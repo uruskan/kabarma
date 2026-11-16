@@ -1,0 +1,517 @@
+# Kabarma: Oyun Tasarımı
+
+> Kurallar ve formüller burada, adlı içerik listeleri [ICERIK.md](ICERIK.md)'de.
+> Bütün sayılar `data/` altındaki dosyalarda durur ve ayarlanabilir. Kısaltmalar: **T** = Ocak basamağı (1–6), **KS** = Kabarma seviyesi.
+
+## 1. Döngüler
+
+| Ölçek | Döngü |
+|---|---|
+| Saniye | Nişan al → ışın ya da atış → parça ve sayı fırlar → çantaya emilir |
+| Dakika | Topla → üret → kur → ek ya da besle → sat |
+| Gün (30 dk) | Sabah hasat ve bakım → gündüz keşif ya da inşa → akşam dönüş → gece dinlenme ya da Küçük Kabarma |
+| Kabarma (varsayılan 4 günde bir) | Hazırlık → gece: dalgalar ve kart yığını → şafak: hasat, rapor, satış → onarım ve yükseltme |
+| Basamak (saatler) | Yeni biyom → yeni malzeme, ekin, hayvan → adak → Ata → Ocak yükselir → yeni istasyonlar ve daha yüksek KS |
+
+## 2. Zaman ve takvim
+
+- Bir oyun günü 30 gerçek dakikadır: 22 dk gündüz, 8 dk gece. Dünya ayarıyla ×0,5 ile ×2 arasında değişir.
+- Bütün oyuncular yataktaysa gece atlanır. Kabarma gecesi atlanamaz.
+- **Kabarma takvimi:** varsayılan her 4. gece. Ayar: 2–7 gün ya da "yalnızca çanla". Gökyüzündeki Maya halkası kalan süreyi gösterir; son gün halka tamamdır ve Suna sabah anons eder.
+- **Çan:** Ocak'taki çan çalınırsa bir sonraki gün batımında Kabarma başlar ve takvim sıfırlanır. Çan çalınırken KS seçilir.
+- Kabarma gecesi 14 dakikadır.
+
+## 3. Oyuncu
+
+### 3.1 Nitelikler
+
+| Nitelik | Taban | Ne artırır |
+|---|---|---|
+| Can | 100 | Yemek, zırh takımı, kartlar |
+| Dayanıklılık | 100 | Yemek, Ustalık |
+| Şarj (kuşam enerjisi) | 100 | Kuşam modülleri |
+| Taşıma gücü (Çekim) | 80 kg × Çapa çarpanı | Çapa basamağı, çip |
+
+### 3.2 Hareket
+
+Yürüme 3,5 m/sn, koşu 6, depar 8,5 (saniyede 8 dayanıklılık). Zıplama 1,3 m. Merdiven ve rampa tırmanılır. Zıpkın başlığı kendini çeker. Planör, çift zıplama ve roket zıplama kuşam modülü ya da güçtür. Yuvarlanma yok; kaçınma Atılma gücüyle yapılır.
+
+Gövde fiziklidir: araç ya da 150 kg'dan ağır bir nesne çarparsa oyuncu 5 saniyeliğine yere serilir (ragdoll). Bu hasar vermez.
+
+### 3.3 Yemek
+
+Açlık ve susuzluk yok. Üç yemek yuvası var. Her yemek 15–25 dakika boyunca Can, Dayanıklılık ve çoğu zaman özel bir etki verir. Aynı yemek iki yuvaya konamaz. Yemek bozulmaz. Liste: [ICERIK.md](ICERIK.md) §15.
+
+### 3.4 Konfor ve dinlenme
+
+Yatağın 10 m çevresindeki farklı mobilya ve süs türlerinin sayısı konfor puanıdır (1–20). Uyuyunca **Dinlenmiş** etkisi gelir: süre `8 + konfor` dakika, dayanıklılık yenilenmesi +%25, Ustalık kazanımı +%10.
+
+### 3.5 Tehlikeler
+
+| Tehlike | Nerede | Direnç kaynağı |
+|---|---|---|
+| Soğuk | Ayaz Yaylası, yüksek rakımda gece | Termal Astar, Acılı Ezme ve Kar Çayı, ısı kaynağı, kapalı alan |
+| Sıcak | Kızıl Kanyon gündüzü | Serin Yelek, Ayran ve Karpuz Peynir, gölge, ıslak olmak |
+| Zehirli gaz | Sazlık çukurları, bazı Oyuklar | Filtre Maskesi |
+| Maya yanığı | Göbek | Maya Yalıtımı, Ekşi Maya Ekmeği |
+
+Direnç yetmiyorsa dayanıklılık yenilenmez ve saniyede 1–3 can gider. Hiçbir tehlike anında öldürmez.
+
+### 3.6 Bayılma, ölüm, doğma
+
+- **Ortak oyun:** Can sıfırlanınca oyuncu 30 saniye baygın kalır. Bir arkadaşı şok tokadıyla (E basılı, 1,5 sn) %30 canla kaldırır. Süre dolarsa ölür.
+- **Tek oyuncu:** Gecede bir kez "ikinci nefes": can sıfırlanınca %40 canla kalkılır.
+- **Ölüm:** Çanta, ölünen yerde emanet kasası olarak kalır ve haritada işaretlenir; kaybolmaz. Çapa ve giyili kuşam oyuncuda kalır. Oyuncu yatağında, yatak yoksa Ocak'ta doğar. Ustalık kaybı yok.
+- **Kabarma sırasında ölüm:** 10 sn + ölüm başına 5 sn sonra yatakta doğulur. Kartlar kalır; dolmakta olan seviye çubuğunun yarısı ve Gösteri çarpanı sıfırlanır.
+
+## 4. Çapa
+
+Oyuncunun elindeki tek alet. Bütün işler ve silahlar başlık olarak takılır. Karakter Çapa'yı hep aynı pozda tutar; hedefe kol IK'sıyla döner.
+
+| Çapa | Gereken Ocak | Güç çarpanı | Silah yuvası | Başlık başına çip yuvası |
+|---|---|---|---|---|
+| Mk.I | T1 | 1,0 | 2 | 1 |
+| Mk.II | T2 | 1,5 | 3 | 1 |
+| Mk.III | T3 | 2,2 | 3 | 2 |
+| Mk.IV | T4 | 3,2 | 4 | 2 |
+| Mk.V | T5 | 4,5 | 4 | 3 |
+| Mk.VI | T6 | 6,5 | 5 | 4 |
+
+- **İş başlıkları** (6): Kazma, Biçme, Çekim, Toprak, Sulama, İnşa. Hepsi iniş kapsülünden çıkar, yuva harcamaz ve iş çarkından seçilir. Çapa basamağı ve çipler onları güçlendirir.
+- **Silah başlıkları** (12): [ICERIK.md](ICERIK.md) §6. Aynı anda silah yuvası kadarı takılı durur; Alet Askısı'nda değiştirilir.
+- Başlık değiştirme: sayı tuşları ya da çark (kol: sol tampon basılı).
+- **Tarayıcı** başlık değildir; her zaman açılabilen bir moddur. İlk kez taranan her tür, bitki ve maden Veri verir ve Ansiklopedi'ye yazılır.
+- **Cephane:** Çivi, saçma, havan mermisi, biyoyakıt ve tohum kullanan başlıklar gündüz cephane harcar. Kabarma sırasında Çapa aşırı yüklüdür ve cephane sınırsızdır; özel cephane takılıysa etkisi sürer.
+- **Çipler:** Başlığa takılan kalıcı geliştirmeler. 24 tür, 4 nadirlik. Çipler ganimetten ve üretimden gelir; en üst nadirlik yalnızca Holding parçasıyla yapılır.
+
+**Vuruş hissi ölçütleri** (hepsi F1 ayar panelinde): vuruş duraklaması 30–80 ms; kamera sarsıntısı; hasar sayıları; geri tepme yayı; vurulan hedefte ezilip esneme; üç katmanlı ses (atış, isabet, parça). Girişten ekrandaki ilk tepkiye kadar geçen süre en fazla 50 ms.
+
+## 5. Envanter ve yük
+
+- **Sırt çantası:** 20 yuva; Çapa basamağıyla 24, 30, 36, 42, 48. **Kemer:** 8 yuva.
+- Yığın: kaynak 50, ara ürün 20, yemek 10.
+- **Yük nesneleri** çantaya girmez; dünyada fiziksel durur: kabarık ürün, kargo kasası, büyük leş, yumurta, paketlenmiş makine ve araç, Ata ganimeti. Çekim başlığıyla, birkaç kişiyle, hayvanla, vinçle ya da araçla taşınır.
+- **Ambardan üretim:** Tapu içinde Ocak'a bağlı bütün depolardaki malzeme tezgâhlarda doğrudan kullanılır.
+
+## 6. Ocak ve tapu
+
+Ocak üssün kalbidir. İşlevleri: tapu alanı, doğma noktası, Çan, Maya Kazanı, ambar bağlantısı, basamak yükseltme, Mühür rafı.
+
+| Basamak | Açan | Tapu yarıçapı | Tapu direği | Karakol | KS tavanı | Hayvan sınırı |
+|---|---|---|---|---|---|---|
+| T1 | Başlangıç | 40 m | 3 | 1 | 5 | 8 |
+| T2 | Çayır Çekirdeği | 60 m | 6 | 2 | 10 | 14 |
+| T3 | Koru Çekirdeği | 80 m | 9 | 3 | 15 | 20 |
+| T4 | Sazlık Çekirdeği | 110 m | 12 | 4 | 20 | 28 |
+| T5 | Kanyon Çekirdeği | 140 m | 16 | 6 | 25 | 36 |
+| T6 | Ayaz Çekirdeği | 180 m | sınırsız | 8 | sınırsız | 48 |
+
+- **Tapu direği:** 25 m yarıçaplı ek alan; mevcut tapuya değmek zorundadır.
+- **Karakol Ocağı:** Uzakta 30 m'lik mini tapu. Yatak, depo, mancınık ve teleferik konur. Kabarma karakolları etkilemez; o gece mühürlüdürler.
+- **Taşıma:** Ocak sökülüp başka yere kurulabilir (1 oyun günü bekleme). Eski yapılar yerinde kalır.
+- **Maya Kazanı:** Kabarma'da kazanılan Maya burada birikir. Düşmanların ikinci hedefidir.
+- **Mühür rafı:** Her Ata kalıcı bir ekip bonusu (Mühür) verir.
+
+## 7. Yapı
+
+- **Izgara:** 3 m'lik kare; kat yüksekliği 3 m; üçgen parçalar var. İlk temel serbest döner (15° adım), sonrakiler yuvaya oturur.
+- **Malzemeler:**
+
+| Malzeme | Basamak | Parça canı | En fazla yatay açıklık |
+|---|---|---|---|
+| Ahşap | T1 | 400 | 3 parça |
+| Kerpiç-Taş | T2 | 900 | 4 parça |
+| Çelik Sac | T3 | 2.000 | 6 parça |
+| Mayalı Beton | T6 | 5.000 | 8 parça |
+| Cam (ışık geçirir) | T4 | 300 | 3 parça |
+
+- **Taşıma dengesi:** Her parça en yakın temele olan destek mesafesini hesaplar. Açıklık aşılırsa parça yerleşmez. Desteği yıkılan parçalar fizik nesnesi olarak düşer ve altındakini yere serer.
+- **Yerinde yükseltme:** İnşa başlığıyla; aradaki malzeme farkı ödenir.
+- **Onarım:** Hasar oranında malzemenin %25'i. **Söküm:** tapu içinde %100 iade.
+- **Boyama:** 16 renk, parça başına.
+- **Kapalı alan:** Üstü ve çevresi kapalı hacim ısıyı, konforu ve yağmuru etkiler.
+- **Plan modu:** Parçalar hayalet olarak bırakılır; ekip üyeleri malzemeyi getirince tamamlanır.
+- **Plan Defteri:** Kurulu bir bölge plan olarak kaydedilir ve başka yere hayalet olarak konur. 12 yuva.
+- **Dev ürün oyma:** L ve XL kabarık Kabak, Karpuz ve Mantar, yanına kurulan Oyma İskelesi ile kalıcı yapıya dönüşür (Kabak Ev, Karpuz Havuz, Mantar Kule). Konfor puanı verir.
+
+## 8. Tarım
+
+### 8.1 Tarla
+
+- Toprak başlığı 1 × 1 m'lik kareleri sürer (eğim 15°'den az olmalı).
+- Her karenin iki değeri var: **Bereket** (0–100) ve **Nem** (0–100).
+- Evreler: Tohum → Filiz → Genç → Olgun. Kabarma yalnızca Olgun ekini kabartır.
+
+### 8.2 Büyüme
+
+`hız = taban × f(Nem) × f(Bereket) × f(Işık) × f(Sıcaklık) × (1 + 0,04 × H)`
+
+| Etken | Kural |
+|---|---|
+| Nem | 20'nin altı: durur. 20–40: ×0,5. 40–80: ×1. 80 üstü: ×0,8 (su seven ekinlerde ×1). |
+| Bereket | `0,5 + Bereket / 200` |
+| Işık | Açık hava ya da büyütme lambası ×1; karanlık ×0. Mantarlar tersidir. |
+| Sıcaklık | Ekinin biyom bandında ×1, dışında ×0,25. Sera bandı düzeltir. |
+
+- **Hasat verimi:** `taban × (1 + 0,08 × V) × kalite`. Kalite ★1–3; Bereket 70 ve üstü, Nem hiç 20'nin altına düşmediyse ★3.
+- **Bereket:** Her hasat −8 (kök ekinleri −10, Katran Fasulyesi +5). Kompost +30, gübre +20, kimyasal gübre +50. Boş kare günde +3. Bir karede art arda farklı aile ekmek +%10 verim.
+- **Su:** Hortum, yağmur, yağmurlama (4 m yarıçap, boru ve su kaynağı ister), damla hattı.
+- **Gündüz zararlıları:** Zıpzıp, Fındıkçı ve küçük Çekirge grupları olgun ekine gelir. Korkuluk (10 m), çit, bekçi hayvan ya da kule önler.
+
+### 8.3 Genler ve ıslah
+
+Her tohumun dört geni var (1–10): **V** verim, **H** hız, **D** dayanıklılık (nem ve sıcaklık toleransı, zararlı hasarı), **M** Maya eğilimi (kabarma boyu). Yabani tohum 1–3 ile gelir.
+
+- **Çaprazlama:** Aynı aileden iki bitki en fazla 2 m arayla ekiliyse ve 12 m içinde Vızvız kovanı varsa, hasat edilen tohumun her geni ebeveyn ortalamasıdır, üstüne mutasyon: %70 değişmez, %20 +1, %8 −1, %2 +2.
+- **Aşı Tezgâhı (T5):** Bir tohumdaki seçilen tek geni başka tohuma aktarır; kaynak tohum harcanır.
+- **Alaca:** Her hasatta Benekli 1/40, Altın 1/250, Aurora 1/2.000. Alaca tohum %50 olasılıkla Alaca verir. Satışta ×3, ×10, ×50; kabarık hâlinin kendine özgü görünüşü olur.
+
+### 8.4 Kabarma'da tarla
+
+- Tapu içindeki Olgun ekinler gecenin ilk iki dakikasında kabarır.
+- **Boy puanı** = `M + KS / 5 + kart bonusu`. 6'nın altı S, 6–9 M, 10–13 L, 14 ve üstü XL.
+- Kabarık ürün yük nesnesidir: S 40 kg, M 150 kg, L 600 kg, XL 2.500 kg. Satış değeri normalin 8, 12, 16, 24 katıdır.
+- Şafaktan sonra 1 gün içinde toplanmayan kabarık ürün söner ve iki kat normal ürüne döner.
+- **Ne ekersen onu çekersin:** Her ekin ailesi belirli yaratık ailelerini çeker ([ICERIK.md](ICERIK.md) §5). Dalgaların yarısı buna göre kurulur (§14).
+
+### 8.5 Sera
+
+Cam parçalarla kapatılmış hacme Sera Kontrol Ünitesi konunca içerideki sıcaklık bandı seçilir. Böylece her biyomun ekini her yerde yetişir. Ünite güç ister.
+
+## 9. Hayvancılık
+
+### 9.1 Evcilleştirme
+
+- **Otçullar ve küçükler:** Sevdiği yem atılır. Her yiyişte güven çubuğu dolar; koşmak ve ateş etmek çubuğu sıfırlar. Dolunca oyuncuyu izler; ağıla girince kayıt olur.
+- **Yırtıcılar ve büyükler:** Önce canı %25'in altına indirilip Çekim ya da Zıpkın ile tutulur, sonra beslenir.
+- **Yumurtadan:** Hu, Koşar, Paytak ve Kızgın yuvadan alınan yumurtayla Kuluçka'da çıkar.
+
+### 9.2 İhtiyaçlar ve mutluluk
+
+Yemlik (türe göre yem), suluk, çatı, tür başına alan. Mutluluk (0–100) karşılanan ihtiyaçlardan, okşamaktan ve gübreyi toplamaktan gelir. Mutluluk ürün kalitesini ve üremeyi belirler.
+
+### 9.3 Genler ve üreme
+
+Dört gen (1–10): **B** boyut (can, yük), **U** uysallık (komut dinleme, ürün sıklığı), **V** ürün verimi, **K** kabarma gücü (kabarık hâlin canı ve hasarı). Kalıtım ve Alaca kuralları tarımdakiyle aynı. İki yetişkin, 60 ve üstü mutluluk ve boş yer varsa 2–4 günde yavru gelir.
+
+### 9.4 Roller
+
+Her hayvana bir rol atanır:
+
+| Rol | Ne yapar |
+|---|---|
+| Üretici | Ahırda ürün verir |
+| Bekçi | Tapuda devriye gezer, gündüz zararlılarını kovalar |
+| Binek | Sürülür |
+| Yük | Heybe taşır (8–24 yuva) ya da araba çeker |
+| İşçi | Türe özgü iş yapar ([ICERIK.md](ICERIK.md) §3): cevher eşeler, kaya kırar, kompost yapar, elektrik üretir, fırın olur, harita açar |
+| Savaşçı | Savaş Ağılı'nda bekler; Kabarma'da kabarıp savaşır |
+
+Komutlar: izle, bekle, işaretlediğime saldır, dön. Uysallığı düşük hayvan bazen dinlemez.
+
+### 9.5 Kabarma'da hayvanlar
+
+- Savaş Ağılı'ndakiler kabarır ve savaşır. Canı biten bayılır, sabah ahırda uyanır ve bir gün yorgundur.
+- Ahırdakiler saklanır. Ahır yıkılırsa kaçışırlar; sabah mutlulukları yarıya iner.
+- Hayvan kalıcı olarak ölmez (Sert Ay ayarında ölür).
+
+## 10. Ustalık
+
+Sekiz dal: **Kazı, Hasat, Çiftçilik, Hayvancılık, Mühendislik, Aşçılık, Savaş, Sürüş.** Her dal 1–50.
+
+- Yaparak gelişir. `n. seviye eşiği = 100 × n^1,6`.
+- Her seviye ilgili işe +%1 hız ya da verim.
+- 10, 20, 30, 40 ve 50. seviyelerde iki özellikten biri seçilir. Toplam 80 özellik: [ICERIK.md](ICERIK.md) §19.
+- Seçimler kredi karşılığı sıfırlanır.
+- Ustalık karaktere aittir ve dünyalar arasında taşınır.
+
+## 11. Mühendislik
+
+### 11.1 Güç
+
+- Birimler: watt (W) ve watt-saat (Wh).
+- Üreticiler, aküler ve tüketiciler kabloyla aynı ağa bağlanır. Kablo iki soket arasına elle çekilir (en fazla 12 m). Direkte 4 soket var.
+- Her tikte ağ hesabı: üretim talebi karşılamazsa akü devreye girer; o da yetmezse tüketiciler öncelik sırasına göre (1–5, oyuncu ayarlar) kapanır.
+- Şalter ağı böler. Parçalar: [ICERIK.md](ICERIK.md) §12.
+
+### 11.2 Sinyal
+
+Ayrı, ince kabloyla taşınan 0–100 arası sayı.
+
+| Tür | Parçalar |
+|---|---|
+| Kaynak | Düğme, şalter, basınç plakası, hareket sensörü (oyuncu, hayvan, düşman süzgeci), gün-gece sensörü, Kabarma sensörü (aşama ve dalga), depo sensörü, güç sensörü, nem sensörü, sayaç, zamanlayıcı |
+| Kapı | VE, VEYA, DEĞİL, karşılaştırıcı, bellek |
+| Alıcı | Kapı, sur kapısı, kule (aç, kapat, hedef seçimi), yağmurlama, lamba, siren, bant, kol, tuzak, fırlatma pedi, Kabartma Odası |
+
+### 11.3 Taşıma
+
+Bant (eğim en fazla 30°, saniyede 2 nesne), ayırıcı, birleştirici, kol, boru ve pompa (su, yakıt, süt), depolar, Akıllı Depo (istek listesi), Drone İstasyonu, teleferik (karakollar arası yük hattı).
+
+### 11.4 Otomasyon
+
+Hasat Robotu, Ekim Robotu, otomatik yemlik, Sağım-Kırkım Kolu, Yumurta Toplayıcı, Kompostör, Montaj Makinesi (seçilen tarifi kendi üretir), Paketleyici, otomatik Kargo Rampası, Sondaj Kulesi (Zengin Yatak üstünde). Son halka: **Kabartma Odası**, Maya harcayarak tek bir tarla karesini ya da hayvanı gündüz kabartır.
+
+## 12. İçerik nasıl açılır
+
+| Kanal | Ne açar |
+|---|---|
+| Ocak basamağı | İstasyonlar, Çapa basamağı, KS tavanı |
+| Keşif | Yeni bir malzeme ilk alındığında onu kullanan temel tarifler |
+| Araştırma | Tarama, iş emirleri ve enkaz veri küplerinden gelen **Veri** ile Araştırma Masası'nda makine, başlık, parça ve araç tarifleri. Her kalemin Veri bedeli ICERIK'te yazıyor. |
+| Katalog | **Kredi** ile tohum, yumurta, araç gövdesi, süs, kozmetik |
+| Ganimet | Çipler, kart jetonları, güçler (Kadim Taş), Holding planları |
+
+## 13. Ekonomi
+
+- **Kredi kaynakları:** kargo satışı, iş emri ödülü, Holding silosu, enkaz kasaları.
+- **Kargo:** Ürünler Paketleme Tezgâhı'nda kargo kasasına konur (20 yığın). Kasa yük nesnesidir. Kargo Rampası 1–6 kasa ya da bir kabarık ürün alır ve fırlatır; ödeme 60 saniye sonra gelir.
+- **Fiyat:** `taban × kalite (1,0 / 1,3 / 1,7) × Alaca (3 / 10 / 50) × Borsa × doygunluk`
+- **Borsa:** 12 kategori. Her kategorinin çarpanı günde ±0,15 oynar, 0,6 ile 1,6 arasında kalır. Her gün bir kategori "sıcak"tır (×2).
+- **Doygunluk:** Aynı kategoriden satılan her kasa o kategoriyi %3 düşürür (taban %40); günde %15 geri gelir. Tek ürüne yüklenmek cezalanır.
+- **Tohum Çarkı:** Bir çevirme 500 Kredi ya da 3 Alaca ürün; günün ilk çevirmesi bedava. Ödüller: nadir tohum, yumurta, çip, kart jetonu, kozmetik, kredi. Beklenen değer harcananın %85'i.
+- **Cüzdan ekipçe ortaktır.**
+- **İş emirleri:** 48 zincir, her biri 5 adım. Suna okur, Defter'de durur.
+
+## 14. Kabarma
+
+### 14.1 Akış
+
+| Aşama | Süre | Ne olur |
+|---|---|---|
+| Alaca | 2 dk | Siren, gökyüzü dalgalanır, ekinler ışımaya başlar. Hazırlık anı. |
+| Dalgalar 1–8 | Her biri 75 sn + 15 sn ara | Ekinler ilk iki dakikada kabarır. Dalgalar tapu sınırından girer. |
+| Doruk | 2 dk | Her 5. KS'de Azman; diğerlerinde elit dalga |
+| Şafak | — | Kalan düşmanlar söner ve kaçar. Hasat Raporu açılır. |
+
+### 14.2 Kabaranlar
+
+Tapudaki olgun ekinler; Savaş Ağılı'ndaki hayvanlar; çevredeki yabani yaratıklar (dalga olarak gelirler); oyuncuların Çapa'sı (kartlar açılır, cephane sınırsız olur); Holding kampları (kalkanları iner, Husumet yüksekse baskın ekibi çıkar).
+
+### 14.3 Dalga kuralları
+
+- **Sayı:** dalga başına toplam düşman `(30 + 8 × KS) × oyuncu çarpanı`. Oyuncu çarpanı `1 + 0,6 × (n − 1)^0,85`. Aynı anda sahnede en fazla 220 düşman bulunur; fazlası sırayla girer.
+- **Güç:** can `1,15^(KS−1)`, hasar `1,08^(KS−1)`.
+- **Elit oranı:** `min(%40, %2 × KS)`. Elit önekleri: Zırhlı, Hızlı, Bölünen, Patlayan, Şifacı, Mıknatıs, Dev.
+- **Bileşim:** %50 ekili ailelerin çektiği türler (ekili alan oranında), %30 biyomun yerlileri, %20 komşu biyom. Tapuda hiç olgun ekin yoksa tamamı yerli gelir, sayı ×0,6 olur ve Maya kazancı yarıya iner.
+- **Hedef önceliği:** kendi ailesinin ekini → Maya Kazanı → kendisine saldıran. Yoldaki yapıyı kırarlar.
+- **Sürüler** (Çekirge, Sülük, Hamurcuk öbekleri) tek varlık sayılır ve tek can havuzu taşır.
+
+### 14.4 Kazanç ve kayıp
+
+- **Maya** = öldürülen her düşmanın Maya değeri × `(1 + 0,15 × KS)` × Gösteri çarpanı. Kazan'da birikir.
+- **Kazan devrilirse** Kabarma o an biter ve o gecenin Maya'sının yarısı gider. Ekinler kabarık kalır. Kazan sabah kendini onarır.
+- **Bozgun:** Bütün oyuncular aynı anda yerdeyse Kazan %25 hasar alır, herkes yatağında doğar.
+- **Yenen ekin** kaybedilir. Yıkılan yapı onarılır.
+- **İlk geçiş ödülü:** Bir KS ilk kez geçildiğinde bir üst KS açılır; ekip 1 kart jetonu ve kredi primi alır.
+
+### 14.5 Gösteri çarpanı
+
+×1,0 ile ×5,0 arası; ekranın üst ortasında durur. Artıranlar: 3 saniyede 5 öldürme, havadaki düşmanı öldürme, çevreyle öldürme (fırlatma pedi, araç, biçerdöver, düşen yapı), hayvanının öldürmesi, kıl payı kurtulma, hasar almadan seri. Zamanla düşer; ölünce sıfırlanır.
+
+### 14.6 Küçük Kabarma
+
+Maya Feneri (T2, günde bir kez kullanılır) 40 m yarıçapta 4 dakikalık bir Kabarma başlatır. KS seçilenin yarısıdır, en fazla 3 kart seviyesi verir. Islah denemesi, hayvan eğitimi ve karakolda parti için.
+
+### 14.7 Tatbikat
+
+Ocak'tan başlatılır. Seçilen KS'nin dalgaları hayalet olarak gelir; hasar gerçektir ama onarım bedavadır ve ödül yoktur. Savunma düzenini sınamak için.
+
+### 14.8 Tüzük maddeleri (KS 26 ve üstü)
+
+26'dan sonra her seviye 12 maddelik havuzdan birini kalıcı olarak ekler ([ICERIK.md](ICERIK.md) §8.4). 37'den sonra maddeler ikinci kez eklenip şiddetlenir.
+
+## 15. Kabarma kartları
+
+- **Gece seviyesi:** Öldürmeler Öz verir (türün Öz değeri × Gösteri). `n. seviye eşiği = 20 × n^1,5`. Tipik bir gecede 18–26 seviye atlanır.
+- **Seçim:** Her seviyede açık havuzdan 3 kart gelir. Oyun durmaz; kartlar ekranın altında belirir ve tek tuşla seçilir. 20 saniyede seçilmezse ilki alınır. Tek oyuncuda seçim sırasında zaman %30'a yavaşlar.
+- **Nadirlik ağırlıkları:** Sıradan 60, Nadir 28, Destansı 10, Efsane 2.
+- **Rütbe:** Aynı kart 5 kez alınabilir. En fazla 12 farklı kart taşınır.
+- **Aşı:** İki belirli kart 5. rütbeye gelince birleşik aşı kartı sunulur; iki yuvayı tek yuvaya indirir.
+- **Yenileme ve sürgün:** Gecede 2 yenileme, 2 sürgün.
+- **Ekip kartları** (Çiftlik sınıfı) bütün ekibi etkiler; aynı kart farklı oyunculardan yığılmaz, en yüksek rütbe geçerlidir.
+- Şafakta bütün kartlar söner.
+- **Nişan:** Bir kartı geceyi 5. rütbede bitirmek 1 Nişan puanı verir. 3, 8, 15, 25, 40 puanda Nişan 1–5 olur: her seviye kartın etkisini %4 artırır; Nişan 5'te kart geceye 2. rütbeden başlar.
+- **Açılma:** 20 kart baştan açıktır. 40 kart iş emri zincirleri, üye tipleri, Atalar ve kart jetonlarıyla açılır ([ICERIK.md](ICERIK.md) §8.3). 12 aşı kartı, iki ebeveyni açık olunca kendiliğinden açılır.
+
+## 16. Savaş
+
+### 16.1 Hasar ve durumlar
+
+Hasar türleri: Darbe, Kesme, Ateş, Buz, Şok, Zehir, Maya. Her yaratığın zayıflığı ve direnci var.
+
+| Durum | Etki |
+|---|---|
+| Yanık | 3 sn boyunca saniyede hasarın %20'si; yakındakine sıçrar |
+| Donma | %40 yavaşlatır; yığılınca 2 sn kilitler |
+| Şok | Yakındaki hedeflere sıçrar, kısa sersemletir |
+| Zehir | Uzun süre az hasar; iyileşmeyi keser |
+| Kabarık | Maya hasarı hedefi şişirir; %200'e varınca patlar ve alan hasarı verir |
+| İtme | Kütleye göre savurur |
+
+- **Zırh:** `azaltma = zırh / (zırh + 100)`.
+- **Zayıf nokta:** Kabarmış yaratıklarda parlayan maya kesesi; vuruş ×2.
+- **Dost ateşi** kapalıdır (dünya ayarı). İtme, fırlatma ve ezilme her zaman açıktır.
+
+### 16.2 Düşman davranışları
+
+Dokuz arketip: Koşucu, Tank, Sıçrayan, Menzilli, Uçan, Sürü, Kazıcı, Hırsız (ürünü kapıp kaçar), Yıkıcı (yapıya öncelik verir). Her tür bir ya da iki arketip taşır.
+
+### 16.3 Gündüz savaşı
+
+Yabani yaratıklar, açık arazideki Holding ekipleri ve kervanları, Oyuk koruyucuları ve Atalar. Kart yoktur; güç kalıcı donanımdan gelir: Çapa basamağı, başlıklar, çipler, zırh, güçler, yemek, hayvan.
+
+### 16.4 Savunma yapıları
+
+8 kule ve 8 tuzak ([ICERIK.md](ICERIK.md) §13). Kuleler güç ya da cephane ister; sinyalle açılıp kapanır ve hedef önceliği seçilir (en yakın, en güçlü, uçan, hırsız).
+
+## 17. Güçler
+
+- İki etkin güç yuvası ve bir ulti yuvası. İkinci etkin yuva Kurbağa Ağa'nın ödülüdür.
+- Etkin güçler Şarj harcar (25–50) ve 8–30 saniye bekleme süresi vardır.
+- **Ulti** Maya ölçeriyle çalışır. Ölçer yalnızca Kabarma'da ve Ata dövüşünde dolar.
+- 12 etkin güç Kadim Taş denemelerinden, 4 ulti Atalardan gelir ([ICERIK.md](ICERIK.md) §7).
+
+## 18. Atalar
+
+- Her biyomda bir **Ata Taşı** var. Adak konunca Ata gelir.
+- Adaklar bilerek başka sistemlerden geçer: kabarık ürün (tarım ve Kabarma), bal (hayvancılık), güç isteyen makine (mühendislik).
+- Dövüş açık arenadadır, üç aşamalıdır. Ata'nın canı ekip boyuna göre `1 + 0,5 × (n − 1)` ile çarpılır.
+- **Ödül:** Çekirdek (Ocak basamağı), Mühür (kalıcı ekip bonusu), bir ulti ya da özel ödül, ganimet.
+- **Kabarık Ata:** Yenilen Ata aynı adak ve `KS × 50` Maya ile yeniden çağrılır; gücü seçilen KS'ye göre ölçeklenir, üst basamak çip malzemesi verir.
+- Ayrıntılar: [ICERIK.md](ICERIK.md) §4.
+
+## 19. Bereket Holding (rakipler)
+
+### 19.1 Kamplar
+
+| Kamp | Ne zaman kurulur |
+|---|---|
+| 1. kamp | İlk gerçek Kabarma'nın ertesi günü, Ocak'tan en az 600 m uzağa |
+| 2. kamp | Ocak T3 |
+| 3. kamp | Ocak T4 |
+| Genel Merkez | Ocak T5; krater eteğinde sabit yerde |
+
+- **Seviye 1–10.** Baskın yemeyen kamp her 5 günde bir seviye atlar. Tavan `Ocak basamağı × 2`, en fazla 10.
+- Kamp oyuncunun kullandığı yapı parçalarından kurulur ve seviye atladıkça gözle görülür biçimde büyür: seviye başına `2 + L` bekçi, `2 + L/2` işçi, `L/2` kule, `L/3` sur katmanı.
+
+### 19.2 Gündüz
+
+- İşçiler 150 m içindeki damarları toplar; o damarlar daha çabuk tükenir.
+- Günde bir **kervan** yola çıkar (bir araç, 2–4 bekçi). Açık arazide pusu kurulabilir.
+- Kamp tapusunda **Perde** vardır: içeride kimse kimseye hasar veremez; izinsiz giren kibarca dışarı itilir.
+
+### 19.3 Husumet (0–100)
+
+| Olay | Değişim |
+|---|---|
+| Her gün | +2 |
+| İhracat gelirin (günlük, bin kredi başına +1) | en fazla +3 |
+| Kervan pususu | +15 |
+| Kampa gece baskını | +25 |
+| Onlar sana baskın yapınca | −40 |
+
+Husumet 50 ve üstündeyse o kamp Kabarma'da baskın ekibi gönderir (`L/2 + 2` birim, 4. seviyeden sonra kamyonetli). Hedefleri kabarık ürünü çalıp kamyonetle kaçırmak, ikinci hedefleri kulelere sabotajdır.
+
+### 19.4 Senin baskının
+
+Kabarma gecesi Perde iner. Hedefler:
+
+| Hedef | Ganimet |
+|---|---|
+| Silo | Kabarık ürün, kredi kasaları |
+| Atölye | Holding parçası (en üst çiplerin tek kaynağı), planlar |
+| Ahır | Nadir cins hayvanlar |
+| Şube Çekirdeği | Yok edilirse büyük ödül; kamp 3 gün sonra 1. seviyeden yeniden kurulur, Husumet sıfırlanır |
+
+Şafakta Perde geri gelir ve içeride kalan oyuncu dışarı fırlatılır; elindeki ganimet onda kalır. Evde kalmak ile baskına gitmek arasındaki seçim, ekibi bölmenin ya da savunmayı otomatikleştirmenin gerekçesidir.
+
+### 19.5 Genel Merkez
+
+10 seviyeli, iç mekânlı sabit üs. Sonunda Müdür var. Yalnızca Kabarma gecesi girilir. En üst çip planları ve Holding kozmetikleri buradan gelir.
+
+## 20. Araçlar
+
+- Araç Atölyesi'nde gövde basılır, eklentiler gövdenin yuvalarına takılır.
+- Yakıt: biyoyakıt ya da akü. Dolu depo yaklaşık bir saat sürüş verir.
+- Araç hasar alır ve onarılır; devrilen araç E ile düzeltilir.
+- Kabarma'da araç silahtır: ezme ve biçme Gösteri çarpanını artırır.
+- Liste: [ICERIK.md](ICERIK.md) §14.
+
+## 21. Dünya
+
+- **Yapı:** Tek ada. Ortada Göbek krateri ve göğe yükselen ışık sütunu; her yerden görünür. Beş biyom kraterin çevresinde dilim dilim dizilir; başlangıç güney kıyısındaki Altın Çayır'dır. Adanın kenarı Sis Denizi'ne inen yarlardır.
+- **Geçişler** yumuşaktır: bir biyoma girmek serbest, ayakta kalmak donanım ister. Göbek'in kapısı Ocak T6 ile açılır.
+- **Keşif noktaları** (9 tür): Seyir Kulesi, Kadim Taş, Ata Taşı, Oyuk, Enkaz, Holding Kampı, Yabani Bahçe, Yuva, Zengin Yatak ([ICERIK.md](ICERIK.md) §17).
+- **Harita:** Gezilen yer açılır. Seyir Kulesi'ne tırmanmak 600 m yarıçapı açar.
+- **Hızlı seyahat:** **Mancınık.** Ocak, karakollar ve Seyir Kuleleri arasında oyuncuyu fırlatır; paraşütle inilir. Yük nesnesi taşımaz.
+- **Hava:** açık, bulutlu, yağmur, fırtına, sis, kum fırtınası (Kanyon), tipi (Ayaz), sıcak dalgası. Yağmur tarlayı sular; fırtına rüzgâr gülünü iki kat çalıştırır.
+- **Yenilenme:** Sıradan damarlar ve ağaçlar 5–10 günde yenilenir. Zengin Yataklar bitmez ama yalnızca Sondaj Kulesi ile işletilir.
+
+## 22. Çok oyunculu
+
+### 22.1 Ortak oyun
+
+- 1–8 oyuncu. Kayıt host'ta. Oyun sürerken katılınır ve çıkılır.
+- **Ekipçe ortak:** Ocak, ambar, kredi, araştırma, basamak, Holding ilişkileri.
+- **Kişisel:** çanta, Ustalık, kart Nişanları, Ansiklopedi, kozmetik.
+- Karakter (Ustalık, Nişan, Ansiklopedi, kozmetik) dünyalar arasında taşınır. Çanta dünyada kalır.
+- **Dünyayı devret:** Host, dünya kaydını oyun içinden bir ekip üyesine gönderir; host çevrimdışıyken ekip oynamaya devam eder.
+- Yakınlık sesli sohbeti, uzak mesafe için telsiz tuşu, işaret çarkı, 12 jest.
+- Düşman sayısı ve Ata canı ekip boyuna göre ölçeklenir.
+
+### 22.2 Çekişme (PvP dünyası)
+
+Ayrı bir dünya türüdür; ortak oyun dünyalarında PvP yoktur.
+
+1. 2–4 ekip, ekip başına 1–4 oyuncu. Her ekibin kendi Ocak'ı vardır; Ocaklar arası en az 500 m.
+2. **Gündüz tapu dokunulmazdır:** tapu içinde oyuncu, hayvan ve yapı hasar almaz.
+3. **Açık arazi:** Sunucu ayarı. Kapalı (varsayılan) ya da açık; açıksa öldüren, ölenin çantasından rastgele 3 yığın alır.
+4. **Kabarma** sunucu takvimine göre herkese aynı anda gelir ve tapular askıya alınır.
+5. **Yağmalanabilenler:** tarladaki kabarık ürün ve Açık Silo. Her ekibin o geceki Maya'sının %30'u ve ambarda "ihracata hazır" işaretli mallar Açık Silo'da durur. Geri kalan ambar ve hayvanlar yağmalanamaz.
+6. **Yapı hasarı:** Kabarma'da yapılar yıkılabilir. Yıkılan parça enkaz planı olarak kalır ve malzemenin %50'siyle tek tuşla yeniden kurulur. Ocak yok edilemez. Kazanı devrilen ekip için gece biter ve tapusu mühürlenir.
+7. **Çevrimdışı koruma:** Ekipten kimse çevrimiçi değilse tapu mühürlüdür ve ekin kabarmaz.
+8. **Sezon tablosu:** toplanan Maya + ihracat. Sunucu yöneticisi sezon süresini seçer (7, 14, 30 gün ya da süresiz). Sezon sonunda tablo dondurulur.
+9. Holding kampları sunucu ayarıyla açılır ya da kapanır.
+10. Listen-server'da iki ekip (en fazla 8 oyuncu), adanmış sunucuda dört ekip (16 oyuncu).
+
+## 23. Üye tipleri ve kozmetik
+
+- 12 oynanabilir üye tipi. Her birinin görünüşü, bir pasifi ve Kabarma'ya başladığı bir kartı var. İş emri zincirleriyle açılır ([ICERIK.md](ICERIK.md) §9).
+- Kozmetik parçalar: kask, vizör yüzü, tulum deseni, çanta süsü, Çapa kaplaması, jest. Katalogdan, iş emirlerinden, çarktan ve Genel Merkez'den gelir. Oynanışa etkisi yoktur.
+- Vizör bir ekrandır: göz ve ağız ifadeleri duruma göre değişir; konuşurken ağız ses düzeyine göre oynar.
+
+## 24. Öğretme ve Suna
+
+- **İlk gün:** Suna dokuz adımda yönlendirir ([PLAN.md](PLAN.md) §1.4).
+- **Çıraklık zinciri:** Defter'deki ilk zincir ilk iki saati taşır.
+- **Her yeni sistem** ilk karşılaşmada tek cümlelik ipucu ve Ansiklopedi sayfası açar.
+- **Suna** yaklaşık 700 replik söyler: iş emirleri, olay yorumları (ölüm, ilk kez yapılanlar, Alaca, rekor), Kabarma anonsları, ipuçları. Aynı replik 20 dakika içinde tekrarlanmaz. Ayarlardan sıklığı azaltılır ya da kapatılır.
+
+## 25. Dünya ayarları
+
+| Ön ayar | Fark |
+|---|---|
+| Sakin Ay | Kabarma yalnızca çanla; düşman hasarı %60; Holding kapalı |
+| Kooperatif Standardı | Varsayılan |
+| Sert Ay | Hayvan ölümü kalıcı; emanet kasası 20 dakikada kaybolur; Husumet ×1,5 |
+
+Ayrı sürgüler: gün uzunluğu, Kabarma aralığı, büyüme hızı, düşman canı ve hasarı, kaynak bolluğu, Holding, dost ateşi. **Yeni Ay** kurarken tüzük maddeleri (§14.8) baştan seçilebilir.
+
+## 26. Denge hedefleri
+
+`Sim` ile hızlandırılmış oyuncu modeli şu hedeflere ±%25 uymalı ([TEKNIK.md](TEKNIK.md) §11):
+
+| Geçiş | Tek oyuncu hedef süre |
+|---|---|
+| Başlangıç → T2 | 4–6 saat |
+| T2 → T3 | 8–10 saat |
+| T3 → T4 | 12–15 saat |
+| T4 → T5 | 15–20 saat |
+| T5 → T6 | 20–25 saat |
+| T6 → Ana Maya | 10–15 saat |
+
+- Dört kişilik ekipte süreler ×0,6.
+- Önerilen donanımla bir KS'yi ilk denemede geçme oranı %70.
+- Hiçbir üretim basamağında 10 dakikadan uzun zorunlu bekleme yok.
+- Her 20 dakikada en az bir yeni şey açılır (tarif, kart, iş emri adımı, Ansiklopedi sayfası).
