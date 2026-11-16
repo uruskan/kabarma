@@ -184,7 +184,7 @@ Oyuncu iskeletini ve animasyonlarını kullanırlar; kırmızı tulumludurlar.
 | Mekanik | Kule ve drone kurar, sabotaj yapar | Ark başlığı, tamir |
 | Müdür | Genel Merkez boss'u | Zırhlı araç, bütün başlıklar |
 
-## 4. Atalar ve Azmanlar
+## 4. Atalar, Azmanlar, koruyucular
 
 ### 4.1 Atalar (6)
 
@@ -209,6 +209,28 @@ Her 5. KS'nin Doruk aşamasında, üssün bulunduğu biyomun Azman'ı gelir.
 | Azman Kızgın | Kızıl Kanyon | Tarlayı tutuşturur; yangın Sulama başlığı ve yağmurlamayla söner |
 | Sürübaşı | Ayaz Yaylası | Öldürülene kadar Ayaz Kurdu çağırır |
 | Azman Hamur | Göbek | Bölündükçe küçülür; son parça çekirdektir |
+
+### 4.3 Oyuk koruyucuları (5)
+
+Her biyomun üç Oyuğunu aynı koruyucu türü tutar; her Oyukta biraz daha güçlüdür.
+
+| Koruyucu | Biyom | Dövüş | Ödül |
+|---|---|---|---|
+| **Köstebek Bey** (Lord Mole) | Altın Çayır | Yerden çıkıp dalar. Çıktığı deliğe Sulama başlığıyla su basılınca sersemler; delikler Çekim'le taşınan kayayla tıkanır, tıkanan delikten çıkamaz. | Nadir çip, bakır ve hurda sandıkları |
+| **Yarasa Yumağı** (Bat Knot) | Sis Korusu | Tavanda asılı tek bir sürüdür. Işıkla (meşale, far) dağılır; dağılınca ortadaki ana yarasa görünür ve vurulur. Karanlıkta yeniden toplanır. | Güherçile damarı, nadir çip |
+| **Çamur Devi** (Mud Hulk) | Işıl Sazlık | Islakken hasar almaz ve kendini onarır. Alevle ya da Kızgın'la kurutulur; kuruyan parçalar Darbe ile kırılır. Suya girerse yeniden ıslanır. | Destansı çip, kauçuk ve kükürt sandıkları |
+| **Kuvars Akrebi** (Quartz Scorpion) | Kızıl Kanyon | Zırhı mermi sektirir. Zırh, Havan'la ya da tavandaki sarkıt üstüne düşürülerek çatlatılır; çatlaktan vurulur. Kuyruğu zehir fırlatır. | Destansı çip, kuvars ve titan sandıkları |
+| **Buz Aynası** (Ice Mirror) | Ayaz Yaylası | Oyuncuların buzdan kopyalarını çıkarır; kopyalar o an takılı silah başlığıyla saldırır. Kopyalar Ateş ve Şok ile erir; asıl hedef duvardaki aynadır. | Destansı çip, Ayaz Kristali damarı |
+
+### 4.4 Müdür (Genel Merkez)
+
+| Aşama | Dövüş |
+|---|---|
+| 1. Avlu | Müdür zırhlı kamyonla avluda döner ve kuleden ateş eder. Zayıf nokta arkadaki motor kapağıdır; Mekanikler kamyonu onarmaya koşar. |
+| 2. Yönetim katı | Araçtan iner. Dört kalkan jeneratörü kapatılmadan hasar almaz. Ustabaşı çağırır; hoparlörden yaptığı "motivasyon konuşması" Bekçileri hızlandırır, hoparlörler vurulup susturulur. |
+| 3. Çatı | Kaçış zeplinine biner. Zıpkın'la zepline tutunulur ya da mancınıkla çıkılır; balonlar tek tek patlatılır. |
+
+**Ödül:** Yerçekimi başlığı, Efsane çip planları, Holding Müdürü kaskı, Holding kaplaması.
 
 ## 5. Ekinler (24)
 
@@ -253,7 +275,11 @@ Her 5. KS'nin Doruk aşamasında, üssün bulunduğu biyomun Azman'ı gelir.
 | 23 | Maya Çiçeği | Çiçek | Göbek | 4 | Orta | Hasat başına 5 Maya; komşu karelere M +1 | Tarlada durdukça Maya kazancı +%10 |
 | 24 | Ekşi Maya Mantarı | Mantar | Göbek | 4 | Çok | En üst yemekler | Hamurcuk çeker; her öldürme +%50 Maya |
 
-Bir ekin kendi biyom bandının dışında ancak serada yetişir. Tohumlar ilk kez yabani bitkiden ya da Yabani Bahçe'den alınır; sonra hasat tohum verir.
+**Bant kuralı:** Bir ekin kendi biyom bandının dışında dörtte bir hızla büyür; sera (T4) bandı düzeltir. Altın Çayır ve Sis Korusu aynı banttır. "Su basmış" isteyen ekinler her yerde sığ su ister; Toprak başlığıyla havuz açılır. Mantarlar çatı altında, karanlıkta büyür.
+
+**Başka biyomun ekinini kabartmanın üç yolu:** ana tapuda yavaş yetiştirip Kabarma'yı beklemek · o biyoma karakol kurup tam hızda yetiştirmek ve Maya Feneri ile orada kabartmak · seradan sonra ana tapuda tam hızda yetiştirmek.
+
+Tohumlar ilk kez yabani bitkiden ya da Yabani Bahçe'den alınır; sonra hasat tohum verir.
 
 ## 6. Çapa başlıkları (18), çipler (24)
 
@@ -464,17 +490,17 @@ Havuz bittikten sonra kazanılan her kart jetonu, seçilen bir karta 1 Nişan pu
 | # | Üye | Pasif | Başlangıç kartı | Nasıl açılır |
 |---|---|---|---|---|
 | 1 | Çırak | Ustalık kazanımı +%10 | Rastgele Sıradan | Baştan |
-| 2 | Çoban | Evcilleştirme iki kat hızlı; hayvan mutluluğu +10 | Sürü Çobanı | 10 hayvan evcilleştir |
-| 3 | Makinist | Üretim ve kurma hızı +%20 | Kule Aşırı Yükü | 20 makine kur |
-| 4 | Aşçı | Yemek süresi +%30; pişirdiği yemek bir kalite yüksek çıkar | Yenilenme | 15 tarif pişir |
-| 5 | Kaçak | Depar dayanıklılık harcamaz; hız +%8 | Çevik | Mancınıkla 30 kez uç |
-| 6 | Pehlivan | Tırpan ve itme +%30; can +25 | Tokmak | 500 düşmanı çevreyle öldür |
-| 7 | Arıcı | Çaprazlamada mutasyon şansı ×1,5 | Arı Kovanı | Bir geni 10'a çıkar |
-| 8 | Muhtar | Kredi geliri +%10; katalog −%10 | Ortak Kasa | 100.000 Kredi kazan |
-| 9 | Nine | Tırpan yerine dönerek giden terlik fırlatır; hayvanlar hep dinler | Dikenli | 25 Kabarma'yı kimse ölmeden bitir |
-| 10 | Robot Kâhya | Soğuk, sıcak ve gazdan etkilenmez; yemek yiyemez, aküyle şarj olur | Kabuk | Drone İstasyonu kur |
-| 11 | Gıdak Kostümlü | Zıplarken süzülür; otçul yabaniler ürkmez | Yumurta Topu | Altın Gıdak yetiştir |
-| 12 | Holding Firarisi | Holding kamplarına gündüz girebilir; Holding Parçası +%25 | Açgözlü | Bir Şube Çekirdeği yok et |
+| 2 | Çoban | Evcilleştirme iki kat hızlı; hayvan mutluluğu +10 | Sürü Çobanı | Çoban zinciri, 2. adım: 5 tür evcilleştir |
+| 3 | Makinist | Üretim ve kurma hızı +%20 | Kule Aşırı Yükü | Kalfa zinciri, 3. adım: 20 farklı makine kur |
+| 4 | Aşçı | Yemek süresi +%30; pişirdiği yemek bir kalite yüksek çıkar | Yenilenme | Gurme zinciri, 2. adım: 12 farklı yemek pişir |
+| 5 | Kaçak | Depar dayanıklılık harcamaz; hız +%8 | Çevik | Uçan Üye zinciri, 2. adım: mancınıkla 25 kez uç |
+| 6 | Pehlivan | Tırpan ve itme +%30; can +25 | Tokmak | Nakliyeci zinciri, 3. adım: 100 ton yük taşı |
+| 7 | Arıcı | Çaprazlamada mutasyon şansı ×1,5 | Arı Kovanı | Islahçı zinciri, son adım: bir bitki genini 10'a çıkar |
+| 8 | Muhtar | Kredi geliri +%10; katalog −%10 | Ortak Kasa | Tüccar zinciri, 3. adım: 100.000 Kredi kazan |
+| 9 | Nine | Tırpan yerine dönerek giden terlik fırlatır; hayvanlar hep dinler | Dikenli | Gece Bekçisi zinciri, 3. adım: 20 Kabarma bitir |
+| 10 | Robot Kâhya | Soğuk, sıcak ve gazdan etkilenmez; yemek yiyemez, aküyle şarj olur | Kabuk | Otomasyoncu zinciri, 4. adım: makinelerle 50.000 ürün |
+| 11 | Gıdak Kostümlü | Zıplarken süzülür; otçul yabaniler ürkmez | Yumurta Topu | Cins Hayvan zinciri, son adım: bir hayvan genini 10'a çıkar |
+| 12 | Holding Firarisi | Holding kamplarına gündüz girebilir; Holding Parçası +%25 | Açgözlü | Holding Belası zinciri, 4. adım: bir Şube Çekirdeği yok et |
 
 **Kozmetik parçalar (72):**
 - *Kask (12):* Standart, Hasır Şapkalı, Kasketli, Takkeli, Sera Camı, Dalgıç, Arıcı Tülü, Kaynakçı, Boynuzlu, Yumurta Kabuğu, Aurora, Holding Müdürü.
@@ -707,7 +733,7 @@ Her adım Kredi ve Veri verir. Zincirin son adımı sütundaki ödülü de verir
 | | **Yapı ve mühendislik** | | | |
 | 13 | Usta | Yapı parçası | 20 · 100 · 500 · 2.000 · 8.000 | Plan Defteri +4 yuva |
 | 14 | Elektrikçi | Toplam üretim (W) | 100 · 500 · 2.000 · 10.000 · 50.000 | Kart: Yedek Akü |
-| 15 | Otomasyoncu | Makinelerin ürettiği | 50 · 500 · 5.000 · 50.000 · 500.000 | Üye: Robot Kâhya |
+| 15 | Otomasyoncu | Makinelerin ürettiği | 50 · 500 · 5.000 · 50.000 · 500.000 | Üye: Robot Kâhya (4. adımda) · Altın drone görünümü |
 | 16 | Kalfa | Farklı makine | 5 · 12 · 20 · 30 · 43 | Üye: Makinist (3. adımda) · Krom kaplama |
 | 17 | Mantıkçı | Bağlanan sinyal alıcısı | 1 · 5 · 20 · 50 · 150 | Kart: Tamirci |
 | 18 | Mimar | Konfor puanı | 4 · 8 · 12 · 16 · 20 | Ata Heykeli seti |
@@ -719,14 +745,14 @@ Her adım Kredi ve Veri verir. Zincirin son adımı sütundaki ödülü de verir
 | 23 | Kadim Yol | Kadim Taş | 1 · 3 · 6 · 9 · 12 | Kart: Sadık Gölge |
 | 24 | Enkazcı | Açılan enkaz | 3 · 10 · 25 · 60 · 150 | Kart: Kooperatif Uydusu |
 | | **Kabarma** | | | |
-| 25 | Gece Bekçisi | Bitirilen Kabarma | 1 · 5 · 20 · 60 · 200 | Üye: Nine (ek koşulla) · Aurora kask |
+| 25 | Gece Bekçisi | Bitirilen Kabarma | 1 · 5 · 20 · 60 · 200 | Üye: Nine (3. adımda) · Aurora kask |
 | 26 | Merdiven | Geçilen KS | 3 · 8 · 15 · 25 · 40 | Kart: Altın Tetik |
 | 27 | Şovmen | Gösteri çarpanı | ×2 · ×3 · ×4 · ×5 · ×5'te 60 sn | Kart: Maya Sarhoşu |
 | 28 | Kartbaz | Kullanılan farklı kart | 15 · 30 · 45 · 60 · 72 | Kart: Kumarbaz |
 | 29 | Aşıcı | Yapılan farklı aşı | 1 · 3 · 6 · 9 · 12 | Kart: İkiz Başlık |
 | 30 | Mayacı | Toplam Maya | 500 · 5.000 · 50.000 · 500.000 · 5.000.000 | Ekşi Maya kaplaması |
 | | **Av ve Atalar** | | | |
-| 31 | Avcı | Öldürülen yaratık | 50 · 500 · 5.000 · 50.000 · 500.000 | Üye: Pehlivan (ek koşulla) |
+| 31 | Avcı | Öldürülen yaratık | 50 · 500 · 5.000 · 50.000 · 500.000 | Kemik Çapa kaplaması |
 | 32 | Ata Yolu | Yenilen farklı Ata | 1 · 2 · 3 · 5 · 6 | Kart: Yankı |
 | 33 | Kabarık Ata | Yenilen Kabarık Ata'nın KS'si | 5 · 10 · 15 · 20 · 30 | Kart: Son Kurşun |
 | 34 | Azman Kıran | Öldürülen Azman | 1 · 5 · 15 · 40 · 100 | Kart: Maya Ucu |
@@ -743,13 +769,38 @@ Her adım Kredi ve Veri verir. Zincirin son adımı sütundaki ödülü de verir
 | 43 | Can Dostu | Kaldırılan arkadaş (tek oyuncuda: ikinci nefes) | 1 · 10 · 50 · 150 · 500 | Kart: İkinci Nefes |
 | 44 | Uçan Üye | Mancınık uçuşu | 5 · 25 · 100 · 300 · 1.000 | Üye: Kaçak (2. adımda) · Planör deseni |
 | 45 | Ezilenler Kulübü | Yere serilme | 5 · 25 · 100 · 300 · 1.000 | Kart: Dikenli Nişanı +1 · Yumurta Kabuğu kask |
-| 46 | Nakliyeci | Taşınan yük (ton) | 1 · 10 · 100 · 1.000 · 10.000 | Kart: Tokmak Nişanı +1 · Vinç kaplaması |
+| 46 | Nakliyeci | Taşınan yük (ton) | 1 · 10 · 100 · 1.000 · 10.000 | Üye: Pehlivan (3. adımda) · Kart: Tokmak Nişanı +1 |
 | 47 | Şoför | Araçla yol (km) | 5 · 50 · 250 · 1.000 · 5.000 | Kart: Minik Biçer |
 | 48 | Fotoğrafçı | Tabloya çevrilen fotoğraf | 1 · 5 · 15 · 30 · 60 | Altın çerçeve |
 
 **Başarımlar (50):** 48 zincirin tamamlanması + "İlk Gece" (ilk Kabarma) + "Maya Hâkimi" (Ana Maya).
 
-**Katalog (Kredi):** keşfedilmiş biyomların tohum paketleri; Gıdak, Koşar ve Paytak yumurtası; 72 süs ve mobilyanın planları; kozmetik parçaların 36'sı; Plan Defteri yuvası; Ustalık sıfırlama.
+**İş emri adım ödülleri** (1. adımdan 5. adıma): 100 · 400 · 1.500 · 6.000 · 25.000 Kredi ve 10 · 20 · 40 · 70 · 100 Veri. **KS ilk geçiş primi:** `200 × KS` Kredi.
+
+**Borsa kategorileri (12):** Tahıl · Kök ve Kabakgil · Meyve · Baharat ve Çay · Mantar · Yağ ve Yakıt · Lif ve Kumaş · Süt, Yumurta, Bal · Et ve Deri · Maden ve Külçe · İşlenmiş Mal · Yemek. Kabarık ürün kendi ekininin kategorisinde satılır. Maya ve Holding Parçası satılmaz.
+
+**Satış taban fiyatları** (birim başına, kalite ★1):
+
+| Mal | T1 | T2 | T3 | T4 | T5 | T6 |
+|---|---|---|---|---|---|---|
+| Ham ürün (ekin, hayvansal, cevher) | 15 | 30 | 60 | 110 | 180 | 300 |
+| İşlenmiş mal ve yemek | Girdilerinin taban fiyat toplamı × 1,5 | | | | | |
+| Kabarık ürün | Ham fiyat × 8 (S), 12 (M), 16 (L), 24 (XL) | | | | | |
+
+Bir ürünün basamağı, ilk elde edilebildiği biyomun basamağıdır. Örnek: kabarık S Şalgam 15 × 8 = 120 Kredi.
+
+**Katalog fiyatları (Kredi):**
+
+| Kalem | Fiyat |
+|---|---|
+| Tohum paketi (10 tohum, genler 1–3) | Ürünün taban fiyatı × 20 |
+| Yumurta | Gıdak 1.500 · Koşar 4.000 · Paytak 9.000 |
+| Süs ve mobilya planı | Basamağa göre 200 · 400 · 800 · 1.200 · 1.600 · 2.000 |
+| Kozmetik (72 parçanın 36'sı) | 500 – 5.000 |
+| Plan Defteri yuvası | 2.500 |
+| Ustalık sıfırlama | 1.000 × (dalın seviyesi / 10) |
+
+Kozmetiklerin kalan 36'sı iş emirlerinden, çarktan, Atalardan ve Genel Merkez'den gelir.
 
 **Tohum Çarkı ödülleri:** Kredi (%40) · tohum paketi, genleri 3–6 (%22) · çip, Sıradan ya da Nadir (%15) · yumurta (%8) · kozmetik (%8) · Destansı çip (%4) · kart jetonu (%2,5) · Alaca tohum (%0,5).
 
@@ -774,7 +825,7 @@ Her basamakta ilerlemek için gereken her şeyin girdisi, o basamakta ya da daha
 
 | Basamak | Gereken | Girdileri ve kaynağı | Sonuç |
 |---|---|---|---|
-| **Başlangıç** | Ocak, 6 iş başlığı, Tırpan Işını, 12 Şalgam tohumu, Sırt Yazıcısı | İniş kapsülünde | ✔ |
+| **Başlangıç** | Ocak, 6 iş başlığı, Tırpan Işını, Sırt Yazıcısı, 12 Şalgam tohumu, 10 Buğday (yem) | İniş kapsülünde. Kapsülün kendisi ilk Kargo Rampası'na dönüşür. | ✔ |
 | **T1** | Tezgâh (10 Odun + 5 Taş) · Taş Fırın (15 Taş + 5 Kil) · Kömür Ocağı (10 Taş + 10 Kil) | Hepsi Çayır | ✔ |
 | | Bakır Külçe → Çivi Tabancası, Bakır Tel | Bakır Cevheri: Çayır | ✔ |
 | | **Adak: Dev Yemlik** (5 Kabarık Şalgam + 10 Yün + 20 Bakır Külçe) | Kabarık Şalgam: bir Kabarma · Yün: Pofuduk (Çayır, Şalgam ile evcilleşir) · Bakır: Çayır | ✔ Tarım, hayvancılık ve Kabarma'dan geçiyor |
@@ -785,7 +836,8 @@ Her basamakta ilerlemek için gereken her şeyin girdisi, o basamakta ya da daha
 | | Hayvan Çarkı, Rüzgâr Gülü, Akü Mk1 (5 Bakır + 5 Demir + 3 Ekşilik) | Ekşilik: Koru | ✔ |
 | | Çapa Mk.II (10 Demir Külçe + 2 Ata Yünü) | Ata Yünü: Koca Pofuduk | ✔ |
 | | Filtre Maskesi (4 Kumaş + 4 Odun Kömürü + 2 Demir Külçe) | T2 | ✔ Sazlık'a hazırlık |
-| | **Adak: Orman Çıngırağı** (10 Demir Külçe + 3 Kabarık Mantar + 5 Reçine) | Mantar: Koru yabanisi, çatı altı tarlada · Kabarma | ✔ |
+| | Maya Feneri (3 Maya Kesesi + 5 Bakır Tel + 2 Reçine) | Plan: Çıraklık zinciri · Maya Kesesi: Kabarma | ✔ |
+| | **Adak: Orman Çıngırağı** (10 Demir Külçe + 3 Kabarık Mantar + 5 Reçine) | Mantar: Koru yabanisi. Çayır ve Koru aynı bant olduğu için ana tapuda, çatı altı tarlada tam hızda büyür ve ana Kabarma'da kabarır. | ✔ |
 | **T3** | Yüksek Fırın (30 Kerpiç + 15 Demir Külçe + 10 Kil) · Çelik | Kerpiç: Kil + Lif · yakıt Odun Kömürü (Turba şart değil) | ✔ |
 | | Kimya Tezgâhı (10 Çelik + 10 Kil) · Barut | Güherçile: Koru Oyukları · Kükürt: Sazlık (maske T2'de) | ✔ |
 | | Pres (10 Çelik + 10 Kereste) · Kauçuk | Kauçuk Sütü, Kükürt: Sazlık | ✔ |
@@ -794,7 +846,7 @@ Her basamakta ilerlemek için gereken her şeyin girdisi, o basamakta ya da daha
 | | Su Çarkı, Biyoyakıt Jeneratörü, Akü Mk2 (10 Çelik + 10 Bakır + 5 Kükürt) | T3 | ✔ |
 | | Çapa Mk.III (15 Çelik + 2 Dede Boynuzu) | Boynuzlu Dede | ✔ |
 | | Serin Yelek (6 Kumaş + 4 Kauçuk) | T3 | ✔ Kanyon'a hazırlık |
-| | **Adak: Dev Sinek Yemi** (5 Kabarık Kamış + 10 Bal + 5 Kükürt) | Kamış: Sazlık · Bal: Vızvız kovanı (T2) | ✔ |
+| | **Adak: Dev Sinek Yemi** (5 Kabarık Kamış + 10 Bal + 5 Kükürt) | Kamış bant dışı. İki yol, ikisi de T3'te açık: Sazlık'ta karakol (T2'de 2 karakol hakkı) + Maya Feneri ile yerinde kabartma; ya da ana tapuda havuz açıp dörtte bir hızla (8 gün) yetiştirip ana Kabarma'da kabartma. Bal: Vızvız kovanı (T2). | ✔ |
 | **T4** | Cam Ocağı (20 Çelik + 20 Kerpiç) · Cam (2 Kum + 1 Turba) | Kum: Kanyon (yelek T3'te) · Turba: Sazlık | ✔ |
 | | Elektronik Tezgâhı (15 Çelik + 10 Cam + 10 Bakır Tel) · Devre | Kuvars: Kanyon | ✔ |
 | | Rafineri (30 Çelik + 10 Cam + 5 Devre) · Plastik | Katran: Kanyon | ✔ |
@@ -811,13 +863,13 @@ Her basamakta ilerlemek için gereken her şeyin girdisi, o basamakta ya da daha
 | | Maya Şırıngası (20 Maya + 2 Cam + 1 Kauçuk) | Maya: Kabarma | ✔ |
 | | Çapa Mk.V (10 Kristal Lens + 2 Paşa Kabuğu) | Çıyan Paşa | ✔ |
 | | Maya Yalıtımı (30 Maya + 6 Kristal Lens + 10 Termal Kumaş + 10 Plastik) | Ham Maya istemez | ✔ Göbek'e hazırlık |
-| | **Adak: Tuz Yalağı** (20 Tuz + 5 Kabarık Kaktüs İnciri + 10 Titan Külçe) | Kaktüs İnciri: Kanyon ya da sera | ✔ |
+| | **Adak: Tuz Yalağı** (20 Tuz + 5 Kabarık Kaktüs İnciri + 10 Titan Külçe) | Kaktüs İnciri bant dışı. Üç yol: ana tapuda sera (T4'te açıldı) + ana Kabarma; Kanyon karakolu + Maya Feneri; ana tapuda dörtte bir hızla. | ✔ |
 | **T6** | Göbek kapısı | Ocak T6 | ✔ |
 | | Maya Dökümhanesi (30 Titan + 20 Obsidyen + 10 Kristal Lens + 100 Maya) | Obsidyen: Göbek yüzeyi (elle kazılır) | ✔ |
 | | Mayalı Alaşım, Mayalı Beton, Reaktör Çubuğu | Ham Maya, Işıl Cevher: Göbek · Balçık: Sazlık · Kum: Kanyon | ✔ |
 | | Maya Reaktörü (30 Mayalı Alaşım + 20 Devre + 10 Kristal Lens) | T6 | ✔ |
 | | Çapa Mk.VI (20 Mayalı Alaşım + 2 Tosun Dişi) | Buz Tosunu | ✔ |
-| | **Adak: Ekşi Maya Kazanı** (30 Ham Maya + 5 farklı kabarık ürün + 1 Reaktör Çubuğu) | Beş ekinin tohumu önceki biyomlardan; sera ya da kendi biyomunda bir Kabarma | ✔ |
+| | **Adak: Ekşi Maya Kazanı** (30 Ham Maya + 1'er Kabarık Şalgam, Mantar, Kamış, Kaktüs İnciri, Ayaz Pancarı + 1 Reaktör Çubuğu) | Tohumlar önceki biyomlardan. Şalgam ve Mantar ana tapuda kendi bandında; Kamış, Kaktüs İnciri ve Ayaz Pancarı ana tapudaki üç ayrı sera bölmesinde (T4) tam hızda. Beşi aynı ana Kabarma'da kabarır. | ✔ |
 | **Son** | Kabartma Odası (40 Mayalı Alaşım + 20 Devre + 10 Kristal Lens + 10 Reaktör Çubuğu) | Tarif: Ana Maya | ✔ |
 
 **Döngü kontrolü:** Hiçbir basamağın zorunlu girdisi kendisinden sonraki bir basamağın istasyonunu, Ata'sını ya da biyom donanımını istemiyor. Her biyoma giriş donanımı bir önceki basamakta üretiliyor. Bu tablo `Sim` içinde otomatik bir teste dönüşür ([TEKNIK.md](TEKNIK.md) §11): tarif grafında başlangıçtan Kabartma Odası'na yol aranır, bulunamazsa derleme kırılır.

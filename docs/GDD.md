@@ -151,7 +151,7 @@ Ocak üssün kalbidir. İşlevleri: tapu alanı, doğma noktası, Çan, Maya Kaz
 | Nem | 20'nin altı: durur. 20–40: ×0,5. 40–80: ×1. 80 üstü: ×0,8 (su seven ekinlerde ×1). |
 | Bereket | `0,5 + Bereket / 200` |
 | Işık | Açık hava ya da büyütme lambası ×1; karanlık ×0. Mantarlar tersidir. |
-| Sıcaklık | Ekinin biyom bandında ×1, dışında ×0,25. Sera bandı düzeltir. |
+| Sıcaklık | Ekinin biyom bandında ×1, dışında ×0,25 (yavaş ama büyür). Altın Çayır ve Sis Korusu aynı banttır. Sera bandı düzeltir. |
 
 - **Hasat verimi:** `taban × (1 + 0,08 × V) × kalite`. Kalite ★1–3; Bereket 70 ve üstü, Nem hiç 20'nin altına düşmediyse ★3.
 - **Bereket:** Her hasat −8 (kök ekinleri −10, Katran Fasulyesi +5). Kompost +30, gübre +20, kimyasal gübre +50. Boş kare günde +3. Bir karede art arda farklı aile ekmek +%10 verim.
@@ -266,7 +266,7 @@ Hasat Robotu, Ekim Robotu, otomatik yemlik, Sağım-Kırkım Kolu, Yumurta Topla
 
 - **Kredi kaynakları:** kargo satışı, iş emri ödülü, Holding silosu, enkaz kasaları.
 - **Kargo:** Ürünler Paketleme Tezgâhı'nda kargo kasasına konur (20 yığın). Kasa yük nesnesidir. Kargo Rampası 1–6 kasa ya da bir kabarık ürün alır ve fırlatır; ödeme 60 saniye sonra gelir.
-- **Fiyat:** `taban × kalite (1,0 / 1,3 / 1,7) × Alaca (3 / 10 / 50) × Borsa × doygunluk`
+- **Fiyat:** `taban × kalite (1,0 / 1,3 / 1,7) × Alaca (3 / 10 / 50) × Borsa × doygunluk`. Taban fiyat, katalog fiyatı ve ödül kuralları: [ICERIK.md](ICERIK.md) §18.
 - **Borsa:** 12 kategori. Her kategorinin çarpanı günde ±0,15 oynar, 0,6 ile 1,6 arasında kalır. Her gün bir kategori "sıcak"tır (×2).
 - **Doygunluk:** Aynı kategoriden satılan her kasa o kategoriyi %3 düşürür (taban %40); günde %15 geri gelir. Tek ürüne yüklenmek cezalanır.
 - **Tohum Çarkı:** Bir çevirme 500 Kredi ya da 3 Alaca ürün; günün ilk çevirmesi bedava. Ödüller: nadir tohum, yumurta, çip, kart jetonu, kozmetik, kredi. Beklenen değer harcananın %85'i.
@@ -311,7 +311,7 @@ Tapudaki olgun ekinler; Savaş Ağılı'ndaki hayvanlar; çevredeki yabani yarat
 
 ### 14.6 Küçük Kabarma
 
-Maya Feneri (T2, günde bir kez kullanılır) 40 m yarıçapta 4 dakikalık bir Kabarma başlatır. KS seçilenin yarısıdır, en fazla 3 kart seviyesi verir. Islah denemesi, hayvan eğitimi ve karakolda parti için.
+Maya Feneri (T2, günde bir kez kullanılır) 40 m yarıçapta 4 dakikalık bir Kabarma başlatır. Yarıçaptaki olgun ekinler ve evcil hayvanlar kabarır; KS seçilenin yarısıdır, en fazla 3 kart seviyesi verir. Ana tapunun dışında, karakollarda da çalışır. Kullanımı: ıslah denemesi, hayvan eğitimi ve başka bir biyomun ekinini kendi yerinde, tam hızda yetiştirip orada kabartmak (Ata adakları için önemli, [ICERIK.md](ICERIK.md) §20).
 
 ### 14.7 Tatbikat
 
@@ -374,7 +374,7 @@ Yabani yaratıklar, açık arazideki Holding ekipleri ve kervanları, Oyuk koruy
 
 ## 18. Atalar
 
-- Her biyomda bir **Ata Taşı** var. Adak konunca Ata gelir.
+- Her biyomda bir **Ata Taşı** var. Adağın bileşenleri taşın önündeki sunağa tek tek konur; tamamlanınca Ata gelir. Kabarık ürün yük nesnesi olduğu için sunağa taşımak işin parçasıdır.
 - Adaklar bilerek başka sistemlerden geçer: kabarık ürün (tarım ve Kabarma), bal (hayvancılık), güç isteyen makine (mühendislik).
 - Dövüş açık arenadadır, üç aşamalıdır. Ata'nın canı ekip boyuna göre `1 + 0,5 × (n − 1)` ile çarpılır.
 - **Ödül:** Çekirdek (Ocak basamağı), Mühür (kalıcı ekip bonusu), bir ulti ya da özel ödül, ganimet.
@@ -483,7 +483,7 @@ Ayrı bir dünya türüdür; ortak oyun dünyalarında PvP yoktur.
 
 ## 24. Öğretme ve Suna
 
-- **İlk gün:** Suna dokuz adımda yönlendirir ([PLAN.md](PLAN.md) §1.4).
+- **İlk gün:** Suna dokuz adımda yönlendirir ([PLAN.md](PLAN.md) §1.4). İlk gecenin Küçük Kabarma'sı öğretici kuralıyla çalışır: evresine bakmadan bütün ekinleri ve ağıldaki bütün hayvanları kabartır.
 - **Çıraklık zinciri:** Defter'deki ilk zincir ilk iki saati taşır.
 - **Her yeni sistem** ilk karşılaşmada tek cümlelik ipucu ve Ansiklopedi sayfası açar.
 - **Suna** yaklaşık 700 replik söyler: iş emirleri, olay yorumları (ölüm, ilk kez yapılanlar, Alaca, rekor), Kabarma anonsları, ipuçları. Aynı replik 20 dakika içinde tekrarlanmaz. Ayarlardan sıklığı azaltılır ya da kapatılır.

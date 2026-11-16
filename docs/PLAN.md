@@ -48,7 +48,7 @@ Oyuncunun bu fiille ilişkisi oyun boyunca değişir:
 | 4:00 | Toprak başlığıyla 3×3 tarla açıyor, şalgam ekiyor, hortumla suluyorsun. Filizler anında baş veriyor. |
 | 6:00 | Bir Gıdak geçiyor. Önüne buğday atıyorsun, peşinden az önce çaktığın ağıla giriyor ve yumurtluyor. |
 | 8:00 | Hava kararıyor. Suna: "Küçük bir ayrıntı kaldı. Bu ayın bir huyu var." Gökyüzü dalgalanıyor. Dokuz şalgamın fıçı boyuna şişiyor. Üç Zıpzıp plaj topu gibi kabarıp çite yükleniyor. Çapa'n çatırdıyor, ilk kartını seçiyorsun: "Çatal". Sayılar havada uçuşuyor. Gıdak'ın midilli boyuna gelip birini çitin üstünden tekmeliyor. |
-| 10:00 | Şafak. Fıçı boyundaki şalgamı çekim ışınıyla Kargo Rampası'na taşıyorsun. Roket kalkıyor: "+120 Kredi". Defter açılıyor: 240 iş emri. İlki: "5 kabarık şalgam yetiştir." |
+| 10:00 | Şafak. Fıçı boyundaki şalgamı çekim ışınıyla, iniş kapsülünden bozma Kargo Rampası'na taşıyorsun. Roket kalkıyor: "+120 Kredi". Defter açılıyor: 240 iş emri. Sıradaki: "5 kabarık ürün yetiştir." |
 
 İlk gece senaryolu, kısa bir Küçük Kabarma'dır (3 dakika). Oyunun vaadi ilk 10 dakikada gösterilir; normal takvim ondan sonra başlar.
 
@@ -180,6 +180,7 @@ v1.0, aşağıdaki içeriğin tamamının oynanabilir, dengelenmiş, seslendiril
 | Kaynak ve ara ürün | 67 | §2 |
 | Yaratık türü | 27 (16'sı evcilleşir) + 5 Holding birimi | §3 |
 | Ata (boss) / Azman (gece mini boss'u) | 6 / 6 | §4 |
+| Oyuk koruyucusu / Holding boss'u | 5 / 1 (Müdür) | §4 |
 | Ekin | 24 | §5 |
 | Çapa başlığı | 18 (6 iş, 12 silah) | §6 |
 | Çip | 24 × 4 nadirlik | §6 |
@@ -195,6 +196,7 @@ v1.0, aşağıdaki içeriğin tamamının oynanabilir, dengelenmiş, seslendiril
 | Yemek tarifi | 32 | §15 |
 | Zırh takımı / kuşam modülü | 7 / 18 | §16 |
 | Keşif noktası türü | 9 | §17 |
+| Borsa kategorisi | 12 | §18 |
 | İş emri | 240 (48 zincir × 5 adım) | §18 |
 | Başarım | 50 | §18 |
 | Ustalık | 8 dal × 50 seviye, 80 özellik | §19 |
@@ -228,7 +230,8 @@ Bunlar eksik değil, verilmiş kararlardır.
 | Risk | Olasılık | Önlem |
 |---|---|---|
 | Görsel "AI işi" ya da "programcı işi" duruyor | Orta–yüksek | İlk kilometre taşı sadece görünüş ve his dilimi; genişliğe ondan önce geçilmez. Her varlık palet ve siluet kontrolünden geçer; geçemeyen yeniden üretilir ya da koddan kurulur ([URETIM.md](URETIM.md) §3). |
-| Hazır animasyon klipleri tıknaz gövdeye oturmuyor | Orta | M0'da tek karakter ve iki yaratıkla denenir. Yedek: Oduncu'da çalışan tamamen prosedürel gövde (yay, IK, ragdoll). |
+| **Yaratık animasyonu tek bir yönteme dayanıyor** | Orta–yüksek | Planın en zayıf noktası. Servislerde insansı olmayan gövdeler için yalnızca yürüyüş klibi var; 27 türün kalan bütün klipleri benim kodla yazacağım poz kütüphanesinden gelecek ([URETIM.md](URETIM.md) §2.2 E) ve bu yöntem henüz denenmedi. M0'da iki gövde planıyla sınanır, M1'de sen ekranda görüp onaylarsın. Yedek: yaratıkları katı parçalardan kurup tamamen kodla oynatmak. Bedeli açık: hayvanlar yumuşak gövdeli canlı gibi değil, kurmalı oyuncak gibi durur; Pofuduk'un yünü, Vrak'ın sıçrayışı gibi sevimlilik veren hareketler kaybolur ve gündüz hayvancılığı görsel olarak zayıflar. Şişme, titreme ve patlama shader olduğu için bundan etkilenmez; yani Kabarma gecesi görüntüsünü korur, gündüz kaybeder. |
+| Hazır insansı klipler tıknaz gövdeye oturmuyor | Orta | M0'da oyuncu gövdesiyle denenir. Yedek: Oduncu'da çalışan tamamen prosedürel gövde (yay, IK, ragdoll). |
 | C# araç zinciri bu makinede kurulu değil | Kesin | M0'ın ilk işi kurulum ve doğrulama. Başarısız olursa yedek GDScript'tir; `Sim` kütüphanesi fikri GDScript'te de korunur ama test hızı düşer. |
 | Kabarma'da yüzlerce düşmanla ağ ve kare süresi | Orta | Sürüler tek ağ varlığıdır; etkin düşman tavanı 220; M3'te 8 istemcili bot testiyle ölçülür ([TEKNIK.md](TEKNIK.md) §5). |
 | Rakip AI'nın üs içinde yol bulması | Orta | Izgara üstünde, duvar kırma maliyetini hesaba katan yol bulma; baskın hedefi öncelikle açık tarla ve silo. |

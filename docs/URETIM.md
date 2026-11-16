@@ -133,15 +133,15 @@ Birim fiyatlar `npx genex --help` çıktısından (16 Kasım 2026). Yeniden dene
 |---|---|---|---|---|
 | Statik modeller (bitki ve kaya 96, damar 25, yerleştirilebilir 72, ekin 48, dünya eşyası 30, başlık 18, kozmetik 24, keşif noktası 40, Holding 15) | 368 | 40 (görsel + model) | 2,5 | 36.800 |
 | Parçalı modeller (makine ve parça 73, kule ve tuzak 16, araç ve eklenti 17) | 106 | 86 (+ parçalara ayırma) | 2,5 | 22.800 |
-| Yaratıklar (27 tür, Ata parçaları 12) | 39 | 81 (+ kemik + yürüyüş) | 3 | 9.500 |
+| Yaratıklar (27 tür, Ata parçaları 12, Oyuk koruyucusu 4) | 43 | 81 (+ kemik + yürüyüş) | 3 | 10.400 |
 | Oyuncu gövdesi ve 53 klip | 1 | 2.500 | 2 | 5.000 |
 | Görseller (kart 72, logo, kapsül, menü, konsept föyleri) | 400 | 5 | 1 | 2.000 |
 | Ses efektleri (900 ses × 4 varyasyon) | 3.600 | 2 | 1,5 | 10.800 |
 | Müzik (40 parça, 20 geçiş sesi) | 60 | 27 | 2,5 | 4.100 |
 | Seslendirme (doğrudan ElevenLabs: yaklaşık 1.550 replik, 125.000 karakter) | — | — | 2 | 2.000 |
-| **Ara toplam** | | | | **93.000** |
-| Beklenmeyen (%30) | | | | 27.900 |
-| **Toplam** | | | | **yaklaşık 121.000 kredi ≈ 1.200 $** |
+| **Ara toplam** | | | | **93.900** |
+| Beklenmeyen (%30) | | | | 28.200 |
+| **Toplam** | | | | **yaklaşık 122.000 kredi ≈ 1.220 $** |
 
 Buna ek olarak: ElevenLabs aboneliği (üretim aylarında), Steam uygulama ücreti (100 $). Harcama taşlara yayılır: M0 yaklaşık %2, M1 %8, M2–M4 %70, M6 %20. Her taşın başında o taşın harcama tavanını söylerim; onayın olmadan üretim başlatmam.
 
@@ -187,7 +187,7 @@ Tek oyuncu, Altın Çayır'ın 300 × 300 m'lik bir köşesi. Amaç tek: oyunun 
 
 Bütün kalıcı sistemlerin kuralları, T1–T2 içeriğiyle; ardından ortak oyun.
 
-**Teslim:** yapı (taşıma dengesi, yükseltme, plan modu, Plan Defteri) · tarım (genler, çaprazlama, Alaca, zararlılar) · hayvancılık (Gıdak, Pofuduk, Homur, Vızvız; roller, üreme) · güç ağı ve temel sinyal · T1–T2 üretim zinciri ve araştırma · envanter, ambardan üretim · ekonomi (borsa, katalog, çark) · iş emirleri altyapısı ve ilk 12 zincir · Ustalık · kayıt ve yükleme · Sis Korusu · Koca Pofuduk ve Boynuzlu Dede · harita, Seyir Kulesi, mancınık · Çekirge · ortak oyun 1–4 (ENet ve Steam), sonradan katılma, sesli sohbet, şok tokadı.
+**Teslim:** yapı (taşıma dengesi, yükseltme, plan modu, Plan Defteri) · tarım (genler, çaprazlama, Alaca, zararlılar) · hayvancılık (Çayır ve Koru'nun sekiz evcil türü: Gıdak, Pofuduk, Homur, Dallı, Hu, Vıcık, Bozuk, Vızvız; roller, üreme) · Çayır ve Koru'nun 12 yaratığının tamamı · güç ağı ve temel sinyal · T1–T2 üretim zinciri ve araştırma · envanter, ambardan üretim · ekonomi (borsa, katalog, çark) · iş emirleri altyapısı ve ilk 12 zincir · Ustalık · kayıt ve yükleme · Sis Korusu · Koca Pofuduk ve Boynuzlu Dede · harita, Seyir Kulesi, mancınık · Çekirge · ortak oyun 1–4 (ENet ve Steam), sonradan katılma, sesli sohbet, şok tokadı.
 
 **Kabul:**
 - [ ] Birim, içerik ve senaryo testleri yeşil.
@@ -197,17 +197,21 @@ Bütün kalıcı sistemlerin kuralları, T1–T2 içeriğiyle; ardından ortak o
 
 ### M3: Kabarma ve savaş
 
-**Teslim:** tam Kabarma akışı (KS 1–15), dalga bileşimi ve "ne ekersen onu çekersin" · 72 kart, aşılar, Nişan · Gösteri çarpanı · Tatbikat, Maya Feneri · T1–T3 kuleleri ve tuzakları · savaş hayvanları ve binek · T1–T3 silah başlıkları, çipler · ilk beş güç ve Kadim Taş denemeleri · Holding: iki kamp (seviye 1–6), kervan, baskın ve karşı baskın · Azman Homur ve Azman Bozuk · akış alanlı yol bulma.
+Bu taşta dünya hâlâ Altın Çayır ve Sis Korusu'dur (T1–T2); savaş sistemlerinin tamamı bu içerikle kurulur.
+
+**Teslim:** tam Kabarma akışı (oyunda KS 1–10; stres sahnesinde KS 30), dalga bileşimi ve "ne ekersen onu çekersin" · 72 kart, aşılar, Nişan · Gösteri çarpanı · Tatbikat, Maya Feneri · T1–T2 kuleleri (Çivi, Sapan, Saçma) ve tuzakları (Diken Tarlası, Yapışkan Zemin, Fırlatma Pedi, Çukur Kapağı) · savaş hayvanları ve binek · 24 çip · ilk beş güç ve Kadim Taş denemeleri, iki ulti · Holding: beş birim, ilk kamp (seviye 1–4), kervan, baskın ve karşı baskın · Azman Homur ve Azman Bozuk · Köstebek Bey ve Yarasa Yumağı · akış alanlı yol bulma.
 
 **Kabul:**
-- [ ] KS 15, 8 bot: kare süresi ve ağ bütçesi içinde ([TEKNIK.md](TEKNIK.md) §5.3, §10).
+- [ ] KS 10 gerçek içerikle ve KS 30 stres sahnesi, 8 bot: kare süresi ve ağ bütçesi içinde ([TEKNIK.md](TEKNIK.md) §5.3, §10).
 - [ ] Denge simülasyonunda önerilen donanımla ilk denemede geçme oranı %60–80.
 - [ ] Her kartın ve her aşının senaryo testi var.
 - [ ] **Sen** tek başına üç, arkadaşlarınla bir Kabarma gecesi oynuyorsun: "gece güçlenmesi zevkli" onayı.
 
 ### M4: Dünya ve içerik
 
-**Teslim:** Işıl Sazlık, Kızıl Kanyon, Ayaz Yaylası, Göbek · T3–T6 zinciri · kalan 17 yaratık, 13 ekin, makineler, otomasyon, drone ve teleferik · sera, Aşı Tezgâhı, Kabartma Odası · Traktör, Kamyon, Biçerdöver, Hava Yastıklı, Zeplin ve eklentiler · Kurbağa Ağa, Çıyan Paşa, Buz Tosunu, Ana Maya; Kabarık Atalar · üçüncü kamp ve Genel Merkez · kalan silah başlıkları, güçler, ultiler · 32 yemek · 48 iş emri zincirinin tamamı · 12 üye tipi, 72 kozmetik · KS 16 ve üstü, tüzük maddeleri, Yeni Ay · Oyuklar ve bütün keşif noktaları.
+**Teslim:** Işıl Sazlık, Kızıl Kanyon, Ayaz Yaylası, Göbek · T3–T6 zinciri · kalan 15 yaratık, 13 ekin, 25 istasyon ve makine, otomasyon, drone ve teleferik · sera, Aşı Tezgâhı, Kabartma Odası · Traktör, Kamyon, Biçerdöver, Hava Yastıklı, Zeplin ve 10 eklenti · Kurbağa Ağa, Çıyan Paşa, Buz Tosunu, Ana Maya; Kabarık Atalar; dört Azman; üç Oyuk koruyucusu · ikinci ve üçüncü kamp, Genel Merkez ve Müdür · kalan 7 silah başlığı, 7 güç, 2 ulti · kalan 5 kule ve 4 tuzak · kalan 18 yemek · kalan 24 iş emri zinciri · 11 üye tipi, 72 kozmetik · KS 11 ve üstü, tüzük maddeleri, Yeni Ay · kalan biyomların keşif noktaları.
+
+Her içerik bölümünün hangi taşta geldiği aşağıdaki tabloda.
 
 **Kabul:**
 - [ ] `DataCheck`: içerik adetleri [PLAN.md](PLAN.md) §7.1 ile birebir.
@@ -234,6 +238,32 @@ Bütün kalıcı sistemlerin kuralları, T1–T2 içeriğiyle; ardından ortak o
 ### M7: Çıkış
 
 **Teslim:** mağaza sayfası, kapsüller, fragman · demo (ilk iki saat: T1, ilk Kabarma'lar, Koca Pofuduk) · Steam Playtest · içerik üreticisi anahtar listesi · çıkış günü kontrol listesi · ilk hafta yama düzeni.
+
+### İçerik dağılımı
+
+[ICERIK.md](ICERIK.md)'deki her bölümün hangi taşta tamamlandığı. M5 ve M6 yeni oynanış içeriği eklemez; M6 replikleri, dilleri ve son ses-müzik hâlini getirir.
+
+| ICERIK bölümü | M1 | M2 | M3 | M4 |
+|---|---|---|---|---|
+| §1 Biyomlar | Çayır'ın bir köşesi | Altın Çayır, Sis Korusu | — | Sazlık, Kanyon, Ayaz, Göbek |
+| §2 Kaynaklar (67) | T1'in çekirdeği | T1–T2'nin tamamı | Maya, Maya Kesesi, Holding Parçası | T3–T6 |
+| §3 Yaratıklar (27 + 5) | Gıdak, Zıpzıp | Çayır ve Koru'nun kalan 10 türü | 5 Holding birimi | Sazlık 5, Kanyon 5, Ayaz 4, Göbek 1 |
+| §4 Atalar, Azmanlar, koruyucular | — | Koca Pofuduk, Boynuzlu Dede | Azman Homur, Azman Bozuk, Köstebek Bey, Yarasa Yumağı | 4 Ata, 4 Azman, 3 koruyucu, Müdür, Kabarık Atalar |
+| §5 Ekinler (24) | Şalgam | Çayır ve Koru'nun 11 ekini | — | 13 ekin, sera |
+| §6 Başlıklar ve çipler | 6 iş başlığı, Tırpan, Çivi | Sapan, Saçma, Zıpkın | 24 çip | Alev, Havan, Ark, Tohum Makinalısı, Ayaz Lazeri, Yerçekimi, Maya Topu |
+| §7 Güçler ve ultiler | — | — | 5 güç, 2 ulti | 7 güç, 2 ulti |
+| §8 Kartlar ve tüzük | 10 kart | — | 72 kart, Nişan | 12 tüzük maddesi |
+| §9 Üye tipleri, kozmetik | Çırak | — | — | 11 üye tipi, 72 kozmetik |
+| §10 Yapı | Ahşap seti, 6 yerleştirilebilir | Kerpiç-Taş; T1–T2 yerleştirilebilirleri | Sur, sur kapısı, kule tabanı | Çelik Sac, Cam, Mayalı Beton; kalan yerleştirilebilirler |
+| §11 İstasyonlar (43) | 4 | T1–T2'nin 18'i | — | T3–T6 ve otomasyon: 25 |
+| §12 Güç, sinyal, taşıma (43) | — | T2 üreticileri, Akü Mk1, kablo, direk, şalter, düğme, basınç plakası | Kabarma Sensörü, siren | Kalanlar |
+| §13 Kuleler, tuzaklar | — | — | 3 kule, 4 tuzak | 5 kule, 4 tuzak |
+| §14 Araçlar | El Arabası | Çekirge | — | 5 araç, 10 eklenti |
+| §15 Yemekler (32) | 3 | T1–T2'nin 14'ü | — | 18 |
+| §16 Zırh ve kuşam | — | 3 takım, 6 modül, Çapa Mk.II | — | 4 takım, 12 modül, Çapa Mk.III–VI |
+| §17 Keşif noktaları | — | Seyir Kulesi, Ata Taşı, Yabani Bahçe, Yuva, Enkaz | Kadim Taş, Oyuk, Holding Kampı | Zengin Yatak, Genel Merkez, kalan biyomların noktaları |
+| §18 İş emirleri (48 zincir) | Çıraklık'ın ilk üç adımı | 12 zincir | Kabarma ile Av ve Atalar: 12 zincir | 24 zincir, başarımlar, katalog ve çark tabloları |
+| §19 Ustalık | — | 8 dal, 80 özellik | — | — |
 
 ### Büyüklük ve süre
 
