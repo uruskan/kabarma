@@ -315,7 +315,7 @@ public partial class Gidak : Node3D
             // Oyuncunun kamerasini kapatmasin: oyuncuya 3 m'den fazla yaklasmaz.
             var toP = GlobalPosition - _dir.Player.GlobalPosition; toP.Y = 0;
             if (toP.Length() < 3.5f) goal = GlobalPosition + toP.Normalized() * 2f;
-            speed *= 2.6f;
+            speed *= Def.SwollenSpeedMult;
             _kickT -= dt;
             if (z != null && z.GlobalPosition.DistanceTo(GlobalPosition) < Def.KickRange + z.Radius && _kickT <= 0)
             {

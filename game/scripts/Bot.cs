@@ -102,7 +102,8 @@ public partial class Bot : Node
                 if (!_fed && _d.Gidak.Visible)
                 {
                     Aim(_d.Gidak.GlobalPosition + Vector3.Up * 0.5f);
-                    if (MoveTo(_d.Gidak.GlobalPosition, 2.0f)) { _d.Interact(); _fed = true; }
+                    MoveTo(_d.Gidak.GlobalPosition, 2.0f);
+                    if (_d.Gidak.GlobalPosition.DistanceTo(P.GlobalPosition) < 2.8f) { _d.Interact(); _fed = true; }
                 }
                 else { Aim(_d.FarmCenter() + Vector3.Up * 0.5f); MoveTo(_d.FarmCenter() + new Vector3(-6, 0, -2), 1f, false); }
                 break;

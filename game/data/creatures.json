@@ -1,6 +1,6 @@
 {
   "creatures": [
-    { "id": "zipzip", "name": "Zıpzıp", "archetype": "jumper", "weight": 1, "hp": 30, "damage": 6, "speed": 4.2, "swollenScale": 2.6, "weakPointMult": 2.0, "eatSeconds": 3.0 },
-    { "id": "gidak", "name": "Gıdak", "archetype": "runner", "weight": 1, "hp": 60, "damage": 18, "speed": 2.2, "swollenScale": 2.8, "kickInterval": 1.6, "kickRange": 3.2 }
+    { "id": "zipzip", "name": "Zıpzıp", "archetype": "jumper", "weight": 1, "hp": 30, "damage": 6, "speed": 4.2, "swollenScale": 2.6, "weakPointMult": 2.0, "eatSeconds": 2.5 },
+    { "id": "gidak", "name": "Gıdak", "archetype": "runner", "weight": 1, "hp": 60, "damage": 8, "speed": 2.2, "swollenScale": 2.8, "kickInterval": 2.4, "kickRange": 3.0, "swollenSpeedMult": 1.5 }
   ]
 }

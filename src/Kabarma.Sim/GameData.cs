@@ -64,6 +64,7 @@ public sealed class CreatureDef
     public float EatSeconds { get; set; }
     public float KickInterval { get; set; }
     public float KickRange { get; set; }
+    public float SwollenSpeedMult { get; set; } = 1f;
 }
 
 public sealed class CreaturesFile

@@ -78,6 +78,7 @@ public partial class Director : Node3D
 
         GD.Print($"AUDIO ok {Sfx.CheckAll()}/{Sfx.Names.Length}");
         State.Scenario.StepChanged += OnStepChanged;
+        State.Farm.Eaten += p => { GD.Print($"EATEN plot {p.X},{p.Y}"); Sfx.Play("pop", FarmView.CellCenter(p.X, p.Y), -2f); };
         foreach (var l in Data.Scenario.Intro) Hud.Say(l);
 
         if (Main.Args.ContainsKey("bot")) { Bot = new Bot(this); AddChild(Bot); }
@@ -198,7 +199,12 @@ public partial class Director : Node3D
         Hud.Big("ŞAFAK", Palette.Warning, 3f);
         GD.Print($"NIGHT dawn kills={Night.Kills} level={Night.Level} maya={Night.Maya:0} swollenLeft={_swollenAtDawn}");
         State.Scenario.Report("night");
-        if (_swollenAtDawn == 0) Hud.Say("Tarlada kabarık bir şey kalmamış. Kooperatif bunu not etti.");
+        if (_swollenAtDawn == 0)
+        {
+            // Satacak kabarik urun kalmadi: satis adimi bos gecer, rapor yine gelir.
+            Hud.Say("Tarlada kabarık bir şey kalmamış. Kooperatif bunu not etti. Bir dahaki sefere tarlanın başında dur.");
+            State.Scenario.Report("sell");
+        }
     }
 
     public void OnZipzipKilled(Zipzip z)

@@ -13,3 +13,5 @@ bin/
 obj/
 game/.godot/
 *.user
+game/assets/genex/
+progress/shots/

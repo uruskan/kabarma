@@ -13,6 +13,6 @@ mkdir -p .tools/run
 dotnet build game/Kabarma.Game.csproj -nologo -v q 2>&1 | grep -E " error |rror\(s\)" | head -20
 timeout ${TIMEOUT:-900} $G $HEAD --path game -- "$@" > .tools/run/$NAME.log 2>&1
 echo "exit=$? log=.tools/run/$NAME.log"
-grep -E "BOOT|STEP|BOT|NIGHT|SOLD|REPORT|RESULT|SCREENSHOT|QUIT|PLAYER" .tools/run/$NAME.log | head -80
+grep -E "BOOT|STEP|BOT|NIGHT|SOLD|REPORT|RESULT|SCREENSHOT|QUIT|PLAYER|EATEN|AUDIO" .tools/run/$NAME.log | head -80
 echo "--- errors:"
 grep -E "ERROR|SCRIPT ERROR|Unhandled|Exception|   at " .tools/run/$NAME.log | sort | uniq -c | sort -rn | head -25

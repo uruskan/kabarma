@@ -1,0 +1,22 @@
+AUDIO ok 13/13
+BOOT Kabarma MVP
+STEP mine -> ocak t=3.0
+STEP ocak -> till t=3.4
+STEP till -> plant t=3.9
+STEP plant -> water t=4.4
+STEP water -> grow t=4.9
+STEP grow -> night t=29.4
+NIGHT start
+NIGHT swell crops=9
+NIGHT wave 1 count=3
+NIGHT card cevik rank=1
+NIGHT wave 2 count=7
+NIGHT card kivilcim rank=1
+NIGHT wave 3 count=11
+NIGHT card miknatis rank=1
+NIGHT dawn kills=21 level=3 maya=48 swollenLeft=9
+STEP night -> sell t=61.5
+SOLD turnip S +120 credits=120
+STEP sell -> end t=62.1
+REPORT shown
+RESULT ok credits=120 eggs=1 kills=21 cards=3 maya=48 t=235.0

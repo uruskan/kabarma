@@ -1,0 +1,19 @@
+STEP mine -> ocak t=1.1
+STEP ocak -> till t=1.1
+STEP till -> plant t=1.2
+STEP plant -> water t=1.2
+STEP water -> grow t=1.2
+STEP grow -> night t=1.2
+EATEN plot 5,1
+EATEN plot 3,-1
+EATEN plot 3,1
+EATEN plot 3,0
+EATEN plot 5,-1
+EATEN plot 4,1
+EATEN plot 5,0
+EATEN plot 4,0
+EATEN plot 4,-1
+NIGHT dawn kills=14 level=3 maya=32 swollenLeft=0
+STEP night -> sell t=313.8
+STEP sell -> end t=313.8
+REPORT shown
