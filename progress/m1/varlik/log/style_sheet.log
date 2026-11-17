@@ -1,0 +1,94 @@
+00:09:56 | INFO: Data are loaded, start creating Blender stuff
+00:09:56 | INFO: Blender create Mesh node char1
+00:09:56 | INFO: glTF import finished in 0.33s
+00:09:57 | INFO: Data are loaded, start creating Blender stuff
+00:09:57 | INFO: Blender create Mesh node tripo_mesh_66b1d738-dc6a-4ffc-b488-342506b915f4
+00:09:57 | INFO: glTF import finished in 0.44s
+00:09:57 | INFO: Data are loaded, start creating Blender stuff
+00:09:57 | INFO: Blender create Mesh node tripo_mesh_336859ec-92bb-4381-bb19-cfd85ee1e653
+00:09:57 | INFO: glTF import finished in 0.07s
+00:09:57 | INFO: Data are loaded, start creating Blender stuff
+00:09:57 | INFO: Blender create Mesh node meshes[0]
+00:09:57 | INFO: glTF import finished in 0.03s
+00:09:57 | INFO: Data are loaded, start creating Blender stuff
+00:09:57 | INFO: Blender create Mesh node tripo_mesh_15b23276-81d0-4cf9-97cf-53aeb12b7c82
+00:09:57 | INFO: glTF import finished in 0.02s
+00:09:57 | INFO: Data are loaded, start creating Blender stuff
+00:09:57 | INFO: Blender create Mesh node meshes[0]
+00:09:57 | INFO: glTF import finished in 0.02s
+00:09:57 | INFO: Data are loaded, start creating Blender stuff
+00:09:57 | INFO: Blender create Mesh node tripo_mesh_a08e6543-d32b-4cba-818a-f1ef68cd26e6
+00:09:57 | INFO: glTF import finished in 0.03s
+00:09:57 | INFO: Data are loaded, start creating Blender stuff
+00:09:57 | INFO: Blender create Mesh node base
+00:09:57 | INFO: Blender create Mesh node body
+00:09:57 | INFO: Blender create Mesh node chimney
+00:09:57 | INFO: Blender create Mesh node door
+00:09:57 | INFO: Blender create Mesh node door_handle
+00:09:57 | INFO: Blender create Mesh node panel
+00:09:57 | INFO: glTF import finished in 0.04s
+00:09:57 | INFO: Data are loaded, start creating Blender stuff
+00:09:57 | INFO: Blender create Mesh node body
+00:09:57 | INFO: Blender create Mesh node fork
+00:09:57 | INFO: Blender create Mesh node frame_l
+00:09:57 | INFO: Blender create Mesh node frame_r
+00:09:57 | INFO: Blender create Mesh node grip_l
+00:09:57 | INFO: Blender create Mesh node grip_r
+00:09:57 | INFO: Blender create Mesh node wheel
+00:09:57 | INFO: glTF import finished in 0.04s
+00:09:57 | INFO: Data are loaded, start creating Blender stuff
+00:09:57 | INFO: Blender create Mesh node duvar
+00:09:57 | INFO: glTF import finished in 0.02s
+00:09:57 | INFO: Data are loaded, start creating Blender stuff
+00:09:57 | INFO: Blender create Mesh node meshes[0]
+00:09:57 | INFO: glTF import finished in 0.02s
+00:09:57 | INFO: Data are loaded, start creating Blender stuff
+00:09:57 | INFO: Blender create Mesh node tripo_mesh_90eeaf7c-ce83-4762-accc-73691b10f5bc
+00:09:57 | INFO: glTF import finished in 0.03s
+00:09:57 | INFO: Data are loaded, start creating Blender stuff
+00:09:57 | INFO: Blender create Mesh node base
+00:09:57 | INFO: Blender create Mesh node body
+00:09:57 | INFO: Blender create Mesh node hatch
+00:09:57 | INFO: glTF import finished in 0.04s
+00:09:57 | INFO: Data are loaded, start creating Blender stuff
+00:09:57 | INFO: Blender create Mesh node tripo_mesh_0a704422-9eb9-4cb4-99b3-6a9072c3b134
+00:09:57 | INFO: glTF import finished in 0.04s
+00:09:57 | INFO: Data are loaded, start creating Blender stuff
+00:09:57 | INFO: Blender create Mesh node tripo_mesh_89398fe7-dfbc-4aa5-b502-65e7ef121d0e
+00:09:57 | INFO: glTF import finished in 0.02s
+00:09:57 | INFO: Data are loaded, start creating Blender stuff
+00:09:57 | INFO: Blender create Mesh node tripo_mesh_de8cd989-e7a3-47ea-a2cd-e0c6f044ccf5
+00:09:58 | INFO: glTF import finished in 0.03s
+00:05.656  render           | Saved: 'C:\Users\uruskan\Documents\GitHub\kabarma\.claude\worktrees\m1-varlik-72a21b\docs\stil\altin_varliklar.png.models.png'
+00:05.969  render           | Saved: 'C:\Users\uruskan\Documents\GitHub\kabarma\.claude\worktrees\m1-varlik-72a21b\docs\stil\altin_varliklar.png.yazi.png'
+00:06.391  render           | Saved: 'C:\Users\uruskan\Documents\GitHub\kabarma\.claude\worktrees\m1-varlik-72a21b\docs\stil\altin_varliklar.png.pal.png'
+00:07.547  render           | Saved: 'C:\Users\uruskan\Documents\GitHub\kabarma\.claude\worktrees\m1-varlik-72a21b\docs\stil\altin_varliklar_4isik.png.0.png'
+00:07.953  render           | Saved: 'C:\Users\uruskan\Documents\GitHub\kabarma\.claude\worktrees\m1-varlik-72a21b\docs\stil\altin_varliklar_4isik.png.1.png'
+00:08.312  render           | Saved: 'C:\Users\uruskan\Documents\GitHub\kabarma\.claude\worktrees\m1-varlik-72a21b\docs\stil\altin_varliklar_4isik.png.2.png'
+00:08.703  render           | Saved: 'C:\Users\uruskan\Documents\GitHub\kabarma\.claude\worktrees\m1-varlik-72a21b\docs\stil\altin_varliklar_4isik.png.3.png'
+00:09.000  render           | Saved: 'C:\Users\uruskan\Documents\GitHub\kabarma\.claude\worktrees\m1-varlik-72a21b\docs\stil\altin_varliklar.png.yazi.png'
+STUDIO docs/stil/altin_varliklar.png
+LIGHT Sabah
+LIGHT Öğle
+LIGHT Gün batımı
+LIGHT Kabarma gecesi
+LIGHTS docs/stil/altin_varliklar_4isik.png ['Sabah', 'Öğle', 'Gün batımı', 'Kabarma gecesi']
+PLACED ('Oyuncu', 0.0, 0.6978507339954376, 1.526032593101263)
+PLACED ('Zıpzıp', 1.2978507339954377, 0.4222279191017151, 0.7499997019767761)
+PLACED ('Pofuduk', 2.320078653097153, 0.8435002267360687, 0.9999998509883881)
+PLACED ('Çayır ağacı', 3.7635788798332217, 4.541922092437744, 4.200000286102295)
+PLACED ('Şalgam', 8.905500972270966, 0.3334747552871704, 0.6000000238418579)
+PLACED ('Kaya', 9.838975727558136, 1.326850175857544, 1.3000000715255737)
+PLACED ('Tezgâh', 11.76582590341568, 1.0681557655334473, 1.5)
+PLACED ('Taş Fırın', 13.433981668949126, 1.4769184589385986, 1.4000000953674316)
+PLACED ('El Arabası', 15.510900127887725, 1.8147310018539429, 0.8499999642372131)
+PLACED ('Ahşap duvar', 17.925631129741667, 3.0, 3.0100000090897083)
+PLACED ('Sulama kovası', 21.52563112974167, 0.7902817726135254, 0.5499999523162842)
+PLACED ('Ocak', 22.915912902355196, 1.7795193195343018, 2.0)
+PLACED ('İniş kapsülü', 25.2954322218895, 2.3871536254882812, 2.799999952316284)
+PLACED ('Paketleme', 28.28258584737778, 0.8166587948799133, 1.3000000715255737)
+PLACED ('Çapa', 29.699244642257696, 0.5616087317466736, 0.3500000238418579)
+PLACED ('Gıdak', 30.86085337400437, 0.6017612516880035, 0.75)
+Blender 5.3.0 (hash 02f0899d78e3 built 2026-11-10 01:33:43)
+
+Blender quit

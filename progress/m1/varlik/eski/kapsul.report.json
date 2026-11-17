@@ -1,0 +1,88 @@
+{
+  "name": "kapsul",
+  "input": ".tools/tripo/kapsul/tripo-out/kapsul-segment-e3b30365/model.glb",
+  "checks": {
+    "1_palette": {
+      "pass": true,
+      "note": "dokulu mod: palet oturtma yapilmadi"
+    },
+    "2_polygon": {
+      "pass": true,
+      "value": 9367,
+      "budget": 10000
+    },
+    "3_thickness": {
+      "pass": true,
+      "min_ratio": 0.853,
+      "note": "parca basina en dar boyut / en uzun kenar"
+    },
+    "4_integrity": {
+      "pass": false,
+      "non_manifold_edges": 19,
+      "boundary_edges": 10,
+      "inward_faces": 1019,
+      "loose_parts": 1
+    },
+    "5_scale_axis": {
+      "pass": true,
+      "height": 2.8,
+      "target": 2.8
+    }
+  },
+  "tris_in": 9377,
+  "welded_verts": 1239,
+  "tex_size": 1024,
+  "source_mean_dE": null,
+  "source_within_dE8": null,
+  "palette_use": "textured (palette snap skipped)",
+  "tris": 9367,
+  "size_m": [
+    2.387,
+    2.443,
+    2.8
+  ],
+  "parts": 1,
+  "parts_named": [
+    {
+      "name": "body",
+      "center": [
+        -0.0,
+        0.0,
+        1.716
+      ],
+      "size": [
+        2.386,
+        2.443,
+        2.168
+      ]
+    },
+    {
+      "name": "base",
+      "center": [
+        0.015,
+        -0.01,
+        0.349
+      ],
+      "size": [
+        2.273,
+        2.34,
+        0.699
+      ]
+    },
+    {
+      "name": "hatch",
+      "center": [
+        1.021,
+        0.001,
+        1.598
+      ],
+      "size": [
+        0.346,
+        1.242,
+        1.146
+      ]
+    }
+  ],
+  "out": "game/assets/models/kapsul/kapsul.glb",
+  "pass_scripted": false
+}

@@ -1,0 +1,47 @@
+{
+  "name": "capa",
+  "input": ".tools/tripo/capa/model.glb",
+  "checks": {
+    "1_palette": {
+      "pass": true,
+      "note": "dokulu mod: palet oturtma yapilmadi"
+    },
+    "2_polygon": {
+      "pass": true,
+      "value": 3708,
+      "budget": 4000
+    },
+    "3_thickness": {
+      "pass": true,
+      "min_ratio": 0.374,
+      "note": "parca basina en dar boyut / en uzun kenar"
+    },
+    "4_integrity": {
+      "pass": false,
+      "non_manifold_edges": 12,
+      "boundary_edges": 7,
+      "inward_faces": 844,
+      "loose_parts": 1
+    },
+    "5_scale_axis": {
+      "pass": true,
+      "height": 0.35,
+      "target": 0.35
+    }
+  },
+  "tris_in": 3712,
+  "welded_verts": 823,
+  "tex_size": 1024,
+  "source_mean_dE": null,
+  "source_within_dE8": null,
+  "palette_use": "textured (palette snap skipped)",
+  "tris": 3708,
+  "size_m": [
+    0.562,
+    0.21,
+    0.35
+  ],
+  "parts": 1,
+  "out": "game/assets/models/capa/capa.glb",
+  "pass_scripted": false
+}

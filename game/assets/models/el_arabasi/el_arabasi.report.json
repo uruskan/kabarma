@@ -1,50 +1,228 @@
 {
   "name": "el_arabasi",
-  "input": ".tools/tripo/el_arabasi/tripo-out/el-arabasi-segment-dc3ed20a/model.glb",
+  "label": "El Arabası",
+  "input": "C:/Users/uruskan/Documents/GitHub/kabarma\\.tools/tripo/el_arabasi/tripo-out/el-arabasi-segment-dc3ed20a/model.glb",
+  "class": "arac",
+  "forward": "+X",
   "checks": {
-    "1_palette": {
+    "1_texture": {
       "pass": true,
-      "note": "dokulu mod: palet oturtma yapilmadi"
+      "textures": {
+        "tripo_image_0_base_color": [
+          1024,
+          1024
+        ],
+        "tripo_image_1_base_color": [
+          1024,
+          1024
+        ],
+        "tripo_image_2_base_color": [
+          512,
+          512
+        ],
+        "tripo_image_3_base_color": [
+          256,
+          256
+        ],
+        "tripo_image_4_base_color": [
+          256,
+          256
+        ],
+        "tripo_image_5_base_color": [
+          512,
+          512
+        ],
+        "tripo_image_6_base_color": [
+          256,
+          256
+        ]
+      },
+      "base_color_maps": 7,
+      "max_tex": 1024
     },
     "2_polygon": {
       "pass": true,
-      "value": 5779,
-      "budget": 6000
+      "value": 5998,
+      "budget": 20000,
+      "class": "arac",
+      "below_min": true
     },
     "3_thickness": {
       "pass": false,
-      "min_ratio": 0.007,
-      "note": "parca basina en dar boyut / en uzun kenar"
+      "thin_share": 0.0655,
+      "allowed_share": 0.02,
+      "limit_m": 0.1089,
+      "stick_min_t_m": 0.0005,
+      "plate_share": 0.7726,
+      "faces_measured": 5995,
+      "old_bbox_min_ratio": 0.045,
+      "note": "cubuk/diken alani (iki yonde ince) / yuzey; levha payi (tek yonde ince: yaprak, kapak) bilgi; eski olcu: parca kutusunun en dar boyutu / en uzun kenar"
     },
     "4_integrity": {
-      "pass": false,
-      "non_manifold_edges": 15,
-      "boundary_edges": 8,
-      "inward_faces": 2214,
-      "loose_parts": 3
+      "pass": true,
+      "non_manifold_edges": 0,
+      "boundary_edges": 0,
+      "inverted_faces": 0,
+      "inverted_note": "ters sarimli kenar sayisi",
+      "negative_volume_parts": 0,
+      "floating_parts": [],
+      "loose_parts": 7,
+      "per_part": {
+        "body": {
+          "fan": 0,
+          "boundary": 0,
+          "wire": 0,
+          "non_manifold": 0
+        },
+        "wheel": {
+          "fan": 0,
+          "boundary": 0,
+          "wire": 0,
+          "non_manifold": 0
+        },
+        "frame_r": {
+          "fan": 0,
+          "boundary": 0,
+          "wire": 0,
+          "non_manifold": 0
+        },
+        "grip_l": {
+          "fan": 0,
+          "boundary": 0,
+          "wire": 0,
+          "non_manifold": 0
+        },
+        "grip_r": {
+          "fan": 0,
+          "boundary": 0,
+          "wire": 0,
+          "non_manifold": 0
+        },
+        "frame_l": {
+          "fan": 0,
+          "boundary": 0,
+          "wire": 0,
+          "non_manifold": 0
+        },
+        "fork": {
+          "fan": 0,
+          "boundary": 0,
+          "wire": 0,
+          "non_manifold": 0
+        }
+      }
     },
     "5_scale_axis": {
       "pass": true,
       "height": 0.85,
-      "target": 0.85
+      "target": 0.85,
+      "base_z": 0.0,
+      "center_xy": [
+        0.0,
+        0.0
+      ],
+      "forward": "+X",
+      "note": "on yon betikle olculemez; bildirilen eksen yazilir"
     }
   },
-  "tris_in": 5783,
-  "welded_verts": 1501,
+  "source_parts": [
+    "tripo_part_0",
+    "tripo_part_1",
+    "tripo_part_2",
+    "tripo_part_3",
+    "tripo_part_4",
+    "tripo_part_5",
+    "tripo_part_6",
+    "tripo_part_7",
+    "tripo_part_8"
+  ],
+  "dropped": [
+    "tripo_part_7",
+    "tripo_part_8"
+  ],
+  "merged": {},
+  "tris_in": 5761,
+  "welded_verts": 1342,
+  "repair_before": {
+    "fan": 7,
+    "boundary": 302,
+    "wire": 0
+  },
+  "repair_log": [
+    {
+      "pass": 1,
+      "deleted_slivers": 7,
+      "filled_faces": 230,
+      "fan": 0,
+      "boundary": 18,
+      "wire": 0,
+      "nonmanifold_verts": 0
+    },
+    {
+      "pass": 2,
+      "deleted_slivers": 0,
+      "filled_faces": 18,
+      "fan": 0,
+      "boundary": 0,
+      "wire": 0,
+      "nonmanifold_verts": 0
+    }
+  ],
+  "dropped_floating": [],
+  "snapped_floating": [],
+  "dark_fill": {
+    "patches": 0,
+    "faces": 0,
+    "area_share": 0.0
+  },
   "tex_size": 1024,
-  "source_mean_dE": null,
-  "source_within_dE8": null,
-  "palette_use": "textured (palette snap skipped)",
-  "tris": 5779,
+  "tris": 5998,
   "size_m": [
     1.815,
     1.109,
     0.85
   ],
-  "parts": 3,
+  "parts": 7,
+  "palette_direction": {
+    "samples": 1500,
+    "mean_dE": 13.2,
+    "share": [
+      {
+        "color": "tones.blue_dark",
+        "hex": "2E5580",
+        "share": 0.781
+      },
+      {
+        "color": "tones.wood_dark",
+        "hex": "7E5A48",
+        "share": 0.131
+      },
+      {
+        "color": "neutral.warning",
+        "hex": "F2B632",
+        "share": 0.04
+      },
+      {
+        "color": "altin_cayir.sky_sunset",
+        "hex": "F58A5B",
+        "share": 0.025
+      },
+      {
+        "color": "neutral.dark_grey",
+        "hex": "3B3F4A",
+        "share": 0.014
+      },
+      {
+        "color": "tones.soil",
+        "hex": "81605C",
+        "share": 0.006
+      }
+    ]
+  },
   "parts_named": [
     {
       "name": "body",
+      "source": "tripo_part_0",
       "center": [
         0.144,
         0.0,
@@ -54,10 +232,13 @@
         0.964,
         1.109,
         0.467
-      ]
+      ],
+      "faces": 2568,
+      "pivot": null
     },
     {
       "name": "wheel",
+      "source": "tripo_part_1",
       "center": [
         0.592,
         0.004,
@@ -67,10 +248,17 @@
         0.555,
         0.248,
         0.591
+      ],
+      "faces": 1364,
+      "pivot": [
+        0.592,
+        0.004,
+        0.296
       ]
     },
     {
-      "name": "part_1",
+      "name": "frame_r",
+      "source": "tripo_part_2",
       "center": [
         0.002,
         -0.217,
@@ -80,10 +268,13 @@
         1.337,
         0.315,
         0.689
-      ]
+      ],
+      "faces": 844,
+      "pivot": null
     },
     {
-      "name": "part_5",
+      "name": "grip_l",
+      "source": "tripo_part_3",
       "center": [
         -0.742,
         0.357,
@@ -93,10 +284,13 @@
         0.331,
         0.102,
         0.112
-      ]
+      ],
+      "faces": 154,
+      "pivot": null
     },
     {
-      "name": "part_6",
+      "name": "grip_r",
+      "source": "tripo_part_4",
       "center": [
         -0.766,
         -0.351,
@@ -106,10 +300,13 @@
         0.279,
         0.1,
         0.11
-      ]
+      ],
+      "faces": 148,
+      "pivot": null
     },
     {
-      "name": "part_2",
+      "name": "frame_l",
+      "source": "tripo_part_5",
       "center": [
         0.002,
         0.241,
@@ -119,10 +316,13 @@
         1.336,
         0.283,
         0.691
-      ]
+      ],
+      "faces": 806,
+      "pivot": null
     },
     {
-      "name": "part_4",
+      "name": "fork",
+      "source": "tripo_part_6",
       "center": [
         0.83,
         0.005,
@@ -132,35 +332,141 @@
         0.155,
         0.324,
         0.081
+      ],
+      "faces": 114,
+      "pivot": null
+    }
+  ],
+  "sockets": [
+    {
+      "name": "wheel_pivot",
+      "of": [
+        "wheel"
+      ],
+      "at": "center",
+      "pos_blender": [
+        0.592,
+        0.004,
+        0.296
+      ],
+      "pos_godot": [
+        0.592,
+        0.296,
+        -0.004
+      ],
+      "child": "wheel"
+    },
+    {
+      "name": "handle_l",
+      "of": [
+        "grip_l"
+      ],
+      "at": "center",
+      "pos_blender": [
+        -0.742,
+        0.357,
+        0.729
+      ],
+      "pos_godot": [
+        -0.742,
+        0.729,
+        -0.357
       ]
     },
     {
-      "name": "part_7",
-      "center": [
-        0.218,
+      "name": "handle_r",
+      "of": [
+        "grip_r"
+      ],
+      "at": "center",
+      "pos_blender": [
+        -0.766,
+        -0.351,
+        0.73
+      ],
+      "pos_godot": [
+        -0.766,
+        0.73,
+        0.351
+      ]
+    },
+    {
+      "name": "handle",
+      "of": [
+        "grip_l",
+        "grip_r"
+      ],
+      "at": "center",
+      "pos_blender": [
+        -0.754,
         0.003,
-        0.235
+        0.73
       ],
-      "size": [
-        0.044,
-        0.074,
-        0.061
+      "pos_godot": [
+        -0.754,
+        0.73,
+        -0.003
       ]
     },
     {
-      "name": "door",
-      "center": [
-        -0.536,
-        -0.366,
-        0.741
+      "name": "load_slot",
+      "of": [
+        "body"
       ],
-      "size": [
-        0.012,
-        0.082,
-        0.075
+      "at": "center",
+      "pos_blender": [
+        0.144,
+        0.0,
+        0.616
+      ],
+      "pos_godot": [
+        0.144,
+        0.616,
+        -0.0
       ]
     }
   ],
-  "out": "game/assets/models/el_arabasi/el_arabasi.glb",
-  "pass_scripted": false
+  "icon": "C:\\Users\\uruskan\\Documents\\GitHub\\kabarma\\.claude\\worktrees\\m1-varlik-72a21b\\game/assets/models\\el_arabasi\\el_arabasi_icon.png",
+  "out": "C:\\Users\\uruskan\\Documents\\GitHub\\kabarma\\.claude\\worktrees\\m1-varlik-72a21b\\game/assets/models\\el_arabasi\\el_arabasi.glb",
+  "lods": [
+    {
+      "level": 0,
+      "tris": 5998,
+      "file": "C:\\Users\\uruskan\\Documents\\GitHub\\kabarma\\.claude\\worktrees\\m1-varlik-72a21b\\game/assets/models\\el_arabasi\\el_arabasi.glb",
+      "tex": 1024
+    },
+    {
+      "level": 1,
+      "ratio": 0.5,
+      "tris": 2908,
+      "file": "C:\\Users\\uruskan\\Documents\\GitHub\\kabarma\\.claude\\worktrees\\m1-varlik-72a21b\\game/assets/models\\el_arabasi\\el_arabasi_lod1.glb",
+      "tex": 512,
+      "census": {
+        "fan": 0,
+        "boundary": 0,
+        "wire": 0
+      }
+    },
+    {
+      "level": 2,
+      "ratio": 0.2,
+      "tris": 1162,
+      "file": "C:\\Users\\uruskan\\Documents\\GitHub\\kabarma\\.claude\\worktrees\\m1-varlik-72a21b\\game/assets/models\\el_arabasi\\el_arabasi_lod2.glb",
+      "tex": 256,
+      "census": {
+        "fan": 0,
+        "boundary": 0,
+        "wire": 0
+      }
+    }
+  ],
+  "hull": {
+    "file": "C:\\Users\\uruskan\\Documents\\GitHub\\kabarma\\.claude\\worktrees\\m1-varlik-72a21b\\game/assets/models\\el_arabasi\\el_arabasi_hull.tres",
+    "points": 64,
+    "volume_m3": 0.792,
+    "mesh_volume_m3": 0.1127,
+    "note": "Godot ekseninde (Y yukari), model orijinine gore"
+  },
+  "pass_scripted": false,
+  "card": "C:\\Users\\uruskan\\Documents\\GitHub\\kabarma\\.claude\\worktrees\\m1-varlik-72a21b\\progress/m1/varlik/kart\\el_arabasi.png"
 }
