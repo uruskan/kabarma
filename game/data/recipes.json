@@ -1,8 +1,13 @@
 {
-  "_not": "Istasyon tarifleri: girdi cantadan alinir, cikti cantaya gider.",
+  "_not": "Istasyon tarifleri (ICERIK §11, §20; URETIM §6 M1). Girdi cantadan alinir; yakit istasyonun 'fuel' alanindan (is basina). 'load': urun cantaya degil dunyaya yuk nesnesi olarak cikar. 'unlockOn': tarif bu esya ilk kez alininca acilir (GDD §12 Kesif). Menudeki sira bu siradir.",
   "recipes": [
-    { "id": "civi", "name": "Çivi", "station": "tezgah", "in": { "stone": 2 }, "out": 10, "seconds": 2.0 },
-    { "id": "sebze_corbasi", "name": "Sebze Çorbası", "station": "tas_firin", "in": { "turnip": 2 }, "out": 1, "seconds": 4.0 },
-    { "id": "kargo_kasasi", "name": "Kargo Kasası", "station": "paketleme", "in": { "turnip": 5 }, "out": 1, "seconds": 3.0 }
+    { "id": "civi", "name": "Çivi", "station": "tezgah", "in": { "copper_ingot": 1 }, "out": 20, "seconds": 2.0 },
+    { "id": "civi_tabancasi", "name": "Çivi Tabancası", "station": "tezgah", "in": { "copper_ingot": 2, "wood": 4 }, "out": 1, "seconds": 4.0, "unlockOn": "copper_ingot" },
+    { "id": "el_arabasi", "name": "El Arabası", "station": "tezgah", "in": { "wood": 12, "stone": 4 }, "out": 1, "seconds": 4.0, "load": true },
+    { "id": "copper_ingot", "name": "Bakır Külçe", "station": "tas_firin", "in": { "copper_ore": 2 }, "out": 1, "seconds": 4.0 },
+    { "id": "kozde_salgam", "name": "Közde Şalgam", "station": "ocakbasi", "in": { "turnip": 1 }, "out": 1, "seconds": 3.0 },
+    { "id": "haslanmis_yumurta", "name": "Haşlanmış Yumurta", "station": "ocakbasi", "in": { "egg": 1 }, "out": 1, "seconds": 3.0 },
+    { "id": "sebze_corbasi", "name": "Sebze Çorbası", "station": "ocakbasi", "in": { "turnip": 2 }, "out": 1, "seconds": 4.0 },
+    { "id": "kargo_kasasi", "name": "Kargo Kasası", "station": "paketleme", "in": {}, "out": 1, "seconds": 3.0, "load": true }
   ]
 }

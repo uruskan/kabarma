@@ -52,9 +52,13 @@ public sealed class GameState
     public List<(string crop, string size, int value)> Sales { get; } = new();
     public ulong Seed { get; }
     public Rng Rng { get; }
-    public FoodBuffs Food { get; } = new();
+    public FoodBuffs Food { get; }
     public Belt Belt { get; }
     public Dictionary<string, StationQueue> Stations { get; } = new();
+    /// <summary>Kargo: Paketleme, rampa, gecikmeli odeme (GDD 13).</summary>
+    public Cargo Cargo { get; }
+    /// <summary>Oyuncunun eline bir kez gecmis esyalar: kilitli tarifleri acar (GDD 12 Kesif).</summary>
+    public HashSet<string> Known { get; } = new();
 
     public event Action<int, int>? Sold; // (kazanc, toplam)
 
@@ -62,27 +66,24 @@ public sealed class GameState
     {
         Data = data;
         Seed = seed;
-        Backpack = new Inventory(data.Tool.BackpackSlots, data.Tool.StackResource);
+        Backpack = new Inventory(data.Tool.BackpackSlots, data.Tool.StackOf);
+        Backpack.Changed += (id, count) => { if (count > 0) Known.Add(id); };
         foreach (var (id, n) in data.Tool.StartItems) Backpack.Add(id, n);
         Farm = new Farm(data);
         Scenario = new Scenario(data.Scenario);
         Rng = new Rng(seed * 13 + 1);
         Belt = new Belt(Backpack);
-        foreach (var st in data.Tool.Recipes.Select(r => r.Station).Distinct()) Stations[st] = new StationQueue(data, st);
+        Food = new FoodBuffs(data.Tool.FoodSlots);
+        foreach (var st in data.Tool.Recipes.Select(r => r.Station).Distinct()) Stations[st] = new StationQueue(data, st) { Known = Known };
+        Cargo = new Cargo(data, Credit);
     }
 
-    /// <summary>Kargo Rampasi'ndan normal mal satisi (kasa, urun, yumurta).</summary>
-    public int SellItem(string id, int count)
+    /// <summary>Odeme hesaba gecer (Kargo Rampasi; ilk satis aninda, sonrakiler 60 sn sonra).</summary>
+    void Credit(int v, string what)
     {
-        if (!Data.Tool.Prices.TryGetValue(id, out int price) || count <= 0) return 0;
-        int n = Math.Min(count, Backpack.Count(id));
-        if (n <= 0) return 0;
-        Backpack.Remove(id, n);
-        int v = price * n;
         Credits += v;
-        Sales.Add((id, "x" + n, v));
+        Sales.Add((what, "", v));
         Sold?.Invoke(v, Credits);
-        return v;
     }
 
     public KabarmaNight StartNight()
@@ -91,12 +92,13 @@ public sealed class GameState
         return Night;
     }
 
+    /// <summary>
+    /// Kabarik urunu Kargo Rampasi'ndan firlatir (rampa bos olmali). Donen: urunun degeri (rampa doluysa -1).
+    /// Odeme ilk satista aninda, sonra 60 sn sonra gelir (Cargo.Tick).
+    /// </summary>
     public int Sell(string cropId, SizeClassDef size)
     {
         int v = Farm.SellValue(cropId, size);
-        Credits += v;
-        Sales.Add((cropId, size.Id, v));
-        Sold?.Invoke(v, Credits);
-        return v;
+        return Cargo.ShipSwollen(v, $"{cropId} {size.Id}");
     }
 }

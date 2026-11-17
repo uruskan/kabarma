@@ -58,17 +58,48 @@ public partial class Bot
 
     // ---------- M1 makine zinciri: oyuncunun yaptigini yapar (hareket, nisan, tetik, E, menu tuslari) ----------
 
-    /// <summary>Yeterli tas yoksa en yakin kayayi kazar. Yeterliyse true.</summary>
-    bool EnsureStone(int need)
+    bool EnsureStone(int need) => EnsureItem("stone", need);
+
+    /// <summary>
+    /// Cantada yeterli `item` yoksa oyun yolundan toplar: tas, kil, bakir cevheri Kazma ile kayadan (kil ve bakir
+    /// World.Placeholders yer tutucu dugumleri); odun Bicme ile agactan; lif ve bugday Bicme ile tutamdan. Yeterliyse true.
+    /// </summary>
+    bool EnsureItem(string item, int need)
     {
-        if (_d.State.Backpack.Count("stone") >= need) return true;
+        if (_d.State.Backpack.Count(item) >= need) return true;
+        var p = P.GlobalPosition;
+        if (item == "wood")
+        {
+            _d.Capa.Select(Capa.Head.Bicme);
+            var tr = _d.World.TreePositions.OrderBy(x => x.DistanceTo(p)).First();
+            Aim(tr + Vector3.Up * 1.4f);
+            if (MoveTo(tr, 3.0f)) Fire = true;
+            return false;
+        }
+        if (item == "fiber" || item == "wheat")
+        {
+            // Agac Bicme'de tutamdan once gelir: yaninda agac olmayan tutami sec.
+            var t = _d.World.Tufts.Where(x => x.Left > 0 && x.Item == item && !_d.World.TreePositions.Any(tp => new Vector2(tp.X - x.Position.X, tp.Z - x.Position.Z).Length() < 2.2f))
+                .OrderBy(x => x.Position.DistanceTo(p)).FirstOrDefault();
+            if (t == null) { GD.Print($"BOT no {item} tufts left"); return true; }
+            _d.Capa.Select(Capa.Head.Bicme);
+            Aim(t.Position + Vector3.Up * 0.3f);
+            if (MoveTo(t.Position, 3.0f)) Fire = true;
+            return false;
+        }
         _d.Capa.Select(Capa.Head.Kazma);
-        var rock = _d.World.Rocks.Where(r => IsInstanceValid(r) && r.Stones > 0 && r.Item == "stone").OrderBy(r => r.GlobalPosition.DistanceTo(P.GlobalPosition)).FirstOrDefault();
-        if (rock == null) { GD.Print("BOT no rocks left"); return true; }
+        var rock = _d.World.Rocks.Where(r => IsInstanceValid(r) && r.Stones > 0 && r.Item == item).OrderBy(r => r.GlobalPosition.DistanceTo(p)).FirstOrDefault();
+        if (rock == null) { GD.Print($"BOT no {item} rocks left"); return true; }
         Aim(rock.Center);
         if (MoveTo(rock.GlobalPosition, 4.5f)) Fire = true;
         return false;
     }
+
+    /// <summary>Istasyon menusundeki tarif sirasi (Director.OpenStationMenu veri sirasiyla listeler).</summary>
+    static int RecipeIndex(Station st, string recipe) => st.Queue.Recipes.Select(r => r.Id).ToList().IndexOf(recipe);
+
+    /// <summary>Istasyonun yaninda bekler (uretim surerken).</summary>
+    void WaitAt(Station st) { P.MoveOverride = Vector3.Zero; Aim(st.GlobalPosition + Vector3.Up); }
 
     /// <summary>Insa basliginda istenen yerlestirilebiliri secip verilen noktaya koyar.</summary>
     void PlaceAt(string id, Vector3 at)
@@ -91,15 +122,30 @@ public partial class Bot
         else if (_d.Hud.MenuOpen && _menuT <= 0) { _d.Hud.ActivateMenu(item); _d.Hud.HideMenu(); _menuT = 1.0f; }
     }
 
-    void StepTezgahKur(Vector3 o)
+    /// <summary>Yerlestirilebilirin bedeli (placeables.json): once hepsini topla, sonra kur.</summary>
+    bool EnsureCost(string placeable, int extraWood = 0)
     {
-        if (EnsureStone(6)) PlaceAt("tezgah", o + new Vector3(-5f, 0, 1.5f));
+        var def = _d.Data.Tool.Placeables.First(x => x.Id == placeable);
+        foreach (var kv in def.Cost)
+            if (!EnsureItem(kv.Key, kv.Value + (kv.Key == "wood" ? extraWood : 0))) return false;
+        return extraWood <= 0 || def.Cost.ContainsKey("wood") || EnsureItem("wood", extraWood);
     }
 
+    void StepTezgahKur(Vector3 o)
+    {
+        if (EnsureCost("tezgah")) PlaceAt("tezgah", o + new Vector3(-5f, 0, 1.5f));
+    }
+
+    /// <summary>Bakir cevheri kaz, Tas Firin'da Bakir Kulce erit (1 Odun yakit), Tezgah'ta kulceden civi yap.</summary>
     void StepCivi(Vector3 o)
     {
-        var st = StationOf("tezgah");
-        if (st != null && EnsureStone(2)) UseStation(st, 0);
+        var tz = StationOf("tezgah");
+        var fr = StationOf("tas_firin");
+        if (tz == null || fr == null) return;
+        if (tz.Queue.Active != null) { WaitAt(tz); return; }
+        if (_d.State.Backpack.Count("copper_ingot") > 0) { UseStation(tz, RecipeIndex(tz, "civi")); return; }
+        if (fr.Queue.Active != null) { WaitAt(fr); return; }
+        if (EnsureItem("copper_ore", 2) && EnsureItem("wood", 1)) UseStation(fr, RecipeIndex(fr, "copper_ingot"));
     }
 
     void StepHasat(Vector3 o)
@@ -114,41 +160,69 @@ public partial class Bot
 
     void StepFirinKur(Vector3 o)
     {
-        if (EnsureStone(10)) PlaceAt("tas_firin", o + new Vector3(-5f, 0, -3.5f));
+        if (EnsureCost("tas_firin")) PlaceAt("tas_firin", o + new Vector3(-5f, 0, -3.5f));
     }
 
+    /// <summary>Ocakbasi kur (yakit icin bir odun fazla topla), Sebze Corbasi pisir (2 Salgam + 1 Odun), cantadan ye.</summary>
     void StepCorba(Vector3 o)
     {
-        var st = StationOf("tas_firin");
-        if (st == null) return;
+        var st = StationOf("ocakbasi");
+        if (st == null) { if (EnsureCost("ocakbasi", 1)) PlaceAt("ocakbasi", o + new Vector3(-9f, 0, -1f)); return; }
         if (_d.State.Backpack.Count("sebze_corbasi") > 0)
         {
             P.MoveOverride = Vector3.Zero;
+            int idx = _d.Data.Tool.Foods.FindIndex(f => f.Id == "sebze_corbasi");
             if (!_d.Hud.MenuOpen && _menuT <= 0) { _d.OpenBagMenu(); _menuT = 0.5f; }
-            else if (_d.Hud.MenuOpen && _menuT <= 0) { _d.Hud.ActivateMenu(0); _d.Hud.HideMenu(); _menuT = 1f; }
+            else if (_d.Hud.MenuOpen && _menuT <= 0) { _d.Hud.ActivateMenu(idx); _d.Hud.HideMenu(); _menuT = 1f; }
         }
-        else if (st.Queue.Active == null) UseStation(st, 0);
-        else { P.MoveOverride = Vector3.Zero; Aim(st.GlobalPosition + Vector3.Up); }
+        else if (st.Queue.Active != null) WaitAt(st);
+        else if (EnsureItem("wood", 1)) UseStation(st, RecipeIndex(st, "sebze_corbasi"));
     }
 
+    /// <summary>Paketleme Tezgahi kur; cantadaki satilir mali (once Salgam) acik kasaya koy, kasayi kapat. Kasa tezgahin onune cikar.</summary>
     void StepPaketle(Vector3 o)
     {
         var st = StationOf("paketleme");
-        if (st == null) { if (EnsureStone(8)) PlaceAt("paketleme", o + new Vector3(-1f, 0, 5.5f)); return; }
-        if (st.Queue.Active == null && _d.State.Backpack.Count("kargo_kasasi") == 0) UseStation(st, 0);
-        else { P.MoveOverride = Vector3.Zero; Aim(st.GlobalPosition + Vector3.Up); }
+        if (st == null) { if (EnsureCost("paketleme")) PlaceAt("paketleme", o + new Vector3(-1f, 0, 5.5f)); return; }
+        if (st.Queue.Active != null) { WaitAt(st); return; }
+        var cargo = _d.State.Cargo;
+        int item = 0; // 0 = "Kasayi kapat"
+        if (cargo.Open == null || cargo.Open.Items.IsEmpty)
+        {
+            // Director.OpenPackingMenu ile ayni sira: kapat, sonra cantadaki satilir mallar.
+            var goods = _d.State.Backpack.Contents.Select(c => c.id).Distinct().Where(cargo.Pricing.Sellable).Take(8).ToList();
+            var pick = goods.Contains("turnip") ? "turnip" : goods.FirstOrDefault();
+            if (pick == null) { GD.Print("BOT nothing to pack"); return; }
+            item = goods.IndexOf(pick) + 1;
+        }
+        UseStation(st, item);
     }
 
+    /// <summary>Kasayi Cekim ile Kargo Rampasi'na tasi, birak (rampaya yuklenir), rampanin dibinde E: Gonder.</summary>
     void StepKasaSat(Vector3 o)
     {
         var pad = _d.Pod.PadCenter;
-        Aim(pad + Vector3.Up);
-        if (!MoveTo(pad + (P.GlobalPosition - pad).Normalized() * 3.2f, 0.6f, false)) return;
-        if (!_d.Hud.MenuOpen && _menuT <= 0) { _d.Interact(); _menuT = 0.6f; }
-        else if (_d.Hud.MenuOpen && _menuT <= 0)
+        var crate = _d.GetTree().GetNodesInGroup("cargo_crates").OfType<CargoCrateNode>().FirstOrDefault(c => !c.Sold);
+        if (crate == null) { P.MoveOverride = Vector3.Zero; return; }
+        if (crate.OnRamp)
         {
-            int idx = _d.Data.Tool.Prices.Keys.ToList().IndexOf("kargo_kasasi");
-            _d.Hud.ActivateMenu(idx); _d.Hud.HideMenu(); _menuT = 1f;
+            Aim(pad + Vector3.Up);
+            if (!MoveTo(pad + (P.GlobalPosition - pad).Normalized() * 3.2f, 0.6f, false)) return;
+            if (!_d.Hud.MenuOpen && _menuT <= 0) { _d.Interact(); _menuT = 0.6f; }
+            else if (_d.Hud.MenuOpen && _menuT <= 0) { _d.Hud.ActivateMenu(0); _d.Hud.HideMenu(); _menuT = 1f; }
+            return;
+        }
+        _d.Capa.Select(Capa.Head.Cekim);
+        if (_d.Capa.Held == null)
+        {
+            Aim(crate.GlobalPosition);
+            if (MoveTo(crate.GlobalPosition, 4.0f, false) && _stepT > 0.6f) { FirePressed = true; _stepT = 0; }
+        }
+        else
+        {
+            var away = P.GlobalPosition - pad; away.Y = 0;
+            Aim(pad + Vector3.Up * 0.5f);
+            if (MoveTo(pad + away.Normalized() * 3.2f, 0.8f, false) && _stepT > 0.8f) { FirePressed = true; _stepT = 0; }
         }
     }
 }

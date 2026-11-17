@@ -33,6 +33,7 @@ public partial class Main : Node3D
         ["build"] = m => { m.AddChild(new BuildTest()); return true; },
         ["netsync"] = m => { if (!Args.ContainsKey("netsync")) Args["netsync"] = Args.TryGetValue("role", out var r) ? r : "host"; m.AddChild(new NetSyncTest()); return true; },
         ["swarm"] = m => { m.AddChild(new SwarmTest()); return true; },
+        ["ekonomi"] = m => { Args["ekonomi"] = "1"; Args["mute"] = "1"; Sfx.Muted = true; return false; }, // Director + EconomyTest (Director.Economy.cs)
     };
 
     public override void _Ready()

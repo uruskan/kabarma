@@ -18,6 +18,7 @@ param(
 
 $ErrorActionPreference = 'Continue'
 $Only = @($Only | ForEach-Object { $_ -split ',' } | ForEach-Object { $_.Trim() } | Where-Object { $_ })
+if (-not $PSBoundParameters.ContainsKey('Only')) { $Only += 'ekonomi' }  # ekonomi sinamasi (--test=ekonomi) varsayilan kosuda
 $Root = Split-Path -Parent $PSScriptRoot
 Set-Location $Root
 $GamePath = Join-Path $Root 'game'
@@ -97,6 +98,7 @@ if (($Only -contains 'bot') -or ($Only -contains 'buildtest')) {
     $G = Find-Godot
     if (-not $G) { Say 'Godot bulunamadi: KABARMA_GODOT ortam degiskenini ver.' }
 }
+if ((-not $G) -and ($Only -contains 'ekonomi')) { $G = Find-Godot }
 
 function Invoke-GodotTest([string]$name, [string]$userArgs, [int]$timeoutSec, [scriptblock]$judge) {
     $sw2 = [Diagnostics.Stopwatch]::StartNew()
@@ -129,6 +131,20 @@ if ($Only -contains 'buildtest') {
         if ($r.Text -match 'BUILD RESULT placed=(\d+) failed=(\d+) pieces=(\d+)') {
             $ok = [int]$Matches[2] -eq 0
             $detail = "placed=$($Matches[1]) failed=$($Matches[2]) pieces=$($Matches[3])"
+        }
+        [pscustomobject]@{ Ok = $ok; Detail = $detail }
+    }
+}
+
+if ($Only -contains 'ekonomi') {
+    $out = Join-Path $RunDir 'ekonomi'
+    New-Item -ItemType Directory -Force $out | Out-Null
+    Invoke-GodotTest 'ekonomi' "--test=ekonomi --test_out=`"$out`"" 300 {
+        param($r)
+        $ok = $false; $detail = 'ECONOMY RESULT satiri yok'
+        if ($r.Text -match 'ECONOMY RESULT ok=(\d+) fail=(\d+)') {
+            $ok = [int]$Matches[2] -eq 0
+            $detail = "ok=$($Matches[1]) fail=$($Matches[2])"
         }
         [pscustomobject]@{ Ok = $ok; Detail = $detail }
     }

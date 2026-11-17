@@ -63,16 +63,9 @@
     {
       "id": "tezgah_kur",
       "target": 1,
-      "goal": "İnşa başlığıyla bir Tezgâh kur (6 Taş)",
-      "start": "Rapor bitti. Şimdi iş. İnşa başlığına geç (6), tekerlekle Tezgâh'ı seç. Taş yetmezse kazmaya devam.",
+      "goal": "İnşa başlığıyla bir Tezgâh kur (10 Odun + 5 Taş)",
+      "start": "Rapor bitti. Şimdi iş. İnşa başlığına geç (6), tekerlekle Tezgâh'ı seç. Odun ağaçtan, taş kayadan.",
       "done": "Tezgâh kuruldu. Kooperatif bu yatırımı not etti."
-    },
-    {
-      "id": "civi",
-      "target": 1,
-      "goal": "Tezgâh'ta çivi yap (E)",
-      "start": "Tezgâh'ın yanında E'ye bas. Taştan çivi çıkar. Bunun nasıl olduğunu sorma.",
-      "done": "Çiviler hazır. Çivi Tabancası (8) artık dolu."
     },
     {
       "id": "hasat",
@@ -82,31 +75,38 @@
       "done": "Hasat tamam. Ambar dolu, yürek dolu."
     },
     {
+      "id": "corba",
+      "target": 1,
+      "goal": "Ocakbaşı kur, Sebze Çorbası pişir ve ye (Tab: çanta)",
+      "start": "Bir Ocakbaşı kur. Çorba pişir, sonra çantayı aç ve ye. Yemek güç verir, açlık yok. Kooperatif açlığı yasakladı.",
+      "done": "Afiyet olsun. Yazılı olarak."
+    },
+    {
       "id": "firin_kur",
       "target": 1,
-      "goal": "Bir Taş Fırın kur (10 Taş)",
-      "start": "Şimdi bir Taş Fırın. Yemek güç verir, açlık yok. Kooperatif açlığı yasakladı.",
+      "goal": "Bir Taş Fırın kur (15 Taş + 5 Kil)",
+      "start": "Şimdi bir Taş Fırın. Kil, Kazma'yla alınır. Fırın bakır eritir; bakır her şeyi açar.",
       "done": "Fırın yandı. Bacası tütüyor. Bu iyiye işaret."
     },
     {
-      "id": "corba",
+      "id": "civi",
       "target": 1,
-      "goal": "Sebze çorbası pişir ve ye (Tab: çanta)",
-      "start": "Fırında çorba pişir. Sonra Tab ile çantayı aç ve ye. Çorba canını artırır.",
-      "done": "Afiyet olsun. Yazılı olarak."
+      "goal": "Bakır Külçe erit, Tezgâh'ta çivi yap (E)",
+      "start": "Bakır damarını kaz, fırında külçe erit. Tezgâh'ta külçeden çivi çıkar. Bunun nasıl olduğunu sorma.",
+      "done": "Çiviler hazır. Çivi Tabancası (8) artık dolu."
     },
     {
       "id": "paketle",
       "target": 1,
-      "goal": "Paketleme Tezgâhı kur ve bir kargo kasası hazırla",
-      "start": "Kasalı mal daha iyi satılır. Paketleme Tezgâhı kur, beş şalgamı kasaya koy.",
+      "goal": "Paketleme Tezgâhı kur ve bir kargo kasası doldur",
+      "start": "Kasalı mal daha iyi satılır. Paketleme Tezgâhı kur, şalgamları kasaya koy, kasayı kapat.",
       "done": "Kasa hazır. Etiketi ben yazdım."
     },
     {
       "id": "kasa_sat",
       "target": 1,
-      "goal": "Kasayı Kargo Rampası'nda sat (E)",
-      "start": "Kasayı rampaya götür, E'ye bas. Roket gerisini halleder.",
+      "goal": "Kasayı Kargo Rampası'na taşı ve gönder (E)",
+      "start": "Kasayı Çekim başlığıyla rampaya taşı, sonra gönder. Ödeme bir dakikada gelir. Kooperatif acele etmez.",
       "done": "Satış tamam. Kooperatif memnun. Şimdi bir çatı. Yağmur yağmıyor ama kooperatif önlem sever."
     },
     {

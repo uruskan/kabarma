@@ -13,35 +13,58 @@ public sealed class Rng
     public bool Chance(float p) => NextFloat() < p;
 }
 
-/// <summary>Sirt cantasi: sabit yuva sayisi, esya basina yigin siniri (GDD 5).</summary>
+/// <summary>
+/// Esya yuvalari: sirt cantasi, Sandik, El Arabasi, kargo kasasi. Sabit yuva sayisi, esya basina yigin siniri
+/// (GDD 5: kaynak 50, ara urun 20, yemek 10; ToolFile.StackOf).
+/// </summary>
 public sealed class Inventory
 {
     readonly List<(string id, int count)> _slots = new();
+    readonly Func<string, int> _stackOf;
     public int Slots { get; }
+    /// <summary>Varsayilan (kaynak) yigin boyu.</summary>
     public int StackSize { get; }
     public event Action<string, int>? Changed;
 
-    public Inventory(int slots, int stackSize) { Slots = slots; StackSize = stackSize; }
+    public Inventory(int slots, int stackSize) : this(slots, _ => stackSize) { StackSize = stackSize; }
+
+    public Inventory(int slots, Func<string, int> stackOf)
+    {
+        Slots = slots;
+        _stackOf = stackOf;
+        StackSize = stackOf("");
+    }
+
+    public int StackOf(string id) => Math.Max(1, _stackOf(id));
 
     public IReadOnlyList<(string id, int count)> Contents => _slots;
     public int UsedSlots => _slots.Count;
+    public bool IsEmpty => _slots.Count == 0;
 
     public int Count(string id) => _slots.Where(s => s.id == id).Sum(s => s.count);
+
+    /// <summary>Bu esyadan kac tane daha sigar (bos yuvalar ve yarim yiginlar).</summary>
+    public int Room(string id)
+    {
+        int stack = StackOf(id);
+        return _slots.Where(s => s.id == id).Sum(s => stack - Math.Min(stack, s.count)) + (Slots - _slots.Count) * stack;
+    }
 
     /// <returns>Gercekten eklenen adet; canta dolarsa artan kismi disarida kalir.</returns>
     public int Add(string id, int amount)
     {
         int left = amount;
+        int stack = StackOf(id);
         for (int i = 0; i < _slots.Count && left > 0; i++)
         {
-            if (_slots[i].id != id || _slots[i].count >= StackSize) continue;
-            int put = Math.Min(left, StackSize - _slots[i].count);
+            if (_slots[i].id != id || _slots[i].count >= stack) continue;
+            int put = Math.Min(left, stack - _slots[i].count);
             _slots[i] = (id, _slots[i].count + put);
             left -= put;
         }
         while (left > 0 && _slots.Count < Slots)
         {
-            int put = Math.Min(left, StackSize);
+            int put = Math.Min(left, stack);
             _slots.Add((id, put));
             left -= put;
         }
@@ -64,6 +87,17 @@ public sealed class Inventory
         }
         Changed?.Invoke(id, Count(id));
         return true;
+    }
+
+    /// <summary>Bu esyadan en fazla <paramref name="amount"/> adedi baska bir yuva kumesine tasir (Sandik, araba, kasa).</summary>
+    /// <returns>Tasinan adet (hedefte yer kadar).</returns>
+    public int MoveTo(Inventory to, string id, int amount)
+    {
+        int n = Math.Min(Math.Min(amount, Count(id)), to.Room(id));
+        if (n <= 0) return 0;
+        Remove(id, n);
+        to.Add(id, n);
+        return n;
     }
 }
 

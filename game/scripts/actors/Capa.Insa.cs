@@ -50,7 +50,8 @@ public partial class Capa
         var at = _ghost.GlobalPosition; float yaw = _ghostYaw;
         _ghost.QueueFree(); _ghost = null; _ghostId = null;
         if (def.Id == "ocak") _d.PlaceOcak(at);
-        else _d.PlaceStation(def, at, yaw);
+        else if (def.Station != null) _d.PlaceStation(def, at, yaw);
+        else _d.PlaceFurniture(def, at, yaw); // Sandik, Uyku Tulumu, Mesale (Director.Economy.cs)
     }
 
     void UpdateGhost(Vector3 aim)
@@ -68,6 +69,7 @@ public partial class Capa
                 mi.Transparency = 0.55f;
             foreach (var c in _ghost.FindChildren("*", "CollisionShape3D", true, false).OfType<CollisionShape3D>()) c.Disabled = true;
             foreach (var l in _ghost.FindChildren("*", "OmniLight3D", true, false).OfType<OmniLight3D>()) l.Visible = false;
+            foreach (var g in _ghost.FindChildren("*", "GpuParticles3D", true, false).OfType<GpuParticles3D>()) g.Visible = false;
             _ghost.TopLevel = true;
             AddChild(_ghost);
         }
@@ -84,6 +86,8 @@ public partial class Capa
         if (_ghostOk && id != "ocak")
         {
             if (_d.Stations.Any(st => st.GlobalPosition.DistanceTo(at) < 2.2f)) _ghostOk = false;
+            if (_d.Furniture.Any(f => f.GlobalPosition.DistanceTo(at) < f.Def.Radius + (DefOf(id)?.Radius ?? 1f) + 0.2f)) _ghostOk = false;
+            if (_d.Carts.Any(c => c.GlobalPosition.DistanceTo(at) < 1.6f)) _ghostOk = false;
             if (_d.State.Farm.Plots.Any(pl => _d.FarmView.CellCenter(pl.X, pl.Y).DistanceTo(at) < 1.6f)) _ghostOk = false;
             if (at.DistanceTo(_d.Pod.GlobalPosition) < 3.5f) _ghostOk = false;
         }

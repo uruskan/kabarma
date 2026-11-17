@@ -1,7 +1,10 @@
 {
-  "_not": "Oyuncu ve sirt cantasi. Capa verisi bolundu: heads.json (basliklar), weapons.json (silahlar), recipes.json, placeables.json, foods.json, prices.json. Hepsi bellekte tek Data.Tool olarak birlesir.",
+  "_not": "Oyuncu ve sirt cantasi. Capa verisi bolundu: heads.json (basliklar), weapons.json (silahlar), recipes.json, placeables.json, foods.json, prices.json. Hepsi bellekte tek Data.Tool olarak birlesir. Yigin (GDD §5): kaynak 50, ara urun 20 (intermediates), yemek 10 (foods.json'daki her yemek).",
   "player": { "maxHp": 100, "walkSpeed": 5.0, "sprintSpeed": 8.0, "jump": 6.5 },
   "backpackSlots": 20,
   "stackResource": 50,
+  "stackIntermediate": 20,
+  "stackFood": 10,
+  "intermediates": ["copper_ingot"],
   "startItems": { "turnip_seed": 12, "wheat": 10, "civi": 40 }
 }
