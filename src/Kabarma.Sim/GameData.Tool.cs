@@ -66,6 +66,7 @@ public sealed class PlayerDef
     public float WalkSpeed { get; set; }
     public float SprintSpeed { get; set; }
     public float Jump { get; set; }
+    public StaminaDef Stamina { get; set; } = new();
 }
 
 public sealed class ToolFile

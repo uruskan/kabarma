@@ -57,6 +57,8 @@ public sealed class GameState
     /// <summary>Sulama basliginin su deposu (WaterTank.cs).</summary>
     public WaterTank Tank { get; }
     public Dictionary<string, StationQueue> Stations { get; } = new();
+    /// <summary>Oyuncunun dayanikliligi (GDD §3.2); Stamina.cs.</summary>
+    public Stamina Stamina { get; }
 
     public event Action<int, int>? Sold; // (kazanc, toplam)
 
@@ -71,6 +73,7 @@ public sealed class GameState
         Rng = new Rng(seed * 13 + 1);
         Belt = new Belt(Backpack);
         Tank = new WaterTank(data.Tool.Sulama);
+        Stamina = new Stamina(data.Tool.Player.Stamina);
         foreach (var st in data.Tool.Recipes.Select(r => r.Station).Distinct()) Stations[st] = new StationQueue(data, st);
     }
 

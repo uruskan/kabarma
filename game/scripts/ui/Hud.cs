@@ -211,6 +211,7 @@ public partial class Hud : CanvasLayer
         _report.SetAnchorsPreset(Control.LayoutPreset.Center);
         root.AddChild(_report);
         OnHead(0);
+        BuildStamina(); // Hud.Stamina.cs
         IgnoreMouse(root);
         InitVoice(); // Hud.Voice.cs: Suna'nin sesi (ses akisi)
     }
@@ -258,6 +259,7 @@ public partial class Hud : CanvasLayer
         }
 
         UpdateDayPanels(); // Hud.Day.cs
+        UpdateStamina(dt); // Hud.Stamina.cs
 
         _hintT -= dt;
         if (_hintT <= 0) _hint.Text = "";

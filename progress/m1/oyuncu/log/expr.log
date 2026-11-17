@@ -1,0 +1,26 @@
+Godot Engine v4.7.2.stable.mono.official.ed1daf0bf - https://godotengine.org
+Vulkan 1.4.357 - Forward+ - Using Device #0: NVIDIA - NVIDIA GeForce RTX 2070 SUPER
+
+PLAYER model anims: carry,cheer,crouch_walk,eat,getup_back_pose,getup_front_pose,hurt,idle,jump,jump_air,jump_land,jump_start,kneel,knockdown,plant,push,run,shock_fall,sleep,sprint,walk,walk_casual,wave
+AUDIO ok 13/13
+POFUDUK anims: preset_quadruped_walk
+BUILD kit pieces=28
+BOOT Kabarma MVP
+PLAYER at (7.5, 0.0003124997, -5.5) visualYaw=0.00 bag=True
+EXPR notr t=1.0
+SCREENSHOT C:/Users/uruskan/Documents/GitHub/kabarma/.claude/worktrees/m1-oyuncu-7059e8/game/../progress/shots/oy_expr_001.90.png
+EXPR mutlu t=2.5
+SCREENSHOT C:/Users/uruskan/Documents/GitHub/kabarma/.claude/worktrees/m1-oyuncu-7059e8/game/../progress/shots/oy_expr_003.40.png
+EXPR saskin t=4.0
+SCREENSHOT C:/Users/uruskan/Documents/GitHub/kabarma/.claude/worktrees/m1-oyuncu-7059e8/game/../progress/shots/oy_expr_004.90.png
+EXPR yorgun t=5.5
+SCREENSHOT C:/Users/uruskan/Documents/GitHub/kabarma/.claude/worktrees/m1-oyuncu-7059e8/game/../progress/shots/oy_expr_006.40.png
+EXPR korkmus t=7.0
+SCREENSHOT C:/Users/uruskan/Documents/GitHub/kabarma/.claude/worktrees/m1-oyuncu-7059e8/game/../progress/shots/oy_expr_007.90.png
+EXPR uyku t=8.5
+SCREENSHOT C:/Users/uruskan/Documents/GitHub/kabarma/.claude/worktrees/m1-oyuncu-7059e8/game/../progress/shots/oy_expr_009.40.png
+EXPR bayilma t=10.0
+SCREENSHOT C:/Users/uruskan/Documents/GitHub/kabarma/.claude/worktrees/m1-oyuncu-7059e8/game/../progress/shots/oy_expr_010.90.png
+EXPR odak t=11.5
+SCREENSHOT C:/Users/uruskan/Documents/GitHub/kabarma/.claude/worktrees/m1-oyuncu-7059e8/game/../progress/shots/oy_expr_012.40.png
+QUIT t=14.0
