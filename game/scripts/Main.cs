@@ -37,6 +37,8 @@ public partial class Main : Node3D
         if (Args.TryGetValue("quit_after", out var q)) _quitAfter = float.Parse(q, System.Globalization.CultureInfo.InvariantCulture);
 
         if (Args.TryGetValue("checkcolors", out var cc)) { CheckColors(cc); GetTree().Quit(); return; }
+        if (Args.ContainsKey("netsync")) { AddChild(new NetSyncTest()); return; }
+        if (Args.ContainsKey("swarm")) { AddChild(new SwarmTest()); return; }
         _dir = new Director { Name = "Director" };
         if (Args.TryGetValue("fast", out var f)) _dir.SpeedScale = float.Parse(f, System.Globalization.CultureInfo.InvariantCulture);
         AddChild(_dir);

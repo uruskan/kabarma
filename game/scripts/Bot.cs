@@ -46,7 +46,7 @@ public partial class Bot : Node
         if (step != _lastStep) { _lastStep = step; _stepT = 0; _cell = 0; Fire = false; GD.Print($"BOT step {step} t={_t:0.0}"); }
         Fire = false;
         _dbg -= dt;
-        if (_dbg <= 0 && Main.Args.ContainsKey("botdebug")) { _dbg = 2f; GD.Print($"BOTDBG {step} pos={P.GlobalPosition} aim={P.AimOverride} cell={_cell} prog={sc.Progress} ocak={_d.OcakPos} head={_d.Capa.Current}"); }
+        if (_dbg <= 0 && Main.Args.ContainsKey("botdebug")) { _dbg = 2f; GD.Print($"BOTDBG {step} pos={P.GlobalPosition} aim={P.AimOverride} cell={_cell} prog={sc.Progress} ocak={_d.OcakPos} head={_d.Capa.Current} vel={P.Velocity} floor={P.IsOnFloor()} down={P.Down} move={P.MoveOverride} held={_d.Capa.Held != null}"); }
 
         switch (step)
         {
@@ -144,7 +144,7 @@ public partial class Bot : Node
                 {
                     var away = (P.GlobalPosition - pad); away.Y = 0;
                     Aim(pad + Vector3.Up * 0.5f);
-                    if (MoveTo(pad + away.Normalized() * 3.6f, 0.8f, false) && _d.Capa.OverPad(held.GlobalPosition) && _stepT > 0.8f) { FirePressed = true; _stepT = 0; }
+                    if (MoveTo(pad + away.Normalized() * 3.2f, 0.8f, false) && _stepT > 0.8f) { FirePressed = true; _stepT = 0; }
                 }
                 break;
             }

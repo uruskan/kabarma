@@ -9,7 +9,7 @@ public partial class Rock : Node3D
     readonly int _max;
     readonly float _size;
     float _wear;
-    MeshInstance3D _mesh;
+    Node3D _mesh;
     ShaderMaterial _mat;
     float _flash;
 
@@ -18,13 +18,26 @@ public partial class Rock : Node3D
         Stones = _max = stones;
         _size = size;
         var r = new RandomNumberGenerator { Seed = seed };
-        var kit = new MeshKit();
-        kit.Pillow(new Vector3(1.8f, 1.3f, 1.5f) * size, MeshKit.At(new Vector3(0, 0.55f * size, 0), new Vector3(0, r.Randf() * 3f, 0.1f)), Palette.Rock, 0.5f, 10, 6);
-        kit.Pillow(new Vector3(1.0f, 0.9f, 1.0f) * size, MeshKit.At(new Vector3(0.7f * size, 0.35f * size, 0.4f * size), new Vector3(0.2f, r.Randf() * 3f, 0)), Palette.RockDark, 0.5f, 8, 5);
-        kit.Pillow(new Vector3(0.45f, 0.35f, 0.4f) * size, MeshKit.At(new Vector3(-0.3f * size, 1.15f * size, 0.1f)), Palette.Warning.Lerp(Palette.Rock, 0.4f), 0.5f, 8, 4);
-        _mat = MeshKit.NewLiveMaterial();
-        _mesh = kit.Instance(_mat);
-        AddChild(_mesh);
+        // M0 denemesi #1: Tripo'dan gelen dokulu kaya (uretim hattinda 3.879 ucgen, 1K doku). Yoksa koddan kit.
+        var model = Assets.Load("res://assets/models/kaya/kaya.glb");
+        if (model != null)
+        {
+            _mesh = new Node3D();
+            model.Scale = Vector3.One * size;
+            model.Rotation = new Vector3(0, r.Randf() * Mathf.Tau, 0);
+            _mesh.AddChild(model);
+            AddChild(_mesh);
+        }
+        else
+        {
+            var kit = new MeshKit();
+            kit.Pillow(new Vector3(1.8f, 1.3f, 1.5f) * size, MeshKit.At(new Vector3(0, 0.55f * size, 0), new Vector3(0, r.Randf() * 3f, 0.1f)), Palette.Rock, 0.5f, 10, 6);
+            kit.Pillow(new Vector3(1.0f, 0.9f, 1.0f) * size, MeshKit.At(new Vector3(0.7f * size, 0.35f * size, 0.4f * size), new Vector3(0.2f, r.Randf() * 3f, 0)), Palette.RockDark, 0.5f, 8, 5);
+            kit.Pillow(new Vector3(0.45f, 0.35f, 0.4f) * size, MeshKit.At(new Vector3(-0.3f * size, 1.15f * size, 0.1f)), Palette.Warning.Lerp(Palette.Rock, 0.4f), 0.5f, 8, 4);
+            _mat = MeshKit.NewLiveMaterial();
+            _mesh = kit.Instance(_mat);
+            AddChild(_mesh);
+        }
         var body = new StaticBody3D();
         body.AddChild(new CollisionShape3D { Shape = new SphereShape3D { Radius = 0.85f * size }, Position = new Vector3(0, 0.6f * size, 0) });
         AddChild(body);
@@ -49,7 +62,7 @@ public partial class Rock : Node3D
 
     public override void _Process(double delta)
     {
-        if (_flash > 0) { _flash = Mathf.Max(0, _flash - (float)delta * 3f); _mat.SetShaderParameter("flash", _flash * 0.4f); }
+        if (_flash > 0) { _flash = Mathf.Max(0, _flash - (float)delta * 3f); _mat?.SetShaderParameter("flash", _flash * 0.4f); }
         if (Stones <= 0 && _flash <= 0) QueueFree();
         // titreme
         if (_flash > 0) _mesh.Position = new Vector3(Mathf.Sin(Time.GetTicksMsec() * 0.09f), 0, Mathf.Cos(Time.GetTicksMsec() * 0.11f)) * 0.04f * _flash;
@@ -119,7 +132,7 @@ public partial class Pod : Node3D
     public bool IsRamp { get; private set; }
     float _rampT = -1, _launchT = -1;
     GpuParticles3D _flame;
-    public Vector3 PadCenter => GlobalPosition + new Vector3(0, 0.3f, 3.2f);
+    public Vector3 PadCenter => GlobalTransform * new Vector3(0, 0.3f, 3.2f); // rampa kapsulle birlikte doner
 
     public Pod()
     {

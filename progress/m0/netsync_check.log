@@ -1,0 +1,8 @@
+NETSYNC host listening port=27021
+NETSYNC peer connected 164726049
+NETSYNC host start
+NETSYNC host done ticks=600
+NETSYNC client connecting port=27021
+NETSYNC peer connected 1
+NETSYNC client final tick=599 snapshots=600 gaps=0 final_max_diff_mm=0.000
+RESULT netsync PASS final_max_diff_mm=0.000

@@ -132,7 +132,9 @@ public partial class Capa : Node3D
                     Held.GlobalPosition = Held.GlobalPosition.Lerp(holdAt, Mathf.Min(1f, dt * 8f));
                     ShowBeam(muzzle, Held.GlobalPosition, HeadColors[3], 0.5f);
                     beaming = true;
-                    _d.Hud.Hint(_d.Pod.IsRamp && OverPad(Held.GlobalPosition) ? "Bırak: kargoya yükle (sol tık)" : "Kargo Rampası'na taşı");
+                    var padP = _d.Pod.PadCenter;
+                    bool atRamp = _d.Pod.IsRamp && (OverPad(Held.GlobalPosition) || new Vector2(p.GlobalPosition.X - padP.X, p.GlobalPosition.Z - padP.Z).Length() < 4.5f);
+                    _d.Hud.Hint(atRamp ? "Bırak: kargoya yükle (sol tık)" : "Kargo Rampası'na taşı");
                 }
                 break;
             case Head.Insa:
@@ -275,7 +277,10 @@ public partial class Capa : Node3D
         var s = Held;
         Held = null;
         s.Held = false;
-        if (_d.Pod.IsRamp && OverPad(s.GlobalPosition)) { _d.SellCrop(s); return; }
+        // Rampanin ustunde ya da oyuncu rampanin dibindeyken birakilan yuk kargoya gider.
+        var pad = _d.Pod.PadCenter;
+        bool nearPad = new Vector2(_d.Player.GlobalPosition.X - pad.X, _d.Player.GlobalPosition.Z - pad.Z).Length() < 4.5f;
+        if (_d.Pod.IsRamp && (OverPad(s.GlobalPosition) || nearPad)) { _d.SellCrop(s); return; }
         var g = _d.World.Ground(s.GlobalPosition);
         var tw = s.CreateTween();
         tw.TweenProperty(s, "global_position", g + Vector3.Up * s.Radius * 0.6f, 0.35f).SetTrans(Tween.TransitionType.Bounce).SetEase(Tween.EaseType.Out);

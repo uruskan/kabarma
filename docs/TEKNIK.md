@@ -13,9 +13,11 @@
 | GodotSteam GDExtension 4.24 (Steamworks 1.65) | ✅ GDScript'ten doğrulandı | Oduncu |
 | Python 3.14, Node.js, ffmpeg 9.0.2 | ✅ Kurulu | |
 | Genex CLI (model, kemik, animasyon, doku, ses, müzik, görsel) | ✅ Kurulu (oduncu klasöründe) | `npx genex --help` |
-| **.NET SDK** | ❌ Kurulu değil | `dotnet` komutu yok |
-| **Godot .NET sürümü** | ❌ İndirilmedi | Eldeki ikili standart sürüm |
-| **Blender** | ❌ Kurulu değil | |
+| .NET 8 SDK | ✅ Kuruldu (8.0.428), 17 Kasım 2026 | `dotnet --list-sdks` |
+| Godot 4.7.2 .NET | ✅ `.tools/` altında; C# projesi derleniyor, başsız ve pencereli çalışıyor | MVP + M0 |
+| Blender 5.3 | ✅ Kurulu; başsız `bpy` hattı çalışıyor | `pipeline/clean_asset.py` |
+| Steamworks.NET 2025.165.0 (SDK 1.65) | ✅ `lib/steamworks-2025.165.0/` | NuGet'teki 2024.8.0, SDK 1.65 `steam_api64.dll` ile uyuşmuyor (giriş noktası hatası); GitHub Standalone sürümü kullanılır |
+| Tripo CLI 0.11.2 | ✅ Oturum açık (API kredisi ayrı havuz) | `tripo balance` |
 
 Dış kaynaklardan teyit edilenler (16 Kasım 2026): Godot'un son kararlı sürümü 4.7.2; GodotSharp 4.7.2 .NET 8'i hedefliyor; C# projeleri Windows, Linux ve macOS'a dışa aktarılıyor, web'e aktarılmıyor. GodotSteam'in C# sürümü yok. Steamworks.NET 2025.165.0 (SDK 1.65) Networking Sockets, Networking Messages ve Matchmaking'i içeriyor. Godot `--headless` ve adanmış sunucu dışa aktarma kipini destekliyor; bunun .NET projesinde Linux'ta çalıştığı belgede açıkça yazmıyor.
 
@@ -33,6 +35,19 @@ Her adımın geçme ölçütü ve yedeği var. M0 bitmeden M1 başlamaz.
 | 6 | Blender kurulumu ve başsız `bpy` betiği: GLB al, sadeleştir, köşe rengine çevir, GLB ver | Betik komut satırından uçtan uca çalışıyor | Sadeleştirme ve renklendirmeyi Godot içe aktarma betiğinde yapmak |
 | 7 | Üretim hattı denemeleri | [URETIM.md](URETIM.md) §2.3 | Aynı yerde |
 | 8 | Sürü çizimi: köşe animasyon dokusuyla 2.000 örnek | RTX 2070S'te 2 ms'nin altında | Sürü üyelerini animasyonsuz, yay-salınımlı çizmek |
+
+### 1.3 M0 sonuçları (17 Kasım 2026)
+
+| # | Adım | Sonuç | Kanıt |
+|---|---|---|---|
+| 1 | .NET 8 SDK + Godot .NET; boş C# projesi | ✅ Geçti. Başsız çalışıyor. Windows'a dışa aktarma bu taşta denenmedi (paketleme istenmedi). | MVP, `tools/run.sh` |
+| 2 | `Kabarma.Sim` Godot'tan çağrılıyor; `dotnet test` | ✅ Geçti (9 test). 1.000 oyun günü ölçümü henüz yazılmadı. | `src/Kabarma.Sim.Tests` |
+| 3 | Steamworks.NET: başlatma, lobi, Networking Sockets ile iki süreç | ✅ Geçti: app 480, özel lobi kuruldu, iki süreç arasında 20/20 mesaj (ortalama 31 ms, döngüdeki bekleme dahil). Aynı hesapta iki süreç için Steam ağ sertifikasının hazır olmasını beklemek gerekiyor. | `progress/m0/steam_check.log`, `tools/spikes/SteamSpike` |
+| 4 | C# Linux başsız sunucu | ⏸ Bu makinede doğrulanamadı: WSL ve Linux makine yok. Windows'ta C# başsız host çalışıyor (adım 5). Yedek, belgedeki gibi: adanmış sunucu önce Windows; Linux ikinci bir makinede ya da WSL kurulunca denenecek. | — |
+| 5 | C# ile senkron testi (ENet, host yetkili) | ✅ Geçti: 24 fizik cismi, 600 tik, 600 anlık görüntü, 0 boşluk, son durum farkı 0,000 mm. Not: yerel döngü; paket kaybı benzetimi yok. | `progress/m0/netsync_check.log`, `game/scripts/tests/NetSyncTest.cs` |
+| 6 | Blender başsız hattı | ✅ Geçti; iki kip: palet (eski yön) ve dokulu (yeni yön) | `pipeline/README.md` |
+| 7 | Üretim hattı denemeleri | [URETIM.md](URETIM.md) §2.3.1 | |
+| 8 | Sürü çizimi: 2.000 örnek, köşe animasyon dokusu | ✅ Geçti: 1080p'de sürünün GPU maliyeti 1,28 ms (açık 3,69 / kapalı 2,41 ms, medyan), sınır 2 ms | `progress/m0/swarm_check.log`, `progress/m0/swarm.png` |
 
 ## 2. Proje yapısı
 

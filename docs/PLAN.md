@@ -114,7 +114,7 @@ Kurgu tek bu bölümde durur. Sistemler kurgudan bağımsız tasarlandı; kabuk 
 | Oyuncu sayısı | Ortak oyun 1–8. Adanmış sunucu 16'ya kadar (Çekişme: 4 ekip × 4). | Kabarma'da 220 etkin düşmanla ağ bütçesi buna göre hesaplandı. |
 | Dünya | Tohumdan üretilen, sınırlı, tek parça ada (yaklaşık 5 × 5 km), yükleme ekranı yok | Tek ortak mekân; "sonsuzluk" haritada değil üste, dalga seviyesinde ve ıslahta (§6). |
 | Arazi | Yükseklik haritası + Valheim tarzı düzleme, yükseltme, kazma. Voksel tünel yok. | Ağda farkları göndermek ucuz ve sağlam. Mağaralar hazır iç mekân. |
-| Görsel | Düşük poligon, yumuşak gölgeli, dokusuz (palet + köşe rengi), Firewatch atmosferi | AI modellerindeki doku tutarsızlığı kökten kalkar; tek palet bütün varlıkları birleştirir. |
+| Görsel | Stilize ama dokulu: AI modelinin dokusu korunur, orta poligon bütçesi ([SANAT-SES.md](SANAT-SES.md) §4), Firewatch atmosferi. Flash oyunu ya da çizgi film gibi durmaz. | 17 Kasım 2026, sahibinin kararı: M0 denemelerinde dokusuz, palete oturtulmuş düşük poligon "flash oyun / çizgi film" gibi durdu. Eski kural (dokusuz, köşe rengi) bırakıldı; tutarlılık artık istem dili, doku sürümü ve ortak ışıkla sağlanır. |
 | Para | Gerçek parayla satış yok. Çark ve kasa oyun içi krediyle çalışır. | |
 | Diller | Arayüz: 10 dil (Türkçe, İngilizce, Almanca, Fransızca, İspanyolca, Brezilya Portekizcesi, Rusça, Basitleştirilmiş Çince, Japonca, Korece). Seslendirme: Türkçe ve İngilizce. | |
 | Giriş | Klavye-fare ve oyun kolu, ilk günden. Steam Deck hedefi. | |
@@ -229,7 +229,7 @@ Bunlar eksik değil, verilmiş kararlardır.
 
 | Risk | Olasılık | Önlem |
 |---|---|---|
-| Görsel "AI işi" ya da "programcı işi" duruyor | Orta–yüksek | İlk kilometre taşı sadece görünüş ve his dilimi; genişliğe ondan önce geçilmez. Her varlık palet ve siluet kontrolünden geçer; geçemeyen yeniden üretilir ya da koddan kurulur ([URETIM.md](URETIM.md) §3). |
+| Görsel "AI işi" ya da "programcı işi" duruyor | Orta–yüksek | İlk kilometre taşı sadece görünüş ve his dilimi; genişliğe ondan önce geçilmez. Her varlık bütçe, siluet ve dil uyumu kontrolünden geçer; geçemeyen yeniden üretilir ya da koddan kurulur ([URETIM.md](URETIM.md) §3). |
 | **Yaratık animasyonu tek bir yönteme dayanıyor** | Orta–yüksek | Planın en zayıf noktası. Servislerde insansı olmayan gövdeler için yalnızca yürüyüş klibi var; 27 türün kalan bütün klipleri benim kodla yazacağım poz kütüphanesinden gelecek ([URETIM.md](URETIM.md) §2.2 E) ve bu yöntem henüz denenmedi. M0'da iki gövde planıyla sınanır, M1'de sen ekranda görüp onaylarsın. Yedek: yaratıkları katı parçalardan kurup tamamen kodla oynatmak. Bedeli açık: hayvanlar yumuşak gövdeli canlı gibi değil, kurmalı oyuncak gibi durur; Pofuduk'un yünü, Vrak'ın sıçrayışı gibi sevimlilik veren hareketler kaybolur ve gündüz hayvancılığı görsel olarak zayıflar. Şişme, titreme ve patlama shader olduğu için bundan etkilenmez; yani Kabarma gecesi görüntüsünü korur, gündüz kaybeder. |
 | Hazır insansı klipler tıknaz gövdeye oturmuyor | Orta | M0'da oyuncu gövdesiyle denenir. Yedek: Oduncu'da çalışan tamamen prosedürel gövde (yay, IK, ragdoll). |
 | C# araç zinciri bu makinede kurulu değil | Kesin | M0'ın ilk işi kurulum ve doğrulama. Başarısız olursa yedek GDScript'tir; `Sim` kütüphanesi fikri GDScript'te de korunur ama test hızı düşer. |

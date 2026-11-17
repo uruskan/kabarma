@@ -4,12 +4,12 @@
   "checks": {
     "1_palette": {
       "pass": true,
-      "note": "butun yuzler palete oturtuldu; kaynakta ortalama dE 13.24, dE<8 orani 0.23"
+      "note": "dokulu mod: palet oturtma yapilmadi"
     },
     "2_polygon": {
       "pass": true,
       "value": 4773,
-      "budget": 5000
+      "budget": 10000
     },
     "3_thickness": {
       "pass": true,
@@ -31,23 +31,10 @@
   },
   "tris_in": 4779,
   "welded_verts": 1520,
-  "source_mean_dE": 13.24,
-  "source_within_dE8": 0.23,
-  "palette_use": {
-    "tones.soil": 864,
-    "tones.rock": 862,
-    "tones.wood_dark": 676,
-    "neutral.dark_grey": 650,
-    "neutral.off_white": 581,
-    "neutral.wood": 365,
-    "tones.accent_dark": 209,
-    "tones.rock_dark": 175,
-    "neutral.warning": 135,
-    "altin_cayir.ground": 82,
-    "altin_cayir.sky": 77,
-    "tones.blue_dark": 74,
-    "neutral.coop_blue": 23
-  },
+  "tex_size": 1024,
+  "source_mean_dE": null,
+  "source_within_dE8": null,
+  "palette_use": "textured (palette snap skipped)",
   "tris": 4773,
   "size_m": [
     1.477,
@@ -57,81 +44,81 @@
   "parts": 3,
   "parts_named": [
     {
-      "name": "door_handle",
-      "center": [
-        0.674,
-        0.169,
-        0.589
-      ],
-      "size": [
-        0.13,
-        0.373,
-        0.092
-      ]
-    },
-    {
       "name": "body",
       "center": [
-        -0.077,
-        0.065,
-        0.811
+        0.0,
+        0.0,
+        0.7
       ],
       "size": [
-        1.227,
-        1.33,
-        0.956
+        1.477,
+        1.468,
+        1.4
       ]
     },
     {
       "name": "base",
       "center": [
-        -0.063,
-        0.046,
-        0.24
+        0.0,
+        0.0,
+        0.7
       ],
       "size": [
-        1.351,
-        1.375,
-        0.481
+        1.477,
+        1.468,
+        1.4
       ]
     },
     {
       "name": "door",
       "center": [
-        0.586,
-        0.146,
-        0.593
+        0.0,
+        0.0,
+        0.7
       ],
       "size": [
-        0.136,
-        0.555,
-        0.478
+        1.477,
+        1.468,
+        1.4
       ]
     },
     {
-      "name": "chimney",
+      "name": "door_handle",
       "center": [
-        -0.007,
-        0.07,
-        1.266
+        0.0,
+        0.0,
+        0.7
       ],
       "size": [
-        0.272,
-        0.284,
-        0.268
+        1.477,
+        1.468,
+        1.4
       ]
     },
     {
-      "name": "panel",
+      "name": "part_4",
       "center": [
-        -0.147,
-        -0.667,
-        0.454
+        0.0,
+        0.0,
+        0.7
       ],
       "size": [
-        0.389,
-        0.133,
-        0.254
+        1.477,
+        1.468,
+        1.4
+      ]
+    },
+    {
+      "name": "part_5",
+      "center": [
+        0.0,
+        0.0,
+        0.7
+      ],
+      "size": [
+        1.477,
+        1.468,
+        1.4
       ]
     }
   ],

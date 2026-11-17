@@ -1,0 +1,3 @@
+SWARM instances=2000 verts=1260 frames=16
+SWARM gpu_ms_on=3.686 gpu_ms_off=2.408 swarm_cost_ms=1.278 fps_on~271
+RESULT swarm PASS cost_ms=1.278 (limit 2.0)

@@ -6,9 +6,11 @@
 
 Beş kural. Bir varlık bunlardan birini bozuyorsa oyuna girmez.
 
-1. **Büyük, yumuşak, tıknaz biçimler.** İnce çubuk, sivri diken ve küçük ayrıntı yok. En ince parça, nesnenin en uzun kenarının %6'sından kalın olur. Köşeler pahlıdır.
-2. **Doku yok, renk var.** Bütün yüzeyler palet rengidir (köşe rengi). Ayrıntı dokuyla değil biçimle ve iki-üç renk bölgesiyle verilir.
-3. **Yumuşak gölgeleme, net siluet.** Düşük poligon ama yüzler pürüzsüz gölgelenir (Astroneer çizgisi); sert kenar yalnızca biçimin kırıldığı yerde. Her nesne 64 piksellik küçük resimde tanınır.
+> **17 Kasım 2026 güncellemesi (sahibinin kararı):** "Aşırı yüksek poligon gerekmez ama flash oyun gibi de durmasın; bütçeye göre ayarla." Dokusuz, palete oturtulmuş düşük poligon bırakıldı. Kural 1 ve 3 kalır; kural 2 aşağıdaki gibi değişti; bütçeler §4'te yükseldi.
+
+1. **Büyük, okunaklı biçimler.** İnce çubuk ve sivri diken yok; en ince parça, nesnenin en uzun kenarının %6'sından kalın olur. Ayrıntı vardır ama siluet önce gelir.
+2. **Doku var, palet yön verir.** Modelin kendi dokusu korunur (Tripo doku v3.5, gerekirse PBR). Palet artık yüzeyi zorlamaz; istemde renk yönü olarak verilir ve ışık, sis, renk düzeltmesiyle sahne bütünlenir. İstemde "cartoon / flat colours" kullanılmaz; "stylised, hand-painted, grounded materials" kullanılır.
+3. **Yumuşak gölgeleme, net siluet.** Yüzler pürüzsüz gölgelenir; sert kenar yalnızca biçimin kırıldığı yerde. Her nesne 64 piksellik küçük resimde tanınır.
 4. **Derinlik sisle kurulur.** Her manzarada en az üç katman okunur: ön plan, orta plan, sisli ufuk. Uzak katmanlar gökyüzü rengine yaklaşır (Firewatch ilkesi). Saf siyah ve saf beyaz kullanılmaz.
 5. **Işıyan tek şey Maya'dır.** Işıma (emission) yalnızca Maya'ya, kabarmış canlılara, çalışan makine göstergelerine ve gece lambalarına aittir. Böylece Kabarma başladığında ekran kendiliğinden değişir.
 
@@ -64,7 +66,7 @@ Birinci şahıs kol animasyonu, yakın dövüş kombosu ve silaha özel doldurma
 - **Sürüler** tek mesh'in örneklenmesiyle çizilir; hareketleri köşe animasyon dokusundan gelir.
 - **Atalar** birkaç parçadan kurulur (Çıyan Paşa boğumları, Dede'nin boynuzundaki koru); parçalar kodla hareket eder. Ana Maya şekilsiz bir shader kütlesidir.
 
-**Poligon bütçeleri:** oyuncu 8.000 üçgen · küçük yaratık 2.000 · orta 5.000 · büyük 10.000 · Ata 20.000 · eşya 300–2.000 · makine 2.000–5.000 · araç 6.000–10.000 · yapı parçası 100–600.
+**Poligon bütçeleri (17 Kasım 2026, dokulu yön):** oyuncu 10.000–15.000 üçgen · küçük yaratık 5.000 · orta 8.000 · büyük 12.000 · Ata 30.000 · eşya ve kaya 2.000–6.000 · ağaç 5.000–8.000 · makine 8.000–15.000 · araç 12.000–20.000 · yapı parçası 200–1.500. Doku: eşya 1K, yaratık ve makine 1–2K, oyuncu ve Ata 2K. Eski bütçe (oyuncu 8.000, küçük yaratık 2.000 …) dokusuz yön içindi.
 
 ## 5. Yapılar, makineler, araçlar
 
@@ -127,7 +129,7 @@ Her varlık ve her taşın ekran görüntüsü seti bu ölçütlerden geçer. İ
 
 | # | Ölçüt | Geçme koşulu | Nasıl ölçülür |
 |---|---|---|---|
-| 1 | Palet | Yüzeyin en az %95'i izinli palet renklerine yakın (ΔE < 8) | Betik: köşe renkleri |
+| 1 | Palet / doku | Dokulu yönde: doku var, 4K değil, bütçe çözünürlüğünde (§4). Eski yön: yüzeyin %95'i palete yakın (ΔE < 8) | Betik |
 | 2 | Poligon | Sınıf bütçesinin içinde (§4) | Betik |
 | 3 | Kalınlık | En ince parça en uzun kenarın %6'sından kalın | Betik: kalınlık örneklemesi |
 | 4 | Bütünlük | Delik yok, havada kalan parça yok, ters yüz yok | Betik: mesh denetimi |

@@ -32,6 +32,8 @@ ap.add_argument("--renders", default="")
 ap.add_argument("--smooth_passes", type=int, default=2)
 ap.add_argument("--min_region", type=int, default=0, help="bundan az yuzlu renk lekeleri komsu renge katilir")
 ap.add_argument("--lweight", type=float, default=0.45, help="palete oturturken parlaklik farkinin agirligi; AI dokularindaki pisirilmis golgeyi yok saymak icin < 1")
+ap.add_argument("--keep_texture", action="store_true", help="dokulari ve malzemeleri koru (palet oturtma yok)")
+ap.add_argument("--tex_size", type=int, default=1024, help="dokulu modda en buyuk doku kenari (piksel)")
 ap.add_argument("--parts", action="store_true", help="makine: Tripo'nun parcalarini ayri, adli dugumler olarak koru")
 ap.add_argument("--rename", default="", help="parca modunda ad duzeltme: eski=yeni,... (ayni anda uygulanir)")
 ap.add_argument("--exclude", default="", help="bu varlikta kullanilmayacak palet adlari (virgulle), ornegin tones.rock")
@@ -141,7 +143,7 @@ report["welded_verts"] = before - len(me.vertices)
 if tris_in > args.tris:
     mod = obj.modifiers.new("dec", "DECIMATE")
     mod.decimate_type = "COLLAPSE"
-    mod.ratio = max(0.01, args.tris / tris_in * 0.97)
+    mod.ratio = max(0.0002, args.tris / tris_in * 0.97)
     mod.use_collapse_triangulate = True
     bpy.context.view_layer.objects.active = obj
     bpy.ops.object.modifier_apply(modifier=mod.name)
@@ -164,132 +166,146 @@ if args.relax > 0:
     bpy.context.view_layer.objects.active = obj
     bpy.ops.object.modifier_apply(modifier=mod.name)
 
-# ---------------- dokudan kose rengi ----------------
-img_cache = {}
-def pixels_of(img):
-    if img.name in img_cache:
+if not args.keep_texture:
+    # ---------------- dokudan kose rengi ----------------
+    img_cache = {}
+    def pixels_of(img):
+        if img.name in img_cache:
+            return img_cache[img.name]
+        w, h = img.size
+        px = list(img.pixels[:])  # 8 bit sRGB goruntulerde degerler sRGB kodlu
+        img_cache[img.name] = (w, h, px)
         return img_cache[img.name]
-    w, h = img.size
-    px = list(img.pixels[:])  # 8 bit sRGB goruntulerde degerler sRGB kodlu
-    img_cache[img.name] = (w, h, px)
-    return img_cache[img.name]
 
-def sample(img, u, v):
-    w, h, px = pixels_of(img)
-    x = int((u % 1.0) * (w - 1)); y = int((v % 1.0) * (h - 1))
-    i = (y * w + x) * 4
-    return (px[i], px[i + 1], px[i + 2])
+    def sample(img, u, v):
+        w, h, px = pixels_of(img)
+        x = int((u % 1.0) * (w - 1)); y = int((v % 1.0) * (h - 1))
+        i = (y * w + x) * 4
+        return (px[i], px[i + 1], px[i + 2])
 
-uv = me.uv_layers.active.data if me.uv_layers.active else None
-mats = me.materials
-face_rgb = []
-for p in me.polygons:
-    mat = mats[p.material_index] if p.material_index < len(mats) else None
-    img, flat = base_image(mat)
-    if img is not None and uv is not None:
-        uvs = [uv[li].uv for li in p.loop_indices]
-        c = Vector((0, 0))
-        for t in uvs:
-            c += t
-        c /= len(uvs)
-        pts = [c] + [c.lerp(t, 0.6) for t in uvs[:6]]
-        acc = [0.0, 0.0, 0.0]
-        for q in pts:
-            s = sample(img, q.x, q.y)
-            for k in range(3):
-                acc[k] += s[k]
-        rgb = tuple(a / len(pts) for a in acc)
-    elif flat is not None:
-        rgb = tuple(min(1, max(0, x)) for x in flat)
-        rgb = tuple((x ** (1 / 2.2)) for x in rgb)  # dogrusal -> yaklasik sRGB
-    else:
-        rgb = (0.6, 0.6, 0.6)
-    face_rgb.append(rgb)
+    uv = me.uv_layers.active.data if me.uv_layers.active else None
+    mats = me.materials
+    face_rgb = []
+    for p in me.polygons:
+        mat = mats[p.material_index] if p.material_index < len(mats) else None
+        img, flat = base_image(mat)
+        if img is not None and uv is not None:
+            uvs = [uv[li].uv for li in p.loop_indices]
+            c = Vector((0, 0))
+            for t in uvs:
+                c += t
+            c /= len(uvs)
+            pts = [c] + [c.lerp(t, 0.6) for t in uvs[:6]]
+            acc = [0.0, 0.0, 0.0]
+            for q in pts:
+                s = sample(img, q.x, q.y)
+                for k in range(3):
+                    acc[k] += s[k]
+            rgb = tuple(a / len(pts) for a in acc)
+        elif flat is not None:
+            rgb = tuple(min(1, max(0, x)) for x in flat)
+            rgb = tuple((x ** (1 / 2.2)) for x in rgb)  # dogrusal -> yaklasik sRGB
+        else:
+            rgb = (0.6, 0.6, 0.6)
+        face_rgb.append(rgb)
 
-labels, dists = [], []
-for rgb in face_rgb:
-    i, d = nearest(rgb)
-    labels.append(i); dists.append(d)
-report["source_mean_dE"] = round(sum(dists) / max(1, len(dists)), 2)
-report["source_within_dE8"] = round(sum(1 for d in dists if d < 8) / max(1, len(dists)), 3)
+    labels, dists = [], []
+    for rgb in face_rgb:
+        i, d = nearest(rgb)
+        labels.append(i); dists.append(d)
+    report["source_mean_dE"] = round(sum(dists) / max(1, len(dists)), 2)
+    report["source_within_dE8"] = round(sum(1 for d in dists if d < 8) / max(1, len(dists)), 3)
 
-# Cogunluk suzgeci: tek basina kalan benekleri komsulara katar.
-bm = bmesh.new(); bm.from_mesh(me); bm.faces.ensure_lookup_table()
-for _ in range(args.smooth_passes):
-    new = labels[:]
-    for f in bm.faces:
-        counts = {}
-        for e in f.edges:
-            for g in e.link_faces:
-                if g.index != f.index:
-                    counts[labels[g.index]] = counts.get(labels[g.index], 0) + 1
-        if counts:
-            top, n = max(counts.items(), key=lambda kv: kv[1])
-            if n >= 2 and labels[f.index] not in counts:
-                new[f.index] = top
-    labels = new
-# Kucuk lekeleri birlestir: ayni renkli bitisik yuz kumeleri; az yuzlu olanlar en cok komsu renge katilir.
-if args.min_region > 0:
-    for _ in range(3):
-        region = [-1] * len(labels); regions = []
+    # Cogunluk suzgeci: tek basina kalan benekleri komsulara katar.
+    bm = bmesh.new(); bm.from_mesh(me); bm.faces.ensure_lookup_table()
+    for _ in range(args.smooth_passes):
+        new = labels[:]
         for f in bm.faces:
-            if region[f.index] >= 0:
-                continue
-            rid = len(regions); stack = [f]; region[f.index] = rid; members = []
-            while stack:
-                a = stack.pop(); members.append(a.index)
-                for e in a.edges:
-                    for g in e.link_faces:
-                        if region[g.index] < 0 and labels[g.index] == labels[a.index]:
-                            region[g.index] = rid; stack.append(g)
-            regions.append(members)
-        changed = 0
-        for rid, members in enumerate(regions):
-            if len(members) >= args.min_region:
-                continue
             counts = {}
-            for fi in members:
-                for e in bm.faces[fi].edges:
-                    for g in e.link_faces:
-                        if region[g.index] != rid:
-                            counts[labels[g.index]] = counts.get(labels[g.index], 0) + 1
+            for e in f.edges:
+                for g in e.link_faces:
+                    if g.index != f.index:
+                        counts[labels[g.index]] = counts.get(labels[g.index], 0) + 1
             if counts:
-                top = max(counts.items(), key=lambda kv: kv[1])[0]
+                top, n = max(counts.items(), key=lambda kv: kv[1])
+                if n >= 2 and labels[f.index] not in counts:
+                    new[f.index] = top
+        labels = new
+    # Kucuk lekeleri birlestir: ayni renkli bitisik yuz kumeleri; az yuzlu olanlar en cok komsu renge katilir.
+    if args.min_region > 0:
+        for _ in range(3):
+            region = [-1] * len(labels); regions = []
+            for f in bm.faces:
+                if region[f.index] >= 0:
+                    continue
+                rid = len(regions); stack = [f]; region[f.index] = rid; members = []
+                while stack:
+                    a = stack.pop(); members.append(a.index)
+                    for e in a.edges:
+                        for g in e.link_faces:
+                            if region[g.index] < 0 and labels[g.index] == labels[a.index]:
+                                region[g.index] = rid; stack.append(g)
+                regions.append(members)
+            changed = 0
+            for rid, members in enumerate(regions):
+                if len(members) >= args.min_region:
+                    continue
+                counts = {}
                 for fi in members:
-                    labels[fi] = top
-                changed += 1
-        if changed == 0:
-            break
-bm.free()
+                    for e in bm.faces[fi].edges:
+                        for g in e.link_faces:
+                            if region[g.index] != rid:
+                                counts[labels[g.index]] = counts.get(labels[g.index], 0) + 1
+                if counts:
+                    top = max(counts.items(), key=lambda kv: kv[1])[0]
+                    for fi in members:
+                        labels[fi] = top
+                    changed += 1
+            if changed == 0:
+                break
+    bm.free()
 
-# Kose rengi katmani (yuz basina tek renk: koseler yuz rengini alir)
-for a in list(me.color_attributes):
-    me.color_attributes.remove(a)
-col = me.color_attributes.new(name="Col", type="BYTE_COLOR", domain="CORNER")
-for p in me.polygons:
-    rgb = allowed[labels[p.index]][1]
-    for li in p.loop_indices:
-        col.data[li].color_srgb = (rgb[0], rgb[1], rgb[2], 1.0)
-me.color_attributes.active_color = col
-used = {}
-for p in me.polygons:
-    used[allowed[labels[p.index]][0]] = used.get(allowed[labels[p.index]][0], 0) + 1
-report["palette_use"] = dict(sorted(used.items(), key=lambda kv: -kv[1]))
+    # Kose rengi katmani (yuz basina tek renk: koseler yuz rengini alir)
+    for a in list(me.color_attributes):
+        me.color_attributes.remove(a)
+    col = me.color_attributes.new(name="Col", type="BYTE_COLOR", domain="CORNER")
+    for p in me.polygons:
+        rgb = allowed[labels[p.index]][1]
+        for li in p.loop_indices:
+            col.data[li].color_srgb = (rgb[0], rgb[1], rgb[2], 1.0)
+    me.color_attributes.active_color = col
+    used = {}
+    for p in me.polygons:
+        used[allowed[labels[p.index]][0]] = used.get(allowed[labels[p.index]][0], 0) + 1
+    report["palette_use"] = dict(sorted(used.items(), key=lambda kv: -kv[1]))
 
-# Doku ve malzemeleri at; kose rengini gosteren tek malzeme
-me.materials.clear()
-mat = bpy.data.materials.new(args.name + "_vc")
-mat.use_nodes = True
-nt = mat.node_tree
-bsdf = next(n for n in nt.nodes if n.type == "BSDF_PRINCIPLED")
-attr = nt.nodes.new("ShaderNodeVertexColor"); attr.layer_name = "Col"
-nt.links.new(attr.outputs["Color"], bsdf.inputs["Base Color"])
-bsdf.inputs["Roughness"].default_value = 0.85
-if "Metallic" in bsdf.inputs:
-    bsdf.inputs["Metallic"].default_value = 0.0
-me.materials.append(mat)
-for img in list(bpy.data.images):
-    bpy.data.images.remove(img)
+    # Doku ve malzemeleri at; kose rengini gosteren tek malzeme
+    me.materials.clear()
+    mat = bpy.data.materials.new(args.name + "_vc")
+    mat.use_nodes = True
+    nt = mat.node_tree
+    bsdf = next(n for n in nt.nodes if n.type == "BSDF_PRINCIPLED")
+    attr = nt.nodes.new("ShaderNodeVertexColor"); attr.layer_name = "Col"
+    nt.links.new(attr.outputs["Color"], bsdf.inputs["Base Color"])
+    bsdf.inputs["Roughness"].default_value = 0.85
+    if "Metallic" in bsdf.inputs:
+        bsdf.inputs["Metallic"].default_value = 0.0
+    me.materials.append(mat)
+    for img in list(bpy.data.images):
+        bpy.data.images.remove(img)
+
+else:
+    # Dokular oyun butcesine kucultulur (4K -> --tex_size).
+    for img in bpy.data.images:
+        w, h = img.size
+        if max(w, h) > args.tex_size:
+            k = args.tex_size / max(w, h)
+            img.scale(max(1, int(w * k)), max(1, int(h * k)))
+            img.pack()
+    report["tex_size"] = args.tex_size
+    report["source_mean_dE"] = None
+    report["source_within_dE8"] = None
+    report["palette_use"] = "textured (palette snap skipped)"
 
 # ---------------- olcek ve eksen ----------------
 def world_bbox(o):
@@ -360,7 +376,7 @@ report["tris"] = tris
 report["size_m"] = [round(size.x, 3), round(size.y, 3), round(size.z, 3)]
 report["parts"] = len(parts)
 report["checks"] = {
-    "1_palette": {"pass": True, "note": f"butun yuzler palete oturtuldu; kaynakta ortalama dE {report['source_mean_dE']}, dE<8 orani {report['source_within_dE8']}"},
+    "1_palette": {"pass": True, "note": ("dokulu mod: palet oturtma yapilmadi" if args.keep_texture else f"butun yuzler palete oturtuldu; kaynakta ortalama dE {report['source_mean_dE']}, dE<8 orani {report['source_within_dE8']}")},
     "2_polygon": {"pass": budget_ok, "value": tris, "budget": args.tris},
     "3_thickness": {"pass": min(thin) >= 0.06 if thin else True, "min_ratio": round(min(thin), 3) if thin else None, "note": "parca basina en dar boyut / en uzun kenar"},
     "4_integrity": {"pass": nonman == 0 or (boundary == 0 and inward < len(me.polygons) * 0.05), "non_manifold_edges": nonman, "boundary_edges": boundary, "inward_faces": inward, "loose_parts": len(parts)},
@@ -371,20 +387,16 @@ report["checks"] = {
 if args.parts and "part" in obj.data.attributes:
     part_attr = obj.data.attributes["part"]
     ids = sorted({part_attr.data[p.index].value for p in obj.data.polygons})
-    base_mat = obj.data.materials[0]
-    obj.data.materials.clear()
+    pieces = []
     for i in ids:
-        m = base_mat.copy(); m.name = f"part_{i}"
-        obj.data.materials.append(m)
-    slot = {i: k for k, i in enumerate(ids)}
-    for p in obj.data.polygons:
-        p.material_index = slot[part_attr.data[p.index].value]
-    bpy.ops.object.select_all(action="DESELECT"); obj.select_set(True)
-    bpy.context.view_layer.objects.active = obj
-    bpy.ops.object.mode_set(mode="EDIT")
-    bpy.ops.mesh.separate(type="MATERIAL")
-    bpy.ops.object.mode_set(mode="OBJECT")
-    pieces = [o for o in bpy.context.scene.objects if o.type == "MESH"]
+        o = obj.copy(); o.data = obj.data.copy(); bpy.context.scene.collection.objects.link(o)
+        bm = bmesh.new(); bm.from_mesh(o.data)
+        lay = bm.faces.layers.int.get("part")
+        bmesh.ops.delete(bm, geom=[f for f in bm.faces if f[lay] != i], context="FACES")
+        bm.to_mesh(o.data); bm.free()
+        pieces.append(o)
+    bpy.data.objects.remove(obj, do_unlink=True)
+    obj = pieces[0]
     info = []
     for o in pieces:
         pmn, pmx = world_bbox(o)
@@ -409,7 +421,6 @@ if args.parts and "part" in obj.data.attributes:
     report["parts_named"] = []
     for d in info:
         o = d["obj"]; o.name = names[o.name]; o.data.name = o.name
-        o.data.materials.clear(); o.data.materials.append(base_mat)
         report["parts_named"].append({"name": o.name, "center": [round(v, 3) for v in d["center"]], "size": [round(v, 3) for v in d["size"]]})
 
 # ---------------- goruntuler (olcut 6-8 icin) ----------------
@@ -419,7 +430,7 @@ if args.renders:
     scene = bpy.context.scene
     scene.render.engine = "BLENDER_WORKBENCH"
     scene.display.shading.light = "STUDIO"
-    scene.display.shading.color_type = "VERTEX"
+    scene.display.shading.color_type = "TEXTURE" if args.keep_texture else "VERTEX"
     scene.render.resolution_x = 512; scene.render.resolution_y = 512
     scene.render.film_transparent = False
     world = bpy.data.worlds.new("w"); scene.world = world
@@ -449,9 +460,9 @@ if args.renders:
 
 # ---------------- disa aktar ----------------
 os.makedirs(os.path.dirname(os.path.abspath(args.out)), exist_ok=True)
-kw = dict(filepath=args.out, export_format="GLB", use_selection=False, export_yup=True, export_texcoords=False, export_normals=True)
+kw = dict(filepath=args.out, export_format="GLB", use_selection=False, export_yup=True, export_texcoords=args.keep_texture, export_normals=True)
 try:
-    bpy.ops.export_scene.gltf(**kw, export_vertex_color="ACTIVE", export_animations=args.rig, export_skins=args.rig)
+    bpy.ops.export_scene.gltf(**kw, export_vertex_color=("NONE" if args.keep_texture else "ACTIVE"), export_animations=args.rig, export_skins=args.rig)
 except TypeError:
     bpy.ops.export_scene.gltf(**kw, export_colors=True, export_animations=args.rig, export_skins=args.rig)
 report["out"] = args.out

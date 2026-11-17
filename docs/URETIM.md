@@ -106,6 +106,22 @@ Tamamen koddan. 26 şekil × 4 malzeme ve cam seti, parametreli bir Blender beti
 
 M0'ın sonunda gerçek yeniden deneme oranları ölçülür ve §5'teki bütçe tablosu güncellenir.
 
+### 2.3.1 Deneme sonuçları (17 Kasım 2026)
+
+Ara karar: sahibi dokusuz, palete oturtulmuş görünümü istemedi ([SANAT-SES.md](SANAT-SES.md) §1 güncellemesi). Hat iki kipte çalışıyor; denemeler dokulu kipte yeniden işlendi ve oyuna öyle girdi.
+
+| # | Deneme | Sonuç | Ölçülen |
+|---|---|---|---|
+| 1 | Statik: kaya, çayır ağacı, sulama kovası (Tripo web, H3.1 "HD Model") | Kaya ✅ oyuna hazır: 2,0 M → 3.879 üçgen, 1K doku. Ağaç ve kova üretildi (web kitaplığında), dışa aktarımı bekliyor. Bölüm 1 betik ölçütlerinden 4 (bütünlük) her üçünde "küçük": 13–18 manifold dışı kenar, gözle görünmüyor. | 3 × 55 web kredisi, 0 yeniden deneme |
+| 2 | Makine: Taş Fırın (Tripo API H3.1 + anlamsal parçalama v2) | ✅ 6 adlı parça (gövde, taban, kapak, kapak kolu, baca, pano). Kapak menteşesinden kodla açılıyor, baca "puf" yapıp duman çıkarıyor. Not: Tripo modeli +X'e bakıyor; otomatik adlandırma yanıldı, `--rename` ile düzeltildi. | 20 + 40 = 60 API kredisi, 0 yeniden deneme |
+| 3 | Oyuncu + klipler | ⚠️ MVP'de Genex (Meshy) ile: 1,6 m, 6 klip (bekleme, yürüme ×2, koşu ×2, zıplama) kaymadan oynuyor. Çapa ele bağlı ama kol IK'si henüz yok. | 64 Genex kredisi |
+| 4 | Yaratık: Pofuduk (dört ayak) ve Gıdak (kuş) | Pofuduk ✅: Tripo dört ayak iskeleti v2.5 ve hazır yürüme klibi; kemikler adımda 83°'ye kadar dönüyor. Bacaklar yünün içinde kaldığı için adım uzaktan zor seçiliyor; tasarım notu: istemde daha uzun bacak. Gıdak ⚠️: Tripo'da kuş için hazır klip yok (belgedeki gibi); şimdilik kodla paytak yürüyüş. Kodla yazılan poz kütüphanesi (§2.2 E) henüz yazılmadı. | Pofuduk 20 + 25 + 10 = 55 API kredisi; Gıdak 35 Genex kredisi |
+| 5 | 10 ses efekti + 1 döngü | ⚠️ MVP'de Genex ses kanalıyla 12 efekt + ışın döngüsü üretildi. Betikli denetim yapıldı; dinleme turu sahibinde. | 24 Genex kredisi |
+| 6 | 1 müzik, 3 katman | ⚠️ Tek katmanlı 90 sn Kabarma parçası (Genex). Katman ayrıştırma denenmedi. | 27 Genex kredisi |
+| 7 | Suna: 3 aday ses, 10 replik | ⏸ Yapılmadı: sahibinin ElevenLabs anahtarı her kullanımda ayrı onay istiyor; onay alınmadı. | — |
+
+**Öğrenilenler:** Tripo API'de H3.1 metinden model 20 kredi, web stüdyosunda "HD Model" 55 kredi: toplu üretim API'de çok daha ucuz. Web kredileri önemli tek modeller için. Yapay zekâ dokularındaki pişmiş gölge palete oturtmayı bozuyor; dokulu yönde bu sorun yok. Karmaşık şekiller (2 M üçgen) Blender'da tek geçişte 4 bin üçgene iniyor, yaklaşık 50 sn.
+
 ## 3. Kalite kapıları
 
 | Düzey | Kapı |
@@ -144,6 +160,26 @@ Birim fiyatlar `npx genex --help` çıktısından (16 Kasım 2026). Yeniden dene
 | **Toplam** | | | | **yaklaşık 122.000 kredi ≈ 1.220 $** |
 
 Buna ek olarak: ElevenLabs aboneliği (üretim aylarında), Steam uygulama ücreti (100 $). Harcama taşlara yayılır: M0 yaklaşık %2, M1 %8, M2–M4 %70, M6 %20. Her taşın başında o taşın harcama tavanını söylerim; onayın olmadan üretim başlatmam.
+
+### 5.1 Ölçülen birim fiyatlarla yeniden hesap (17 Kasım 2026, dokulu yön)
+
+Birimler M0'da ödenen gerçek tutarlar. Tripo API kredisi, Tripo web kredisi ve Genex kredisi ayrı havuzlardır; dolar karşılığı havuza göre değişir. Deneme çarpanı M0'da 1,0 çıktı (5 denemenin hiçbiri yeniden üretilmedi), ama örnek küçük olduğu için 1,5–2 alındı.
+
+| Sınıf | Adet | Yol ve birim | Çarpan | Toplam |
+|---|---|---|---|---|
+| Statik modeller | 368 | Tripo API H3.1 20 + ayrıntılı doku ~10 = 30 | 1,5 | 16.560 Tripo |
+| Parçalı modeller | 106 | H3.1 20 + parçalama 40 = 60 | 1,5 | 9.540 Tripo |
+| Yaratıklar | 43 | H3.1 20 + iskelet 25 + yürüme 10 = 55 | 2 | 4.730 Tripo |
+| Oyuncu gövdesi ve klipler | 1 | Genex karakter 64 + ek klipler | 2 | 5.000 Genex |
+| Görseller | 400 | 5 | 1 | 2.000 Genex |
+| Ses efektleri | 3.600 | 2 | 1,5 | 10.800 Genex ya da ElevenLabs (anahtar her kullanımda onaylı) |
+| Müzik | 60 | 27 | 2,5 | 4.100 aynı |
+| Seslendirme | — | ElevenLabs | 2 | 2.000 aynı |
+| **Ara toplam** | | | | **30.830 Tripo + 23.900 ses/görsel** |
+| Beklenmeyen (%30) | | | | 16.420 |
+| **Toplam** | | | | **yaklaşık 71.000 kredi** (eski hesap 122.000) |
+
+Elde: Tripo API 885, Tripo web 3.035, Genex 50 (17 Kasım 2026).
 
 ## 6. Kilometre taşları
 

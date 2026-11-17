@@ -26,14 +26,19 @@ public static class Assets
         return m;
     }
 
-    /// <summary>Modeli yukler; yoksa null (cagiran koddan kurulan yedege duser).</summary>
-    public static Node3D Load(string path, Material material = null)
+    /// <summary>
+    /// Modeli yukler; yoksa null (cagiran koddan kurulan yedege duser).
+    /// Varsayilan: dokulu modelin kendi malzemeleri korunur (sanat yonu: dokulu, orta poligon).
+    /// paletted=true: eski palet/kose rengi hattindan gelen modeller icin toon malzemesi.
+    /// </summary>
+    public static Node3D Load(string path, bool paletted = false, Material material = null)
     {
         if (!ResourceLoader.Exists(path)) return null;
         var inst = GD.Load<PackedScene>(path)?.Instantiate<Node3D>();
         if (inst == null) return null;
-        foreach (var mi in inst.FindChildren("*", "MeshInstance3D", true, false).OfType<MeshInstance3D>())
-            mi.MaterialOverride = material ?? PipelineMaterial;
+        if (paletted || material != null)
+            foreach (var mi in inst.FindChildren("*", "MeshInstance3D", true, false).OfType<MeshInstance3D>())
+                mi.MaterialOverride = material ?? PipelineMaterial;
         return inst;
     }
 
