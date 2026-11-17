@@ -12,3 +12,4 @@ output/
 bin/
 obj/
 game/.godot/
+*.user
