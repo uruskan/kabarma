@@ -15,7 +15,8 @@ Kanıt:
 - `test.log`
 - `bot_audio_lines.log`: müzik durumları ve Suna satırları botta.
 - `bot_unmuted.log`: bot `--mute` olmadan; oyun içi ses yolu çalıştı, sonuç aynı, 0 hata satırı.
-- `audio_qc.md` / `audio_qc.json`: 28 dosya, 17 Kasım.
+- `audio_qc.md` / `audio_qc.json`: 198 dosya, 18 Kasım (ana oturumun üretimi dahil).
+- `bot_unmuted_real.log`: bot `--mute` olmadan, gerçek dosyalarla. Sonuç aynı; müzik Gündüz → Sessizlik → Kabarma → 2 → 3 katman → Gündüz. Yalnız 3 çıkış uyarısı var, (f) 21.
 - `eleven_dry_run.txt`: bu dalın metni.
 - `eleven_dry_run_ilkgun.txt`: ilkgun'un metni.
 - `merge_ilkgun_bot.log`: ses + ilkgun birleşik ağacında her Suna satırı ilkgun kimliğine çözülüyor. `audio_qc --fix-dir` ve `eleven.post_process` M0 dosyalarının kopyalarında denendi: `hit`, `pickup`, `pop` düzeltmeden sonra geçti; geçen dosyaya dokunulmadı.
@@ -41,7 +42,7 @@ Kanıt:
 | 60 ses (`audio.json`, `Sfx`) | geçti | geçti (Sim: 60 ses, gruplar, 12 M0, döngüler, varyasyon; `audio`: 60'ı da çöker mi, tutulan döngü; bot `--mute` olmadan da yeşil) | kısmen. Commit'li dalda 17/60 çalınabilir (12 M0 tek sürüm + 5 sentez × 3). Bu worktree'de ana oturumun commit edilmemiş üretimiyle 60/60 ve 180 dosya; `audio` sınaması bunlarla geçti, 10 dosya denetimde KALDI. 33 sesin çalma noktası sahibi akışta bağlanmalı. Dinleme: sahibin onayını bekliyor | M2'de (ortak oyun); girdi yok | M2'de | yok |
 | Müzik (2 parça, 3 katman) | geçti (eşikler belgenin sustuğu yer, aşağıda) | geçti (Sim: yoğunluk, katman, bekleme; `audio`: durumlar ve katmanlar; bot günlüğünde Gündüz → Sessizlik → Kabarma → 2 → 3 katman → Gündüz) | kısmen. Commit'li dalda yalnız M0 Kabarma parçası (1. katman). Ana oturumun ürettiği gündüz parçası ve 3 katman bu worktree'de yüklendi (`layers_loaded=3/3 day_music=yes`), commit'te yok. Dinleme: sahibin onayını bekliyor | M2'de | M2'de | yok |
 | Suna (30 replik, telsiz, altyazı) | kısmen: kod iki metin yapısını da okur. Bu daldaki metin eski (41 replik, 12'sinde tuş adı, İngilizcesi yok); ilkgun dalında 30 TR + 30 EN hazır | kısmen. Sim: iki yapı ve bugünkü dosya. Birleşik ağaçta bot: 24 Suna satırının hepsi ilkgun kimliğine çözüldü (`merge_ilkgun_bot.log`). Sesli yol, replik dosyası olmadığı için koşmadı | kısmen: mandal ve altyazı var; seslendirme yok (3 aday üretildi, sahip seçecek) | M2'de | M2'de | yok |
-| `audio_qc.py` | kısmen: −1 dBTP ve Suna +3 dB belgeden; LUFS aralıkları seçilmiş (UYARI) | kısmen: 28 dosyada koştu, birim testi yok | — | — | — | — |
+| `audio_qc.py` | kısmen: −1 dBTP ve Suna +3 dB belgeden; LUFS aralıkları seçilmiş (UYARI) | kısmen: 198 gerçek dosyada koştu; sessiz katmanı ve tutmayan tepe düzeltmesini yakaladı (ikisi de düzeltildi, (e)). Katman kayma özeti ve tek enstrüman dikişi yanıltıcı. Birim testi yok | — | — | — | — |
 | `eleven.py` + istek | geçti (sınırlar M1 kararlarından) | kısmen: kuru koşu iki metin yapısıyla koştu; ağ yolu ana oturumda `sfx`, `music`, `stems`, `design` için koştu (defter); `save-voice` ve `voice` koşmadı | — | — | — | — |
 | `licenses.md` | geçti | — | — | — | — | — |
 
@@ -49,7 +50,11 @@ His ve dinleme: **sahibin onayını bekliyor** (12 M0 sesi, 15 sentez arayüz se
 
 **M0 denemeleri (URETIM §2.3):**
 - 5 (10 ses + 1 döngü): ⚠️ Betikli denetim artık var. 12 M0 sesinin 8'i geçti. `hit` ve `pop` gerçek tepe −1 dBTP üstünde; `pickup` 40 ms baş sessizliği; `water` döngü olarak kullanılamıyor (0,5 sn, dikiş 26 dB). Dinleme turu 👤.
-- 6 (1 müzik, 3 katman): ⚠️ Kod hazır (katmanlı oynatıcı, `eleven.py --only stems`). M0 parçası tek katman; tempo 119,9 BPM ölçüldü (veride 120). Döngü dikişi kaldı: baş ve son arası 5,3 dB. Üretim isteği aşağıda. 👤
+- 5, ElevenLabs ile (18 Kasım): 165 ses üretildi. Betikli denetim 10'unu KALDI saydı (8 dikiş, 2 tepe; tepe düzeltmesi artık tutuyor). Dinleme turu 👤.
+- 6 (1 müzik, 3 katman): ⚠️
+  - Kabarma parçası (120 sn, ölçülen 119,9 BPM) ayrıştırıldı. Teslim edilen 3. katman sessiz (eşleme kusuru, (e)).
+  - Düzeltilmiş eşleme scratch'te üç sesli, aynı boyda ve hizalı katman verdi; kredisiz uygulama ana oturumun kararı.
+  - Dinleme 👤.
 - 7 (Suna: 3 aday, 10 replik): ❌ Betik hazır (tasarım → sahip seçer → kayıt → replik + geri çevirme). Üretim isteği. Replik metni (30 TR + 30 EN) ilkgun dalında hazır; dallar birleşince başlanabilir. 👤
 
 ## (c) Dokunduğum başka akış dosyaları
@@ -58,7 +63,8 @@ His ve dinleme: **sahibin onayını bekliyor** (12 M0 sesi, 15 sentez arayüz se
 - `game/scripts/Main.cs` (girdi): `Tests` sözlüğüne `["audio"]` satırı.
 - `tools/test.ps1` (girdi): varsayılan adımlara `audio` ekleyen 1 satır ve `audio` adım bloğu.
 - `game/scripts/tests/AudioTest.cs` (girdi'nin klasöründe yeni dosya).
-- `pipeline/README.md`: sona ses bölümü.
+- `pipeline/README.md`: sona ses bölümü; 18 Kasım'da `--reuse-raw` cümlesi.
+- `pipeline/.gitignore` (yeni): `__pycache__/`. `8f3f476`'da yanlışlıkla commit ettiğim 3 `.pyc` izlemeden çıkarıldı.
 - Davranış değişikliği: her çağrı artık `audio.json`'dan geçiyor. Ses başına eşzamanlı kopya sınırı var (vuruşlarda 6), kanallar ayrı, ana kanalda tepe sınırı. Eski adlar aynı M0 dosyasını çalıyor. `--mute` artık ana kanalı da susturuyor.
 - Godot içe aktarmanın 106 `.import` dosyasında yaptığı satır sonu değişiklikleri geri alındı, commit'te yok.
 
@@ -89,7 +95,37 @@ Indirmeden sonra `post_process` denetiminde 10 dosya KALDI:
 - 8'i döngü dikişi: `kaya_kemirme_1,2`, `ates_citirti_1,2`, `tezgah_calisma_1,2,3`, `el_arabasi_teker_2`.
 - 2'si tepe: `sokum_1`, `kargo_roketi_1`.
 
-Bu dosyalar, defter ve `.import` dosyaları commit'imde **yok**: üretim ana oturumun, ne yapılacağına o karar verir. 5. madde (Suna replikleri) duruyor: bu dalda metin engelli, ayrıca sahip adaylardan birini seçmeli.
+Üretilen dosyalar ve `.import` dosyaları commit'imde **yok**: üretim ana oturumun, ne yapılacağına o karar verir. Defter commit edildi (`bf5d6fd`; sert sınırlar sıfırlanmasın diye, (f) 16). 5. madde (Suna replikleri) duruyor: bu dalda metin engelli, ayrıca sahip adaylardan birini seçmeli.
+
+**Gerçek dosyalarda denetim (18 Kasım, `audio_qc.md`, 198 dosya; kredi yok).** İki betik kusuru çıktı, ikisi de düzeltildi; teslim edilen dosyalara dokunulmadı.
+
+1. **`kabarma_3.mp3` tamamen sessiz:** gerçek tepe −87,5 dBTP, 120 sn boyunca. Oyunda 3. katman hiçbir şey çalmıyor.
+   - Neden: benim katman eşlemem. Ayrıştırma bass, drums, guitar, other, piano, vocals döndürdü; enstrümantal parçada guitar, piano ve vocals boş. Eşleme 3. katmana yalnız `vocal` veriyordu, zurna ve sentezler (`other`) 1. katmana gitmişti.
+   - Düzeltme:
+     - Yeni eşleme: 1 = bass, 2 = drums, 3 = other.
+     - Boş kök hiçbir katmana girmez, uymayan kök son katmana gider.
+     - Sesli kökü olmayan katman varsa betik, dosya yazmadan durur.
+     - Katmanlar kırpılmaz; döngü bilgisi artık yoldan çıkarılmıyor.
+     - Yeni bayrak `--reuse-raw`: indirilmiş kökleri kullanır, API'ye gitmez, anahtar istemez.
+   - Scratch'te sınandı:
+     - Üç katmanın üçü de sesli: −19,5 / −15,6 / −17,9 LUFS, tepe ≤ −1,1 dBTP.
+     - Üçü de 5.294.592 örnek.
+     - Köklerin toplamı tam parçayla 0,991 korelasyon veriyor; tek ve sabit kayma 25 ms (mp3 kodlayıcı gecikmesi). Yani katmanlar birbirine hizalı.
+   - Uygulamak için, kredisiz: `python pipeline/eleven.py pipeline/requests/m1_audio.json --only stems --reuse-raw --force`. Bu komut teslim edilen `kabarma_{1,2,3}.mp3` dosyalarının üzerine yazar; karar ana oturumun.
+2. **Tepe düzeltmesi tutmuyordu:** `sokum_1` ve `kargo_roketi_1` düzeltmeden sonra yine −0,9 dBTP.
+   - Neden: `fix` tepeyi −1,5'e indirip mp3'e yeniden kodluyordu; kodlama tepeyi geri taşıyordu.
+   - Düzeltme: artık ölçüp en çok 3 kez yeniden indiriyor.
+   - Kopyalarda: −1,5 ve −2,2 dBTP; asıllar değişmedi.
+   - Uygulamak için: `python pipeline/audio_qc.py game/assets/audio/sfx/sokum_1.mp3 game/assets/audio/sfx/kargo_roketi_1.mp3 --fix-dir <klasör>`, sonra kopyalar elle yerine konur.
+3. **Döngü dikişi (yeniden üretim ya da çapraz geçiş isteği; kredi gerekirse ayrı onay):**
+   - `el_arabasi_teker_2` dikişte gerçek atlama gösteriyor (7,6×, tık).
+   - `kaya_kemirme_1,2`, `ates_citirti_1,2`, `tezgah_calisma_1,2,3` baş ile son arasında 3–37 dB düzey farkı gösteriyor.
+   - Dinlemeden karar verilmemeli: çıtırtı ve tıkırtı seslerinde 50 ms'lik pencere yanıltabilir.
+4. **Müzik:**
+   - `kabarma_full` +0,1 dBTP; `run_music` müziğe `post_process` uygulamıyor. Oyunda ana kanaldaki −1 dB sınırlayıcı tutar; `kabarma_full` oyunda çalmaz.
+   - `cayir_gunduz` 3,5 sn sonda sessizlik (sönüş; döngü değil). Tempo kestirimi 166,8; veride gündüz temposu yok.
+   - Denetimin katman kayma özeti (−130 / −120 ms) farklı enstrümanların vuruş zarflarını karşılaştırıyor ve burada yanıltıcı. Örnek düzeyinde ölçüm hizayı gösterdi (yukarıda).
+   - Tek enstrümanlı katmanda "dikiş düzeyi" ve ezgi katmanında "tempo 80" da aynı nedenle beklenen sonuçlar. Tam parçada dikiş geçiyor.
 
 ## (f) Belgeyle çelişen ya da belgenin sustuğu yerler
 
@@ -114,3 +150,11 @@ Bu dosyalar, defter ve `.import` dosyaları commit'imde **yok**: üretim ana otu
     - Çakışma yok. Sim 45/45, derleme 0 uyarı, bot `RESULT ok`. Her Suna satırı (gecehud'un metinle söylediği gece satırları dahil) ilkgun kimliğine çözüldü.
     - Aynı koşuda ilkgun'un `ActText.Label`'ı (`ActText.cs:26`, `DisplayServer.KeyboardGetKeycodeFromPhysical`) `--headless` altında 12.937 `Not supported by this display server` hatası yazdı. Bu ses akışından değil; ilkgun'a bildirildi.
 19. **`eleven.py` kuru koşusu tüm planı sayar:** yapılmış adımları düşmez. Ana oturumun üretiminden sonra müzik satırı "ASIYOR" gösteriyor (defter 420 + plan 420 > 750); tasarımın 142 karakteri de yeniden sayılıyor. Gerçek koşuda sert sınır ve `designCalls` durumu tekrarı zaten engeller. Kalan iş yalnız Suna replikleri: 4.580 karakter + defterdeki 142 = 4.722 / 7.200.
+20. **Katman içerikleri belgede yok:** SANAT-SES §10.2 ve URETIM yalnız "3 yoğunluk katmanı" diyor. Ben seçtim: 1 bas (alarmda tek başına), 2 davul, 3 ezgi ve sentez (zurna, bağlama, arpej). Sıra `m1_audio.json`'da (`_layersNot`), dinleyip değiştirmek bir satır.
+21. **Çıkışta ses sızıntısı uyarısı (gerçek dosyalarla ortaya çıktı):** Oyun ses çalarken kapanınca Godot şunları yazıyor:
+    - `ObjectDB instances were leaked at exit` (`--verbose`: `AudioStreamMP3` ve `AudioStreamPlaybackMP3`)
+    - `resources still in use`
+
+    Oynatıcı serbest kalıyor, ama ses döngüsü playback'i bırakmaya yetişmiyor. Dosyasızken çalan döngü yoktu; şimdi ortam ve müzik hep çalıyor. Bu yalnız çıkışta olur, oyunu etkilemez.
+    - `Sfx.StopAll()` eklendi. `audio` sınaması çıkmadan önce onu çağırıp 0,1 sn bekliyor: sızıntı satırı 0.
+    - Bot ve `Main.Tests` çıkışı başka akışların dosyasında. Orada `Quit` öncesine aynı iki satır eklenirse bot günlüğü de temizlenir (öneri; dokunmadım).

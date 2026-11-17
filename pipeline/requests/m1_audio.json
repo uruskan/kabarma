@@ -105,7 +105,8 @@
       { "id": "cayir_gunduz", "file": "cayir_gunduz.mp3", "seconds": 180, "stems": false,
         "prompt": "'Space türkü' daytime meadow theme for a cozy farming game on the moon. Turkish folk instruments, bağlama (saz) and kaval (shepherd's flute) with a soft frame drum, blended with warm analog synth pads. Calm, wide, spacious and sparse, long gentle phrases. D dorian, 84 BPM. Soft intro, two calm sections, natural quiet ending. Instrumental only." },
       { "id": "kabarma", "file": "kabarma_full.mp3", "seconds": 120, "stems": true,
-        "layers": { "kabarma_1.mp3": ["bass", "other", "piano", "guitar", "instrument"], "kabarma_2.mp3": ["drum", "percussion"], "kabarma_3.mp3": ["vocal", "lead"] },
+        "_layersNot": "Yogunluk sirasi: 1 bas (alarm), 2 + davul, 3 + ezgi ve sentez (zurna, baglama, arpej 'other' kokunde). 18 Kasim ayristirmasi: bass, drums, other sesli; guitar, piano, vocals bos. Bos kok katmana girmez; uymayan kok son katmana gider.",
+        "layers": { "kabarma_1.mp3": ["bass"], "kabarma_2.mp3": ["drum", "percussion"], "kabarma_3.mp3": ["other", "lead", "vocal", "piano", "guitar", "synth", "instrument"] },
         "prompt": "'Space türkü' night battle track for a comedic-heroic farming game: driving Turkish halay dance groove, exactly 120 BPM in 4/4, D minor with hicaz flavour. Davul bass drum and zurna lead melody drive the rhythm, bağlama riffs, punchy analog synth bass and arpeggios. Constant high energy from the first bar to the last, no intro and no outro, so it loops seamlessly; length is an exact number of bars. Instrumental only." }
     ]
   },

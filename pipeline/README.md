@@ -16,5 +16,5 @@ Oyunda: `Assets.Load("res://assets/models/<ad>/<ad>.glb")`. Köşe renkleri Godo
 
 - `audio_qc.py`: ses denetimi (URETIM §2.2 H.3, I.3): süre, gerçek tepe, kırpılma, LUFS, baş/son sessizlik, döngü dikişi, grup içi spektrum, müzikte tempo ve katman hizası. Yalnız Python + ffmpeg. `python pipeline/audio_qc.py [dosyalar] [--fix-dir klasör]` → `progress/m1/ses/audio_qc.md`.
 - `synth_ui.py`: 5 arayüz sesi × 3 sürüm, sentez, kredi yok.
-- `eleven.py`: ElevenLabs üretimi (kredi harcar, sahibin onayıyla). Sahibin onayladığı sınırlar kodda sert sınır; harcama defteri `progress/m1/ses/eleven_ledger.json`. Önce `python pipeline/eleven.py pipeline/requests/m1_audio.json --dry-run`.
+- `eleven.py`: ElevenLabs üretimi (kredi harcar, sahibin onayıyla). Sahibin onayladığı sınırlar kodda sert sınır; harcama defteri `progress/m1/ses/eleven_ledger.json`. Önce `python pipeline/eleven.py pipeline/requests/m1_audio.json --dry-run`. Katman eşlemesi değişirse, indirilmiş köklerden kredisiz yeniden toplama: `--only stems --reuse-raw --force`.
 - `licenses.md`: ses kaynakları, planlar, üretim tarihleri.

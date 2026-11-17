@@ -116,6 +116,9 @@ public partial class AudioTest : Node
         string ok = _fails.Count == 0 ? "ok" : "fail";
         GD.Print($"AUDIO RESULT {ok} sounds={a.Sounds.Count} playable={playable} variant_files={files} buses={a.Buses.Count} layers_loaded={m.LayersLoaded}/{a.Music.Kabarma.Layers.Count} day_music={(m.DayLoaded ? "yes" : "no")}"
                  + (_fails.Count > 0 ? " :: " + string.Join("; ", _fails) : ""));
+        // Calan sesler durmadan cikilirsa Godot cikista AudioStreamPlayback sizintisi yazar (Sfx.StopAll).
+        Sfx.StopAll(GetTree().Root);
+        await Wait(0.1);
         GetTree().Quit(_fails.Count == 0 ? 0 : 1);
     }
 }

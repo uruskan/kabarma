@@ -371,16 +371,24 @@ def fix(path, r, out_dir):
         filters.append(f"atrim=start={start:.3f}:end={end:.3f},asetpts=PTS-STARTPTS")
         filters.append(f"afade=t=out:st={max(0.0, end - start - 0.02):.3f}:d=0.02")
     tp = r["true_peak_dbtp"]
-    if tp is not None and tp > LIMITS["true_peak_dbtp"]:
-        filters.append(f"volume={-1.5 - tp:.2f}dB")
-    cmd = ["ffmpeg", "-hide_banner", "-loglevel", "error", "-y", "-i", str(path)]
-    if filters:
-        cmd += ["-af", ",".join(filters)]
-    cmd += ["-c:a", "libmp3lame", "-q:a", "2", str(out)]
-    res = run(cmd)
-    if res.returncode != 0 or not out.exists() or out.stat().st_size == 0:
-        print(f"DUZELTME BASARISIZ {path}: {res.stderr.strip()[:300]}")
-        return None
+    gain = -1.5 - tp if tp is not None and tp > LIMITS["true_peak_dbtp"] else None
+    # mp3'e yeniden kodlama tepeyi ~0,5 dB geri tasiyabilir: olc, sinirin ustundeyse farki kadar daha indir (en cok 3 deneme).
+    for _ in range(3):
+        cmd = ["ffmpeg", "-hide_banner", "-loglevel", "error", "-y", "-i", str(path)]
+        af = filters + ([f"volume={gain:.2f}dB"] if gain is not None else [])
+        if af:
+            cmd += ["-af", ",".join(af)]
+        cmd += ["-c:a", "libmp3lame", "-q:a", "2", str(out)]
+        res = run(cmd)
+        if res.returncode != 0 or not out.exists() or out.stat().st_size == 0:
+            print(f"DUZELTME BASARISIZ {path}: {res.stderr.strip()[:300]}")
+            return None
+        if gain is None:
+            break
+        got = ebur128(out)["true_peak_dbtp"]
+        if got is None or got <= LIMITS["true_peak_dbtp"]:
+            break
+        gain -= got - (-1.5)
     return out
 
 

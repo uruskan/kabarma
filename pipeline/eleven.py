@@ -372,6 +372,8 @@ def post_process(path, loop):
     r, _ = audio_qc.check_file(path, data, [])
     if not audio_qc.needs_fix(r):
         return r
+    # Dongu (ve Kabarma katmani) asla kirpilmaz: yalniz tepe indirilir. Yol siniflamasina birakilmaz, cagiran bilir.
+    r["loop"] = bool(r.get("loop")) or bool(loop)
     fixed = audio_qc.fix(path, r, RAW / "fixed")
     if fixed is None:
         return r
@@ -436,52 +438,91 @@ def run_music(req, args, key, led):
         print(f"muzik {t['id']} -> {e['out']}")
 
 
+SILENT_STEM_DBTP = -60.0  # bu tepenin altindaki kok bos sayilir (enstrumantal parcada vocals gibi)
+
+
+def assign_stems(stems, layers):
+    """
+    Kokleri katmanlara dagitir: {katman: [kok]}, bos kokler ve atlananlar. Bos kok (tepesi SILENT_STEM_DBTP altinda)
+    hicbir katmana girmez. Anahtar sozcuge uymayan kok son katmana (en yogun) gider. Sesli koku olmayan katman varsa
+    hata (dosya yazilmadan once).
+    """
+    import audio_qc
+    names = list(layers)
+    assign, silent = {n: [] for n in names}, []
+    for s in stems:
+        tp = audio_qc.ebur128(s)["true_peak_dbtp"]
+        if tp is None or tp < SILENT_STEM_DBTP:
+            silent.append(s)
+            continue
+        low = s.stem.lower()
+        target = next((n for n in names if any(w in low for w in layers[n])), names[-1])
+        assign[target].append(s)
+    empty = [n for n, v in assign.items() if not v]
+    if empty:
+        raise RuntimeError(f"sesli koku olmayan katman: {', '.join(empty)} (bos kokler: {', '.join(s.name for s in silent) or '-'}); "
+                           "eslemeyi istek dosyasinda duzelt")
+    return assign, silent
+
+
+def mix_layers(assign, outs):
+    """Her katmanin koklerini (hizali, ayni boy) toplayip mp3 yazar; tepe -1 dBTP ustundeyse post_process indirir."""
+    for name, files in assign.items():
+        cmd = ["ffmpeg", "-hide_banner", "-loglevel", "error", "-y"]
+        for f in files:
+            cmd += ["-i", str(f)]
+        cmd += ["-filter_complex", f"amix=inputs={len(files)}:normalize=0:duration=longest" if len(files) > 1 else "anull",
+                "-c:a", "libmp3lame", "-q:a", "2", str(outs[name])]
+        subprocess.run(cmd, check=True)
+        post_process(outs[name], loop=True)
+        print(f"katman {name}: {', '.join(f.name for f in files)}")
+
+
 def run_stems(req, args, key, led):
-    """Kabarma tam parcasini ayristirir; kokleri istek dosyasindaki anahtar sozcuklerle 3 katmana toplar."""
+    """
+    Kabarma tam parcasini ayristirir; kokleri istek dosyasindaki anahtar sozcuklerle 3 katmana toplar.
+    --reuse-raw: daha once indirilen kokler (.tools/eleven_raw/stems/<id>) varsa API'ye gidilmez, kredi harcanmaz;
+    yalniz katmanlar yeniden toplanir (eslemeyi duzeltmek icin).
+    """
     plan, _ = music_plan(req, set(args.ids or []))
     for t in [t for t in plan if t.get("stems")]:
         if not t["out"].exists():
             sys.exit(f"once parca uretilmeli: {t['out'].relative_to(ROOT)}")
         layer_out = {name: out_path(req, "music", file=name) for name in t["layers"]}
         if all(p.exists() for p in layer_out.values()) and not args.force:
-            print("katmanlar var, atlandi")
+            print("katmanlar var, atlandi (yeniden toplamak icin --force)")
             continue
-        e = reserve(led, "music_seconds", t["seconds"], f"katman ayristirma {t['id']}")
-        try:
-            z = http("POST", "/v1/music/stem-separation", key, files={"file": (t["out"].name, t["out"].read_bytes())}, body={}, query={"output_format": OUTPUT_FORMAT})
-        except RuntimeError as err:
-            e["billed"] = False
-            save_ledger(led)
-            sys.exit(f"durdu: {err}")
         stem_dir = RAW / "stems" / t["id"]
-        if stem_dir.exists():
-            shutil.rmtree(stem_dir)
-        stem_dir.mkdir(parents=True)
-        with zipfile.ZipFile(io.BytesIO(z)) as zf:
-            for m in zf.infolist():
-                name = Path(m.filename).name
-                if name and not m.is_dir():
-                    (stem_dir / name).write_bytes(zf.read(m))
+        e = None
+        if args.reuse_raw and stem_dir.exists() and any(stem_dir.iterdir()):
+            print(f"kokler yeniden kullaniliyor (API yok, kredi yok): {shown(stem_dir)}")
+        else:
+            if args.reuse_raw:
+                sys.exit(f"--reuse-raw: {shown(stem_dir)} yok ya da bos")
+            e = reserve(led, "music_seconds", t["seconds"], f"katman ayristirma {t['id']}")
+            try:
+                z = http("POST", "/v1/music/stem-separation", key, files={"file": (t["out"].name, t["out"].read_bytes())}, body={}, query={"output_format": OUTPUT_FORMAT})
+            except RuntimeError as err:
+                e["billed"] = False
+                save_ledger(led)
+                sys.exit(f"durdu: {err}")
+            if stem_dir.exists():
+                shutil.rmtree(stem_dir)
+            stem_dir.mkdir(parents=True)
+            with zipfile.ZipFile(io.BytesIO(z)) as zf:
+                for m in zf.infolist():
+                    name = Path(m.filename).name
+                    if name and not m.is_dir():
+                        (stem_dir / name).write_bytes(zf.read(m))
         stems = sorted(stem_dir.glob("*"))
         print("kokler:", ", ".join(s.name for s in stems))
-        assign = {name: [] for name in t["layers"]}
-        fallback = next(iter(t["layers"]))
-        for s in stems:
-            low = s.stem.lower()
-            target = next((name for name, words in t["layers"].items() if any(w in low for w in words)), fallback)
-            assign[target].append(s)
-        e["stems"] = {k: [s.name for s in v] for k, v in assign.items()}
-        save_ledger(led)
-        for name, files in assign.items():
-            if not files:
-                sys.exit(f"{name} icin kok yok; eslemeyi istek dosyasinda duzelt ({stem_dir})")
-            cmd = ["ffmpeg", "-hide_banner", "-loglevel", "error", "-y"]
-            for f in files:
-                cmd += ["-i", str(f)]
-            cmd += ["-filter_complex", f"amix=inputs={len(files)}:normalize=0:duration=longest" if len(files) > 1 else "anull",
-                    "-c:a", "libmp3lame", "-q:a", "2", str(layer_out[name])]
-            subprocess.run(cmd, check=True)
-            print(f"katman {name}: {', '.join(f.name for f in files)}")
+        assign, silent = assign_stems(stems, t["layers"])
+        if silent:
+            print("bos kokler (katmana girmedi):", ", ".join(s.name for s in silent))
+        if e is not None:
+            e["stems"] = {k: [s.name for s in v] for k, v in assign.items()}
+            save_ledger(led)
+        mix_layers(assign, layer_out)
 
 
 def run_design(req, args, key, led):
@@ -592,13 +633,16 @@ def main():
     ap.add_argument("--voice-id")
     ap.add_argument("--generated-id")
     ap.add_argument("--force", action="store_true", help="var olan ciktiyi yeniden uret (sinira sayilir)")
+    ap.add_argument("--reuse-raw", action="store_true", help="stems: indirilmis kokleri kullan, API'ye gitme (kredisiz, anahtar istemez)")
     args = ap.parse_args()
     req = load_request(args.request)
     if args.dry_run:
         return dry_run(req, args)
     if not args.only:
         sys.exit("--only ile bir adim sec (ya da --dry-run). Toplu kosu yok: her adim sahibin onayiyla ayri calisir.")
-    key = api_key()
+    if args.reuse_raw and args.only != "stems":
+        sys.exit("--reuse-raw yalniz --only stems ile")
+    key = None if args.reuse_raw else api_key()
     led = load_ledger()
     try:
         {"sfx": run_sfx, "music": run_music, "stems": run_stems, "design": run_design, "save-voice": run_save_voice, "voice": run_voice}[args.only](req, args, key, led)

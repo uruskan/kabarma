@@ -305,6 +305,19 @@ public static partial class Sfx
     static bool IsInstanceValid(GodotObject o) => GodotObject.IsInstanceValid(o);
 
     /// <summary>
+    /// Butun ses oynaticilarini durdurur. Calarken kapanan oyun "ObjectDB instances were leaked at exit" uyarisi yazar
+    /// (oynatici serbest kalir ama ses dongusu AudioStreamPlayback'i birakmaya yetismez; --verbose: AudioStreamMP3 ve
+    /// AudioStreamPlaybackMP3). GetTree().Quit() oncesi bunu cagirip bir kare (~0,1 sn) beklemek uyariyi kaldirir.
+    /// </summary>
+    public static void StopAll(Node from = null)
+    {
+        var root = from ?? (_root != null && _root.IsInsideTree() ? _root.GetTree().Root : null);
+        if (root == null) return;
+        foreach (var n in root.FindChildren("*", "AudioStreamPlayer", true, false)) ((AudioStreamPlayer)n).Stop();
+        foreach (var n in root.FindChildren("*", "AudioStreamPlayer3D", true, false)) ((AudioStreamPlayer3D)n).Stop();
+    }
+
+    /// <summary>
     /// Kabarma muzigi istegi (eski arayuz: Director.Night alarmda true, safakta false). Muzik durum makinesi
     /// (MusicDirector) gece evresini kendisi de izler; bu cagri yalnizca istegi iletir.
     /// </summary>

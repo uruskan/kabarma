@@ -19,7 +19,9 @@ Her üretimden sonra bu tabloya bir satır eklenir. `pipeline/eleven.py` her ça
 |---|---|---|---|---|
 | 17 Kasım 2026 | Genex (MVP) | `game/assets/audio/sfx/{beam_loop,pickup,place,till,water,swell,pop,nailgun,hit,levelup,siren,rocket}.mp3`, `game/assets/audio/music/kabarma_night.mp3` | 51 Genex kredisi (12 × 2 + 27) | Ayrıntı ve üretim kimlikleri: `game/assets/audio/README.md`. M1'de bu 12 ses `audio.json`'da `m0` yedeği; yerlerine 3'er ElevenLabs sürümü gelecek |
 | 17 Kasım 2026 | `pipeline/synth_ui.py` (kredi yok) | `game/assets/audio/sfx/{ui_odak,ui_onay,ui_hata,ui_baslik_carki,telsiz_mandali}_{1,2,3}.mp3` | 15 dosya | Betikli denetimden geçti (`progress/m1/ses/audio_qc.md`). Dinleme onayı sahipte; onaylanana dek `placeholder: true` |
-| — | ElevenLabs | — | — | Henüz üretim yok. İstek: `pipeline/requests/m1_audio.json`. Kuru koşu tahmini: `progress/m1/ses/eleven_dry_run.txt` |
+| 18 Kasım 2026, 00:28–00:34 | ElevenLabs API, `eleven_text_to_sound_v3`. Plan adı: ⚠️ sahipten bekleniyor | `game/assets/audio/sfx/{id}_{1,2,3}.mp3`, 55 ses (arayüz grubu hariç) | 165 üretim, 329,7 sn (defter) | Ana oturum koştu. İndirmeden sonra `post_process`'te 10 dosya KALDI (8 döngü dikişi, 2 tepe). Dinleme sahipte; onaylanana dek `placeholder: true` |
+| 18 Kasım 2026 | ElevenLabs API, `music_v2_5` + katman ayrıştırma. Plan adı: ⚠️ sahipten bekleniyor | `game/assets/audio/music/cayir_gunduz.mp3` (180 sn), `kabarma_full.mp3` (120 sn), `kabarma_{1,2,3}.mp3` (ayrıştırma) | 420 sn (180 + 120 + ayrıştırma 120) / 750 | Kökler: bass, drums, other sesli; guitar, piano, vocals boş. İlk eşleme `kabarma_3`'ü boş bıraktı (vocals); eşleme düzeltildi, `--only stems --reuse-raw --force` kredisiz yeniden toplar (RAPOR (e)). Müzik şartı: Free–Pro'da "bireysel kullanım", plan adı önemli |
+| 18 Kasım 2026 | ElevenLabs API, `eleven_ttv_v3` (ses tasarımı). Plan adı: ⚠️ sahipten bekleniyor | `progress/m1/ses/suna_adaylari/aday_{1,2,3}.mp3` | 1 çağrı, 142 karakter | Suna'nın 3 aday sesi; sahip seçecek, sonra `--only save-voice`. Replikler (30 TR + 30 EN) henüz üretilmedi |
 
 ## AI beyanı (URETIM §9)
 
