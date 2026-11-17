@@ -34,7 +34,7 @@
       "fireShake": 0.12, "fireRecoil": 0.45,
       "muzzle": 6, "muzzleSpeed": 4, "muzzleSize": 0.06, "muzzleLife": 0.18,
       "fireSfx": "nailgun", "fireDb": -5,
-      "hitStopMs": 40, "critHitStopMs": 70, "hitShake": 0, "critHitShake": 0.1, "critFlash": 1,
+      "hitStopMs": 40, "critHitStopMs": 60, "hitShake": 0, "critHitShake": 0.1, "critFlash": 1,
       "hitSfx": "hit", "hitDb": -3, "critSfx": "hit", "critDb": 0, "weakSfx": "hit", "weakDb": 0,
       "debris": 8, "critDebris": 14, "debrisSpeed": 5, "debrisSize": 0.08, "debrisLife": 0.35, "debrisGravity": 0,
       "debrisSfx": "pop", "debrisDb": -16

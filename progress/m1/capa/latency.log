@@ -1,28 +1,29 @@
 LATENCY display=headless fps_cap=60 frame_ms=16.7 present_frames=1 budget<=50 ms
-LATENCY kazma   n=8 frames_max=1 budget_ms=33.3 wall_med_ms=50.9 wall_max_ms=115.6 ok
-        kazma wall_ms=[70.2, 50.9, 32.0, 54.9, 49.8, 41.9, 115.6, 44.5] fps=52 nodes=413 draw_calls=0
-LATENCY bicme   n=8 frames_max=1 budget_ms=33.3 wall_med_ms=40.5 wall_max_ms=121.0 ok
-        bicme wall_ms=[121.0, 49.6, 47.4, 34.7, 26.3, 40.5, 37.9, 31.0] fps=52 nodes=417 draw_calls=0
-LATENCY toprak  n=8 frames_max=1 budget_ms=33.3 wall_med_ms=32.9 wall_max_ms=44.9 ok
-        toprak wall_ms=[37.3, 18.8, 44.9, 42.4, 31.6, 32.9, 25.4, 31.8] fps=59 nodes=407 draw_calls=0
-LATENCY sulama  n=8 frames_max=1 budget_ms=33.3 wall_med_ms=32.5 wall_max_ms=54.6 ok
-        sulama wall_ms=[33.0, 54.6, 18.3, 33.1, 32.5, 18.3, 24.5, 30.7] fps=55 nodes=407 draw_calls=0
-LATENCY cekim   n=8 frames_max=1 budget_ms=33.3 wall_med_ms=31.4 wall_max_ms=77.6 ok
-        cekim wall_ms=[77.6, 23.7, 48.7, 34.9, 29.6, 29.5, 31.4, 29.8] fps=55 nodes=411 draw_calls=0
-LATENCY insa    n=8 frames_max=1 budget_ms=33.3 wall_med_ms=46.9 wall_max_ms=86.6 ok
-        insa wall_ms=[86.6, 32.5, 50.6, 35.4, 46.9, 33.0, 49.5, 32.2] fps=59 nodes=419 draw_calls=0
-LATENCY tirpan  n=8 frames_max=1 budget_ms=33.3 wall_med_ms=34.9 wall_max_ms=56.3 ok
-        tirpan wall_ms=[44.1, 45.9, 29.0, 34.9, 30.4, 33.9, 32.7, 56.3] fps=60 nodes=420 draw_calls=0
-LATENCY civi    n=8 frames_max=1 budget_ms=33.3 wall_med_ms=38.4 wall_max_ms=61.2 ok
-        civi wall_ms=[61.2, 37.6, 39.9, 33.2, 50.2, 38.4, 34.4, 28.5] fps=58 nodes=421 draw_calls=0
+LATENCY kazma   n=8 frames_max=1 budget_ms=33.3 wall_med_ms=33.0 wall_max_ms=52.8 ok
+        kazma wall_ms=[52.8, 46.9, 18.9, 33.2, 33.0, 32.7, 32.7, 32.2] fps=60 nodes=411 draw_calls=0
+LATENCY bicme   n=8 frames_max=1 budget_ms=33.3 wall_med_ms=33.6 wall_max_ms=38.9 ok
+        bicme wall_ms=[38.9, 32.3, 34.9, 33.6, 33.4, 33.7, 32.7, 33.2] fps=61 nodes=417 draw_calls=0
+LATENCY toprak  n=8 frames_max=1 budget_ms=33.3 wall_med_ms=33.0 wall_max_ms=47.3 ok
+        toprak wall_ms=[33.8, 47.3, 33.7, 32.5, 32.6, 32.4, 31.9, 33.0] fps=60 nodes=407 draw_calls=0
+LATENCY sulama  n=8 frames_max=1 budget_ms=33.3 wall_med_ms=33.9 wall_max_ms=46.8 ok
+        sulama wall_ms=[35.1, 33.9, 19.4, 33.8, 46.8, 46.5, 19.6, 19.9] fps=61 nodes=407 draw_calls=0
+LATENCY cekim   n=8 frames_max=1 budget_ms=33.3 wall_med_ms=33.7 wall_max_ms=48.3 ok
+        cekim wall_ms=[23.7, 33.4, 48.3, 47.4, 33.7, 32.7, 47.8, 32.4] fps=59 nodes=411 draw_calls=0
+LATENCY insa    n=8 frames_max=1 budget_ms=33.3 wall_med_ms=32.7 wall_max_ms=35.9 ok
+        insa wall_ms=[35.9, 32.7, 32.5, 32.7, 32.7, 31.8, 32.5, 32.6] fps=59 nodes=419 draw_calls=0
+LATENCY tirpan  n=8 frames_max=1 budget_ms=33.3 wall_med_ms=33.7 wall_max_ms=48.5 ok
+        tirpan wall_ms=[37.5, 48.5, 33.7, 32.9, 33.5, 33.5, 48.2, 33.1] fps=61 nodes=420 draw_calls=0
+LATENCY civi    n=8 frames_max=1 budget_ms=33.3 wall_med_ms=36.4 wall_max_ms=48.4 ok
+        civi wall_ms=[36.4, 33.8, 47.8, 48.4, 46.6, 33.6, 33.7, 32.3] fps=60 nodes=422 draw_calls=0
 CARRY agir=150kg sinir=80kg tutulmadi=True
-CARRY firlatma yol=11.4m birakildi=True
+CARRY firlatma yol=11.1m birakildi=True
 TRIGGER civi 1sn_basili_atis=1 yari otomatik ok
 TRIGGER tirpan 1sn_basili_atis=3 tam otomatik ok
-HITSTOP tirpan isinma: istenen=40.0ms olculen=70.0ms kare=33.2ms
-HITSTOP tirpan isabet  veri=40 istenen=40.0ms olculen=44.1ms bitis_karesi=16.5ms aralik=30-80 ok
-HITSTOP tirpan kritik  veri=70 istenen=70.0ms olculen=86.5ms bitis_karesi=27.3ms aralik=30-80 ok
-HITSTOP civi isinma: istenen=30.0ms olculen=45.2ms kare=18.2ms
-HITSTOP civi isabet    veri=30 istenen=30.0ms olculen=40.7ms bitis_karesi=25.6ms aralik=30-80 ok
-HITSTOP civi kritik    veri=60 istenen=60.0ms olculen=62.1ms bitis_karesi=16.4ms aralik=30-80 ok
-RESULT ok heads=8/8 budget_max_ms=33.3 wall_med_ms=38.4 wall_max_ms=121.0 hitstop=ok
+HITSTOP tirpan isinma: istenen=40.0ms olculen=40.7ms kare=15.3ms
+HITSTOP tirpan isabet  veri=40 istenen=40.0ms olculen=46.0ms bitis_karesi=15.7ms aralik=30-80 istenen_aralikta=evet olculen_aralikta=evet ok
+HITSTOP tirpan kritik  veri=60 istenen=60.0ms olculen=62.4ms bitis_karesi=15.5ms aralik=30-80 istenen_aralikta=evet olculen_aralikta=evet ok
+HITSTOP civi isinma: istenen=30.0ms olculen=30.0ms kare=30.0ms
+HITSTOP civi isabet    veri=30 istenen=30.0ms olculen=30.6ms bitis_karesi=15.0ms aralik=30-80 istenen_aralikta=evet olculen_aralikta=evet ok
+HITSTOP civi kritik    veri=60 istenen=60.0ms olculen=77.4ms bitis_karesi=29.8ms aralik=30-80 istenen_aralikta=evet olculen_aralikta=evet ok
+F1KAYIT kayit=True sifirlama=True okuma=True degerler=True yalniz_fark=True ok
+RESULT ok heads=8/8 budget_max_ms=33.3 wall_med_ms=33.7 wall_max_ms=52.8 hitstop=ok

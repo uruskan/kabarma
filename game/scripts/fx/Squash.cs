@@ -42,6 +42,7 @@ public partial class Squash : Node
     /// <summary>Esnemeyi keser, olcegi oldugu gibi birakir (ornegin satista olcegi baska bir ara deger surecekse).</summary>
     public static void Stop(Node3D target)
     {
+        target = Visual(target); // Kick esnemeyi govdesiz gorsel cocuga koyar
         var s = target?.GetNodeOrNull<Squash>(NodeName);
         if (s == null) return;
         target.Scale = s._base;

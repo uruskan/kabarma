@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text.Json.Nodes;
 using System.Threading.Tasks;
 using Godot;
 using Kabarma.Sim;
@@ -88,7 +89,34 @@ public partial class LatencyTest : Node
         await CarryChecks();
         await TriggerModes();
         await HitStops();
+        SaveRoundTrip();
         await PanelShot();
+    }
+
+    /// <summary>
+    /// F1 paneli kaydi: Set -> Save -> Reset -> LoadUser ayri bir dosyada (oyuncunun user://feel_tuning.json'una
+    /// dokunmaz). Dosyada yalnizca degisen sayilar olmali; okununca ayni degerler donmeli. Dosya sonunda silinir.
+    /// </summary>
+    void SaveRoundTrip()
+    {
+        string dir = Main.Args.TryGetValue("test_out", out var o) ? o.TrimEnd('/', '\\') : "user://test";
+        DirAccess.MakeDirRecursiveAbsolute(ProjectSettings.GlobalizePath(dir));
+        string path = dir + "/feel_tuning_test.json";
+        var t = FeelTuning.ForFile(path);
+        float civiDefault = t.Data.Source("civi").HitStopMs;
+        t.Set((JsonObject)t.Doc["master"]!, "shake", 0.5);
+        t.Set((JsonObject)((JsonObject)t.Doc["sources"]!)["tirpan"]!, "hitStopMs", 55);
+        string msg = t.Save();
+        t.Reset();
+        bool reset = Math.Abs(t.Data.Master.Shake - 1f) < 1e-6;
+        bool loaded = t.LoadUser();
+        bool values = Math.Abs(t.Data.Master.Shake - 0.5f) < 1e-6 && t.Data.Source("tirpan").HitStopMs == 55f && t.Data.Source("civi").HitStopMs == civiDefault;
+        var saved = FileAccess.FileExists(path) ? JsonNode.Parse(FileAccess.GetFileAsString(path)) as JsonObject : null;
+        bool onlyDiff = saved != null && saved.Count == 2 && ((JsonObject)saved["master"]!).Count == 1 && ((JsonObject)saved["sources"]!).Count == 1;
+        DirAccess.RemoveAbsolute(ProjectSettings.GlobalizePath(path));
+        bool ok = msg.StartsWith("Kaydedildi") && reset && loaded && values && onlyDiff;
+        if (!ok) _fails.Add($"F1 kaydi: kayit='{msg}' sifirlama={reset} okuma={loaded} degerler={values} yalniz_fark={onlyDiff}");
+        Say($"F1KAYIT kayit={msg.StartsWith("Kaydedildi")} sifirlama={reset} okuma={loaded} degerler={values} yalniz_fark={onlyDiff} {(ok ? "ok" : "FAIL")}");
     }
 
     /// <summary>F1 panelini gercek tusla acar, goruntusunu alir (pencereli kosuda), kapatir.</summary>
@@ -319,7 +347,10 @@ public partial class LatencyTest : Node
         bool close = got >= req - tol && got <= req + frame + tol;
         bool ok = inRange && close;
         if (!ok) _fails.Add($"{name}: istenen {req:0} ms, olculen {got:0} ms (kare {frame:0.0} ms)");
-        Say($"HITSTOP {name,-14} veri={cfgMs:0} istenen={req:0.0}ms olculen={got:0.0}ms bitis_karesi={frame:0.0}ms aralik={_c.HitStopMinMs:0}-{_c.HitStopMaxMs:0} {(ok ? "ok" : "FAIL")}");
+        // Olculenin araliga dusmesi kare suresine bagli (yuklu makinede kareler uzar): bilgi; belirlenimci kosul Sim'de
+        // (CapaTests: istenen + bir kare <= ust sinir).
+        bool gotIn = got >= _c.HitStopMinMs - tol && got <= _c.HitStopMaxMs + tol;
+        Say($"HITSTOP {name,-14} veri={cfgMs:0} istenen={req:0.0}ms olculen={got:0.0}ms bitis_karesi={frame:0.0}ms aralik={_c.HitStopMinMs:0}-{_c.HitStopMaxMs:0} istenen_aralikta={(inRange ? "evet" : "hayir")} olculen_aralikta={(gotIn ? "evet" : "hayir")} {(ok ? "ok" : "FAIL")}");
     }
 
     void Finish()

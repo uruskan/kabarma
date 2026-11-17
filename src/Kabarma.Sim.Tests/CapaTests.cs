@@ -47,10 +47,12 @@ public class CapaTests
             Assert.InRange(src.HitStopMs * f.Master.HitStop, f.Criteria.HitStopMinMs, f.Criteria.HitStopMaxMs);
             Assert.InRange(src.CritHitStopMs * f.Master.HitStop, f.Criteria.HitStopMinMs, f.Criteria.HitStopMaxMs);
         }
-        // Her duraklama ya kapali (0) ya aralikta.
+        // Her duraklama ya kapali (0) ya aralikta; ekranda da aralikta kalsin diye: duraklama ancak kare basinda kalkar,
+        // istenen + bir kare (hedef FPS'te) ust siniri asmamali.
+        float frameMs = 1000f / f.Criteria.TargetFps;
         foreach (var (id, src) in f.Sources)
             foreach (var ms in new[] { src.HitStopMs, src.CritHitStopMs })
-                Assert.True(ms == 0 || (ms >= f.Criteria.HitStopMinMs && ms <= f.Criteria.HitStopMaxMs), $"{id}: {ms} ms");
+                Assert.True(ms == 0 || (ms >= f.Criteria.HitStopMinMs && ms + frameMs <= f.Criteria.HitStopMaxMs), $"{id}: {ms} ms (+{frameMs:0.0} ms kare)");
     }
 
     [Fact]

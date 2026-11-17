@@ -45,6 +45,10 @@ public sealed class FeelTuning
         return new FeelTuning(GameData.ParseDoc(FileAccess.GetFileAsString("res://data/feel.json")), explicitFile ? file : UserPath, explicitFile || !testRun);
     }
 
+    /// <summary>Sinama icin: verilen dosyaya yazan ve ondan okuyan ayar (oyuncunun dosyasi degil).</summary>
+    public static FeelTuning ForFile(string path) =>
+        new(GameData.ParseDoc(FileAccess.GetFileAsString("res://data/feel.json")), path, true);
+
     /// <summary>Oyuncu ayarini varsayilanin ustune bindirir. Dosya yoksa false.</summary>
     public bool LoadUser()
     {
