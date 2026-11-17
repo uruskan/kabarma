@@ -24,6 +24,12 @@ public partial class Director
     {
         var sc = State.Scenario;
         foreach (var (s, miss) in sc.Skipped) GD.Print($"SCENARIO skip {s.Id}: missing {string.Join(",", miss)}");
+        // Siki kip (--strict-scenario): atlanan adim basarisizliktir (birlestirme sonrasi dogrulama).
+        if (Main.Args.ContainsKey("strict-scenario") && sc.Skipped.Count > 0)
+        {
+            GD.Print($"RESULT fail scenario_skipped={SkippedIds} (--strict-scenario)");
+            GetTree().Quit(1);
+        }
         // 1-9: ilk 10 dakika
         Events.Gathered += (item, n) => { if (item == "stone") sc.Report("mine", n); };                                    // 1 mine (Tas)
         Events.Gathered += (item, _) => { if (item == "wood") sc.SetProgress("odun", State.Backpack.Count("wood")); };     // 2 odun
@@ -60,6 +66,9 @@ public partial class Director
         OnStepStart("bakir_kil", () => Capa.Select(Capa.Head.Kazma));
         OnStepStart("civi", () => _madeThisStep.Clear());
     }
+
+    /// <summary>Yuklemede atlanan adimlar, virgulle ("-" yoksa). Bot sonuc satiri ve siki kip kullanir.</summary>
+    public string SkippedIds => State.Scenario.Skipped.Count == 0 ? "-" : string.Join(",", State.Scenario.Skipped.Select(x => x.step.Id));
 
     int OreAndClay() => (State.Backpack.Count("copper_ore") > 0 ? 1 : 0) + (State.Backpack.Count("clay") > 0 ? 1 : 0);
 

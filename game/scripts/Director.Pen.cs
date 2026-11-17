@@ -38,7 +38,7 @@ public partial class Director
     /// <summary>Ilk gece (GDD 24): dalga agilin bulundugu yonden girer, aci veride (scenario.json waveSpreadDegrees).</summary>
     float WaveAngle(float random)
     {
-        if (Pens == null || Pens.Pens.Count == 0) return random;
+        if (Pens == null || Pens.Pens.Count == 0 || !State.Scenario.Is("night")) return random; // yalniz ilk gece (ogretici)
         var c = Pens.Pens[0].Centroid;
         var f = FarmCenter();
         float a = Mathf.Atan2(c.Z - f.Z, c.X - f.X);

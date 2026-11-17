@@ -32,6 +32,8 @@ public partial class PenSystem : Node
     public IReadOnlyList<EggPickup> GroundEggs => _eggs;
     public PenFile Def => _def;
     public int FenceHits { get; private set; }
+    /// <summary>Itmeyle (Gidak tekmesi, vurus) cit ustunden gecen Zipzip sayisi.</summary>
+    public int KnockedOver { get; set; }
 
     /// <summary>Kapi kanadi: yapi setindeki "Kanat" dugumleri (menteşe ekseninde) ve kanat carpismalari.</summary>
     public sealed class Gate
@@ -58,7 +60,7 @@ public partial class PenSystem : Node
         Events.Dawn += () =>
         {
             var hp = _walls.Select(PieceOf).Where(p => p != null && IsInstanceValid(p)).Select(p => p.Hp).DefaultIfEmpty(0).Min();
-            GD.Print($"FENCE night hits={FenceHits} lowest_hp={hp:0}/{_d.Build?.System?.Kit.PieceHp ?? 0:0}");
+            GD.Print($"FENCE night hits={FenceHits} lowest_hp={hp:0}/{_d.Build?.System?.Kit.PieceHp ?? 0:0} knocked_over={KnockedOver}");
         };
         var sys = _d.Build?.System;
         if (sys == null) return;

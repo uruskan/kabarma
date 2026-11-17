@@ -195,6 +195,43 @@ public partial class Bot
         return (_d.World.Ground(mid + n * 1.8f), _d.World.Ground(mid - n * 1.8f));
     }
 
+    PenProp PropIn(string id) => _d.Pens.Pens.Count == 0 ? null : _d.Pens.PropsIn(_d.Pens.Pens[0], id).FirstOrDefault();
+
+    /// <summary>
+    /// Gidak gelmeden agili donatir (ICERIK 10.2): Folluk (4 Odun + 4 Lif, Lif tutamdan Bicme ile) bati yakasina, Yemlik
+    /// (6 Odun) guney ucuna; ikisi de citin disindan konur (hayalet nisan noktasina oturur). Sonra Yemlik'e cantadaki
+    /// bugday (E, citin uzerinden). Bitince true.
+    /// </summary>
+    bool FurnishPen()
+    {
+        var pen = _d.Pens.Pens.FirstOrDefault();
+        if (pen == null) return true;
+        float minX = pen.Polygon.Min(v => v.X), minZ = pen.Polygon.Min(v => v.Z);
+        var c = pen.Centroid;
+        var follukAt = _d.World.Ground(new Vector3(minX + 0.8f, 0, c.Z - 0.6f));
+        var follukStand = _d.World.Ground(new Vector3(minX - 1.6f, 0, c.Z - 0.6f));
+        var yemlikAt = _d.World.Ground(new Vector3(c.X, 0, minZ + 0.9f));
+        var yemlikStand = _d.World.Ground(new Vector3(c.X, 0, minZ - 1.5f));
+        if (PropIn("folluk") == null) { if (EnsureCost(PlaceableOf("folluk"))) PlacePropAt("folluk", follukAt, follukStand); return false; }
+        var y = PropIn("yemlik");
+        if (y == null) { if (EnsureCost(PlaceableOf("yemlik"))) PlacePropAt("yemlik", yemlikAt, yemlikStand); return false; }
+        if (y.Feeder.Amount > 0) return true;
+        if (!EnsureItem("wheat", 1)) return false;
+        Aim(y.GlobalPosition + Vector3.Up * 0.4f);
+        if (MoveRouted(yemlikStand, 0.5f) && _menuT <= 0) { _d.Interact(); _menuT = 0.8f; }
+        return false;
+    }
+
+    /// <summary>Istasyon olmayan yerlestirilebiliri (Yemlik, Folluk) koyar: Insa, tekerlek, durulacak yer, nisan, sol tik.</summary>
+    void PlacePropAt(string id, Vector3 at, Vector3 stand)
+    {
+        _d.Capa.Select(Capa.Head.Insa);
+        if (_d.Capa.CurrentPlaceable != id) { if (_stepT > 0.15f) { _d.Capa.CyclePlaceable(1); _stepT = 0; } return; }
+        Aim(at);
+        if (!MoveRouted(stand, 0.5f)) { _stepT = 0; return; }
+        if (_stepT > 1.0f) { FirePressed = true; _stepT = 0; GD.Print($"BOT place {id} at {at}"); }
+    }
+
     void StepGidak(Vector3 o)
     {
         var g = _d.Gidak;
@@ -202,6 +239,7 @@ public partial class Bot
         if (!g.Visible || gate == null) { P.MoveOverride = Vector3.Zero; return; }
         if (!g.Tame)
         {
+            if (!FurnishPen()) return;
             // Bugday: oyuncunun yolu (E), Gidak'in yanina git.
             if (!EnsureItem("wheat", 1)) return;
             Aim(g.GlobalPosition + Vector3.Up * 0.4f);
@@ -235,6 +273,16 @@ public partial class Bot
         bool dusk = _d.Phase == Director.Act.Dusk;
         if (gate != null && (dusk || _d.Night?.Phase == NightPhase.Alarm))
         {
+            // Folluk'taki yumurta (agilin icinden, E)
+            var nest = PropIn("folluk");
+            if (nest != null && nest.Nest.Eggs > 0 && _d.Pens.PenAt(P.GlobalPosition) != null)
+            {
+                var pc = _d.Pens.Pens[0].Centroid;
+                var toC = new Vector3(pc.X - nest.GlobalPosition.X, 0, pc.Z - nest.GlobalPosition.Z).Normalized();
+                Aim(nest.GlobalPosition + Vector3.Up * 0.6f);
+                if (MoveTo(nest.GlobalPosition + toC * 1.2f, 0.4f, false) && _menuT <= 0) { _d.Interact(); _menuT = 0.6f; }
+                return;
+            }
             var egg = _d.Pens.GroundEggs.FirstOrDefault(e => IsInstanceValid(e));
             if (egg != null)
             {
@@ -262,19 +310,19 @@ public partial class Bot
     }
 
     /// <summary>
-    /// Agilli ilk gece savunmasi: en yakin Zipzip'e nisan alip ates eder; arada cit varsa agilin etrafindan dolasir
-    /// (oyuncu da dolasir). Kovalayan Zipzip'ten kacmaz, durup vurur (geri kacis onu menzil kiyisinda tutuyordu).
+    /// Agilli ilk gece savunmasi: tarlaya en yakin Zipzip'e nisan alip ates eder (cit otekileri tutar; Tirpan Isini citin
+    /// ustunden gecer); uzaktaysa agilin etrafindan yaklasir. Kovalayan Zipzip'ten kacmaz, durup vurur.
     /// </summary>
     void NightFight()
     {
         var n = _d.Night;
         if (n?.Offer != null && n.Offer.Age > 0.6f) _d.ChooseCard(0);
-        var z = Zipzip.All.Where(e => !e.Dead).OrderBy(e => e.GlobalPosition.DistanceTo(P.GlobalPosition)).FirstOrDefault();
-        if (z == null) { Aim(_d.FarmCenter() + Vector3.Up); MoveTo(_d.FarmCenter() + new Vector3(-2.5f, 0, -2.5f), 1.5f, false); return; }
+        var farm = _d.FarmCenter();
+        var z = Zipzip.All.Where(e => !e.Dead).OrderBy(e => e.GlobalPosition.DistanceTo(farm)).FirstOrDefault();
+        if (z == null) { Aim(_d.FarmCenter() + Vector3.Up); MoveRouted(_d.FarmCenter() + new Vector3(-2.5f, 0, -2.5f), 1.5f); return; }
         Aim(z.Center);
-        if (_d.Pens.FirstHit(P.GlobalPosition, z.GlobalPosition, 0.1f) != null) { MoveRouted(z.GlobalPosition, 6f); return; }
         float dist = new Vector2(z.GlobalPosition.X - P.GlobalPosition.X, z.GlobalPosition.Z - P.GlobalPosition.Z).Length();
-        if (dist > 9f) MoveTo(z.GlobalPosition, 7f);
+        if (dist > 9f) MoveRouted(z.GlobalPosition, 7f);
         else P.MoveOverride = Vector3.Zero;
         Fire = dist < 11f;
     }

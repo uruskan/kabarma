@@ -30,11 +30,16 @@ public partial class Zipzip
         // yolu bir duvari kesiyorsa sicrama duvarin onunde biter. Bu karede yapilmis hareket de geri alinir.
         bool newHop = _hopT > 0 && (_fenceLastHopT <= 0 || _hopT > _fenceLastHopT);
         _fenceLastHopT = _hopT;
-        // Yedek: itme olmadan bu karede bir duvari kestiyse duvarin onunde kalir (itme, tekme cit ustunden atabilir).
-        if (_fencePrevSet && !newHop && _knock.LengthSquared() < 0.25f && ps.FirstHit(_fencePrev, GlobalPosition, Radius * 0.85f) is WallHit back)
+        // Yedek: itme olmadan bu karede bir duvari kestiyse duvarin onunde kalir. Itme (Gidak tekmesi, vurus) cit
+        // ustunden atabilir; sayilir (PenSystem.KnockedOver, safakta loglanir).
+        if (_fencePrevSet && !newHop && ps.FirstHit(_fencePrev, GlobalPosition, Radius * 0.85f) is WallHit back)
         {
-            GlobalPosition = _dir.World.Ground(new Vector3(back.Point.X, 0, back.Point.Z));
-            _hopTo = GlobalPosition;
+            if (_knock.LengthSquared() < 0.25f)
+            {
+                GlobalPosition = _dir.World.Ground(new Vector3(back.Point.X, 0, back.Point.Z));
+                _hopTo = GlobalPosition;
+            }
+            else ps.KnockedOver++;
         }
         if (newHop)
         {

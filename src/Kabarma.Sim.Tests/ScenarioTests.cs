@@ -178,4 +178,45 @@ public class ScenarioTests
         Assert.Equal(Order.Take(9), real.Steps.Take(9).Select(s => s.Id));
         Assert.All(real.Skipped, x => Assert.NotEmpty(d.MissingFor(x.step)));
     }
+
+    /// <summary>Gercek veriyle: on kosulu veride olan adim atlanmaz, olmayan atlanir; on kosulsuz adim hep oynanir.</summary>
+    [Fact]
+    public void Met_requirement_keeps_step_unmet_requirement_skips_it()
+    {
+        var d = Data();
+        var file = new ScenarioFile
+        {
+            Steps =
+            {
+                new StepDef { Id = "a", Target = 1, Requires = { "tezgah", "civi" } }, // ikisi de veride
+                new StepDef { Id = "b", Target = 1, Requires = { "tezgah", "yok_boyle_bir_sey" } },
+                new StepDef { Id = "c", Target = 1 },
+            }
+        };
+        var sc = new Scenario(file, d.MissingFor);
+        Assert.Equal(new[] { "a", "c" }, sc.Steps.Select(s => s.Id));
+        var skipped = Assert.Single(sc.Skipped);
+        Assert.Equal("b", skipped.step.Id);
+        Assert.Equal(new[] { "yok_boyle_bir_sey" }, skipped.missing);
+        sc.Report("b"); // atlanan adimin olayi yok sayilir
+        Assert.True(sc.Is("a"));
+    }
+
+    /// <summary>
+    /// requires yalniz CLAUDE.md'deki ortak kimlikleri kullanir: birlestirmeden sonra ad tutmazsa adim sessizce kapali
+    /// kalmasin diye uydurma kimlik yok.
+    /// </summary>
+    [Fact]
+    public void Requires_use_only_shared_ids()
+    {
+        var shared = new HashSet<string>
+        {
+            "stone", "wood", "fiber", "clay", "copper_ore", "copper_ingot", "wheat", "egg", "turnip", "turnip_seed", "civi",
+            "civi_tabancasi", "el_arabasi", "kargo_kasasi", "kozde_salgam", "haslanmis_yumurta", "sebze_corbasi",
+            "ocak", "tezgah", "tas_firin", "paketleme", "ocakbasi", "kargo_rampasi", "ahsap_kapi", "sandik", "uyku_tulumu",
+            "mesale", "yemlik", "folluk",
+        };
+        foreach (var s in Data().Scenario.Steps)
+            foreach (var id in s.Requires) Assert.True(shared.Contains(id), $"{s.Id}: '{id}' ortak kimlik degil");
+    }
 }

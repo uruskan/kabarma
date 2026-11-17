@@ -97,7 +97,7 @@ public partial class Bot : Node
         {
             _done = true;
             var s = _d.State;
-            GD.Print($"RESULT ok credits={s.Credits} eggs={s.Eggs} kills={_d.Night?.Kills} cards={_d.Night?.CardsCount} maya={_d.Night?.Maya:0} stations={_d.Stations.Count} harvests={_d.Harvests} t={_t:0.0}");
+            GD.Print($"RESULT ok credits={s.Credits} eggs={s.Eggs} kills={_d.Night?.Kills} cards={_d.Night?.CardsCount} maya={_d.Night?.Maya:0} stations={_d.Stations.Count} harvests={_d.Harvests} skipped={_d.SkippedIds} t={_t:0.0}");
         }
     }
 

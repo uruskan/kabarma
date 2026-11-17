@@ -1,0 +1,83 @@
+﻿Godot Engine v4.7.2.stable.mono.official.ed1daf0bf - https://godotengine.org
+
+TEST bot
+PLAYER model anims: carry,cheer,crouch_walk,hurt,idle,jump,kneel,knockdown,push,run,run_fast,shock_fall,walk,walk_casual,wave
+AUDIO ok 13/13
+POFUDUK anims: preset_quadruped_walk
+BUILD kit pieces=28
+SCENARIO skip yemek: missing ocakbasi
+SCENARIO skip firin: missing copper_ingot
+SCENARIO skip civi: missing civi_tabancasi
+SCENARIO skip kasa: missing el_arabasi
+SCENARIO skip barinak: missing uyku_tulumu
+BOOT Kabarma MVP
+BOT step mine t=1.0
+HATCH intro done
+STEP mine -> odun t=5.8
+BOT step odun t=11.4
+STEP odun -> ocak t=8.1
+BOT step ocak t=20.5
+STEP ocak -> tezgah t=9.6
+BOT step tezgah t=26.1
+PLACED tezgah at (-2.5, 0, 4.5)
+STEP tezgah -> tarla t=10.0
+BOT step tarla t=27.4
+STEP tarla -> agil t=12.0
+BOT step agil t=35.0
+TAS_FIRIN parts: base,body,part_4,part_5,door,door_handle door=True
+BOT aim cit err=1.42 valid=True reason= mode=ground
+BOT aim cit err=0.75 valid=True reason= mode=ground
+BOT aim cit err=0.45 valid=True reason= mode=ground
+BOT place cit at (-4.5569983, 0, -9.287827)
+BUILT cit pieces=1
+BOT place cit at (-3.0569983, 0, -7.7878265)
+BUILT cit pieces=2
+BOT place bahce_kapisi at (-3.0569983, 0, -4.7878265)
+BUILT bahce_kapisi pieces=3
+TAS_FIRIN parts: base,body,part_4,part_5,door,door_handle door=True
+BOT place cit at (-4.5569983, 0, -3.2878268)
+BUILT cit pieces=4
+BOT place cit at (-6.0569983, 0, -4.787827)
+BUILT cit pieces=5
+BOT aim cit err=2.12 valid=True reason= mode=snap
+BOT place cit at (-6.0569983, 0, -7.787827)
+BUILT cit pieces=6
+PEN area=18.0 cells=2 walls=6 gate=True gidak=4
+STEP agil -> gidak t=19.8
+GIDAK appears at (0.4785365, 0, 1.5761338)
+BOT step gidak t=64.4
+GIDAK fed trust=1.00 tame=True
+GATE bahce_kapisi open
+GIDAK penned area=18.0 cells=2
+STEP gidak -> night t=21.3
+EGG laid ground at (-3.4029844, 0, -3.797227)
+BOT step night t=71.2
+EGG picked eggs=1
+GATE bahce_kapisi closed
+NIGHT start
+FIRSTNIGHT ripen=9
+NIGHT swell crops=9
+NIGHT wave 1 count=3
+FENCE hit cit_1 hp=394/400 hits=1
+BOT fence watch done hits=6 t=17.8
+NIGHT card keskin_goz rank=1
+NIGHT wave 2 count=7
+NIGHT card kiragi rank=1
+NIGHT wave 3 count=11
+NIGHT card tez_el rank=1
+NIGHT dawn kills=21 level=3 maya=48 swollenLeft=9
+FENCE night hits=10 lowest_hp=346/400
+STEP night -> sell t=52.7
+BOT step sell t=186.1
+SOLD turnip S +120 credits=120
+STEP sell -> hasat t=55.7
+BOT step hasat t=197.9
+STEP hasat -> bakir_kil t=56.0
+HARVEST 5 total=5 turnips=35
+BOT step bakir_kil t=199.0
+REPORT shown
+STEP bakir_kil -> end t=58.5
+CHAIN done
+BOT step end t=209.1
+RESULT ok credits=120 eggs=1 kills=21 cards=3 maya=48 stations=1 harvests=5 t=209.1
+QUIT t=400.0
