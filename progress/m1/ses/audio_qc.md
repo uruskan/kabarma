@@ -1,17 +1,17 @@
 # Ses denetimi (pipeline/audio_qc.py)
 
-198 dosya · 178 gecti · 31 KALDI · 95 UYARI
+198 dosya · 193 gecti · 5 KALDI · 94 UYARI
 
 Tonlama (key) tespiti yok; tempo kestirimi yalnizca muzikte. Kulak yargisi sahibin dinleme turunda.
 
 | Dosya | Tur | Sure (sn) | Gercek tepe (dBTP) | LUFS-I | En yuksek anlik | Bas/son sessizlik (sn) | Dikis | Sonuc |
 |---|---|---|---|---|---|---|---|---|
-| game/assets/audio/music/cayir_gunduz.mp3 | music_day | 180.04 | -1.0 | -14.9 | -11.0 | 0.025 / 3.457 |  | KALDI son_sessizlik: 3.457 sn > 2.0 |
-| game/assets/audio/music/kabarma_1.mp3 | music_kabarma | 120.06 | -0.8 | -15.0 | -12.3 | 0.033 / 0.001 | 28.0 dB / 0.01x | KALDI tepe: gercek tepe -0.8 dBTP > -1.0; KALDI dikis_duzey: bas/son duzey farki 28.0 dB |
-| game/assets/audio/music/kabarma_2.mp3 | music_kabarma | 120.06 | -1.1 | -15.6 | -14.1 | 0.032 / 0.001 | 12.59 dB / 0.01x | KALDI dikis_duzey: bas/son duzey farki 12.59 dB |
-| game/assets/audio/music/kabarma_3.mp3 | music_kabarma | 120.06 | -87.5 | None | None | 120.059 / 120.059 | 0.0 dB / 0.0x | KALDI bas_sessizlik: 120.059 sn > 0.5; KALDI son_sessizlik: 120.059 sn > 2.0; KALDI tempo: kestirilen 203.4 BPM, veri 120 BPM |
-| game/assets/audio/music/kabarma_full.mp3 | music_kabarma | 120.03 | 0.1 | -11.6 | -9.9 | 0.007 / 0.003 | 2.44 dB / 0.01x | KALDI tepe: gercek tepe 0.1 dBTP > -1.0; UYARI yukseklik: -11.6 LUFS, secilen aralik -20.0..-12.0 |
-| game/assets/audio/music/kabarma_night.mp3 | music_kabarma | 90.02 | -0.2 | -11.9 | -10.9 | 0.007 / 0.0 | 5.32 dB / 0.22x | KALDI tepe: gercek tepe -0.2 dBTP > -1.0; KALDI dikis_duzey: bas/son duzey farki 5.32 dB; UYARI yukseklik: -11.9 LUFS, secilen aralik -20.0..-12.0 |
+| game/assets/audio/music/cayir_gunduz.mp3 | music_day | 176.66 | -1.5 | -15.4 | -11.6 | 0.01 / 0.124 |  | gecti |
+| game/assets/audio/music/kabarma_1.mp3 | music_layer | 120.03 | -5.0 | -19.5 | -17.8 | 0.037 / 0.001 | 25.31 dB / 0.05x | gecti |
+| game/assets/audio/music/kabarma_2.mp3 | music_layer | 120.03 | -1.1 | -15.6 | -14.1 | 0.006 / 0.001 | 9.24 dB / 0.09x | gecti |
+| game/assets/audio/music/kabarma_3.mp3 | music_layer | 120.03 | -3.0 | -17.9 | -13.7 | 0.007 / 0.001 | 9.13 dB / 0.02x | gecti |
+| game/assets/audio/music/kabarma_full.mp3 | music_kabarma | 120.03 | -1.4 | -13.2 | -11.5 | 0.007 / 0.003 | 2.47 dB / 0.02x | gecti |
+| game/assets/audio/music/kabarma_night.mp3 | music_kabarma | 90.02 | -0.2 | -11.9 | -10.9 | 0.007 / 0.0 | 5.32 dB / 0.22x | KALDI tepe: gercek tepe -0.2 dBTP > -1.0; UYARI yukseklik: -11.9 LUFS, secilen aralik -20.0..-12.0 |
 | game/assets/audio/sfx/adim_ot_1.mp3 | sfx | 0.48 | -5.2 | -22.8 | -22.8 | 0.005 / 0.071 |  | gecti |
 | game/assets/audio/sfx/adim_ot_2.mp3 | sfx | 0.48 | -8.6 | -26.9 | -26.9 | 0.006 / 0.065 |  | UYARI yukseklik: en yuksek anlik -26.9 LUFS, secilen aralik -26.0..-10.0 |
 | game/assets/audio/sfx/adim_ot_3.mp3 | sfx | 0.45 | -19.1 | -35.6 | -35.6 | 0.011 / 0.043 |  | UYARI yukseklik: en yuksek anlik -35.6 LUFS, secilen aralik -26.0..-10.0 |
@@ -24,8 +24,8 @@ Tonlama (key) tespiti yok; tempo kestirimi yalnizca muzikte. Kulak yargisi sahib
 | game/assets/audio/sfx/ahsap_kapi_1.mp3 | sfx | 0.80 | -3.7 | -16.7 | -15.4 | 0.0 / 0.0 |  | gecti |
 | game/assets/audio/sfx/ahsap_kapi_2.mp3 | sfx | 0.74 | -1.4 | -22.9 | -22.7 | 0.01 / 0.1 |  | UYARI spektrum: agirlik merkezi 749 Hz, grup 'yapi' ortancasi 2597 Hz |
 | game/assets/audio/sfx/ahsap_kapi_3.mp3 | sfx | 0.48 | -1.9 | -18.4 | -18.4 | 0.0 / 0.1 |  | gecti |
-| game/assets/audio/sfx/ates_citirti_1.mp3 | loop | 5.00 | -7.6 | -30.7 | -26.8 | 0.0 / 0.0 | 4.62 dB / 0.38x | KALDI dikis_duzey: bas/son duzey farki 4.62 dB; UYARI yukseklik: en yuksek anlik -26.8 LUFS, secilen aralik -26.0..-10.0 |
-| game/assets/audio/sfx/ates_citirti_2.mp3 | loop | 5.00 | -1.0 | -31.9 | -24.0 | 0.0 / 0.0 | 3.39 dB / 0.11x | KALDI dikis_duzey: bas/son duzey farki 3.39 dB |
+| game/assets/audio/sfx/ates_citirti_1.mp3 | loop | 5.00 | -7.6 | -30.7 | -26.8 | 0.0 / 0.0 | 4.62 dB / 0.38x | UYARI yukseklik: en yuksek anlik -26.8 LUFS, secilen aralik -26.0..-10.0 |
+| game/assets/audio/sfx/ates_citirti_2.mp3 | loop | 5.00 | -1.0 | -31.9 | -24.0 | 0.0 / 0.0 | 3.39 dB / 0.11x | gecti |
 | game/assets/audio/sfx/ates_citirti_3.mp3 | loop | 5.00 | -8.5 | -31.2 | -27.4 | 0.0 / 0.0 | 2.45 dB / 0.13x | UYARI yukseklik: en yuksek anlik -27.4 LUFS, secilen aralik -26.0..-10.0 |
 | game/assets/audio/sfx/atis_civi_1.mp3 | sfx | 0.48 | -4.1 | -19.0 | -19.0 | 0.0 / 0.227 |  | gecti |
 | game/assets/audio/sfx/atis_civi_2.mp3 | sfx | 0.48 | -2.8 | -17.1 | -17.1 | 0.0 / 0.0 |  | gecti |
@@ -53,7 +53,7 @@ Tonlama (key) tespiti yok; tempo kestirimi yalnizca muzikte. Kulak yargisi sahib
 | game/assets/audio/sfx/donma_citirti_2.mp3 | sfx | 0.80 | -6.6 | -27.3 | -24.9 | 0.0 / 0.004 |  | gecti |
 | game/assets/audio/sfx/donma_citirti_3.mp3 | sfx | 0.80 | -3.4 | -21.7 | -20.1 | 0.0 / 0.001 |  | gecti |
 | game/assets/audio/sfx/el_arabasi_teker_1.mp3 | loop | 3.00 | -4.3 | -21.2 | -18.1 | 0.0 / 0.0 | 2.01 dB / 0.53x | gecti |
-| game/assets/audio/sfx/el_arabasi_teker_2.mp3 | loop | 3.00 | -1.4 | -20.2 | -15.5 | 0.0 / 0.0 | 6.53 dB / 7.64x | KALDI dikis_duzey: bas/son duzey farki 6.53 dB; KALDI dikis_atlama: dikiste atlama 7.64 x tipik |
+| game/assets/audio/sfx/el_arabasi_teker_2.mp3 | loop | 2.50 | -1.5 | -20.1 | -15.5 | 0.0 / 0.0 | 6.58 dB / 0.21x | gecti |
 | game/assets/audio/sfx/el_arabasi_teker_3.mp3 | loop | 3.00 | -1.4 | -23.0 | -18.3 | 0.0 / 0.0 | 1.31 dB / 2.04x | gecti |
 | game/assets/audio/sfx/filiz_cikisi_1.mp3 | sfx | 0.62 | -6.0 | -27.8 | -24.9 | 0.0 / 0.099 |  | gecti |
 | game/assets/audio/sfx/filiz_cikisi_2.mp3 | sfx | 0.64 | -7.7 | -26.1 | -25.1 | 0.0 / 0.1 |  | gecti |
@@ -101,14 +101,14 @@ Tonlama (key) tespiti yok; tempo kestirimi yalnizca muzikte. Kulak yargisi sahib
 | game/assets/audio/sfx/kabarmis_patlama_1.mp3 | sfx | 0.35 | -1.4 | None | None | 0.011 / 0.1 |  | UYARI yukseklik: 400 ms'den kisa: LUFS olculemez, en yuksek 100 ms RMS -22.1 dBFS |
 | game/assets/audio/sfx/kabarmis_patlama_2.mp3 | sfx | 0.50 | -2.0 | -21.1 | -21.1 | 0.0 / 0.1 |  | gecti |
 | game/assets/audio/sfx/kabarmis_patlama_3.mp3 | sfx | 0.44 | -1.4 | -20.6 | -20.6 | 0.0 / 0.136 |  | UYARI spektrum: agirlik merkezi 603 Hz, grup 'yaratik' ortancasi 2338 Hz |
-| game/assets/audio/sfx/kargo_roketi_1.mp3 | sfx | 1.81 | -0.9 | -16.1 | -12.6 | 0.01 / 0.1 |  | KALDI tepe: gercek tepe -0.9 dBTP > -1.0 |
+| game/assets/audio/sfx/kargo_roketi_1.mp3 | sfx | 1.81 | -2.2 | -16.7 | -13.2 | 0.01 / 0.1 |  | gecti |
 | game/assets/audio/sfx/kargo_roketi_2.mp3 | sfx | 1.73 | -2.5 | -17.2 | -14.2 | 0.01 / 0.1 |  | gecti |
 | game/assets/audio/sfx/kargo_roketi_3.mp3 | sfx | 2.00 | -2.4 | -15.3 | -13.2 | 0.01 / 0.233 |  | gecti |
 | game/assets/audio/sfx/kart_secimi_1.mp3 | sfx | 0.60 | -4.0 | -22.0 | -21.8 | 0.0 / 0.0 |  | gecti |
 | game/assets/audio/sfx/kart_secimi_2.mp3 | sfx | 0.60 | -4.9 | -20.8 | -20.6 | 0.0 / 0.224 |  | gecti |
 | game/assets/audio/sfx/kart_secimi_3.mp3 | sfx | 0.39 | -9.8 | None | None | 0.0 / 0.1 |  | UYARI yukseklik: 400 ms'den kisa: LUFS olculemez, en yuksek 100 ms RMS -27.9 dBFS |
-| game/assets/audio/sfx/kaya_kemirme_1.mp3 | loop | 3.00 | -5.2 | -15.6 | -15.0 | 0.0 / 0.0 | 6.86 dB / 0.31x | KALDI dikis_duzey: bas/son duzey farki 6.86 dB |
-| game/assets/audio/sfx/kaya_kemirme_2.mp3 | loop | 3.00 | -19.5 | -33.4 | -32.9 | 0.0 / 0.0 | 3.42 dB / 0.33x | KALDI dikis_duzey: bas/son duzey farki 3.42 dB; UYARI yukseklik: en yuksek anlik -32.9 LUFS, secilen aralik -26.0..-10.0 |
+| game/assets/audio/sfx/kaya_kemirme_1.mp3 | loop | 3.00 | -5.2 | -15.6 | -15.0 | 0.0 / 0.0 | 6.86 dB / 0.31x | gecti |
+| game/assets/audio/sfx/kaya_kemirme_2.mp3 | loop | 3.00 | -19.5 | -33.4 | -32.9 | 0.0 / 0.0 | 3.42 dB / 0.33x | UYARI yukseklik: en yuksek anlik -32.9 LUFS, secilen aralik -26.0..-10.0 |
 | game/assets/audio/sfx/kaya_kemirme_3.mp3 | loop | 3.00 | -6.8 | -17.7 | -16.5 | 0.0 / 0.0 | 0.34 dB / 1.73x | gecti |
 | game/assets/audio/sfx/kazma_isini_1.mp3 | loop | 3.00 | -14.3 | -23.1 | -22.2 | 0.0 / 0.0 | 1.09 dB / 0.26x | gecti |
 | game/assets/audio/sfx/kazma_isini_2.mp3 | loop | 3.00 | -32.0 | -40.4 | -40.2 | 0.0 / 0.0 | 0.15 dB / 0.47x | UYARI yukseklik: en yuksek anlik -40.2 LUFS, secilen aralik -26.0..-10.0 |
@@ -156,7 +156,7 @@ Tonlama (key) tespiti yok; tempo kestirimi yalnizca muzikte. Kulak yargisi sahib
 | game/assets/audio/sfx/sisme_1.mp3 | sfx | 1.20 | -2.2 | -13.8 | -11.4 | 0.027 / 0.0 |  | gecti |
 | game/assets/audio/sfx/sisme_2.mp3 | sfx | 1.16 | -6.8 | -18.7 | -16.1 | 0.01 / 0.004 |  | gecti |
 | game/assets/audio/sfx/sisme_3.mp3 | sfx | 1.19 | -2.3 | -12.5 | -10.3 | 0.01 / 0.009 |  | gecti |
-| game/assets/audio/sfx/sokum_1.mp3 | sfx | 0.66 | -0.9 | -16.4 | -14.9 | 0.01 / 0.006 |  | KALDI tepe: gercek tepe -0.9 dBTP > -1.0 |
+| game/assets/audio/sfx/sokum_1.mp3 | sfx | 0.66 | -1.5 | -17.0 | -15.5 | 0.01 / 0.013 |  | gecti |
 | game/assets/audio/sfx/sokum_2.mp3 | sfx | 0.68 | -1.6 | -15.6 | -15.1 | 0.0 / 0.055 |  | gecti |
 | game/assets/audio/sfx/sokum_3.mp3 | sfx | 0.67 | -1.1 | -16.8 | -15.9 | 0.0 / 0.1 |  | gecti |
 | game/assets/audio/sfx/sulama_1.mp3 | loop | 3.00 | -10.1 | -18.4 | -18.2 | 0.0 / 0.0 | 0.22 dB / 0.33x | gecti |
@@ -166,9 +166,9 @@ Tonlama (key) tespiti yok; tempo kestirimi yalnizca muzikte. Kulak yargisi sahib
 | game/assets/audio/sfx/telsiz_mandali_1.mp3 | ui | 0.10 | -3.5 | None | None | 0.0 / 0.002 |  | UYARI yukseklik: 400 ms'den kisa: LUFS olculemez, en yuksek 100 ms RMS -22.8 dBFS; UYARI spektrum: agirlik merkezi 7498 Hz, grup 'arayuz' ortancasi 1529 Hz |
 | game/assets/audio/sfx/telsiz_mandali_2.mp3 | ui | 0.08 | -2.5 | None | None | 0.0 / 0.002 |  | UYARI yukseklik: 400 ms'den kisa: LUFS olculemez, en yuksek 100 ms RMS -21.3 dBFS; UYARI spektrum: agirlik merkezi 7125 Hz, grup 'arayuz' ortancasi 1529 Hz |
 | game/assets/audio/sfx/telsiz_mandali_3.mp3 | ui | 0.12 | -2.7 | None | None | 0.0 / 0.001 |  | UYARI yukseklik: 400 ms'den kisa: LUFS olculemez, en yuksek 100 ms RMS -22.6 dBFS; UYARI spektrum: agirlik merkezi 7442 Hz, grup 'arayuz' ortancasi 1529 Hz |
-| game/assets/audio/sfx/tezgah_calisma_1.mp3 | loop | 4.00 | -5.6 | -21.8 | -19.2 | 0.0 / 0.0 | 6.19 dB / 0.02x | KALDI dikis_duzey: bas/son duzey farki 6.19 dB |
-| game/assets/audio/sfx/tezgah_calisma_2.mp3 | loop | 4.00 | -2.7 | -19.2 | -17.7 | 0.0 / 0.0 | 13.56 dB / 0.29x | KALDI dikis_duzey: bas/son duzey farki 13.56 dB |
-| game/assets/audio/sfx/tezgah_calisma_3.mp3 | loop | 4.00 | -1.3 | -22.9 | -20.9 | 0.0 / 0.0 | 37.08 dB / 1.21x | KALDI dikis_duzey: bas/son duzey farki 37.08 dB |
+| game/assets/audio/sfx/tezgah_calisma_1.mp3 | loop | 4.00 | -5.6 | -21.8 | -19.2 | 0.0 / 0.0 | 6.19 dB / 0.02x | gecti |
+| game/assets/audio/sfx/tezgah_calisma_2.mp3 | loop | 4.00 | -2.7 | -19.2 | -17.7 | 0.0 / 0.0 | 13.56 dB / 0.29x | gecti |
+| game/assets/audio/sfx/tezgah_calisma_3.mp3 | loop | 3.50 | -2.0 | -22.9 | -21.0 | 0.0 / 0.0 | 15.87 dB / 3.0x | gecti |
 | game/assets/audio/sfx/till.mp3 | sfx | 0.45 | -5.1 | -18.6 | -18.6 | 0.0 / 0.034 |  | gecti |
 | game/assets/audio/sfx/tohum_ekme_1.mp3 | sfx | 0.19 | -26.5 | None | None | 0.0 / 0.1 |  | UYARI yukseklik: 400 ms'den kisa: LUFS olculemez, en yuksek 100 ms RMS -46.8 dBFS |
 | game/assets/audio/sfx/tohum_ekme_2.mp3 | sfx | 0.28 | -35.7 | None | None | 0.01 / 0.1 |  | UYARI yukseklik: 400 ms'den kisa: LUFS olculemez, en yuksek 100 ms RMS -54.2 dBFS |
@@ -188,7 +188,7 @@ Tonlama (key) tespiti yok; tempo kestirimi yalnizca muzikte. Kulak yargisi sahib
 | game/assets/audio/sfx/ui_onay_1.mp3 | ui | 0.42 | -3.0 | -15.2 | -15.2 | 0.0 / 0.0 |  | gecti |
 | game/assets/audio/sfx/ui_onay_2.mp3 | ui | 0.42 | -3.0 | -14.5 | -14.5 | 0.0 / 0.0 |  | gecti |
 | game/assets/audio/sfx/ui_onay_3.mp3 | ui | 0.42 | -3.0 | -15.2 | -15.2 | 0.0 / 0.0 |  | gecti |
-| game/assets/audio/sfx/water.mp3 | loop | 0.50 | -2.7 | -13.6 | -13.2 | 0.0 / 0.097 | 26.19 dB / 0.06x | KALDI sure: 0.50 sn, beklenen 1.0-30.0; KALDI dikis_duzey: bas/son duzey farki 26.19 dB |
+| game/assets/audio/sfx/water.mp3 | loop | 0.50 | -2.7 | -13.6 | -13.2 | 0.0 / 0.097 | 15.06 dB / 0.06x | KALDI sure: 0.50 sn, beklenen 1.0-30.0 |
 | game/assets/audio/sfx/yanik_tutusma_1.mp3 | sfx | 0.68 | -1.1 | -16.9 | -14.9 | 0.0 / 0.0 |  | gecti |
 | game/assets/audio/sfx/yanik_tutusma_2.mp3 | sfx | 0.68 | -9.9 | -29.8 | -25.9 | 0.0 / 0.135 |  | gecti |
 | game/assets/audio/sfx/yanik_tutusma_3.mp3 | sfx | 0.68 | -1.2 | -16.1 | -15.1 | 0.0 / 0.0 |  | gecti |
@@ -205,6 +205,7 @@ Tonlama (key) tespiti yok; tempo kestirimi yalnizca muzikte. Kulak yargisi sahib
 | game/assets/audio/sfx/zipzip_sicrama_2.mp3 | sfx | 0.48 | -1.3 | -23.7 | -23.7 | 0.0 / 0.233 |  | gecti |
 | game/assets/audio/sfx/zipzip_sicrama_3.mp3 | sfx | 0.48 | -1.5 | -23.2 | -23.2 | 0.0 / 0.195 |  | gecti |
 
-Tempo kestirimi: game/assets/audio/music/cayir_gunduz.mp3: 166.8 BPM, game/assets/audio/music/kabarma_1.mp3: 119.9 BPM, game/assets/audio/music/kabarma_2.mp3: 119.9 BPM, game/assets/audio/music/kabarma_3.mp3: 203.4 BPM, game/assets/audio/music/kabarma_full.mp3: 119.9 BPM, game/assets/audio/music/kabarma_night.mp3: 119.9 BPM (veri: Kabarma 120 BPM).
+Tempo kestirimi: game/assets/audio/music/cayir_gunduz.mp3: 166.8 BPM, game/assets/audio/music/kabarma_1.mp3: 59.7 BPM, game/assets/audio/music/kabarma_2.mp3: 119.9 BPM, game/assets/audio/music/kabarma_3.mp3: 79.9 BPM, game/assets/audio/music/kabarma_full.mp3: 119.9 BPM, game/assets/audio/music/kabarma_night.mp3: 119.9 BPM (veri: Kabarma 120 BPM).
 
-Kabarma katman kaymasi (ms): game/assets/audio/music/kabarma_2.mp3: -130.0, game/assets/audio/music/kabarma_3.mp3: -120.0, game/assets/audio/music/kabarma_full.mp3: 30.0, game/assets/audio/music/kabarma_night.mp3: 90.0
+Kabarma katmanlari: ornek sayilari kabarma_1.mp3 5293440, kabarma_2.mp3 5293440, kabarma_3.mp3 5293440; toplam: dikis 2.91 dB (sesin kendi oynamasi 5.27 dB), atlama 0.01x, tempo 119.9 BPM.
+Zarf kaymasi (yalniz bilgi; farkli enstrumanlarda yaniltici): kabarma_2.mp3: 120.0 ms, kabarma_3.mp3: -130.0 ms

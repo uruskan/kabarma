@@ -105,7 +105,7 @@ Kurgu tek bu bölümde durur. Sistemler kurgudan bağımsız tasarlandı; kabuk 
 
 | Konu | Karar | Gerekçe |
 |---|---|---|
-| Kamera | Omuz üstü üçüncü şahıs. Birinci şahıs modu yok. | El ve kol animasyonu gerektirmez. Karakter ve kozmetik görünür. |
+| Kamera | Üçüncü şahıs, birinci şahıs modu yok. İki kip, V ile geçilir (sahibin kararı, 18 Kasım 2026): **normal** (karakterin arkasında ve üstünde; fare tekerleğiyle yakınlaştırma) ve **yakın omuz** (Astroneer'deki gibi kamera omzun hemen arkasında ve yanında; kafa ve omuz ekranın kenarında görünür, nişan neredeyse birinci şahıs gibi hisseder). | Karakter ve kozmetik hep görünür; yakın omuz kipi nişan ve inşa için. El ve kol animasyonu birinci şahıs için ayrıca gerekmez. |
 | Elde tutulan şey | Tek alet (Çapa), tek tutuş pozu, 18 başlık | Her yeni silah yeni animasyon istemez; iş ışına, efekte ve sese düşer. |
 | Animasyon | Gövde ve yaratıklar: AI ile kemiklendirme ve hazır klipler + kodla katmanlar (IK, yay, şişme). Ölüm ve ezilme: ragdoll. | Tek zayıf nokta birinci şahıs animasyonuydu; o tasarımda yok. |
 | Motor | Godot 4.7.2 (.NET sürümü), C# | Her şey metinden yazılır; derleyici hataları çalıştırmadan yakalar. Godot bu makinede Oduncu ile doğrulandı; .NET sürümü M0'da doğrulanacak ([TEKNIK.md](TEKNIK.md) §1). Rust motoru (Bevy) seçilmedi: fizik, animasyon, ses, arayüz ve Steam katmanları Godot'ta hazır ve denenmiş; Bevy'de her biri ayrı risk olurdu. |
@@ -219,7 +219,7 @@ Oyunun tamamı için çıkış kapısı [URETIM.md](URETIM.md) §8'de.
 
 Bunlar eksik değil, verilmiş kararlardır.
 
-- Birinci şahıs kamera yok.
+- Birinci şahıs kamera yok; en yakın görünüş Astroneer tarzı yakın omuz kipidir (bkz. §4 Kamera).
 - Voksel tünel kazma yok; arazi yükseklik haritasıdır.
 - Açlıktan ölme yok; yemek güç verir.
 - Gündüz zorla baskın yok; savaşın saati bellidir.

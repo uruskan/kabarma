@@ -28,13 +28,14 @@ public partial class Bot
         _steps["gidak"] = Machine(StepGidak);
         _steps["night"] = StepNightPen;
         _steps["bakir_kil"] = Machine(StepBakirKil);
+        RegisterIlkgunSonra(); // Bot.IlkgunSonra.cs: 11 yemek, 13 firin, 14 civi, 15 kasa, 16 barinak
     }
 
     // ---------- 12 Bakir ve kil: Kazma ile damardan ve kil yatagindan ----------
 
     void StepBakirKil(Vector3 o)
     {
-        if (EnsureItem("copper_ore", 1)) EnsureItem("clay", 1);
+        if (HaveItem("copper_ore", 1)) HaveItem("clay", 1);
     }
 
     /// <summary>Kapak acilisi bitmeden oyuncu hareket etmez (PLAN 1.4, 0:00).</summary>
@@ -46,15 +47,21 @@ public partial class Bot
 
     // ---------- kaynak ----------
 
+    // Adlar ekonomi'nin Bot.Machines EnsureItem/EnsureCost'undan ayri (birlesince ayni imza derleme hatasi olurdu).
     /// <summary>Yerlestirilebilirin bedeli cantada yoksa eksik kaynagi oyun yolundan toplar. Tamamsa true.</summary>
-    bool EnsureCost(PlaceableDef def)
+    bool HaveCost(PlaceableDef def)
     {
         foreach (var (item, n) in def.Cost)
             if (_d.State.Backpack.Count(item) < n) { Gather(item); return false; }
         return true;
     }
 
-    // EnsureItem(item, n): Bot.Machines.cs (ekonomi akisi; ayni is, entegrasyonda tek tanim).
+    bool HaveItem(string item, int n)
+    {
+        if (_d.State.Backpack.Count(item) >= n) return true;
+        Gather(item);
+        return false;
+    }
 
     /// <summary>Kaynagi oyuncunun yolundan toplar: tas/kil/bakir Kazma, odun agactan Bicme, lif/bugday tutamdan Bicme.</summary>
     void Gather(string item)
@@ -89,7 +96,7 @@ public partial class Bot
 
     void StepTezgah(Vector3 o)
     {
-        if (EnsureCost(PlaceableOf("tezgah"))) PlaceAt("tezgah", o + TezgahAt);
+        if (HaveCost(PlaceableOf("tezgah"))) PlaceAt("tezgah", o + TezgahAt);
     }
 
     // ---------- 5 Tarla: sur, ek, sula ----------
@@ -132,7 +139,7 @@ public partial class Bot
         if (i < 0) { P.MoveOverride = Vector3.Zero; return; } // hepsi kurulu; sayac PenChanged ile ilerler
         if (i != _penStage) { _penStage = i; _aimFix = Vector3.Zero; }
         var (at, id, outward) = plan[i];
-        if (!EnsureItem("wood", b.CostOf(id))) return;
+        if (!HaveItem("wood", b.CostOf(id))) return;
         PlacePiece(id, _d.World.Ground(at), _d.World.Ground(at + outward * 6f), i == 0);
     }
 
@@ -208,11 +215,11 @@ public partial class Bot
         var yemlikAt = _d.World.Ground(new Vector3(c.X, 0, minZ + 0.9f));
         // Entegrasyon: minZ - 1.5 ve 0.5 tolerans Yemlik'e 2.9 m'ye kadar birakiyordu (pen.json interactRange 2.6); yaklas.
         var yemlikStand = _d.World.Ground(new Vector3(c.X, 0, minZ - 1.2f));
-        if (PropIn("folluk") == null) { if (EnsureCost(PlaceableOf("folluk"))) PlacePropAt("folluk", follukAt, follukStand); return false; }
+        if (PropIn("folluk") == null) { if (HaveCost(PlaceableOf("folluk"))) PlacePropAt("folluk", follukAt, follukStand); return false; }
         var y = PropIn("yemlik");
-        if (y == null) { if (EnsureCost(PlaceableOf("yemlik"))) PlacePropAt("yemlik", yemlikAt, yemlikStand); return false; }
+        if (y == null) { if (HaveCost(PlaceableOf("yemlik"))) PlacePropAt("yemlik", yemlikAt, yemlikStand); return false; }
         if (y.Feeder.Amount > 0) return true;
-        if (!EnsureItem("wheat", 1)) return false;
+        if (!HaveItem("wheat", 1)) return false;
         Aim(y.GlobalPosition + Vector3.Up * 0.4f);
         if (MoveRouted(yemlikStand, 0.25f) && _menuT <= 0) { Use(); _menuT = 0.8f; }
         return false;
@@ -237,8 +244,11 @@ public partial class Bot
         {
             if (!FurnishPen()) return;
             // Bugday: oyuncunun yolu (E), Gidak'in yanina git.
-            if (!EnsureItem("wheat", 1)) return;
+            if (!HaveItem("wheat", 1)) return;
             Aim(g.GlobalPosition + Vector3.Up * 0.4f);
+            // E once en yakin istasyonun menusunu acar (Director.Interact): istasyon erimindeyse Gidak'in obur yanina gec.
+            var st = _d.Stations.FirstOrDefault(s => s.InReach(P.GlobalPosition));
+            if (st != null) { var away = g.GlobalPosition - st.GlobalPosition; away.Y = 0; MoveTo(g.GlobalPosition + away.Normalized() * 1.5f, 0.4f, false); return; }
             if (MoveTo(g.GlobalPosition, 1.8f, false) && _menuT <= 0) { Use(); _menuT = 0.8f; }
             return;
         }
@@ -265,6 +275,8 @@ public partial class Bot
     void StepNightPen()
     {
         _menuT -= (float)GetProcessDeltaTime();
+        // Acik kalmis menu tetigi yutar (Director.ReadInput): gece boyu ates edilemez, safakta Cekim calismaz. Kapat.
+        if (_d.Hud.MenuOpen && !_d.Hud.ReportOpen && _menuT <= 0) { GD.Print("BOT closed stray menu"); _d.Hud.HideMenu(); _menuT = 0.3f; return; }
         var gate = PenGate;
         bool dusk = _d.Phase == Director.Act.Dusk;
         if (gate != null && (dusk || _d.Night?.Phase == NightPhase.Alarm))
@@ -306,20 +318,30 @@ public partial class Bot
     }
 
     /// <summary>
-    /// Agilli ilk gece savunmasi: tarlaya en yakin Zipzip'e nisan alip ates eder (cit otekileri tutar; Tirpan Isini citin
-    /// ustunden gecer); uzaktaysa agilin etrafindan yaklasir. Kovalayan Zipzip'ten kacmaz, durup vurur.
+    /// Agilli ilk gece savunmasi: nobet yerinde durur, menzildeki Zipzip'lerden tarlaya en yakinina ates eder (cit
+    /// otekileri tutar; Tirpan Isini citin ustunden gecer). Kovalamaz, kacmaz.
     /// </summary>
     void NightFight()
     {
         PickCard();
+        // Nobet yerinden (tarlanin agil yani) ayrilmaz: agilin etrafindan Zipzip kovalamak oyuncuyu yakin dovuse sokup
+        // yere seriyor, tarla korumasiz kaliyordu. Menzildekilerden tarlaya en yakini vurulur; citte kalan safakta soner.
         var farm = _d.FarmCenter();
-        var z = Zipzip.All.Where(e => !e.Dead).OrderBy(e => e.GlobalPosition.DistanceTo(farm)).FirstOrDefault();
-        if (z == null) { Aim(_d.FarmCenter() + Vector3.Up); MoveRouted(_d.FarmCenter() + new Vector3(-2.5f, 0, -2.5f), 1.5f); return; }
+        MoveTo(NightPost(), 1f, false);
+        float Dist(Zipzip e) => new Vector2(e.GlobalPosition.X - P.GlobalPosition.X, e.GlobalPosition.Z - P.GlobalPosition.Z).Length();
+        var z = Zipzip.All.Where(e => !e.Dead && Dist(e) < 11f).OrderBy(e => e.GlobalPosition.DistanceTo(farm)).FirstOrDefault();
+        if (z == null) { Aim(farm + Vector3.Up); return; }
         Aim(z.Center);
-        float dist = new Vector2(z.GlobalPosition.X - P.GlobalPosition.X, z.GlobalPosition.Z - P.GlobalPosition.Z).Length();
-        if (dist > 9f) MoveRouted(z.GlobalPosition, 7f);
-        else P.MoveOverride = Vector3.Zero;
-        Fire = dist < 11f;
+        Fire = true;
+    }
+
+    /// <summary>Ilk gecenin nobet yeri: tarla merkezinden agila dogru 2,5 m (cit nobetiyle ayni yer).</summary>
+    Vector3 NightPost()
+    {
+        var f = _d.FarmCenter() with { Y = 0 };
+        if (_d.Pens.Pens.Count == 0) return _d.World.Ground(f);
+        var c = _d.Pens.Pens[0].Centroid;
+        return _d.World.Ground(f + new Vector3(c.X - f.X, 0, c.Z - f.Z).Normalized() * 2.5f);
     }
 
     // Ilk dalgada citin arkasinda (tarla yaninda) bekler: Zipzip yoldaki cite yuklenir, kabarmis Gidak cit ustunden
@@ -352,13 +374,11 @@ public partial class Bot
             return false;
         }
         PickCard();
-        var f = _d.FarmCenter() with { Y = 0 };
         var c = _d.Pens.Pens[0].Centroid;
-        var toPen = new Vector3(c.X - f.X, 0, c.Z - f.Z).Normalized();
         var near = Zipzip.All.Where(e => !e.Dead && e.GlobalPosition.DistanceTo(P.GlobalPosition) < 5f).OrderBy(e => e.GlobalPosition.DistanceTo(P.GlobalPosition)).FirstOrDefault();
         if (near != null) { Aim(near.Center); Fire = true; P.MoveOverride = Vector3.Zero; return true; }
         Aim(new Vector3(c.X, 1f, c.Z));
-        MoveTo(_d.World.Ground(f + toPen * 2.5f), 1f, false);
+        MoveTo(NightPost(), 1f, false);
         return true;
     }
 }

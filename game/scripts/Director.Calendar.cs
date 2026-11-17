@@ -92,7 +92,9 @@ public partial class Director
         {
             if (held) Bot.ProcessMode = ProcessModeEnum.Inherit;
             var img = GetViewport().GetTexture().GetImage();
-            var dir = ProjectSettings.GlobalizePath("res://").TrimEnd('/') + "/../progress/m1/gecehud";
+            // --gecehud_shots=alt/klasor: goruntuler progress/m1/gecehud/alt/klasor altina (ornek: ui/once_1920x1080)
+            string sub = Main.Args["gecehud_shots"] is var v && v != "1" ? "/" + v.Trim('/') : "";
+            var dir = ProjectSettings.GlobalizePath("res://").TrimEnd('/') + "/../progress/m1/gecehud" + sub;
             DirAccess.MakeDirRecursiveAbsolute(dir);
             var path = $"{dir}/{name}.png";
             img.SavePng(path);
@@ -102,8 +104,10 @@ public partial class Director
 
     /// <summary>
     /// Goruntu ve sinama yardimcilari (komut satiri):
-    ///   --gecehud_shots              olay aninda goruntu: gunduz panosu, kart teklifi, Kabarma panosu, rapor, envanter, Defter
-    ///   --hudopen=bag:S,defter:S     S. oyun saniyesinde envanteri ya da Defter'i acar (3 sn sonra kapar)
+    ///   --gecehud_shots[=alt/klasor] olay aninda goruntu: gunduz panosu, kart teklifi, Kabarma panosu, rapor, envanter, Defter
+    ///   --hudopen=bag:S,defter:S     S. oyun saniyesinde envanteri ya da Defter'i acar (3 sn sonra kapar);
+    ///             wheel:S, station:S  baslik carkini ya da ilk istasyonun panelini acar (goruntu: cark, istasyon)
+    ///   --shotat=ad:S,...             S. oyun saniyesinde goruntu
     ///   --clock=K                     takvim islerken saati gunun K kesrine alir (0..1)
     ///   --replay_at=S                 S. saniyede F1 dugmesinin yaptigini yapar (Kucuk Kabarma yeniden)
     /// </summary>
@@ -115,12 +119,40 @@ public partial class Director
             {
                 var p = item.Split(':');
                 int page = p[0] == "defter" ? 1 : 0;
+                if (p[0] == "wheel") // baslik carki: acilir, bir dilim secili gosterilir, 3 sn sonra secmeden kapanir
+                {
+                    GetTree().CreateTimer(p.Length > 1 ? F(p[1]) : 3f).Timeout += () =>
+                    {
+                        Hud.OpenWheel((int)Capa.Current);
+                        Hud.WheelMotion(new Vector2(40, -30));
+                        DebugShot("cark", 0.6f, holdBot: true);
+                        GetTree().CreateTimer(3.0).Timeout += () => Hud.CloseWheel();
+                    };
+                    continue;
+                }
+                if (p[0] == "station") // ilk kurulan istasyonun paneli (envanter sablonunun sag sutunu)
+                {
+                    GetTree().CreateTimer(p.Length > 1 ? F(p[1]) : 3f).Timeout += () =>
+                    {
+                        if (Stations.Count == 0) return;
+                        OpenStationMenu(Stations[0]);
+                        DebugShot("istasyon", 0.6f, holdBot: true);
+                        GetTree().CreateTimer(3.0).Timeout += () => Hud.HideMenu();
+                    };
+                    continue;
+                }
                 GetTree().CreateTimer(p.Length > 1 ? F(p[1]) : 3f).Timeout += () =>
                 {
                     Hud.OpenInventory(page);
                     DebugShot(page == 1 ? "defter" : "envanter", 0.6f);
                     GetTree().CreateTimer(3.0).Timeout += () => Hud.HideMenu();
                 };
+            }
+        if (Main.Args.TryGetValue("shotat", out var sa)) // --shotat=ad:S,...: S. oyun saniyesinde goruntu
+            foreach (var item in sa.Split(','))
+            {
+                var p = item.Split(':');
+                if (p.Length == 2) GetTree().CreateTimer(F(p[1])).Timeout += () => DebugShot(p[0], 0.05f);
             }
         if (Main.Args.TryGetValue("clock", out var ck))
             State.Calendar.Morning += _ => { if (State.Calendar.Seconds == 0) State.Calendar.SetTimeOfDay(F(ck)); };

@@ -62,16 +62,27 @@
   "layer_offset_ms": 15.0
  },
  "summary": {
-  "layer_offsets_ms": {
-   "game/assets/audio/music/kabarma_2.mp3": -130.0,
-   "game/assets/audio/music/kabarma_3.mp3": -120.0,
-   "game/assets/audio/music/kabarma_full.mp3": 30.0,
-   "game/assets/audio/music/kabarma_night.mp3": 90.0
+  "layers": {
+   "offsets_ms_info": {
+    "game/assets/audio/music/kabarma_2.mp3": 120.0,
+    "game/assets/audio/music/kabarma_3.mp3": -130.0
+   },
+   "samples": {
+    "game/assets/audio/music/kabarma_1.mp3": 5293440,
+    "game/assets/audio/music/kabarma_2.mp3": 5293440,
+    "game/assets/audio/music/kabarma_3.mp3": 5293440
+   },
+   "sum": {
+    "seam_level_db": 2.91,
+    "seam_jump": 0.01,
+    "seam_ref_db": 5.27,
+    "tempo_bpm": 119.9
+   }
   },
   "files": 198,
-  "fail": 31,
-  "warn": 95,
-  "passed": 178
+  "fail": 5,
+  "warn": 94,
+  "passed": 193
  },
  "results": [
   {
@@ -80,120 +91,84 @@
    "id": "cayir_gunduz",
    "group": "muzik",
    "loop": false,
-   "duration_s": 180.035875,
-   "lufs_i": -14.9,
-   "true_peak_dbtp": -1.0,
-   "lufs_m_max": -11.0,
-   "sample_peak_dbfs": -1.39,
+   "duration_s": 176.663991,
+   "lufs_i": -15.4,
+   "true_peak_dbtp": -1.5,
+   "lufs_m_max": -11.6,
+   "sample_peak_dbfs": -1.99,
    "clipped_runs": 0,
-   "lead_silence_s": 0.025,
-   "tail_silence_s": 3.457,
-   "rms100_dbfs": -10.6,
-   "centroid_hz": 866.7025000000001,
+   "lead_silence_s": 0.01,
+   "tail_silence_s": 0.124,
+   "rms100_dbfs": -11.0,
+   "centroid_hz": 854.113,
    "tempo_bpm": 166.8,
-   "checks": [
-    {
-     "level": "KALDI",
-     "check": "son_sessizlik",
-     "msg": "3.457 sn > 2.0"
-    }
-   ]
+   "checks": []
   },
   {
    "file": "game/assets/audio/music/kabarma_1.mp3",
-   "kind": "music_kabarma",
+   "kind": "music_layer",
    "id": "kabarma_1",
    "group": "muzik",
    "loop": true,
-   "duration_s": 120.058776,
-   "lufs_i": -15.0,
-   "true_peak_dbtp": -0.8,
-   "lufs_m_max": -12.3,
-   "sample_peak_dbfs": -1.27,
+   "duration_s": 120.032653,
+   "lufs_i": -19.5,
+   "true_peak_dbtp": -5.0,
+   "lufs_m_max": -17.8,
+   "sample_peak_dbfs": -5.01,
    "clipped_runs": 0,
-   "lead_silence_s": 0.033,
+   "lead_silence_s": 0.037,
    "tail_silence_s": 0.001,
-   "rms100_dbfs": -13.9,
-   "centroid_hz": 1427.75,
-   "seam_level_db": 28.0,
-   "seam_jump": 0.01,
-   "tempo_bpm": 119.9,
-   "checks": [
-    {
-     "level": "KALDI",
-     "check": "tepe",
-     "msg": "gercek tepe -0.8 dBTP > -1.0"
-    },
-    {
-     "level": "KALDI",
-     "check": "dikis_duzey",
-     "msg": "bas/son duzey farki 28.0 dB"
-    }
-   ]
+   "rms100_dbfs": -16.6,
+   "centroid_hz": 175.5985,
+   "seam_level_db": 25.31,
+   "seam_jump": 0.05,
+   "seam_ref_db": 11.46,
+   "tempo_bpm": 59.7,
+   "checks": []
   },
   {
    "file": "game/assets/audio/music/kabarma_2.mp3",
-   "kind": "music_kabarma",
+   "kind": "music_layer",
    "id": "kabarma_2",
    "group": "muzik",
    "loop": true,
-   "duration_s": 120.058776,
+   "duration_s": 120.032653,
    "lufs_i": -15.6,
    "true_peak_dbtp": -1.1,
    "lufs_m_max": -14.1,
    "sample_peak_dbfs": -1.45,
    "clipped_runs": 0,
-   "lead_silence_s": 0.032,
+   "lead_silence_s": 0.006,
    "tail_silence_s": 0.001,
    "rms100_dbfs": -11.2,
-   "centroid_hz": 4110.83,
-   "seam_level_db": 12.59,
-   "seam_jump": 0.01,
+   "centroid_hz": 4095.32,
+   "seam_level_db": 9.24,
+   "seam_jump": 0.09,
+   "seam_ref_db": 35.02,
    "tempo_bpm": 119.9,
-   "checks": [
-    {
-     "level": "KALDI",
-     "check": "dikis_duzey",
-     "msg": "bas/son duzey farki 12.59 dB"
-    }
-   ]
+   "checks": []
   },
   {
    "file": "game/assets/audio/music/kabarma_3.mp3",
-   "kind": "music_kabarma",
+   "kind": "music_layer",
    "id": "kabarma_3",
    "group": "muzik",
    "loop": true,
-   "duration_s": 120.058776,
-   "lufs_i": null,
-   "true_peak_dbtp": -87.5,
-   "lufs_m_max": null,
-   "sample_peak_dbfs": -90.31,
+   "duration_s": 120.032653,
+   "lufs_i": -17.9,
+   "true_peak_dbtp": -3.0,
+   "lufs_m_max": -13.7,
+   "sample_peak_dbfs": -4.04,
    "clipped_runs": 0,
-   "lead_silence_s": 120.059,
-   "tail_silence_s": 120.059,
-   "rms100_dbfs": -109.4,
-   "centroid_hz": 974.6145,
-   "seam_level_db": 0.0,
-   "seam_jump": 0.0,
-   "tempo_bpm": 203.4,
-   "checks": [
-    {
-     "level": "KALDI",
-     "check": "bas_sessizlik",
-     "msg": "120.059 sn > 0.5"
-    },
-    {
-     "level": "KALDI",
-     "check": "son_sessizlik",
-     "msg": "120.059 sn > 2.0"
-    },
-    {
-     "level": "KALDI",
-     "check": "tempo",
-     "msg": "kestirilen 203.4 BPM, veri 120 BPM"
-    }
-   ]
+   "lead_silence_s": 0.007,
+   "tail_silence_s": 0.001,
+   "rms100_dbfs": -15.8,
+   "centroid_hz": 1855.3249999999998,
+   "seam_level_db": 9.13,
+   "seam_jump": 0.02,
+   "seam_ref_db": 6.63,
+   "tempo_bpm": 79.9,
+   "checks": []
   },
   {
    "file": "game/assets/audio/music/kabarma_full.mp3",
@@ -201,31 +176,21 @@
    "id": "kabarma_full",
    "group": "muzik",
    "loop": true,
-   "duration_s": 120.032625,
-   "lufs_i": -11.6,
-   "true_peak_dbtp": 0.1,
-   "lufs_m_max": -9.9,
-   "sample_peak_dbfs": -0.94,
+   "duration_s": 120.032653,
+   "lufs_i": -13.2,
+   "true_peak_dbtp": -1.4,
+   "lufs_m_max": -11.5,
+   "sample_peak_dbfs": -2.55,
    "clipped_runs": 0,
    "lead_silence_s": 0.007,
    "tail_silence_s": 0.003,
-   "rms100_dbfs": -9.8,
-   "centroid_hz": 2094.875,
-   "seam_level_db": 2.44,
-   "seam_jump": 0.01,
+   "rms100_dbfs": -11.4,
+   "centroid_hz": 2098.37,
+   "seam_level_db": 2.47,
+   "seam_jump": 0.02,
+   "seam_ref_db": 5.25,
    "tempo_bpm": 119.9,
-   "checks": [
-    {
-     "level": "KALDI",
-     "check": "tepe",
-     "msg": "gercek tepe 0.1 dBTP > -1.0"
-    },
-    {
-     "level": "UYARI",
-     "check": "yukseklik",
-     "msg": "-11.6 LUFS, secilen aralik -20.0..-12.0"
-    }
-   ]
+   "checks": []
   },
   {
    "file": "game/assets/audio/music/kabarma_night.mp3",
@@ -245,17 +210,13 @@
    "centroid_hz": 2424.6049999999996,
    "seam_level_db": 5.32,
    "seam_jump": 0.22,
+   "seam_ref_db": 6.05,
    "tempo_bpm": 119.9,
    "checks": [
     {
      "level": "KALDI",
      "check": "tepe",
      "msg": "gercek tepe -0.2 dBTP > -1.0"
-    },
-    {
-     "level": "KALDI",
-     "check": "dikis_duzey",
-     "msg": "bas/son duzey farki 5.32 dB"
     },
     {
      "level": "UYARI",
@@ -516,12 +477,8 @@
    "centroid_hz": 6401.71,
    "seam_level_db": 4.62,
    "seam_jump": 0.38,
+   "seam_ref_db": 5.21,
    "checks": [
-    {
-     "level": "KALDI",
-     "check": "dikis_duzey",
-     "msg": "bas/son duzey farki 4.62 dB"
-    },
     {
      "level": "UYARI",
      "check": "yukseklik",
@@ -547,13 +504,8 @@
    "centroid_hz": 7314.5,
    "seam_level_db": 3.39,
    "seam_jump": 0.11,
-   "checks": [
-    {
-     "level": "KALDI",
-     "check": "dikis_duzey",
-     "msg": "bas/son duzey farki 3.39 dB"
-    }
-   ]
+   "seam_ref_db": 10.69,
+   "checks": []
   },
   {
    "file": "game/assets/audio/sfx/ates_citirti_3.mp3",
@@ -573,6 +525,7 @@
    "centroid_hz": 5856.0,
    "seam_level_db": 2.45,
    "seam_jump": 0.13,
+   "seam_ref_db": 5.62,
    "checks": [
     {
      "level": "UYARI",
@@ -713,6 +666,7 @@
    "centroid_hz": 6327.45,
    "seam_level_db": 0.53,
    "seam_jump": 0.42,
+   "seam_ref_db": 1.07,
    "checks": []
   },
   {
@@ -847,6 +801,7 @@
    "centroid_hz": 1714.41,
    "seam_level_db": 0.33,
    "seam_jump": 0.19,
+   "seam_ref_db": 1.97,
    "checks": [
     {
      "level": "UYARI",
@@ -873,6 +828,7 @@
    "centroid_hz": 817.0545,
    "seam_level_db": 0.45,
    "seam_jump": 1.21,
+   "seam_ref_db": 2.13,
    "checks": [
     {
      "level": "UYARI",
@@ -899,6 +855,7 @@
    "centroid_hz": 2161.575,
    "seam_level_db": 0.15,
    "seam_jump": 1.18,
+   "seam_ref_db": 3.55,
    "checks": []
   },
   {
@@ -1105,6 +1062,7 @@
    "centroid_hz": 1395.98,
    "seam_level_db": 2.01,
    "seam_jump": 0.53,
+   "seam_ref_db": 6.66,
    "checks": []
   },
   {
@@ -1113,30 +1071,20 @@
    "id": "el_arabasi_teker",
    "group": "istasyon",
    "loop": true,
-   "duration_s": 3.0,
-   "lufs_i": -20.2,
-   "true_peak_dbtp": -1.4,
+   "duration_s": 2.5,
+   "lufs_i": -20.1,
+   "true_peak_dbtp": -1.5,
    "lufs_m_max": -15.5,
-   "sample_peak_dbfs": -2.19,
+   "sample_peak_dbfs": -2.29,
    "clipped_runs": 0,
    "lead_silence_s": 0.0,
    "tail_silence_s": 0.0,
    "rms100_dbfs": -15.5,
-   "centroid_hz": 1405.03,
-   "seam_level_db": 6.53,
-   "seam_jump": 7.64,
-   "checks": [
-    {
-     "level": "KALDI",
-     "check": "dikis_duzey",
-     "msg": "bas/son duzey farki 6.53 dB"
-    },
-    {
-     "level": "KALDI",
-     "check": "dikis_atlama",
-     "msg": "dikiste atlama 7.64 x tipik"
-    }
-   ]
+   "centroid_hz": 1353.27,
+   "seam_level_db": 6.58,
+   "seam_jump": 0.21,
+   "seam_ref_db": 10.41,
+   "checks": []
   },
   {
    "file": "game/assets/audio/sfx/el_arabasi_teker_3.mp3",
@@ -1156,6 +1104,7 @@
    "centroid_hz": 1924.03,
    "seam_level_db": 1.31,
    "seam_jump": 2.04,
+   "seam_ref_db": 10.4,
    "checks": []
   },
   {
@@ -1577,6 +1526,7 @@
    "centroid_hz": 5275.43,
    "seam_level_db": 2.63,
    "seam_jump": 0.86,
+   "seam_ref_db": 4.07,
    "checks": []
   },
   {
@@ -1597,6 +1547,7 @@
    "centroid_hz": 2697.67,
    "seam_level_db": 1.48,
    "seam_jump": 0.27,
+   "seam_ref_db": 6.19,
    "checks": [
     {
      "level": "UYARI",
@@ -1623,6 +1574,7 @@
    "centroid_hz": 6261.35,
    "seam_level_db": 1.38,
    "seam_jump": 1.75,
+   "seam_ref_db": 3.36,
    "checks": [
     {
      "level": "UYARI",
@@ -2188,22 +2140,16 @@
    "group": "istasyon",
    "loop": false,
    "duration_s": 1.806009,
-   "lufs_i": -16.1,
-   "true_peak_dbtp": -0.9,
-   "lufs_m_max": -12.6,
-   "sample_peak_dbfs": -1.72,
+   "lufs_i": -16.7,
+   "true_peak_dbtp": -2.2,
+   "lufs_m_max": -13.2,
+   "sample_peak_dbfs": -2.79,
    "clipped_runs": 0,
    "lead_silence_s": 0.01,
    "tail_silence_s": 0.1,
-   "rms100_dbfs": -13.0,
-   "centroid_hz": 4301.875,
-   "checks": [
-    {
-     "level": "KALDI",
-     "check": "tepe",
-     "msg": "gercek tepe -0.9 dBTP > -1.0"
-    }
-   ]
+   "rms100_dbfs": -13.7,
+   "centroid_hz": 4349.29,
+   "checks": []
   },
   {
    "file": "game/assets/audio/sfx/kargo_roketi_2.mp3",
@@ -2319,13 +2265,8 @@
    "centroid_hz": 5065.1849999999995,
    "seam_level_db": 6.86,
    "seam_jump": 0.31,
-   "checks": [
-    {
-     "level": "KALDI",
-     "check": "dikis_duzey",
-     "msg": "bas/son duzey farki 6.86 dB"
-    }
-   ]
+   "seam_ref_db": 8.43,
+   "checks": []
   },
   {
    "file": "game/assets/audio/sfx/kaya_kemirme_2.mp3",
@@ -2345,12 +2286,8 @@
    "centroid_hz": 4368.47,
    "seam_level_db": 3.42,
    "seam_jump": 0.33,
+   "seam_ref_db": 6.53,
    "checks": [
-    {
-     "level": "KALDI",
-     "check": "dikis_duzey",
-     "msg": "bas/son duzey farki 3.42 dB"
-    },
     {
      "level": "UYARI",
      "check": "yukseklik",
@@ -2376,6 +2313,7 @@
    "centroid_hz": 4079.17,
    "seam_level_db": 0.34,
    "seam_jump": 1.73,
+   "seam_ref_db": 4.37,
    "checks": []
   },
   {
@@ -2396,6 +2334,7 @@
    "centroid_hz": 3488.54,
    "seam_level_db": 1.09,
    "seam_jump": 0.26,
+   "seam_ref_db": 0.79,
    "checks": []
   },
   {
@@ -2416,6 +2355,7 @@
    "centroid_hz": 6618.035,
    "seam_level_db": 0.15,
    "seam_jump": 0.47,
+   "seam_ref_db": 1.03,
    "checks": [
     {
      "level": "UYARI",
@@ -2442,6 +2382,7 @@
    "centroid_hz": 3261.99,
    "seam_level_db": 0.31,
    "seam_jump": 0.55,
+   "seam_ref_db": 1.36,
    "checks": []
   },
   {
@@ -2558,6 +2499,7 @@
    "centroid_hz": 5975.965,
    "seam_level_db": 1.75,
    "seam_jump": 0.19,
+   "seam_ref_db": 2.26,
    "checks": [
     {
      "level": "UYARI",
@@ -2584,6 +2526,7 @@
    "centroid_hz": 5554.3150000000005,
    "seam_level_db": 0.7,
    "seam_jump": 0.41,
+   "seam_ref_db": 1.76,
    "checks": [
     {
      "level": "UYARI",
@@ -2610,6 +2553,7 @@
    "centroid_hz": 6615.375,
    "seam_level_db": 0.79,
    "seam_jump": 0.19,
+   "seam_ref_db": 1.47,
    "checks": [
     {
      "level": "UYARI",
@@ -2636,6 +2580,7 @@
    "centroid_hz": 3307.955,
    "seam_level_db": 1.39,
    "seam_jump": 0.41,
+   "seam_ref_db": 5.14,
    "checks": [
     {
      "level": "UYARI",
@@ -2662,6 +2607,7 @@
    "centroid_hz": 3264.665,
    "seam_level_db": 0.78,
    "seam_jump": 0.54,
+   "seam_ref_db": 5.42,
    "checks": [
     {
      "level": "UYARI",
@@ -2688,6 +2634,7 @@
    "centroid_hz": 3804.21,
    "seam_level_db": 0.84,
    "seam_jump": 0.66,
+   "seam_ref_db": 5.77,
    "checks": [
     {
      "level": "UYARI",
@@ -3362,22 +3309,16 @@
    "group": "yapi",
    "loop": false,
    "duration_s": 0.657007,
-   "lufs_i": -16.4,
-   "true_peak_dbtp": -0.9,
-   "lufs_m_max": -14.9,
-   "sample_peak_dbfs": -1.35,
+   "lufs_i": -17.0,
+   "true_peak_dbtp": -1.5,
+   "lufs_m_max": -15.5,
+   "sample_peak_dbfs": -1.93,
    "clipped_runs": 0,
    "lead_silence_s": 0.01,
-   "tail_silence_s": 0.006,
-   "rms100_dbfs": -17.8,
-   "centroid_hz": 2584.28,
-   "checks": [
-    {
-     "level": "KALDI",
-     "check": "tepe",
-     "msg": "gercek tepe -0.9 dBTP > -1.0"
-    }
-   ]
+   "tail_silence_s": 0.013,
+   "rms100_dbfs": -18.4,
+   "centroid_hz": 2594.34,
+   "checks": []
   },
   {
    "file": "game/assets/audio/sfx/sokum_2.mp3",
@@ -3433,6 +3374,7 @@
    "centroid_hz": 7518.63,
    "seam_level_db": 0.22,
    "seam_jump": 0.33,
+   "seam_ref_db": 1.26,
    "checks": []
   },
   {
@@ -3453,6 +3395,7 @@
    "centroid_hz": 6898.96,
    "seam_level_db": 0.78,
    "seam_jump": 1.22,
+   "seam_ref_db": 0.99,
    "checks": [
     {
      "level": "UYARI",
@@ -3479,6 +3422,7 @@
    "centroid_hz": 8081.635,
    "seam_level_db": 0.33,
    "seam_jump": 1.11,
+   "seam_ref_db": 1.16,
    "checks": []
   },
   {
@@ -3604,13 +3548,8 @@
    "centroid_hz": 5212.13,
    "seam_level_db": 6.19,
    "seam_jump": 0.02,
-   "checks": [
-    {
-     "level": "KALDI",
-     "check": "dikis_duzey",
-     "msg": "bas/son duzey farki 6.19 dB"
-    }
-   ]
+   "seam_ref_db": 19.71,
+   "checks": []
   },
   {
    "file": "game/assets/audio/sfx/tezgah_calisma_2.mp3",
@@ -3630,13 +3569,8 @@
    "centroid_hz": 4385.63,
    "seam_level_db": 13.56,
    "seam_jump": 0.29,
-   "checks": [
-    {
-     "level": "KALDI",
-     "check": "dikis_duzey",
-     "msg": "bas/son duzey farki 13.56 dB"
-    }
-   ]
+   "seam_ref_db": 23.52,
+   "checks": []
   },
   {
    "file": "game/assets/audio/sfx/tezgah_calisma_3.mp3",
@@ -3644,25 +3578,20 @@
    "id": "tezgah_calisma",
    "group": "istasyon",
    "loop": true,
-   "duration_s": 4.0,
+   "duration_s": 3.5,
    "lufs_i": -22.9,
-   "true_peak_dbtp": -1.3,
-   "lufs_m_max": -20.9,
-   "sample_peak_dbfs": -1.55,
+   "true_peak_dbtp": -2.0,
+   "lufs_m_max": -21.0,
+   "sample_peak_dbfs": -2.43,
    "clipped_runs": 0,
    "lead_silence_s": 0.0,
    "tail_silence_s": 0.0,
    "rms100_dbfs": -20.5,
-   "centroid_hz": 5087.23,
-   "seam_level_db": 37.08,
-   "seam_jump": 1.21,
-   "checks": [
-    {
-     "level": "KALDI",
-     "check": "dikis_duzey",
-     "msg": "bas/son duzey farki 37.08 dB"
-    }
-   ]
+   "centroid_hz": 5115.12,
+   "seam_level_db": 15.87,
+   "seam_jump": 3.0,
+   "seam_ref_db": 22.7,
+   "checks": []
   },
   {
    "file": "game/assets/audio/sfx/till.mp3",
@@ -4121,18 +4050,14 @@
    "tail_silence_s": 0.097,
    "rms100_dbfs": -15.7,
    "centroid_hz": 7178.445,
-   "seam_level_db": 26.19,
+   "seam_level_db": 15.06,
    "seam_jump": 0.06,
+   "seam_ref_db": 25.16,
    "checks": [
     {
      "level": "KALDI",
      "check": "sure",
      "msg": "0.50 sn, beklenen 1.0-30.0"
-    },
-    {
-     "level": "KALDI",
-     "check": "dikis_duzey",
-     "msg": "bas/son duzey farki 26.19 dB"
     }
    ]
   },
