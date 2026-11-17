@@ -24,6 +24,8 @@ public partial class Director : Node3D
     public Vector3 OcakPos => Ocak?.GlobalPosition ?? Pod.GlobalPosition;
     public Vector3 GidakHome => (Ocak?.GlobalPosition ?? Vector3.Zero) + new Vector3(-6, 0, 5);
     public Bot Bot { get; private set; }
+    public Pofuduk Pofuduk { get; private set; }
+    public TasFirin Firin { get; private set; }
 
     public enum Act { Day, Dusk, Night, Dawn, Report, Free }
     public Act Phase { get; private set; } = Act.Day;
@@ -77,11 +79,32 @@ public partial class Director : Node3D
         Gidak.Visible = false; // "grow" adiminda gelir
 
         GD.Print($"AUDIO ok {Sfx.CheckAll()}/{Sfx.Names.Length}");
+        // M0 hat denemeleri: Pofuduk (dort ayak, iskelet + yurume) ve Tas Firin (adli parcalar).
+        Pofuduk = new Pofuduk(this, new Vector3(-12, 0, 10)) { Name = "Pofuduk" };
+        AddChild(Pofuduk);
+        Firin = new TasFirin { Name = "TasFirin" };
+        AddChild(Firin);
+        var firinAt = World.Ground(new Vector3(-7, 0, -7));
+        Firin.GlobalPosition = firinAt;
+        var toBase = (Vector3.Zero - firinAt) with { Y = 0 };
+        Firin.Rotation = new Vector3(0, Mathf.Atan2(-toBase.Z, toBase.X), 0); // kapak (+X) usse baksin
+
         State.Scenario.StepChanged += OnStepChanged;
         State.Farm.Eaten += p => { GD.Print($"EATEN plot {p.X},{p.Y}"); Sfx.Play("pop", FarmView.CellCenter(p.X, p.Y), -2f); };
         foreach (var l in Data.Scenario.Intro) Hud.Say(l);
 
         if (Main.Args.ContainsKey("bot")) { Bot = new Bot(this); AddChild(Bot); }
+        // Sinama: --look=x,y,z:tx,ty,tz sabit bir kameradan bakar (varlik denetimi goruntuleri icin).
+        if (Main.Args.TryGetValue("look", out var look))
+        {
+            var ps = look.Split(':');
+            Vector3 V(string t) { var a = t.Split(','); return new Vector3(float.Parse(a[0], System.Globalization.CultureInfo.InvariantCulture), float.Parse(a[1], System.Globalization.CultureInfo.InvariantCulture), float.Parse(a[2], System.Globalization.CultureInfo.InvariantCulture)); }
+            var cam = new Camera3D { Fov = 50f };
+            AddChild(cam);
+            cam.GlobalPosition = V(ps[0]);
+            cam.LookAt(V(ps[1]));
+            cam.MakeCurrent();
+        }
         if (Main.Args.TryGetValue("skip", out var skip) && skip == "night") CallDeferred(nameof(SkipToNight));
     }
 
@@ -158,6 +181,7 @@ public partial class Director : Node3D
             int count = State.Farm.SwellMature(n.Ks, 0).Count;
             Hud.Say(Data.Scenario.NightLines["swell"]);
             Gidak.Swell(true);
+            Pofuduk.Swell(true);
             Hud.Say(Data.Scenario.NightLines["gidak"]);
             GD.Print($"NIGHT swell crops={count}");
         };
@@ -191,6 +215,7 @@ public partial class Director : Node3D
         foreach (var z in Zipzip.All.ToArray()) { Fx.Burst(z.Center, Palette.MayaTeal, 10, 3f, 0.1f, 0.6f, true, -1f); z.QueueFree(); }
         Zipzip.All.Clear();
         Gidak.Swell(false);
+        Pofuduk.Swell(false);
         Sfx.Music(false);
         Pod.BecomeRamp();
         Hud.ShowOffer(null, Night);

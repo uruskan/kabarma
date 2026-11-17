@@ -1,0 +1,10 @@
+STEAM init ok app=480 user=...2454 mode=lobby
+STEAM net auth=k_ESteamNetworkingAvailability_Current in 131 ms
+LOBBY created ok=True result=k_EResultOK
+LOBBY data game=kabarma-m0 members=1
+RESULT lobby PASS
+STEAM init ok app=480 user=...2454 mode=server
+STEAM net auth=k_ESteamNetworkingAvailability_Current in 586 ms
+SERVER listening 127.0.0.1:27020 socket=131073
+SERVER client connected
+RESULT server echoed=20 PASS

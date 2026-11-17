@@ -30,6 +30,12 @@ ap.add_argument("--sets", default="altin_cayir,neutral,tones")
 ap.add_argument("--palette", default=os.path.join(os.path.dirname(__file__), "..", "game", "data", "palette.json"))
 ap.add_argument("--renders", default="")
 ap.add_argument("--smooth_passes", type=int, default=2)
+ap.add_argument("--min_region", type=int, default=0, help="bundan az yuzlu renk lekeleri komsu renge katilir")
+ap.add_argument("--lweight", type=float, default=0.45, help="palete oturturken parlaklik farkinin agirligi; AI dokularindaki pisirilmis golgeyi yok saymak icin < 1")
+ap.add_argument("--parts", action="store_true", help="makine: Tripo'nun parcalarini ayri, adli dugumler olarak koru")
+ap.add_argument("--rename", default="", help="parca modunda ad duzeltme: eski=yeni,... (ayni anda uygulanir)")
+ap.add_argument("--exclude", default="", help="bu varlikta kullanilmayacak palet adlari (virgulle), ornegin tones.rock")
+ap.add_argument("--relax", type=int, default=0, help="yumusatma adimi (Laplace); topak yuzeyleri tiknaz yapar")
 args = ap.parse_args(argv)
 
 report = {"name": args.name, "input": args.inp, "checks": {}}
@@ -54,12 +60,18 @@ pal = json.load(open(args.palette, encoding="utf-8"))
 allowed = []
 for s in args.sets.split(","):
     for k, hx in pal["sets"][s].items():
+        if f"{s}.{k}" in args.exclude.split(","):
+            continue
         rgb = tuple(int(hx[i:i + 2], 16) / 255 for i in (0, 2, 4))
         allowed.append((f"{s}.{k}", rgb, to_lab(rgb)))
 
+def de_match(a, b):
+    # Eslestirme uzakligi: oyun isigi kendi golgesini verir, dokuya pisirilmis golge parlakligi bozar.
+    return math.sqrt(((a[0] - b[0]) * args.lweight) ** 2 + (a[1] - b[1]) ** 2 + (a[2] - b[2]) ** 2)
+
 def nearest(rgb):
     lab = to_lab(rgb)
-    best = min(range(len(allowed)), key=lambda i: de(lab, allowed[i][2]))
+    best = min(range(len(allowed)), key=lambda i: de_match(lab, allowed[i][2]))
     return best, de(lab, allowed[best][2])
 
 # ---------------- sahne ----------------
@@ -93,6 +105,11 @@ def base_image(mat):
                 return None, (c[0], c[1], c[2])
     return None, None
 
+# Parca kimligi: birlestirmeden once her yuze kaynagin sirasi yazilir (parca modunda geri ayrilir).
+for i, o in enumerate(meshes):
+    att = o.data.attributes.new("part", "INT", "FACE")
+    for k in range(len(o.data.polygons)):
+        att.data[k].value = i
 bpy.ops.object.select_all(action="DESELECT")
 for o in meshes:
     o.select_set(True)
@@ -130,6 +147,22 @@ if tris_in > args.tris:
     bpy.ops.object.modifier_apply(modifier=mod.name)
 me = obj.data
 bpy.ops.object.mode_set(mode="OBJECT")
+
+# Sadelestirmenin biraktigi kucuk delikleri kapat (olcut 4).
+bm = bmesh.new(); bm.from_mesh(me)
+bound = [e for e in bm.edges if e.is_boundary]
+if bound:
+    bmesh.ops.holes_fill(bm, edges=bound, sides=64)
+bm.to_mesh(me); bm.free(); me.update()
+
+# Topak yuzeyleri yumusat (SANAT-SES §1.1: buyuk, yumusak, tiknaz). UV'ler degismez; renk ornekleme etkilenmez.
+if args.relax > 0:
+    mod = obj.modifiers.new("relax", "LAPLACIANSMOOTH")
+    mod.iterations = args.relax
+    mod.lambda_factor = 0.8
+    mod.use_volume_preserve = True
+    bpy.context.view_layer.objects.active = obj
+    bpy.ops.object.modifier_apply(modifier=mod.name)
 
 # ---------------- dokudan kose rengi ----------------
 img_cache = {}
@@ -195,6 +228,38 @@ for _ in range(args.smooth_passes):
             if n >= 2 and labels[f.index] not in counts:
                 new[f.index] = top
     labels = new
+# Kucuk lekeleri birlestir: ayni renkli bitisik yuz kumeleri; az yuzlu olanlar en cok komsu renge katilir.
+if args.min_region > 0:
+    for _ in range(3):
+        region = [-1] * len(labels); regions = []
+        for f in bm.faces:
+            if region[f.index] >= 0:
+                continue
+            rid = len(regions); stack = [f]; region[f.index] = rid; members = []
+            while stack:
+                a = stack.pop(); members.append(a.index)
+                for e in a.edges:
+                    for g in e.link_faces:
+                        if region[g.index] < 0 and labels[g.index] == labels[a.index]:
+                            region[g.index] = rid; stack.append(g)
+            regions.append(members)
+        changed = 0
+        for rid, members in enumerate(regions):
+            if len(members) >= args.min_region:
+                continue
+            counts = {}
+            for fi in members:
+                for e in bm.faces[fi].edges:
+                    for g in e.link_faces:
+                        if region[g.index] != rid:
+                            counts[labels[g.index]] = counts.get(labels[g.index], 0) + 1
+            if counts:
+                top = max(counts.items(), key=lambda kv: kv[1])[0]
+                for fi in members:
+                    labels[fi] = top
+                changed += 1
+        if changed == 0:
+            break
 bm.free()
 
 # Kose rengi katmani (yuz basina tek renk: koseler yuz rengini alir)
@@ -302,6 +367,51 @@ report["checks"] = {
     "5_scale_axis": {"pass": abs(size.z - args.height) < 0.02 and abs(mn.z) < 0.01 and abs((mn.x + mx.x) / 2) < 0.02, "height": round(size.z, 3), "target": args.height},
 }
 
+# ---------------- parca modu: adli dugumlere ayir ----------------
+if args.parts and "part" in obj.data.attributes:
+    part_attr = obj.data.attributes["part"]
+    ids = sorted({part_attr.data[p.index].value for p in obj.data.polygons})
+    base_mat = obj.data.materials[0]
+    obj.data.materials.clear()
+    for i in ids:
+        m = base_mat.copy(); m.name = f"part_{i}"
+        obj.data.materials.append(m)
+    slot = {i: k for k, i in enumerate(ids)}
+    for p in obj.data.polygons:
+        p.material_index = slot[part_attr.data[p.index].value]
+    bpy.ops.object.select_all(action="DESELECT"); obj.select_set(True)
+    bpy.context.view_layer.objects.active = obj
+    bpy.ops.object.mode_set(mode="EDIT")
+    bpy.ops.mesh.separate(type="MATERIAL")
+    bpy.ops.object.mode_set(mode="OBJECT")
+    pieces = [o for o in bpy.context.scene.objects if o.type == "MESH"]
+    info = []
+    for o in pieces:
+        pmn, pmx = world_bbox(o)
+        c = (pmn + pmx) / 2; sz = pmx - pmn
+        info.append({"obj": o, "center": c, "size": sz, "vol": sz.x * sz.y * sz.z, "top": pmx.z})
+    names = {}
+    body = max(info, key=lambda d: d["vol"]); names[body["obj"].name] = "body"
+    rest = [d for d in info if d is not body]
+    if rest:
+        top = max(rest, key=lambda d: d["top"])
+        if top["top"] >= mx.z - 0.02 * (mx.z - mn.z) and top["size"].x < 0.5 * size.x:
+            names[top["obj"].name] = "chimney"; rest.remove(top)
+    if rest:
+        # glTF ileri yonu (+Z) Blender'da -Y: en ondeki parca kapak
+        front = min(rest, key=lambda d: d["center"].y - d["size"].y / 2)
+        if front["center"].y < body["center"].y:
+            names[front["obj"].name] = "door"; rest.remove(front)
+    for k, d in enumerate(sorted(rest, key=lambda d: -d["vol"])):
+        names[d["obj"].name] = f"part_{k + 1}"
+    fix = dict(kv.split("=") for kv in args.rename.split(",") if "=" in kv)
+    names = {k: fix.get(v, v) for k, v in names.items()}
+    report["parts_named"] = []
+    for d in info:
+        o = d["obj"]; o.name = names[o.name]; o.data.name = o.name
+        o.data.materials.clear(); o.data.materials.append(base_mat)
+        report["parts_named"].append({"name": o.name, "center": [round(v, 3) for v in d["center"]], "size": [round(v, 3) for v in d["size"]]})
+
 # ---------------- goruntuler (olcut 6-8 icin) ----------------
 if args.renders:
     args.renders = os.path.abspath(args.renders)
@@ -311,8 +421,10 @@ if args.renders:
     scene.display.shading.light = "STUDIO"
     scene.display.shading.color_type = "VERTEX"
     scene.render.resolution_x = 512; scene.render.resolution_y = 512
-    scene.render.film_transparent = True
+    scene.render.film_transparent = False
     world = bpy.data.worlds.new("w"); scene.world = world
+    scene.display.shading.background_type = "VIEWPORT"
+    scene.display.shading.background_color = (0.83, 0.8, 0.74)
     cam_data = bpy.data.cameras.new("cam"); cam_data.type = "ORTHO"
     cam = bpy.data.objects.new("cam", cam_data); scene.collection.objects.link(cam); scene.camera = cam
     ctr = Vector(((mn.x + mx.x) / 2, (mn.y + mx.y) / 2, (mn.z + mx.z) / 2))

@@ -98,7 +98,7 @@ public partial class Main : Node3D
             var img = GetViewport().GetTexture().GetImage();
             var dir = ProjectSettings.GlobalizePath("res://").TrimEnd('/') + "/../progress/shots";
             DirAccess.MakeDirRecursiveAbsolute(dir);
-            var path = $"{dir}/{_prefix}_{at:000}.png";
+            var path = $"{dir}/{_prefix}_{at:000.00}.png".Replace(",", ".");
             img.SavePng(path);
             GD.Print($"SCREENSHOT {path}");
         }

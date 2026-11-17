@@ -1,0 +1,59 @@
+{
+  "name": "pofuduk",
+  "input": ".tools/tripo/pofuduk/tripo-out/pofuduk-retarget-b78bc840/model.glb",
+  "checks": {
+    "1_palette": {
+      "pass": true,
+      "note": "butun yuzler palete oturtuldu; kaynakta ortalama dE 15.18, dE<8 orani 0.199"
+    },
+    "2_polygon": {
+      "pass": true,
+      "value": 4842,
+      "budget": 5000
+    },
+    "3_thickness": {
+      "pass": true,
+      "min_ratio": 0.826,
+      "note": "parca basina en dar boyut / en uzun kenar"
+    },
+    "4_integrity": {
+      "pass": false,
+      "non_manifold_edges": 18,
+      "boundary_edges": 8,
+      "inward_faces": 139,
+      "loose_parts": 1
+    },
+    "5_scale_axis": {
+      "pass": true,
+      "height": 1.0,
+      "target": 1.0
+    }
+  },
+  "tris_in": 5584,
+  "welded_verts": 1050,
+  "source_mean_dE": 15.18,
+  "source_within_dE8": 0.199,
+  "palette_use": {
+    "neutral.off_white": 2302,
+    "tones.turnip_top": 756,
+    "tones.wood_dark": 666,
+    "altin_cayir.fog": 303,
+    "tones.soil": 219,
+    "altin_cayir.shadow": 166,
+    "neutral.wood": 108,
+    "neutral.warning": 102,
+    "altin_cayir.ground": 86,
+    "altin_cayir.accent": 62,
+    "tones.accent_dark": 37,
+    "neutral.dark_grey": 35
+  },
+  "tris": 4842,
+  "size_m": [
+    0.845,
+    0.953,
+    1.0
+  ],
+  "parts": 1,
+  "out": "game/assets/models/pofuduk/pofuduk.glb",
+  "pass_scripted": false
+}
