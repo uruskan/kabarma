@@ -9,7 +9,7 @@ namespace Kabarma.Sim;
 //   prices.json     prices (sira satis menusundeki siradir)
 //   tool.json       player, backpackSlots, stackResource, startItems
 
-public sealed class WeaponDef
+public sealed partial class WeaponDef
 {
     public string Id { get; set; } = "";
     public string Name { get; set; } = "";
@@ -68,7 +68,7 @@ public sealed class PlayerDef
     public float Jump { get; set; }
 }
 
-public sealed class ToolFile
+public sealed partial class ToolFile
 {
     public List<string> Heads { get; set; } = new();
     public float MineRate { get; set; }

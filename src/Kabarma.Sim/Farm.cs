@@ -16,6 +16,10 @@ public sealed class Plot
     public SizeClassDef? Swollen { get; internal set; } // kabarik urun (yuk nesnesi) ise boyu
     public bool Eaten { get; internal set; }
     public bool Harvested { get; internal set; }
+    /// <summary>Kabarik urunun safaktan beri tarlada bekledigi sure; -1: saat islemiyor (GDD 8.4).</summary>
+    public float SinceDawn { get; internal set; } = -1f;
+    /// <summary>Kabarik urun toplanmadan sondu: normal olgun ekin, hasadi iki kat (GDD 8.4).</summary>
+    public bool Deflated { get; internal set; }
 
     public bool Planted => Crop != null && !Eaten && !Harvested;
     public CropStage Stage => Growth >= 1f ? CropStage.Mature : Growth >= 0.6f ? CropStage.Young : Growth >= 0.2f ? CropStage.Sprout : CropStage.Seed;
@@ -33,6 +37,14 @@ public sealed class Farm
     public Plot? Get(int x, int y) => _plots.TryGetValue((x, y), out var p) ? p : null;
 
     public event Action<Plot>? Tilled, Planted, Watered, Matured, Swelled, Eaten, Harvested, Cleared;
+    /// <summary>Kabarik urun safaktan sonra toplanmadan sondu (GDD 8.4).</summary>
+    public event Action<Plot>? Deflated;
+
+    /// <summary>GDD 8.1: Toprak basligi ancak egimi sinirdan az olan kareyi surer.</summary>
+    public bool CanTill(float slopeDegrees) => slopeDegrees < _data.Crops.MaxSlopeDegrees;
+
+    /// <summary>Egimi verilen kareyi surer; egim sinirda ya da ustundeyse surmez.</summary>
+    public bool Till(int x, int y, float slopeDegrees) => CanTill(slopeDegrees) && Till(x, y);
 
     public bool Till(int x, int y)
     {
@@ -90,6 +102,18 @@ public sealed class Farm
         {
             if (!p.Planted) continue;
             var def = _data.Crop(p.Crop!);
+            // GDD 8.4: safaktan sonra 1 gun icinde toplanmayan kabarik urun soner, iki kat normal urune doner.
+            if (p.Swollen != null && p.SinceDawn >= 0f)
+            {
+                p.SinceDawn += dt;
+                if (p.SinceDawn >= _data.Crops.DeflateAfterSeconds)
+                {
+                    p.Swollen = null;
+                    p.Deflated = true;
+                    p.SinceDawn = -1f;
+                    Deflated?.Invoke(p);
+                }
+            }
             if (p.Growth < 1f)
             {
                 float before = p.Growth;
@@ -125,6 +149,13 @@ public sealed class Farm
         return list;
     }
 
+    /// <summary>Safak: tarladaki kabarik urunlerin sonme saati baslar (GDD 8.4). Saati zaten isleyen ekin bastan baslamaz.</summary>
+    public void OnDawn()
+    {
+        foreach (var p in _plots.Values)
+            if (p.Planted && p.Swollen != null && p.SinceDawn < 0f) p.SinceDawn = 0f;
+    }
+
     public bool Eat(int x, int y)
     {
         var p = Get(x, y);
@@ -143,10 +174,10 @@ public sealed class Farm
         var p = Get(x, y);
         if (p == null || !p.Planted || p.Stage != CropStage.Mature) return null;
         var def = _data.Crop(p.Crop!);
-        int stars = p.NeverDry && p.Fertility >= 70 ? 3 : p.NeverDry ? 2 : 1;
-        float q = _data.Crops.QualityMult[Math.Clamp(stars - 1, 0, _data.Crops.QualityMult.Count - 1)];
-        // Kabarik urun bicilirse soner: iki kat normal urun (GDD 8.4).
-        float raw = def.BaseYield * (1f + 0.08f * p.Genes.V) * q * (p.Swollen != null ? 2f : 1f);
+        int stars = Stars(p);
+        float q = QualityMult(stars);
+        // Kabarik urun bicilirse ya da toplanmadan sonduyse iki kat normal urun (GDD 8.4).
+        float raw = def.BaseYield * (1f + 0.08f * p.Genes.V) * q * (p.Swollen != null || p.Deflated ? _data.Crops.DeflateYieldMult : 1f);
         int yield = (int)MathF.Floor(raw) + (rng.Chance(raw - MathF.Floor(raw)) ? 1 : 0);
         int seeds = def.SeedReturn;
         p.Harvested = true;
@@ -155,12 +186,22 @@ public sealed class Farm
         return (Math.Max(1, yield), stars, seeds);
     }
 
+    /// <summary>
+    /// Kalite yildizi (GDD 8.2): Bereket esigi ve ustu, nem hic durma esiginin altina dusmediyse 3.
+    /// GDD yalnizca 3 yildizi tanimlar; 2 (yalnizca nem kosulu) ve 1 (aksi) bu kodun karari, raporda.
+    /// </summary>
+    public int Stars(Plot p) => p.NeverDry && p.Fertility >= _data.Crops.Star3MinFertility ? 3 : p.NeverDry ? 2 : 1;
+
+    /// <summary>Kalite carpani (GDD 13: 1,0 / 1,3 / 1,7; GDD 8.2 hasat veriminde de "kalite").</summary>
+    public float QualityMult(int stars) => _data.Crops.QualityMult[Math.Clamp(stars - 1, 0, _data.Crops.QualityMult.Count - 1)];
+
     /// <summary>Hasat edilmis ya da yenmis kareyi yeniden ekime acar (surulmus kalir).</summary>
     public void Clear(int x, int y)
     {
         var p = Get(x, y);
         if (p == null || p.Planted) return;
         p.Crop = null; p.Growth = 0; p.Swollen = null; p.Eaten = false; p.Harvested = false; p.NeverDry = true;
+        p.Deflated = false; p.SinceDawn = -1f;
         Cleared?.Invoke(p);
     }
 
@@ -170,7 +211,7 @@ public sealed class Farm
         var p = Get(x, y);
         if (p == null || p.Swollen == null || p.Harvested || p.Eaten) return null;
         p.Harvested = true;
-        p.Fertility = Math.Max(0f, p.Fertility - 10f); // kok ekini -10 (GDD 8.2)
+        p.Fertility = Math.Max(0f, p.Fertility - _data.Crops.HarvestFertilityLoss); // kok ekini -10 (GDD 8.2)
         return p.Swollen;
     }
 

@@ -181,7 +181,7 @@ public partial class Player : CharacterBody3D
     public void Shake(float amount) => _shake = Mathf.Max(_shake, amount);
 
     /// <summary>Geri tepme yayi (GDD 4): Capa geriye ve yukari teper, yayla yerine doner.</summary>
-    public void Recoil(float amount) => _recoilVel += amount * 9f;
+    public void Recoil(float amount) => _recoilVel += amount * RecoilImpulse; // Player.Feel.cs
 
     public bool Facing; // arac kullanilirken govde kameraya doner
     public bool Carrying; // Cekim ile yuk tasirken agir yuk yurumesi
@@ -260,19 +260,19 @@ public partial class Player : CharacterBody3D
             if (fwd.LengthSquared() < 0.01f) fwd = Visual.GlobalBasis.Z;
             // yay: x'' = -k x - c x'
             float dtp = (float)GetPhysicsProcessDeltaTime();
-            _recoilVel += (-180f * _recoil - 18f * _recoilVel) * dtp;
+            _recoilVel += (-RecoilStiffness * _recoil - RecoilDamping * _recoilVel) * dtp;
             _recoil += _recoilVel * dtp;
-            _capa.GlobalPosition = hand + fwd * (0.12f - _recoil * 0.18f) + Vector3.Up * _recoil * 0.05f;
-            _capa.GlobalBasis = Basis.LookingAt(-fwd, Vector3.Up).Rotated(Basis.LookingAt(-fwd, Vector3.Up).X, _recoil * 0.6f);
+            _capa.GlobalPosition = hand + fwd * (0.12f - _recoil * RecoilPushBack) + Vector3.Up * _recoil * RecoilLift;
+            _capa.GlobalBasis = Basis.LookingAt(-fwd, Vector3.Up).Rotated(Basis.LookingAt(-fwd, Vector3.Up).X, _recoil * RecoilTilt);
         }
 
         // Kamera sarsintisi
         if (_shake > 0)
         {
-            _shake = Mathf.Max(0, _shake - dt * 2.5f);
+            _shake = Mathf.Max(0, _shake - dt * ShakeDecay);
             float s = _shake * _shake;
-            Cam.HOffset = (float)GD.RandRange(-1, 1) * s * 0.4f;
-            Cam.VOffset = (float)GD.RandRange(-1, 1) * s * 0.4f;
+            Cam.HOffset = (float)GD.RandRange(-1, 1) * s * ShakeOffset;
+            Cam.VOffset = (float)GD.RandRange(-1, 1) * s * ShakeOffset;
         }
         else { Cam.HOffset = 0; Cam.VOffset = 0; }
 

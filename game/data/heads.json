@@ -1,5 +1,6 @@
 {
   "_not": "GDD 4 Capa Mk.I is basliklari: menziller ve hizlar. Silah basliklari weapons.json icinde.",
+  "_not_m1": "URETIM 6 M1 Capa satiri. Kazma: tas, kil, bakir. Bicme: alan etkili (mowRadius); agac her vurusta woodPerChop Odun verir, devrilmez. Toprak: yalniz tarla (egim siniri crops.json). Sulama: kucuk dusmani iter (waterPush). Cekim: tutar, tasir, firlatir; carry.maxKg. Vurus hissi sayilari feel.json'da.",
   "heads": ["kazma", "bicme", "toprak", "sulama", "cekim", "insa"],
   "mowRadius": 1.6,
   "mowRange": 5,
@@ -9,5 +10,39 @@
   "waterRange": 9,
   "carryRange": 10,
   "buildRange": 8,
-  "woodPerChop": 2
+  "woodPerChop": 2,
+  "mowInterval": 0.35,
+  "tillInterval": 0.16,
+  "tillClearOcak": 1.6,
+  "tillClearPod": 2.2,
+  "waterInterval": 0.08,
+  "mineAimSlack": 1.2,
+  "treeRadius": 1.8,
+  "carry": {
+    "maxKg": 80,
+    "grabRadius": 1.2,
+    "grabReach": 2,
+    "grabPerScale": 0.4,
+    "chargePullBack": 0.6,
+    "missBeamSeconds": 0.15,
+    "holdDistance": 2.2,
+    "holdLift": 0.3,
+    "holdLiftPerRadius": 0.4,
+    "follow": 8,
+    "tapSeconds": 0.25,
+    "chargeSeconds": 0.8,
+    "throwMinSpeed": 7,
+    "throwMaxSpeed": 17,
+    "throwUp": 0.35,
+    "gravity": 18,
+    "bounce": 0.3,
+    "dropSeconds": 0.35,
+    "rampPadRadius": 2.4,
+    "rampReach": 4.5
+  },
+  "waterPush": {
+    "force": 2.0,
+    "width": 1.0,
+    "maxScale": 1.5
+  }
 }

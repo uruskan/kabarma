@@ -5,13 +5,14 @@
 #   powershell -ExecutionPolicy Bypass -File tools/test.ps1
 #   powershell -ExecutionPolicy Bypass -File tools/test.ps1 -Only sim,bot -Log progress/m1/x.log
 #
-# Adimlar (-Only): build, sim, bot, buildtest. Godot: $env:KABARMA_GODOT, yoksa .tools/ altinda, yoksa ana calisma
+# Adimlar (-Only): build, sim, bot, buildtest, latency. Godot: $env:KABARMA_GODOT, yoksa .tools/ altinda, yoksa ana calisma
 # kopyasinin .tools/ klasoru (worktree'ler icin, CLAUDE.md). Kosu gunlukleri .tools/run/test/ altinda.
 # Yeni bir Godot sinamasi: game/scripts/Main.cs Tests sozlugune bir satir, buraya bir Invoke-GodotTest cagrisi.
 param(
-    [string[]]$Only = @('build', 'sim', 'bot', 'buildtest'),
+    [string[]]$Only = @('build', 'sim', 'bot', 'buildtest', 'latency'),
     [int]$BotTimeout = 600,
     [int]$BuildTestTimeout = 300,
+    [int]$LatencyTimeout = 300,
     [string]$BotArgs = '--fast=4 --quit_after=400 --mute',
     [string]$Log = ''
 )
@@ -93,7 +94,7 @@ if ($Only -contains 'sim') {
 }
 
 $G = $null
-if (($Only -contains 'bot') -or ($Only -contains 'buildtest')) {
+if (($Only -contains 'bot') -or ($Only -contains 'buildtest') -or ($Only -contains 'latency')) {
     $G = Find-Godot
     if (-not $G) { Say 'Godot bulunamadi: KABARMA_GODOT ortam degiskenini ver.' }
 }
@@ -131,6 +132,18 @@ if ($Only -contains 'buildtest') {
             $detail = "placed=$($Matches[1]) failed=$($Matches[2]) pieces=$($Matches[3])"
         }
         [pscustomobject]@{ Ok = $ok; Detail = $detail }
+    }
+}
+
+# His olcutleri (GDD 4): her baslik ve silah icin girdi->tepki karesi, vurus duraklamasinin gercek suresi. Ayrinti: latency.log.
+if ($Only -contains 'latency') {
+    $out = Join-Path $RunDir 'latency'
+    New-Item -ItemType Directory -Force $out | Out-Null
+    Invoke-GodotTest 'latency' "--test=latency --mute --test_out=`"$out`"" $LatencyTimeout {
+        param($r)
+        $res = ($r.Text -split "`r?`n" | Where-Object { $_ -match '^RESULT ' } | Select-Object -Last 1)
+        if (-not $res) { $res = 'RESULT satiri yok' }
+        [pscustomobject]@{ Ok = ($res -match '^RESULT ok'); Detail = $res }
     }
 }
 

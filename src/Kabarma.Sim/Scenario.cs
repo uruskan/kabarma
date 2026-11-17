@@ -39,7 +39,7 @@ public sealed class Scenario
 }
 
 /// <summary>Bir oyunun butun kural durumu. Godot katmani bunu tutar ve gorur.</summary>
-public sealed class GameState
+public sealed partial class GameState
 {
     public GameData Data { get; }
     public Inventory Backpack { get; }

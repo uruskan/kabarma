@@ -1,0 +1,37 @@
+LATENCY display=Windows fps_cap=60 frame_ms=16.7 present_frames=1 budget<=50 ms
+SHOT C:\Users\uruskan\Documents\GitHub\kabarma\.claude\worktrees\m1-capa-fe4408\progress\m1\capa\pencereli/his_kazma.png
+LATENCY kazma   n=8 frames_max=1 budget_ms=33.3 wall_med_ms=19.1 wall_max_ms=35.5 ok
+        kazma wall_ms=[35.5, 19.1, 18.8, 18.8, 19.1, 18.6, 18.9, 20.0] fps=53 nodes=409 draw_calls=85
+SHOT C:\Users\uruskan\Documents\GitHub\kabarma\.claude\worktrees\m1-capa-fe4408\progress\m1\capa\pencereli/his_bicme.png
+LATENCY bicme   n=8 frames_max=1 budget_ms=33.3 wall_med_ms=22.3 wall_max_ms=35.2 ok
+        bicme wall_ms=[35.2, 18.9, 22.3, 19.1, 19.2, 24.0, 18.6, 24.4] fps=51 nodes=421 draw_calls=85
+SHOT C:\Users\uruskan\Documents\GitHub\kabarma\.claude\worktrees\m1-capa-fe4408\progress\m1\capa\pencereli/his_toprak.png
+LATENCY toprak  n=8 frames_max=1 budget_ms=33.3 wall_med_ms=18.4 wall_max_ms=22.1 ok
+        toprak wall_ms=[22.1, 18.1, 18.1, 18.4, 19.2, 18.0, 19.1, 18.4] fps=54 nodes=407 draw_calls=75
+SHOT C:\Users\uruskan\Documents\GitHub\kabarma\.claude\worktrees\m1-capa-fe4408\progress\m1\capa\pencereli/his_sulama.png
+LATENCY sulama  n=8 frames_max=1 budget_ms=33.3 wall_med_ms=18.7 wall_max_ms=20.2 ok
+        sulama wall_ms=[20.2, 18.4, 19.2, 18.7, 17.6, 19.9, 18.5, 18.3] fps=60 nodes=407 draw_calls=74
+SHOT C:\Users\uruskan\Documents\GitHub\kabarma\.claude\worktrees\m1-capa-fe4408\progress\m1\capa\pencereli/his_cekim.png
+LATENCY cekim   n=8 frames_max=1 budget_ms=33.3 wall_med_ms=19.0 wall_max_ms=26.9 ok
+        cekim wall_ms=[26.9, 18.4, 18.2, 21.3, 19.2, 19.0, 18.6, 18.8] fps=52 nodes=411 draw_calls=79
+SHOT C:\Users\uruskan\Documents\GitHub\kabarma\.claude\worktrees\m1-capa-fe4408\progress\m1\capa\pencereli/his_insa.png
+LATENCY insa    n=8 frames_max=1 budget_ms=33.3 wall_med_ms=19.2 wall_max_ms=37.0 ok
+        insa wall_ms=[37.0, 20.2, 18.7, 19.1, 19.7, 18.7, 19.2, 18.9] fps=54 nodes=419 draw_calls=85
+SHOT C:\Users\uruskan\Documents\GitHub\kabarma\.claude\worktrees\m1-capa-fe4408\progress\m1\capa\pencereli/his_tirpan.png
+LATENCY tirpan  n=8 frames_max=1 budget_ms=33.3 wall_med_ms=20.7 wall_max_ms=25.4 ok
+        tirpan wall_ms=[25.4, 20.7, 19.8, 19.8, 19.9, 20.2, 20.7, 20.9] fps=60 nodes=420 draw_calls=80
+SHOT C:\Users\uruskan\Documents\GitHub\kabarma\.claude\worktrees\m1-capa-fe4408\progress\m1\capa\pencereli/his_civi.png
+LATENCY civi    n=8 frames_max=1 budget_ms=33.3 wall_med_ms=20.2 wall_max_ms=38.8 ok
+        civi wall_ms=[38.8, 20.8, 19.7, 19.9, 20.4, 19.7, 19.9, 20.2] fps=60 nodes=422 draw_calls=82
+CARRY agir=150kg sinir=80kg tutulmadi=True
+CARRY firlatma yol=11.1m birakildi=True
+TRIGGER civi 1sn_basili_atis=1 yari otomatik ok
+TRIGGER tirpan 1sn_basili_atis=3 tam otomatik ok
+HITSTOP tirpan isinma: istenen=40.0ms olculen=42.9ms kare=16.7ms
+HITSTOP tirpan isabet  veri=40 istenen=40.0ms olculen=49.1ms bitis_karesi=16.5ms aralik=30-80 ok
+HITSTOP tirpan kritik  veri=70 istenen=70.0ms olculen=82.8ms bitis_karesi=16.7ms aralik=30-80 ok
+HITSTOP civi isinma: istenen=30.0ms olculen=32.7ms kare=16.6ms
+HITSTOP civi isabet    veri=30 istenen=30.0ms olculen=32.8ms bitis_karesi=16.7ms aralik=30-80 ok
+HITSTOP civi kritik    veri=60 istenen=60.0ms olculen=66.6ms bitis_karesi=16.4ms aralik=30-80 ok
+SHOT C:\Users\uruskan\Documents\GitHub\kabarma\.claude\worktrees\m1-capa-fe4408\progress\m1\capa\pencereli/his_f1_panel.png
+RESULT ok heads=8/8 budget_max_ms=33.3 wall_med_ms=19.2 wall_max_ms=38.8 hitstop=ok

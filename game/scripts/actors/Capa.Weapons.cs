@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using Godot;
@@ -5,39 +6,64 @@ using Kabarma.Sim;
 
 namespace Kabarma.Game;
 
-/// <summary>Capa, silah basliklari: Tirpan Isini ve Civi Tabancasi (ICERIK §6.2 #1, #2) ve mermileri.</summary>
+/// <summary>
+/// Capa, silah basliklari: Tirpan Isini ve Civi Tabancasi (ICERIK 6.2 #1, #2) ve mermileri. Sayilar weapons.json'da,
+/// vurus hissi feel.json'da (sources.tirpan, sources.civi; Capa.Feel.cs).
+/// </summary>
 public partial class Capa
 {
-    // ---------- Tirpan Isini ----------
+    /// <summary>Tetigin urettigi atis sayisi (sinama: yari ve tam otomatik).</summary>
+    public int ShotsFired { get; private set; }
 
-    /// <summary>Civi Tabancasi: tek hedefli, isabetli (ICERIK §6.2 #2). Gunduz cephane harcar; Kabarma gecesi sinirsiz (GDD 4).</summary>
+    /// <summary>
+    /// Tetik: tam otomatikte basili tutmak ateslemeye devam eder; yari otomatikte her basis bir atis (ICERIK 6.2 #2),
+    /// bekleme bitmeden gelen basis inputBufferSeconds icinde saklanir. Beklemede gelen basis gecikme ornegi sayilmaz.
+    /// </summary>
+    void TickWeapon(WeaponDef w, bool fire, bool firePressed, float dt, Action shoot)
+    {
+        bool pressed = firePressed || _shotBuffer > 0f;
+        bool trigger = w.SemiAuto ? pressed : fire;
+        if (trigger && _fireCd <= 0f)
+        {
+            _fireCd = w.FireInterval / (_d.Night?.Stats.FireRateMult ?? 1f);
+            _shotBuffer = 0f;
+            shoot();
+            ShotsFired++;
+            _reacted = true;
+        }
+        else if (firePressed)
+        {
+            if (w.SemiAuto) _shotBuffer = w.InputBufferSeconds;
+            _d.FeelPanel?.CancelInput();
+        }
+        else _shotBuffer = Mathf.Max(0f, _shotBuffer - dt);
+    }
+
+    /// <summary>Civi Tabancasi: tek hedefli, isabetli (ICERIK 6.2 #2). Gunduz cephane harcar; Kabarma gecesi sinirsiz (GDD 4).</summary>
     public void FireNail(Vector3 aim)
     {
         var w = _d.Data.Tool.Nailgun;
+        var muzzle = _d.Player.Muzzle.GlobalPosition;
         bool free = _d.NightActive;
         if (!free && !string.IsNullOrEmpty(w.Ammo) && !_d.State.Backpack.Remove(w.Ammo, w.AmmoPerShot))
         {
-            _d.Hud.Hint("Çivi yok: Tezgâhta taştan çivi yap", 1.2f);
-            Sfx.Play("place", null, -12f);
+            _d.Hud.Hint("Çivi yok: Tezgâhta bakırdan çivi yap", 1.2f);
+            FeelEmpty("civi", muzzle);
             return;
         }
         var stats = _d.Night?.Stats ?? new CombatStats();
-        var muzzle = _d.Player.Muzzle.GlobalPosition;
         var dir = (aim - muzzle).Normalized();
         int n = stats.Projectiles;
         float spread = Mathf.DegToRad(w.SpreadDegrees);
+        var look = NailLook(w, stats, F.Source("civi").Trail > 0);
         for (int i = 0; i < n; i++)
         {
             float off = n == 1 ? 0 : Mathf.Lerp(-spread * (n - 1), spread * (n - 1), i / (float)(n - 1));
-            var nail = new Nail(_d, dir.Rotated(Vector3.Up, off), w, stats);
+            var nail = new Nail(_d, dir.Rotated(Vector3.Up, off), w, stats, look);
             _d.AddChild(nail);
             nail.GlobalPosition = muzzle;
         }
-        Sfx.Play("nailgun", muzzle, -2f);
-        Fx.Burst(muzzle, Palette.Warning, 5, 3f, 0.04f, 0.15f, true, 0f);
-        _d.Player.Recoil(0.7f * Feel.Recoil);
-        _d.Player.Shake(0.08f * Feel.Shake);
-        _d.MarkReaction();
+        FeelFire("civi", muzzle, Palette.Warning);
     }
 
     public void FireTirpan(Vector3 aim)
@@ -45,7 +71,8 @@ public partial class Capa
         var w = _d.Data.Tool.Weapon;
         var stats = _d.Night?.Stats ?? new CombatStats();
         var muzzle = _d.Player.Muzzle.GlobalPosition;
-        var dir = (aim - muzzle); dir.Y = Mathf.Clamp(dir.Y, -0.3f * dir.Length(), 0.3f * dir.Length());
+        var dir = (aim - muzzle);
+        if (w.MaxPitch > 0) dir.Y = Mathf.Clamp(dir.Y, -w.MaxPitch * dir.Length(), w.MaxPitch * dir.Length());
         dir = dir.Normalized();
         int n = stats.Projectiles;
         float spread = Mathf.DegToRad(w.SpreadDegrees);
@@ -57,14 +84,47 @@ public partial class Capa
             _d.AddChild(proj);
             proj.GlobalPosition = muzzle;
         }
-        Sfx.Play("nailgun", muzzle, -5f);
-        _d.Player.Shake(0.12f * Feel.Shake);
-        _d.Player.Recoil(0.45f * Feel.Recoil);
-        _d.MarkReaction();
+        FeelFire("tirpan", muzzle, Palette.MayaTeal);
+    }
+
+    /// <summary>Civinin gorunusu (malzeme, govde, iz parcaciginin malzemesi ve cizimi): her atista yeniden kurmak (ozellikle
+    /// iz parcaciginin renk rampasi dokusu) tepki karesini bir kare geciktiriyordu (pencereli gecikme olcumu: ~34 ms -> ~20 ms).
+    /// Kaynaklar paylasilir; dugumler (MeshInstance3D, GpuParticles3D) her civide yeni.</summary>
+    NailLook _nailLook;
+
+    NailLook NailLook(WeaponDef w, CombatStats s, bool trail)
+    {
+        if (_nailLook != null && _nailLook.Size == s.SizeMult && _nailLook.Glow == w.Glow && (_nailLook.TrailMesh != null) == trail) return _nailLook;
+        var look = new NailLook { Size = s.SizeMult, Glow = w.Glow };
+        look.Material = new StandardMaterial3D { ShadingMode = BaseMaterial3D.ShadingModeEnum.Unshaded, AlbedoColor = Palette.OffWhite, EmissionEnabled = true, Emission = Palette.Warning, EmissionEnergyMultiplier = w.Glow };
+        look.Body = new CapsuleMesh { Radius = 0.035f * s.SizeMult, Height = 0.5f, RadialSegments = 6, Rings = 1 };
+        if (trail)
+        {
+            var t = Fx.MakeTrail(new Color(Palette.Warning, 0.7f), Palette.OffWhite);
+            ((SphereMesh)t.DrawPass1).Radius = 0.03f;
+            ((SphereMesh)t.DrawPass1).Height = 0.06f;
+            look.TrailProcess = t.ProcessMaterial;
+            look.TrailMesh = t.DrawPass1;
+            t.Free(); // agaca girmedi: yalnizca kaynaklari kullanilir
+        }
+        return _nailLook = look;
+    }
+
+    /// <summary>Mermi bir Zipzip'e degdi: hasar, durumlar ve isabet hissi (iki silahta ortak).</summary>
+    internal void WeaponHit(string feel, WeaponDef w, CombatStats s, Zipzip z, Vector3 at, Vector3 dir, bool weak, Color color)
+    {
+        var night = _d.Night;
+        float dmg; bool crit;
+        if (night != null) (dmg, crit) = night.RollHit(w, weak, z.Def.WeakPointMult);
+        else { dmg = w.Damage; crit = false; }
+        z.Hit(dmg, crit, dir with { Y = 0 }, w.Knockback * s.KnockbackMult, weak);
+        if (night != null && night.RollBurn()) z.BurnT = w.BurnSeconds;
+        if (night != null && night.RollFreeze()) z.FreezeT = w.FreezeSeconds;
+        FeelHit(feel, at, crit ? Palette.Warning : color, crit, weak);
     }
 }
 
-/// <summary>Tirpan Isini mermisi: hilal bicimli enerji suprumesi. Ayni dusmana bir kez vurur; Seken karti ile seker.</summary>
+/// <summary>Tirpan Isini mermisi: hilal bicimli enerji supurmesi. Ayni dusmana bir kez vurur; Seken karti ile seker.</summary>
 public partial class Crescent : Node3D
 {
     readonly Director _d;
@@ -75,7 +135,7 @@ public partial class Crescent : Node3D
     int _bounces;
     readonly HashSet<Zipzip> _hit = new();
     readonly MeshInstance3D _mesh;
-    float _width;
+    readonly float _width;
 
     public Crescent(Director d, Vector3 dir, WeaponDef w, CombatStats s)
     {
@@ -87,7 +147,7 @@ public partial class Crescent : Node3D
             ShadingMode = BaseMaterial3D.ShadingModeEnum.Unshaded,
             AlbedoColor = new Color(Palette.MayaTeal, 0.85f),
             Transparency = BaseMaterial3D.TransparencyEnum.Alpha,
-            EmissionEnabled = true, Emission = Palette.MayaTeal, EmissionEnergyMultiplier = 3f,
+            EmissionEnabled = true, Emission = Palette.MayaTeal, EmissionEnergyMultiplier = w.Glow,
             CullMode = BaseMaterial3D.CullModeEnum.Disabled,
         };
         _mesh = new MeshInstance3D
@@ -113,38 +173,29 @@ public partial class Crescent : Node3D
         float step = _w.Speed * dt;
         GlobalPosition += _dir * step;
         _traveled += step;
-        _mesh.RotateObjectLocal(Vector3.Forward, dt * 18f);
+        _mesh.RotateObjectLocal(Vector3.Forward, dt * _w.Spin);
         float life = _traveled / (_w.Range * _s.SizeMult);
-        _mesh.Transparency = Mathf.Clamp((life - 0.7f) / 0.3f, 0, 1);
+        _mesh.Transparency = Mathf.Clamp((life - _w.FadeStart) / Mathf.Max(0.01f, 1f - _w.FadeStart), 0, 1);
 
         // Zemine gomulmesin
-        float gy = _d.World.HeightAt(GlobalPosition.X, GlobalPosition.Z) + 0.35f;
+        float gy = _d.World.HeightAt(GlobalPosition.X, GlobalPosition.Z) + _w.GroundOffset;
         if (GlobalPosition.Y < gy) GlobalPosition = GlobalPosition with { Y = gy };
 
         foreach (var z in Zipzip.All.ToArray())
         {
             if (z.Dead || _hit.Contains(z)) continue;
-            if (z.Center.DistanceTo(GlobalPosition) > z.Radius + _width * 0.5f) continue;
+            if (z.Center.DistanceTo(GlobalPosition) > z.Radius + _width * 0.5f + _w.HitRadius) continue;
             _hit.Add(z);
-            bool weak = z.HasSac && z.SacPos.DistanceTo(GlobalPosition) < z.Radius * 0.9f;
-            var night = _d.Night;
-            float dmg; bool crit;
-            if (night != null) (dmg, crit) = night.RollHit(_w, weak, z.Def.WeakPointMult);
-            else { dmg = _w.Damage; crit = false; }
-            z.Hit(dmg, crit, _dir with { Y = 0 }, _w.Knockback * _s.KnockbackMult, weak);
-            if (night != null && night.RollBurn()) z.BurnT = _w.BurnSeconds;
-            if (night != null && night.RollFreeze()) z.FreezeT = _w.FreezeSeconds;
-            Sfx.Play("hit", z.Center, -3f);
-            Fx.Burst(z.Center, crit ? Palette.Warning : Palette.MayaTeal, crit ? 14 : 8, 5f, 0.08f, 0.35f, true, 0f);
-            _d.HitStop((crit ? 0.07f : 0.04f) * Feel.HitStop);
+            bool weak = z.HasSac && z.SacPos.DistanceTo(GlobalPosition) < z.Radius * _w.WeakRadius;
+            _d.Capa.WeaponHit("tirpan", _w, _s, z, z.Center, _dir, weak, Palette.MayaTeal);
             if (_bounces > 0)
             {
                 _bounces--;
                 var next = Zipzip.All.Where(e => !e.Dead && !_hit.Contains(e)).OrderBy(e => e.Center.DistanceTo(GlobalPosition)).FirstOrDefault();
-                if (next != null && next.Center.DistanceTo(GlobalPosition) < 12f)
+                if (next != null && next.Center.DistanceTo(GlobalPosition) < _w.BounceSearch)
                 {
                     _dir = (next.Center - GlobalPosition).Normalized();
-                    _traveled = Mathf.Max(0, _traveled - 4f);
+                    _traveled = Mathf.Max(0, _traveled - _w.BounceRefund);
                     LookDir();
                 }
             }
@@ -153,7 +204,17 @@ public partial class Crescent : Node3D
     }
 }
 
-/// <summary>Civi: ince, hizli, tek hedef. Seken karti ile bir sonrakine seker.</summary>
+/// <summary>Civilerin paylastigi kaynaklar (Capa.NailLook).</summary>
+public sealed class NailLook
+{
+    public float Size, Glow;
+    public Material Material;
+    public Mesh Body;
+    public Material TrailProcess;
+    public Mesh TrailMesh;
+}
+
+/// <summary>Civi: ince, hizli, tek hedef. Seken karti ile bir sonrakine seker. Arkasinda kisa iz (feel.json civi.trail).</summary>
 public partial class Nail : Node3D
 {
     readonly Director _d;
@@ -163,12 +224,17 @@ public partial class Nail : Node3D
     float _traveled;
     int _bounces;
     Zipzip _last;
+    readonly GpuParticles3D _trail;
 
-    public Nail(Director d, Vector3 dir, WeaponDef w, CombatStats s)
+    public Nail(Director d, Vector3 dir, WeaponDef w, CombatStats s, NailLook look)
     {
         _d = d; _dir = dir; _w = w; _s = s; _bounces = s.Bounces;
-        var mat = new StandardMaterial3D { ShadingMode = BaseMaterial3D.ShadingModeEnum.Unshaded, AlbedoColor = Palette.OffWhite, EmissionEnabled = true, Emission = Palette.Warning, EmissionEnergyMultiplier = 1.5f };
-        AddChild(new MeshInstance3D { Mesh = new CapsuleMesh { Radius = 0.035f * s.SizeMult, Height = 0.5f, RadialSegments = 6, Rings = 1 }, MaterialOverride = mat, RotationDegrees = new Vector3(90, 0, 0), CastShadow = GeometryInstance3D.ShadowCastingSetting.Off });
+        AddChild(new MeshInstance3D { Mesh = look.Body, MaterialOverride = look.Material, RotationDegrees = new Vector3(90, 0, 0), CastShadow = GeometryInstance3D.ShadowCastingSetting.Off });
+        if (look.TrailMesh != null)
+        {
+            _trail = new GpuParticles3D { Amount = 12, Lifetime = 0.12f, LocalCoords = false, ProcessMaterial = look.TrailProcess, DrawPass1 = look.TrailMesh };
+            AddChild(_trail);
+        }
     }
 
     public override void _Ready() { if (_dir.LengthSquared() > 0.001f) GlobalBasis = Basis.LookingAt(_dir, Vector3.Up); }
@@ -188,35 +254,31 @@ public partial class Nail : Node3D
             var seg = GlobalPosition - from;
             float t = Mathf.Clamp((c - from).Dot(seg) / Mathf.Max(0.0001f, seg.LengthSquared()), 0, 1);
             var hp = from + seg * t;
-            if (hp.DistanceTo(c) > z.Radius + 0.1f * _s.SizeMult) continue;
-            bool weak = z.HasSac && z.SacPos.DistanceTo(hp) < z.Radius * 0.7f;
-            var night = _d.Night;
-            float dmg; bool crit;
-            if (night != null) (dmg, crit) = night.RollHit(_w, weak, z.Def.WeakPointMult);
-            else { dmg = _w.Damage; crit = false; }
-            z.Hit(dmg, crit, _dir with { Y = 0 }, _w.Knockback * _s.KnockbackMult, weak);
-            if (night != null && night.RollBurn()) z.BurnT = _w.BurnSeconds;
-            if (night != null && night.RollFreeze()) z.FreezeT = _w.FreezeSeconds;
-            Sfx.Play("hit", c, -1f);
-            Fx.Burst(c, crit ? Palette.Warning : Palette.OffWhite, crit ? 12 : 6, 4f, 0.06f, 0.3f, true, 0f);
-            _d.HitStop((crit ? 0.06f : 0.03f) * Feel.HitStop);
+            if (hp.DistanceTo(c) > z.Radius + _w.HitRadius * _s.SizeMult) continue;
+            bool weak = z.HasSac && z.SacPos.DistanceTo(hp) < z.Radius * _w.WeakRadius;
+            _d.Capa.WeaponHit("civi", _w, _s, z, c, _dir, weak, Palette.OffWhite);
             _last = z;
             if (_bounces-- > 0)
             {
                 var next = Zipzip.All.Where(e => !e.Dead && e != z).OrderBy(e => e.Center.DistanceTo(c)).FirstOrDefault();
-                if (next != null && next.Center.DistanceTo(c) < 14f)
+                if (next != null && next.Center.DistanceTo(c) < _w.BounceSearch)
                 {
                     _dir = (next.Center - c).Normalized();
                     GlobalPosition = c;
                     GlobalBasis = Basis.LookingAt(_dir, Vector3.Up);
-                    _traveled = Mathf.Max(0, _traveled - 6f);
+                    _traveled = Mathf.Max(0, _traveled - _w.BounceRefund);
                     return;
                 }
             }
             QueueFree();
             return;
         }
-        if (GlobalPosition.Y < _d.World.HeightAt(GlobalPosition.X, GlobalPosition.Z)) { Fx.Burst(GlobalPosition, Palette.Soil, 4, 2f, 0.05f, 0.3f); QueueFree(); return; }
+        if (GlobalPosition.Y < _d.World.HeightAt(GlobalPosition.X, GlobalPosition.Z) + _w.GroundOffset)
+        {
+            _d.Capa.FeelDebris("civi_zemin", GlobalPosition, Palette.Soil);
+            QueueFree();
+            return;
+        }
         if (_traveled > _w.Range * _s.SizeMult) QueueFree();
     }
 }

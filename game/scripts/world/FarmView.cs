@@ -22,7 +22,13 @@ public partial class FarmView : Node3D
         farm.Swelled += p => View(p)?.OnSwelled();
         farm.Eaten += p => View(p)?.OnEaten();
         farm.Harvested += p => View(p)?.OnEaten(); // bicilen ekin tarladan kalkar (parca efekti ayni)
+        // GDD 8.4: safakta sonme saati baslar; 1 gun icinde toplanmayan kabarik urun soner.
+        farm.Deflated += p => View(p)?.OnDeflated();
+        Events.Dawn += farm.OnDawn;
     }
+
+    /// <summary>Vurus hissi (Capa.Feel.cs) icin: tarla Director'un cocugu.</summary>
+    internal Capa Capa => (GetParent() as Director)?.Capa;
 
     PlotView View(Plot p) => _views.GetValueOrDefault((p.X, p.Y));
     public PlotView View(int x, int y) => _views.GetValueOrDefault((x, y));
@@ -80,10 +86,8 @@ public partial class PlotView : Node3D
         _soilMat.SetShaderParameter("rim", 0f);
         _soil = kit.Instance(_soilMat);
         AddChild(_soil);
-        Fx.Burst(Position, Palette.Soil.Lerp(Palette.Ground, 0.3f), 10, 3f, 0.08f, 0.5f);
+        // Surme efekti (toprak parcasi, ezilip esneme, ses) Capa.Toprak'ta: feel.json sources.toprak.
     }
-
-    public override void _Ready() => Fx.Burst(GlobalPosition + Vector3.Up * 0.1f, Palette.Soil.Lerp(Palette.Ground, 0.3f), 12, 3.5f, 0.09f, 0.5f);
 
     public void OnPlanted()
     {
@@ -108,13 +112,22 @@ public partial class PlotView : Node3D
         }
         _crop.AddChild(_cropMesh);
         _crop.Scale = Vector3.One * 0.15f;
-        Fx.Burst(GlobalPosition + Vector3.Up * 0.2f, Palette.Plant, 8, 2.5f, 0.06f, 0.4f);
+        // Ekme efekti Capa.Toprak'ta: feel.json sources.toprak_ekim.
     }
 
     public void OnWatered()
     {
         _flash = 0.5f;
-        Fx.Burst(GlobalPosition + Vector3.Up * 0.3f, new Color("8CC8E8"), 10, 2.5f, 0.06f, 0.5f);
+        _owner.Capa?.FeelHit("sulama", GlobalPosition + Vector3.Up * 0.3f, new Color("8CC8E8"), squash: this);
+    }
+
+    /// <summary>Kabarik urun toplanmadan sondu (GDD 8.4): normal boya iner, iki kat hasat verir.</summary>
+    public void OnDeflated()
+    {
+        _swellT = -1;
+        _soundDone = false;
+        SetCrop(swell: 0f, glow: 0f);
+        if (_crop != null) _owner.Capa?.FeelHit("kabarik_sonme", _crop.GlobalPosition + Vector3.Up * 0.5f, Palette.MayaTeal, squash: this);
     }
 
     public void OnSwelled()
@@ -202,13 +215,16 @@ public partial class PlotView : Node3D
     }
 }
 
-/// <summary>Kabarik urun: yuk nesnesi. Cantaya girmez, Cekim isiniyla tasinir (GDD 5).</summary>
-public partial class SwollenCrop : Node3D
+/// <summary>Kabarik urun: yuk nesnesi. Cantaya girmez, Cekim isiniyla tasinir ve firlatilir (GDD 5, 8.4).</summary>
+public partial class SwollenCrop : Node3D, ICarryable
 {
     public string CropId { get; }
     public SizeClassDef Size { get; }
-    public bool Held;
+    public bool Held { get; set; }
     public bool Sold;
+    public Node3D Body => this;
+    public float Kg => Size.Kg;
+    public bool Gone => Sold || IsQueuedForDeletion();
     readonly System.Action<float> _glow;
     readonly Node3D _pivot;
     float _t;
