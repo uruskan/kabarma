@@ -12,6 +12,8 @@ uniform float flash = 0.0;                              // isabet parlamasi
 uniform float rim = 0.25;
 uniform vec4 tint : source_color = vec4(1.0);
 uniform float vein_scale = 3.5;
+// Uretim hattindan (Blender, glTF COLOR_0) gelen kose renkleri Godot'a dogrusal gelir; koddan kurulanlar sRGB.
+uniform bool vertex_linear = false;
 
 varying vec3 obj_pos;
 
@@ -32,7 +34,7 @@ void vertex() {
 }
 
 void fragment() {
-	vec3 base = to_linear(COLOR.rgb) * tint.rgb;
+	vec3 base = (vertex_linear ? COLOR.rgb : to_linear(COLOR.rgb)) * tint.rgb;
 	ALBEDO = base;
 	ROUGHNESS = 0.85;
 	float n = noise(obj_pos * vein_scale + vec3(0.0, TIME * 0.6, 0.0));

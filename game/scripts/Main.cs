@@ -36,10 +36,24 @@ public partial class Main : Node3D
         if (Args.TryGetValue("shot_prefix", out var pre)) _prefix = pre;
         if (Args.TryGetValue("quit_after", out var q)) _quitAfter = float.Parse(q, System.Globalization.CultureInfo.InvariantCulture);
 
+        if (Args.TryGetValue("checkcolors", out var cc)) { CheckColors(cc); GetTree().Quit(); return; }
         _dir = new Director { Name = "Director" };
         if (Args.TryGetValue("fast", out var f)) _dir.SpeedScale = float.Parse(f, System.Globalization.CultureInfo.InvariantCulture);
         AddChild(_dir);
         GD.Print("BOOT Kabarma MVP");
+    }
+
+    /// <summary>Uretim hatti denetimi: GLB'deki kose renkleri Godot'a hangi uzayda geliyor.</summary>
+    static void CheckColors(string path)
+    {
+        var inst = GD.Load<PackedScene>(path).Instantiate<Node3D>();
+        foreach (var mi in inst.FindChildren("*", "MeshInstance3D", true, false).OfType<MeshInstance3D>())
+        {
+            var arr = mi.Mesh.SurfaceGetArrays(0);
+            var cols = (Color[])arr[(int)Mesh.ArrayType.Color];
+            var top = cols.GroupBy(c => c.ToHtml(false)).OrderByDescending(g => g.Count()).Take(4);
+            GD.Print($"COLORS {mi.Name}: " + string.Join(" ", top.Select(g => $"{g.Key}x{g.Count()}")));
+        }
     }
 
     static void Key(string action, params Key[] keys)

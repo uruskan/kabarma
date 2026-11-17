@@ -1,0 +1,38 @@
+{
+  "_not": "SANAT-SES §2. Izinli renkler: biyom paleti + ortak notr + Maya + turetilmis tonlar (Palette.cs ile ayni). Uretim hatti (pipeline/clean_asset.py) yuzeyleri bu listeye oturtur.",
+  "sets": {
+    "altin_cayir": {
+      "ground": "E2B54A",
+      "plant": "7FA650",
+      "accent": "F26B3A",
+      "shadow": "5A4A6B",
+      "fog": "F3D9A4",
+      "sky": "8CC8E8"
+    },
+    "neutral": {
+      "off_white": "EDE6D6",
+      "coop_blue": "3E78B2",
+      "warning": "F2B632",
+      "dark_grey": "3B3F4A",
+      "wood": "B07A4A",
+      "holding_red": "C8372D"
+    },
+    "maya": {
+      "teal": "5FF0C8",
+      "violet": "D45BFF",
+      "night": "1A2238"
+    },
+    "tones": {
+      "plant_dark": "60845A",
+      "plant_light": "A9C477",
+      "ground_dark": "A88A52",
+      "wood_dark": "7E5A48",
+      "rock": "A49AA2",
+      "rock_dark": "7A6E80",
+      "soil": "83615A",
+      "turnip_top": "8E5AAE",
+      "accent_dark": "B85A48",
+      "blue_dark": "2E5580"
+    }
+  }
+}
