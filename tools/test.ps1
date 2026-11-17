@@ -16,6 +16,7 @@ param(
     [string]$Log = ''
 )
 
+if (-not $PSBoundParameters.ContainsKey('Only')) { $Only += 'gece' } # gecehud: --test=gece varsayilan adimlara eklenir
 $ErrorActionPreference = 'Continue'
 $Only = @($Only | ForEach-Object { $_ -split ',' } | ForEach-Object { $_.Trim() } | Where-Object { $_ })
 $Root = Split-Path -Parent $PSScriptRoot
@@ -131,6 +132,17 @@ if ($Only -contains 'buildtest') {
             $detail = "placed=$($Matches[1]) failed=$($Matches[2]) pieces=$($Matches[3])"
         }
         [pscustomobject]@{ Ok = $ok; Detail = $detail }
+    }
+}
+
+if (($Only -contains 'gece') -and -not $G) { $G = Find-Godot }
+if ($Only -contains 'gece') {
+    # gecehud: ilk gece kartlari, Hasat Raporu, Defter, envanter, takvim ve uyku, F1'den Kucuk Kabarma (game/scripts/GeceHudTest.cs)
+    Invoke-GodotTest 'gece' "--test=gece --mute" $BotTimeout {
+        param($r)
+        $res = ($r.Text -split "`r?`n" | Where-Object { $_ -match '^GECE RESULT ' } | Select-Object -Last 1)
+        if (-not $res) { $res = 'GECE RESULT satiri yok' }
+        [pscustomobject]@{ Ok = ($res -match '^GECE RESULT ok'); Detail = ($res -replace ' t=[0-9.]+$', '') }
     }
 }
 

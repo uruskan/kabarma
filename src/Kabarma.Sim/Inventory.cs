@@ -104,4 +104,12 @@ public sealed class Belt
     }
 
     public string? At(int slot) => slot >= 0 && slot < Slots ? _ids[slot] : null;
+
+    /// <summary>Envanter izgarasi: esyayi belirli kemer yuvasina koyar (baska yuvadaysa oradan alinir). null yuvayi bosaltir.</summary>
+    public void Assign(int slot, string? id)
+    {
+        if (slot < 0 || slot >= Slots) return;
+        if (id != null) { int was = Array.IndexOf(_ids, id); if (was >= 0) _ids[was] = null; }
+        _ids[slot] = id;
+    }
 }

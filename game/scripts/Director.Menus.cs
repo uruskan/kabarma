@@ -72,22 +72,8 @@ public partial class Director
         return true;
     }
 
-    public void OpenBagMenu()
-    {
-        var items = new System.Collections.Generic.List<Hud.MenuItem>();
-        foreach (var f in Data.Tool.Foods)
-        {
-            var ff = f;
-            items.Add(new Hud.MenuItem($"Ye: {f.Name}  (+{f.MaxHp:0} can, +{f.Regen:0.#}/sn, {f.Seconds / 60f:0} dk)  ·  elde {State.Backpack.Count(f.Id)}", () => State.Backpack.Count(ff.Id) > 0, () => EatFood(ff)));
-        }
-        foreach (var g in State.Backpack.Contents.Select(c => c.id).Distinct().Take(8 - items.Count))
-        {
-            var id = g;
-            items.Add(new Hud.MenuItem($"{ItemNames.Of(id)} ×{State.Backpack.Count(id)}   ·   {(State.Belt.Contains(id) ? "kemerde (çıkar)" : "kemere tak")}", () => true, () => { State.Belt.Toggle(id); OpenBagMenu(); }));
-        }
-        var lines = State.Backpack.Contents.GroupBy(c => c.id).Select(g => $"{ItemNames.Of(g.Key)} {g.Sum(c => c.count)}");
-        Hud.ShowMenu($"Sırt Çantası · {State.Backpack.UsedSlots}/{State.Backpack.Slots} yuva", items, string.Join("   ·   ", lines) + $"\nYemek yuvaları: {string.Join(", ", State.Food.Active.Select(a => $"{a.food.Name} {a.left / 60f:0.0} dk"))}");
-    }
+    /// <summary>Tab: envanter izgarasi (Hud.Inventory.cs; canta, kemer, 3 yemek yuvasi; ikinci sayfa Defter).</summary>
+    public void OpenBagMenu() => Hud.OpenInventory();
 
     public void OpenSellMenu()
     {

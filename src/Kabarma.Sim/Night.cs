@@ -90,10 +90,22 @@ public sealed class KabarmaNight
     /// <param name="memberCard">Uye tipinin baslangic karti (GDD 23). Gece tanimi izin vermezse verilmez (GDD 24: ilk gece).</param>
     public KabarmaNight(GameData data, NightDef def, ulong seed, string? memberCard = null)
     {
-        _data = data; _def = def; _rng = new Rng(seed);
+        _data = data; _def = def; _rng = new Rng(Scramble(seed));
         Gosteri = data.Kabarma.Gosteri.Min;
         PeakGosteri = Gosteri;
         if (def.MemberStartCard && !string.IsNullOrEmpty(memberCard)) Grant(memberCard);
+    }
+
+    /// <summary>
+    /// splitmix64: kucuk tohumla xorshift'in ilk ciktilari da kucuk olur ve kart teklifi hep havuzun basindan secer
+    /// (yeniden oynanan gecede uc teklifin ucunde de Catal ilk siradaydi). Tohum burada karistirilir; Rng'nin kendisi ortak.
+    /// </summary>
+    static ulong Scramble(ulong z)
+    {
+        z += 0x9E3779B97F4A7C15UL;
+        z = (z ^ (z >> 30)) * 0xBF58476D1CE4E5B9UL;
+        z = (z ^ (z >> 27)) * 0x94D049BB133111EBUL;
+        return z ^ (z >> 31);
     }
 
     public NightDef Def => _def;

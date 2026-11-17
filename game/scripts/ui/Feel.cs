@@ -40,6 +40,7 @@ public partial class FeelPanel : CanvasLayer
         Slider(v, "Kamera sarsıntısı", () => Feel.Shake, x => Feel.Shake = x);
         Slider(v, "Geri tepme", () => Feel.Recoil, x => Feel.Recoil = x);
         Slider(v, "Hasar sayısı boyu", () => Feel.DamageNumbers, x => Feel.DamageNumbers = x);
+        v.AddChild(NightRestartButton()); // FeelPanel.Night.cs (gecehud): Kucuk Kabarma yeniden
         _stats = new Label();
         v.AddChild(_stats);
         _panel.AddChild(v);

@@ -125,7 +125,7 @@ public partial class Bot
         {
             P.MoveOverride = Vector3.Zero;
             if (!_d.Hud.MenuOpen && _menuT <= 0) { _d.OpenBagMenu(); _menuT = 0.5f; }
-            else if (_d.Hud.MenuOpen && _menuT <= 0) { _d.Hud.ActivateMenu(0); _d.Hud.HideMenu(); _menuT = 1f; }
+            else if (_d.Hud.MenuOpen && _menuT <= 0) { _d.Hud.InventorySelect("sebze_corbasi"); _d.Hud.InventoryAccept(); _d.Hud.HideMenu(); _menuT = 1f; } // envanter izgarasi: corbayi sec, Enter
         }
         else if (st.Queue.Active == null) UseStation(st, 0);
         else { P.MoveOverride = Vector3.Zero; Aim(st.GlobalPosition + Vector3.Up); }

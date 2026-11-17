@@ -159,6 +159,22 @@ public class CardTests
         Assert.True(catalLater < offers, "ikinci teklif de hep Catal iceriyor: kural yalniz ilk teklif icin");
     }
 
+    /// <summary>Teklifler havuzun basina yigilmamali: ilk sira 10 kart arasinda dagilir (kucuk tohum hatasi).</summary>
+    [Fact]
+    public void Offers_are_spread_over_the_pool()
+    {
+        var d = Data();
+        var firsts = new Dictionary<string, int>();
+        for (ulong seed = 1; seed <= 300; seed++)
+        {
+            var n = new KabarmaNight(d, d.Kabarma.FirstNight, seed);
+            var o = n.RollOffer();
+            firsts[o[0].Id] = firsts.GetValueOrDefault(o[0].Id) + 1;
+        }
+        Assert.Equal(d.Cards.Cards.Count, firsts.Count);
+        Assert.True(firsts.Values.Max() < 70, "ilk sira tek karta yigiliyor: " + string.Join(", ", firsts.Select(kv => $"{kv.Key}={kv.Value}")));
+    }
+
     [Fact]
     public void First_night_does_not_grant_the_member_start_card()
     {

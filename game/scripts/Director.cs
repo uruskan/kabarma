@@ -102,6 +102,7 @@ public partial class Director : Node3D
 
         State.Scenario.StepChanged += OnStepChanged;
         WireScenario(); // Director.Scenario.cs: olay -> adim sayaci
+        WireNightAndDay(); // Director.Calendar.cs: takvim, uyku, Defter olaylari
         State.Farm.Eaten += p => { GD.Print($"EATEN plot {p.X},{p.Y}"); Sfx.Play("pop", FarmView.CellCenter(p.X, p.Y), -2f); };
         foreach (var l in Data.Scenario.Intro) Hud.Say(l);
 
@@ -172,6 +173,7 @@ public partial class Director : Node3D
 
         // Ekin: gunduz isik var; gece ve aksamda buyume durur (GDD 8.2 Isik).
         bool light = Phase is Act.Day or Act.Dawn or Act.Report or Act.Free;
+        light = light && ClockDaylight; // Director.Calendar.cs: takvimin normal gecesinde de buyume durur
         State.Farm.Tick(dt, light);
         State.Scenario.SetProgress("grow", State.Farm.MatureCount);
 
