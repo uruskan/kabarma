@@ -1,0 +1,105 @@
+KIT kare_temel               tris=  910 json=  910 surfaces=1 sockets= 9 colliders=1 mat=res://assets/models/build/wood/wood_kit.tres
+KIT ucgen_temel              tris=  662 json=  662 surfaces=1 sockets= 6 colliders=1 mat=res://assets/models/build/wood/wood_kit.tres
+KIT kazik_temel              tris= 1172 json= 1172 surfaces=1 sockets= 9 colliders=1 mat=res://assets/models/build/wood/wood_kit.tres
+KIT duvar                    tris=  700 json=  700 surfaces=1 sockets= 4 colliders=1 mat=res://assets/models/build/wood/wood_kit.tres
+KIT yarim_duvar              tris=  416 json=  416 surfaces=1 sockets= 4 colliders=1 mat=res://assets/models/build/wood/wood_kit.tres
+KIT alcak_duvar              tris=  328 json=  328 surfaces=1 sockets= 4 colliders=1 mat=res://assets/models/build/wood/wood_kit.tres
+KIT kapi_kasasi              tris= 1008 json= 1008 surfaces=1 sockets= 4 colliders=3 mat=res://assets/models/build/wood/wood_kit.tres
+KIT pencereli_duvar          tris= 1164 json= 1164 surfaces=1 sockets= 4 colliders=4 mat=res://assets/models/build/wood/wood_kit.tres
+KIT ucgen_duvar              tris=  428 json=  428 surfaces=1 sockets= 3 colliders=1 mat=res://assets/models/build/wood/wood_kit.tres
+KIT kare_zemin               tris=  668 json=  668 surfaces=1 sockets= 9 colliders=1 mat=res://assets/models/build/wood/wood_kit.tres
+KIT ucgen_zemin              tris=  532 json=  532 surfaces=1 sockets= 6 colliders=1 mat=res://assets/models/build/wood/wood_kit.tres
+KIT merdiven                 tris=  716 json=  716 surfaces=1 sockets= 3 colliders=1 mat=res://assets/models/build/wood/wood_kit.tres
+KIT rampa                    tris=  816 json=  816 surfaces=1 sockets= 3 colliders=1 mat=res://assets/models/build/wood/wood_kit.tres
+KIT egimli_cati              tris= 1044 json= 1044 surfaces=1 sockets= 4 colliders=1 mat=res://assets/models/build/wood/wood_kit.tres
+KIT cati_kosesi              tris= 1068 json= 1068 surfaces=1 sockets= 2 colliders=2 mat=res://assets/models/build/wood/wood_kit.tres
+KIT cati_tepesi              tris=  260 json=  260 surfaces=1 sockets= 3 colliders=1 mat=res://assets/models/build/wood/wood_kit.tres
+KIT duz_cati                 tris=  708 json=  708 surfaces=1 sockets= 9 colliders=1 mat=res://assets/models/build/wood/wood_kit.tres
+KIT sutun                    tris=  284 json=  284 surfaces=1 sockets= 2 colliders=1 mat=res://assets/models/build/wood/wood_kit.tres
+KIT kiris                    tris=  228 json=  228 surfaces=1 sockets= 4 colliders=1 mat=res://assets/models/build/wood/wood_kit.tres
+KIT parmaklik                tris=  472 json=  472 surfaces=1 sockets= 3 colliders=1 mat=res://assets/models/build/wood/wood_kit.tres
+KIT cit                      tris=  864 json=  864 surfaces=1 sockets= 3 colliders=1 mat=res://assets/models/build/wood/wood_kit.tres
+KIT bahce_kapisi             tris= 1188 json= 1188 surfaces=2 sockets= 3 colliders=3 mat=res://assets/models/build/wood/wood_kit.tres
+KIT sur_duvari               tris=  488 json=  488 surfaces=1 sockets= 3 colliders=1 mat=res://assets/models/build/wood/wood_kit.tres
+KIT sur_kapisi               tris= 1276 json= 1276 surfaces=3 sockets= 3 colliders=5 mat=res://assets/models/build/wood/wood_kit.tres
+KIT kule_tabani              tris= 1244 json= 1244 surfaces=1 sockets=10 colliders=5 mat=res://assets/models/build/wood/wood_kit.tres
+KIT makine_platformu_kucuk   tris=  936 json=  936 surfaces=1 sockets= 9 colliders=1 mat=res://assets/models/build/wood/wood_kit.tres
+KIT makine_platformu_orta    tris= 1076 json= 1076 surfaces=1 sockets=21 colliders=1 mat=res://assets/models/build/wood/wood_kit.tres
+KIT makine_platformu_buyuk   tris= 1498 json= 1498 surfaces=1 sockets=37 colliders=1 mat=res://assets/models/build/wood/wood_kit.tres
+KIT CHECK pieces=28 problems=0
+PLACE kare_temel       ground at (-1.50,0.35,-1.50) yaw=0 span=0
+PLACE kare_temel       snap   at (1.50,0.35,-1.50) yaw=0 span=0
+PLACE kare_temel       snap   at (-1.50,0.35,1.50) yaw=0 span=0
+PLACE kare_temel       snap   at (1.50,0.35,1.50) yaw=0 span=0
+PLACE kare_temel       snap   at (-1.50,0.35,4.50) yaw=90 span=0
+PLACE kare_temel       snap   at (1.50,0.35,4.50) yaw=90 span=0
+PLACE sutun            snap   at (-3.00,0.35,-3.00) yaw=0 span=0
+PLACE sutun            snap   at (3.00,0.35,-3.00) yaw=0 span=0
+PLACE sutun            snap   at (-3.00,0.35,3.00) yaw=90 span=0
+PLACE sutun            snap   at (3.00,0.35,3.00) yaw=90 span=0
+PLACE duvar            snap   at (-1.50,0.35,-3.00) yaw=-180 span=0
+PLACE duvar            snap   at (1.50,0.35,-3.00) yaw=-180 span=0
+PLACE duvar            snap   at (-3.00,0.35,-1.50) yaw=-90 span=0
+PLACE pencereli_duvar  snap   at (-3.00,0.35,1.50) yaw=-90 span=0
+PLACE pencereli_duvar  snap   at (3.00,0.35,-1.50) yaw=90 span=0
+PLACE duvar            snap   at (3.00,0.35,1.50) yaw=90 span=0
+PLACE kapi_kasasi      snap   at (-1.50,0.35,3.00) yaw=0 span=0
+PLACE pencereli_duvar  snap   at (1.50,0.35,3.00) yaw=0 span=0
+SHOT build_step1_walls.png
+PLACE kare_zemin       snap   at (-1.50,3.35,-1.50) yaw=0 span=1
+PLACE kare_zemin       snap   at (1.50,3.35,-1.50) yaw=0 span=1
+PLACE kare_zemin       snap   at (-1.50,3.35,1.50) yaw=90 span=1
+PLACE kare_zemin       snap   at (1.50,3.35,1.50) yaw=90 span=1
+PLACE merdiven         snap   at (1.50,0.35,4.50) yaw=0 span=0
+PLACE parmaklik        snap   at (-3.00,0.35,4.50) yaw=-90 span=0
+PLACE sutun            snap   at (-3.00,0.35,6.00) yaw=90 span=0
+PLACE sutun            snap   at (-0.00,0.35,6.00) yaw=90 span=0
+PLACE kiris            snap   at (-1.50,0.35,6.00) yaw=0 span=1
+PLACE kiris            snap   at (-3.00,0.35,4.50) yaw=-90 span=1
+PLACE duz_cati         snap   at (-1.50,3.35,4.50) yaw=90 span=1
+SHOT build_step2_floor_stairs.png
+PLACE sutun            snap   at (-3.00,3.35,-3.00) yaw=0 span=0
+PLACE sutun            snap   at (3.00,3.35,-3.00) yaw=0 span=0
+PLACE sutun            snap   at (-3.00,3.35,3.00) yaw=90 span=0
+PLACE sutun            snap   at (3.00,3.35,3.00) yaw=90 span=0
+PLACE duvar            snap   at (-1.50,3.35,-3.00) yaw=-180 span=0
+PLACE duvar            snap   at (1.50,3.35,-3.00) yaw=-180 span=0
+PLACE pencereli_duvar  snap   at (-3.00,3.35,-1.50) yaw=-90 span=0
+PLACE duvar            snap   at (-3.00,3.35,1.50) yaw=-90 span=0
+PLACE duvar            snap   at (3.00,3.35,-1.50) yaw=90 span=0
+PLACE pencereli_duvar  snap   at (3.00,3.35,1.50) yaw=90 span=0
+PLACE pencereli_duvar  snap   at (-1.50,3.35,3.00) yaw=0 span=0
+PLACE kapi_kasasi      snap   at (1.50,3.35,3.00) yaw=0 span=0
+PLACE ucgen_duvar      snap   at (-3.00,6.35,-1.50) yaw=-90 span=0
+PLACE ucgen_duvar      snap   at (3.00,6.35,-1.50) yaw=-90 span=0
+PLACE ucgen_duvar      snap   at (-3.00,6.35,1.50) yaw=90 span=0
+PLACE ucgen_duvar      snap   at (3.00,6.35,1.50) yaw=90 span=0
+PLACE egimli_cati      snap   at (-1.50,6.35,3.00) yaw=0 span=1
+PLACE egimli_cati      snap   at (-1.50,6.35,-3.00) yaw=-180 span=1
+PLACE egimli_cati      snap   at (1.50,6.35,3.00) yaw=0 span=1
+PLACE egimli_cati      snap   at (1.50,6.35,-3.00) yaw=-180 span=1
+PLACE cati_tepesi      snap   at (-1.50,9.35,0.00) yaw=180 span=2
+PLACE cati_tepesi      snap   at (1.50,9.35,0.00) yaw=180 span=2
+PLACE cit              ground at (-4.50,0.00,10.50) yaw=0 span=0
+PLACE cit              snap   at (-1.50,0.00,10.50) yaw=0 span=0
+PLACE bahce_kapisi     snap   at (1.50,0.00,10.50) yaw=0 span=0
+PLACE cit              snap   at (4.50,0.00,10.50) yaw=0 span=0
+SHOT build_house_front.png
+SHOT build_house_back.png
+SHOT build_house_closeup.png
+SHOT build_house_far.png
+PLACE kare_temel       ground at (16.00,0.35,0.00) yaw=0 span=0
+PLACE duvar            snap   at (17.50,0.35,0.00) yaw=90 span=0
+PLACE kare_zemin       snap   at (19.00,3.35,-0.00) yaw=0 span=1
+PLACE kare_zemin       snap   at (22.00,3.35,-0.00) yaw=0 span=2
+PLACE kare_zemin       snap   at (25.00,3.35,-0.00) yaw=0 span=3
+SPAN 4th floor: valid=False reason='açıklık 4 > 3' span=4
+SHOT build_ghost_invalid.png
+GHOST wall: valid=True mode=snap
+SHOT build_ghost_valid.png
+FELL kare_zemin span>3
+FELL kare_zemin span>3
+FELL kare_zemin span>3
+REMOVE wall: pieces 60 -> 56
+SHOT build_fall.png
+BUILD RESULT placed=60 failed=0 pieces=56
