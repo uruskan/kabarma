@@ -17,12 +17,29 @@ public partial class World
         var g = Preset;
         var env = Env.Environment;
         env.SsaoEnabled = g.Ssao;
-        RenderingServer.EnvironmentSetSsaoQuality(RenderingServer.EnvironmentSsaoQuality.Medium, g.SsaoHalf, 0.5f, 2, 50f, 300f);
+        RenderingServer.EnvironmentSetSsaoQuality(g.SsaoHalf ? RenderingServer.EnvironmentSsaoQuality.Medium : RenderingServer.EnvironmentSsaoQuality.High, g.SsaoHalf, 0.5f, 2, 50f, 300f);
         env.GlowEnabled = g.Glow;
         env.SdfgiEnabled = g.Sdfgi;
         env.SsilEnabled = g.Ssil;
+        if (g.Ssil) RenderingServer.EnvironmentSetSsilQuality(g.SsilHalf ? RenderingServer.EnvironmentSsilQuality.Medium : RenderingServer.EnvironmentSsilQuality.High, g.SsilHalf, 0.5f, 4, 50f, 300f);
         env.SsrEnabled = g.Ssr;
-        env.VolumetricFogEnabled = g.VolumetricFog;
+        env.VolumetricFogEnabled = g.VolumetricFog && g.VolumetricDensity > 0;
+        if (env.VolumetricFogEnabled)
+        {
+            env.VolumetricFogDensity = g.VolumetricDensity;
+            env.VolumetricFogAnisotropy = 0.6f;
+            env.VolumetricFogLength = 120f;
+            env.VolumetricFogDetailSpread = 2f;
+            env.VolumetricFogGIInject = 0.6f;
+            env.VolumetricFogSkyAffect = 0.0f;
+            env.VolumetricFogTemporalReprojectionEnabled = true;
+        }
+        // Yumusak golge: suzgec kalitesi ve gunesin acisal capi (yari golge yakinda keskin, uzakta yumusak).
+        RenderingServer.DirectionalSoftShadowFilterSetQuality((RenderingServer.ShadowQuality)Mathf.Clamp(g.SoftShadows, 0, 5));
+        Sun.LightAngularDistance = g.SunAngle;
+        Sun.DirectionalShadowBlendSplits = g.ShadowSplits >= 4;
+        Sun.ShadowBias = 0.04f;
+        Sun.ShadowNormalBias = 1.2f;
         env.FogEnabled = g.DistanceFog || g.HeightFog;
         // Yukseklik sisi: gol cukuru ve vadiler daha sisli (uc derinlik katmani, SANAT-SES §1.4).
         var hf = Biomes.World.HeightFog;

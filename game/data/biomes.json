@@ -39,6 +39,14 @@
     "heightFog": [1, 0.01],
     "_clearings": "Bitki ve ot konmayan aciklik [x, z, yaricap]: inis kapsulu (Director.PodPos), Ocak cevresi (tarla, istasyonlar, agil).",
     "clearings": [[9, -9, 6], [0, 1, 9]],
+    "_paths": "Cignenmis patikalar [x, z] (gorsel-dunya): us-kapsul, us-gol, us-bakir-tepe, us-kuzey. Zemin toprak katmani, ot yok.",
+    "paths": [
+      [[0, -3], [4, -6], [8, -8]],
+      [[-6, 4], [-12, 6], [-19, 10], [-27, 13], [-35, 18], [-43, 22], [-50, 25], [-55, 28]],
+      [[6, -2], [12, -5], [19, -9], [26, -13], [31, -19], [35, -29], [39, -40], [44, -52], [47, -64], [49, -76]],
+      [[-2, 8], [-4, 16], [-8, 25], [-11, 35], [-16, 46], [-19, 58], [-24, 72]]
+    ],
+    "pathWidth": 1.7,
     "bookmarks": [
       { "id": "kapsul", "name": "İniş kapsülü", "eye": [14.5, -15.5], "eyeHeight": 2.5, "target": [-3.5, 5, 12], "fov": 68 },
       { "id": "us", "name": "Üs", "anchor": "ocak", "eye": [-1, -13], "eyeHeight": 3.5, "target": [1.5, 0.5, 2], "fov": 68 },
@@ -60,9 +68,9 @@
       },
       "_times": "SANAT-SES §2 tablosu. 16 goruntu ilk dort saattendir; normal gece isik olarak vardir, goruntu setine girmez (M1 karari 7).",
       "times": {
-        "sabah": { "name": "Sabah", "lightElevation": 12, "lightAzimuth": 90, "lightColor": "FFE2B8", "lightEnergy": 1.05, "sunDisk": 1, "moonDisk": 0, "moonElevation": -20, "moonAzimuth": 270, "skyTop": "A3CFE6", "skyHorizon": "F6D7B0", "fog": "F3D9A4", "fogDensity": 0.0033, "ambient": 0.95, "stars": 0, "aurora": 0, "clouds": 0.45, "cloudColor": "FFF1E0", "veins": 0 },
-        "ogle": { "name": "Öğle", "lightElevation": 62, "lightAzimuth": 180, "lightColor": "FFF4DE", "lightEnergy": 1.25, "sunDisk": 1, "moonDisk": 0, "moonElevation": -20, "moonAzimuth": 0, "skyTop": "8CC8E8", "skyHorizon": "F3D9A4", "fog": "F3D9A4", "fogDensity": 0.0022, "ambient": 1.0, "stars": 0, "aurora": 0, "clouds": 0.4, "cloudColor": "FFFFFF", "veins": 0 },
-        "gunbatimi": { "name": "Gün batımı", "lightElevation": 4, "lightAzimuth": 270, "lightColor": "FF9A5C", "lightEnergy": 1.0, "sunDisk": 1, "moonDisk": 0.25, "moonElevation": 18, "moonAzimuth": 100, "skyTop": "6E79B0", "skyHorizon": "F58A5B", "fog": "F2A878", "fogDensity": 0.0026, "ambient": 0.85, "stars": 0.05, "aurora": 0, "clouds": 0.5, "cloudColor": "FFB48A", "veins": 0 },
+        "sabah": { "name": "Sabah", "lightElevation": 13, "lightAzimuth": 90, "lightColor": "FFD6A6", "lightEnergy": 2.3, "sunDisk": 1, "moonDisk": 0, "moonElevation": -20, "moonAzimuth": 270, "skyTop": "5F98CF", "skyHorizon": "F4D2AE", "fog": "E9CDAE", "fogDensity": 0.0019, "ambient": 0.62, "stars": 0, "aurora": 0, "clouds": 0.42, "cloudColor": "FFF0DE", "veins": 0 },
+        "ogle": { "name": "Öğle", "lightElevation": 58, "lightAzimuth": 165, "lightColor": "FFF5E4", "lightEnergy": 2.9, "sunDisk": 1, "moonDisk": 0, "moonElevation": -20, "moonAzimuth": 0, "skyTop": "3E7DC2", "skyHorizon": "D7E2E2", "fog": "C9D6DA", "fogDensity": 0.0011, "ambient": 0.62, "stars": 0, "aurora": 0, "clouds": 0.45, "cloudColor": "FFFFFF", "veins": 0 },
+        "gunbatimi": { "name": "Gün batımı", "lightElevation": 5, "lightAzimuth": 270, "lightColor": "FF8C4A", "lightEnergy": 2.2, "sunDisk": 1, "moonDisk": 0.25, "moonElevation": 18, "moonAzimuth": 100, "skyTop": "3A4A86", "skyHorizon": "F48A52", "fog": "C98466", "fogDensity": 0.0017, "ambient": 0.5, "stars": 0.05, "aurora": 0, "clouds": 0.5, "cloudColor": "FFB283", "veins": 0 },
         "kabarma_gecesi": { "name": "Kabarma gecesi", "lightElevation": 35, "lightAzimuth": 140, "lightColor": "A9B8E8", "lightEnergy": 0.6, "sunDisk": 0, "moonDisk": 1, "moonElevation": 35, "moonAzimuth": 140, "skyTop": "1A2238", "skyHorizon": "5FF0C8", "fog": "2A3358", "fogDensity": 0.003, "ambient": 1.35, "stars": 1, "aurora": 1, "clouds": 0.15, "cloudColor": "3A4570", "veins": 0.55 },
         "normal_gece": { "name": "Normal gece", "lightElevation": 35, "lightAzimuth": 140, "lightColor": "A9B8E8", "lightEnergy": 0.55, "sunDisk": 0, "moonDisk": 1, "moonElevation": 35, "moonAzimuth": 140, "skyTop": "1A2238", "skyHorizon": "2E3E66", "fog": "2A3358", "fogDensity": 0.003, "ambient": 1.25, "stars": 1, "aurora": 0, "clouds": 0.2, "cloudColor": "3A4570", "veins": 0 }
       },
@@ -91,7 +99,7 @@
         { "_not": "Kil yatagi: Blender betiginden (pipeline/gen_kil_yatagi.py, M1 kararlari 'Koddan varliklar'), kredi yok. Gol kiyisinda, Ussun tarafinda.", "id": "kil", "item": "clay", "model": "res://assets/models/kil_yatagi/kil_yatagi.glb", "units": [8, 8], "size": [1.1, 1.35], "sink": 0.05, "shoreCount": 4, "shoreOffset": 1.2, "shoreArc": [-70, 15] },
         { "id": "bakir", "item": "copper_ore", "placeholder": "olcut 4: 10 manifold disi kenar (hat sorunu, varlik akisi)", "model": "res://assets/models/bakir/bakir.glb", "units": [8, 8], "size": [0.9, 1.1], "sink": 0.2, "positions": [[30, -14], [34, -20], [27, -21]] }
       ],
-      "grass": { "chunk": 16, "perChunk": 380, "height": [0.3, 0.6], "baseClear": 7, "wind": 1.0 }
+      "grass": { "chunk": 16, "perChunk": 380, "height": [0.3, 0.62], "baseClear": 7, "wind": 1.0, "spacing": 0.3, "farSpacing": 0.75, "blades": 9, "farKeep": 0.45 }
     }
   }
 }

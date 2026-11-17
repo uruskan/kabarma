@@ -30,7 +30,9 @@ public partial class WorldShots : Node
 
     public override void _Ready()
     {
-        _outDir = ProjectSettings.GlobalizePath("res://").TrimEnd('/') + "/../progress/m1/dunya/shots";
+        // --shots_out=progress/... (depo kokune gore) ciktiyi baska klasore yazar (once/sonra karsilastirmalari).
+        _outDir = ProjectSettings.GlobalizePath("res://").TrimEnd('/') + "/../"
+            + (Main.Args.TryGetValue("shots_out", out var o) && !string.IsNullOrEmpty(o) ? o.TrimEnd('/') : "progress/m1/dunya/shots");
         DirAccess.MakeDirRecursiveAbsolute(_outDir + "/deck");
     }
 
@@ -49,7 +51,14 @@ public partial class WorldShots : Node
         if (_quick)
         {
             if (_t < 3f) return;
-            if (!_dayDone) { foreach (var tm in World.ShotTimes) Enqueue(tm, ""); _dayDone = true; _nightDone = true; return; }
+            if (!_dayDone)
+            {
+                // --shots_times=ogle,gunbatimi ve --shots_marks=us,gol: hizli denemede yalniz bu saatler ve yer imleri.
+                var times = Main.Args.TryGetValue("shots_times", out var st) ? st.Split(',') : World.ShotTimes;
+                foreach (var tm in times) Enqueue(tm, "");
+                _dayDone = true; _nightDone = true; _deckQueued |= Main.Args.ContainsKey("shots_times");
+                return;
+            }
         }
         else
         {
@@ -101,7 +110,9 @@ public partial class WorldShots : Node
 
     void Enqueue(string time, string sub)
     {
-        foreach (var b in W.Biomes.World.Bookmarks) _queue.Enqueue((b.Id, time, sub));
+        var marks = Main.Args.TryGetValue("shots_marks", out var sm) ? sm.Split(',') : null;
+        foreach (var b in W.Biomes.World.Bookmarks)
+            if (marks == null || System.Array.IndexOf(marks, b.Id) >= 0) _queue.Enqueue((b.Id, time, sub));
         _savedSpeed = _d.SpeedScale;
         _d.SpeedScale = 0.001f; // eylem durur, cizim surer
         // Insa basligi acik kalirsa hayalet ve ipucu kadraja girer: oyuncunun yapacagi gibi Kazma'ya gecilir.

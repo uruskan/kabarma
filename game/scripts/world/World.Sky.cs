@@ -17,7 +17,6 @@ public partial class World
     public DirectionalLight3D Sun { get; private set; }
     ShaderMaterial _sky;
     MeshInstance3D _pillar;
-    StandardMaterial3D _pillarMat;
 
     float _dayMix;         // 0 ogle, 1 gunbatimi
     float _nightMix;       // 0..1 Kabarma gecesi
@@ -101,19 +100,38 @@ public partial class World
             Sky = new Sky { SkyMaterial = _sky, ProcessMode = Sky.ProcessModeEnum.Realtime, RadianceSize = Sky.RadianceSizeEnum.Size256 },
             AmbientLightSource = Godot.Environment.AmbientSource.Sky,
             AmbientLightSkyContribution = 0.75f,
+            ReflectedLightSource = Godot.Environment.ReflectionSource.Sky,
+            // Ton eslemesi ve derecelendirme (gorsel-dunya): AgX, hafif kontrast ve doygunluk; isik enerjileri biomes.json'da.
             TonemapMode = Godot.Environment.ToneMapper.Agx,
+            TonemapExposure = 1.0f,
+            TonemapAgxContrast = 1.35f,
+            AdjustmentEnabled = true,
+            AdjustmentContrast = 1.05f,
+            AdjustmentSaturation = 1.12f,
             FogEnabled = true,
             FogLightColor = Palette.Fog,
-            FogDensity = 0.0028f,
-            FogAerialPerspective = 0.35f,
-            FogSkyAffect = 0.25f,
+            FogDensity = 0.0015f,
+            // Uzak tepeler gokyuzu rengine erir (hava perspektifi); gunes yonunde sis isir.
+            FogAerialPerspective = 0.7f,
+            FogSkyAffect = 0.3f,
+            FogSunScatter = 0.25f,
             GlowEnabled = true,
-            GlowIntensity = 0.7f,
-            GlowBloom = 0.05f,
-            GlowHdrThreshold = 1.1f,
+            GlowIntensity = 0.45f,
+            GlowStrength = 0.9f,
+            GlowBloom = 0.02f,
+            GlowHdrThreshold = 1.0f,
+            GlowBlendMode = Godot.Environment.GlowBlendModeEnum.Softlight,
             SsaoEnabled = true,
-            SsaoRadius = 1.4f,
-            SsaoIntensity = 1.2f,
+            SsaoRadius = 1.1f,
+            SsaoIntensity = 1.8f,
+            SsaoPower = 1.6f,
+            SsaoDetail = 0.6f,
+            SsaoLightAffect = 0.1f,
+            SsilRadius = 4f,
+            SsilIntensity = 0.8f,
+            SdfgiUseOcclusion = true,
+            SdfgiCascades = 4,
+            SdfgiMinCellSize = 0.4f,
         };
         Env = new WorldEnvironment { Environment = env };
         AddChild(Env);
@@ -150,26 +168,26 @@ public partial class World
         var hills = kit.Instance();
         hills.Name = "Horizon";
         hills.CastShadow = GeometryInstance3D.ShadowCastingSetting.Off;
+        // Uzak tepeler: duz renk yerine orman lekeli, kayali yuzey (far_hills.gdshader); sis gokyuzune eritir.
+        var hillMat = new ShaderMaterial { Shader = GD.Load<Shader>("res://shaders/far_hills.gdshader") };
+        hillMat.SetShaderParameter("macro_noise", MacroNoise);
+        hillMat.SetShaderParameter("forest", Pal("plant", Palette.Plant).Lerp(Pal("shadow", Palette.Shadow), 0.55f));
+        hillMat.SetShaderParameter("meadow", Pal("ground", Palette.Ground).Lerp(Pal("plant", Palette.Plant), 0.4f));
+        hillMat.SetShaderParameter("rock", new Color(0.52f, 0.48f, 0.43f));
+        hills.MaterialOverride = hillMat;
         AddChild(hills);
 
-        // Krater isik sutunu: Maya'ya ait tek isiyan sey (SANAT-SES §1.5); her yerden gorunur, sisi kendisi yonetir.
-        _pillarMat = new StandardMaterial3D
-        {
-            ShadingMode = BaseMaterial3D.ShadingModeEnum.Unshaded,
-            AlbedoColor = new Color(Palette.MayaTeal, 0.55f),
-            Transparency = BaseMaterial3D.TransparencyEnum.Alpha,
-            EmissionEnabled = true,
-            Emission = Palette.MayaTeal,
-            EmissionEnergyMultiplier = 2.5f,
-            CullMode = BaseMaterial3D.CullModeEnum.Disabled,
-            DisableFog = true,
-        };
+        // Krater isik sutunu: Maya'ya ait tek isiyan sey (SANAT-SES §1.5); her yerden gorunur. Yumusak kenarli,
+        // tepeye dogru incelen, icinde akan isik demeti (maya_beam.gdshader); sise kendisi karisir.
+        var beam = new ShaderMaterial { Shader = GD.Load<Shader>("res://shaders/maya_beam.gdshader") };
+        beam.SetShaderParameter("color_a", Palette.MayaTeal);
+        beam.SetShaderParameter("color_b", Palette.MayaViolet);
         var pp = Biomes.World.Pillar;
         _pillar = new MeshInstance3D
         {
             Name = "Pillar",
-            Mesh = new CylinderMesh { TopRadius = 9f, BottomRadius = 22f, Height = 900f, RadialSegments = 16 },
-            MaterialOverride = _pillarMat,
+            Mesh = new CylinderMesh { TopRadius = 9f, BottomRadius = 22f, Height = 900f, RadialSegments = 32, CapTop = false, CapBottom = false },
+            MaterialOverride = beam,
             Position = pp.Count == 2 ? new Vector3(pp[0], 420f, pp[1]) : new Vector3(-180f, 280f, -330f),
             CastShadow = GeometryInstance3D.ShadowCastingSetting.Off,
         };
