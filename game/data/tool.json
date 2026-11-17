@@ -37,6 +37,8 @@
     { "id": "tas_firin", "name": "Taş Fırın", "cost": { "stone": 10 }, "station": "tas_firin", "radius": 1.0 },
     { "id": "paketleme", "name": "Paketleme Tezgâhı", "cost": { "stone": 8 }, "station": "paketleme", "model": "res://assets/models/paketleme/paketleme.glb", "radius": 1.0 }
   ],
+  "buildCosts": { "foundation": 6, "wall": 4, "floor": 4, "roof": 4, "stairs": 5, "pillar": 2, "beam": 2, "fence": 2, "platform": 6 },
+  "woodPerChop": 2,
   "prices": { "turnip": 15, "salgam_kasasi": 90, "egg": 20 },
   "backpackSlots": 20,
   "stackResource": 50,

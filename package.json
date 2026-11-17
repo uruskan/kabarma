@@ -1,0 +1,5 @@
+{
+  "devDependencies": {
+    "@genex-ai/cli-demo": "^1.43.4"
+  }
+}

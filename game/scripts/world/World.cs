@@ -21,6 +21,7 @@ public partial class World : Node3D
     MeshInstance3D _pillar;
     ShaderMaterial _groundMat;
     readonly List<Rock> _rocks = new();
+    public readonly List<Vector3> TreePositions = new();
     public IReadOnlyList<Rock> Rocks => _rocks;
     readonly RandomNumberGenerator _rng = new() { Seed = 4417 };
 
@@ -255,6 +256,7 @@ public partial class World : Node3D
             AddChild(new MultiMeshInstance3D { Multimesh = mm, Name = "Trees" });
             foreach (var xf in treeXf)
             {
+                TreePositions.Add(xf.Origin);
                 var body = new StaticBody3D();
                 body.AddChild(new CollisionShape3D { Shape = new CylinderShape3D { Radius = 0.45f * xf.Basis.Scale.X, Height = 3f * xf.Basis.Scale.Y }, Position = new Vector3(0, 1.5f * xf.Basis.Scale.Y, 0) });
                 AddChild(body);

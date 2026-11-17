@@ -186,6 +186,8 @@ public class SimTests
         sc.Report("paketle");
         Assert.Equal(90, s.SellItem("salgam_kasasi", 1));
         sc.Report("kasa_sat");
+        sc.SetProgress("odun", 18);
+        sc.Report("yapi", 4);
         Assert.True(sc.Finished);
         Assert.Equal(120 + 90, s.Credits); // kabarik salgam + kasa
         Assert.Equal(3, s.Backpack.Count("turnip_seed"));

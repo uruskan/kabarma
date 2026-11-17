@@ -212,6 +212,8 @@ public sealed class ToolFile
     public List<RecipeDef> Recipes { get; set; } = new();
     public List<FoodDef> Foods { get; set; } = new();
     public List<PlaceableDef> Placeables { get; set; } = new();
+    public Dictionary<string, int> BuildCosts { get; set; } = new();
+    public int WoodPerChop { get; set; } = 2;
     public Dictionary<string, int> Prices { get; set; } = new();
     public int BackpackSlots { get; set; }
     public int StackResource { get; set; }

@@ -28,8 +28,14 @@ public partial class Bot : Node
     bool MoveTo(Vector3 target, float within, bool sprint = true)
     {
         var d = target - P.GlobalPosition; d.Y = 0;
-        if (d.Length() <= within) { P.MoveOverride = Vector3.Zero; return true; }
-        P.MoveOverride = d.Normalized() * (sprint ? 1.5f : 1f);
+        if (d.Length() <= within) { P.MoveOverride = Vector3.Zero; _stuckT = 0; return true; }
+        var dir = d.Normalized();
+        // Engel: hiz yoksa bir sure yana kay (duvar, istasyon, agac)
+        float dt = (float)GetProcessDeltaTime();
+        if (_sideT > 0) { _sideT -= dt; dir = (dir.Cross(Vector3.Up) * _sideSign + dir * 0.3f).Normalized(); }
+        else if (new Vector2(P.Velocity.X, P.Velocity.Z).Length() < 0.3f) { _stuckT += dt; if (_stuckT > 0.6f) { _stuckT = 0; _sideT = 1.2f; _sideSign = -_sideSign; } }
+        else _stuckT = 0;
+        P.MoveOverride = dir * (sprint ? 1.5f : 1f);
         return false;
     }
 
@@ -155,6 +161,8 @@ public partial class Bot : Node
             case "corba":
             case "paketle":
             case "kasa_sat":
+            case "odun":
+            case "yapi":
                 if (_d.Hud.ReportOpen) { if (_stepT > 1.5f) { _d.CloseReport(); _stepT = 0; } P.MoveOverride = Vector3.Zero; break; }
                 MachineChain(step);
                 break;
@@ -176,6 +184,8 @@ public partial class Bot : Node
     // ---------- M1 makine zinciri: oyuncunun yaptigini yapar (hareket, nisan, tetik, E, menu tuslari) ----------
 
     float _menuT;
+    float _stuckT, _sideT, _sideSign = 1f;
+    int _built, _pendingCheck = -1;
 
     /// <summary>Yeterli tas yoksa en yakin kayayi kazar. Yeterliyse true.</summary>
     bool EnsureStone(int need)
@@ -258,6 +268,54 @@ public partial class Bot : Node
                 if (st == null) { if (EnsureStone(8)) PlaceAt("paketleme", o + new Vector3(-1f, 0, 5.5f)); break; }
                 if (st.Queue.Active == null && _d.State.Backpack.Count("salgam_kasasi") == 0) UseStation(st, 0);
                 else { P.MoveOverride = Vector3.Zero; Aim(st.GlobalPosition + Vector3.Up); }
+                break;
+            }
+            case "odun":
+            {
+                _d.Capa.Select(Capa.Head.Bicme);
+                var t = _d.World.TreePositions.OrderBy(x => x.DistanceTo(P.GlobalPosition)).First();
+                Aim(t + Vector3.Up * 1.4f);
+                if (MoveTo(t, 3.0f)) Fire = true;
+                break;
+            }
+            case "yapi":
+            {
+                var b = _d.Build;
+                if (b == null) { GD.Print("BOT no build kit"); break; }
+                // Temel ussun yanina; duvarlar temelin uc kenarina: temelin ust yuzune, kenarin 0,45 m icine nisan.
+                var f = o + new Vector3(7f, 0, 4f);
+                string want = _built == 0 ? "kare_temel" : "duvar";
+                var fp = b.System.Pieces.FirstOrDefault(x => x.Def.Id == "kare_temel");
+                Vector3[] outs = { Vector3.Back * -1f, Vector3.Right, Vector3.Left };  // -Z, +X, -X kenarlari
+                Vector3 target, stand;
+                if (_built == 0 || fp == null) { target = _d.World.Ground(f); stand = _d.World.Ground(f) + new Vector3(0, 0, -6.5f); }
+                else
+                {
+                    var outw = outs[Mathf.Min(_built - 1, 2)];
+                    float top = fp.GlobalPosition.Y + fp.Def.BoundsMax.Y;
+                    var c = fp.GlobalPosition;
+                    target = new Vector3(c.X, top, c.Z) + outw * (1.5f - 0.45f);
+                    stand = _d.World.Ground(c + outw * 7f);
+                }
+                if (_d.State.Backpack.Count("wood") < b.CostOf(want))
+                {
+                    _d.Capa.Select(Capa.Head.Bicme);
+                    var tr = _d.World.TreePositions.OrderBy(x => x.DistanceTo(P.GlobalPosition)).First();
+                    Aim(tr + Vector3.Up * 1.4f);
+                    if (MoveTo(tr, 3.0f)) Fire = true;
+                    break;
+                }
+                _d.Capa.Select(Capa.Head.Insa);
+                if (_d.Capa.CurrentPlaceable != want) { if (_stepT > 0.12f) { _d.Capa.CyclePlaceable(1); _stepT = 0; } break; }
+                Aim(target);
+                if (MoveTo(stand, 0.6f, false) && _stepT > 1.2f)
+                {
+                    int before = b.System.Pieces.Count;
+                    FirePressed = true; _stepT = 0;
+                    _pendingCheck = before;
+                }
+                if (_pendingCheck >= 0 && b.System.Pieces.Count > _pendingCheck) { _built++; _pendingCheck = -1; GD.Print($"BOT built {want} -> {_built}"); }
+                else if (_pendingCheck >= 0 && _stepT > 1.0f) { GD.Print($"BOT place failed {want}: {b.System.Current?.Reason} valid={b.System.Current?.Valid}"); _pendingCheck = -1; }
                 break;
             }
             case "kasa_sat":

@@ -107,7 +107,21 @@
       "target": 1,
       "goal": "Kasayı Kargo Rampası'nda sat (E)",
       "start": "Kasayı rampaya götür, E'ye bas. Roket gerisini halleder.",
-      "done": "Satış tamam. Bu ilk iş emrinin sonu. Sıradaki: beş kabarık ürün. Kooperatif sabırsız değil. Biraz."
+      "done": "Satış tamam. Kooperatif memnun. Şimdi bir çatı. Yağmur yağmıyor ama kooperatif önlem sever."
+    },
+    {
+      "id": "odun",
+      "target": 18,
+      "goal": "Biçme başlığıyla ağaçlardan 18 odun kes",
+      "start": "Biçme başlığı (2) ağaca tutulunca odun verir. Ağaç yerinde kalır. Bu ayın ağaçları kin tutmaz.",
+      "done": "Odun tamam. Kokusu güzel. Kayda geçmedi."
+    },
+    {
+      "id": "yapi",
+      "target": 4,
+      "goal": "İnşa başlığıyla 4 parçalık bir barınak kur (temel ve duvarlar)",
+      "start": "İnşa başlığı (6), tekerlekle Kare Temel'i seç, yere koy. Sonra duvarları temelin kenarına oturt.",
+      "done": "Barınak ayakta. Bu ilk iş emrinin sonu. Sıradaki: beş kabarık ürün. Kooperatif sabırsız değil. Biraz."
     }
   ],
   "nightLines": {

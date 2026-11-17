@@ -16,6 +16,9 @@ public partial class Player : CharacterBody3D
     Node3D _capa;
     AnimationPlayer _anim;
     Skeleton3D _skel;
+    public PlayerRig Rig { get; private set; }
+    string _animHurt, _animCarry, _animPush, _animKneel, _animCheer, _animWave;
+    float _actionT;
     int _handBone = -1;
     string _animIdle, _animWalk, _animRun, _animJump;
 
@@ -46,6 +49,7 @@ public partial class Player : CharacterBody3D
         var col = new CollisionShape3D { Shape = new CapsuleShape3D { Radius = 0.42f, Height = 1.6f }, Position = new Vector3(0, 0.8f, 0) };
         AddChild(col);
         FloorSnapLength = 0.5f;
+        FloorMaxAngle = Mathf.DegToRad(47f); // yapi setinin merdiveni 45 derece
 
         Visual = new Node3D { Name = "Visual" };
         AddChild(Visual);
@@ -95,6 +99,8 @@ public partial class Player : CharacterBody3D
         }
         TuneMaterials(inst);
         _skel = inst.FindChildren("*", "Skeleton3D", true, false).OfType<Skeleton3D>().FirstOrDefault();
+        if (_skel != null) CallDeferred(nameof(SetupRig));
+        if (_skel != null && Main.Args.ContainsKey("bones")) GD.Print("BONES " + string.Join(",", Enumerable.Range(0, _skel.GetBoneCount()).Select(b => $"{b}:{_skel.GetBoneName(b)}<{_skel.GetBoneParent(b)}")) + $" skelScale={_skel.GlobalTransform.Basis.Scale}");
         if (_skel != null)
             for (int b = 0; b < _skel.GetBoneCount(); b++)
                 if (_skel.GetBoneName(b).ToLower().Replace("_", "").Contains("righthand")) { _handBone = b; break; }
@@ -107,12 +113,35 @@ public partial class Player : CharacterBody3D
             _animWalk = Find("walk");
             _animRun = Find("run", "jog");
             _animJump = Find("jump");
+            _animHurt = Find("hit_reaction", "hit reaction", "hurt");
+            _animCarry = Find("carry");
+            _animPush = Find("push_and_walk", "push");
+            _animKneel = Find("crouch_pick", "pick_up", "kneel");
+            _animCheer = Find("victory_cheer", "cheer", "victory");
+            _animWave = Find("wave");
+            if (_animCarry != null) _anim.GetAnimation(_animCarry).LoopMode = Animation.LoopModeEnum.Linear;
             foreach (var n in new[] { _animIdle, _animWalk, _animRun })
                 if (n != null) _anim.GetAnimation(n).LoopMode = Animation.LoopModeEnum.Linear;
             if (_animIdle != null) _anim.Play(_animIdle);
             GD.Print($"PLAYER model anims: {string.Join(",", names)}");
         }
         return true;
+    }
+
+    void SetupRig()
+    {
+        Rig = new PlayerRig(this, _skel);
+        Rig.Exclude(GetRid());
+    }
+
+    /// <summary>Tek seferlik eylem klibi (el sallama, sevinme, cömelme...). Hareket ederken kesilir.</summary>
+    public void PlayAction(string which)
+    {
+        if (_anim == null) return;
+        string n = which switch { "hurt" => _animHurt, "cheer" => _animCheer, "wave" => _animWave, "kneel" => _animKneel, _ => null };
+        if (n == null) return;
+        _anim.Play(n, 0.12);
+        _actionT = (float)_anim.GetAnimation(n).Length;
     }
 
     /// <summary>Uretilen dokuda tulum koyu lacivert cikti (#132C47); paletteki kooperatif mavisine yaklastir.</summary>
@@ -258,8 +287,10 @@ public partial class Player : CharacterBody3D
             Hp = 0;
             Down = true;
             _downT = 3f;
-            Visual.Rotation = new Vector3(-1.4f, Visual.Rotation.Y, 0);
+            if (Rig != null) Rig.StartRagdoll(k.Normalized() * 2.5f + Vector3.Up * 1.5f);
+            else Visual.Rotation = new Vector3(-1.4f, Visual.Rotation.Y, 0);
         }
+        else if (_animHurt != null && _actionT <= 0) { _anim.Play(_animHurt, 0.08); _actionT = 0.45f; }
     }
 
     public void Shake(float amount) => _shake = Mathf.Max(_shake, amount);
@@ -268,6 +299,7 @@ public partial class Player : CharacterBody3D
     public void Recoil(float amount) => _recoilVel += amount * 9f;
 
     public bool Facing; // arac kullanilirken govde kameraya doner
+    public bool Carrying; // Cekim ile yuk tasirken agir yuk yurumesi
 
     public override void _PhysicsProcess(double delta)
     {
@@ -275,11 +307,19 @@ public partial class Player : CharacterBody3D
         Yaw.GlobalPosition = GlobalPosition;
         if (Down)
         {
+            if (Rig != null && Main.Args.ContainsKey("ragtest") && Engine.GetPhysicsFrames() % 20 == 0) GD.Print($"RAG hips={Rig.HipsPosition} body={GlobalPosition}");
+            // Bayginken Capa elde kalir (ragdoll ile birlikte serilir).
+            if (_skel != null && _handBone >= 0)
+            {
+                var handDown = _skel.GlobalTransform * _skel.GetBoneGlobalPose(_handBone);
+                _capa.GlobalTransform = new Transform3D(handDown.Basis.Orthonormalized(), handDown.Origin);
+            }
             _downT -= dt;
             if (_downT <= 0)
             {
                 Down = false;
                 Hp = MaxHp;
+                Rig?.StopRagdoll();
                 GlobalPosition = RespawnPoint;
                 Visual.Rotation = new Vector3(0, Visual.Rotation.Y, 0);
             }
@@ -331,15 +371,18 @@ public partial class Player : CharacterBody3D
             Visual.Position = new Vector3(0, Mathf.Abs(Mathf.Sin(_bob)) * 0.06f * Mathf.Min(1f, sp / 3f), 0);
             Visual.Rotation = new Vector3(Mathf.Min(sp / 8f, 1f) * 0.12f, Visual.Rotation.Y, Mathf.Sin(_bob) * 0.04f * Mathf.Min(1f, sp / 3f));
         }
-        else if (IsOnFloor())
+        else if (IsOnFloor() && (_actionT -= dt) <= 0)
         {
-            string want = sp > 6f && _animRun != null ? _animRun : sp > 0.6f && _animWalk != null ? _animWalk : _animIdle;
+            string walk = Carrying && _animCarry != null ? _animCarry : _animWalk;
+            string want = sp > 6f && _animRun != null && !Carrying ? _animRun : sp > 0.6f && walk != null ? walk : _animIdle;
             if (want != null && _anim.CurrentAnimation != want) _anim.Play(want, 0.2);
             if (want == _animWalk) _anim.SpeedScale = Mathf.Clamp(sp / 3.2f, 0.6f, 1.6f);
             else _anim.SpeedScale = 1f;
         }
 
-        // Capa sag elde: konum elden, yon nisandan (kol IK'si yerine MVP yaklasimi).
+        Rig?.Update(dt, Facing || AimOverride != null, AimPoint(out _), Visual);
+
+        // Capa sag elde: konum elden (kol IK'si eli nisana goturur), yon nisandan.
         if (_skel != null && _handBone >= 0)
         {
             var hand = _skel.GlobalTransform * _skel.GetBoneGlobalPose(_handBone).Origin;

@@ -18,7 +18,7 @@ public partial class BuildBridge : Node
     public static BuildBridge TryCreate(Director d)
     {
         // Yapi seti henuz projede degil: koprü bos kalir.
-        if (!ResourceLoader.Exists("res://assets/models/build/wood/sockets.json")) return null;
+        if (!FileAccess.FileExists("res://assets/models/build/wood/sockets.json")) return null;
         var b = new BuildBridge(d) { Name = "BuildBridge" };
         d.AddChild(b);
         b.Init();

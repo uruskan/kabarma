@@ -85,6 +85,7 @@ public partial class Capa : Node3D
         bool spraying = false;
         bool beaming = false;
         UsingNow = fire || Held != null;
+        p.Carrying = Held != null;
         p.Facing = UsingNow || IsWeapon(Current) && _d.NightActive;
 
         var aim = p.AimPoint(out var hitNode, 60f);
@@ -225,6 +226,21 @@ public partial class Capa : Node3D
             Sfx.Play("till", c, 0f);
         }
         if (n > 0) _d.OnHarvest(n);
+        // Agac biçilirse odun verir (GDD 8: Biçme agac, cali ve ekin biçer). Agac yerinde kalir.
+        if (n == 0)
+        {
+            var tree = _d.World.TreePositions.Where(t => new Vector2(t.X - aim.X, t.Z - aim.Z).Length() < 1.8f).OrderBy(t => t.DistanceTo(aim)).Cast<Vector3?>().FirstOrDefault();
+            if (tree is Vector3 tp)
+            {
+                int w = _d.Data.Tool.WoodPerChop;
+                _d.State.Backpack.Add("wood", w);
+                Fx.Burst(aim, Palette.Plant, 14, 4f, 0.07f, 0.6f);
+                Fx.Burst(aim, Palette.Wood, 6, 3f, 0.06f, 0.4f);
+                Fx.FlyTo(aim, () => _d.Player.BackpackPoint.GlobalPosition, Palette.Wood, 0.12f);
+                Sfx.Play("hit", aim, -4f);
+                _d.State.Scenario.SetProgress("odun", _d.State.Backpack.Count("wood"));
+            }
+        }
         return n;
     }
 

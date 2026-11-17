@@ -6,7 +6,7 @@ cd "$(dirname "$0")/../.tools/tripo" || exit 1
 STYLE="Stylised hand-painted game asset, grounded believable materials with subtle wear, chunky readable silhouette, soft bevelled forms, no thin spikes, warm sunny sci-fi farm on a golden meadow moon."
 Q=(--model tripo-v3.1 -p texture_quality=detailed -p texture_version=v3.5)
 
-declare -A PROMPT FACE THEN RETARGET
+declare -A PROMPT FACE THEN RETARGET QUAL
 PROMPT[zipzip]="A small mischievous rabbit-like pest creature standing upright on two big hind feet, round plump body, long upright ears, big round eyes, tiny front paws held up, short fluffy tail. Warm orange-tan fur with cream belly. $STYLE"
 FACE[zipzip]=6000; THEN[zipzip]="rig-check,rig:rig_type=biped"; RETARGET[zipzip]="preset:idle preset:run preset:jump preset:hurt"
 PROMPT[salgam]="A single fresh turnip vegetable with leaves: round bulb, white lower half blending into a purple top, a thin tap root, a bunch of four broad green leaves. $STYLE"
@@ -24,9 +24,21 @@ FACE[kapsul]=10000; THEN[kapsul]="segment:segmentation_granularity=simple"
 PROMPT[capa]="A handheld multi-tool gadget for a space farmer: chunky pistol-grip body in off-white plastic and blue metal, a round yellow emitter nozzle at the front, a big top handle, a small glowing teal gauge, a slot on top for swappable heads. $STYLE"
 FACE[capa]=4000
 
+
+# M1 dunya cesitliligi (SANAT-SES §6: biyom basina 8-12 bitki, 4-6 kaya) - standart doku
+PROMPT[cali]="A round meadow shrub bush with dense leafy clumps and a few clusters of small orange berries. $STYLE"; FACE[cali]=3000; QUAL[cali]=standard
+PROMPT[bugday]="A clump of wild golden wheat stalks with heavy seed heads, growing from a small tuft of green leaves. $STYLE"; FACE[bugday]=3000; QUAL[bugday]=standard
+PROMPT[cicek]="A cluster of meadow wildflowers: chunky orange and cream daisy-like blossoms on thick green stems with broad leaves. $STYLE"; FACE[cicek]=3000; QUAL[cicek]=standard
+PROMPT[ot]="A tall clump of soft feathery meadow grass with plume tips, golden green colour. $STYLE"; FACE[ot]=2500; QUAL[ot]=standard
+PROMPT[turuncu_agac]="A small round tree with a thick short trunk and a puffy crown of warm orange and amber leaves, autumn mood. $STYLE"; FACE[turuncu_agac]=5000; QUAL[turuncu_agac]=standard
+PROMPT[egrelti]="A broad-leaf ground plant with five big rounded fan leaves spreading low from the centre, deep green with lighter veins. $STYLE"; FACE[egrelti]=2500; QUAL[egrelti]=standard
+PROMPT[kaya_duz]="A wide flat weathered boulder, smooth rounded top, lavender grey stone with moss patches. $STYLE"; FACE[kaya_duz]=3000; QUAL[kaya_duz]=standard
+PROMPT[kaya_dik]="A tall standing stone pillar slightly leaning, rounded worn edges, lavender grey with lichen. $STYLE"; FACE[kaya_dik]=3000; QUAL[kaya_dik]=standard
+PROMPT[bakir]="A rounded rock outcrop with chunky veins and nuggets of shiny orange copper ore embedded, grey-purple stone. $STYLE"; FACE[bakir]=3000; QUAL[bakir]=standard
 ITEMS=("$@"); [ ${#ITEMS[@]} -eq 0 ] && ITEMS=(zipzip salgam tezgah paketleme el_arabasi ocak kapsul capa)
 for n in "${ITEMS[@]}"; do
-  args=("${PROMPT[$n]}" "${Q[@]}" -p face_limit="${FACE[$n]}" --name "$n")
+  q=("${Q[@]}"); [ -n "${QUAL[$n]:-}" ] && q=(--model tripo-v3.1 -p texture_quality="${QUAL[$n]}" -p texture_version=v3.5)
+  args=("${PROMPT[$n]}" "${q[@]}" -p face_limit="${FACE[$n]}" --name "$n")
   [ -n "${THEN[$n]:-}" ] && args+=(--then "${THEN[$n]}")
   plan=$(tripo make "${args[@]}" --dry-run --json 2>/dev/null)
   ok=$(echo "$plan" | python -c "import sys,json;d=json.load(sys.stdin);print('1' if d['valid'] else '0', d['generation_credits_estimate'], '|'.join(d['warnings']), '|'.join(d['errors']))")
