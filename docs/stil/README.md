@@ -12,14 +12,14 @@
 | URETIM §4 sınıfı | Varlık | Kaynak | Üçgen | Doku | Kredi |
 |---|---|---|---|---|---|
 | Karakter | Oyuncu (tulumlu üye) | Genex karakter (Meshy), 6 klip | 10.348 | 2K | 64 Genex |
-| Yaratık 1 | Zıpzıp | Tripo API H3.1 + iki ayak iskeleti v3.0 + 4 klip (bekleme, koşu, zıplama, acı) | 5.764 | 1K | 95 Tripo |
-| Yaratık 2 | Pofuduk | Tripo API H3.1 + dört ayak iskeleti v2.5 + yürüme | 5.576 | 1K | 55 Tripo |
+| Yaratık 1 | Zıpzıp | Tripo API H3.1 + iki ayak iskeleti v3.0 + 4 klip (bekleme, koşu, zıplama, acı) | 5.764 (küçük sınıf: 5.000'e indirilecek, [SANAT-SES.md](../SANAT-SES.md) §4) | 1K | 95 Tripo |
+| Yaratık 2 | Pofuduk | Tripo API H3.1 + dört ayak iskeleti v2.5 + yürüme | 5.576 (orta sınıf) | 1K | 55 Tripo |
 | Bitki 1 | Çayır ağacı | Tripo web "HD Model" | 6.788 | 1K | 55 web |
 | Bitki 2 | Şalgam (ekin ve kabarık ürün) | Tripo API H3.1, doku v3.5 ayrıntılı | 3.878 | 1K | 30 Tripo |
 | Kaya | Cevherli kaya | Tripo web "HD Model" | 3.879 | 1K | 55 web |
 | Makine 1 | Tezgâh | Tripo API H3.1, doku v3.5 ayrıntılı | 7.428 | 1K | 30 Tripo |
-| Makine 2 | Taş Fırın (6 adlı parça) | Tripo API H3.1 + anlamsal parçalama | 4.773 | 1K | 60 Tripo |
-| Araç | El Arabası (teker ayrı parça) | Tripo API H3.1 + parçalama | 5.779 | 1K | 70 Tripo |
+| Makine 2 | Taş Fırın (6 parça; düğümler `base, body, door, door_handle, part_4, part_5`, baca ve pano adı yok: `--rename` ile yeniden işlenecek) | Tripo API H3.1 + anlamsal parçalama | 4.773 | 1K | 60 Tripo |
+| Araç | El Arabası (teker ayrı parça; henüz oyunda kullanılmıyor) | Tripo API H3.1 + parçalama | 5.779 | 1K | 70 Tripo |
 | Yapı köşesi | Ahşap yapı seti | Blender betiği (koddan, milimetrik yuvalar) | 200–1.500/parça | 1K | 0 |
 | Eşya | Sulama kovası | Tripo web "HD Model" | 2.908 | 1K | 55 web |
 | Kabarık ürün | Kabarık şalgam | Şalgam modeli + `swell_tex` shader (şişme, Maya damarları) | aynı | aynı | 0 |

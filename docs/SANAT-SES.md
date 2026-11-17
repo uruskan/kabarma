@@ -31,6 +31,18 @@ Her biyomun altı ana rengi ve dört gün saati için gökyüzü geçişi var. V
 - **Maya paleti:** turkuaz `#5FF0C8` ile eflatun `#D45BFF` arasında geçiş. Kabarma gecesinde gökyüzü, zemin damarları ve kabarmış her şey bu iki renge döner.
 - **Gece** karanlık değil mavidir: en koyu değer `#1A2238`. Ay ışığı ve aurora her zaman okunaklı bir taban ışık verir.
 
+**Altın Çayır'ın dört gün saati** (M1'in ışık ve ekran görüntüsü saatleri; değerler veriye yazılır):
+
+| Saat | Güneş yüksekliği | Gökyüzü tepe → ufuk | Güneş ışığı | Sis |
+|---|---|---|---|---|
+| Sabah | 12°, doğudan | `#A3CFE6` → `#F6D7B0` | `#FFE2B8` | `#F3D9A4`, yoğunluk ×1,5 |
+| Öğle | 62° | `#8CC8E8` → `#F3D9A4` | `#FFF4DE` | `#F3D9A4` |
+| Gün batımı | 4°, batıdan | `#6E79B0` → `#F58A5B` | `#FF9A5C` | `#F2A878` |
+| Kabarma gecesi | Güneş yok; ay 35° | `#1A2238` → `#5FF0C8` (aurora bandı) | Ay `#A9B8E8` | `#2A3358`; zemin damarları Maya paletinde |
+| Normal gece | Güneş yok; ay 35° | `#1A2238` → `#2E3E66` | Ay `#A9B8E8` | `#2A3358` |
+
+M1'in 16 ekran görüntüsü ilk dört satırdandır; normal gece M1'de ışık olarak vardır ama görüntü setine girmez.
+
 ## 3. Karakter
 
 - **Gövde:** "Tulumlu". Boy 1,6 m; kafa gövdenin üçte biri; eller ve botlar büyük; boyun yok. Tek iskelet, bütün üye tipleri ve Holding birimleri için.
@@ -50,6 +62,17 @@ Her biyomun altı ana rengi ve dört gün saati için gökyüzü geçişi var. V
 
 **Klip listesi (53):** bekleme (2) · sekiz yönlü yürüme ve koşu (16) · depar · zıplama, havada, iniş (3) · düşme · merdiven tırmanma · suda yürüme · süzülme · paraşüt · ağır yük taşıma · el arabası itme · oturma · sürücü koltuğu · binek üstü · uyuma · yeme · hayvan okşama · diz çöküp ekme · kol çevirme · şok tokadı · baygın sürünme · önden ve arkadan kalkış (2) · 12 jest.
 
+**Kaynak kuralı:** Döngülü yürüyüş, akrobasi ve jestler insansı klip kütüphanesinden ya da düz yazıyla üretilir. Yerinde duran ya da üst gövdesi sabit kalan klipler (ekme, yeme, uyuma, oturma, okşama, kol çevirme, itme, taşıma, sürücü, binek, paraşüt, süzülme, şok tokadı) yaratıklardaki poz yöntemiyle kodla yazılır ([URETIM.md](URETIM.md) §2.2 E).
+
+**M1'in 30 klibi:**
+
+| Kaynak | Klipler | Adet |
+|---|---|---|
+| Kütüphane ya da düz yazı | Bekleme (2), sekiz yönlü yürüme ve koşu (16), depar, zıplama-havada-iniş (3), düşme, önden ve arkadan kalkış (2) | 25 |
+| Kodla poz | Diz çöküp ekme, yeme, uyuma, el arabası itme, suda yürüme (yürüme üstüne katman) | 5 |
+
+**Sonraki taşlara kalan 23:** merdiven tırmanma, oturma, paraşüt, ağır yük taşıma, sürücü koltuğu, hayvan okşama, kol çevirme, şok tokadı, baygın sürünme → M2 · binek üstü → M3 · süzülme → Planör ya da Gıdak Kostümlü'nün geldiği taş, en geç M4 · 12 jest → M4.
+
 Birinci şahıs kol animasyonu, yakın dövüş kombosu ve silaha özel doldurma animasyonu yoktur; tasarım bunları gerektirmez.
 
 ## 4. Yaratıklar
@@ -67,6 +90,8 @@ Birinci şahıs kol animasyonu, yakın dövüş kombosu ve silaha özel doldurma
 - **Atalar** birkaç parçadan kurulur (Çıyan Paşa boğumları, Dede'nin boynuzundaki koru); parçalar kodla hareket eder. Ana Maya şekilsiz bir shader kütlesidir.
 
 **Poligon bütçeleri (17 Kasım 2026, dokulu yön):** oyuncu 10.000–15.000 üçgen · küçük yaratık 5.000 · orta 8.000 · büyük 12.000 · Ata 30.000 · eşya ve kaya 2.000–6.000 · ağaç 5.000–8.000 · makine 8.000–15.000 · araç 12.000–20.000 · yapı parçası 200–1.500. Doku: eşya 1K, yaratık ve makine 1–2K, oyuncu ve Ata 2K. Eski bütçe (oyuncu 8.000, küçük yaratık 2.000 …) dokusuz yön içindi.
+
+**Altın yaratıkların sınıfı:** Zıpzıp küçük sınıftadır (kabarmamış hâli küçük zararlı, ağırlık 1). 5.764 üçgen bütçeyi %15 aşıyor; hat 5.000'e indirecek (kredi yok). İskelet ağırlıklarının sadeleştirmeden sağlam çıktığı doğrulanacak; bozulursa yeniden kemiklendirilir (Tripo, 25 kredi, onaylı). Pofuduk orta sınıftadır (5.576, bütçe içinde).
 
 ## 5. Yapılar, makineler, araçlar
 
@@ -110,7 +135,7 @@ Hepsi shader ve parçacıkla, kodda yazılır. Liste:
 ### 8.1 İlkeler
 
 - **Önce dünya, sonra pano.** Çantanın doluluğu sırtta, makinenin durumu makinenin üstünde, takvim gökyüzünde görünür. Pano yalnızca dünyada gösterilemeyen şeyi taşır.
-- **Gündüz sade, gece yoğun.** Gündüz ekranda yalnızca kemer, can ve dayanıklılık, pusula durur. Kabarma'da dalga sayacı, Öz çubuğu, Gösteri çarpanı ve kart şeridi eklenir.
+- **Gündüz sade, gece yoğun.** Gündüz ekranda yalnızca kemer, can ve dayanıklılık, pusula durur. Pusula Ocak'ı ve etkin hedefi işaretler; altında Defter'in etkin adımı tek satır durur (tuşlar glifle). Kabarma'da dalga sayacı, Öz çubuğu, Gösteri çarpanı ve kart şeridi eklenir.
 - **İkonlar modelden çekilir.** Her eşyanın ikonu kendi 3B modelinin aynı ışık ve açıyla alınmış görüntüsüdür; böylece ikon seti kendiliğinden tutarlıdır.
 - **Yazı tipi:** arayüz için yuvarlak hatlı bir sans, sayılar için sabit genişlikli; ikisi de açık lisanslı ve Türkçe, Kiril, Çince, Japonca, Korece kapsamı olan ailelerden.
 - **Her panel** klavye-fare ve oyun koluyla tam kullanılır; ipucu ikonları son kullanılan aygıta göre değişir.
@@ -139,6 +164,15 @@ Her varlık ve her taşın ekran görüntüsü seti bu ölçütlerden geçer. İ
 | 8 | Okunaklılık | Oyun kamerası mesafesinde işlevi anlaşılıyor (giriş, çıkış, tehlike, etkileşim) | Ben; oyun içi görüntü |
 
 **Ekran görüntüsü ölçütleri:** üç derinlik katmanı okunuyor · gökyüzü geçişi ve sis var · saf siyah bölge yok · arayüz 1080p'de ve Deck çözünürlüğünde okunuyor · ışıyan yüzey gündüz ekranın %5'ini geçmiyor.
+
+**M1 yer imleri** (Altın Çayır köşesi). Her yer imi sabit kamera konumu ve bakış yönüdür, veride durur; oyun kamerası yüksekliğinde, arayüz açık. 16 görüntü = 4 yer imi × §2'deki 4 saat; Kabarma gecesi görüntüleri ilk gecenin 2. dalgasında alınır.
+
+| # | Yer imi | Kadrajda |
+|---|---|---|
+| 1 | İniş kapsülü | Kapsül (Kargo Rampası) ön planda, çayır, ufukta krater ışık sütunu |
+| 2 | Üs | Ocak, 3×3 tarla, ağıl ve Gıdak; arkada istasyonlar |
+| 3 | Göl kıyısı | Su ve köpük çizgisi, kil yatakları, ağaçlar, sisli tepeler |
+| 4 | Tepe | En yüksek tepeden üsse ve kratere; üç sis katmanı |
 
 Ölçütten geçemeyen varlık en fazla dört kez yeniden üretilir; yine geçemezse koddan kurulur (Oduncu'daki kit yöntemi) ve aynı ölçütlerden geçirilir.
 
@@ -169,6 +203,25 @@ Her sesin 3–5 varyasyonu olur; çalarken perde ±%8, düzey ±2 dB oynar.
 | Arayüz | 50 |
 | Ortam döngüleri: 6 bölge × gündüz ve gece, 8 hava durumu | 20 |
 | **Toplam** | **yaklaşık 900** |
+
+**M1'in 60 sesi** (↻ döngü; *M0* işaretli 12'si M0'da üretildi. M1'de her sesin 3 varyasyonu olur.)
+
+| Grup | Adet | Sesler |
+|---|---|---|
+| Çapa iş başlıkları | 9 | kazma ışını ↻ *M0* · kaya kemirme ↻ (taş, kil, bakır) · parça emilişi "pıt" *M0* · biçme süpürmesi · bitki darbesi (ağaç, çalı, ot) · çekim ışını ↻ · fırlatma · toprak sürme *M0* · sulama püskürtmesi ↻ *M0* (depo dolumunda aynı ses pes çalar) |
+| Silahlar, vuruşun üç katmanı ([GDD.md](GDD.md) §4) | 8 | atış: Tırpan Işını · atış: Çivi Tabancası *M0* · isabet: kesme *M0* · isabet: çivi saplanması · isabet: kritik · isabet: zayıf nokta · parça: kauçuk ve Maya kırıntısı saçılması · cephane bitti tıkı |
+| Oyuncu | 6 | adım: ot · adım: toprak · adım: tahta · iniş (ağır varyasyonu yere serilme) · acı nidası · yeme |
+| Gıdak ve Zıpzıp | 7 | Gıdak gıdaklaması (ürkme varyasyonlu) · yumurtlama · Koç Gıdak tekmesi · Zıpzıp sıçraması · Zıpzıp kemirmesi · Zıpzıp acısı · kabarmış yaratık patlaması *M0* |
+| Tarım | 4 | tohum ekme · filiz çıkışı · hasat çekme · kabarık ürün gümlemesi (yük nesnesi yere ya da arabaya) |
+| Yapı | 4 | parça yerleşmesi *M0* (kısa varyasyonu onarım) · söküm · parçaya darbe (çite yüklenme) · ahşap kapı ve kapak (kapı, bahçe kapısı, Sandık, Folluk) |
+| İstasyonlar ve araç | 6 | Ocak yanması ve tapu kubbesi · ateş çıtırtısı ↻ (Ocak, Ocakbaşı, Taş Fırın) · tezgâh çalışması ↻ (Tezgâh, Paketleme) · Taş Fırın kapağı · kargo roketi ve kredi *M0* · El Arabası tekerleği ↻ |
+| Kabarma | 5 | siren *M0* · gökyüzü dalgalanması ↻ · şişme *M0* (ekin ve canlı; perde boya göre) · dalga girişi · şafakta sönme |
+| Kartlar ve seviye | 4 | seviye atlama (Çapa çatırdaması) *M0* · kart seçimi · Yanık tutuşması · Donma çıtırtısı |
+| Arayüz | 5 | odak · onay (üretim bitti, adım tamam, rapor açıldı) · hata (yetmiyor, geçersiz yer) · başlık çarkı · telsiz mandalı (Suna'nın başı ve sonu) |
+| Ortam | 2 | çayır gündüzü ↻ · göl kıyısı ↻ (Kabarma gecesini gökyüzü döngüsü ve müzik taşır) |
+| **Toplam** | **60** | |
+
+Arayüz grubu Oduncu'daki sentez betikleriyle de yapılabilir (kredi yok).
 
 - **Motorlar ve döngüler:** birkaç devirde üretilmiş döngüler devire göre çapraz geçişle çalınır.
 - **Kanallar:** Ana / Efekt / Ortam / Müzik / Suna / Sesli sohbet / Arayüz. Suna konuşurken müzik 4 dB kısılır.
@@ -212,6 +265,8 @@ Müzik durumdan duruma en az iki saniyelik geçişle değişir; aynı parça art
 | Boş zaman | 80 |
 | Ortak oyun şamatası | 30 |
 
+- **Seslendirilen replik tuş adı içermez.** Tuşlar değiştirilebildiği için (§8.3) "E'ye bas", "(6)", "Tab ile" gibi yönlendirmeler ekrandaki adım satırına, son kullanılan aygıtın glifiyle yazılır; Suna yalnızca ne yapılacağını söyler. Aynı kural altyazıya da uyar: altyazı seslendirilen metnin aynısıdır.
+- **M1: 30 replik, Türkçe ve İngilizce (60 kayıt).** Giriş 2 · ilk günün dokuz adımı 14 · Küçük Kabarma ve şafak 6 · ilk 10 dakikadan sonraki yedi adım 7 · sıradaki iş emri 1 ([GDD.md](GDD.md) §24). Adımların hedef satırları seslendirilmez, yalnızca ekranda durur.
 - **Holding hoparlörü:** kamplarda duyulan kurumsal erkek sesi, 60 replik ("Değerli çalışanlarımız, hasat hedefimizin gerisindeyiz.").
 - **Oyuncu karakteri konuşmaz;** kısa nidalar çıkarır (zıplama, darbe, sevinme): 24 ses.
 - **Altyazı** her replikte vardır; arayüzün 10 dilinin hepsinde.

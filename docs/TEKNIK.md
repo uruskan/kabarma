@@ -40,8 +40,8 @@ Her adımın geçme ölçütü ve yedeği var. M0 bitmeden M1 başlamaz.
 
 | # | Adım | Sonuç | Kanıt |
 |---|---|---|---|
-| 1 | .NET 8 SDK + Godot .NET; boş C# projesi | ✅ Geçti. Başsız çalışıyor. Windows'a dışa aktarma bu taşta denenmedi (paketleme istenmedi). | MVP, `tools/run.sh` |
-| 2 | `Kabarma.Sim` Godot'tan çağrılıyor; `dotnet test` | ✅ Geçti (9 test). 1.000 oyun günü ölçümü henüz yazılmadı. | `src/Kabarma.Sim.Tests` |
+| 1 | .NET 8 SDK + Godot .NET; boş C# projesi | ⚠️ Kısmen. Başsız çalışıyor. Windows'a dışa aktarma denenmedi (`export_presets.cfg` yok), .exe açılışı doğrulanmadı. | MVP, `tools/run.sh` |
+| 2 | `Kabarma.Sim` Godot'tan çağrılıyor; `dotnet test` | ⚠️ Kısmen: çağrı ve `dotnet test` çalışıyor (11 test). 1.000 oyun günü ölçümü henüz yazılmadı. | `src/Kabarma.Sim.Tests` |
 | 3 | Steamworks.NET: başlatma, lobi, Networking Sockets ile iki süreç | ✅ Geçti: app 480, özel lobi kuruldu, iki süreç arasında 20/20 mesaj (ortalama 31 ms, döngüdeki bekleme dahil). Aynı hesapta iki süreç için Steam ağ sertifikasının hazır olmasını beklemek gerekiyor. | `progress/m0/steam_check.log`, `tools/spikes/SteamSpike` |
 | 4 | C# Linux başsız sunucu | ⏸ Bu makinede doğrulanamadı: WSL ve Linux makine yok. Windows'ta C# başsız host çalışıyor (adım 5). Yedek, belgedeki gibi: adanmış sunucu önce Windows; Linux ikinci bir makinede ya da WSL kurulunca denenecek. | — |
 | 5 | C# ile senkron testi (ENet, host yetkili) | ✅ Geçti: 24 fizik cismi, 600 tik, 600 anlık görüntü, 0 boşluk, son durum farkı 0,000 mm. Not: yerel döngü; paket kaybı benzetimi yok. | `progress/m0/netsync_check.log`, `game/scripts/tests/NetSyncTest.cs` |
@@ -193,6 +193,7 @@ Host ya da sunucu yetkilidir. İstemci istekleri mesafe, bekleme süresi ve enva
 - **Göç:** her sürüm artışı için bir göç fonksiyonu ve birim testi zorunlu.
 - **Karakter** ayrı dosyadadır (Ustalık, Nişan, Ansiklopedi, kozmetik) ve Steam Cloud ile eşlenir.
 - **Hedef boyut:** dünya kaydı en fazla 30 MB.
+- **Kayda hazır yazım (M1'den itibaren):** Kayıt ve ortak oyun M2'de gelir; M1'de yazılan kod onlar için yeniden yazılmasın diye: `Sim`'e giren her yeni durum düz, serileştirilebilir sınıftır (Godot tipi, düğüm başvurusu ya da olay aboneliği tutmaz; kimlikle başvurur). Godot katmanına yeni statik durum eklenmez: statikler kayıt yüklenince sıfırlanmaz ve aynı süreçte koşan host ile istemciyi birbirine karıştırır ([PLAN.md](PLAN.md) §7.2).
 
 ## 10. Performans bütçeleri
 
@@ -207,6 +208,10 @@ Host ya da sunucu yetkilidir. İstemci istekleri mesafe, bekleme süresi ve enva
 | Dünya yükleme | ≤ 15 sn | ≤ 30 sn | ≤ 30 sn |
 
 **Çizim:** Forward+. Bitki örtüsü, ekinler ve yapı parçaları örneklenmiş (MultiMesh). Sürü üyeleri köşe animasyon dokusuyla tek çizim çağrısında. Gölge iki bölümlü; SDFGI kapalı; hafif SSAO ve glow; yükseklik ve mesafe sisi. Düşük ayarda gölge mesafesi ve bitki yoğunluğu yarıya iner.
+
+**"Yüksek" ön ayarı** (önerilen donanım sütunu ve M1'in ≥ 90 FPS ölçümü): 1920×1080, çözünürlük ölçeği 1,0 · MSAA 2× · yönlü gölge 2 bölüm, 4096 atlas, 150 m · SSAO açık (yarım çözünürlük) · glow açık · SDFGI, VoxelGI, SSIL, SSR ve hacimsel sis kapalı · yükseklik ve mesafe sisi açık · bitki yoğunluğu %100, ot yarıçapı 40 m · dikey eşitleme kapalı, kare sınırı yok.
+
+**M1 ölçümü:** dört yer iminin her birinde ([SANAT-SES.md](SANAT-SES.md) §9) öğle saatinde 60 sn ve ilk gecenin son dalgası boyunca; her birinde ortalama kare süresi ≤ 11,1 ms (≥ 90 FPS). Gündüzün 8,3 ms bütçesi M6 performans turunun hedefidir.
 
 ## 11. Test ve doğrulama
 

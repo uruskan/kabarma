@@ -105,7 +105,7 @@
 | 66 | Mayalı Alaşım | Maya Dökümhanesi | 2 Titan Külçe + 1 Ham Maya |
 | 67 | Mayalı Beton | Maya Dökümhanesi | 2 Balçık + 2 Kum + 1 Ham Maya |
 
-**Cephane (5):** Çivi (Bakır Külçe), Saçma (Demir Külçe), Havan Mermisi (Çelik + Barut), Biyoyakıt, Tohum (her ekinin tohumu).
+**Cephane (5):** Çivi (Tezgâh: 1 Bakır Külçe → 20), Saçma (Demir Külçe), Havan Mermisi (Çelik + Barut), Biyoyakıt, Tohum (her ekinin tohumu).
 
 ## 3. Yaratıklar (27 tür + 5 Holding birimi)
 
@@ -518,6 +518,22 @@ Kare Temel · Üçgen Temel · Kazık Temel · Duvar · Yarım Duvar · Alçak D
 
 **Cam seti (4):** Cam Duvar, Cam Çatı, Cam Zemin, Cam Kapı.
 
+**Ahşap bedeli (Odun):**
+
+| Şekil | Odun |
+|---|---|
+| Kare Temel, Kazık Temel | 6 |
+| Üçgen Temel | 3 |
+| Duvar, Kapı Kasası, Pencereli Duvar, Kare Zemin, Eğimli Çatı, Çatı Köşesi, Çatı Tepesi, Düz Çatı | 4 |
+| Yarım Duvar, Alçak Duvar, Üçgen Duvar, Üçgen Zemin | 2 |
+| Merdiven, Rampa | 5 |
+| Sütun, Kiriş, Parmaklık, Çit | 2 |
+| Bahçe Kapısı | 3 |
+| Sur Duvarı · Sur Kapısı · Kule Tabanı | 8 · 10 · 12 |
+| Makine Platformu | Hücre başına 6 (küçük 6, orta 24, büyük 54) |
+
+Öbür malzemeler aynı adette kendi ana girdisini ister: Kerpiç-Taş yarı Kerpiç yarı Taş, Çelik Sac Çelik, Mayalı Beton Mayalı Beton, cam seti Cam. Sayılar o malzemenin geldiği taşta veriyle ayarlanır.
+
 ### 10.2 Yerleştirilebilirler (72)
 
 | Grup | Parçalar |
@@ -530,6 +546,17 @@ Kare Temel · Üçgen Temel · Kazık Temel · Duvar · Yarım Duvar · Alçak D
 | Hayvan (8) | Yemlik, Suluk, Folluk, Savaş Ağılı Bayrağı, Ahır Zili, Bağlama Direği, Kaşınma Fırçası, Eyerlik |
 | Hizmet (8) | Mancınık, Harita Masası, İş Emri Panosu, Borsa Tahtası, Katalog Terminali, Tohum Çarkı, Gardırop, Tabela |
 | Süs (18) | Saksı Çiçeği, Duvar Halısı, Tablo (oyuncunun çektiği fotoğraf), Ekip Bayrağı, Ata Heykeli, Rüzgâr Çanı, Kuş Evi, Gıdak Cücesi, Çeşme, Hamak, Salıncak, Kamp Ateşi, Raf, Kitaplık, Saat, Radyo, Semaver, Kilim |
+
+**Bedeller** (şimdilik M1'in altısı; kalanlar geldikleri taşta yazılır):
+
+| Parça | Bedel | M1'deki işi |
+|---|---|---|
+| Ahşap Kapı | 4 Odun | Kapı Kasası'na oturur; E ile açılır |
+| Sandık | 10 Odun | 20 yuva |
+| Uyku Tulumu | 6 Lif | Doğma noktası ([GDD.md](GDD.md) §3.6); üstünde uyununca normal gece atlanır (GDD §2) |
+| Meşale | 2 Odun | 6 m gece ışığı |
+| Yemlik | 6 Odun | Ağılda; içine yem konur |
+| Folluk | 4 Odun + 4 Lif | Ağıldaki Gıdak buraya yumurtlar (6 yuva); Folluk yoksa yere |
 
 ## 11. İstasyonlar ve makineler (43)
 
@@ -621,7 +648,7 @@ Sinyal parçaları T3'te (basit) ve T4'te (sensörler, kapılar) açılır. Bant
 
 | Araç | T | Kişi | Yuva | Özelliği |
 |---|---|---|---|---|
-| El Arabası | 1 | — | — | Bir yük nesnesi ya da 6 yuva; itilir |
+| El Arabası | 1 | — | — | Bir yük nesnesi (en fazla 200 kg) ya da 6 yuva, ikisi birden değil; itilir |
 | Çekirge (ATV) | 2 | 2 | 1 | Hızlı, hafif |
 | Traktör | 3 | 2 | 2 + çeki demiri | Tarla eklentilerini çalıştırır |
 | Kamyon | 3 | 3 | 2 | Kasa: 6 kargo kasası ya da bir L ürün |
@@ -641,7 +668,7 @@ Can ve Dayanıklılık değerleri yemeğin süresi boyunca eklenir.
 |---|---|---|---|---|---|
 | 1 | Közde Şalgam | 1 | Şalgam | 15 · 10 | — |
 | 2 | Haşlanmış Yumurta | 1 | Yumurta | 10 · 20 | — |
-| 3 | Kabak Çorbası | 1 | Kabak | 25 · 10 | Can yenilenmesi |
+| 3 | Sebze Çorbası | 1 | 2 Şalgam ya da 2 Kabak | 25 · 10 | Can yenilenmesi |
 | 4 | Menemen | 1 | Domates + Yumurta | 25 · 25 | — |
 | 5 | Bazlama | 1 | Un | 10 · 30 | — |
 | 6 | Izgara Et | 1 | Et | 30 · 10 | — |
@@ -826,8 +853,8 @@ Her basamakta ilerlemek için gereken her şeyin girdisi, o basamakta ya da daha
 | Basamak | Gereken | Girdileri ve kaynağı | Sonuç |
 |---|---|---|---|
 | **Başlangıç** | Ocak, 6 iş başlığı, Tırpan Işını, Sırt Yazıcısı, 12 Şalgam tohumu, 10 Buğday (yem) | İniş kapsülünde. Kapsülün kendisi ilk Kargo Rampası'na dönüşür. | ✔ |
-| **T1** | Tezgâh (10 Odun + 5 Taş) · Taş Fırın (15 Taş + 5 Kil) · Kömür Ocağı (10 Taş + 10 Kil) | Hepsi Çayır | ✔ |
-| | Bakır Külçe → Çivi Tabancası, Bakır Tel | Bakır Cevheri: Çayır | ✔ |
+| **T1** | Tezgâh (10 Odun + 5 Taş) · Taş Fırın (15 Taş + 5 Kil) · Kömür Ocağı (10 Taş + 10 Kil) · Ocakbaşı (8 Taş + 4 Odun) · Paketleme Tezgâhı (8 Odun) · El Arabası (Tezgâh: 12 Odun + 4 Taş). Taş Fırın ve Ocakbaşı iş başına 1 yakıt yakar (Odun ya da Odun Kömürü). | Hepsi Çayır | ✔ |
+| | Bakır Külçe (Taş Fırın: 2 Bakır Cevheri + 1 Odun) → Çivi Tabancası (Tezgâh: 2 Bakır Külçe + 4 Odun; tarifi ilk Bakır Külçe'de açılır), Çivi (Tezgâh: 1 Bakır Külçe → 20), Bakır Tel | Bakır Cevheri: Çayır | ✔ |
 | | **Adak: Dev Yemlik** (5 Kabarık Şalgam + 10 Yün + 20 Bakır Külçe) | Kabarık Şalgam: bir Kabarma · Yün: Pofuduk (Çayır, Şalgam ile evcilleşir) · Bakır: Çayır | ✔ Tarım, hayvancılık ve Kabarma'dan geçiyor |
 | **T2** | Demirci Ocağı (20 Taş + 10 Bakır Külçe + 5 Kil) | Çayır | ✔ |
 | | Demir Külçe (2 Demir Cevheri + 1 Odun Kömürü) | Demir: Koru (tehlikesiz girilir) | ✔ |

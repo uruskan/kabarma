@@ -211,6 +211,8 @@ Bir özellik ancak şu altısı tamamsa "bitti" sayılır:
 5. Kaydedilip yüklenince aynı duruyor.
 6. Ekran görüntüsü ve kısa videosu görsel ölçütleri geçiyor ([SANAT-SES.md](SANAT-SES.md) §9).
 
+**M1'de 4. ve 5. koşul:** Ortak oyun ve kayıt M2'nin teslimidir; M1'deki hiçbir özellik bunları karşılayamaz. M1'de bir özellik 4. koşulun ortak oyun yarısını ve 5. koşulu "M2'de" diye raporlar; 4. koşulun klavye-fare ve oyun kolu yarısı M1'de de zorunludur. Karşılığında yeni `Sim` durumu kayda hazır yazılır ve Godot katmanına yeni statik durum eklenmez ([TEKNIK.md](TEKNIK.md) §9).
+
 Oyunun tamamı için çıkış kapısı [URETIM.md](URETIM.md) §8'de.
 
 ## 8. Tasarım sınırları

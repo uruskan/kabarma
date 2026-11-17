@@ -34,7 +34,7 @@
 
 ### 3.2 Hareket
 
-Yürüme 3,5 m/sn, koşu 6, depar 8,5 (saniyede 8 dayanıklılık). Zıplama 1,3 m. Merdiven ve rampa tırmanılır. Zıpkın başlığı kendini çeker. Planör, çift zıplama ve roket zıplama kuşam modülü ya da güçtür. Yuvarlanma yok; kaçınma Atılma gücüyle yapılır.
+Yürüme 3,5 m/sn, koşu 6, depar 8,5 (saniyede 8 dayanıklılık). Depar bırakıldıktan 1 sn sonra dayanıklılık saniyede 15 dolar; sıfıra inerse depar, dayanıklılık 20'ye çıkana kadar kapanır. Zıplama 1,3 m. Merdiven ve rampa tırmanılır. Zıpkın başlığı kendini çeker. Planör, çift zıplama ve roket zıplama kuşam modülü ya da güçtür. Yuvarlanma yok; kaçınma Atılma gücüyle yapılır.
 
 Gövde fiziklidir: araç ya da 150 kg'dan ağır bir nesne çarparsa oyuncu 5 saniyeliğine yere serilir (ragdoll). Bu hasar vermez.
 
@@ -90,7 +90,7 @@ Oyuncunun elindeki tek alet. Bütün işler ve silahlar başlık olarak takılı
 
 - **Sırt çantası:** 20 yuva; Çapa basamağıyla 24, 30, 36, 42, 48. **Kemer:** 8 yuva.
 - Yığın: kaynak 50, ara ürün 20, yemek 10.
-- **Yük nesneleri** çantaya girmez; dünyada fiziksel durur: kabarık ürün, kargo kasası, büyük leş, yumurta, paketlenmiş makine ve araç, Ata ganimeti. Çekim başlığıyla, birkaç kişiyle, hayvanla, vinçle ya da araçla taşınır.
+- **Yük nesneleri** çantaya girmez; dünyada fiziksel durur: kabarık ürün, kargo kasası, büyük leş, kuluçkalık yumurta (yuvadan alınan; Gıdak yumurtası sıradan eşyadır, çantaya girer), paketlenmiş makine ve araç, Ata ganimeti. Çekim başlığıyla, birkaç kişiyle, hayvanla, vinçle ya da araçla taşınır.
 - **Ambardan üretim:** Tapu içinde Ocak'a bağlı bütün depolardaki malzeme tezgâhlarda doğrudan kullanılır.
 
 ## 6. Ocak ve tapu
@@ -115,6 +115,8 @@ Ocak üssün kalbidir. İşlevleri: tapu alanı, doğma noktası, Çan, Maya Kaz
 ## 7. Yapı
 
 - **Izgara:** 3 m'lik kare; kat yüksekliği 3 m; üçgen parçalar var. İlk temel serbest döner (15° adım), sonrakiler yuvaya oturur.
+- **Tapu dışı:** Kurma tapu dışında da serbesttir (köprü, gözetleme yeri, yol); söküm iadesi orada düşüktür (aşağıda).
+- **Bedel:** Parça bedelleri [ICERIK.md](ICERIK.md) §10.1'de; yerleştirilebilirler İnşa başlığıyla doğrudan kurulur, bedel çantadan düşer.
 - **Malzemeler:**
 
 | Malzeme | Basamak | Parça canı | En fazla yatay açıklık |
@@ -127,7 +129,7 @@ Ocak üssün kalbidir. İşlevleri: tapu alanı, doğma noktası, Çan, Maya Kaz
 
 - **Taşıma dengesi:** Her parça en yakın temele olan destek mesafesini hesaplar. Açıklık aşılırsa parça yerleşmez. Desteği yıkılan parçalar fizik nesnesi olarak düşer ve altındakini yere serer.
 - **Yerinde yükseltme:** İnşa başlığıyla; aradaki malzeme farkı ödenir.
-- **Onarım:** Hasar oranında malzemenin %25'i. **Söküm:** tapu içinde %100 iade.
+- **Onarım:** Hasar oranında malzemenin %25'i. **Söküm:** tapu içinde %100, dışında %50 iade.
 - **Boyama:** 16 renk, parça başına.
 - **Kapalı alan:** Üstü ve çevresi kapalı hacim ısıyı, konforu ve yağmuru etkiler.
 - **Plan modu:** Parçalar hayalet olarak bırakılır; ekip üyeleri malzemeyi getirince tamamlanır.
@@ -183,6 +185,7 @@ Cam parçalarla kapatılmış hacme Sera Kontrol Ünitesi konunca içerideki sı
 ### 9.1 Evcilleştirme
 
 - **Otçullar ve küçükler:** Sevdiği yem atılır. Her yiyişte güven çubuğu dolar; koşmak ve ateş etmek çubuğu sıfırlar. Dolunca oyuncuyu izler; ağıla girince kayıt olur.
+- **Ağıl:** Çit, bahçe kapısı, duvar ya da kapı parçalarından kapalı bir halka; en az 1 hücre (9 m²), çatı gerekmez. Kapılar E ile açılıp kapanır; açık kapı geçilir. Halkanın içindeki hayvan kayıt olur. Tür başına gereken alan veridedir (Gıdak 4 m²).
 - **Yırtıcılar ve büyükler:** Önce canı %25'in altına indirilip Çekim ya da Zıpkın ile tutulur, sonra beslenir.
 - **Yumurtadan:** Hu, Koşar, Paytak ve Kızgın yuvadan alınan yumurtayla Kuluçka'da çıkar.
 
@@ -265,7 +268,7 @@ Hasat Robotu, Ekim Robotu, otomatik yemlik, Sağım-Kırkım Kolu, Yumurta Topla
 ## 13. Ekonomi
 
 - **Kredi kaynakları:** kargo satışı, iş emri ödülü, Holding silosu, enkaz kasaları.
-- **Kargo:** Ürünler Paketleme Tezgâhı'nda kargo kasasına konur (20 yığın). Kasa yük nesnesidir. Kargo Rampası 1–6 kasa ya da bir kabarık ürün alır ve fırlatır; ödeme 60 saniye sonra gelir.
+- **Kargo:** Ürünler Paketleme Tezgâhı'nda kargo kasasına konur (20 yığın). Kasa yük nesnesidir (25 kg); değeri içindekilerin satış değerinin toplamıdır. Kargo Rampası 1–6 kasa ya da bir kabarık ürün alır ve fırlatır; ödeme 60 saniye sonra gelir.
 - **Fiyat:** `taban × kalite (1,0 / 1,3 / 1,7) × Alaca (3 / 10 / 50) × Borsa × doygunluk`. Taban fiyat, katalog fiyatı ve ödül kuralları: [ICERIK.md](ICERIK.md) §18.
 - **Borsa:** 12 kategori. Her kategorinin çarpanı günde ±0,15 oynar, 0,6 ile 1,6 arasında kalır. Her gün bir kategori "sıcak"tır (×2).
 - **Doygunluk:** Aynı kategoriden satılan her kasa o kategoriyi %3 düşürür (taban %40); günde %15 geri gelir. Tek ürüne yüklenmek cezalanır.
@@ -483,7 +486,40 @@ Ayrı bir dünya türüdür; ortak oyun dünyalarında PvP yoktur.
 
 ## 24. Öğretme ve Suna
 
-- **İlk gün:** Suna dokuz adımda yönlendirir ([PLAN.md](PLAN.md) §1.4). İlk gecenin Küçük Kabarma'sı öğretici kuralıyla çalışır: evresine bakmadan bütün ekinleri ve ağıldaki bütün hayvanları kabartır.
+- **İlk gün:** Suna dokuz adımda yönlendirir ([PLAN.md](PLAN.md) §1.4):
+
+| # | Adım | Hedef | Yaklaşık dakika |
+|---|---|---|---|
+| 1 | Taş | Kazma ile 10 Taş | 0:30 |
+| 2 | Odun | Biçme ile 25 Odun (Tezgâh 10 + ağıl 13 + 2) | 1:15 |
+| 3 | Ocak | Ocak'ı kur; tapu yayılır | 2:00 |
+| 4 | Tezgâh | Tezgâh'ı kur (10 Odun + 5 Taş) | 2:00 |
+| 5 | Tarla | 3×3 sür, 9 Şalgam ek, sula | 4:00 |
+| 6 | Ağıl | En az 1×2 hücrelik kapalı ağıl: 5 Çit + 1 Bahçe Kapısı (13 Odun) | 5:00 |
+| 7 | Gıdak | Buğday at; izleyen Gıdak'ı açık kapıdan ağıla sok | 6:00 |
+| 8 | Küçük Kabarma | 3 dakika, 3 dalga Zıpzıp; ilk kart | 8:00 |
+| 9 | Kargo | Kabarık şalgamı Çekim ile Kargo Rampası'na taşı | 10:00 |
+
+- **Öğretici kuralları (yalnız ilk gün):**
+  - İlk dokuz şalgam öğretici hızında büyür (veride); sonraki ekimler §8.2 hızında.
+  - İlk Gıdak tek buğdayla güvenir; ağıla ilk girişinde hemen bir yumurta bırakır.
+  - Gece 7. adım bitince başlar; ekinin olgun olması gerekmez. Küçük Kabarma evresine bakmadan bütün ekinleri ve ağıldaki bütün hayvanları kabartır.
+  - Dalgalar ağılın bulunduğu yönden girer; Zıpzıp'ın hedefi tarladaki ekindir ve yoldaki çite yüklenir (§14.3). İlk gecede yapı canı %10'un altına inmez.
+  - Üye tipinin başlangıç kartı (§23) ilk gecede verilmez; ilk seviyede sunulan üç karttan biri her zaman Çatal'dır.
+  - İlk satışın ödemesi anında gelir (normalde 60 sn, §13).
+- **İlk 10 dakikadan sonra** öğretici yedi adımla sürer; Çıraklık zincirine bağlanır:
+
+| # | Adım | Hedef |
+|---|---|---|
+| 10 | Hasat | Biçme ile 5 şalgam (ürün ve tohum) |
+| 11 | Yemek | Ocakbaşı kur, bir yemek pişir ve ye |
+| 12 | Bakır ve kil | Bakır damarından Bakır Cevheri, göl kıyısından Kil |
+| 13 | Taş Fırın | Taş Fırın kur, Bakır Külçe erit |
+| 14 | Çivi | Tezgâh'ta Çivi Tabancası ve Çivi yap |
+| 15 | Kasa | Paketleme Tezgâhı kur, kasa doldur; Tezgâh'ta El Arabası yap, kasayı onunla rampaya götür, sat |
+| 16 | Barınak | Temel, duvar, kapı kasası ve Ahşap Kapı, çatı; içine Uyku Tulumu |
+
+- **Suna'nın seslendirilen replikleri tuş adı içermez.** Tuşlar değiştirilebilir; yönlendirme ekrandaki adım satırında son kullanılan aygıtın glifiyle yazılır ([SANAT-SES.md](SANAT-SES.md) §10.3).
 - **Çıraklık zinciri:** Defter'deki ilk zincir ilk iki saati taşır.
 - **Her yeni sistem** ilk karşılaşmada tek cümlelik ipucu ve Ansiklopedi sayfası açar.
 - **Suna** yaklaşık 700 replik söyler: iş emirleri, olay yorumları (ölüm, ilk kez yapılanlar, Alaca, rekor), Kabarma anonsları, ipuçları. Aynı replik 20 dakika içinde tekrarlanmaz. Ayarlardan sıklığı azaltılır ya da kapatılır.

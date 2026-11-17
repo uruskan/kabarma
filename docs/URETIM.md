@@ -52,7 +52,7 @@ Tamamen koddan. 26 şekil × 4 malzeme ve cam seti, parametreli bir Blender beti
 
 **D. Oyuncu karakteri**
 1. Konsept ve kemikli insansı model.
-2. 53 klip: düz yazıyla hareket üretimi ya da insansı klip kütüphanesinden seçim.
+2. 53 klip: döngülü yürüyüş, akrobasi ve jestler düz yazıyla hareket üretimi ya da insansı klip kütüphanesinden; yerinde duran ve üst gövdesi sabit klipler E'deki poz yöntemiyle kodla. M1'de 30'u ([SANAT-SES.md](SANAT-SES.md) §3.1).
 3. Blender betiği: kök hareketini temizle, döngü başını ve sonunu eşle, tıknaz orana göre el ve ayak hedeflerini düzelt.
 4. Godot animasyon kitaplığı; üstüne kodla IK ve yay katmanları.
 *Yedek:* Oduncu'da çalışan tamamen prosedürel gövde (yay, IK, ragdoll).
@@ -112,11 +112,11 @@ Ara karar: sahibi dokusuz, palete oturtulmuş görünümü istemedi ([SANAT-SES.
 
 | # | Deneme | Sonuç | Ölçülen |
 |---|---|---|---|
-| 1 | Statik: kaya, çayır ağacı, sulama kovası (Tripo web, H3.1 "HD Model") | ✅ Üçü de oyunda. Kaya 2,0 M → 3.879 üçgen; ağaç 1,9 M → 6.788 (bütün ağaçlar tek MultiMesh); kova 1,9 M → 2.908; hepsi 1K doku. Web modelleri API'den görünmüyor (görev bulunamadı); yalnızca tarayıcıdan dışa aktarılabiliyor. Bölüm 1 betik ölçütlerinden 4 (bütünlük) her üçünde "küçük": 13–18 manifold dışı kenar, gözle görünmüyor. | 3 × 55 web kredisi, 0 yeniden deneme |
-| 2 | Makine: Taş Fırın (Tripo API H3.1 + anlamsal parçalama v2) | ✅ 6 adlı parça (gövde, taban, kapak, kapak kolu, baca, pano). Kapak menteşesinden kodla açılıyor, baca "puf" yapıp duman çıkarıyor. Not: Tripo modeli +X'e bakıyor; otomatik adlandırma yanıldı, `--rename` ile düzeltildi. | 20 + 40 = 60 API kredisi, 0 yeniden deneme |
-| 3 | Oyuncu + klipler | ⚠️ MVP'de Genex (Meshy) ile: 1,6 m, 6 klip (bekleme, yürüme ×2, koşu ×2, zıplama) kaymadan oynuyor. Çapa ele bağlı ama kol IK'si henüz yok. | 64 Genex kredisi |
+| 1 | Statik: kaya, çayır ağacı, sulama kovası (Tripo web, H3.1 "HD Model") | ⚠️ Üçü de oyunda. Kaya 2,0 M → 3.879 üçgen; ağaç 1,9 M → 6.788 (bütün ağaçlar tek MultiMesh); kova 1,9 M → 2.908; hepsi 1K doku. Web modelleri API'den görünmüyor (görev bulunamadı); yalnızca tarayıcıdan dışa aktarılabiliyor. Ölçüt 4 (bütünlük), varlık raporlarına göre: ağaç 0 manifold dışı kenar (geçti), kaya 13, kova 83 (kaldı); gözle görünmüyor. | 3 × 55 web kredisi, 0 yeniden deneme |
+| 2 | Makine: Taş Fırın (Tripo API H3.1 + anlamsal parçalama v2) | ⚠️ 6 parçaya bölündü ama çıktıdaki düğümler `base, body, door, door_handle, part_4, part_5`: baca ve pano adlı parça yok. Kapak menteşesinden kodla açılıyor; baca "puf"u henüz yok. `--rename` ile yeniden işlenecek (kredi yok). Not: Tripo modeli +X'e bakıyor. | 20 + 40 = 60 API kredisi, 0 yeniden deneme |
+| 3 | Oyuncu + klipler | ⚠️ MVP'de Genex (Meshy) ile: 1,6 m, 6 klip (bekleme, yürüme ×2, koşu ×2, zıplama) kaymadan oynuyor. Kol IK'si kodda var (`TwoBoneIK3D`) ama doğrulanmadı. Birleştirilen 15 oyuncu klibinin 8'i boş (birleştirme hatası). | 64 Genex kredisi |
 | 4 | Yaratık: Pofuduk (dört ayak) ve Gıdak (kuş) | Pofuduk ✅: Tripo dört ayak iskeleti v2.5 ve hazır yürüme klibi; kemikler adımda 83°'ye kadar dönüyor. Bacaklar yünün içinde kaldığı için adım uzaktan zor seçiliyor; tasarım notu: istemde daha uzun bacak. Gıdak ⚠️: Tripo'da kuş için hazır klip yok (belgedeki gibi); şimdilik kodla paytak yürüyüş. Kodla yazılan poz kütüphanesi (§2.2 E) henüz yazılmadı. | Pofuduk 20 + 25 + 10 = 55 API kredisi; Gıdak 35 Genex kredisi |
-| 5 | 10 ses efekti + 1 döngü | ⚠️ MVP'de Genex ses kanalıyla 12 efekt + ışın döngüsü üretildi. Betikli denetim yapıldı; dinleme turu sahibinde. | 24 Genex kredisi |
+| 5 | 10 ses efekti + 1 döngü | ⚠️ MVP'de Genex ses kanalıyla 12 ses üretildi (11 efekt + ışın döngüsü). Denetim betiği yok: süre ve tepe düzeyi elle ffprobe ile ölçüldü (§2.2 H.3'ün betiği yazılmadı). Dinleme turu sahibinde. | 24 Genex kredisi |
 | 6 | 1 müzik, 3 katman | ⚠️ Tek katmanlı 90 sn Kabarma parçası (Genex). Katman ayrıştırma denenmedi. | 27 Genex kredisi |
 | 7 | Suna: 3 aday ses, 10 replik | ⏸ Yapılmadı: sahibinin ElevenLabs anahtarı her kullanımda ayrı onay istiyor; onay alınmadı. | — |
 
@@ -141,7 +141,7 @@ M1'in ilk işi **12 altın varlık** üretmektir: bir karakter, iki yaratık, ik
 
 Stil föyü `docs/stil/` altında durur: paletler, altın varlıkların döner tabla görüntüleri, doğru ve yanlış örnekler.
 
-**Durum (17 Kasım 2026):** 11 altın varlık + 5 ek varlık üretildi ve oyunda ([stil/README.md](stil/README.md)); yapı köşesi Blender betiğiyle üretiliyor. Tripo API harcaması bu turda 385 kredi (8 model, 2 iskelet, 4 klip, 2 parçalama), deneme çarpanı 1,0: hiçbiri yeniden üretilmedi.
+**Durum (17 Kasım 2026):** 11 altın varlık + 5 ek varlık üretildi ([stil/README.md](stil/README.md)); El Arabası dışında hepsi oyunda (El Arabası henüz kullanılmıyor). Yapı köşesi Blender betiğiyle üretiliyor. 13 varlık raporunun 12'si betikli ölçüt 4'ten (bütünlük) kalıyor; yani "ölçütlerden geçer" koşulu henüz sağlanmadı. Tripo API harcaması bu turda 385 kredi (8 model, 2 iskelet, 4 klip, 2 parçalama), deneme çarpanı 1,0: hiçbiri yeniden üretilmedi.
 
 ## 5. Kredi bütçesi
 
@@ -181,7 +181,7 @@ Birimler M0'da ödenen gerçek tutarlar. Tripo API kredisi, Tripo web kredisi ve
 | Beklenmeyen (%30) | | | | 16.420 |
 | **Toplam** | | | | **yaklaşık 71.000 kredi** (eski hesap 122.000) |
 
-Elde: Tripo API 885, Tripo web 3.035, Genex 50 (17 Kasım 2026).
+Elde (17 Kasım 2026): Tripo API 320 (9 süs modeline 180 kredi harcandı: turuncu ağaç, eğrelti, ot, çiçek, yabani buğday, çalı, dik kaya, düz kaya, bakır damarı; üretildi, henüz içe aktarılmadı) · Tripo web 3.035 (doğrulanmadı) · Genex 2 (23 Kasım 2026'da 200'e dolar).
 
 ## 6. Kilometre taşları
 
@@ -193,8 +193,11 @@ Sıra sabittir: önce doğrulama, sonra görünüş ve his, sonra sistemler az i
 
 **Kabul:**
 - [ ] [TEKNIK.md](TEKNIK.md) §1.2'deki sekiz adım geçti ya da yedeği seçildi ve belgeye yazıldı.
+  *Durum (17 Kasım 2026): 3, 5, 6, 8 geçti; 1 ve 2 kısmen (Windows'a dışa aktarma ve 1.000 gün ölçümü yok); 4 (Linux) yedeği yazılı, doğrulanmadı; 7 aşağıda.*
 - [ ] §2.3'teki yedi deneme geçti ya da yedeği seçildi.
+  *Durum: hiçbiri tam geçmedi; 1, 2, 3, 5, 6 ⚠️; 4'te Pofuduk'un iskeleti ve yürüyüşü oturdu, Gıdak iskeleti, poz kütüphanesi ve ortak şişme shader'ı açık; 7 yapılmadı (§2.3.1).*
 - [ ] Bütçe tablosu ölçülen deneme oranlarıyla güncellendi; sen onayladın.
+  *Durum: §5.1 yazıldı; sahibin onayı kayıtlı değil.*
 
 ### M1: Görünüş ve his dilimi
 
@@ -203,23 +206,77 @@ Tek oyuncu, Altın Çayır'ın 300 × 300 m'lik bir köşesi. Amaç tek: oyunun 
 **Teslim:**
 - 12 altın varlık ve stil föyü.
 - Arazi, gökyüzü, sis, su; 8 bitki, 4 kaya.
-- Oyuncu: 53 klip, IK ve yay katmanları, ragdoll, vizör ifadeleri.
+- Oyuncu: 30 klip (M1 alt kümesi; kalan 23'ü onları ilk kullanan taşta, [SANAT-SES.md](SANAT-SES.md) §3.1), IK ve yay katmanları, ragdoll, vizör ifadeleri.
 - Çapa: altı iş başlığı, Tırpan Işını, Çivi Tabancası; vuruş hissi katmanları; F1 ayar paneli.
 - Gıdak ve Zıpzıp, normal ve kabarmış.
 - Ahşap yapı seti (26 şekil), 6 yerleştirilebilir, Ocak.
 - Şalgam tarlası (büyüme, sulama, kabarma).
-- Tezgâh, Taş Fırın, Paketleme Tezgâhı, Kargo Rampası, El Arabası.
+- Tezgâh, Ocakbaşı, Taş Fırın, Paketleme Tezgâhı, Kargo Rampası, El Arabası.
 - İlk gece senaryosu: Küçük Kabarma, 10 kart, hasar sayıları, Hasat Raporu.
 - HUD (gündüz ve Kabarma), envanter, Defter'in ilk sayfası.
-- 60 ses efekti, 2 müzik parçası (çayır gündüzü; 3 katmanlı Kabarma), Suna'dan 30 replik.
+- 60 ses efekti, 2 müzik parçası (çayır gündüzü; 3 katmanlı Kabarma), Suna'dan 30 replik (Türkçe ve İngilizce).
+
+**M1 kapsamı ayrıntısı:**
+
+| Kalem | M1'de | Kural ve liste |
+|---|---|---|
+| Kaynaklar | Taş, Odun, Lif, Kil, Bakır Cevheri, Bakır Külçe, Şalgam ve tohumu, Buğday, Yumurta, Çivi. Kazma ile: Kil göl kıyısındaki kil yataklarından (koddan yumru, kredi yok), Bakır Cevheri bakır damarından. Biçme ile: Lif ot ve çalıdan, Buğday yabani buğdaydan; kapsülden ayrıca 10 Buğday. Buğday ekimi M2. Haritada Ocak'a 60–90 m'de bir göl. | [ICERIK.md](ICERIK.md) §2, §20 |
+| Bitki ve kaya | 8 bitki: çayır ağacı ve Şalgam (altın) + 6 süs modeli. 4 kaya: cevherli kaya (altın) + dik kaya, düz kaya, bakır damarı. Süs modelleri üretildi, içe aktarılacak (§5.1). | — |
+| Yerleştirilebilir (6) | Ahşap Kapı, Sandık, Uyku Tulumu, Meşale, Yemlik, Folluk. Modelleri yapı kitinin Blender betiğinden (kalas dili, kredi yok). Korkuluk M2'de (gündüz zararlısıyla birlikte). | [ICERIK.md](ICERIK.md) §10.2 |
+| Yapı | 26 Ahşap şekli kitte ve kurulabilir; sur ve kule tabanının savaş işlevi M3. İnşa: yerleştir, sök (%100 iade), onar (hasar oranında %25). Yükseltme, boyama, plan modu M2. Kurma yalnızca tapu içinde; tapu dışı M2. Hasarla yıkılma yok: parça canı %10'da durur (yıkılma M3). | [ICERIK.md](ICERIK.md) §10.1, [GDD.md](GDD.md) §7 |
+| İstasyonlar (5) | Tezgâh, Ocakbaşı, Taş Fırın, Paketleme Tezgâhı, Kargo Rampası; Ocak ve rampa kapsülden. Tarifler: Tezgâh → Çivi Tabancası, Çivi, El Arabası · Taş Fırın → Bakır Külçe · Ocakbaşı → 3 yemek · Paketleme → kargo kasası. Yakıt: iş başına 1 Odun. Kerpiç, Bakır Tel M2. Ocakbaşı modeli koddan (kaya modelinden taş halka + ızgara + ateş; kredi yok). | [ICERIK.md](ICERIK.md) §11, §20 |
+| Yemek (3) | Közde Şalgam, Haşlanmış Yumurta, Sebze Çorbası (2 Şalgam); üç yemek yuvası | [ICERIK.md](ICERIK.md) §15, [GDD.md](GDD.md) §3.3 |
+| Gıdak ve ağıl | Ağıl kuralı GDD §9.1; Gıdak başına 4 m². Buğdayla güven, izler, kapıdan girince kayıt. Yemlik'te Buğday varken 3 dakikada bir Folluk'a (yoksa yere) yumurta. Kaçma, mutluluk, üreme M2. | [GDD.md](GDD.md) §9, §24 |
+| Zıpzıp | Gündüz çayırda 2–3'lük ürkek gruplar; olgun ekine gelir ([GDD.md](GDD.md) §8.1). Gece dalga. | — |
+| Çapa | Kazma: taş, kil, bakır · Biçme: alan etkili; ağaç vuruş başına Odun verir, devrilmez (devrilme, kütük, yenilenme M2); ot ve çalı Lif, yabani buğday Buğday verir, geri gelmez; olgun şalgamı hasat eder · Çekim: tutar, taşır, fırlatır; 80 kg sınırı; arkadaş tutma M2 · Toprak: yalnız tarla sürme; yükseltme, alçaltma, düzleme, yol M2 · Sulama: 100 L depo, su yüzeyinden dolar; küçük düşmanı iter; yangın söndürme M3 · İnşa: yukarıdaki "Yapı" · Tırpan Işını: baştan · Çivi Tabancası: yarı otomatik, gündüz Çivi harcar, Kabarma'da sınırsız; ilk Bakır Külçe'de tarifi açılır · Tarayıcı M2 | [ICERIK.md](ICERIK.md) §6, [GDD.md](GDD.md) §4 |
+| Kartlar (10) | Çatal, Seken, Tez El, İri Tane, Kıvılcım, Kırağı, Keskin Göz, Tokmak, Mıknatıs, Çevik (hepsi §8.3'ün baştan açık 20'sinden). İlk teklifte Çatal her zaman var. | [ICERIK.md](ICERIK.md) §8.3, [GDD.md](GDD.md) §24 |
+| Kargo | GDD §13 olduğu gibi: kasa 20 yığın, 25 kg yük nesnesi, değeri içindekilerin toplamı; rampa 1–6 kasa ya da 1 kabarık ürün; ödeme 60 sn (ilk satış anında). Fiyat = taban × kalite; Borsa ve doygunluk M2. | [GDD.md](GDD.md) §13 |
+| El Arabası | Tezgâh'ta. E ile tutamağa geçilir, yürüme hızının %80'iyle itilir; 1 yük nesnesi (en fazla 200 kg) ya da 6 yuva, ikisi birden değil; devrilince E ile düzeltilir. | [ICERIK.md](ICERIK.md) §14 |
+| HUD | Gündüz: kemer, can ve dayanıklılık, pusula, etkin adımın tek satırı. Kabarma: + dalga sayacı, Öz çubuğu, Gösteri, kart şeridi. Dayanıklılık sistemi var. | [SANAT-SES.md](SANAT-SES.md) §8.1, [GDD.md](GDD.md) §3.2 |
+| Takvim | İlk geceden sonra gün döngüsü işler; normal gece Kabarma'sızdır. Takvim ve Çan M3. Küçük Kabarma F1 panelinden yeniden başlatılır (his denemesi için). | [GDD.md](GDD.md) §2 |
+| İlk gün | 9 adım + ilk 10 dakikadan sonra 7 adım | [GDD.md](GDD.md) §24 |
+| Ses ve Suna | 60 ses (12'si M0'dan), varyasyon 3 · 30 replik × 2 dil, tuş adı yok | [SANAT-SES.md](SANAT-SES.md) §10.1, §10.3 |
+| Görüntü ve performans | 4 gün saati, 4 yer imi; "yüksek" ön ayar ve ölçüm sahnesi | [SANAT-SES.md](SANAT-SES.md) §2, §9, [TEKNIK.md](TEKNIK.md) §10 |
+| [PLAN.md](PLAN.md) §7.2 koşul 4 ve 5 | Ortak oyun yarısı ve kayıt "M2'de" raporlanır; klavye-fare ve oyun kolu M1'de zorunlu. Yeni `Sim` durumu kayda hazır, Godot katmanında yeni statik yok. | [PLAN.md](PLAN.md) §7.2, [TEKNIK.md](TEKNIK.md) §9 |
 
 **Kabul:**
-- [ ] İlk 10 dakika senaryosu ([PLAN.md](PLAN.md) §1.4) hem botla hem insan giriş yoluyla hatasız oynanıyor.
+- [ ] İlk 10 dakika senaryosu ([PLAN.md](PLAN.md) §1.4, adımlar [GDD.md](GDD.md) §24) hem botla hem insan giriş yoluyla hatasız oynanıyor.
 - [ ] Bütün varlıklar sekiz ölçütten geçti.
-- [ ] 16 ekran görüntüsü (4 yer imi × 4 gün saati) ekran görüntüsü ölçütlerinden geçti.
+- [ ] 16 ekran görüntüsü (4 yer imi × 4 gün saati, [SANAT-SES.md](SANAT-SES.md) §2 ve §9) ekran görüntüsü ölçütlerinden geçti.
 - [ ] His ölçütleri aralıkta (girişten tepkiye ≤ 50 ms).
-- [ ] RTX 2070S'te 1080p yüksek ayarda ≥ 90 FPS.
+- [ ] RTX 2070S'te 1080p yüksek ayarda ≥ 90 FPS ([TEKNIK.md](TEKNIK.md) §10'daki ön ayar ve sahneler).
 - [ ] **Sen** 30 dakika oynuyorsun ve iki soruya "evet" diyorsun: "Stüdyo işi gibi duruyor mu?" ve "Ateş etmek ve kabartmak zevkli mi?" İkisi de "evet" olmadan M2 başlamaz.
+
+### M1 kararları (17 Kasım 2026)
+
+Belgelerin sustuğu ya da çeliştiği yerler için verilen kararlar. Sahibin tek yerden gözden geçirmesi için.
+
+| # | Karar | Değişen yer |
+|---|---|---|
+| 1 | 6 yerleştirilebilir: Ahşap Kapı, Sandık, Uyku Tulumu, Meşale, Yemlik, Folluk; bedelleri yazıldı. Korkuluk M2. | ICERIK §10.2 |
+| 2 | 3 yemek: Közde Şalgam, Haşlanmış Yumurta, Sebze Çorbası. Sebze Çorbası, Kabak Çorbası'nın yerini aldı (2 Şalgam ya da 2 Kabak; değerler aynı); yemek sayısı 32'de kaldı. Bu bir ad değişikliğidir ("adlar kesindir", ICERIK başı): sahibin onayına; seçeneği Kabak Çorbası'nı korumak ve M1'i iki yemekle bırakmak. Pişiren istasyon Ocakbaşı. Gıdak yumurtası çanta eşyasıdır; yük nesnesi olan kuluçkalık yumurtadır. | ICERIK §15, GDD §5 |
+| 3 | Ahşap parça bedelleri tabloya yazıldı. Kurma tapu dışında da serbest; tapu dışında söküm %50 iade. M1'de kurma yalnız tapu içinde (tapu dışı M2); söküm ve onarım var, hasarla yıkılma M3. | ICERIK §10.1, GDD §7, bu bölüm |
+| 4 | M1 belgeye uyar, sadeleştirme yok: Tezgâh 10 Odun + 5 Taş, Taş Fırın 15 Taş + 5 Kil, Çivi Bakır Külçe'den, Çivi Tabancası ilk Bakır Külçe'de. M1 dünyasına Kil ve Bakır girer. Ocakbaşı M1'e girer (M1 istasyonu 4 → 5). Ocakbaşı, Paketleme Tezgâhı, El Arabası, Çivi ve Çivi Tabancası bedelleri yazıldı. | ICERIK §2.3, §20; §6 içerik dağılımı |
+| 5 | Koddaki 10 kart onaylandı; ilk teklifte Çatal; ilk gecede üye tipinin başlangıç kartı verilmez. | GDD §24 |
+| 6 | Çapa başlıklarının M1 kapsamı yazıldı (yukarıdaki tablo). | bu bölüm |
+| 7 | 4 gün saati: sabah, öğle, gün batımı, Kabarma gecesi; normal gecenin ışığı da yazıldı ama 16 görüntüye girmez. 4 yer imi: iniş kapsülü, üs, göl kıyısı, tepe. "Yüksek" ön ayar ve ≥ 90 FPS ölçüm sahneleri. | SANAT-SES §2, §9; TEKNIK §10 |
+| 8 | M1'in 60 sesi listelendi; 12'si M0'dan. | SANAT-SES §10.1 |
+| 9 | Suna'nın 30 repliği Türkçe ve İngilizce; seslendirilen replikte tuş adı yok, tuş ekranda glifle. | SANAT-SES §10.3, GDD §24 |
+| 10 | **Plan değişikliği:** Oyuncu M1'de 53 değil 30 klip: 25 kütüphane ya da düz yazı, 5 kodla poz. Kalan 23 klip onları ilk kullanan taşa kaydı (9'u M2, 1'i M3, 13'ü en geç M4). | SANAT-SES §3.1, §2.2 D, M1 Teslim |
+| 11 | HUD'da pusula var; dayanıklılık var (depar 8/sn, yenilenme kuralı yazıldı); Defter takibi pusulanın altında tek satır. | SANAT-SES §8.1, GDD §3.2 |
+| 12 | PLAN §7.2'nin 4. (ortak oyun yarısı) ve 5. koşulu M1'de "M2'de" raporlanır; karşılığında kayda hazır `Sim` durumu, yeni statik yok. | PLAN §7.2, TEKNIK §9 |
+| 13 | Ağıl tanımı (kapalı halka, ≥ 1 hücre); ilk günün 9 adımı: Tezgâh ve ağıl geceden önce; öğretici kuralları (gece hedefi, ilk yumurta, ilk satış); MVP'nin gece sonrası adımları "ilk 10 dakikadan sonra" olarak kaldı ve yeniden sıralandı. | GDD §9.1, §24 |
+| 14 | Kargo M1'de GDD §13 olduğu gibi; kasa 25 kg ve değeri içeriği; ilk satış anında öder. | GDD §13, §24 |
+| 15 | El Arabası: Tezgâh'ta 12 Odun + 4 Taş; 1 yük nesnesi (≤ 200 kg) ya da 6 yuva; itilir. | ICERIK §14, §20 |
+| 16 | Bayat bilgiler düzeltildi: hat denemeleri, altın varlık durumu, eldeki krediler, M0 durumları, test sayısı, dışa aktarma; Zıpzıp küçük sınıfta, 5.000 üçgene indirilir. | §2.3.1, §4, §5.1, M0; TEKNIK §1.3; SANAT-SES §4; stil/README |
+| — | Takvim: ilk geceden sonra Kabarma yok; Küçük Kabarma F1'den yeniden oynanır. | bu bölüm |
+| — | Koddan varlıklar: Ocakbaşı (kaya modelinden halka + ızgara), 6 yerleştirilebilir (yapı kitinin kalas dili) ve kil yatağı §2.2 A yolu yerine Blender betiğinden, kredisiz. [SANAT-SES.md](SANAT-SES.md) §9'dan geçemeyen Tripo API ile üretilir (yaklaşık 30'ar kredi, onaylı; elde 320). | bu bölüm |
+
+**Bu kararların kredi isteyenleri ve sahibin onayları (17 Kasım 2026):**
+- **ElevenLabs (doğrudan, sahibin anahtarı) — M1 ses paketi onaylandı**, şu üst sınırlarla: Suna için 3 aday ses · 30 TR + 30 EN replik, en fazla 7.200 karakter, geri çevirme denetimiyle · 60 ses × 3–4 sürüm, en fazla ~19 dk · 2 müzik (çayır gündüzü ~3 dk, 3 katmanlı Kabarma ~2 dk), denemelerle en fazla ~12,5 dk. Sınır aşılacaksa yeniden sorulur. Genex ses kanalı kullanılmaz (bakiye yetmez).
+- **Tripo API — 175 krediye kadar onaylandı** (elde 320): Gıdak kuş iskeleti (Blender denemesi tutmazsa ~55), ince saplı ot ve buğdayın yeniden üretimi (~80'e kadar), gerekirse 8. bitki (~30), Zıpzıp yürüyüş klibi (~10). Her üretimden önce `--dry-run` tahmini yazılır.
+- **Onay bekleyen:** eksik oyuncu klipleri (kütüphane bağlama ~6 × 11, `--locomotion` ~3 × 14; Genex, 23 Kasım'da 200'e dolar). Tripo web kredisi tarayıcı oturumu olmadığı için kullanılamıyor.
+- Ocakbaşı, 6 yerleştirilebilir ve kil yatağı koddan: kredi yok.
 
 ### M2: Çekirdek sandbox
 
@@ -292,12 +349,12 @@ Her içerik bölümünün hangi taşta geldiği aşağıdaki tabloda.
 | §7 Güçler ve ultiler | — | — | 5 güç, 2 ulti | 7 güç, 2 ulti |
 | §8 Kartlar ve tüzük | 10 kart | — | 72 kart, Nişan | 12 tüzük maddesi |
 | §9 Üye tipleri, kozmetik | Çırak | — | — | 11 üye tipi, 72 kozmetik |
-| §10 Yapı | Ahşap seti, 6 yerleştirilebilir | Kerpiç-Taş; T1–T2 yerleştirilebilirleri | Sur, sur kapısı, kule tabanı | Çelik Sac, Cam, Mayalı Beton; kalan yerleştirilebilirler |
-| §11 İstasyonlar (43) | 4 | T1–T2'nin 18'i | — | T3–T6 ve otomasyon: 25 |
+| §10 Yapı | Ahşap seti (26 şekil), 6 yerleştirilebilir | Kerpiç-Taş; T1–T2 yerleştirilebilirleri | Sur, sur kapısı, kule tabanı | Çelik Sac, Cam, Mayalı Beton; kalan yerleştirilebilirler |
+| §11 İstasyonlar (43) | 5 (Tezgâh, Ocakbaşı, Taş Fırın, Paketleme, Kargo Rampası) | T1–T2'nin 18'i | — | T3–T6 ve otomasyon: 25 |
 | §12 Güç, sinyal, taşıma (43) | — | T2 üreticileri, Akü Mk1, kablo, direk, şalter, düğme, basınç plakası | Kabarma Sensörü, siren | Kalanlar |
 | §13 Kuleler, tuzaklar | — | — | 3 kule, 4 tuzak | 5 kule, 4 tuzak |
 | §14 Araçlar | El Arabası | Çekirge | — | 5 araç, 10 eklenti |
-| §15 Yemekler (32) | 3 | T1–T2'nin 14'ü | — | 18 |
+| §15 Yemekler (32) | 3 (Közde Şalgam, Haşlanmış Yumurta, Sebze Çorbası) | T1–T2'nin 14'ü | — | 18 |
 | §16 Zırh ve kuşam | — | 3 takım, 6 modül, Çapa Mk.II | — | 4 takım, 12 modül, Çapa Mk.III–VI |
 | §17 Keşif noktaları | — | Seyir Kulesi, Ata Taşı, Yabani Bahçe, Yuva, Enkaz | Kadim Taş, Oyuk, Holding Kampı | Zengin Yatak, Genel Merkez, kalan biyomların noktaları |
 | §18 İş emirleri (48 zincir) | Çıraklık'ın ilk üç adımı | 12 zincir | Kabarma ile Av ve Atalar: 12 zincir | 24 zincir, başarımlar, katalog ve çark tabloları |
