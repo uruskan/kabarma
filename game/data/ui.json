@@ -1,0 +1,56 @@
+{
+  "_not": "Arayuz tasarim sistemi (SANAT-SES 8.1 'Gorsel dil: Rust tarzi arayuz'; URETIM 6 M1 karari 20). Uzunluklar 1600 x 900 tasarim tuvalinde piksel; UiTheme.Px ekran olcegiyle tam piksele yuvarlar (arayuz gerdirilmez, her olcekte keskin). Renkler sRGB onaltilik, RRGGBBAA (son iki hane saydamlik). Basvuru: Hollow-Universe Common/Ui.cs (RustMVP paleti), sicak griye cekildi.",
+  "_yer_tutucu": "Olcek sinirlari, yazi rampasi ve yerlesim sayilari belgede yazmiyor: Hollow-Universe'ten (RustMVP olculeri) alindi, kemer 6 yerine 8 yuvaya gore ortalandi. Sahibin gozuyle ayarlanir.",
+  "design": { "width": 1600, "height": 900 },
+  "scale": {
+    "min": 0.75, "max": 4, "baseHeight": 1080, "fitWidth": 1440, "fitHeight": 600,
+    "step": 1.1, "preferenceMin": 0.6, "preferenceMax": 2, "steps": 20
+  },
+  "palette": {
+    "ink": "E3DFD6FF",
+    "muted": "A8A49CFF",
+    "red": "B94936FF",
+    "green": "98B956FF",
+    "panel": "B5B0A62B",
+    "panelHover": "BFBAB042",
+    "hudSlot": "2B292669",
+    "selected": "297BABC2",
+    "selectedEdge": "DCEBF5E6",
+    "health": "8DB83FFF",
+    "stamina": "529ECCFF",
+    "ivory": "F7EEE3FF",
+    "brick": "C23C2BFF",
+    "short": "D6A84DFF",
+    "warning": "FF996EFF",
+    "tooltip": "24221FFA",
+    "star": "D6C445FF",
+    "dialog": "1C1A18F0",
+    "toast": "BBC4C3FF",
+    "shade": "0000008C",
+    "locked": "B5B0A614",
+    "oz": "9A6BD8FF",
+    "teal": "5CC8B8FF"
+  },
+  "type": { "section": 28, "title": 26, "body": 18, "small": 15, "caption": 13, "count": 16, "prompt": 24, "big": 64, "condensedFrom": 26 },
+  "belt": { "y": 802, "size": 75, "pitch": 80, "nameSeconds": 1.6, "flashSeconds": 0.25 },
+  "vitals": { "x": 1340, "bottom": 880, "width": 240, "height": 32, "pitch": 35, "fillLeft": 30, "fillWidth": 202, "fillHeight": 25 },
+  "feed": { "seconds": 4, "fadeSeconds": 0.5, "rows": 6 },
+  "prompt": { "dx": 26, "dy": -14, "hintY": 560, "crosshairDot": 4 },
+  "compass": { "y": 8, "width": 560, "height": 26, "stepY": 56, "kabarmaY": 104, "kabarmaWidth": 520 },
+  "inventory": { "slot": 75, "pitch": 80, "bagColumns": [6, 5], "gearSlots": 6, "blur": 2.5, "dim": 0.86, "dragStart": 5 },
+  "wheel": {
+    "inner": 200, "outer": 300, "selectInner": 197, "selectOuter": 318, "iconRadius": 250, "iconRadiusSelected": 257,
+    "iconSize": 29, "centerIconSize": 64, "deadZone": 0.35, "blur": 1.6, "dim": 1.0
+  },
+  "_heads": "Cark dilimleri Capa.Head sirasiyla: 6 is basligi, Tirpan Isini, Civi Tabancasi. Aciklamalar oyunun bugunku davranisini anlatir (GDD 4, 8).",
+  "heads": [
+    { "title": "Kazma", "text": "Kaya, kil yatağı ve bakır damarını kazar." },
+    { "title": "Biçme", "text": "Olgun ekini biçer; ağaçtan odun, ottan lif alır." },
+    { "title": "Toprak", "text": "Tapu içinde toprağı sürer, tohum eker." },
+    { "title": "Sulama", "text": "Depodaki suyla tarlayı sular." },
+    { "title": "Çekim", "text": "Kabarık ürünü ve yükü çekip taşır." },
+    { "title": "İnşa", "text": "İstasyon ve yapı kurar. Tekerlek: parça, R: döndür." },
+    { "title": "Tırpan Işını", "text": "Kabarma silahı: ışınla kabarıkları söndürür." },
+    { "title": "Çivi Tabancası", "text": "Çivi atar. Gündüz çivi harcar, Kabarma'da sınırsız." }
+  ]
+}

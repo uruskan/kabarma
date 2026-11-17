@@ -41,6 +41,7 @@ public partial class Hud
     {
         _headName.Text = "▸ " + Capa.HeadNames[h];
         _headTag.AddThemeStyleboxOverride("panel", Box(new Color(Capa.HeadColors[h].Darkened(0.45f), 0.85f), 12, Capa.HeadColors[h], 2));
+        NoteHeadChanged(); // Hud.Belt.cs: yeni panoda baslik yuvasi parlar
     }
 
     void RefreshBelt()
@@ -60,6 +61,7 @@ public partial class Hud
     public void FlashBelt(int i)
     {
         if (i < 0 || i >= _beltSlots.Count) return;
+        _beltFlashAt[i] = _now; // Hud.Belt.cs: yeni panoda yuva bir an kalkar
         var p = _beltSlots[i];
         p.PivotOffset = p.Size / 2f;
         p.CreateTween().TweenProperty(p, "scale", Vector2.One, 0.2f).From(new Vector2(1.15f, 1.15f));

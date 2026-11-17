@@ -1,215 +1,162 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using Godot;
 using Kabarma.Sim;
+using T = Kabarma.Game.UiTheme;
 
 namespace Kabarma.Game;
 
 /// <summary>
-/// Pano, Kabarma (SANAT-SES 8.1: gunduz panosuna ek olarak dalga sayaci, Oz cubugu, Gosteri carpani ve kart seridi).
-/// Yerlesim: pusula ve adim satirinin altinda, ust ortada (GDD 14.5: Gosteri ekranin ust ortasinda); kart secimi
-/// ekranin altinda, kemerin ustunde (GDD 15). Eski ust orta kutusu (_nightBox) kullanilmiyor.
+/// Pano, Kabarma (SANAT-SES 8.1: gunduz panosuna ek olarak dalga sayaci, Oz cubugu, Gosteri carpani ve kart seridi; M1
+/// karari 20: ayni Rust panel dilinde). Yerlesim: pusula ve adim satirinin altinda, ust ortada (GDD 14.5: Gosteri ekranin
+/// ust ortasinda); kart secimi ekranin altinda, kemerin ustunde (GDD 15).
 /// </summary>
 public partial class Hud
 {
+    // Hud._Ready'nin kurdugu eski dugumler (gizli tutucuda).
     VBoxContainer _nightBox;
     Label _wave, _level, _gosteri;
     ProgressBar _oz;
     HBoxContainer _cards;
 
-    VBoxContainer _kabarma;
-    Label _kWave, _kGosteri, _kGosteriTag, _kLevel;
-    HBoxContainer _kWavePips, _kCardStrip;
-    ProgressBar _kOz;
-    ProgressBar _offerTimer;
+    CardOffer _offer;
+    KabarmaNight _offerNight;
+    double _offerAt, _gosteriAt = -10;
     float _gosteriShown = 1f;
-    int _stripCount = -1;
 
     static readonly string[] OfferKeys = { "Z", "X", "C" };
 
     static Color RarityColor(string r) => r switch
     {
-        "N" => Palette.CoopBlue.Lerp(Palette.MayaTeal, 0.3f),
-        "D" => Palette.MayaViolet,
-        "E" => Palette.Warning,
-        _ => Palette.OffWhite.Lerp(Palette.Shadow, 0.3f),
+        "N" => T.Stamina,
+        "D" => T.Oz,
+        "E" => T.Short,
+        _ => T.Muted,
     };
 
     static string RarityName(string r) => r switch { "N" => "Nadir", "D" => "Destansı", "E" => "Efsane", _ => "Sıradan" };
 
-    static string Pips(int rank, int max) => new string('●', rank) + new string('○', System.Math.Max(0, max - rank));
+    /// <summary>Hud._Process'ten (eski adiyla): eski ust orta kutusu kapali kalir.</summary>
+    void UpdateNightBox() => _nightBox.Visible = false;
 
-    void BuildNightHud(Control root)
+    bool KabarmaOn => _d.Night != null && _d.Night.Phase != NightPhase.Dawn && !_report.Visible;
+
+    /// <summary>Rutbe noktalari: dolu ve bos daireler (yazi tipine guvenmez).</summary>
+    float Pips(float x, float y, int rank, int max, Color on, float r = 3.5f)
     {
-        _kabarma = new VBoxContainer { Visible = false, CustomMinimumSize = new Vector2(520, 0) };
-        _kabarma.AddThemeConstantOverride("separation", 4);
-
-        // 1. satir: dalga sayaci (sol) ve Gosteri carpani (sag)
-        var row = new HBoxContainer();
-        var wv = new VBoxContainer();
-        wv.AddThemeConstantOverride("separation", 0);
-        _kWave = L("", 24, Palette.MayaTeal, true);
-        _kWave.AddThemeConstantOverride("outline_size", 10);
-        _kWavePips = new HBoxContainer();
-        _kWavePips.AddThemeConstantOverride("separation", 5);
-        wv.AddChild(_kWave);
-        wv.AddChild(_kWavePips);
-        wv.SizeFlagsHorizontal = Control.SizeFlags.ExpandFill;
-        row.AddChild(wv);
-        var gv = new VBoxContainer();
-        gv.AddThemeConstantOverride("separation", -6);
-        _kGosteriTag = L("GÖSTERİ", 13, Palette.Fog, true);
-        _kGosteriTag.HorizontalAlignment = HorizontalAlignment.Right;
-        _kGosteriTag.AddThemeConstantOverride("outline_size", 6);
-        _kGosteri = L("×1.0", 34, Palette.Warning, true);
-        _kGosteri.HorizontalAlignment = HorizontalAlignment.Right;
-        _kGosteri.AddThemeConstantOverride("outline_size", 12);
-        gv.AddChild(_kGosteriTag);
-        gv.AddChild(_kGosteri);
-        row.AddChild(gv);
-        _kabarma.AddChild(row);
-
-        // 2. satir: Oz cubugu ve seviye
-        _kOz = new ProgressBar { CustomMinimumSize = new Vector2(520, 14), ShowPercentage = false, MaxValue = 100 };
-        var ozFill = Box(Palette.MayaViolet, 7); ozFill.ContentMarginTop = ozFill.ContentMarginBottom = 0;
-        _kOz.AddThemeStyleboxOverride("fill", ozFill);
-        _kOz.AddThemeStyleboxOverride("background", Box(new Color(Palette.NightDeep, 0.75f), 7, new Color(Palette.MayaViolet, 0.5f), 1));
-        _kabarma.AddChild(_kOz);
-        _kLevel = L("", 15, Palette.OffWhite, true);
-        _kLevel.AddThemeConstantOverride("outline_size", 7);
-        _kabarma.AddChild(_kLevel);
-
-        // 3. satir: kart seridi (bu gece alinan kartlar ve rutbeleri)
-        _kCardStrip = new HBoxContainer { Alignment = BoxContainer.AlignmentMode.Center };
-        _kCardStrip.AddThemeConstantOverride("separation", 6);
-        _kabarma.AddChild(_kCardStrip);
-        root.AddChild(_kabarma);
+        for (int i = 0; i < max; i++)
+            Disc(x + r + i * (r * 2 + 3), y + r, r, i < rank ? on : T.A(T.Ink, 0.25f), i < rank, 1.2f);
+        return max * (r * 2 + 3);
     }
 
-    /// <summary>Hud._Process'ten (eski adiyla): Kabarma panosunu gunceller; eski ust orta kutusu kapali kalir.</summary>
-    void UpdateNightBox()
+    void PaintKabarma()
     {
-        _nightBox.Visible = false;
-    }
-
-    void UpdateKabarmaHud(Vector2 vp)
-    {
+        if (!KabarmaOn) return;
         var night = _d.Night;
-        bool on = night != null && night.Phase != NightPhase.Dawn && !_report.Visible;
-        _kabarma.Visible = on;
-        if (!on) { _stripCount = -1; return; }
-        _kabarma.Position = new Vector2((vp.X - _kabarma.Size.X) / 2f, _topCenter.Position.Y + _topCenter.Size.Y + 4);
+        _o = TopFrame;
+        var c = T.Data.Compass;
+        float w = c.KabarmaWidth, x = (T.DesignW - w) / 2f, y = c.KabarmaY + (string.IsNullOrEmpty(_defterText) ? 0 : 20);
 
+        // Kart seridi satiri (alinan kartlar) yuksekligi: sigdigi kadar satir
+        var taken = _d.Data.Cards.Cards.Where(cd => night.Rank(cd.Id) > 0).ToList();
+        int max = _d.Data.Cards.MaxRank;
+        var chipW = taken.Select(cd => Measure(T.Upper(cd.Name), 14, true, true) + 22 + max * 10f).ToList();
+        int rows = 0; float rowW = 0;
+        for (int i = 0; i < chipW.Count; i++) { if (i == 0 || rowW + chipW[i] + 6 > w - 16) { rows++; rowW = 0; } rowW += chipW[i] + 6; }
+        float h = 84 + rows * 30;
+        Rect(x, y, w, h, T.HudSlot);
+
+        // 1. satir: dalga sayaci (sol) ve Gosteri (sag)
         int waves = night.Def.Waves.Count;
         int cur = night.Phase == NightPhase.Alarm ? 0 : Mathf.Clamp(night.WaveIndex + 1, 0, waves);
-        _kWave.Text = night.Phase == NightPhase.Alarm ? "KABARMA GELİYOR" : $"DALGA {cur}/{waves}";
-        if (_kWavePips.GetChildCount() != waves)
+        Text(night.Phase == NightPhase.Alarm ? "KABARMA GELİYOR" : $"DALGA {cur}/{waves}", x + 12, y + 6, T.Data.Type.Title, T.Ink, true, true);
+        for (int i = 0; i < waves; i++)
         {
-            foreach (var c in _kWavePips.GetChildren()) c.QueueFree();
-            for (int i = 0; i < waves; i++) _kWavePips.AddChild(new ColorRect { CustomMinimumSize = new Vector2(34, 6), MouseFilter = Control.MouseFilterEnum.Ignore });
+            bool done = i < cur - 1 || (i == cur - 1 && night.SpawnedThisWave >= (night.CurrentWave?.Count ?? 0) && Zipzip.All.Count(z => !z.Dead) == 0);
+            bool active = i == cur - 1 && !done;
+            var col = done ? T.Teal : active ? T.A(T.Teal, 0.55f + 0.35f * Mathf.Sin((float)_now * 8f)) : T.A(T.Ink, 0.22f);
+            Rect(x + 12 + i * 30, y + 38, 26, 5, col);
         }
-        int pipIndex = 0;
-        foreach (var c in _kWavePips.GetChildren())
-        {
-            if (c is not ColorRect r) continue;
-            bool done = pipIndex < cur - 1 || (pipIndex == cur - 1 && night.SpawnedThisWave >= (night.CurrentWave?.Count ?? 0) && Zipzip.All.Count(z => !z.Dead) == 0);
-            bool active = pipIndex == cur - 1 && !done;
-            r.Color = done ? Palette.MayaTeal : active ? new Color(Palette.MayaTeal, 0.55f + 0.35f * Mathf.Sin(Time.GetTicksMsec() * 0.008f)) : new Color(Palette.OffWhite, 0.25f);
-            pipIndex++;
-        }
-
-        // Gosteri: artinca sayi bir an buyur
         float g = night.Gosteri;
-        if (g > _gosteriShown + 0.01f) { _kGosteri.PivotOffset = _kGosteri.Size / 2f; _kGosteri.CreateTween().TweenProperty(_kGosteri, "scale", Vector2.One, 0.25f).From(new Vector2(1.35f, 1.35f)); }
+        if (g > _gosteriShown + 0.01f) _gosteriAt = _now;
         _gosteriShown = g;
-        _kGosteri.Text = $"×{g:0.0}";
-        _kGosteri.AddThemeColorOverride("font_color", Palette.Warning.Lerp(Palette.Accent, Mathf.Clamp((g - 1f) / 4f, 0, 1)));
+        float bump = (float)Math.Max(0, 1 - (_now - _gosteriAt) / 0.25);
+        float gs = 32 * (1 + 0.25f * bump);
+        var gc = T.Short.Lerp(T.Brick, Mathf.Clamp((g - 1f) / 4f, 0, 1));
+        TextIn($"×{g:0.0}", x, y + 2 - (gs - 32) / 2f, w - 12, gs, gc, HorizontalAlignment.Right, true, true);
+        TextIn("GÖSTERİ", x, y + 36, w - 12 - Measure($"×{g:0.0}", 32, true, true) - 8, T.Data.Type.Caption, T.Muted, HorizontalAlignment.Right, true, true);
 
-        int lv = night.Level;
-        int maxLv = night.Def.MaxCardLevels;
+        // 2. satir: Oz cubugu (seviye esigine dek), solda Oz ve seviye, sagda sondurulen ve yerdeki Oz
+        int lv = night.Level, maxLv = night.Def.MaxCardLevels;
         float lo = lv == 0 ? 0 : night.Threshold(lv), hi = night.Threshold(lv + 1);
         bool capped = lv >= maxLv;
-        _kOz.Value = capped ? 100 : Mathf.Clamp((night.Oz - lo) / (hi - lo) * 100f, 0, 100);
+        float frac = capped ? 1 : Mathf.Clamp((night.Oz - lo) / Math.Max(1e-3f, hi - lo), 0, 1);
+        Rect(x + 12, y + 52, w - 24, 8, T.Panel);
+        if (frac > 0) Rect(x + 12, y + 52, (w - 24) * frac, 8, T.Oz);
+        Text(capped ? $"ÖZ · SEVİYE {lv}/{maxLv} · DOLU" : $"ÖZ {(int)night.Oz}/{(int)hi} · SEVİYE {lv}/{maxLv}", x + 12, y + 63, T.Data.Type.Caption, T.Ink, true, true);
         // Yerdeki Oz (M1 karari 19): toplaninca ya da dalga bitince sayilir.
-        string ground = night.Motes.Count > 0 ? $"   ·   yerde {(int)night.OzOnGround} Öz" : "";
-        _kLevel.Text = capped ? $"ÖZ · Seviye {lv}/{maxLv} · dolu   ·   {night.Kills} kabarık söndü{ground}"
-                              : $"ÖZ {(int)night.Oz}/{(int)hi} · Seviye {lv}/{maxLv}   ·   {night.Kills} kabarık söndü{ground}";
+        string right = $"{night.Kills} SÖNDÜ" + (night.Motes.Count > 0 ? $"  ·  YERDE {(int)night.OzOnGround} ÖZ" : "");
+        TextIn(right, x, y + 63, w - 12, T.Data.Type.Caption, T.A(T.Ink, 0.8f), HorizontalAlignment.Right, true, true);
 
-        if (night.CardsCount != _stripCount) RebuildCardStrip(night);
-        if (_offerTimer != null && IsInstanceValid(_offerTimer) && night.Offer != null)
-            _offerTimer.Value = Mathf.Clamp(1f - night.Offer.Age / _d.Data.Cards.AutoPickSeconds, 0, 1) * 100f;
-    }
-
-    /// <summary>Kart seridi: bu gece alinan her kart, rutbe noktalariyla.</summary>
-    void RebuildCardStrip(KabarmaNight night)
-    {
-        _stripCount = night.CardsCount;
-        foreach (var c in _kCardStrip.GetChildren()) c.QueueFree();
-        int max = _d.Data.Cards.MaxRank;
-        foreach (var card in _d.Data.Cards.Cards)
+        // 3. satir: kart seridi (bu gece alinan kartlar ve rutbeleri)
+        float cx = x + 8, cy = y + 84;
+        for (int i = 0; i < taken.Count; i++)
         {
-            int r = night.Rank(card.Id);
-            if (r <= 0) continue;
-            var rc = RarityColor(card.Rarity);
-            var chip = new PanelContainer();
-            var sb = Box(new Color(Palette.NightDeep, 0.82f), 9, rc, 2);
-            sb.ContentMarginLeft = sb.ContentMarginRight = 8; sb.ContentMarginTop = sb.ContentMarginBottom = 3;
-            chip.AddThemeStyleboxOverride("panel", sb);
-            var v = new VBoxContainer();
-            v.AddThemeConstantOverride("separation", -4);
-            v.AddChild(L(card.Name, 14, Palette.OffWhite, true));
-            v.AddChild(L(Pips(r, max), 11, Palette.MayaTeal, true));
-            chip.AddChild(v);
-            _kCardStrip.AddChild(chip);
+            if (i > 0 && cx + chipW[i] > x + w - 8) { cx = x + 8; cy += 30; }
+            var cd = taken[i];
+            Rect(cx, cy, chipW[i], 24, T.Panel);
+            Rect(cx, cy, 3, 24, RarityColor(cd.Rarity));
+            float tw = Text(T.Upper(cd.Name), cx + 9, cy + 4, 14, T.Ink, true, true);
+            Pips(cx + 9 + tw + 6, cy + 8.5f, night.Rank(cd.Id), max, T.Teal, 3.5f);
+            cx += chipW[i] + 6;
         }
-        IgnoreMouse(_kCardStrip);
     }
 
     /// <summary>Kart secimi: oyun durmaz, kartlar altta belirir, tek tusla secilir; 20 sn'de ilki alinir (GDD 15).</summary>
     public void ShowOffer(CardOffer offer, KabarmaNight night)
     {
         foreach (var c in _cards.GetChildren()) c.QueueFree();
-        _offerTimer = null;
+        _offer = offer;
+        _offerNight = night;
+        _offerAt = Time.GetTicksMsec() / 1000.0;
         _cards.Visible = offer != null;
-        if (offer == null) return;
+    }
+
+    void PaintOffer()
+    {
+        var offer = _offer;
+        var night = _offerNight;
+        if (offer == null || night == null || _d.Night != night || night.Offer != offer) return;
+        _o = CanvasFrame;
+        int n = offer.Cards.Count;
+        float cw = 250, ch = 164, gap = 18;
+        float x0 = (T.DesignW - (n * cw + (n - 1) * gap)) / 2f, y = T.Data.Belt.Y - 30 - ch;
+        float appear = Mathf.Clamp((float)(_now - _offerAt) / 0.2f, 0, 1);
         int max = _d.Data.Cards.MaxRank;
-        for (int i = 0; i < offer.Cards.Count; i++)
+        for (int i = 0; i < n; i++)
         {
             var card = offer.Cards[i];
             int rank = night.Rank(card.Id);
             var rc = RarityColor(card.Rarity);
-            var p = new PanelContainer { CustomMinimumSize = new Vector2(250, 156) };
-            p.AddThemeStyleboxOverride("panel", Box(new Color(Palette.NightDeep, 0.93f), 16, rc, 4));
-            var v = new VBoxContainer();
-            v.AddThemeConstantOverride("separation", 2);
-            var top = new HBoxContainer();
-            var key = L($"[{OfferKeys[i]}]", 18, Palette.Warning, true);
-            var rar = L(RarityName(card.Rarity), 14, rc, true);
-            rar.SizeFlagsHorizontal = Control.SizeFlags.ExpandFill;
-            rar.HorizontalAlignment = HorizontalAlignment.Right;
-            top.AddChild(key); top.AddChild(rar);
-            v.AddChild(top);
-            v.AddChild(L(card.Name, 30, Palette.OffWhite, true));
-            var t = L(card.Text, 18, Palette.Fog);
-            t.AutowrapMode = TextServer.AutowrapMode.WordSmart;
-            t.CustomMinimumSize = new Vector2(218, 0);
-            v.AddChild(t);
-            v.AddChild(L(rank > 0 ? $"{Pips(rank, max)}  →  {rank + 1}. rütbe" : $"{Pips(0, max)}  yeni", 14, Palette.MayaTeal, true));
+            float x = x0 + i * (cw + gap), yy = y + (1 - appear) * 24;
+            Rect(x, yy, cw, ch, T.A(T.Dialog, appear));
+            Rect(x, yy, cw, 4, T.A(rc, appear));
+            Keycap(i < OfferKeys.Length ? OfferKeys[i] : "", x + 12, yy + 14, 24, T.A(T.Ink, appear));
+            TextIn(T.Upper(RarityName(card.Rarity)), x, yy + 18, cw - 12, T.Data.Type.Caption, T.A(rc, appear), HorizontalAlignment.Right, true, true);
+            Text(Fit(T.Upper(card.Name), cw - 24, T.Data.Type.Title, true, true), x + 12, yy + 44, T.Data.Type.Title, T.A(T.Ink, appear), true, true);
+            var lines = WrapLines(card.Text, cw - 24, 16);
+            for (int l = 0; l < Math.Min(3, lines.Count); l++)
+                Text(l == 2 && lines.Count > 3 ? Fit(lines[l] + " …", cw - 24, 16) : lines[l], x + 12, yy + 78 + l * 19, 16, T.A(T.Ink, 0.82f * appear));
+            float pw = Pips(x + 12, yy + ch - 22, rank, max, T.Teal);
+            Text(rank > 0 ? $"SIRADAKİ: {rank + 1}. RÜTBE" : "YENİ KART", x + 18 + pw, yy + ch - 25, T.Data.Type.Caption, T.A(T.Teal, appear), true, true);
             if (i == 0)
             {
                 // 20 sn icinde secilmezse ilki alinir: ilk kartin altinda geri sayim
-                _offerTimer = new ProgressBar { CustomMinimumSize = new Vector2(218, 5), ShowPercentage = false, MaxValue = 100, Value = 100 };
-                var fill = Box(Palette.Warning, 3); fill.ContentMarginTop = fill.ContentMarginBottom = 0;
-                _offerTimer.AddThemeStyleboxOverride("fill", fill);
-                _offerTimer.AddThemeStyleboxOverride("background", Box(new Color(Palette.OffWhite, 0.12f), 3));
-                v.AddChild(_offerTimer);
+                float left = Mathf.Clamp(1f - offer.Age / _d.Data.Cards.AutoPickSeconds, 0, 1);
+                Rect(x, yy + ch - 4, cw, 4, T.A(T.Panel, appear));
+                Rect(x, yy + ch - 4, cw * left, 4, T.A(T.Short, appear));
             }
-            p.AddChild(v);
-            _cards.AddChild(p);
-            p.Scale = new Vector2(0.6f, 0.6f);
-            p.PivotOffset = new Vector2(125, 156);
-            p.CreateTween().TweenProperty(p, "scale", Vector2.One, 0.25f).SetTrans(Tween.TransitionType.Back).SetEase(Tween.EaseType.Out);
         }
-        IgnoreMouse(_cards);
     }
 }

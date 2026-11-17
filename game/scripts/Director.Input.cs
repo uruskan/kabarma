@@ -24,9 +24,9 @@ public partial class Director
         }
         else
         {
-            bool alt = Input.IsKeyPressed(Key.Alt);
+            // M1 karari 20: 1-8 kemeri secer (Director.Belt.cs); baslik yalniz Q carkindan.
             for (int i = 0; i < 8; i++)
-                if (Input.IsActionJustPressed($"head_{i + 1}")) { if (alt) UseBelt(i); else Capa.Select((Capa.Head)i); }
+                if (Input.IsActionJustPressed($"head_{i + 1}")) SelectBelt(i);
             if (Input.IsActionJustPressed("bag")) OpenBagMenu();
             // Baslik carki: Q basili tut, fareyle sec, birak
             if (Input.IsActionJustPressed("head_wheel")) { Hud.OpenWheel((int)Capa.Current); Player.LookLocked = true; }
@@ -36,12 +36,6 @@ public partial class Director
                 if (Input.IsActionJustPressed("build_next")) Capa.CyclePlaceable(1);
                 if (Input.IsActionJustPressed("build_prev")) Capa.CyclePlaceable(-1);
                 if (Input.IsActionJustPressed("build_rotate")) Capa.RotateGhost();
-            }
-            else if (!Hud.WheelOpen)
-            {
-                int n = Capa.HeadNames.Length;
-                if (Input.IsActionJustPressed("build_next")) Capa.Select((Capa.Head)(((int)Capa.Current + 1) % n));
-                if (Input.IsActionJustPressed("build_prev")) Capa.Select((Capa.Head)(((int)Capa.Current + n - 1) % n));
             }
         }
         if (Input.IsActionJustPressed("card_1")) ChooseCard(0);
