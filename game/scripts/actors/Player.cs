@@ -15,6 +15,8 @@ public partial class Player : CharacterBody3D
     public Node3D BackpackPoint { get; private set; }
     Node3D _capa;
     AnimationPlayer _anim;
+    Skeleton3D _skel;
+    int _handBone = -1;
     string _animIdle, _animWalk, _animRun, _animJump;
 
     public float WalkSpeed = 5f, SprintSpeed = 8f, JumpVelocity = 6.5f, MaxHp = 100f;
@@ -80,6 +82,11 @@ public partial class Player : CharacterBody3D
             inst.Scale = Vector3.One * s;
             inst.Position = new Vector3(0, -aabb.Position.Y * s, 0);
         }
+        TuneMaterials(inst);
+        _skel = inst.FindChildren("*", "Skeleton3D", true, false).OfType<Skeleton3D>().FirstOrDefault();
+        if (_skel != null)
+            for (int b = 0; b < _skel.GetBoneCount(); b++)
+                if (_skel.GetBoneName(b).ToLower().Replace("_", "").Contains("righthand")) { _handBone = b; break; }
         _anim = inst.FindChildren("*", "AnimationPlayer", true, false).OfType<AnimationPlayer>().FirstOrDefault();
         if (_anim != null)
         {
@@ -95,6 +102,23 @@ public partial class Player : CharacterBody3D
             GD.Print($"PLAYER model anims: {string.Join(",", names)}");
         }
         return true;
+    }
+
+    /// <summary>Uretilen dokuda tulum koyu lacivert cikti (#132C47); paletteki kooperatif mavisine yaklastir.</summary>
+    static void TuneMaterials(Node3D root)
+    {
+        foreach (var mi in root.FindChildren("*", "MeshInstance3D", true, false).OfType<MeshInstance3D>())
+        {
+            for (int i = 0; i < mi.Mesh.GetSurfaceCount(); i++)
+            {
+                if (mi.Mesh.SurfaceGetMaterial(i) is not StandardMaterial3D sm) continue;
+                var m = (StandardMaterial3D)sm.Duplicate();
+                m.AlbedoColor = new Color(1.45f, 1.5f, 1.6f);
+                m.Roughness = 0.85f;
+                m.MetallicSpecular = 0.2f;
+                mi.SetSurfaceOverrideMaterial(i, m);
+            }
+        }
     }
 
     static Aabb Aabb(Node3D root)
@@ -289,6 +313,16 @@ public partial class Player : CharacterBody3D
             if (want != null && _anim.CurrentAnimation != want) _anim.Play(want, 0.2);
             if (want == _animWalk) _anim.SpeedScale = Mathf.Clamp(sp / 3.2f, 0.6f, 1.6f);
             else _anim.SpeedScale = 1f;
+        }
+
+        // Capa sag elde: konum elden, yon nisandan (kol IK'si yerine MVP yaklasimi).
+        if (_skel != null && _handBone >= 0)
+        {
+            var hand = _skel.GlobalTransform * _skel.GetBoneGlobalPose(_handBone).Origin;
+            var fwd = Facing || AimOverride != null ? (AimPoint(out _) - hand).Normalized() : Visual.GlobalBasis.Z;
+            if (fwd.LengthSquared() < 0.01f) fwd = Visual.GlobalBasis.Z;
+            _capa.GlobalPosition = hand + fwd * 0.12f;
+            _capa.GlobalBasis = Basis.LookingAt(-fwd, Vector3.Up);
         }
 
         // Kamera sarsintisi

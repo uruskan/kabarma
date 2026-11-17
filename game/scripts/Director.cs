@@ -76,6 +76,7 @@ public partial class Director : Node3D
         Gidak.GlobalPosition = World.Ground(new Vector3(-8, 0, 9));
         Gidak.Visible = false; // "grow" adiminda gelir
 
+        GD.Print($"AUDIO ok {Sfx.CheckAll()}/{Sfx.Names.Length}");
         State.Scenario.StepChanged += OnStepChanged;
         foreach (var l in Data.Scenario.Intro) Hud.Say(l);
 
@@ -168,7 +169,7 @@ public partial class Director : Node3D
         n.LevelUp += lv =>
         {
             Sfx.Play("levelup", null, -2f);
-            Fx.Burst(Player.GlobalPosition + Vector3.Up, Palette.MayaViolet, 30, 6f, 0.12f, 0.8f, true, -2f);
+            Fx.Burst(Player.GlobalPosition + Vector3.Up * 0.6f, Palette.MayaViolet, 24, 3.5f, 0.07f, 0.7f, true, -1f);
             if (lv == 1) Hud.Say(Data.Scenario.NightLines["level"]);
         };
         n.CardTaken += (c, r) => { Hud.Big($"{c.Name} {(r > 1 ? "· Rütbe " + r : "")}", Palette.MayaViolet, 1.6f); GD.Print($"NIGHT card {c.Id} rank={r}"); };

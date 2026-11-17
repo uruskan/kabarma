@@ -22,6 +22,16 @@ public static class Sfx
         return s;
     }
 
+    public static readonly string[] Names = { "beam_loop", "pickup", "place", "till", "water", "swell", "pop", "nailgun", "hit", "levelup", "siren", "rocket", "kabarma_night" };
+
+    /// <summary>Butun ses dosyalari yukleniyor mu: acilista bir kez denetlenir.</summary>
+    public static int CheckAll()
+    {
+        int ok = 0;
+        foreach (var n in Names) { var s = Get(n); if (s != null && s.GetLength() > 0.05) ok++; else GD.PrintErr($"AUDIO missing {n}"); }
+        return ok;
+    }
+
     public static void Play(string name, Vector3? at = null, float db = 0f)
     {
         if (Root == null || Muted) return;
