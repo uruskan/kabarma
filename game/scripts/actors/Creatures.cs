@@ -275,7 +275,8 @@ public partial class Gidak : Node3D
                     var m = (StandardMaterial3D)sm.Duplicate();
                     m.EmissionEnabled = on;
                     m.Emission = Palette.MayaTeal;
-                    m.EmissionEnergyMultiplier = 0.35f;
+                    m.EmissionEnergyMultiplier = 0.12f;
+                    m.RimEnabled = on; m.Rim = 0.6f; m.RimTint = 0.2f;
                     mi.SetSurfaceOverrideMaterial(i, on ? m : null);
                 }
             }

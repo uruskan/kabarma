@@ -80,6 +80,7 @@ public partial class Director : Node3D
         foreach (var l in Data.Scenario.Intro) Hud.Say(l);
 
         if (Main.Args.ContainsKey("bot")) { Bot = new Bot(this); AddChild(Bot); }
+        if (Main.Args.TryGetValue("skip", out var skip) && skip == "night") CallDeferred(nameof(SkipToNight));
     }
 
     void OnStepChanged(StepDef done, StepDef next)
@@ -109,6 +110,20 @@ public partial class Director : Node3D
         var f = State.Farm;
         State.Scenario.SetProgress("till", f.Plots.Count());
         State.Scenario.SetProgress("plant", f.Plots.Count(p => p.Crop != null));
+    }
+
+    /// <summary>Sinama kisayolu: gunduz adimlarini kurallar uzerinden hizla yapar, gece basinda birakir.</summary>
+    void SkipToNight()
+    {
+        var sc = State.Scenario;
+        for (int i = 0; i < 10; i++) { State.Backpack.Add("stone", 1); sc.Report("mine"); }
+        PlaceOcak(World.Ground(new Vector3(0, 0, 0)));
+        var f = State.Farm;
+        for (int x = 3; x < 6; x++) for (int y = -1; y < 2; y++) { f.Till(x, y); f.Plant(x, y, "turnip", State.Backpack); f.Water(x, y); }
+        sc.SetProgress("till", 9); sc.SetProgress("plant", 9); sc.SetProgress("water", 9);
+        while (f.MatureCount < 9) f.Tick(1f, true);
+        Player.GlobalPosition = World.Ground(new Vector3(1, 0, -5)) + Vector3.Up * 0.3f;
+        Player.Yaw.Rotation = new Vector3(0, Mathf.DegToRad(200), 0);
     }
 
     public void PlaceOcak(Vector3 at)
