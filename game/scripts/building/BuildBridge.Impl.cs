@@ -129,7 +129,7 @@ public partial class BuildBridge
     {
         var inv = _d.State.Backpack;
         var probe = new Inventory(inv.Slots, _d.Data.Tool.StackOf);
-        foreach (var (id, n) in inv.Contents) probe.Add(id, n);
+        foreach (var (id, n, stars) in inv.Stacks) probe.Add(id, n, stars);
         return items.All(kv => probe.Add(kv.Key, kv.Value) == kv.Value);
     }
 

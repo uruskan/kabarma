@@ -44,7 +44,7 @@ public class ScenarioTests
         var size = s.Farm.Uproot(1, 1)!;
         s.Sell("turnip", size);
         sc.Report("sell");
-        // M1 makine zinciri (kurallar duzeyinde): Tezgah, hasat, Ocakbasi corbasi, Tas Firin, civi, paketleme, kasa satisi.
+        // M1 makine zinciri (kurallar duzeyinde): Tezgah, hasat, Tas Firin, Bakir Kulce ve civi, Ocakbasi corbasi, paketleme, kasa satisi.
         Assert.True(sc.Is("tezgah_kur"));
         s.Backpack.Add("stone", 30);
         s.Backpack.Add("wood", 10);
@@ -53,33 +53,38 @@ public class ScenarioTests
         tez.Produced += (r, n) => { if (r.Id == "civi") sc.Report("civi"); };
         Assert.True(sc.Is("hasat"));
         int got = 0;
-        foreach (var p in s.Farm.Plots.ToList()) { var h = s.Farm.Harvest(p.X, p.Y, s.Rng); if (h != null) { s.Backpack.Add("turnip", h.Value.yield); got += h.Value.yield; } }
+        foreach (var p in s.Farm.Plots.ToList()) { var h = s.Farm.Harvest(p.X, p.Y, s.Rng); if (h != null) { s.Backpack.Add("turnip", h.Value.yield, h.Value.stars); got += h.Value.yield; } }
         Assert.True(got >= 8 * 6, $"kabarik salgamlar iki kat verir, alinan {got}");
         sc.SetProgress("hasat", s.Backpack.Count("turnip"));
-        var ocb = s.Stations["ocakbasi"];
-        Assert.True(ocb.Enqueue(ocb.Recipes.Single(r => r.Id == "sebze_corbasi"), s.Backpack));
-        for (int i = 0; i < 50; i++) ocb.Tick(0.1f, s.Backpack);
-        Assert.True(s.Food.Eat(d.Tool.Foods.Single(f => f.Id == "sebze_corbasi")) && s.Backpack.Remove("sebze_corbasi", 1));
-        sc.Report("corba");
         sc.Report("firin_kur");
+        Assert.True(sc.Is("civi"));
         s.Backpack.Add("copper_ore", 2);
         var firin = s.Stations["tas_firin"];
         Assert.True(firin.Enqueue(firin.Recipes.Single(r => r.Id == "copper_ingot"), s.Backpack));
         for (int i = 0; i < 50; i++) firin.Tick(0.1f, s.Backpack);
         Assert.True(tez.Enqueue(tez.Recipes.Single(r => r.Id == "civi"), s.Backpack));
         for (int i = 0; i < 30; i++) tez.Tick(0.1f, s.Backpack);
+        Assert.True(sc.Is("corba"));
+        var ocb = s.Stations["ocakbasi"];
+        Assert.True(ocb.Enqueue(ocb.Recipes.Single(r => r.Id == "sebze_corbasi"), s.Backpack));
+        for (int i = 0; i < 50; i++) ocb.Tick(0.1f, s.Backpack);
+        Assert.True(s.Food.Eat(d.Tool.Foods.Single(f => f.Id == "sebze_corbasi")) && s.Backpack.Remove("sebze_corbasi", 1));
+        sc.Report("corba");
         Assert.True(sc.Is("paketle"));
         s.Cargo.Pack(s.Backpack, "turnip", 5);
-        Assert.NotNull(s.Cargo.Close());
+        var crate = s.Cargo.Close();
+        Assert.NotNull(crate);
         sc.Report("paketle");
+        int value = s.Cargo.Value(crate!); // kasa degeri yigin basina taban × kalite (hasat ★'i cantadan kasaya gecer)
+        Assert.InRange(value, 5 * 15, (int)Math.Round(5 * 15 * 1.7f));
         Assert.True(s.Cargo.LoadCrate(s.Cargo.TakeClosed()!));
-        Assert.Equal(5 * 15, s.Cargo.LaunchCrates());
+        Assert.Equal(value, s.Cargo.LaunchCrates());
         sc.Report("kasa_sat");
         s.Cargo.Tick(60.5f); // ilk satis kabarik salgamdi: kasanin odemesi 60 sn sonra
         sc.SetProgress("odun", 18);
         sc.Report("yapi", 4);
         Assert.True(sc.Finished);
-        Assert.Equal(120 + 75, s.Credits); // kabarik salgam + kasa (5 Salgam)
+        Assert.Equal(120 + value, s.Credits); // kabarik salgam + kasa (5 Salgam)
         Assert.Equal(3, s.Backpack.Count("turnip_seed"));
     }
 }

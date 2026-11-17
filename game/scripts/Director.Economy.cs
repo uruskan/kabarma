@@ -127,7 +127,15 @@ public partial class Director
 
     // ---------- menuler ----------
 
-    static string Stack(Inventory inv) => inv.IsEmpty ? "boş" : string.Join("  ·  ", inv.Contents.GroupBy(c => c.id).Select(g => $"{ItemNames.Of(g.Key)} {g.Sum(c => c.count)}"));
+    static string Stack(Inventory inv) => inv.IsEmpty ? "boş" : string.Join("  ·  ", inv.Contents.GroupBy(c => c.id).Select(g => $"{ItemNames.Of(g.Key)} {g.Sum(c => c.count)}{Stars(inv, g.Key)}"));
+
+    /// <summary>Kalite dokumu: hepsi ★1 ise bos, degilse " (★1 4 · ★3 2)".</summary>
+    static string Stars(Inventory inv, string id)
+    {
+        var by = inv.Stacks.Where(s => s.id == id).GroupBy(s => s.stars).OrderBy(g => g.Key).Select(g => (stars: g.Key, n: g.Sum(s => s.count))).ToList();
+        if (by.All(x => x.stars <= Inventory.BaseStars)) return "";
+        return " (" + string.Join(" · ", by.Select(x => $"{new string('★', x.stars)} {x.n}")) + ")";
+    }
 
     /// <summary>Iki yuva kumesi arasinda tasima menusu (Sandik, araba yuvalari): koy / al.</summary>
     void TransferItems(List<Hud.MenuItem> items, Inventory store, System.Func<bool> allowPut, System.Action reopen, int max = 9)
@@ -182,7 +190,7 @@ public partial class Director
         foreach (var id in State.Backpack.Contents.Select(c => c.id).Distinct().Where(cargo.Pricing.Sellable).Take(8).ToList())
         {
             var iid = id;
-            items.Add(new Hud.MenuItem($"Kasaya koy: {ItemNames.Of(iid)} ×{State.Backpack.Count(iid)}  ({cargo.Pricing.Base(iid):0.##} Kredi/adet)",
+            items.Add(new Hud.MenuItem($"Kasaya koy: {ItemNames.Of(iid)} ×{State.Backpack.Count(iid)}{Stars(State.Backpack, iid)}  ({cargo.Pricing.Base(iid):0.##} Kredi/adet × kalite)",
                 () => State.Backpack.Count(iid) > 0 && st.Queue.Active == null && (cargo.Open == null || cargo.Open.Items.Room(iid) > 0),
                 () => { int n = cargo.Pack(State.Backpack, iid, State.Backpack.Count(iid)); if (n > 0) { Sfx.Play("place", st.GlobalPosition, -8f); GD.Print($"PACKED {iid} x{n}"); } OpenPackingMenu(st); }));
         }

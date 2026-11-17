@@ -34,9 +34,9 @@ public sealed class Pricing
 
     public bool Sellable(string id) => Base(id) > 0;
 
-    /// <summary>Bir yuva kumesinin (kasa) toplam degeri, en yakin tam Krediye yuvarlanmis. Kalite canta esyasinda tutulmaz: ★1.</summary>
+    /// <summary>Bir yuva kumesinin (kasa) toplam degeri: her yigin icin taban × kalite[★] × adet; toplam en yakin tam Krediye yuvarlanir.</summary>
     public int Value(Inventory items) =>
-        (int)Math.Round(items.Contents.Sum(s => Unit(s.id) * s.count), MidpointRounding.AwayFromZero);
+        (int)Math.Round(items.Stacks.Sum(s => Unit(s.id, s.stars) * s.count), MidpointRounding.AwayFromZero);
 }
 
 /// <summary>Kargo kasasi (GDD 13): 20 yigin alan yuk nesnesi (25 kg); degeri icindekilerin satis degerinin toplami.</summary>

@@ -52,6 +52,89 @@ public class EconomyTests
     }
 
     [Fact]
+    public void Slots_carry_quality_only_same_id_and_stars_stack_and_low_stars_are_spent_first()
+    {
+        var d = Data();
+        var inv = new Inventory(6, d.Tool.StackOf);
+        Assert.Equal(30, inv.Add("turnip", 30, 1));
+        Assert.Equal(30, inv.Add("turnip", 30, 3));
+        Assert.Equal(10, inv.Add("turnip", 10, 1));
+        // ★1: 40 tek yiginda (50'lik), ★3: 30 ayri yiginda; ayni kimlik farkli ★ ust uste binmez
+        Assert.Equal(2, inv.UsedSlots);
+        Assert.Equal(70, inv.Count("turnip"));
+        Assert.Equal(40, inv.Count("turnip", 1));
+        Assert.Equal(30, inv.Count("turnip", 3));
+        Assert.Equal(0, inv.Count("turnip", 2));
+        // Kalite belirtilmeyen esya ★1
+        inv.Add("turnip", 5);
+        Assert.Equal(45, inv.Count("turnip", 1));
+        Assert.Equal(2, inv.UsedSlots);
+        // Harcama butun kalitelerden, once dusuk ★
+        Assert.True(inv.Remove("turnip", 50));
+        Assert.Equal(0, inv.Count("turnip", 1));
+        Assert.Equal(25, inv.Count("turnip", 3));
+        Assert.False(inv.Remove("turnip", 26));
+        // Yalniz bir kaliteden dusurme
+        inv.Add("turnip", 4, 2);
+        Assert.True(inv.Remove("turnip", 4, 2));
+        Assert.False(inv.Remove("turnip", 1, 2));
+        // Tasima kaliteyi korur (Sandik, araba, kasa), once dusuk ★
+        inv.Add("turnip", 3, 2);
+        var chest = new Inventory(20, d.Tool.StackOf);
+        Assert.Equal(10, inv.MoveTo(chest, "turnip", 10));
+        Assert.Equal(3, chest.Count("turnip", 2));
+        Assert.Equal(7, chest.Count("turnip", 3));
+        Assert.Equal(18, inv.Count("turnip", 3));
+        // Dolu kumede baska ★ icin yer yok, ayni ★'nin yarim yiginina yer var
+        var tight = new Inventory(1, d.Tool.StackOf);
+        tight.Add("turnip", 10, 1);
+        Assert.Equal(0, tight.Room("turnip", 3));
+        Assert.Equal(40, tight.Room("turnip", 1));
+        Assert.Equal(0, inv.MoveTo(tight, "turnip", 5)); // cantada yalniz ★3 kaldi
+    }
+
+    [Fact]
+    public void Crate_value_is_base_times_quality_per_stack()
+    {
+        var d = Data();
+        var s = new GameState(d);
+        var c = s.Cargo;
+        s.Backpack.Add("turnip", 10, 1);
+        s.Backpack.Add("turnip", 10, 2);
+        s.Backpack.Add("turnip", 10, 3);
+        s.Backpack.Add("egg", 2);
+        Assert.Equal(30, c.Pack(s.Backpack, "turnip", 30));
+        c.Pack(s.Backpack, "egg", 2);
+        var crate = c.Open!;
+        Assert.Equal(10, crate.Items.Count("turnip", 3)); // kalite kasaya da gecer
+        // 10 × 15 × (1,0 + 1,3 + 1,7) + 2 × 15 = 600 + 30
+        Assert.Equal(630, c.Value(crate));
+        Assert.Same(crate, c.Close());
+        c.TakeClosed();
+        Assert.True(c.LoadCrate(crate));
+        Assert.Equal(630, c.LaunchCrates());
+    }
+
+    [Fact]
+    public void Harvest_stars_go_into_the_backpack()
+    {
+        var d = Data();
+        var s = new GameState(d);
+        // Hic kurumamis tarla en az ★2 verir (GDD 8.2); yildiz cantaya ayni yigin anahtariyla gecer.
+        s.Farm.Till(0, 0);
+        s.Farm.Plant(0, 0, "turnip", s.Backpack);
+        s.Farm.Water(0, 0);
+        while (s.Farm.Get(0, 0)!.Stage != CropStage.Mature) { s.Farm.Tick(0.5f, true); s.Farm.Water(0, 0); }
+        var h = s.Farm.Harvest(0, 0, s.Rng);
+        Assert.NotNull(h);
+        var (yield, stars, _) = h!.Value;
+        Assert.True(stars >= 2);
+        s.Backpack.Add("turnip", yield, stars);
+        Assert.Equal(yield, s.Backpack.Count("turnip", stars));
+        Assert.Equal(15f * d.Tool.Quality[stars - 1], s.Cargo.Pricing.Unit("turnip", stars), 3);
+    }
+
+    [Fact]
     public void Ramp_takes_1_to_6_crates_or_one_swollen_crop_and_pays_after_60s_except_the_first_sale()
     {
         var d = Data();
