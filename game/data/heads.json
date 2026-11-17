@@ -9,5 +9,6 @@
   "waterRange": 9,
   "carryRange": 10,
   "buildRange": 8,
+  "sulama": { "_not": "Su deposu (URETIM 6 M1; ana oturum karari 18 Kasim 2026): dolu baslar, islanan her kare litersPerCell, gol yuzeyine nisan alininca fillPerSecond.", "tankLiters": 100, "litersPerCell": 5, "fillPerSecond": 25, "startFull": true },
   "woodPerChop": 2
 }

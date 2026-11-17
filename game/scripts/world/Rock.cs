@@ -4,13 +4,15 @@ namespace Kabarma.Game;
 
 /// <summary>
 /// Kazilabilir dugum: Kazma isiniyla kemirilir, her birim cantaya emilir (PLAN 1.4, 0:30).
-/// Tas kayasi (altin kaya modeli), bakir damari (bakir modeli) ya da kil yatagi (koddan yumru, kredi yok; URETIM 6 M1).
+/// Tas kayasi (altin kaya modeli), bakir damari (bakir modeli) ya da kil yatagi (kil_yatagi modeli, Blender betiginden; URETIM 6 M1).
 /// </summary>
 public partial class Rock : Node3D
 {
     public int Stones { get; private set; }
     /// <summary>Kazinca cantaya giren esya: "stone", "clay", "copper_ore" (URETIM 6 M1 kapsami, Kazma).</summary>
     public string Item { get; }
+    /// <summary>Model dosyasindan mi kuruldu (yoksa koddan yedek kaya).</summary>
+    public bool FromModel { get; }
     readonly int _max;
     readonly float _size;
     float _wear;
@@ -29,6 +31,7 @@ public partial class Rock : Node3D
         var loaded = string.IsNullOrEmpty(model) ? null : Assets.Load(model);
         if (loaded != null)
         {
+            FromModel = true;
             _mesh = new Node3D();
             loaded.Scale = Vector3.One * size;
             loaded.Rotation = new Vector3(0, r.Randf() * Mathf.Tau, 0);
@@ -38,7 +41,7 @@ public partial class Rock : Node3D
         else
         {
             _mat = MeshKit.NewLiveMaterial();
-            _mesh = (item == "clay" ? ClayBed(size, r) : CodeRock(item, size, r)).Instance(_mat);
+            _mesh = CodeRock(item, size, r).Instance(_mat);  // model yoksa yedek: koddan kaya
             AddChild(_mesh);
         }
         var body = new StaticBody3D();
@@ -46,26 +49,6 @@ public partial class Rock : Node3D
         body.AddChild(new CollisionShape3D { Shape = new SphereShape3D { Radius = radius }, Position = new Vector3(0, item == "clay" ? 0.15f * size : 0.6f * size, 0) });
         AddChild(body);
         AddToGroup("rocks");
-    }
-
-    /// <summary>Kil yatagi: gol kiyisinda alcak, islak, kiremit tonlu yumrular (koddan, kredi yok).</summary>
-    static MeshKit ClayBed(float size, RandomNumberGenerator r)
-    {
-        var kit = new MeshKit();
-        var clay = Palette.Accent.Lerp(Palette.Soil, 0.55f);
-        var wet = clay.Lerp(Palette.Shadow, 0.35f);
-        var dry = clay.Lerp(Palette.Fog, 0.3f);
-        // Taban: yayvan, islak camur.
-        kit.Pillow(new Vector3(2.2f, 0.35f, 1.8f) * size, MeshKit.At(new Vector3(0, 0.08f * size, 0), new Vector3(0, r.Randf() * 3f, 0)), wet, 0.6f, 14, 6);
-        // Yumrular: elle sekillenmis kil topaklari.
-        for (int i = 0; i < 4; i++)
-        {
-            float a = r.Randf() * Mathf.Tau, d = r.RandfRange(0.2f, 0.7f) * size;
-            float s = r.RandfRange(0.45f, 0.75f) * size;
-            var c = i % 2 == 0 ? clay : dry;
-            kit.Pillow(new Vector3(s, s * 0.7f, s * 0.9f), MeshKit.At(new Vector3(Mathf.Cos(a) * d, 0.22f * size + s * 0.2f, Mathf.Sin(a) * d), new Vector3(r.Randf() * 0.4f, r.Randf() * 3f, r.Randf() * 0.3f)), c, 0.55f, 10, 5);
-        }
-        return kit;
     }
 
     static MeshKit CodeRock(string item, float size, RandomNumberGenerator r)

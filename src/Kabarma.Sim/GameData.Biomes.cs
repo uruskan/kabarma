@@ -121,6 +121,8 @@ public sealed class DecorDef
     /// <summary>Bicme ile toplanan esya ("fiber", "wheat"); bos ise sus. Geri gelmez (URETIM 6 M1, Capa).</summary>
     public string Harvest { get; set; } = "";
     public int Yield { get; set; }
+    /// <summary>Bicme vurusu basina alinan birim (ana oturum karari 18 Kasim 2026: 2; woodPerChop'tan ayri).</summary>
+    public int PerHit { get; set; } = 2;
     /// <summary>URETIM §3 "yer tutucu" isareti: SANAT-SES §9'dan gecemeyen varlik (neden). Bos = gecti.</summary>
     public string Placeholder { get; set; } = "";
 }
@@ -148,6 +150,16 @@ public sealed class NodeDef
     public int ShoreCount { get; set; }
     public float ShoreOffset { get; set; }
     public List<float> ShoreArc { get; set; } = new();
+    /// <summary>Zemine gomulme (m): modelin alti egimli zeminde havada kalmasin.</summary>
+    public float Sink { get; set; }
+    /// <summary>Dunyaya rastgele serpilen ek dugum sayisi ve Ocak'a uzaklik araligi [en az, en cok] (m).</summary>
+    public int ScatterCount { get; set; }
+    public List<float> ScatterDistance { get; set; } = new();
+    public float ScatterSlope { get; set; } = 25f;
+    /// <summary>Serpilen dugum gol kiyisindan en az bu kadar uzak (m).</summary>
+    public float LakeClear { get; set; } = 4f;
+    /// <summary>[yaricap m, en az birim]: Ocak'in bu yaricapinda guvenceli en az birim (ilk gunun ihtiyaci; dunya sinamasi denetler).</summary>
+    public List<float> NearBase { get; set; } = new();
     public string Placeholder { get; set; } = "";
 }
 

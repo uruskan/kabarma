@@ -20,14 +20,15 @@
 | 8 bitki | ✅ çayır ağacı + Şalgam (altın) + turuncu ağaç, çalı, ot, yabani buğday, çiçek, eğrelti (Tripo modelleri `pipeline/clean_asset.py` ile içe alındı, git'te) | `game/assets/models/<ad>/`, aşağıdaki ölçüt tablosu |
 | 4 kaya | ✅ cevherli kaya (altın) + düz kaya, dik kaya, bakır damarı | aynı |
 | Rüzgâr salınımı | ✅ bitki shader'ı (dokuyu korur; ağaçta yalnız taç), ot tutamları (40 m içinde, kenarda söner) | `shaders/plant_wind.gdshader`, `grass.gdshader`, `pipeline/clip_gif.py` → `clip_gol.gif` |
-| Kil yatakları | ✅ göl kıyısında 4 yatak (8 birim), koddan yumru (kredi yok) | `Rock.ClayBed`, `--test=world` |
+| Kil yatakları | ✅ göl kıyısında 4 yatak (8 birim). Model `kil_yatagi`: Blender betiğinden (kredi yok), ıslak çamur tabanı üstünde kürekle kesilmiş 3 kil kalıbı + 3 topak, 1K pişirilmiş doku; **betikli 5 ölçütün hepsinden geçti** (2406 üçgen, tek manifold parça) | `pipeline/gen_kil_yatagi.py`, `pipeline/make_kil_yatagi.ps1`, `kil_yatagi.report.json`, `--test=world` |
+| Taş (yalnız altın kaya) | ✅ 31 altın kaya: 15'i Ocak'ın 35 m'sinde (76 birim; ilk gün ihtiyacı 40, bu dalın yerleştirilebilir + tarif taşı 26), 16'sı dünyaya serpili (50–140 m). Düz ve dik kaya süs + çarpışma, taş vermez | `biomes.json` `nodes.kaya` (`nearBase`, `scatterCount`), `--test=world` |
 | Bakır damarı | ✅ `bakir` modeliyle 3 damar (8 birim), üssün ~33 m batı-güneybatısında: (30,−14), (34,−20), (27,−21) | `biomes.json` `nodes` |
-| Lif ve Buğday | ✅ ot ve çalı → Lif, yabani buğday → Buğday (tutam başına 4); geri gelmez; üssün 25 m'sinde kümeler + çayıra dağılmış (379 Lif, 74 Buğday tutamı) | `World.Resources.cs`, `--test=world` |
+| Lif ve Buğday | ✅ ot ve çalı → Lif, yabani buğday → Buğday (tutam başına 4, vuruş başına 2: `biomes.json` `yield` / `perHit`, `woodPerChop` artık kullanılmıyor); geri gelmez; üssün 25 m'sinde kümeler + çayıra dağılmış (379 Lif, 74 Buğday tutamı) | `World.Resources.cs`, `Capa.Bicme.cs`, `--test=world` |
 | `World.Placeholders.cs` | ✅ silindi; `World.Tuft` / `NearestTuft` / `TakeTuft` ve `Rock.Item` arayüzü aynı | bot `harvests=4` taban ile aynı |
 | `biomes.json` + veri ailesi | ✅ `GameData.Biomes.cs`, `GameData.Graphics.cs` (`graphics.json`); bilinmeyen anahtar testi otomatik | `DataCheckTests`, `BiomesDataTests` (5 test) |
 | 4 yer imi + 16 görüntü aracı | ✅ `--test=shots`: bot ilk günü oynar, Kabarma gecesi görüntüleri ilk gecenin 2. dalgasında, gündüz görüntüleri bot bitince; Deck (1280×800) öğle görüntüleri; Üs yer imi Ocak'ın gerçek konumuna bağlı | `progress/m1/dunya/shots/`, `shots/deck/`, `shots/metrics.json` |
 | "Yüksek" ön ayar + ölçüm | ✅ `graphics.json` (TEKNIK §10: 1080p, MSAA 2×, gölge 2 bölme 4096, SSAO yarım, glow, SDFGI/SSIL/SSR/hacimsel sis kapalı); `--test=perf`, `tools/perf_m1.ps1` | `progress/m1/dunya/perf/` |
-| Sulama deposu (100 L, su yüzeyinden dolar) | ⏸ yazılmadı: depo sayıları (tüketim, dolma hızı, başlangıç) belgede yok; ana oturuma soruldu, cevap gelmedi | — |
+| Sulama deposu | ✅ ana oturum kararı (18 Kasım): 100 L, dolu başlar, ıslanan her kare 5 L, göle nişan alınca 25 L/sn dolar, boş depo sulamaz. Kural Sim'de (`WaterTank`, `GameState.Tank`), sayılar `heads.json` `sulama`; Çapa tarafı `Capa.Sulama.cs` (`World.IsWater` ile göl tanınır; doluluk ipucu, su sesi, sıçrama) | `WaterTankTests` (4), bot sulama adımı |
 
 ### Süs modelleri: URETIM §3 / SANAT-SES §9 ölçütleri
 
@@ -44,6 +45,7 @@ Betik (1–5) `pipeline/clean_asset.py` raporu (`game/assets/models/<ad>/<ad>.re
 | kaya_duz | ✓ 1K | 2866/4000 ✓ | 0,45 ✓ | ✗ 4 kenar | 0,7 m ✓ | 8 | 9 | 8 | yalnız ölçüt 4 |
 | kaya_dik | ✓ 1K | 2868/4000 ✓ | 0,40 ✓ | ✗ 9 kenar | 2,4 m ✓ | 9 | 9 | 8 | yalnız ölçüt 4 |
 | bakir (bakır damarı) | ✓ 1K | 2788/4000 ✓ | 0,67 ✓ | ✗ 10 kenar | 1,3 m ✓ | 8 | 8 | 7 (bakır topakları oyun mesafesinde küçük) | yalnız ölçüt 4 |
+| **kil_yatagi** (Blender betiği) | ✓ 1K | 2406/3000 ✓ | 0,33 ✓ | ✓ 0 manifold dışı kenar, tek parça | 0,55 m ✓ | 8 (alçak, topaklı yığın) | 8 (kiremit kili, palet tonları) | 8 (kesik kil kalıpları ıslak çamurda) | **8 ölçütün hepsi geçti** (6–8 sahibin onayını bekliyor) |
 
 Ölçüt 4: onaylı altın `kaya` modeli de aynı denetimden geçmiyor (13 manifold dışı kenar; `docs/stil/README.md`); Tripo çıktısının dikiş kenarları bu denetimde hep kalıyor. Bu bir hat/denetim sorusu (varlik akışı), yeniden üretimle çözülmez. Hepsi `biomes.json` `placeholder` alanında nedeniyle işaretli (URETIM §3).
 
@@ -72,21 +74,27 @@ Her görünümün en iyi gözlenen ortalaması 11,1 ms bütçesinin içinde (ö�
 
 **2. 8 bitki, 4 kaya**
 1. **geçti** (`biomes.json` `decor`; yer tutucu işaretleri URETIM §3).
-2. **kısmen** (betik ölçütleri 1, 2, 5 dokuzunda geçti; 3 dört bitkide, 4 dokuzunda kaldı; tablo yukarıda).
+2. **kısmen** (betik ölçütleri 1, 2, 5 dokuzunda geçti; 3 dört bitkide, 4 dokuzunda kaldı; kil yatağı beşinden de geçti; tablo yukarıda).
 3. **geçti** (rüzgâr salınımı; Biçme ile toplananlar küçülüp kaybolur).
 4. **kısmen** / ortak oyun **M2'de** (yukarıdaki gibi).
 5. **M2'de**.
 6. **kısmen** (öz puanım 8'in altında: çalı, yabani buğday, eğrelti, bakır; tablo yukarıda); **sahibin onayını bekliyor**.
 
 **3. Gerçek kaynaklar (kil, bakır, Lif, Buğday)**
-1. **kısmen**: kural (Kazma/Biçme ile toplanır, geri gelmez) URETIM §6'da; verim sayıları veride ama belgede değer yok, yer tutucu sayılar korundu (soruldu).
-2. **geçti** (`--test=world`: sayılar, kıyıda kil, üsse yakın Lif/Buğday, `TakeTuft`; bot `harvests=4` tabanla aynı).
+1. **geçti**: kural URETIM §6'da, verimler ana oturum kararıyla (18 Kasım) `biomes.json`'da (tutam 4, vuruş 2, kil/bakır 8, taş yalnız altın kayadan).
+2. **geçti** (`--test=world`: sayılar, kıyıda kil ve modelden kurulu, üsse yakın Lif/Buğday, `perHit`, ilk günün taşı üsse yakın, serpili kayalar, `TakeTuft`; bot hasat ve istasyon adımları geçiyor).
 3. **kısmen** (mevcut Çapa vuruş efekti ve sesi; yeni ses yok).
 4. **kısmen** / ortak oyun **M2'de**.
 5. **M2'de**. Not: tükenen tutam ve kaya durumu (MVP'deki yer tutucu gibi) Godot katmanındaki `World` örneğinde; kayıt için M2'de Sim'e taşınmalı.
 6. **sahibin onayını bekliyor**.
 
-**4. Sulama deposu**: 1 **yok** (sayılar belgede yok) · 2 **yok** · 3 **yok** · 4 **yok** · 5 **M2'de** · 6 **yok**. `World.IsWater(p)` hazır; depo kuralı cevap gelince Sim'de yazılır.
+**4. Sulama deposu**
+1. **geçti** (URETIM §6 "100 L" + ana oturum kararı; sayılar `heads.json` `sulama`).
+2. **kısmen**: kural `WaterTankTests` ile sınanıyor (dolu başlar, 20 kare sonra durur, 25 L/sn dolar, sınırda kalır, ilk günün 9 karesi tek depoya sığar); bot ilk günün sulamasını bu depoyla yapıyor. Göle nişan alıp doldurma (Godot bağlantısı) otomatik sınanmadı.
+3. **kısmen**: doluluk ipucu ("Su deposu: 55 / 100 L", "boş: göle nişan al"), dolarken su sesi ve sıçrama. Kalıcı depo göstergesi HUD'da yok (gecehud). Çapa'nın püskürtme görüntüsü boş depoda da çıkıyor (capa).
+4. **kısmen** (KM bot yolu ile; oyun kolu elle sınanmadı); ortak oyun **M2'de**.
+5. **M2'de** (durum Sim'de tek sayı, `Restore` hazır).
+6. **yok**: dolum anının görüntüsü alınmadı.
 
 **5. 16 ekran görüntüsü**
 1. **geçti** (yer imleri `biomes.json` `bookmarks`, SANAT-SES §9 tablosu).
@@ -119,7 +127,11 @@ Saatler: sabah ile öğle üs ve kapsülde birbirine yakın (sabah biraz daha so
 - `game/scripts/Main.cs` (girdi): `Tests` sözlüğüne 3 satır eklendi (`world`, `shots`, `perf`). Var olan satır değişmedi.
 - `tools/test.ps1` (girdi): `world` varsayılan listeye eklendi, Godot bulma koşuluna `world` eklendi, `Invoke-GodotTest 'world'` bloğu. Yalnız satır ekleme.
 - `CLAUDE.md` hâlâ `World.Placeholders.cs`'i anıyor; dosya bu dalda silindi (görev buydu). CLAUDE.md'ye dokunmadım.
-- Başka akış dosyası değişmedi. `WorldShots` yalnız `Capa.Select`, `Hud.Hint` ve `Director.SpeedScale`'i çağırır.
+- `game/scripts/actors/Capa.Bicme.cs` (capa): tutam verimi `WoodPerChop` yerine `tuft.PerHit` (`biomes.json` `perHit`); 1 satır + yorumu (ana oturumun izniyle). Ağaç odunu yine `woodPerChop`.
+- `game/data/heads.json` (capa): `"sulama"` nesnesi tek satır olarak eklendi; var olan satır değişmedi. **Birleşmede dikkat:** capa dalı `heads.json`'u yeniden yazıyorsa aynı adlı nesne çakışabilir.
+- `src/Kabarma.Sim/GameData.Tool.cs` (ortak): `ToolFile`'a `public SulamaDef Sulama` satırı. `src/Kabarma.Sim/Scenario.cs` (ortak): `GameState`'e `Tank` özelliği ve kurucuda bir satır. Yalnız satır ekleme; `DataCheckTests` ve `DataSplitTests` yeşil.
+- `game/scripts/actors/Capa.Sulama.cs`: depo kısmı bu akışın (dosya sahipliği tablosu). Sulama döngüsüne depo harcaması ve göl dolumu eklendi; kare seçimi ve senaryo ilerlemesi aynı.
+- `WorldShots` yalnız `Capa.Select`, `Hud.Hint` ve `Director.SpeedScale`'i çağırır.
 
 ## (d) Gevşetilen bot adımları
 
@@ -136,16 +148,16 @@ Komut (ana oturumda): `powershell -NoProfile -ExecutionPolicy Bypass -File pipel
 
 ## (f) Belgeyle çelişen ya da belgenin sustuğu yerler
 
-1. **Sulama deposu sayıları** (soruldu, cevap yok; kod yazılmadı): 100 L belgede, ama kare başına tüketim, gölden dolma hızı, başlangıç doluluğu yok. Önerim: dolu başlar, ıslatılan kare başına 5 L, su yüzeyinden 25 L/sn, dolarken "water" sesi pes.
-2. **Verimler** (soruldu): tutam başına Lif/Buğday, kil ve bakır düğüm birimi, ağaç vuruşu başına odun belgede yok. Yer tutucu sayılar korundu (4 / 8 / `woodPerChop`).
-3. **Düz ve dik kaya kazılır mı?** Belge susuyor; süs olarak bıraktım (kazılmaz, çarpışmalı).
-4. **Kil yatağı**: belge model mi kod mu demiyor; kredi istemediği için C# yumruları (MeshKit) yazdım, Blender betiği değil.
+1. **Sulama deposu sayıları**: belgede yalnız 100 L vardı. **Karara bağlandı (ana oturum, 18 Kasım):** dolu başlar, kare başına 5 L, gölden 25 L/sn; uygulandı. Ses akışında perde parametresi olmadığı için dolum sesi "water" daha kısık çalıyor (pes değil).
+2. **Verimler**: belgede yoktu. **Karara bağlandı:** tutam 4, vuruş 2, kil ve bakır 8; `biomes.json`'da kendi anahtarları, `woodPerChop` tutamda kullanılmıyor.
+3. **Düz ve dik kaya**: **karara bağlandı:** süs + çarpışma, taş vermez; taş yalnız altın kayadan. İlk gün ihtiyacı kararda "Tezgâh 5 + Taş Fırın 15 + El Arabası 4 + yapı"; bu dalda Tezgâh 6, Taş Fırın 10, Paketleme 8 (ekonomi dalı farklı). İkisini de karşılamak için 35 m'de en az 40 birim (`nearBase`), gerçekte 76.
+4. **Kil yatağı**: ilk sürümde C# yumrusu yazmıştım. **Karara bağlandı:** M1 kararları satırı geçerli. Blender betiği yazıldı, `clean_asset.py`'den geçti, raporu var; C# yumrusu silindi.
 5. **Yön**: belge kuzeyi tanımlamıyor. Seçimim: kuzey +Z (krater ışık sütunu kuzey-kuzeydoğuda), doğu −X; güneş doğudan (−X) doğar, azimut 0 kuzey, 90 doğu. Buna göre göl üssün doğu-kuzeydoğusunda, bakır batı-güneybatısında. **gecehud pusulası aynı kuzeyi (+Z) kullanmalı**, yoksa güneş ve pusula çelişir.
 6. **Sis yoğunluğu**: SANAT-SES §2 yalnız sabahın öğleye oranını (×1,5) veriyor; mutlak yoğunluklar benim seçimim (`biomes.json`).
 7. **İki ay**: SANAT-SES §6 "güneş ve iki ay" diyor, §2 tablosu tek ay konumu veriyor. İkinci ayın konumu birincisine göre sabit açıyla (kodda) çiziliyor.
 8. **Üs yer imi**: SANAT-SES §9 "ağıl ve Gıdak" istiyor; ağıl ilkgün akışında, bu dalda yok. Üs görüntüleri ağılsız (kısmen).
 9. **`--test=shots`**: CLAUDE.md `--shots=...` argümanını anıyor (MVP aracı); M1 görüntüleri için ayrı test adı ekledim, eskisi değişmedi.
-10. **Sulama boş depoyla da püskürtüyor** (capa akışı; depo gelince birleşmede bağlanmalı).
+10. **Sulama boş depoyla da püskürtüyor**: depo kuralı artık boş depoda sulamıyor, ama Çapa'nın püskürtme görüntüsü (`Capa.cs`, capa akışı) depoyu okumuyor; birleşmede `_d.State.Tank.CanWater`'a bağlanmalı. Kalıcı depo göstergesi gecehud'un HUD'una (`State.Tank.Liters / Capacity`).
 11. **Kuşak etiketleri Deck çözünürlüğünde kesik** ("ılgam Tohum", "ebze Çorbas"): gecehud akışı.
 12. **Ölçüt 4 denetimi** onaylı altın varlıkları da düşürüyor: varlik akışı.
 13. **Birleşme dikişleri** (paylaşılan notlar `dunya-notes.md` §4): gecehud `ApplyClockLight()` → `SetDay/SetDawn/SetNormalNight`; ses göl kıyısı emitter'ı → `World.LakeCenter` / `ShoreRadius`.

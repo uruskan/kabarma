@@ -7,7 +7,7 @@ namespace Kabarma.Game;
 
 /// <summary>
 /// Dunya: toplanan kaynaklar (URETIM 6 M1 kapsami, "Kaynaklar" ve "Capa" satirlari). Yer tutucularin yerine gelenler:
-///  - Kazma (Rock): tas (altin kaya), gol kiyisindaki kil yataklari (koddan yumru, kredi yok), bakir damari (bakir modeli).
+///  - Kazma (Rock): tas (yalniz altin kaya; ussun cevresi + dunyaya serpili), gol kiyisindaki kil yataklari (Blender betigi), bakir damari.
 ///  - Bicme (Tuft): ot ve cali Lif, yabani bugday Bugday verir; geri gelmez.
 /// Dugumler ve verimler data/biomes.json "nodes" ve "decor" satirlarinda. Arayuz MVP ile ayni: Rocks, Rock.Item,
 /// Tuft, Tufts, NearestTuft, TakeTuft (Capa.Kazma.cs, Capa.Bicme.cs ve bot buna dayanir).
@@ -29,6 +29,8 @@ public partial class World
         /// <summary>Tutamin turu (biomes.json decor kimligi) ve ilk verimi.</summary>
         public string Kind;
         public int Yield;
+        /// <summary>Bicme vurusu basina alinan birim (biomes.json decor perHit).</summary>
+        public int PerHit = 1;
         internal MultiMesh Mm;
         internal int Index;
         internal Transform3D Local;
@@ -43,7 +45,7 @@ public partial class World
         {
             _tufts.Add(new Tuft
             {
-                Position = chunk.Origin + local.Origin, Item = def.Harvest, Left = def.Yield, Yield = def.Yield, Kind = def.Id,
+                Position = chunk.Origin + local.Origin, Item = def.Harvest, Left = def.Yield, Yield = def.Yield, PerHit = Mathf.Max(1, def.PerHit), Kind = def.Id,
                 Mm = chunk.Mm, Index = index, Local = local,
             });
         }
@@ -78,15 +80,33 @@ public partial class World
         {
             var spots = node.Positions.Select(p => new Vector3(p[0], 0, p[1])).ToList();
             spots.AddRange(ShoreSpots(node));
+            spots.AddRange(ScatterSpots(node, rng));
             foreach (var s in spots)
             {
                 int units = node.Units.Count >= 2 ? rng.RandiRange(node.Units[0], node.Units[1]) : 1;
                 float size = rng.RandfRange(node.Size[0], node.Size.Count > 1 ? node.Size[1] : node.Size[0]);
                 var rock = new Rock(units, size, seed++, node.Item, node.Model) { Name = $"{node.Id}_{seed}" };
                 AddChild(rock);
-                rock.GlobalPosition = Ground(s) + Vector3.Down * (node.Item == "clay" ? 0.05f : 0.2f);
+                rock.GlobalPosition = Ground(s) + Vector3.Down * node.Sink * size;
                 _rocks.Add(rock);
             }
+        }
+    }
+
+    /// <summary>Dunyaya serpilen ek dugumler: Ocak'a ScatterDistance araliginda, golden, aciklik ve dik yamactan uzak.</summary>
+    IEnumerable<Vector3> ScatterSpots(NodeDef node, RandomNumberGenerator rng)
+    {
+        if (node.ScatterCount <= 0 || node.ScatterDistance.Count < 2) yield break;
+        float half = Size / 2f - 6f;
+        int made = 0;
+        for (int tries = 0; tries < node.ScatterCount * 40 && made < node.ScatterCount; tries++)
+        {
+            float a = rng.Randf() * Mathf.Tau, d = rng.RandfRange(node.ScatterDistance[0], node.ScatterDistance[1]);
+            var p = new Vector3(Mathf.Cos(a) * d, 0, Mathf.Sin(a) * d);
+            if (Mathf.Abs(p.X) > half || Mathf.Abs(p.Z) > half || InClearing(p)) continue;
+            if (ShoreDistance(p.X, p.Z) < node.LakeClear || SlopeAt(p.X, p.Z) > node.ScatterSlope) continue;
+            made++;
+            yield return p;
         }
     }
 

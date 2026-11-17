@@ -104,7 +104,20 @@ public partial class WorldTest : Node3D
         Check(w.TakeTuft(tuft, 2) == Mathf.Min(2, left) && tuft.Left == left - Mathf.Min(2, left), "TakeTuft partial");
         w.TakeTuft(tuft, 999);
         Check(tuft.Left == 0 && w.NearestTuft(tuft.Position, 0.01f) != tuft, "TakeTuft empty / NearestTuft skips empty");
-        _info.Add($"stone={Count("stone")} clay={Count("clay")} copper={Count("copper_ore")} fiber={fiber} wheat={wheat}");
+        Check(w.Tufts.Where(x => x.Item != "").All(x => x.PerHit == w.Biome.Decor.First(d => d.Id == x.Kind).PerHit), "tuft perHit != biomes.json");
+        // Tas yalniz altin kayadan; ilk gunun ihtiyaci ussun yakininda (ana oturum karari 18 Kasim 2026).
+        var kaya = w.Biome.Nodes.First(n => n.Item == "stone");
+        Check(w.Biome.Nodes.Where(n => n.Item == "stone").All(n => n.Model.EndsWith("kaya/kaya.glb")), "stone from a non-golden rock");
+        float nearR = kaya.NearBase.Count > 0 ? kaya.NearBase[0] : 35f;
+        int nearStone = w.Rocks.Where(r => r.Item == "stone" && new Vector2(r.GlobalPosition.X, r.GlobalPosition.Z).Length() <= nearR).Sum(r => r.Stones);
+        int placeStone = w.Data.Tool.Placeables.Sum(p => p.Cost.TryGetValue("stone", out int n) ? n : 0)
+            + w.Data.Tool.Recipes.Sum(r => r.In.TryGetValue("stone", out int n) ? n : 0);
+        Check(kaya.NearBase.Count < 2 || nearStone >= kaya.NearBase[1], $"stone near base {nearStone} < need {(kaya.NearBase.Count > 1 ? kaya.NearBase[1] : 0)}");
+        Check(nearStone >= placeStone, $"stone near base {nearStone} < placeable+recipe stone {placeStone}");
+        int farStone = w.Rocks.Count(r => r.Item == "stone" && new Vector2(r.GlobalPosition.X, r.GlobalPosition.Z).Length() > nearR + 10f);
+        Check(farStone >= kaya.ScatterCount * 3 / 4, $"scattered stone rocks {farStone} < {kaya.ScatterCount}");
+        Check(w.Rocks.Where(r => r.Item == "clay").All(r => r.FromModel), "clay bed not from kil_yatagi model");
+        _info.Add($"stone={Count("stone")} near_stone={nearStone} need={placeStone} far_stone_rocks={farStone} clay={Count("clay")} copper={Count("copper_ore")} fiber={fiber} wheat={wheat}");
 
         // 6. Bitki ve kaya turleri (8 bitki: 7 dekor + Salgam tarlada; 4 kaya: altin kaya + 3).
         var plants = new[] { "agac", "turuncu_agac", "cali", "ot", "bugday", "cicek", "egrelti" };
