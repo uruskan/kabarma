@@ -36,6 +36,15 @@ Dal `claude/m1-girdi-bcdafe` (main'e birleştirilmedi). Tarih 2026-11-18.
 | Hasat/satış/kazma: kamera ışını Ocak'a ya da ağaca çarpıyor | Doğrudan kipte nişan engelin içinden geçer | Sürücü görüş engelinde kısa yan adım atar (`sidesteps=`), bot adımına dokunmaz |
 | Kol çarkı taramada hep aynı başlık | Tarama içindeki çark işleminde nişan sürücüsü sağ çubuğu ezmişti | İşlem bakışı sahiplenir (`OwnsLook`); çark açılmadan çubuk bırakılır |
 
-Tekrarlar (sür/ek düzeltmesinden sonra): klavye-fare 7/7 yeşil, kol 6/7. Tek kol takılması satışta Ocak engeliydi: basış nişan oturunca hemen harcandığı için yan adım tetiklenmiyordu; sürücü artık yakın zamanda istenen basışı da "iş yapmak istiyor" sayar. Bu düzeltmeden sonra tam koşu (`test.log`) yeşil. Kol koşusu yük altında daha yavaş (~80 sn gerçek, ~300 oyun sn); `--quit_after=900` üst sınır, zincir bitince test kendisi çıkar.
+Tekrarlar (sür/ek düzeltmesinden sonra): klavye-fare 7/7 yeşil, kol 6/7. Tek kol takılması satışta Ocak engeliydi: basış nişan oturunca hemen harcandığı için yan adım tetiklenmiyordu; sürücü artık yakın zamanda istenen basışı da "iş yapmak istiyor" sayar. Bu düzeltmeden sonraki tam koşu (`test.log`) yeşil, ancak o koşuda satışta engel çıkmadı (tek yan adım yine hasatta, `yanadim=1`): düzeltmenin bir takılmayı açtığı henüz görülmedi. Ağaç engeli (paketle, kazma) için de yan adımın engeli açtığı bir koşu yok; bu iki durum gözlem altında. Kol koşusu yük altında daha yavaş (~80 sn gerçek, ~300 oyun sn); `--quit_after=900` üst sınır, zincir bitince test kendisi çıkar.
 
-Kıyaslama: 1.000 gün 3×3 tarlada 1,76 sn (ölçüt 10 sn, geçti). İsteğe bağlı 10×10 ölçeği 12,0 sn (ölçütü geçmiyor): toplam 38 GB ayırma, sayım GC baskısında, hesapta değil (`sim_bench_10x10.txt`).
+Kıyaslama: 1.000 gün 3×3 tarlada 1,76 sn (ölçüt 10 sn, geçti). İsteğe bağlı 10×10 ölçeği 12,0 sn (ölçütü geçmiyor), toplam 38 GB ayırma (3×3'te 3,4 GB); nedeni profillenmedi (`sim_bench_10x10.txt`).
+
+## Sınanmayanlar
+
+- Olayla hiç basılmayan eylemler: `build_prev`, `build_rotate`, `card_2`, `card_3`, `jump`, `ui_up`, `controls_panel` (bağlamaları her iki aygıtta var: `InputDataTests` durağan denetimi).
+- Yeniden atama paneli arayüzü (yakalama kipi, gezinme) çalıştırılmadı; yalnızca `Controls.Rebind` / `ResetAll` açılış denetiminde.
+- Kaydedilmiş `user://input.json`'un sonraki açılışta yüklenmesi sınanmadı.
+- Kemer (`Alt+1–8`) ham tuş: kolda yolu yok (Ⓨ çanta menüsünden), yeniden atanamaz.
+- Gerçek kol donanımı, pencereli fare kilidi, kol hissi (ölü bölge, eğri, hız): sahibin onayını bekliyor. Başlıksız fare bakışı (`Player.cs`) yalnızca sınama yolu.
+- Ekran görüntüsü yok (başlıksız koşu): glif ve panel görünüşü sahibin onayını bekliyor.
