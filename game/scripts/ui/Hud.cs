@@ -212,6 +212,7 @@ public partial class Hud : CanvasLayer
         root.AddChild(_report);
         OnHead(0);
         IgnoreMouse(root);
+        InitVoice(); // Hud.Voice.cs: Suna'nin sesi (ses akisi)
     }
 
     /// <summary>Panoda tiklanacak bir sey yok: hicbir oge fareyi oyundan almasin (nisangah dahil).</summary>
@@ -253,6 +254,7 @@ public partial class Hud : CanvasLayer
             _lineT = Mathf.Clamp(_full.Length * 0.055f, 2.8f, 6f) * (_lines.Count > 1 ? 0.6f : 1f);
             _suna.Visible = true;
             Sfx.Play("place", null, -22f); // telsiz mandali
+            VoiceLineStarted(_full); // Hud.Voice.cs: mandal, Suna'nin sesi, altyazi suresi (ses akisi)
         }
 
         UpdateDayPanels(); // Hud.Day.cs

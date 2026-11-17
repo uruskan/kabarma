@@ -1,0 +1,36 @@
+﻿ElevenLabs M1 ses paketi: KURU KOSU (ag yok, anahtar okunmadi)
+
+Modeller: ses efekti eleven_text_to_sound_v3 · muzik music_v2_5 · konusma eleven_v3 · ses tasarimi eleven_ttv_v3 · geri cevirme scribe_v3
+Defter: progress\m1\ses\eleven_ledger.json · onceki harcama: tts_chars 0/7200, sfx_seconds 0/1140, music_seconds 0/750, stt_seconds 0/900
+
+[ses efekti] 55 ses, 165 uretim, 329.7 sn (5.50 dk) / sinir 19 dk
+  kapali (sentezle uretildi, pipeline/synth_ui.py): ui_odak, ui_onay, ui_hata, ui_baslik_carki, telsiz_mandali
+  cikti: game/assets/audio/sfx/{id}_{n}.mp3
+
+[muzik] 2 parca, 300 sn + katman ayristirma 120 sn = 7.00 dk / sinir 12.5 dk
+  cayir_gunduz: 180 sn -> game\assets\audio\music\cayir_gunduz.mp3
+  kabarma: 120 sn -> game\assets\audio\music\kabarma_full.mp3 -> katmanlar kabarma_1.mp3, kabarma_2.mp3, kabarma_3.mp3
+  ! katman ayristirmanin fiyati fiyat sayfasinda yok: tutumlu olsun diye muzik dakikasina sayildi
+
+[Suna ses tasarimi] 1 cagri, 3 aday, onizleme metni 142 karakter (karaktere sayildi)
+  cikti: progress/m1/ses/suna_adaylari/aday_{n}.mp3
+
+[Suna tr] 41 replik, seslendirilebilir 29, 1649 karakter; geri cevirme ~118 sn
+  cikti: game/assets/audio/voice/tr/{line}.mp3
+  ! tr: 41 replik > 30 (M1: 30 replik; ilkgun akisinin 30 replikli metni bekleniyor)
+  ! tr: tus adi iceren 12 replik seslendirilmez (SANAT-SES §10.3): ocak_start, till_start, water_start, sell_start, tezgah_kur_start, civi_start, civi_done, hasat_start, corba_start, kasa_sat_start, odun_start, yapi_start
+  ! ENGEL: tr seslendirmesi bu metinle baslatilamaz
+
+[Suna en] 0 replik, seslendirilebilir 0, 0 karakter; geri cevirme ~0 sn
+  cikti: game/assets/audio/voice/en/{line}.mp3
+  ! game\data\scenario.en.json yok
+  ! ENGEL: en seslendirmesi bu metinle baslatilamaz
+
+  yeniden deneme payi: replik basina en fazla 1 (geri cevirme tutmazsa); karakter sinirina sayilir
+
+TOPLAM (bu plan):
+  tts_chars         1791.0 karakter (defterde 0.0) / sinir 7200  ~0.14 $
+  sfx_seconds        329.7 sn       (defterde 0.0) / sinir 1140  ~0.66 $
+  music_seconds      420.0 sn       (defterde 0.0) / sinir 750  ~1.05 $
+  stt_seconds        117.9 sn       (defterde 0.0) / sinir 900  ~0.01 $
+  tahmini tutar ~1.86 $ (liste fiyati; ses tasarimi ve katman ayristirma fiyati yazmiyor)

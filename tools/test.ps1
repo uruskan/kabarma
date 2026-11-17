@@ -18,6 +18,7 @@ param(
 
 $ErrorActionPreference = 'Continue'
 $Only = @($Only | ForEach-Object { $_ -split ',' } | ForEach-Object { $_.Trim() } | Where-Object { $_ })
+if (-not $PSBoundParameters.ContainsKey('Only')) { $Only += 'audio' } # ses akisi: --test=audio varsayilan adimlarda
 $Root = Split-Path -Parent $PSScriptRoot
 Set-Location $Root
 $GamePath = Join-Path $Root 'game'
@@ -131,6 +132,17 @@ if ($Only -contains 'buildtest') {
             $detail = "placed=$($Matches[1]) failed=$($Matches[2]) pieces=$($Matches[3])"
         }
         [pscustomobject]@{ Ok = $ok; Detail = $detail }
+    }
+}
+
+# Ses sinamasi (ses akisi): kanallar, 60 ses, muzik durum makinesi, Suna kismasi. "AUDIO RESULT ok" bekler.
+if ($Only -contains 'audio') {
+    if (-not $G) { $G = Find-Godot }
+    Invoke-GodotTest 'audio' "--test=audio" 120 {
+        param($r)
+        $res = ($r.Text -split "`r?`n" | Where-Object { $_ -match '^AUDIO RESULT ' } | Select-Object -Last 1)
+        if (-not $res) { $res = 'AUDIO RESULT satiri yok' }
+        [pscustomobject]@{ Ok = ($res -match '^AUDIO RESULT ok'); Detail = ($res -replace '^AUDIO RESULT ', '') }
     }
 }
 

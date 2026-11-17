@@ -1,0 +1,49 @@
+﻿MUSIC ready day=no layers=1/3 bar=2.00s
+AUDIO sounds=60 playable=17 variant_files=15 m0_only=12 silent=43 placeholder=60
+AUDIO ok 17/60
+MUSIC Silence -> Day
+SUNA line=intro_1 voice=no
+SUNA line=intro_2 voice=no
+SUNA line=mine_done voice=no
+SUNA line=ocak_start voice=no
+SUNA line=ocak_done voice=no
+SUNA line=till_start voice=no
+SUNA line=till_done voice=no
+SUNA line=plant_start voice=no
+SUNA line=plant_done voice=no
+SUNA line=water_start voice=no
+SUNA line=water_done voice=no
+SUNA line=grow_start voice=no
+MUSIC Day -> Silence
+SUNA line=grow_done voice=no
+SUNA line=night_start voice=no
+MUSIC Silence -> Kabarma
+SUNA line=night_alarm voice=no
+SUNA line=night_swell voice=no
+SUNA line=night_gidak voice=no
+SUNA line=night_wave voice=no
+SUNA line=night_level voice=no
+MUSIC layers=2 bar=6
+MUSIC layers=3 bar=11
+MUSIC Kabarma -> Day
+SUNA line=night_done voice=no
+SUNA line=sell_start voice=no
+SUNA line=sell_done voice=no
+SUNA line=tezgah_kur_done voice=no
+SUNA line=civi_start voice=no
+SUNA line=civi_start voice=no
+SUNA line=civi_done voice=no
+SUNA line=hasat_start voice=no
+SUNA line=hasat_done voice=no
+SUNA line=firin_kur_start voice=no
+SUNA line=firin_kur_done voice=no
+SUNA line=corba_start voice=no
+SUNA line=corba_done voice=no
+SUNA line=paketle_start voice=no
+SUNA line=paketle_done voice=no
+SUNA line=kasa_sat_start voice=no
+SUNA line=kasa_sat_done voice=no
+SUNA line=odun_start voice=no
+SUNA line=odun_done voice=no
+SUNA line=yapi_start voice=no
+SUNA line=yapi_done voice=no

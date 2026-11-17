@@ -1,0 +1,748 @@
+{
+ "limits": {
+  "true_peak_dbtp": -1.0,
+  "clip_run": 3,
+  "silence_dbfs": -50.0,
+  "lead_silence_s": {
+   "sfx": 0.03,
+   "loop": 0.25,
+   "voice": 0.3,
+   "music": 0.5
+  },
+  "tail_silence_s": {
+   "sfx": 0.25,
+   "loop": 0.25,
+   "voice": 0.6,
+   "music": 2.0
+  },
+  "duration_s": {
+   "sfx": [
+    0.1,
+    30.0
+   ],
+   "ui": [
+    0.03,
+    1.2
+   ],
+   "loop": [
+    1.0,
+    30.0
+   ],
+   "voice": [
+    0.4,
+    15.0
+   ],
+   "music_day": [
+    120.0,
+    240.0
+   ],
+   "music_kabarma": [
+    60.0,
+    180.0
+   ],
+   "music": [
+    30.0,
+    600.0
+   ]
+  },
+  "seam_level_db": 3.0,
+  "seam_jump": 6.0,
+  "sfx_lufs_window": [
+   -26.0,
+   -10.0
+  ],
+  "music_lufs_window": [
+   -20.0,
+   -12.0
+  ],
+  "voice_over_sfx_db": 3.0,
+  "voice_over_sfx_tol": 2.0,
+  "centroid_ratio": 2.5,
+  "tempo_tol": 0.03,
+  "layer_offset_ms": 15.0
+ },
+ "summary": {
+  "layer_offsets_ms": {},
+  "files": 28,
+  "fail": 7,
+  "warn": 22,
+  "passed": 23
+ },
+ "results": [
+  {
+   "file": "game/assets/audio/music/kabarma_night.mp3",
+   "kind": "music_kabarma",
+   "id": "kabarma_night",
+   "group": "muzik",
+   "loop": true,
+   "duration_s": 90.024,
+   "lufs_i": -11.9,
+   "true_peak_dbtp": -0.2,
+   "lufs_m_max": -10.9,
+   "sample_peak_dbfs": -0.8,
+   "clipped_runs": 0,
+   "lead_silence_s": 0.007,
+   "tail_silence_s": 0.0,
+   "rms100_dbfs": -10.8,
+   "centroid_hz": 2424.6049999999996,
+   "seam_level_db": 5.32,
+   "seam_jump": 0.22,
+   "tempo_bpm": 119.9,
+   "checks": [
+    {
+     "level": "KALDI",
+     "check": "tepe",
+     "msg": "gercek tepe -0.2 dBTP > -1.0"
+    },
+    {
+     "level": "KALDI",
+     "check": "dikis_duzey",
+     "msg": "bas/son duzey farki 5.32 dB"
+    },
+    {
+     "level": "UYARI",
+     "check": "yukseklik",
+     "msg": "-11.9 LUFS, secilen aralik -20.0..-12.0"
+    }
+   ]
+  },
+  {
+   "file": "game/assets/audio/sfx/beam_loop.mp3",
+   "kind": "loop",
+   "id": "kazma_isini",
+   "group": "capa",
+   "loop": true,
+   "duration_s": 2.0,
+   "lufs_i": -16.5,
+   "true_peak_dbtp": -8.0,
+   "lufs_m_max": -16.1,
+   "sample_peak_dbfs": -11.17,
+   "clipped_runs": 0,
+   "lead_silence_s": 0.0,
+   "tail_silence_s": 0.0,
+   "rms100_dbfs": -24.3,
+   "centroid_hz": 6327.45,
+   "seam_level_db": 0.53,
+   "seam_jump": 0.42,
+   "checks": []
+  },
+  {
+   "file": "game/assets/audio/sfx/hit.mp3",
+   "kind": "sfx",
+   "id": "isabet_kesme",
+   "group": "silah",
+   "loop": false,
+   "duration_s": 0.18,
+   "lufs_i": null,
+   "true_peak_dbtp": -0.7,
+   "lufs_m_max": null,
+   "sample_peak_dbfs": -1.05,
+   "clipped_runs": 0,
+   "lead_silence_s": 0.011,
+   "tail_silence_s": 0.03,
+   "rms100_dbfs": -16.5,
+   "centroid_hz": 3270.3199999999997,
+   "checks": [
+    {
+     "level": "KALDI",
+     "check": "tepe",
+     "msg": "gercek tepe -0.7 dBTP > -1.0"
+    },
+    {
+     "level": "UYARI",
+     "check": "yukseklik",
+     "msg": "400 ms'den kisa: LUFS olculemez, en yuksek 100 ms RMS -16.5 dBFS"
+    }
+   ]
+  },
+  {
+   "file": "game/assets/audio/sfx/levelup.mp3",
+   "kind": "sfx",
+   "id": "seviye_atlama",
+   "group": "kart",
+   "loop": false,
+   "duration_s": 0.85,
+   "lufs_i": -15.6,
+   "true_peak_dbtp": -6.7,
+   "lufs_m_max": -13.8,
+   "sample_peak_dbfs": -9.65,
+   "clipped_runs": 0,
+   "lead_silence_s": 0.0,
+   "tail_silence_s": 0.098,
+   "rms100_dbfs": -19.2,
+   "centroid_hz": 3251.77,
+   "checks": []
+  },
+  {
+   "file": "game/assets/audio/sfx/nailgun.mp3",
+   "kind": "sfx",
+   "id": "atis_civi",
+   "group": "silah",
+   "loop": false,
+   "duration_s": 0.3,
+   "lufs_i": null,
+   "true_peak_dbtp": -1.1,
+   "lufs_m_max": null,
+   "sample_peak_dbfs": -2.83,
+   "clipped_runs": 0,
+   "lead_silence_s": 0.0,
+   "tail_silence_s": 0.044,
+   "rms100_dbfs": -22.1,
+   "centroid_hz": 6548.35,
+   "checks": [
+    {
+     "level": "UYARI",
+     "check": "yukseklik",
+     "msg": "400 ms'den kisa: LUFS olculemez, en yuksek 100 ms RMS -22.1 dBFS"
+    }
+   ]
+  },
+  {
+   "file": "game/assets/audio/sfx/pickup.mp3",
+   "kind": "sfx",
+   "id": "parca_emilis",
+   "group": "capa",
+   "loop": false,
+   "duration_s": 0.48,
+   "lufs_i": -19.5,
+   "true_peak_dbtp": -1.6,
+   "lufs_m_max": -19.5,
+   "sample_peak_dbfs": -2.1,
+   "clipped_runs": 0,
+   "lead_silence_s": 0.04,
+   "tail_silence_s": 0.033,
+   "rms100_dbfs": -16.6,
+   "centroid_hz": 3017.06,
+   "checks": [
+    {
+     "level": "KALDI",
+     "check": "bas_sessizlik",
+     "msg": "0.040 sn > 0.03"
+    }
+   ]
+  },
+  {
+   "file": "game/assets/audio/sfx/place.mp3",
+   "kind": "sfx",
+   "id": "parca_yerlesme",
+   "group": "yapi",
+   "loop": false,
+   "duration_s": 0.6,
+   "lufs_i": -18.4,
+   "true_peak_dbtp": -1.2,
+   "lufs_m_max": -15.0,
+   "sample_peak_dbfs": -2.24,
+   "clipped_runs": 0,
+   "lead_silence_s": 0.03,
+   "tail_silence_s": 0.0,
+   "rms100_dbfs": -11.4,
+   "centroid_hz": 3874.79,
+   "checks": []
+  },
+  {
+   "file": "game/assets/audio/sfx/pop.mp3",
+   "kind": "sfx",
+   "id": "kabarmis_patlama",
+   "group": "yaratik",
+   "loop": false,
+   "duration_s": 0.5,
+   "lufs_i": -12.5,
+   "true_peak_dbtp": -0.9,
+   "lufs_m_max": -11.7,
+   "sample_peak_dbfs": -2.08,
+   "clipped_runs": 0,
+   "lead_silence_s": 0.006,
+   "tail_silence_s": 0.035,
+   "rms100_dbfs": -13.3,
+   "centroid_hz": 4229.32,
+   "checks": [
+    {
+     "level": "KALDI",
+     "check": "tepe",
+     "msg": "gercek tepe -0.9 dBTP > -1.0"
+    }
+   ]
+  },
+  {
+   "file": "game/assets/audio/sfx/rocket.mp3",
+   "kind": "sfx",
+   "id": "kargo_roketi",
+   "group": "istasyon",
+   "loop": false,
+   "duration_s": 1.67,
+   "lufs_i": -18.6,
+   "true_peak_dbtp": -3.2,
+   "lufs_m_max": -16.2,
+   "sample_peak_dbfs": -6.18,
+   "clipped_runs": 0,
+   "lead_silence_s": 0.001,
+   "tail_silence_s": 0.061,
+   "rms100_dbfs": -17.3,
+   "centroid_hz": 3120.56,
+   "checks": []
+  },
+  {
+   "file": "game/assets/audio/sfx/siren.mp3",
+   "kind": "sfx",
+   "id": "siren",
+   "group": "kabarma",
+   "loop": false,
+   "duration_s": 2.900658,
+   "lufs_i": -9.0,
+   "true_peak_dbtp": -4.0,
+   "lufs_m_max": -7.9,
+   "sample_peak_dbfs": -4.17,
+   "clipped_runs": 0,
+   "lead_silence_s": 0.011,
+   "tail_silence_s": 0.087,
+   "rms100_dbfs": -10.9,
+   "centroid_hz": 1905.12,
+   "checks": [
+    {
+     "level": "UYARI",
+     "check": "yukseklik",
+     "msg": "en yuksek anlik -7.9 LUFS, secilen aralik -26.0..-10.0"
+    }
+   ]
+  },
+  {
+   "file": "game/assets/audio/sfx/swell.mp3",
+   "kind": "sfx",
+   "id": "sisme",
+   "group": "kabarma",
+   "loop": false,
+   "duration_s": 1.150454,
+   "lufs_i": -14.8,
+   "true_peak_dbtp": -5.0,
+   "lufs_m_max": -12.4,
+   "sample_peak_dbfs": -7.33,
+   "clipped_runs": 0,
+   "lead_silence_s": 0.01,
+   "tail_silence_s": 0.0,
+   "rms100_dbfs": -18.5,
+   "centroid_hz": 4114.93,
+   "checks": []
+  },
+  {
+   "file": "game/assets/audio/sfx/telsiz_mandali_1.mp3",
+   "kind": "ui",
+   "id": "telsiz_mandali",
+   "group": "arayuz",
+   "loop": false,
+   "duration_s": 0.095986,
+   "lufs_i": null,
+   "true_peak_dbtp": -3.5,
+   "lufs_m_max": null,
+   "sample_peak_dbfs": -4.09,
+   "clipped_runs": 0,
+   "lead_silence_s": 0.0,
+   "tail_silence_s": 0.002,
+   "rms100_dbfs": -22.8,
+   "centroid_hz": 7498.48,
+   "checks": [
+    {
+     "level": "UYARI",
+     "check": "yukseklik",
+     "msg": "400 ms'den kisa: LUFS olculemez, en yuksek 100 ms RMS -22.8 dBFS"
+    },
+    {
+     "level": "UYARI",
+     "check": "spektrum",
+     "msg": "agirlik merkezi 7498 Hz, grup 'arayuz' ortancasi 1529 Hz"
+    }
+   ]
+  },
+  {
+   "file": "game/assets/audio/sfx/telsiz_mandali_2.mp3",
+   "kind": "ui",
+   "id": "telsiz_mandali",
+   "group": "arayuz",
+   "loop": false,
+   "duration_s": 0.075986,
+   "lufs_i": null,
+   "true_peak_dbtp": -2.5,
+   "lufs_m_max": null,
+   "sample_peak_dbfs": -3.72,
+   "clipped_runs": 0,
+   "lead_silence_s": 0.0,
+   "tail_silence_s": 0.002,
+   "rms100_dbfs": -21.3,
+   "centroid_hz": 7125.355,
+   "checks": [
+    {
+     "level": "UYARI",
+     "check": "yukseklik",
+     "msg": "400 ms'den kisa: LUFS olculemez, en yuksek 100 ms RMS -21.3 dBFS"
+    },
+    {
+     "level": "UYARI",
+     "check": "spektrum",
+     "msg": "agirlik merkezi 7125 Hz, grup 'arayuz' ortancasi 1529 Hz"
+    }
+   ]
+  },
+  {
+   "file": "game/assets/audio/sfx/telsiz_mandali_3.mp3",
+   "kind": "ui",
+   "id": "telsiz_mandali",
+   "group": "arayuz",
+   "loop": false,
+   "duration_s": 0.115986,
+   "lufs_i": null,
+   "true_peak_dbtp": -2.7,
+   "lufs_m_max": null,
+   "sample_peak_dbfs": -5.01,
+   "clipped_runs": 0,
+   "lead_silence_s": 0.0,
+   "tail_silence_s": 0.001,
+   "rms100_dbfs": -22.6,
+   "centroid_hz": 7442.46,
+   "checks": [
+    {
+     "level": "UYARI",
+     "check": "yukseklik",
+     "msg": "400 ms'den kisa: LUFS olculemez, en yuksek 100 ms RMS -22.6 dBFS"
+    },
+    {
+     "level": "UYARI",
+     "check": "spektrum",
+     "msg": "agirlik merkezi 7442 Hz, grup 'arayuz' ortancasi 1529 Hz"
+    }
+   ]
+  },
+  {
+   "file": "game/assets/audio/sfx/till.mp3",
+   "kind": "sfx",
+   "id": "toprak_surme",
+   "group": "capa",
+   "loop": false,
+   "duration_s": 0.45,
+   "lufs_i": -18.6,
+   "true_peak_dbtp": -5.1,
+   "lufs_m_max": -18.6,
+   "sample_peak_dbfs": -6.29,
+   "clipped_runs": 0,
+   "lead_silence_s": 0.0,
+   "tail_silence_s": 0.034,
+   "rms100_dbfs": -21.6,
+   "centroid_hz": 4685.745000000001,
+   "checks": []
+  },
+  {
+   "file": "game/assets/audio/sfx/ui_baslik_carki_1.mp3",
+   "kind": "ui",
+   "id": "ui_baslik_carki",
+   "group": "arayuz",
+   "loop": false,
+   "duration_s": 0.09,
+   "lufs_i": null,
+   "true_peak_dbtp": -3.2,
+   "lufs_m_max": null,
+   "sample_peak_dbfs": -3.25,
+   "clipped_runs": 0,
+   "lead_silence_s": 0.0,
+   "tail_silence_s": 0.0,
+   "rms100_dbfs": -16.3,
+   "centroid_hz": 5577.35,
+   "checks": [
+    {
+     "level": "UYARI",
+     "check": "yukseklik",
+     "msg": "400 ms'den kisa: LUFS olculemez, en yuksek 100 ms RMS -16.3 dBFS"
+    },
+    {
+     "level": "UYARI",
+     "check": "spektrum",
+     "msg": "agirlik merkezi 5577 Hz, grup 'arayuz' ortancasi 1529 Hz"
+    }
+   ]
+  },
+  {
+   "file": "game/assets/audio/sfx/ui_baslik_carki_2.mp3",
+   "kind": "ui",
+   "id": "ui_baslik_carki",
+   "group": "arayuz",
+   "loop": false,
+   "duration_s": 0.09,
+   "lufs_i": null,
+   "true_peak_dbtp": -3.2,
+   "lufs_m_max": null,
+   "sample_peak_dbfs": -3.73,
+   "clipped_runs": 0,
+   "lead_silence_s": 0.0,
+   "tail_silence_s": 0.001,
+   "rms100_dbfs": -16.4,
+   "centroid_hz": 4682.57,
+   "checks": [
+    {
+     "level": "UYARI",
+     "check": "yukseklik",
+     "msg": "400 ms'den kisa: LUFS olculemez, en yuksek 100 ms RMS -16.4 dBFS"
+    },
+    {
+     "level": "UYARI",
+     "check": "spektrum",
+     "msg": "agirlik merkezi 4683 Hz, grup 'arayuz' ortancasi 1529 Hz"
+    }
+   ]
+  },
+  {
+   "file": "game/assets/audio/sfx/ui_baslik_carki_3.mp3",
+   "kind": "ui",
+   "id": "ui_baslik_carki",
+   "group": "arayuz",
+   "loop": false,
+   "duration_s": 0.09,
+   "lufs_i": null,
+   "true_peak_dbtp": -3.0,
+   "lufs_m_max": null,
+   "sample_peak_dbfs": -2.77,
+   "clipped_runs": 0,
+   "lead_silence_s": 0.0,
+   "tail_silence_s": 0.0,
+   "rms100_dbfs": -15.7,
+   "centroid_hz": 6121.885,
+   "checks": [
+    {
+     "level": "UYARI",
+     "check": "yukseklik",
+     "msg": "400 ms'den kisa: LUFS olculemez, en yuksek 100 ms RMS -15.7 dBFS"
+    },
+    {
+     "level": "UYARI",
+     "check": "spektrum",
+     "msg": "agirlik merkezi 6122 Hz, grup 'arayuz' ortancasi 1529 Hz"
+    }
+   ]
+  },
+  {
+   "file": "game/assets/audio/sfx/ui_hata_1.mp3",
+   "kind": "ui",
+   "id": "ui_hata",
+   "group": "arayuz",
+   "loop": false,
+   "duration_s": 0.224989,
+   "lufs_i": null,
+   "true_peak_dbtp": -3.0,
+   "lufs_m_max": null,
+   "sample_peak_dbfs": -3.01,
+   "clipped_runs": 0,
+   "lead_silence_s": 0.0,
+   "tail_silence_s": 0.0,
+   "rms100_dbfs": -10.4,
+   "centroid_hz": 692.2605,
+   "checks": [
+    {
+     "level": "UYARI",
+     "check": "yukseklik",
+     "msg": "400 ms'den kisa: LUFS olculemez, en yuksek 100 ms RMS -10.4 dBFS"
+    }
+   ]
+  },
+  {
+   "file": "game/assets/audio/sfx/ui_hata_2.mp3",
+   "kind": "ui",
+   "id": "ui_hata",
+   "group": "arayuz",
+   "loop": false,
+   "duration_s": 0.224989,
+   "lufs_i": null,
+   "true_peak_dbtp": -3.0,
+   "lufs_m_max": null,
+   "sample_peak_dbfs": -2.99,
+   "clipped_runs": 0,
+   "lead_silence_s": 0.0,
+   "tail_silence_s": 0.0,
+   "rms100_dbfs": -10.3,
+   "centroid_hz": 677.462,
+   "checks": [
+    {
+     "level": "UYARI",
+     "check": "yukseklik",
+     "msg": "400 ms'den kisa: LUFS olculemez, en yuksek 100 ms RMS -10.3 dBFS"
+    }
+   ]
+  },
+  {
+   "file": "game/assets/audio/sfx/ui_hata_3.mp3",
+   "kind": "ui",
+   "id": "ui_hata",
+   "group": "arayuz",
+   "loop": false,
+   "duration_s": 0.224989,
+   "lufs_i": null,
+   "true_peak_dbtp": -3.0,
+   "lufs_m_max": null,
+   "sample_peak_dbfs": -2.98,
+   "clipped_runs": 0,
+   "lead_silence_s": 0.0,
+   "tail_silence_s": 0.0,
+   "rms100_dbfs": -10.4,
+   "centroid_hz": 732.7115,
+   "checks": [
+    {
+     "level": "UYARI",
+     "check": "yukseklik",
+     "msg": "400 ms'den kisa: LUFS olculemez, en yuksek 100 ms RMS -10.4 dBFS"
+    }
+   ]
+  },
+  {
+   "file": "game/assets/audio/sfx/ui_odak_1.mp3",
+   "kind": "ui",
+   "id": "ui_odak",
+   "group": "arayuz",
+   "loop": false,
+   "duration_s": 0.07,
+   "lufs_i": null,
+   "true_peak_dbtp": -3.0,
+   "lufs_m_max": null,
+   "sample_peak_dbfs": -3.12,
+   "clipped_runs": 0,
+   "lead_silence_s": 0.0,
+   "tail_silence_s": 0.001,
+   "rms100_dbfs": -14.7,
+   "centroid_hz": 1464.495,
+   "checks": [
+    {
+     "level": "UYARI",
+     "check": "yukseklik",
+     "msg": "400 ms'den kisa: LUFS olculemez, en yuksek 100 ms RMS -14.7 dBFS"
+    }
+   ]
+  },
+  {
+   "file": "game/assets/audio/sfx/ui_odak_2.mp3",
+   "kind": "ui",
+   "id": "ui_odak",
+   "group": "arayuz",
+   "loop": false,
+   "duration_s": 0.07,
+   "lufs_i": null,
+   "true_peak_dbtp": -3.1,
+   "lufs_m_max": null,
+   "sample_peak_dbfs": -3.21,
+   "clipped_runs": 0,
+   "lead_silence_s": 0.0,
+   "tail_silence_s": 0.001,
+   "rms100_dbfs": -14.6,
+   "centroid_hz": 1528.895,
+   "checks": [
+    {
+     "level": "UYARI",
+     "check": "yukseklik",
+     "msg": "400 ms'den kisa: LUFS olculemez, en yuksek 100 ms RMS -14.6 dBFS"
+    }
+   ]
+  },
+  {
+   "file": "game/assets/audio/sfx/ui_odak_3.mp3",
+   "kind": "ui",
+   "id": "ui_odak",
+   "group": "arayuz",
+   "loop": false,
+   "duration_s": 0.07,
+   "lufs_i": null,
+   "true_peak_dbtp": -3.0,
+   "lufs_m_max": null,
+   "sample_peak_dbfs": -3.16,
+   "clipped_runs": 0,
+   "lead_silence_s": 0.0,
+   "tail_silence_s": 0.001,
+   "rms100_dbfs": -14.9,
+   "centroid_hz": 1617.8,
+   "checks": [
+    {
+     "level": "UYARI",
+     "check": "yukseklik",
+     "msg": "400 ms'den kisa: LUFS olculemez, en yuksek 100 ms RMS -14.9 dBFS"
+    }
+   ]
+  },
+  {
+   "file": "game/assets/audio/sfx/ui_onay_1.mp3",
+   "kind": "ui",
+   "id": "ui_onay",
+   "group": "arayuz",
+   "loop": false,
+   "duration_s": 0.424989,
+   "lufs_i": -15.2,
+   "true_peak_dbtp": -3.0,
+   "lufs_m_max": -15.2,
+   "sample_peak_dbfs": -3.04,
+   "clipped_runs": 0,
+   "lead_silence_s": 0.0,
+   "tail_silence_s": 0.0,
+   "rms100_dbfs": -11.7,
+   "centroid_hz": 863.69,
+   "checks": []
+  },
+  {
+   "file": "game/assets/audio/sfx/ui_onay_2.mp3",
+   "kind": "ui",
+   "id": "ui_onay",
+   "group": "arayuz",
+   "loop": false,
+   "duration_s": 0.424989,
+   "lufs_i": -14.5,
+   "true_peak_dbtp": -3.0,
+   "lufs_m_max": -14.5,
+   "sample_peak_dbfs": -3.0,
+   "clipped_runs": 0,
+   "lead_silence_s": 0.0,
+   "tail_silence_s": 0.0,
+   "rms100_dbfs": -11.0,
+   "centroid_hz": 911.604,
+   "checks": []
+  },
+  {
+   "file": "game/assets/audio/sfx/ui_onay_3.mp3",
+   "kind": "ui",
+   "id": "ui_onay",
+   "group": "arayuz",
+   "loop": false,
+   "duration_s": 0.424989,
+   "lufs_i": -15.2,
+   "true_peak_dbtp": -3.0,
+   "lufs_m_max": -15.2,
+   "sample_peak_dbfs": -3.03,
+   "clipped_runs": 0,
+   "lead_silence_s": 0.0,
+   "tail_silence_s": 0.0,
+   "rms100_dbfs": -11.7,
+   "centroid_hz": 864.214,
+   "checks": []
+  },
+  {
+   "file": "game/assets/audio/sfx/water.mp3",
+   "kind": "loop",
+   "id": "sulama",
+   "group": "capa",
+   "loop": true,
+   "duration_s": 0.5,
+   "lufs_i": -13.6,
+   "true_peak_dbtp": -2.7,
+   "lufs_m_max": -13.2,
+   "sample_peak_dbfs": -3.87,
+   "clipped_runs": 0,
+   "lead_silence_s": 0.0,
+   "tail_silence_s": 0.097,
+   "rms100_dbfs": -15.7,
+   "centroid_hz": 7178.445,
+   "seam_level_db": 26.19,
+   "seam_jump": 0.06,
+   "checks": [
+    {
+     "level": "KALDI",
+     "check": "sure",
+     "msg": "0.50 sn, beklenen 1.0-30.0"
+    },
+    {
+     "level": "KALDI",
+     "check": "dikis_duzey",
+     "msg": "bas/son duzey farki 26.19 dB"
+    }
+   ]
+  }
+ ]
+}
