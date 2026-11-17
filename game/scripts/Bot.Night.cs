@@ -14,7 +14,9 @@ public partial class Bot
     void StepNight()
     {
         var n = _d.Night;
-        if (n?.Offer != null && n.Offer.Age > 0.6f) _d.ChooseCard(0);
+        // --bot_card_delay=S: goruntu almak icin kart seridi S oyun saniyesi acik kalir (varsayilan 0,6; otomatik secim 20)
+        float delay = Main.Args.TryGetValue("bot_card_delay", out var cd) ? float.Parse(cd, System.Globalization.CultureInfo.InvariantCulture) : 0.6f;
+        if (n?.Offer != null && n.Offer.Age > delay) _d.ChooseCard(0);
         var z = Zipzip.All.Where(e => !e.Dead).OrderBy(e => e.GlobalPosition.DistanceTo(P.GlobalPosition)).FirstOrDefault();
         var home = _d.FarmCenter() + new Vector3(-2.5f, 0, -2.5f);
         if (z != null)

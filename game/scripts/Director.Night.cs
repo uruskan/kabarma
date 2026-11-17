@@ -45,6 +45,7 @@ public partial class Director
         n.WaveStarted += (i, w) =>
         {
             if (i == 0) Hud.Say(Data.Scenario.NightLines["wave"]);
+            if (i == 1) DebugShot($"kabarma_pano_gece{State.NightsStarted}", 2.5f);
             Hud.Big($"DALGA {i + 1}", Palette.MayaTeal, 2f);
             GD.Print($"NIGHT wave {i + 1} count={w.Count}");
         };
@@ -114,6 +115,7 @@ public partial class Director
         {
             _shownOffer = Night.Offer;
             Hud.ShowOffer(_shownOffer, Night);
+            if (_shownOffer != null) DebugShot($"kart_teklifi_gece{State.NightsStarted}", 0.5f);
         }
         // Tek oyuncuda secim sirasinda zaman %30'a yavaslar (GDD 15).
         _slowMo = _shownOffer != null ? Data.Cards.SlowMoScale : 1f;
@@ -164,10 +166,12 @@ public partial class Director
     void ShowHarvestReport()
     {
         _reportShown = true;
+        if (Hud.MenuOpen) Hud.HideMenu(); // rapor acik bir istasyon menusunun ya da envanterin ustune binmesin
         var r = State.BuildReport();
         bool first = !State.Orders.DefterOpen;
         State.Orders.OpenDefter(); // PLAN 1.4: ilk raporla Defter acilir
         Hud.ShowReport(r, first);
+        DebugShot($"hasat_raporu_gece{r.NightNumber}", 0.8f, holdBot: true);
         GD.Print($"REPORT shown night={r.NightNumber} kills={r.Kills} maya={r.Maya:0} level={r.Level} cards={string.Join(",", r.Cards.Select(c => c.Id + ":" + c.Rank))} swollen={r.SwollenTotal} eaten={r.CropsEaten} sold={r.SoldCredits} defter={first}");
     }
 

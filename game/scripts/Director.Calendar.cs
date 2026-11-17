@@ -32,9 +32,10 @@ public partial class Director
         State.Orders.StepDone += (chain, i) =>
         {
             var st = chain.Def.Steps[i];
+            GD.Print($"ORDER {chain.Def.Id} step={i + 1} done{(State.Orders.DefterOpen ? "" : " (defter kapali)")}");
+            if (!State.Orders.DefterOpen) return; // PLAN 1.4: Defter ilk geceden sonra acilir; oncesi sessizce sayilir
             Hud.Big($"DEFTER · {st.Goal}", Palette.CoopBlue.Lerp(Palette.OffWhite, 0.3f), 2.2f);
             Sfx.Play("levelup", null, -10f);
-            GD.Print($"ORDER {chain.Def.Id} step={i + 1} done");
         };
         DebugHudArgs();
     }
@@ -76,9 +77,33 @@ public partial class Director
         World.SetDay(idx == parts.Count - 1 ? k : 0f);
     }
 
+    readonly System.Collections.Generic.HashSet<string> _shotsTaken = new();
+
+    /// <summary>
+    /// --gecehud_shots: olay aninda (gercek saniye gecikmeyle) bir kez goruntu alir: progress/m1/gecehud/AD.png.
+    /// holdBot: bot goruntu alinana dek durur (raporu ertesi karede kapatmasin); oyun durumuna dokunmaz.
+    /// </summary>
+    public void DebugShot(string name, float delayReal = 0.5f, bool holdBot = false)
+    {
+        if (!Main.Args.ContainsKey("gecehud_shots") || !_shotsTaken.Add(name)) return;
+        bool held = holdBot && Bot != null && Bot.ProcessMode != ProcessModeEnum.Disabled;
+        if (held) Bot.ProcessMode = ProcessModeEnum.Disabled;
+        GetTree().CreateTimer(delayReal, true, false, true).Timeout += () =>
+        {
+            if (held) Bot.ProcessMode = ProcessModeEnum.Inherit;
+            var img = GetViewport().GetTexture().GetImage();
+            var dir = ProjectSettings.GlobalizePath("res://").TrimEnd('/') + "/../progress/m1/gecehud";
+            DirAccess.MakeDirRecursiveAbsolute(dir);
+            var path = $"{dir}/{name}.png";
+            img.SavePng(path);
+            GD.Print($"GECEHUD SHOT {path}");
+        };
+    }
+
     /// <summary>
     /// Goruntu ve sinama yardimcilari (komut satiri):
-    ///   --hudopen=bag:S | defter:S   S. oyun saniyesinde envanteri ya da Defter'i acar (3 sn sonra kapar)
+    ///   --gecehud_shots              olay aninda goruntu: gunduz panosu, kart teklifi, Kabarma panosu, rapor, envanter, Defter
+    ///   --hudopen=bag:S,defter:S     S. oyun saniyesinde envanteri ya da Defter'i acar (3 sn sonra kapar)
     ///   --clock=K                     takvim islerken saati gunun K kesrine alir (0..1)
     ///   --replay_at=S                 S. saniyede F1 dugmesinin yaptigini yapar (Kucuk Kabarma yeniden)
     /// </summary>
@@ -86,18 +111,25 @@ public partial class Director
     {
         static float F(string s) => float.Parse(s, CultureInfo.InvariantCulture);
         if (Main.Args.TryGetValue("hudopen", out var ho))
-        {
-            var p = ho.Split(':');
-            int page = p[0] == "defter" ? 1 : 0;
-            GetTree().CreateTimer(p.Length > 1 ? F(p[1]) : 3f).Timeout += () =>
+            foreach (var item in ho.Split(','))
             {
-                Hud.OpenInventory(page);
-                GetTree().CreateTimer(3.0).Timeout += () => Hud.HideMenu();
-            };
-        }
+                var p = item.Split(':');
+                int page = p[0] == "defter" ? 1 : 0;
+                GetTree().CreateTimer(p.Length > 1 ? F(p[1]) : 3f).Timeout += () =>
+                {
+                    Hud.OpenInventory(page);
+                    DebugShot(page == 1 ? "defter" : "envanter", 0.6f);
+                    GetTree().CreateTimer(3.0).Timeout += () => Hud.HideMenu();
+                };
+            }
         if (Main.Args.TryGetValue("clock", out var ck))
             State.Calendar.Morning += _ => { if (State.Calendar.Seconds == 0) State.Calendar.SetTimeOfDay(F(ck)); };
         if (Main.Args.ContainsKey("gecetest")) AddChild(new GeceHudTest(this) { Name = "GeceHudTest" }); // --test=gece
+        if (Main.Args.ContainsKey("gecehud_shots"))
+        {
+            Events.StepChanged += (_, to) => { if (to == "plant") DebugShot("gunduz_pano", 1.2f); if (to == "hasat") DebugShot("gunduz_pano_defter", 1.2f); };
+            State.Calendar.Dusk += _ => DebugShot("normal_gece", 0.35f);
+        }
         if (Main.Args.TryGetValue("replay_at", out var ra))
             GetTree().CreateTimer(F(ra)).Timeout += () => RestartKucukKabarma();
     }

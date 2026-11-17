@@ -304,7 +304,8 @@ public partial class Hud
             col.AddChild(L($"{i + 1}", 12, Palette.Warning, true));
             if (bid != null)
             {
-                var nm = L(ItemNames.Of(bid), 12, Palette.OffWhite, true); nm.ClipText = true; nm.CustomMinimumSize = new Vector2(66, 0);
+                var bn = ItemNames.Of(bid);
+                var nm = L(bn, bn.Length > 9 ? 10 : 12, Palette.OffWhite, true); nm.ClipText = true; nm.TextOverrunBehavior = TextServer.OverrunBehavior.TrimEllipsis; nm.CustomMinimumSize = new Vector2(66, 0);
                 col.AddChild(nm);
                 col.AddChild(L(inv.Count(bid).ToString(), 14, Palette.Warning, true));
             }
@@ -352,8 +353,9 @@ public partial class Hud
         cnt.HorizontalAlignment = HorizontalAlignment.Right;
         row.AddChild(cnt);
         v.AddChild(row);
-        var nm = L(name, 12, Palette.OffWhite, true);
+        var nm = L(name, name.Length > 11 ? 10 : 12, Palette.OffWhite, true); // uzun ad kucuk yazilir, sigmazsa "…"
         nm.ClipText = true;
+        nm.TextOverrunBehavior = TextServer.OverrunBehavior.TrimEllipsis;
         nm.CustomMinimumSize = new Vector2(CellW - 12, 0);
         v.AddChild(nm);
         if (onBelt) v.AddChild(L("kemerde", 10, Palette.MayaTeal, true));

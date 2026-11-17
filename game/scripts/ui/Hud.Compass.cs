@@ -30,7 +30,7 @@ public partial class Hud
 
         _topCenter = new VBoxContainer { Alignment = BoxContainer.AlignmentMode.Begin };
         _topCenter.AddThemeConstantOverride("separation", 2);
-        _compass = new CompassBar { CustomMinimumSize = new Vector2(520, 48), Font = _bold };
+        _compass = new CompassBar { CustomMinimumSize = new Vector2(480, 48), Font = _bold, SizeFlagsHorizontal = Control.SizeFlags.ShrinkCenter };
         _topCenter.AddChild(_compass);
         _stepLine = L("", 21, Palette.OffWhite, true);
         _stepLine.HorizontalAlignment = HorizontalAlignment.Center;
@@ -54,6 +54,10 @@ public partial class Hud
         _topCenter.Position = new Vector2((vp.X - _topCenter.Size.X) / 2f, 12);
         bool modal = _report.Visible || InventoryOpen;
         _topCenter.Visible = !modal;
+        // Ipucu satiri ortali, takili baslik kutusunun altinda (eski yeri kutunun ustune biniyordu).
+        _hint.HorizontalAlignment = HorizontalAlignment.Center;
+        _hint.Size = new Vector2(vp.X, _hint.Size.Y);
+        _hint.Position = new Vector2(0, vp.Y / 2f + 112);
         UpdateCompass();
         UpdateStepLines();
         UpdateKabarmaHud(vp);  // Hud.Night.cs
@@ -87,7 +91,7 @@ public partial class Hud
         }
         if (step != null)
         {
-            _stepLine.Text = step.Goal + (step.Target > 1 ? $"   {s.Scenario.Progress}/{step.Target}" : "");
+            _stepLine.Text = GoalText(step.Goal) + (step.Target > 1 ? $"   {s.Scenario.Progress}/{step.Target}" : "");
             _defterLine.Text = s.Orders.DefterOpen && orderLine != "" ? "DEFTER · " + orderLine : "";
         }
         else
@@ -97,6 +101,14 @@ public partial class Hud
         }
         _defterLine.Visible = _defterLine.Text != "";
     }
+
+    static readonly System.Text.RegularExpressions.Regex ActToken = new(@"\{act:([a-z0-9_]+)\}");
+
+    /// <summary>
+    /// Adim metni ekranda. ilkgun/girdi dallari adim metnine {act:eylem} yer tutucusu koyar; birlesince bu tek satir
+    /// onlarin genisleticisine (ActText.Plain / Controls.Expand) baglanir. O zamana dek yer tutucu cig gorunmesin: [eylem].
+    /// </summary>
+    static string GoalText(string goal) => ActToken.Replace(goal, "[$1]");
 }
 
 /// <summary>Ust ortadaki yatay pusula serit: K/D/G/B, Ocak ve etkin hedef isaretleri (SANAT-SES 8.1).</summary>
@@ -151,13 +163,20 @@ public partial class CompassBar : Control
             var sz = font.GetStringSize(label, HorizontalAlignment.Left, -1, size);
             DrawString(font, new Vector2(x - sz.X / 2f, 17), label, HorizontalAlignment.Left, -1, size, col);
         }
-        if (Home is Vector3 home) Marker(font, home, Palette.Warning, "Ocak", true);
-        if (Target is Vector3 t) Marker(font, t, Palette.MayaTeal, TargetName, false);
+        // Hedef once (adi saginda); Ocak'in adi solunda, hedefin adina binerse saga, orada da binerse yazilmaz.
+        // Iki isaret ayni yondeyse adlar ikisinin de disina yazilir (isaret ada binmesin).
+        float? xh = Home is Vector3 hp ? X(Bearing(hp), out _) : null;
+        float? xt = Target is Vector3 tp ? X(Bearing(tp), out _) : null;
+        Rect2? taken = null;
+        if (Target is Vector3 t) taken = Marker(font, t, Palette.MayaTeal, TargetName, false, leftLabel: false, null, xh);
+        if (Home is Vector3 home) Marker(font, home, Palette.Warning, "Ocak", true, leftLabel: true, taken, xt);
     }
 
-    void Marker(Font font, Vector3 at, Color c, string name, bool diamond)
+    /// <summary>Isareti ve adini cizer; adin kapladigi alani dondurur (avoid ile cakisirsa ad yazilmaz).</summary>
+    Rect2? Marker(Font font, Vector3 at, Color c, string name, bool diamond, bool leftLabel, Rect2? avoid, float? otherX)
     {
         float x = X(Bearing(at), out bool inside);
+        float ox = otherX is float o && Mathf.Abs(o - x) < 18f ? o : x; // yakindaki obur isaret
         var flat = at - Origin; flat.Y = 0;
         int dist = Mathf.RoundToInt(flat.Length());
         float top = Band + 1;
@@ -173,9 +192,22 @@ public partial class CompassBar : Control
         }
         string text = string.IsNullOrEmpty(name) ? $"{dist} m" : $"{name} · {dist} m";
         var sz = font.GetStringSize(text, HorizontalAlignment.Left, -1, 12);
-        bool left = x + 12 + sz.X > Size.X;
-        float tx = left ? x - 12 - sz.X : x + 12;
-        DrawString(font, new Vector2(tx + 1, top + 13), text, HorizontalAlignment.Left, -1, 12, new Color(Palette.NightDeep, 0.85f));
-        DrawString(font, new Vector2(tx, top + 12), text, HorizontalAlignment.Left, -1, 12, c);
+        float lo = Mathf.Min(x, ox), hi = Mathf.Max(x, ox);
+        bool left = leftLabel ? lo - 12 - sz.X >= 0 : hi + 12 + sz.X > Size.X;
+        Rect2 At(bool l) => new(l ? lo - 12 - sz.X : hi + 12, top, sz.X, 14);
+        // Ad ne obur adin ne de obur isaretin ustune binsin: once tercih edilen yan, sonra obur yan.
+        Rect2? icon = otherX is float oi ? new Rect2(oi - 8, top, 16, 14) : null;
+        bool Bad(Rect2 r) => r.Position.X < 0 || r.End.X > Size.X
+            || (avoid is Rect2 a && r.Grow(4).Intersects(a)) || (icon is Rect2 ic && r.Grow(2).Intersects(ic));
+        Rect2 rect = At(left);
+        if (Bad(rect))
+        {
+            var alt = At(!left);
+            if (!Bad(alt)) rect = alt;
+            else if (avoid != null) return null; // ikinci ad (Ocak) yer bulamazsa yazilmaz; hedefin adi her zaman yazilir
+        }
+        DrawString(font, new Vector2(rect.Position.X + 1, top + 13), text, HorizontalAlignment.Left, -1, 12, new Color(Palette.NightDeep, 0.85f));
+        DrawString(font, new Vector2(rect.Position.X, top + 12), text, HorizontalAlignment.Left, -1, 12, c);
+        return rect;
     }
 }

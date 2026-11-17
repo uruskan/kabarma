@@ -51,6 +51,7 @@ public partial class Hud
             var id = s.Belt.At(i);
             int n = id == null ? 0 : s.Backpack.Count(id);
             _beltName[i].Text = id == null ? "" : ItemNames.Of(id);
+            _beltName[i].AddThemeFontSizeOverride("font_size", _beltName[i].Text.Length > 10 ? 12 : 15); // uzun ad kirpilmasin
             _beltCount[i].Text = id == null ? "" : n.ToString();
             _beltName[i].Modulate = n > 0 || id == null ? Colors.White : new Color(1, 1, 1, 0.4f);
         }

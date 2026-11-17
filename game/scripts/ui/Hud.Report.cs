@@ -16,7 +16,9 @@ public partial class Hud
 
     public void ShowReport(HarvestReport r, bool defterJustOpened)
     {
-        foreach (var c in _report.GetChildren()) c.QueueFree();
+        foreach (var c in _report.GetChildren()) { _report.RemoveChild(c); c.QueueFree(); }
+        // Onceki raporun boyunda kalmasin (ilk gecenin Defter bolumu uzundur): icerige gore kucul.
+        Callable.From(() => _report.Size = Vector2.Zero).CallDeferred();
         var v = new VBoxContainer { CustomMinimumSize = new Vector2(660, 0) };
         v.AddThemeConstantOverride("separation", 5);
         v.AddChild(L($"HASAT RAPORU · Gece {r.NightNumber}", 34, Palette.CoopBlue, true));
