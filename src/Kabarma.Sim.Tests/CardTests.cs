@@ -208,12 +208,12 @@ public class CardTests
         Assert.Equal(2, n.Stats.Projectiles);
     }
 
-    /// <summary>Bir seviye atlatacak kadar Oz verir (oldurmeyle).</summary>
+    /// <summary>Bir seviye atlatacak kadar Oz verir (oyuncunun ayaginda oldurup toplayarak).</summary>
     internal static void LevelUp(KabarmaNight n, GameData d)
     {
         var zip = d.Creature("zipzip");
         int lv = n.Level;
-        for (int i = 0; i < 200 && n.Level == lv; i++) n.OnKill(zip);
+        for (int i = 0; i < 200 && n.Level == lv; i++) { n.OnKill(zip, 0, 0); n.CollectNear(0, 0); }
     }
 
     internal static void RunToDawn(KabarmaNight n, GameData d)

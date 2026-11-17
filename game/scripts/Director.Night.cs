@@ -57,6 +57,8 @@ public partial class Director
         };
         n.CardTaken += (c, r) => { Hud.Big($"{c.Name} {(r > 1 ? "· Rütbe " + r : "")}", Palette.MayaViolet, 1.6f); GD.Print($"NIGHT card {c.Id} rank={r}"); Events.RaiseCardPicked(c.Id); };
         n.DawnNow += BeginDawn;
+        n.OzCollected += OnOzCollected; // Director.Oz.cs (M1 karari 19)
+        ClearOzViews();
         _wasDown = Player.Down;
         Capa.Select(Capa.Head.Tirpan);
         Sfx.Play("siren", null, -2f);
@@ -78,6 +80,7 @@ public partial class Director
         Zipzip.All.Clear();
         Gidak.Swell(false);
         Pofuduk.Swell(false);
+        ClearOzViews(); // Sim safakta yerde kalan Oz'u saydi; ucuslar zaten basladi
         Sfx.Music(false);
         Hud.ShowOffer(null, Night);
         _shownOffer = null;
@@ -102,8 +105,8 @@ public partial class Director
     {
         Events.RaiseCreatureKilled(z.Def.Id, z.HasSac);
         if (Night == null || Night.Phase == NightPhase.Dawn) return;
-        Night.OnKill(z.Def);
-        Fx.FlyTo(z.Center, () => Player.BackpackPoint.GlobalPosition, Palette.MayaViolet, 0.1f);
+        var oz = Night.OnKill(z.Def, z.GlobalPosition.X, z.GlobalPosition.Z); // Oz yere duser (M1 karari 19)
+        DropOz(oz, z.Center);
         RefreshOffer();
     }
 
@@ -190,6 +193,7 @@ public partial class Director
                 n.Tick(dt);
                 if (n.Phase == NightPhase.Dawn) break;
                 Player.SpeedMult = n.Stats.MoveSpeed(1f); // Cevik: hiz +%8 / rutbe (ICERIK 8.1)
+                n.CollectNear(Player.GlobalPosition.X, Player.GlobalPosition.Z); // Miknatis yaricapi buyutur (M1 karari 19)
                 if (Player.Down && !_wasDown) n.RecordPlayerDown();
                 _wasDown = Player.Down;
                 int due = n.SpawnDue();

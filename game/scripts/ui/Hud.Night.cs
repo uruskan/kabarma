@@ -130,8 +130,10 @@ public partial class Hud
         float lo = lv == 0 ? 0 : night.Threshold(lv), hi = night.Threshold(lv + 1);
         bool capped = lv >= maxLv;
         _kOz.Value = capped ? 100 : Mathf.Clamp((night.Oz - lo) / (hi - lo) * 100f, 0, 100);
-        _kLevel.Text = capped ? $"ÖZ · Seviye {lv}/{maxLv} · dolu   ·   {night.Kills} kabarık söndü"
-                              : $"ÖZ {(int)night.Oz}/{(int)hi} · Seviye {lv}/{maxLv}   ·   {night.Kills} kabarık söndü";
+        // Yerdeki Oz (M1 karari 19): toplaninca ya da dalga bitince sayilir.
+        string ground = night.Motes.Count > 0 ? $"   ·   yerde {(int)night.OzOnGround} Öz" : "";
+        _kLevel.Text = capped ? $"ÖZ · Seviye {lv}/{maxLv} · dolu   ·   {night.Kills} kabarık söndü{ground}"
+                              : $"ÖZ {(int)night.Oz}/{(int)hi} · Seviye {lv}/{maxLv}   ·   {night.Kills} kabarık söndü{ground}";
 
         if (night.CardsCount != _stripCount) RebuildCardStrip(night);
         if (_offerTimer != null && IsInstanceValid(_offerTimer) && night.Offer != null)

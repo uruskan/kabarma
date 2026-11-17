@@ -18,6 +18,8 @@
   "levelExponent": 1.5,
   "gosteri": { "min": 1.0, "max": 5.0, "streakKills": 5, "streakWindow": 3.0, "streakBonus": 0.5, "decayPerSecond": 0.08 },
   "ozPerWeight": 10,
+  "_oz": "URETIM 6 M1 karari 19: Oz oldurulen dusmanin yerine duser (deger oldurme aninda: tur Oz degeri x Gosteri). ozPickupRadius icindeki Oz toplanir, Miknatis karti carpar (ICERIK 8.3: +%40). Dalga bitince ve safakta yerde kalan Oz oyuncuya ucar ve sayilir; kayip yok.",
+  "ozPickupRadius": 4,
   "mayaPerWeight": 2,
   "mayaKsFactor": 0.15,
   "hpGrowth": 1.15,

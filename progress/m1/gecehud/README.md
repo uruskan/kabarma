@@ -23,6 +23,8 @@ Görüntüler olay anında alınır (`--gecehud_shots`, `Director.Calendar.cs` `
 | `kart_teklifi_gece2.png`, `kabarma_pano_gece2.png` | F1'den yeniden başlatılan Küçük Kabarma (saat durur). |
 | `hasat_raporu_gece2.png` | Yeniden oynanan gecenin raporu, şafakta (GDD 14.1). Bot senaryoyu bitirdiği için bu gecede ateş etmez: kabarıkları Gıdak'ın tekmesi söndürür, bu yüzden "Verilen hasar" 0'dır (oyuncu hasarı sayılır). |
 
+Öz (URETIM 6 M1 kararı 19): öldürülen kabarığın yerine mor tane olarak düşer, 4 m içinde toplanır (Mıknatıs ×1,4), dalga sonunda ve şafakta kalanı oyuncuya uçar. Kabarma panosunda "yerde N Öz" yazar. Bot yürüyerek toplar (bot koşusunda 21 Öz'ün 18'i elle, 3'ü dalga sonunda).
+
 Gösteri bütün görüntülerde ×1,0: bot ilk gecede kabarıkları tek tek söndürüyor, 3 saniyede 5 öldürme serisine ulaşmıyor. Kural Sim testinde sınanıyor (`OrdersTests.Gosteri_rises_on_a_kill_streak...`).
 
 `test.log`: `tools/test.ps1` tam koşusu (derleme, Sim testleri, bot, inşa, gece testi). Gece testi kol yolunu gerçek `InputEventJoypadButton` olaylarıyla sınar (d-pad, LB/RB, X). Kolun A/B düğmeleri, `bag` ve `card_1..3` bu dalda bağlı değil (girdi akışı).

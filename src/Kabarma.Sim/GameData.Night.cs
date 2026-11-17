@@ -60,6 +60,8 @@ public sealed class KabarmaFile
     public float LevelExponent { get; set; }
     public GosteriDef Gosteri { get; set; } = new();
     public float OzPerWeight { get; set; } = 1f;
+    /// <summary>Yerdeki Oz'un toplanma yaricapi, metre (URETIM 6 M1 karari 19); Miknatis karti carpar.</summary>
+    public float OzPickupRadius { get; set; } = 4f;
     public float MayaPerWeight { get; set; }
     public float MayaKsFactor { get; set; }
     public float HpGrowth { get; set; }

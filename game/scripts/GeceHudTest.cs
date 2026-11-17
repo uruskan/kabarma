@@ -83,6 +83,7 @@ public partial class GeceHudTest : Node
             {
                 var n = d.Night;
                 if (n.Phase == NightPhase.Dawn) { Check(_firstOfferSeen, "ilk teklif gorulmedi"); Next(); break; }
+                if (n.Motes.Count > 0) _sawOz = true; // M1 karari 19: oldurmede Oz yere duser
                 if (n.Phase == NightPhase.Waves) KillAll();
                 if (n.Offer != null && n.Offer.Age > 0.2f)
                 {
@@ -106,6 +107,7 @@ public partial class GeceHudTest : Node
             {
                 var n = d.Night;
                 Check(n.Stats.IsBase, "safakta kart etkileri sonmedi");
+                Check(_sawOz && n.Motes.Count == 0 && n.Oz > 0, "Oz yere dusmedi ya da safakta yerde kaldi");
                 Check(Mathf.IsEqualApprox(d.Player.SpeedMult, 1f), "safakta oyuncu hizi tabana donmedi");
                 Check(n.CardsAtDawn.Any(c => c.Id == "catal"), "rapor listesinde Catal yok");
                 Check(s.Calendar.Running && s.Calendar.Day == s.Data.Calendar.FirstDay && s.Calendar.Part.Id == "sabah", "ilk safakta takvim baslamadi");
@@ -214,4 +216,5 @@ public partial class GeceHudTest : Node
 
     float _clockAtReplay;
     int _sel0;
+    bool _sawOz;
 }

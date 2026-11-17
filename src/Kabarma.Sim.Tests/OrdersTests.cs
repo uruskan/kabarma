@@ -82,7 +82,8 @@ public class OrdersTests
         n.RecordPlayerDown();
         n.RecordAnimalSwell();
         var zip = d.Creature("zipzip");
-        for (int i = 0; i < 12; i++) n.OnKill(zip);
+        for (int i = 0; i < 12; i++) n.OnKill(zip, 0, 0);
+        n.CollectNear(0, 0);
         while (n.Offer != null) n.Choose(0);
         var (hit, _) = n.RollHit(d.Tool.Weapon, false, 1f);
         CardTests.RunToDawn(n, d);

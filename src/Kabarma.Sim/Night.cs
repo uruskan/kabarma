@@ -48,6 +48,18 @@ public sealed class CombatStats
 /// <summary>Bir kartin gecedeki son rutbesi (Hasat Raporu icin, safakta kart sonmeden once alinir).</summary>
 public sealed record TakenCard(string Id, string Name, int Rank);
 
+/// <summary>
+/// Yerde bekleyen Oz (URETIM 6 M1 karari 19): oldurulen dusmanin yerine duser, degeri oldurme aninda hesaplanir.
+/// Konum yatay duzlemde (x, z), metre.
+/// </summary>
+public sealed class OzMote
+{
+    public required int Id { get; init; }
+    public required float X { get; init; }
+    public required float Z { get; init; }
+    public required float Value { get; init; }
+}
+
 public sealed class CardOffer
 {
     public required IReadOnlyList<CardDef> Cards { get; init; }
@@ -86,6 +98,16 @@ public sealed class KabarmaNight
     public event Action<int, WaveDef>? WaveStarted;
     public event Action<int>? LevelUp;
     public event Action<CardDef, int>? CardTaken;
+    /// <summary>Oz toplandi. auto: dalga sonunda ya da safakta yerde kalan Oz oyuncuya uctu.</summary>
+    public event Action<OzMote, bool>? OzCollected;
+
+    readonly List<OzMote> _motes = new();
+    int _nextMote;
+    /// <summary>Yerde bekleyen Oz.</summary>
+    public IReadOnlyList<OzMote> Motes => _motes;
+    public float OzOnGround => _motes.Sum(m => m.Value);
+    /// <summary>Toplama yaricapi: kabarma.json ozPickupRadius x Miknatis carpani.</summary>
+    public float PickupRadius => Stats.PickupRadius(_data.Kabarma.OzPickupRadius);
 
     /// <param name="memberCard">Uye tipinin baslangic karti (GDD 23). Gece tanimi izin vermezse verilmez (GDD 24: ilk gece).</param>
     public KabarmaNight(GameData data, NightDef def, ulong seed, string? memberCard = null)
@@ -179,12 +201,14 @@ public sealed class KabarmaNight
         if (Phase != NightPhase.Waves) return;
         var w = CurrentWave!;
         if (SpawnedThisWave < w.Count) return;
+        CollectAll(); // M1 karari 19: dalga bitince yerde kalan Oz oyuncuya ucar
         if (WaveIndex == _def.Waves.Count - 1) EnterDawn();
         else if (PhaseTime < w.Seconds) PhaseTime = w.Seconds; // bir sonraki dalgaya kisa aradan sonra gec
     }
 
     void NextWave()
     {
+        CollectAll(); // suresi dolan dalga da biter
         WaveIndex++;
         PhaseTime = 0;
         SpawnedThisWave = 0;
@@ -196,6 +220,7 @@ public sealed class KabarmaNight
     void EnterDawn()
     {
         if (Phase == NightPhase.Dawn) return;
+        CollectAll(); // safakta yerde Oz kalmaz (kayip yok)
         Phase = NightPhase.Dawn;
         PhaseTime = 0;
         Offer = null;
@@ -208,8 +233,11 @@ public sealed class KabarmaNight
         DawnNow?.Invoke();
     }
 
-    /// <summary>Oz = turun Oz degeri (agirlik) x Gosteri. Maya = agirlik x 2 x (1 + 0,15 x KS) x Gosteri.</summary>
-    public void OnKill(CreatureDef c)
+    /// <summary>
+    /// Oldurme. Maya = agirlik x 2 x (1 + 0,15 x KS) x Gosteri, hemen sayilir. Oz = turun Oz degeri (agirlik) x Gosteri;
+    /// oldurme aninda hesaplanir ama (x, z)'ye parcacik olarak duser ve toplaninca sayilir (URETIM 6 M1 karari 19).
+    /// </summary>
+    public OzMote OnKill(CreatureDef c, float x = 0f, float z = 0f)
     {
         Kills++;
         var g = _data.Kabarma.Gosteri;
@@ -222,9 +250,45 @@ public sealed class KabarmaNight
         }
         PeakGosteri = Math.Max(PeakGosteri, Gosteri);
 
-        Oz += c.Weight * _data.Kabarma.OzPerWeight * Gosteri;
         Maya += c.Weight * _data.Kabarma.MayaPerWeight * (1f + _data.Kabarma.MayaKsFactor * Ks) * Gosteri;
+        var mote = new OzMote { Id = ++_nextMote, X = x, Z = z, Value = c.Weight * _data.Kabarma.OzPerWeight * Gosteri };
+        _motes.Add(mote);
+        return mote;
+    }
 
+    /// <summary>Oyuncunun (x, z) konumundan toplama yaricapi icindeki Oz'u toplar. Toplanan sayisi.</summary>
+    public int CollectNear(float x, float z)
+    {
+        if (_motes.Count == 0 || Phase == NightPhase.Dawn) return 0;
+        float r2 = PickupRadius * PickupRadius;
+        int n = 0;
+        for (int i = _motes.Count - 1; i >= 0; i--)
+        {
+            var m = _motes[i];
+            float dx = m.X - x, dz = m.Z - z;
+            if (dx * dx + dz * dz > r2) continue;
+            _motes.RemoveAt(i);
+            Collect(m, false);
+            n++;
+        }
+        return n;
+    }
+
+    /// <summary>Yerde kalan butun Oz oyuncuya ucar ve sayilir (dalga sonu, safak).</summary>
+    public void CollectAll()
+    {
+        while (_motes.Count > 0)
+        {
+            var m = _motes[0];
+            _motes.RemoveAt(0);
+            Collect(m, true);
+        }
+    }
+
+    void Collect(OzMote m, bool auto)
+    {
+        Oz += m.Value;
+        OzCollected?.Invoke(m, auto);
         while (Level < _def.MaxCardLevels && Oz >= Threshold(Level + 1))
         {
             Level++;
