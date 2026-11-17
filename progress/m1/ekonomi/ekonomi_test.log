@@ -1,0 +1,78 @@
+OK   Ocakbasi koddan (tas halka + izgara + ates)
+OK   Mesale 6 m isik (range=6)
+OK   Sandik 20 yuva
+OK   kalas dili modelleri yuklu (sandik, uyku_tulumu, mesale)
+OK   Tas Firin yakitsiz calismaz
+OK   3 Bakir Kulce siraya
+OK   is basina 1 Odun yakildi
+OK   Civi Tabancasi tarifi kilitli
+OK   3 kulce cikti (3)
+OK   ilk kulceyle Civi Tabancasi acildi
+OK   Civi siraya (1 kulce)
+OK   1 kulce -> 20 Civi
+OK   Civi Tabancasi siraya (2 kulce + 4 Odun)
+OK   Civi Tabancasi cantada
+OK   Ocakbasi: kozde_salgam siraya
+OK   Ocakbasi: kozde_salgam pisti
+OK   Ocakbasi: haslanmis_yumurta siraya
+OK   Ocakbasi: haslanmis_yumurta pisti
+OK   Ocakbasi: sebze_corbasi siraya
+OK   Ocakbasi: sebze_corbasi pisti
+OK   El Arabasi siraya (12 Odun + 4 Taş)
+OK   El Arabasi bedeli dustu
+OK   El Arabasi dunyaya cikti (cantaya girmedi)
+OK   tutamakta E: dogrudan tutamaga gecildi (menu yok)
+OK   itme: yurume hizinin %80'i, depar yok
+OK   itme hizi 4.02 m/sn (beklenen ~4.0)
+OK   araba oyuncunun onunde (1.71 m)
+OK   E ile birakildi, hiz geri geldi
+OK   arabanin yaninda E: yuva menusu
+OK   araba 6 yuva
+OK   yuvada esya varken yuk alinmaz (arabanın yuvaları dolu: önce eşyaları al)
+OK   bos arabaya kasa yuklendi
+OK   yuk varken yuvalar kapali
+OK   200 kg'dan agir yuk alinmaz (çok ağır (600 kg > 200 kg))
+OK   kasa yeniden yuklendi
+OK   kasa arabanin kasasinda duruyor
+OK   kasa arabayla rampaya geldi (3.7 m)
+OK   araba devrildi (yukari 0.00)
+OK   devrilince yuk yere dustu
+OK   E ile duzeltildi
+OK   kasaya 30 Salgam girdi, Tas girmez
+OK   kasa kapandi, Paketleme sirada
+OK   Paketleme'den kasa dunyaya cikti
+OK   kasa 25 kg yuk nesnesi
+OK   kasa degeri icerigi: 30 × 15 = 450
+OK   Salgamlar cantadan cikti
+OK   rampa 6 kasa aldi (6)
+OK   7. kasa alinmadi
+OK   arabadaki kasa rampaya gecti
+OK   rampada kasa varken kabarik urun alinmaz
+OK   6 kasa firlatildi (585 Kredi)
+OK   ilk satis: odeme aninda
+OK   sonraki satis: odeme bekliyor
+OK   odeme ~60 sn sonra (58.0 sn kaldi)
+OK   60 sn sonra odendi (+15)
+OK   bos rampaya kabarik urun yuklendi ve firlatildi
+OK   yapi seti yuklu
+OK   kare_temel kondu ()
+OK   duvar kondu ()
+OK   can %10'da durdu (40)
+OK   onarim: 6 Odun × %25 × %90 -> 2 Odun, can doldu
+OK   hasarsiz parca onarilmaz
+OK   temel sokuldu
+OK   desteksiz duvar dustu
+OK   sokum iadesi %100 (temel 6 + dusen duvar 4) -> 10
+OK   dolu Sandik sokulmez
+OK   bos Sandik sokuldu, 10 Odun iade
+OK   uretim surerken istasyon sokulmez
+OK   Tezgah sokuldu: 10 Odun + 5 Tas iade
+OK   Uyku Tulumu dogma noktasi
+OK   E ile uyundu: Events.Slept
+OK   yendi: kozde_salgam
+OK   yendi: haslanmis_yumurta
+OK   yendi: sebze_corbasi
+OK   uc yemek: azami can +50 (150)
+OK   uc yemek: azami dayaniklilik +40 (Sim)
+OK   uc yemek yuvasi dolu
+ECONOMY RESULT ok=77 fail=0
