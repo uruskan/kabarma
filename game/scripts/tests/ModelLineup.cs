@@ -81,13 +81,28 @@ public partial class ModelLineup : Node3D
         foreach (var id in new[] { "agac", "turuncu_agac", "cali", "ot", "bugday", "cicek", "egrelti", "kaya_duz", "kaya_dik" })
             yield return new(id, G($"{id}/{id}.glb"), PX);
         // Yaratiklar ve oyuncu
-        yield return new("zipzip", G("zipzip/zipzip.glb"), PX);
-        yield return new("gidak", G("gidak/gidak.glb"), PX);
-        yield return new("pofuduk", G("pofuduk/pofuduk.glb"), PX);
+        // Yaratiklar oyundaki gibi: creatures.json modeli, rig boyuna (height) olceklenir
+        foreach (var c in _data.Creatures.Creatures)
+        {
+            var def = c;
+            yield return new(def.Id, () => Sized(Assets.Load(def.Rig.Model), def.Rig.Height), PX);
+        }
         yield return new("oyuncu", G("player/player.glb"), PZ);
         // Yapi kiti (temsilci parcalar)
         foreach (var id in new[] { "duvar", "pencereli_duvar", "kapi_kasasi", "kare_temel", "egimli_cati", "merdiven", "cit", "sur_duvari", "kule_tabani", "makine_platformu_kucuk" })
             yield return new("kit_" + id, G($"build/wood/{id}.glb"), PZ);
+    }
+
+    static Node3D Sized(Node3D n, float height)
+    {
+        if (n == null) return null;
+        var holder = new Node3D();
+        holder.AddChild(n);
+        float top = 0f;
+        foreach (var mi in n.FindChildren("*", "MeshInstance3D", true, false).OfType<MeshInstance3D>())
+            top = Mathf.Max(top, (mi.Transform * mi.GetAabb()).End.Y);
+        if (top > 0.001f) n.Scale = Vector3.One * (height / top);
+        return holder;
     }
 
     void BuildStudio()
@@ -165,6 +180,8 @@ public partial class ModelLineup : Node3D
             first = false;
         }
         if (first) box = new Aabb(new Vector3(-0.5f, 0, -0.5f), Vector3.One);
+        // temeller kokun altina iner (ust yuz y=0): vitrinde yere oturt
+        if (box.Position.Y < -0.05f) { _current.Position += Vector3.Up * -box.Position.Y; box.Position = new Vector3(box.Position.X, 0, box.Position.Z); }
         var dir = _entry.Front.Rotated(Vector3.Up, Mathf.DegToRad(-35f));
         var side = dir.Cross(Vector3.Up).Normalized();
         if (_scale != null)
