@@ -54,6 +54,8 @@ public sealed class GameState
     public Rng Rng { get; }
     public FoodBuffs Food { get; } = new();
     public Belt Belt { get; }
+    /// <summary>Sulama basliginin su deposu (WaterTank.cs).</summary>
+    public WaterTank Tank { get; }
     public Dictionary<string, StationQueue> Stations { get; } = new();
 
     public event Action<int, int>? Sold; // (kazanc, toplam)
@@ -68,6 +70,7 @@ public sealed class GameState
         Scenario = new Scenario(data.Scenario);
         Rng = new Rng(seed * 13 + 1);
         Belt = new Belt(Backpack);
+        Tank = new WaterTank(data.Tool.Sulama);
         foreach (var st in data.Tool.Recipes.Select(r => r.Station).Distinct()) Stations[st] = new StationQueue(data, st);
     }
 

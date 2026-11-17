@@ -45,10 +45,10 @@ public partial class Capa
                 Sfx.Play("hit", aim, -4f);
                 Events.RaiseGathered("wood", w);
             }
-            // Ot, cali ve yabani bugday (YER TUTUCU tutamlar, World.Placeholders.cs): Lif ya da Bugday, geri gelmez.
+            // Ot, cali ve yabani bugday (World.Resources.cs): Lif ya da Bugday, geri gelmez; vurus basina biomes.json "perHit".
             else if (_d.World.NearestTuft(aim, _t.MowRadius) is World.Tuft tuft)
             {
-                int got = _d.World.TakeTuft(tuft, _d.Data.Tool.WoodPerChop);
+                int got = _d.World.TakeTuft(tuft, tuft.PerHit);
                 _d.State.Backpack.Add(tuft.Item, got);
                 Fx.Burst(aim, tuft.Item == "wheat" ? Palette.Warning : Palette.Plant, 14, 4f, 0.07f, 0.6f);
                 Fx.FlyTo(aim, () => _d.Player.BackpackPoint.GlobalPosition, Palette.Plant, 0.12f);

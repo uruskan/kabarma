@@ -1,0 +1,30 @@
+{
+  "gol_ogle.png": {
+    "size": "1280x800",
+    "black": 0.0,
+    "white": 0.0,
+    "maya_glow": 0.001,
+    "sky_gradient": 17.7
+  },
+  "kapsul_ogle.png": {
+    "size": "1280x800",
+    "black": 0.0,
+    "white": 0.0,
+    "maya_glow": 0.001,
+    "sky_gradient": 12.1
+  },
+  "tepe_ogle.png": {
+    "size": "1280x800",
+    "black": 0.0,
+    "white": 0.0,
+    "maya_glow": 0.001,
+    "sky_gradient": 20.3
+  },
+  "us_ogle.png": {
+    "size": "1280x800",
+    "black": 0.0,
+    "white": 0.0,
+    "maya_glow": 0.001,
+    "sky_gradient": 24.5
+  }
+}

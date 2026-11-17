@@ -1,107 +1,163 @@
 using System.Collections.Generic;
+using System.Linq;
 using Godot;
+using Kabarma.Sim;
 
 namespace Kabarma.Game;
 
-/// <summary>Dunya: agaclar, calilar, ot tutamlari ve kazilacak kayalar. Hepsi ayni tohumlu _rng'den (sira onemli: once dekor, sonra kaya).</summary>
+/// <summary>
+/// Dunya: bitki ortusu ve sus kayalari (URETIM 6 M1: 8 bitki, 4 kaya). Her tur data/biomes.json'daki "decor" satiri:
+/// model, adet, olcek, yerlestirme kurali. Ornekler 50 m'lik parcalarda MultiMesh olarak cizilir (TEKNIK §10).
+/// Bicme verimi olan turler (ot, cali: Lif; yabani bugday: Bugday) ayni zamanda tutamdir (World.Resources.cs).
+/// Kendi tohumlu RNG'si var: dekor sirasini degistirmek kayalari ve tutamlari etkilemez.
+/// </summary>
 public partial class World
 {
-    readonly List<Rock> _rocks = new();
     public readonly List<Vector3> TreePositions = new();
-    public IReadOnlyList<Rock> Rocks => _rocks;
-    readonly RandomNumberGenerator _rng = new() { Seed = 4417 };
+    const float DecorChunk = 50f;
+
+    /// <summary>Yerlestirilen ornek (sinama ve goruntu araci okur).</summary>
+    public readonly Dictionary<string, int> DecorCounts = new();
 
     void BuildDecor()
     {
-        // Agaclar: tiknaz govde + yuvarlak tac kumeleri. Ussun 22 m icine konmaz.
-        var trees = new MeshKit();
-        var bushes = new MeshKit();
-        // M0 denemesi #1: Tripo'dan dokulu cayir agaci (6.788 ucgen, 1K doku). Varsa butun agaclar ondan, tek MultiMesh.
-        var treeNode = Assets.Load("res://assets/models/agac/agac.glb");
-        var treeMesh = Assets.FirstMesh(treeNode);
-        treeNode?.Free(); // yalnizca mesh'i lazim; sahneye girmeyen dugum serbest birakilir
-        var treeXf = new System.Collections.Generic.List<Transform3D>();
-        for (int i = 0; i < 70; i++)
+        var rng = new RandomNumberGenerator { Seed = (ulong)(T.Seed + 11) };
+        float density = Preset.PlantDensity;
+        foreach (var def in Biome.Decor)
         {
-            var p = new Vector3(_rng.RandfRange(-75, 75), 0, _rng.RandfRange(-75, 75));
-            if (p.Length() < 24f || new Vector2(p.X - 9f, p.Z + 9f).Length() < 10f) continue;
-            p = Ground(p);
-            if (_rng.Randf() < 0.45f)
-            {
-                float s = _rng.RandfRange(0.8f, 1.5f);
-                if (treeMesh != null)
+            var mesh = DecorMesh(def, out float modelHeight);
+            if (mesh == null) { GD.PrintErr($"WORLD decor model yok: {def.Model}"); continue; }
+            var placed = new List<Transform3D>();
+            foreach (var patch in Biome.Patches.Where(p => p.Decor == def.Id))
+                for (int i = 0; i < patch.Count; i++)
                 {
-                    // Model 4,2 m; cesitlilik icin boy ve yon rastgele.
-                    treeXf.Add(new Transform3D(Basis.FromEuler(new Vector3(0, _rng.Randf() * Mathf.Tau, 0)).Scaled(Vector3.One * s * 0.95f), p + Vector3.Down * 0.1f));
-                    continue;
+                    for (int tries = 0; tries < 20; tries++)
+                    {
+                        float a = rng.Randf() * Mathf.Tau, d = Mathf.Sqrt(rng.Randf()) * patch.Radius;
+                        var p = new Vector3(patch.Center[0] + Mathf.Cos(a) * d, 0, patch.Center[1] + Mathf.Sin(a) * d);
+                        if (ShoreDistance(p.X, p.Z) < def.LakeClear) continue;
+                        placed.Add(DecorTransform(def, p, rng));
+                        break;
+                    }
                 }
-                trees.Cylinder(0.28f * s, 0.42f * s, 2.4f * s, MeshKit.At(p + new Vector3(0, 1.1f * s, 0)), Palette.Wood.Lerp(Palette.Shadow, 0.25f), 8);
-                var leaf = Palette.Plant.Lerp(Palette.Accent, _rng.Randf() < 0.25f ? 0.45f : 0f);
-                trees.Sphere(1.6f * s, MeshKit.At(p + new Vector3(0, 3.2f * s, 0), Vector3.Zero, new Vector3(1, 0.85f, 1)), leaf, 10, 6);
-                trees.Sphere(1.1f * s, MeshKit.At(p + new Vector3(0.9f * s, 2.7f * s, 0.3f * s)), leaf.Lerp(Palette.Shadow, 0.12f), 9, 5);
-                trees.Sphere(1.0f * s, MeshKit.At(p + new Vector3(-0.8f * s, 2.8f * s, -0.4f * s)), leaf.Lerp(Palette.Fog, 0.1f), 9, 5);
-            }
-            else
+            int want = Mathf.RoundToInt(def.Count * density);
+            float half = Size / 2f - 4f;
+            for (int tries = 0; tries < want * 12 && placed.Count < want + PatchCount(def.Id); tries++)
             {
-                float s = _rng.RandfRange(0.5f, 1.0f);
-                var c = Palette.Plant.Lerp(Palette.Ground, _rng.Randf() * 0.4f);
-                bushes.Sphere(0.9f * s, MeshKit.At(p + new Vector3(0, 0.4f * s, 0), Vector3.Zero, new Vector3(1.3f, 0.8f, 1.1f)), c, 9, 5);
-                if (_rng.Randf() < 0.4f)
-                    bushes.Sphere(0.22f * s, MeshKit.At(p + new Vector3(0.3f, 1.0f * s, 0.2f)), Palette.Accent, 6, 4);
+                var p = new Vector3(rng.RandfRange(-half, half), 0, rng.RandfRange(-half, half));
+                float dist = new Vector2(p.X, p.Z).Length();
+                if (dist < def.MinDistance || dist > def.MaxDistance || InClearing(p)) continue;
+                float shore = ShoreDistance(p.X, p.Z);
+                if (shore < def.LakeClear) continue;
+                if (SlopeAt(p.X, p.Z) > (def.Tree ? 22f : 30f)) continue;
+                placed.Add(DecorTransform(def, p, rng));
             }
+            DecorCounts[def.Id] = placed.Count;
+            var chunks = AddChunkedInstances(def.Id, mesh, placed, def.Shadow, def.ViewDistance);
+            if (def.Tree) TreePositions.AddRange(placed.Select(x => x.Origin));
+            if (def.CollideRadius > 0)
+                foreach (var xf in placed)
+                {
+                    float s = xf.Basis.Scale.Y;
+                    var body = new StaticBody3D { Name = def.Id + "Body" };
+                    body.AddChild(new CollisionShape3D { Shape = new CylinderShape3D { Radius = def.CollideRadius * xf.Basis.Scale.X, Height = def.CollideHeight * s }, Position = new Vector3(0, def.CollideHeight * s * 0.5f, 0) });
+                    AddChild(body);
+                    body.GlobalPosition = xf.Origin;
+                }
+            if (!string.IsNullOrEmpty(def.Harvest)) AddTufts(def, chunks);
         }
-        if (treeMesh != null && treeXf.Count > 0)
-        {
-            var mm = new MultiMesh { TransformFormat = MultiMesh.TransformFormatEnum.Transform3D, Mesh = treeMesh, InstanceCount = treeXf.Count };
-            for (int i = 0; i < treeXf.Count; i++) mm.SetInstanceTransform(i, treeXf[i]);
-            AddChild(new MultiMeshInstance3D { Multimesh = mm, Name = "Trees" });
-            foreach (var xf in treeXf)
-            {
-                TreePositions.Add(xf.Origin);
-                var body = new StaticBody3D();
-                body.AddChild(new CollisionShape3D { Shape = new CylinderShape3D { Radius = 0.45f * xf.Basis.Scale.X, Height = 3f * xf.Basis.Scale.Y }, Position = new Vector3(0, 1.5f * xf.Basis.Scale.Y, 0) });
-                AddChild(body);
-                body.GlobalPosition = xf.Origin;
-            }
-        }
-        else AddChild(trees.Instance());
-        var b = bushes.Instance();
-        b.CastShadow = GeometryInstance3D.ShadowCastingSetting.Off;
-        AddChild(b);
-
-        // Ot tutamlari: ussun cevresinde yogun.
-        var grass = new MeshKit();
-        for (int i = 0; i < 900; i++)
-        {
-            float a = _rng.Randf() * Mathf.Tau, d = Mathf.Sqrt(_rng.Randf()) * 60f;
-            var p = new Vector3(Mathf.Cos(a) * d, 0, Mathf.Sin(a) * d);
-            if (new Vector2(p.X - 9f, p.Z + 9f).Length() < 6f || p.Length() < 4f) continue;
-            p = Ground(p);
-            var c = Palette.Plant.Lerp(Palette.Ground, _rng.Randf() * 0.5f);
-            for (int k = 0; k < 3; k++)
-            {
-                var off = new Vector3(_rng.RandfRange(-0.15f, 0.15f), 0.22f, _rng.RandfRange(-0.15f, 0.15f));
-                grass.Cylinder(0.0f, 0.07f, 0.45f, MeshKit.At(p + off, new Vector3(_rng.RandfRange(-0.3f, 0.3f), 0, _rng.RandfRange(-0.3f, 0.3f))), c, 4);
-            }
-        }
-        var g = grass.Instance();
-        g.CastShadow = GeometryInstance3D.ShadowCastingSetting.Off;
-        AddChild(g);
     }
 
-    void BuildRocks()
+    int PatchCount(string id) => Biome.Patches.Where(p => p.Decor == id).Sum(p => p.Count);
+
+    public bool InClearing(Vector3 p) =>
+        Biomes.World.Clearings.Any(c => c.Count >= 3 && new Vector2(p.X - c[0], p.Z - c[1]).Length() < c[2]);
+
+    Transform3D DecorTransform(DecorDef def, Vector3 p, RandomNumberGenerator rng)
     {
-        // Kazilacak kayalar ussun cevresinde, ilk dakikada bulunacak kadar yakin.
-        var spots = new[] { new Vector3(-7, 0, 6), new Vector3(-10, 0, 1), new Vector3(5, 0, 11), new Vector3(12, 0, 6), new Vector3(-4, 0, 14), new Vector3(16, 0, -4), new Vector3(-15, 0, -8), new Vector3(2, 0, -16), new Vector3(-13, 0, 10), new Vector3(9, 0, 15), new Vector3(-18, 0, 2), new Vector3(18, 0, 9) };
-        int i = 0;
-        foreach (var s in spots)
-        {
-            var rock = new Rock(_rng.RandiRange(4, 6), _rng.RandfRange(0.9f, 1.3f), (ulong)(1000 + i++));
-            AddChild(rock);
-            rock.GlobalPosition = Ground(s) + Vector3.Down * 0.2f;
-            _rocks.Add(rock);
-        }
+        float s = rng.RandfRange(def.Scale[0], def.Scale.Count > 1 ? def.Scale[1] : def.Scale[0]);
+        var basis = Basis.FromEuler(new Vector3(0, rng.Randf() * Mathf.Tau, 0)).Scaled(Vector3.One * s);
+        return new Transform3D(basis, Ground(p) + Vector3.Down * def.Sink * s);
     }
 
-    public void RemoveRock(Rock r) => _rocks.Remove(r);
+    /// <summary>Modelin mesh'i; ruzgarli turlerde her yuzeyin malzemesi dokuyu koruyan ruzgar malzemesine doner.</summary>
+    Mesh DecorMesh(DecorDef def, out float height)
+    {
+        height = 1f;
+        var node = Assets.Load(def.Model);
+        var src = Assets.FirstMesh(node);
+        node?.Free();
+        if (src == null) return null;
+        height = Mathf.Max(0.05f, src.GetAabb().End.Y);
+        if (def.Wind <= 0 || src is not ArrayMesh am) return src;
+        var mesh = (ArrayMesh)am.Duplicate();
+        for (int i = 0; i < mesh.GetSurfaceCount(); i++)
+            mesh.SurfaceSetMaterial(i, WindMaterial(mesh.SurfaceGetMaterial(i), def, height));
+        return mesh;
+    }
+
+    Shader _plantShader;
+
+    ShaderMaterial WindMaterial(Material from, DecorDef def, float height)
+    {
+        _plantShader ??= GD.Load<Shader>("res://shaders/plant_wind.gdshader");
+        var m = new ShaderMaterial { Shader = _plantShader };
+        if (from is BaseMaterial3D b)
+        {
+            m.SetShaderParameter("albedo_color", b.AlbedoColor);
+            if (b.AlbedoTexture != null) { m.SetShaderParameter("albedo_tex", b.AlbedoTexture); m.SetShaderParameter("has_albedo_tex", true); }
+            if (b.NormalEnabled && b.NormalTexture != null) { m.SetShaderParameter("normal_tex", b.NormalTexture); m.SetShaderParameter("has_normal_tex", true); }
+            m.SetShaderParameter("roughness_value", Mathf.Max(0.6f, b.Roughness));
+        }
+        m.SetShaderParameter("wind_strength", def.Wind);
+        m.SetShaderParameter("model_height", height);
+        m.SetShaderParameter("bend_start", def.Tree ? 0.45f : 0f);
+        return m;
+    }
+
+    /// <summary>Bir parca (chunk) icindeki ornekler: MultiMesh, ornegin yerel donusumu.</summary>
+    public sealed class DecorChunkRef
+    {
+        public MultiMesh Mm;
+        public Vector3 Origin;
+        public readonly List<int> Global = new();
+    }
+
+    /// <summary>Ornekleri 50 m'lik parcalara boler; her parca bir MultiMeshInstance3D (gorus mesafesiyle elenir).</summary>
+    /// <remarks>Basliksiz calismada MultiMesh ornek donusumleri okunamaz (sahte cizici); yerel donusum burada tutulur.</remarks>
+    Dictionary<int, (DecorChunkRef chunk, int index, Transform3D local)> AddChunkedInstances(string name, Mesh mesh, List<Transform3D> xfs, bool shadow, float viewDistance)
+    {
+        var map = new Dictionary<int, (DecorChunkRef, int, Transform3D)>();
+        var groups = new Dictionary<(int, int), List<int>>();
+        for (int i = 0; i < xfs.Count; i++)
+        {
+            var key = (Mathf.FloorToInt(xfs[i].Origin.X / DecorChunk), Mathf.FloorToInt(xfs[i].Origin.Z / DecorChunk));
+            if (!groups.TryGetValue(key, out var l)) groups[key] = l = new List<int>();
+            l.Add(i);
+        }
+        foreach (var ((cx, cz), list) in groups)
+        {
+            var origin = new Vector3((cx + 0.5f) * DecorChunk, 0, (cz + 0.5f) * DecorChunk);
+            var mm = new MultiMesh { TransformFormat = MultiMesh.TransformFormatEnum.Transform3D, Mesh = mesh, InstanceCount = list.Count };
+            var chunk = new DecorChunkRef { Mm = mm, Origin = origin };
+            for (int k = 0; k < list.Count; k++)
+            {
+                var xf = xfs[list[k]];
+                var local = new Transform3D(xf.Basis, xf.Origin - origin);
+                mm.SetInstanceTransform(k, local);
+                chunk.Global.Add(list[k]);
+                map[list[k]] = (chunk, k, local);
+            }
+            var mmi = new MultiMeshInstance3D
+            {
+                Name = $"{name}_{cx}_{cz}",
+                Multimesh = mm,
+                Position = origin,
+                CastShadow = shadow ? GeometryInstance3D.ShadowCastingSetting.On : GeometryInstance3D.ShadowCastingSetting.Off,
+            };
+            if (viewDistance > 0) { mmi.VisibilityRangeEnd = viewDistance + DecorChunk * 0.7f; mmi.VisibilityRangeEndMargin = 5f; }
+            AddChild(mmi);
+        }
+        return map;
+    }
 }

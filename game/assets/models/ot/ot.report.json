@@ -1,0 +1,47 @@
+{
+  "name": "ot",
+  "input": "C:\\Users\\uruskan\\Documents\\GitHub\\kabarma\\.tools\\tripo\\ot\\tripo-out\\ot-7ce835e7\\model.glb",
+  "checks": {
+    "1_palette": {
+      "pass": true,
+      "note": "dokulu mod: palet oturtma yapilmadi"
+    },
+    "2_polygon": {
+      "pass": true,
+      "value": 1933,
+      "budget": 2000
+    },
+    "3_thickness": {
+      "pass": false,
+      "min_ratio": 0.023,
+      "note": "parca basina en dar boyut / en uzun kenar"
+    },
+    "4_integrity": {
+      "pass": false,
+      "non_manifold_edges": 43,
+      "boundary_edges": 16,
+      "inward_faces": 838,
+      "loose_parts": 20
+    },
+    "5_scale_axis": {
+      "pass": true,
+      "height": 0.9,
+      "target": 0.9
+    }
+  },
+  "tris_in": 2221,
+  "welded_verts": 1556,
+  "tex_size": 1024,
+  "source_mean_dE": null,
+  "source_within_dE8": null,
+  "palette_use": "textured (palette snap skipped)",
+  "tris": 1933,
+  "size_m": [
+    0.846,
+    0.793,
+    0.9
+  ],
+  "parts": 20,
+  "out": "game/assets/models/ot/ot.glb",
+  "pass_scripted": false
+}

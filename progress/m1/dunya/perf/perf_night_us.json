@@ -1,0 +1,33 @@
+{
+  "mode": "night",
+  "preset": "Y\u00FCksek",
+  "resolution": "1920x1080",
+  "window": "(1920, 1080)",
+  "vsync": "Disabled",
+  "max_fps": 0,
+  "msaa": "Msaa2X",
+  "gpu": "NVIDIA GeForce RTX 2070 SUPER",
+  "driver": "1.4.357",
+  "other_godot_processes": 13,
+  "video_mem_mb": 618,
+  "static_mem_mb": 167,
+  "date": "2026-11-18T00:09:04",
+  "results": [
+    {
+      "bookmark": "us",
+      "light": "kabarma_gecesi_son_dalga",
+      "frames": 2243,
+      "seconds": 42.7,
+      "mean_ms": 19.042,
+      "fps": 52.5,
+      "p95_ms": 33.593,
+      "p99_ms": 40.54,
+      "max_ms": 50.443,
+      "draw_calls_mean": 334,
+      "draw_calls_max": 353,
+      "primitives_mean": 1746052,
+      "budget_ms": 11.1,
+      "within_budget": false
+    }
+  ]
+}

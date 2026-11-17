@@ -17,6 +17,7 @@ param(
 )
 
 $ErrorActionPreference = 'Continue'
+if (-not $PSBoundParameters.ContainsKey('Only')) { $Only += 'world' } # dunya sinamasi (--test=world), varsayilan listede
 $Only = @($Only | ForEach-Object { $_ -split ',' } | ForEach-Object { $_.Trim() } | Where-Object { $_ })
 if (-not $PSBoundParameters.ContainsKey('Only')) { $Only += 'audio' } # ses akisi: --test=audio varsayilan adimlarda
 $Root = Split-Path -Parent $PSScriptRoot
@@ -98,6 +99,7 @@ if (($Only -contains 'bot') -or ($Only -contains 'buildtest')) {
     $G = Find-Godot
     if (-not $G) { Say 'Godot bulunamadi: KABARMA_GODOT ortam degiskenini ver.' }
 }
+if (($Only -contains 'world') -and -not $G) { $G = Find-Godot }
 
 function Invoke-GodotTest([string]$name, [string]$userArgs, [int]$timeoutSec, [scriptblock]$judge) {
     $sw2 = [Diagnostics.Stopwatch]::StartNew()
@@ -143,6 +145,16 @@ if ($Only -contains 'audio') {
         $res = ($r.Text -split "`r?`n" | Where-Object { $_ -match '^AUDIO RESULT ' } | Select-Object -Last 1)
         if (-not $res) { $res = 'AUDIO RESULT satiri yok' }
         [pscustomobject]@{ Ok = ($res -match '^AUDIO RESULT ok'); Detail = ($res -replace '^AUDIO RESULT ', '') }
+    }
+}
+
+if ($Only -contains 'world') {
+    if (-not $G) { $G = Find-Godot }
+    Invoke-GodotTest 'world' '--test=world' 180 {
+        param($r)
+        $res = ($r.Text -split "`r?`n" | Where-Object { $_ -match '^WORLD RESULT ' } | Select-Object -Last 1)
+        if (-not $res) { $res = 'WORLD RESULT satiri yok' }
+        [pscustomobject]@{ Ok = ($res -match '^WORLD RESULT ok'); Detail = $res }
     }
 }
 
