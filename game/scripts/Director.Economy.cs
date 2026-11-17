@@ -15,6 +15,8 @@ public partial class Director
     public readonly List<Furniture> Furniture = new();
     public readonly List<ElArabasi> Carts = new();
     readonly Dictionary<SwollenCrop, (bool held, Vector3 at, float t)> _dropWatch = new();
+    /// <summary>El Arabasi tutamagina E ile gecis mesafesi (m, yatay).</summary>
+    const float HandleReach = 1.3f;
 
     /// <summary>Director._Ready'den bir kez.</summary>
     void InitEconomy()
@@ -75,7 +77,7 @@ public partial class Director
             if (crate == null) { GD.PrintErr("kasa yok: Paketleme sirasi bos kasayla bitti"); return; }
             var n = new CargoCrateNode(this, crate);
             AddChild(n);
-            n.GlobalPosition = at + Vector3.Up * n.Radius;
+            n.GlobalPosition = at + Vector3.Up * CargoCrateNode.HalfHeight;
             Fx.Burst(n.GlobalPosition, Palette.Wood, 16, 3f, 0.08f, 0.6f);
             GD.Print($"CRATE {crate.Id} value={State.Cargo.Value(crate)} stacks={crate.Items.UsedSlots}");
         }
@@ -98,7 +100,9 @@ public partial class Director
         if (st != null && st.GlobalPosition.DistanceTo(p) < best) return false;
         if (cartFirst)
         {
+            // Devrikse E duzeltir; tutamagin yanindaysa E dogrudan tutamaga gecer (URETIM 6 M1); yandan E yuva ve yuk menusu.
             if (cart.Tipped) cart.Right();
+            else if (new Vector2(cart.Handle.X - p.X, cart.Handle.Z - p.Z).Length() < HandleReach) cart.Grab();
             else OpenCartMenu(cart);
             return true;
         }
@@ -237,7 +241,7 @@ public partial class Director
         for (int i = 0; i < crates.Count; i++)
         {
             var off = b.X * ((i % 3) - 1) * 0.95f + b.Z * ((i / 3) - 0.5f) * 0.95f;
-            var to = Pod.PadCenter + off + Vector3.Up * (crates[i].Radius + 0.05f);
+            var to = Pod.PadCenter + off + Vector3.Up * (CargoCrateNode.HalfHeight + 0.02f);
             crates[i].CreateTween().TweenProperty(crates[i], "global_position", to, 0.3f).SetTrans(Tween.TransitionType.Back).SetEase(Tween.EaseType.Out);
         }
     }

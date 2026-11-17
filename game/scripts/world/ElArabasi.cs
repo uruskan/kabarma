@@ -211,7 +211,7 @@ public partial class ElArabasi : RigidBody3D
         if (Load != null && IsInstanceValid(Load))
         {
             if (Load.Held) Detach(Load);
-            else Load.GlobalPosition = Bed + GlobalBasis.Y * Load.Radius * 0.9f;
+            else Load.GlobalPosition = Bed + GlobalBasis.Y * (Load is CargoCrateNode ? CargoCrateNode.HalfHeight : Load.Radius * 0.9f);
         }
         else if (Load != null) Load = null;
     }
@@ -223,7 +223,7 @@ public partial class ElArabasi : RigidBody3D
         if (!near) return;
         string what = Load != null ? $"yük: {(Load is CargoCrateNode ? "Kargo Kasası" : ItemNames.Of(Load.CropId))} ({Load.Size.Kg} kg)"
             : Slots.IsEmpty ? "boş" : $"{Slots.UsedSlots}/{Slots.Slots} yuva";
-        _label.Text = Tipped ? "El Arabası (devrik)\nE: düzelt" : $"El Arabası · {what}\nE: tutamak / yük";
+        _label.Text = Tipped ? "El Arabası (devrik)\nE: düzelt" : $"El Arabası · {what}\nE: tutamağa geç (arkadan) · yük ve yuvalar (yandan)";
     }
 
     public override void _ExitTree() => Release();

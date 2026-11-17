@@ -165,9 +165,7 @@ public partial class EconomyTest : Node
         float walk = p.WalkSpeed, sprint = p.SprintSpeed, mult = p.SpeedMult;
         _d.Interact();
         await Frames(2);
-        if (_d.Hud.MenuOpen) _d.Hud.ActivateMenu(0); // "Tutamaga gec"
-        await Frames(2);
-        Check(cart.Pushed, "E ile tutamaga gecildi");
+        Check(cart.Pushed && !_d.Hud.MenuOpen, "tutamakta E: dogrudan tutamaga gecildi (menu yok)");
         Check(Mathf.IsEqualApprox(p.SpeedMult, mult * 0.8f) && Mathf.IsEqualApprox(p.SprintSpeed, walk), "itme: yurume hizinin %80'i, depar yok");
         var dir = cart.Forward;
         p.MoveOverride = dir * 1.5f; // depara basiyor
@@ -182,6 +180,13 @@ public partial class EconomyTest : Node
         Check(gap > 0.8f && gap < cart.Length + 1.6f, $"araba oyuncunun onunde ({gap:0.00} m)");
         _d.Interact(); // birak
         Check(!cart.Pushed && Mathf.IsEqualApprox(p.SprintSpeed, sprint) && Mathf.IsEqualApprox(p.SpeedMult, mult), "E ile birakildi, hiz geri geldi");
+        // yandan E: yuva ve yuk menusu (tutamaga gecmez)
+        p.GlobalPosition = _d.World.Ground(cart.GlobalPosition + cart.GlobalBasis.X * 1.4f) + Vector3.Up * 0.3f;
+        await Frames(3);
+        _d.Interact();
+        await Frames(2);
+        Check(_d.Hud.MenuOpen && !cart.Pushed, "arabanin yaninda E: yuva menusu");
+        _d.Hud.HideMenu();
 
         // 6 yuva ya da tek yuk, ikisi birden degil; 200 kg siniri
         Check(cart.Slots.Slots == 6, "araba 6 yuva");
