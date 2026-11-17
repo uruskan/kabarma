@@ -175,7 +175,7 @@ def write_import(path, normal):
     """Godot ice aktarma ayari: koddan takilan doku da VRAM sikistirmali ve mip'li olsun (normal haritasi RGTC).
     Dosya varsa dokunulmaz (Godot uid ve hedefleri kendisi ekler)."""
     imp = path + ".import"
-    if os.path.exists(imp):
+    if os.path.exists(imp) or not os.path.abspath(path).startswith(os.path.join(ROOT, "game")):
         return
     with open(imp, "w", encoding="utf-8", newline="\n") as f:
         f.write('[remap]\n\nimporter="texture"\ntype="CompressedTexture2D"\n\n[params]\n\n'
