@@ -17,6 +17,7 @@ param(
 )
 
 $ErrorActionPreference = 'Continue'
+if (-not $PSBoundParameters.ContainsKey('Only')) { $Only += 'world' } # dunya sinamasi (--test=world), varsayilan listede
 $Only = @($Only | ForEach-Object { $_ -split ',' } | ForEach-Object { $_.Trim() } | Where-Object { $_ })
 $Root = Split-Path -Parent $PSScriptRoot
 Set-Location $Root
@@ -97,6 +98,7 @@ if (($Only -contains 'bot') -or ($Only -contains 'buildtest')) {
     $G = Find-Godot
     if (-not $G) { Say 'Godot bulunamadi: KABARMA_GODOT ortam degiskenini ver.' }
 }
+if (($Only -contains 'world') -and -not $G) { $G = Find-Godot }
 
 function Invoke-GodotTest([string]$name, [string]$userArgs, [int]$timeoutSec, [scriptblock]$judge) {
     $sw2 = [Diagnostics.Stopwatch]::StartNew()
@@ -131,6 +133,15 @@ if ($Only -contains 'buildtest') {
             $detail = "placed=$($Matches[1]) failed=$($Matches[2]) pieces=$($Matches[3])"
         }
         [pscustomobject]@{ Ok = $ok; Detail = $detail }
+    }
+}
+
+if ($Only -contains 'world') {
+    Invoke-GodotTest 'world' '--test=world' 180 {
+        param($r)
+        $res = ($r.Text -split "`r?`n" | Where-Object { $_ -match '^WORLD RESULT ' } | Select-Object -Last 1)
+        if (-not $res) { $res = 'WORLD RESULT satiri yok' }
+        [pscustomobject]@{ Ok = ($res -match '^WORLD RESULT ok'); Detail = $res }
     }
 }
 

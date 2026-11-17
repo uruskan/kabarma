@@ -33,6 +33,9 @@ public partial class Main : Node3D
         ["build"] = m => { m.AddChild(new BuildTest()); return true; },
         ["netsync"] = m => { if (!Args.ContainsKey("netsync")) Args["netsync"] = Args.TryGetValue("role", out var r) ? r : "host"; m.AddChild(new NetSyncTest()); return true; },
         ["swarm"] = m => { m.AddChild(new SwarmTest()); return true; },
+        ["world"] = m => { m.AddChild(new WorldTest()); return true; },
+        ["shots"] = m => { Args.TryAdd("preset", "yuksek"); if (!Args.ContainsKey("shots_quick")) Args["bot"] = "1"; m.AddChild(new WorldShots()); return false; },
+        ["perf"] = m => { Args.TryAdd("preset", "yuksek"); if (Args.GetValueOrDefault("perf") == "night") Args["bot"] = "1"; m.AddChild(new PerfProbe()); return false; },
     };
 
     public override void _Ready()

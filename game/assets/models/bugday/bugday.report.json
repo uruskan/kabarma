@@ -1,0 +1,47 @@
+{
+  "name": "bugday",
+  "input": "C:\\Users\\uruskan\\Documents\\GitHub\\kabarma\\.tools\\tripo\\bugday\\tripo-out\\bugday-22cbca48\\model.glb",
+  "checks": {
+    "1_palette": {
+      "pass": true,
+      "note": "dokulu mod: palet oturtma yapilmadi"
+    },
+    "2_polygon": {
+      "pass": true,
+      "value": 1937,
+      "budget": 2000
+    },
+    "3_thickness": {
+      "pass": false,
+      "min_ratio": 0.023,
+      "note": "parca basina en dar boyut / en uzun kenar"
+    },
+    "4_integrity": {
+      "pass": false,
+      "non_manifold_edges": 11,
+      "boundary_edges": 6,
+      "inward_faces": 804,
+      "loose_parts": 8
+    },
+    "5_scale_axis": {
+      "pass": true,
+      "height": 1.0,
+      "target": 1.0
+    }
+  },
+  "tris_in": 2689,
+  "welded_verts": 1525,
+  "tex_size": 1024,
+  "source_mean_dE": null,
+  "source_within_dE8": null,
+  "palette_use": "textured (palette snap skipped)",
+  "tris": 1937,
+  "size_m": [
+    0.513,
+    0.54,
+    1.0
+  ],
+  "parts": 8,
+  "out": "game/assets/models/bugday/bugday.glb",
+  "pass_scripted": false
+}
