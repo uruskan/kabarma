@@ -24,7 +24,7 @@ public partial class Hud
         var step = s.Scenario.Current;
         if (step != null)
         {
-            _goal.Text = step.Goal;
+            _goal.Text = ActText.Plain(step.Goal); // {act:eylem} -> tus (glifi girdi akisi cizer)
             _goalProgress.Text = step.Target > 1 ? $"{s.Scenario.Progress} / {step.Target}" : "";
         }
         else

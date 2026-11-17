@@ -39,6 +39,7 @@ public partial class Bot : Node
         RegisterNight();     // Bot.Night.cs: night
         RegisterMachines();  // Bot.Machines.cs: sell, tezgah_kur, civi, hasat, firin_kur, corba, paketle, kasa_sat
         RegisterBuild();     // Bot.Build.cs: odun, yapi
+        RegisterIlkgun();    // Bot.Ilkgun.cs: ilk gun (GDD 24): mine (kapak), tezgah, tarla, agil, gidak, night (agil kapisi)
         _steps["end"] = StepEnd;
     }
 

@@ -36,7 +36,7 @@ public class DataSplitTests
         Assert.Equal(10, t.Recipes[0].Out);
         Assert.Equal(5, t.Recipes[2].In["turnip"]);
         // placeables.json
-        Assert.Equal(new[] { "ocak", "tezgah", "tas_firin", "paketleme" }, t.Placeables.Select(p => p.Id));
+        Assert.Equal(new[] { "ocak", "tezgah", "tas_firin", "paketleme" }, t.Placeables.Select(p => p.Id).Take(4)); // M1 yerlestirilebilirleri arkaya eklenir
         Assert.True(t.Placeables[0].Once);
         Assert.Equal(10, t.Placeables[2].Cost["stone"]);
         Assert.Equal(9, t.BuildCosts.Count);

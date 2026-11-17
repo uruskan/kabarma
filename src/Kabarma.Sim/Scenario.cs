@@ -3,17 +3,31 @@ namespace Kabarma.Sim;
 /// <summary>Ilk 10 dakikanin adim zinciri (PLAN 1.4). Godot katmani olaylari bildirir, senaryo ilerler.</summary>
 public sealed class Scenario
 {
-    readonly ScenarioFile _def;
+    readonly List<StepDef> _steps;
     public int StepIndex { get; private set; }
     public int Progress { get; private set; }
-    public bool Finished => StepIndex >= _def.Steps.Count;
-    public StepDef? Current => Finished ? null : _def.Steps[StepIndex];
+    public bool Finished => StepIndex >= _steps.Count;
+    public StepDef? Current => Finished ? null : _steps[StepIndex];
+    /// <summary>Oynanacak adimlar (veride on kosulu olmayanlar cikarilmis).</summary>
+    public IReadOnlyList<StepDef> Steps => _steps;
+    /// <summary>Yuklemede devre disi kalan adimlar ve eksik kimlikleri (StepDef.Requires).</summary>
+    public List<(StepDef step, List<string> missing)> Skipped { get; } = new();
 
     /// <summary>(biten adim, yeni adim). Yeni adim null ise senaryo bitti.</summary>
     public event Action<StepDef, StepDef?>? StepChanged;
     public event Action<StepDef, int>? ProgressChanged;
 
-    public Scenario(ScenarioFile def) { _def = def; }
+    /// <param name="missing">Adimin veride olmayan on kosullari; bos degilse adim atlanir. Null: hepsi oynanir.</param>
+    public Scenario(ScenarioFile def, Func<StepDef, List<string>>? missing = null)
+    {
+        _steps = new List<StepDef>();
+        foreach (var s in def.Steps)
+        {
+            var miss = missing?.Invoke(s) ?? new List<string>();
+            if (miss.Count > 0) Skipped.Add((s, miss));
+            else _steps.Add(s);
+        }
+    }
 
     public bool Is(string id) => Current?.Id == id;
 
@@ -55,6 +69,8 @@ public sealed class GameState
     public FoodBuffs Food { get; } = new();
     public Belt Belt { get; }
     public Dictionary<string, StationQueue> Stations { get; } = new();
+    /// <summary>Agil, evcil hayvanlar, Yemlik ve Folluk (GDD 9.1).</summary>
+    public Coop Coop { get; }
 
     public event Action<int, int>? Sold; // (kazanc, toplam)
 
@@ -65,10 +81,11 @@ public sealed class GameState
         Backpack = new Inventory(data.Tool.BackpackSlots, data.Tool.StackResource);
         foreach (var (id, n) in data.Tool.StartItems) Backpack.Add(id, n);
         Farm = new Farm(data);
-        Scenario = new Scenario(data.Scenario);
+        Scenario = new Scenario(data.Scenario, data.MissingFor);
         Rng = new Rng(seed * 13 + 1);
         Belt = new Belt(Backpack);
         foreach (var st in data.Tool.Recipes.Select(r => r.Station).Distinct()) Stations[st] = new StationQueue(data, st);
+        Coop = new Coop(data.Pen);
     }
 
     /// <summary>Kargo Rampasi'ndan normal mal satisi (kasa, urun, yumurta).</summary>

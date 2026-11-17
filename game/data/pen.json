@@ -1,0 +1,24 @@
+{
+  "_not": "Agil ve evcil hayvan (GDD 9.1; URETIM 6 M1 'Gidak ve agil'; ICERIK 10.2 Yemlik, Folluk, Ahsap Kapi). Belgede sayisi olmayanlar (_belgesiz) raporda listelendi.",
+  "cellArea": 9,
+  "minCells": 1,
+  "weld": 0.35,
+  "wallPieces": ["cit", "bahce_kapisi", "sur_duvari", "sur_kapisi", "duvar", "yarim_duvar", "alcak_duvar", "pencereli_duvar", "kapi_kasasi"],
+  "gatePieces": ["bahce_kapisi", "sur_kapisi", "kapi_kasasi"],
+  "animals": [
+    { "id": "gidak", "area": 4, "food": "wheat", "foodToTrust": 3, "layInterval": 180, "foodPerEgg": 1, "product": "egg" }
+  ],
+  "tutorialFoodToTrust": 1,
+  "tutorialEggOnEntry": true,
+  "_belgesiz": "foodToTrust 3, foodPerEgg 1, feederCapacity 20, scareRadius 8, followDistance, kapi acisi ve suresi, interactRange, fenceHitCooldown, doorSnapRadius belgede yok.",
+  "scareRadius": 8,
+  "followDistance": 2.2,
+  "nestSlots": 6,
+  "feederCapacity": 20,
+  "gateOpenDegrees": 100,
+  "gateSwingSeconds": 0.45,
+  "interactRange": 2.6,
+  "structureHpFloor": 0.1,
+  "fenceHitCooldown": 0.5,
+  "doorSnapRadius": 2.5
+}
