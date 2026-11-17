@@ -8,26 +8,26 @@
   "msaa": "Msaa2X",
   "gpu": "NVIDIA GeForce RTX 2070 SUPER",
   "driver": "1.4.357",
-  "other_godot_processes": 9,
+  "other_godot_processes": 13,
   "video_mem_mb": 618,
-  "static_mem_mb": 166,
-  "date": "2026-11-17T23:49:24",
+  "static_mem_mb": 167,
+  "date": "2026-11-18T00:09:04",
   "results": [
     {
       "bookmark": "us",
       "light": "kabarma_gecesi_son_dalga",
-      "frames": 4635,
-      "seconds": 45.8,
-      "mean_ms": 9.871,
-      "fps": 101.3,
-      "p95_ms": 19.664,
-      "p99_ms": 21.947,
-      "max_ms": 43.085,
-      "draw_calls_mean": 285,
-      "draw_calls_max": 313,
-      "primitives_mean": 1504789,
+      "frames": 2243,
+      "seconds": 42.7,
+      "mean_ms": 19.042,
+      "fps": 52.5,
+      "p95_ms": 33.593,
+      "p99_ms": 40.54,
+      "max_ms": 50.443,
+      "draw_calls_mean": 334,
+      "draw_calls_max": 353,
+      "primitives_mean": 1746052,
       "budget_ms": 11.1,
-      "within_budget": true
+      "within_budget": false
     }
   ]
 }

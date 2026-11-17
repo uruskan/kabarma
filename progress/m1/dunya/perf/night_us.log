@@ -1,37 +1,4 @@
-Godot Engine v4.7.2.stable.mono.official.ed1daf0bf - https://godotengine.org
-Vulkan 1.4.357 - Forward+ - Using Device #0: NVIDIA - NVIDIA GeForce RTX 2070 SUPER
-
-TEST perf
-PLAYER model anims: carry,cheer,crouch_walk,hurt,idle,jump,kneel,knockdown,push,run,run_fast,shock_fall,walk,walk_casual,wave
-AUDIO ok 13/13
-POFUDUK anims: preset_quadruped_walk
-BUILD kit pieces=28
-BOOT Kabarma MVP
-BOT step mine t=1.0
-STEP mine -> ocak t=8.3
-BOT step ocak t=6.8
-STEP ocak -> till t=8.7
-BOT step till t=8.5
-STEP till -> plant t=9.2
-BOT step plant t=10.5
-STEP plant -> water t=9.7
-BOT step water t=12.5
-STEP water -> grow t=10.2
-BOT step grow t=14.4
-STEP grow -> night t=34.7
-BOT step night t=112.6
-NIGHT start
-NIGHT swell crops=9
-NIGHT wave 1 count=3
-NIGHT card cevik rank=1
-NIGHT wave 2 count=7
-NIGHT card kivilcim rank=1
-NIGHT wave 3 count=11
-PERF night last wave 3 bookmark=us
-NIGHT card miknatis rank=1
-NIGHT dawn kills=21 level=3 maya=48 swollenLeft=9
-STEP night -> sell t=104.1
-BOT step sell t=228.9
-PERF us kabarma_gecesi_son_dalga mean=9.87ms fps=101.3 p99=21.947ms draws=285 prims=1504789 frames=4635
-PERF file C:/Users/uruskan/Documents/GitHub/kabarma/.claude/worktrees/m1-dunya-a5c492/game/../progress/m1/dunya/perf/perf_night_us.json gpu=NVIDIA GeForce RTX 2070 SUPER res=1920x1080 vsync=Disabled siblings=9
-PERF RESULT ok budget=11.1ms
+﻿PERF night last wave 3 bookmark=us
+PERF us kabarma_gecesi_son_dalga mean=19.04ms fps=52.5 p99=40.54ms draws=334 prims=1746052 frames=2243
+PERF file C:/Users/uruskan/Documents/GitHub/kabarma/.claude/worktrees/m1-dunya-a5c492/game/../progress/m1/dunya/perf/perf_night_us.json gpu=NVIDIA GeForce RTX 2070 SUPER res=1920x1080 vsync=Disabled siblings=13
+PERF RESULT over budget=11.1ms

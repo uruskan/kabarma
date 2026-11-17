@@ -15,13 +15,13 @@
 | Göl Ocak'a 60–90 m | ✅ 445 su hücresi, Ocak'a 63,5–87,2 m, 0,90 m sığ (oyuncu içinde yürür) | `--test=world`, `BiomesDataTests` |
 | Su yüzeyi shader'ı | ✅ derinliğe göre renk, kırık köpük çizgisi, dalgacık; gün saatine göre koyulaşır; güneş parıltısı saf beyaza çıkmıyor | `shaders/water.gdshader`, görüntüler |
 | Gökyüzü | ✅ palet bantları, güneş, iki ay (SANAT-SES §6), yıldız, stilize bulut, Kabarma'da Maya aurorası, krater ışık sütunu | `shaders/sky_kabarma.gdshader` |
-| 4 gün saati + normal gece | ✅ veride (`biomes.json` `times`, SANAT-SES §2 tablosunun sayıları birebir); `SetDay/SetNight/SetDawn` korundu, `SetNormalNight`, `ForceTime` eklendi | `BiomesDataTests`, `--test=world` |
+| 4 gün saati + normal gece | ✅ veride (`biomes.json` `times`; renkler ve güneş açıları SANAT-SES §2 ile birebir; sis yoğunluğunda belge yalnız "sabah ×1,5" oranını veriyor, mutlak değerler benim: öğle 0,0022, sabah 0,0033, gün batımı 0,0026, geceler 0,003); `SetDay/SetNight/SetDawn` korundu, `SetNormalNight`, `ForceTime` eklendi | `BiomesDataTests`, `--test=world` |
 | Sis | ✅ mesafe sisi, gün saatine göre renk ve yoğunluk (sabah öğlenin 1,5 katı); sis katmanları ufuktaki 3 tepe halkasıyla (240/340/460 m, giderek sis rengine). Yükseklik sisi (`world.heightFog`) çok hafif: Godot'da mesafeden bağımsız olduğu için vadiye konan sis üssü de bulandırıyor | görüntüler, `BiomesDataTests` |
 | 8 bitki | ✅ çayır ağacı + Şalgam (altın) + turuncu ağaç, çalı, ot, yabani buğday, çiçek, eğrelti (Tripo modelleri `pipeline/clean_asset.py` ile içe alındı, git'te) | `game/assets/models/<ad>/`, aşağıdaki ölçüt tablosu |
 | 4 kaya | ✅ cevherli kaya (altın) + düz kaya, dik kaya, bakır damarı | aynı |
 | Rüzgâr salınımı | ✅ bitki shader'ı (dokuyu korur; ağaçta yalnız taç), ot tutamları (40 m içinde, kenarda söner) | `shaders/plant_wind.gdshader`, `grass.gdshader`, `pipeline/clip_gif.py` → `clip_gol.gif` |
 | Kil yatakları | ✅ göl kıyısında 4 yatak (8 birim), koddan yumru (kredi yok) | `Rock.ClayBed`, `--test=world` |
-| Bakır damarı | ✅ `bakir` modeliyle 3 damar (8 birim), üssün ~35 m doğusunda | `biomes.json` `nodes` |
+| Bakır damarı | ✅ `bakir` modeliyle 3 damar (8 birim), üssün ~33 m batı-güneybatısında: (30,−14), (34,−20), (27,−21) | `biomes.json` `nodes` |
 | Lif ve Buğday | ✅ ot ve çalı → Lif, yabani buğday → Buğday (tutam başına 4); geri gelmez; üssün 25 m'sinde kümeler + çayıra dağılmış (379 Lif, 74 Buğday tutamı) | `World.Resources.cs`, `--test=world` |
 | `World.Placeholders.cs` | ✅ silindi; `World.Tuft` / `NearestTuft` / `TakeTuft` ve `Rock.Item` arayüzü aynı | bot `harvests=4` taban ile aynı |
 | `biomes.json` + veri ailesi | ✅ `GameData.Biomes.cs`, `GameData.Graphics.cs` (`graphics.json`); bilinmeyen anahtar testi otomatik | `DataCheckTests`, `BiomesDataTests` (5 test) |
@@ -49,16 +49,16 @@ Betik (1–5) `pipeline/clean_asset.py` raporu (`game/assets/models/<ad>/<ad>.re
 
 ### Ölçüm (TEKNIK §10), bu makine: RTX 2070 SUPER, 1920 × 1080, "yüksek", dikey eşitleme kapalı, kare sınırı yok
 
-Ölçüm sırasında başka oturumların 7–13 Godot süreci aynı GPU'da koşuyordu (`other_godot_processes`); sayılar bu yüzden kötümser ve gürültülü.
+**Bu oturumda geçerli bir FPS ölçümü alınamadı.** Aynı GPU'da başka oturumların 5–13 Godot süreci (pencereli görüntü ve bot koşuları) çalışıyordu; benim sürecim kapalıyken bile GPU %37–97 meşguldü (`nvidia-smi`). Kanıt: tepe öğle karesi aynı çizim ve primitive sayısıyla (247 çizim, 1,39 M) bir koşuda 6,50 ms, sonrakinde 14,72 ms ölçüldü. Kararlı olan kısım sahne yükü: kare başına en çok 334 çizim çağrısı (bütçe 2000), 1,0–1,75 M primitive.
 
-| Yer imi | Öğle (60 sn): ort. ms / FPS / p95 / çizim | İlk gecenin son dalgası: ort. ms / FPS / p95 / çizim |
-|---|---|---|
-| kapsul | 9,20 / 108,7 / 12,7 / 213 | 4,36 / 229,5 / 5,3 / 278 |
-| us | 8,11 / 123,4 / 11,4 / 216 | 9,87 / 101,3 / 19,7 / 285 |
-| gol | 9,23 / 108,4 / 15,0 / 136 | 9,41 / 106,3 / 13,6 / 149 |
-| tepe | 6,50 / 153,9 / 13,5 / 248 | 4,95 / 201,8 / 6,9 / 310 |
+| Yer imi | Öğle, 1. koşu (23:43, 11 süreç) | Öğle, 2. koşu (00:12, son görünüm, 8→13 süreç, GPU önceden %37) | Gece son dalga (23:45–23:52, 7–13 süreç) |
+|---|---|---|---|
+| kapsul | 9,20 ms / 108,7 FPS / 213 çizim | 9,15 / 109,3 / 213 | 4,36 / 229,5 / 278 |
+| us | 8,11 / 123,4 / 216 (eski kamera) | 9,65 / 103,6 / 241 (son kamera) | 9,87 / 101,3 / 285 (eski kamera); son kamerada 19,04 / 52,5 / 334 (13 süreç, GPU %97) |
+| gol | 9,23 / 108,4 / 136 | 12,67 / 78,9 / 136 | 9,41 / 106,3 / 149 |
+| tepe | 6,50 / 153,9 / 248 | 14,72 / 68,0 / 247 | 4,95 / 201,8 / 310 |
 
-Ortalamalar 11,1 ms bütçesinin içinde; Üs'te son dalgada p95 19,7 ms (Zıpzıp kalabalığı ve vuruş efektleri). Gece ölçümünde Üs yer imi son ayardan önceki konumdaydı. RTX 2070S hedefi **sahibin onayını bekliyor** (tek başına koşuyla yeniden ölçülmeli: `powershell -NoProfile -ExecutionPolicy Bypass -File tools/perf_m1.ps1`).
+Her görünümün en iyi gözlenen ortalaması 11,1 ms bütçesinin içinde (öğle 6,5–9,7 ms, gece 4,4–9,9 ms), ama paylaşılan GPU'da en kötüleri bütçeyi aşıyor; hangisinin gerçek olduğu buradan söylenemez. Ölçümler son görünüm ayarlarından (sis, su, Üs kamerası) önce ve sonra karışık. RTX 2070S hedefi **sahibin onayını bekliyor**: başka Godot kapalıyken `powershell -NoProfile -ExecutionPolicy Bypass -File tools/perf_m1.ps1` (her koşudan önce GPU kullanımını yazar, %20'nin üstündeyse "sonuç geçersiz" uyarır). Dosyalar: `perf/perf_noon.json` (2. koşu), `perf/perf_noon_onceki.json` (1. koşu), `perf/perf_noon_us.json`, `perf/perf_night_<yer imi>.json`, `perf/perf_m1.log`.
 
 ## PLAN §7.2: teslim başına altı koşul
 
@@ -68,7 +68,7 @@ Ortalamalar 11,1 ms bütçesinin içinde; Üs'te son dalgada p95 19,7 ms (Zıpz�
 3. Ses, efekt, arayüz: **kısmen** (rüzgâr, dalgacık, köpük var; göl kıyısı ortam sesi `ortam_gol_kiyisi` ses akışının dalında, bu dalda yok).
 4. KM ve oyun kolu: **kısmen** (yeni girdi yok; dünya mevcut hareketle gezilir, bot yolu ile sınandı, oyun kolu bu dalda elle sınanmadı); ortak oyun **M2'de**.
 5. Kayıt: **M2'de** (dünya tohumdan aynı kurulur; Sim'e yeni durum eklenmedi).
-6. Görsel ölçütler: **sahibin onayını bekliyor** (betik kısmı geçti: saf siyah yok, saf beyaz yok, gündüz ışıyan yüzey ≤ %0,05, gökyüzü geçişi var).
+6. Görsel ölçütler: **kısmen** (betik kısmı geçti: saf siyah yok, saf beyaz yok, gündüz ışıyan yüzey ≤ %0,05, gökyüzü geçişi var; öz puanım tepe gündüz 6 ve üs 7, geçme 8); **sahibin onayını bekliyor**.
 
 **2. 8 bitki, 4 kaya**
 1. **geçti** (`biomes.json` `decor`; yer tutucu işaretleri URETIM §3).
@@ -76,7 +76,7 @@ Ortalamalar 11,1 ms bütçesinin içinde; Üs'te son dalgada p95 19,7 ms (Zıpz�
 3. **geçti** (rüzgâr salınımı; Biçme ile toplananlar küçülüp kaybolur).
 4. **kısmen** / ortak oyun **M2'de** (yukarıdaki gibi).
 5. **M2'de**.
-6. **sahibin onayını bekliyor** (6–8 puanlarım tabloda).
+6. **kısmen** (öz puanım 8'in altında: çalı, yabani buğday, eğrelti, bakır; tablo yukarıda); **sahibin onayını bekliyor**.
 
 **3. Gerçek kaynaklar (kil, bakır, Lif, Buğday)**
 1. **kısmen**: kural (Kazma/Biçme ile toplanır, geri gelmez) URETIM §6'da; verim sayıları veride ama belgede değer yok, yer tutucu sayılar korundu (soruldu).
@@ -94,12 +94,12 @@ Ortalamalar 11,1 ms bütçesinin içinde; Üs'te son dalgada p95 19,7 ms (Zıpz�
 3. **geçti** (arayüz açık; Deck çözünürlüğünde okunuyor, iki kuşak etiketi kesik: gecehud).
 4. —
 5. —
-6. **sahibin onayını bekliyor** (öz puanlarım aşağıda).
+6. **kısmen** (öz puanım tepe gündüz 6, üs 7; diğerleri 8; aşağıda); **sahibin onayını bekliyor**.
 
 **6. RTX 2070S'te 1080p yüksek ≥ 90 FPS**
 1. **geçti** (`graphics.json`, TEKNIK §10 ile birebir; test denetler).
 2. **geçti** (`--test=perf` aracı; ön ayar `BiomesDataTests`'te).
-6. FPS: **sahibin onayını bekliyor** (bu makinede ortalama 101–230 FPS, ayrıntı yukarıda).
+6. FPS: **sahibin onayını bekliyor**: paylaşılan GPU yüzünden geçerli ölçüm yok; en iyi gözlenen ortalamalar 103–230 FPS, en kötüler 52–79 FPS (ayrıntı yukarıda).
 
 ### 16 görüntü: öz değerlendirme (SANAT-SES §9 ekran görüntüsü ölçütleri)
 
@@ -140,11 +140,12 @@ Komut (ana oturumda): `powershell -NoProfile -ExecutionPolicy Bypass -File pipel
 2. **Verimler** (soruldu): tutam başına Lif/Buğday, kil ve bakır düğüm birimi, ağaç vuruşu başına odun belgede yok. Yer tutucu sayılar korundu (4 / 8 / `woodPerChop`).
 3. **Düz ve dik kaya kazılır mı?** Belge susuyor; süs olarak bıraktım (kazılmaz, çarpışmalı).
 4. **Kil yatağı**: belge model mi kod mu demiyor; kredi istemediği için C# yumruları (MeshKit) yazdım, Blender betiği değil.
-5. **Yön**: belge kuzeyi tanımlamıyor. Krater +Z (kuzey), güneş doğudan (−X) doğar; azimut 0 kuzey. İlk açılış görüntüsünü bu belirliyor.
-6. **İki ay**: SANAT-SES §6 "güneş ve iki ay" diyor, §2 tablosu tek ay konumu veriyor. İkinci ayın konumu birincisine göre sabit açıyla (kodda) çiziliyor.
-7. **Üs yer imi**: SANAT-SES §9 "ağıl ve Gıdak" istiyor; ağıl ilkgün akışında, bu dalda yok. Üs görüntüleri ağılsız (kısmen).
-8. **`--test=shots`**: CLAUDE.md `--shots=...` argümanını anıyor (MVP aracı); M1 görüntüleri için ayrı test adı ekledim, eskisi değişmedi.
-9. **Sulama boş depoyla da püskürtüyor** (capa akışı; depo gelince birleşmede bağlanmalı).
-10. **Kuşak etiketleri Deck çözünürlüğünde kesik** ("ılgam Tohum", "ebze Çorbas"): gecehud akışı.
-11. **Ölçüt 4 denetimi** onaylı altın varlıkları da düşürüyor: varlik akışı.
-12. **Birleşme dikişleri** (paylaşılan notlar `dunya-notes.md` §4): gecehud `ApplyClockLight()` → `SetDay/SetDawn/SetNormalNight`; ses göl kıyısı emitter'ı → `World.LakeCenter` / `ShoreRadius`.
+5. **Yön**: belge kuzeyi tanımlamıyor. Seçimim: kuzey +Z (krater ışık sütunu kuzey-kuzeydoğuda), doğu −X; güneş doğudan (−X) doğar, azimut 0 kuzey, 90 doğu. Buna göre göl üssün doğu-kuzeydoğusunda, bakır batı-güneybatısında. **gecehud pusulası aynı kuzeyi (+Z) kullanmalı**, yoksa güneş ve pusula çelişir.
+6. **Sis yoğunluğu**: SANAT-SES §2 yalnız sabahın öğleye oranını (×1,5) veriyor; mutlak yoğunluklar benim seçimim (`biomes.json`).
+7. **İki ay**: SANAT-SES §6 "güneş ve iki ay" diyor, §2 tablosu tek ay konumu veriyor. İkinci ayın konumu birincisine göre sabit açıyla (kodda) çiziliyor.
+8. **Üs yer imi**: SANAT-SES §9 "ağıl ve Gıdak" istiyor; ağıl ilkgün akışında, bu dalda yok. Üs görüntüleri ağılsız (kısmen).
+9. **`--test=shots`**: CLAUDE.md `--shots=...` argümanını anıyor (MVP aracı); M1 görüntüleri için ayrı test adı ekledim, eskisi değişmedi.
+10. **Sulama boş depoyla da püskürtüyor** (capa akışı; depo gelince birleşmede bağlanmalı).
+11. **Kuşak etiketleri Deck çözünürlüğünde kesik** ("ılgam Tohum", "ebze Çorbas"): gecehud akışı.
+12. **Ölçüt 4 denetimi** onaylı altın varlıkları da düşürüyor: varlik akışı.
+13. **Birleşme dikişleri** (paylaşılan notlar `dunya-notes.md` §4): gecehud `ApplyClockLight()` → `SetDay/SetDawn/SetNormalNight`; ses göl kıyısı emitter'ı → `World.LakeCenter` / `ShoreRadius`.

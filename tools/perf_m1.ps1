@@ -22,8 +22,20 @@ $out = Join-Path $Root 'progress\m1\dunya\perf'
 New-Item -ItemType Directory -Force $out | Out-Null
 $summary = New-Object System.Collections.ArrayList
 
+function GpuBusy {
+    # Olcumden once GPU baskasi tarafindan kullaniliyor mu? (yalniz NVIDIA; yoksa bos)
+    try { $u = & nvidia-smi --query-gpu=utilization.gpu --format=csv,noheader,nounits 2>$null | Select-Object -First 1; if ($u) { return [int]$u.Trim() } } catch { }
+    return $null
+}
+
 function Run([string]$name, [string]$a, [int]$timeout) {
     $log = Join-Path $out "$name.log"
+    # Baska oturumlarin Godot'u GPU'yu dolduruyorsa sonuc gecersizdir: once yaz, karar sahibin.
+    $busy = GpuBusy
+    $others = @(Get-Process -ErrorAction SilentlyContinue | Where-Object { $_.ProcessName -like 'Godot*' }).Count
+    $pre = "$name  ONCESI gpu_kullanim=$busy% godot_sureci=$others"
+    if ($busy -ne $null -and $busy -gt 20) { $pre += '  UYARI: GPU bos degil, sonuc gecersiz sayilmali' }
+    [void]$summary.Add($pre); Write-Host $pre
     $p = Start-Process -FilePath $G -ArgumentList "--path `"$Root\game`" -- $a" -RedirectStandardOutput $log -RedirectStandardError "$log.err" -PassThru -NoNewWindow
     $null = $p.Handle
     if (-not $p.WaitForExit($timeout * 1000)) { & taskkill /T /F /PID $p.Id | Out-Null; [void]$summary.Add("$name ZAMAN ASIMI") }

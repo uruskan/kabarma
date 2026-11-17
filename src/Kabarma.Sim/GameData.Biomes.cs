@@ -74,7 +74,7 @@ public sealed class WorldDef
     public List<BookmarkDef> Bookmarks { get; set; } = new();
 }
 
-/// <summary>Gun saati isigi (SANAT-SES §2 tablosu). Aci derece; azimut 0 kuzey (-Z), 90 dogu (+X).</summary>
+/// <summary>Gun saati isigi (SANAT-SES §2 tablosu). Aci derece; azimut 0 kuzey (+Z), 90 dogu (-X) (World.Dir).</summary>
 public sealed class TimeOfDayDef
 {
     public string Name { get; set; } = "";

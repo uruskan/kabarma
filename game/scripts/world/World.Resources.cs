@@ -68,7 +68,7 @@ public partial class World
         return got;
     }
 
-    /// <summary>Kazilacak dugumler: tas kayalari ussun cevresinde, kil yataklari gol kiyisinda, bakir damarlari dogu yamacinda.</summary>
+    /// <summary>Kazilacak dugumler: tas kayalari ussun cevresinde, kil yataklari gol kiyisinda, bakir damarlari ussun ~33 m bati-guneybatisinda (+X, -Z).</summary>
     void BuildResources()
     {
         // Kendi tohumu: dekor ve ot degisse de kayalarin birimleri ayni kalir.
