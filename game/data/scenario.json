@@ -1,6 +1,6 @@
 {
   "_not": "Ilk gun (PLAN 1.4, GDD 24, SANAT-SES 10.3). Adimlar GDD 24 sirasinda: 1-9 ilk 10 dakika, 10-16 ilk 10 dakikadan sonra. Suna'nin 30 repligi 'lines' icinde (TR + EN); seslendirilen replikte tus adi yok. Hedef satirlari ekranda durur, seslendirilmez; {act:eylem} girdi glifidir.",
-  "_dagilim": "Giris 2 (giris_*), ilk gunun dokuz adimi 14, Kucuk Kabarma ve safak 6 (gece_*, safak), ilk 10 dakikadan sonraki yedi adim 7, siradaki is emri 1 = 30. Ses dosyasi: assets/audio/suna/<tr|en>/<kimlik>.mp3 (ses akisi).",
+  "_dagilim": "Giris 2 (giris_*), ilk gunun dokuz adimi 14, Kucuk Kabarma ve safak 6 (gece_*, safak), ilk 10 dakikadan sonraki yedi adim 7, siradaki is emri 1 = 30. Ses dosyasi: assets/audio/voice/<tr|en>/<kimlik>.mp3 (ses akisi).",
   "hatch": { "delay": 0.6, "openSeconds": 1.8, "openDegrees": 82, "holdSeconds": 0.9, "exitSeconds": 1.8, "closeSeconds": 1.2 },
   "waveSpreadDegrees": 10,
   "firstNightSwellsAll": true,
