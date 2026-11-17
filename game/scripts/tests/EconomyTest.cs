@@ -54,9 +54,42 @@ public partial class EconomyTest : Node
             await CrateAndRamp();
             await Building();
             await SleepAndFood();
+            await HarvestQuality();
         }
         catch (Exception e) { _fail++; Log("HATA " + e); }
         Finish();
+    }
+
+    /// <summary>Biçme hasadinin yildizi cantaya gecer (Capa.Bicme), kasaya kaliteyle girer, kasa degeri taban × kalite.</summary>
+    async Task HarvestQuality()
+    {
+        var f = _d.State.Farm;
+        int x = 4, y = 12;
+        if (Bag.Count("turnip_seed") == 0) Bag.Add("turnip_seed", 1);
+        Check(f.Till(x, y) && f.Plant(x, y, "turnip", Bag), "kalite: kare surulup ekildi");
+        f.Water(x, y);
+        for (int i = 0; i < 4000 && f.Get(x, y)!.Stage != CropStage.Mature; i++) { f.Tick(0.5f, true); f.Water(x, y); }
+        Check(f.Get(x, y)!.NeverDry, "kalite: nem hic dusmedi (en az ★2, GDD 8.2)");
+        var c = _d.FarmView.CellCenter(x, y);
+        var p = _d.Player;
+        p.GlobalPosition = c + new Vector3(0, 0.3f, -2.5f);
+        await Frames(4);
+        int before1 = Bag.Count("turnip", 1), before2 = Bag.Count("turnip", 2), before3 = Bag.Count("turnip", 3);
+        int n = _d.Capa.Mow(c);
+        int got2 = Bag.Count("turnip", 2) - before2, got3 = Bag.Count("turnip", 3) - before3;
+        Check(n == 1 && got2 + got3 > 0 && Bag.Count("turnip", 1) == before1, $"Biçme hasadi yildizla cantada (★2 +{got2}, ★3 +{got3})");
+        // kasaya kaliteyle girer, deger taban × kalite
+        int stars = got3 > 0 ? 3 : 2, got = got3 > 0 ? got3 : got2;
+        var cargo = _d.State.Cargo;
+        if (cargo.Open != null && !cargo.Open.Items.IsEmpty) { cargo.Close(); while (cargo.TakeClosed() != null) { } } // onceki bolumden kalan kasa
+        var tmp = new Inventory(1, _d.Data.Tool.StackOf);
+        Bag.Remove("turnip", got, stars);
+        tmp.Add("turnip", got, stars);
+        cargo.Pack(tmp, "turnip", got);
+        var crate = cargo.Open;
+        Check(crate != null && crate.Items.Count("turnip", stars) == got, "kalite kasaya gecti");
+        int expect = (int)Math.Round(got * cargo.Pricing.Base("turnip") * _d.Data.Tool.Quality[stars - 1], MidpointRounding.AwayFromZero);
+        Check(crate != null && cargo.Value(crate) == expect, $"kasa degeri taban × kalite ({(crate != null ? cargo.Value(crate) : 0)} = {expect})");
     }
 
     bool _finished;
