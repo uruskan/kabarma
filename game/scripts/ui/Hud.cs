@@ -6,6 +6,7 @@ namespace Kabarma.Game;
 
 /// <summary>
 /// Pano: gunduz sade (kemer, can, pusula yerine Defter), gece yogun (dalga, Oz, Gosteri, kart seridi). SANAT-SES §8.
+/// Parcalar: Hud.Day.cs, Hud.Night.cs, Hud.Menu.cs, Hud.Report.cs, Hud.Wheel.cs. Kurulum (_Ready) burada, cizim sirasi icin tek yerde.
 /// </summary>
 public partial class Hud : CanvasLayer
 {
@@ -16,81 +17,12 @@ public partial class Hud : CanvasLayer
     readonly Queue<string> _lines = new();
     float _lineT, _typeT;
     string _full = "";
-    Label _goal, _goalProgress;
-    PanelContainer _goalPanel;
-    HBoxContainer _belt;
-    readonly List<PanelContainer> _beltSlots = new();
-    readonly List<Label> _beltName = new(), _beltCount = new();
-    PanelContainer _headTag;
-    Label _headName, _headHint;
-    Control _wheel;
-    readonly List<PanelContainer> _wheelSlots = new();
-    Vector2 _wheelDir;
-    int _wheelSel = -1;
-    public bool WheelOpen => _wheel != null && _wheel.Visible;
-    Label _bag;
-    ProgressBar _hp;
     Label _hint;
     float _hintT;
     Control _crosshair;
-    VBoxContainer _nightBox;
-    Label _wave, _level, _gosteri;
-    ProgressBar _oz;
-    HBoxContainer _cards;
-    PanelContainer _report;
     Label _bigText;
     float _bigT;
     ColorRect _vignette;
-    VBoxContainer _bottomLeft;
-
-    public bool ReportOpen => _report != null && _report.Visible;
-
-    // ---------- Menu: istasyon, canta, satis (ortak sablon, SANAT-SES §8.2) ----------
-    public sealed record MenuItem(string Label, System.Func<bool> Enabled, System.Action Act);
-    PanelContainer _menu;
-    VBoxContainer _menuList;
-    Label _menuTitle, _menuFoot;
-    readonly List<MenuItem> _menuItems = new();
-    public bool MenuOpen => _menu != null && _menu.Visible;
-
-    public void ShowMenu(string title, List<MenuItem> items, string footer)
-    {
-        _menuItems.Clear();
-        _menuItems.AddRange(items);
-        _menuTitle.Text = title;
-        _menuFoot.Text = footer;
-        foreach (var c in _menuList.GetChildren()) c.QueueFree();
-        for (int i = 0; i < items.Count; i++)
-        {
-            var l = L($"{i + 1}   {items[i].Label}", 21, Palette.OffWhite, true);
-            l.SetMeta("i", i);
-            _menuList.AddChild(l);
-        }
-        if (items.Count == 0) _menuList.AddChild(L("Burada yapılacak bir şey yok.", 20, Palette.Fog));
-        _menu.Visible = true;
-        RefreshMenu();
-    }
-
-    public void HideMenu() { if (_menu != null) _menu.Visible = false; }
-
-    public void ActivateMenu(int i)
-    {
-        if (!MenuOpen || i < 0 || i >= _menuItems.Count) return;
-        var it = _menuItems[i];
-        if (!it.Enabled()) { Sfx.Play("hit", null, -12f); return; }
-        it.Act();
-        RefreshMenu();
-    }
-
-    void RefreshMenu()
-    {
-        foreach (var n in _menuList.GetChildren())
-            if (n is Label l && l.HasMeta("i"))
-            {
-                int i = (int)l.GetMeta("i");
-                if (i < _menuItems.Count) l.AddThemeColorOverride("font_color", _menuItems[i].Enabled() ? Palette.OffWhite : new Color(Palette.OffWhite, 0.35f));
-            }
-    }
 
     public void Init(Director d) { _d = d; }
 
@@ -323,21 +255,7 @@ public partial class Hud : CanvasLayer
             Sfx.Play("place", null, -22f); // telsiz mandali
         }
 
-        var s = _d.State;
-        var step = s.Scenario.Current;
-        if (step != null)
-        {
-            _goal.Text = step.Goal;
-            _goalProgress.Text = step.Target > 1 ? $"{s.Scenario.Progress} / {step.Target}" : "";
-        }
-        else
-        {
-            _goal.Text = "Defter: 240 iş emri";
-            _goalProgress.Text = "Sıradaki: 5 kabarık ürün yetiştir";
-        }
-
-        _hp.Value = _d.Player.Hp / _d.Player.MaxHp * 100f;
-        _bag.Text = $"{s.Credits} Kredi   ·   Yumurta {s.Eggs}   ·   Çanta {s.Backpack.UsedSlots}/{s.Backpack.Slots} (Tab)";
+        UpdateDayPanels(); // Hud.Day.cs
 
         _hintT -= dt;
         if (_hintT <= 0) _hint.Text = "";
@@ -347,19 +265,7 @@ public partial class Hud : CanvasLayer
         float hurt = 1f - _d.Player.Hp / _d.Player.MaxHp;
         _vignette.Color = new Color(Palette.HoldingRed, _d.Player.Down ? 0.35f : hurt * 0.12f);
 
-        var night = _d.Night;
-        _nightBox.Visible = night != null && night.Phase != NightPhase.Dawn;
-        if (_nightBox.Visible)
-        {
-            int waves = _d.Data.Kabarma.FirstNight.Waves.Count;
-            _wave.Text = night.Phase == NightPhase.Alarm ? "KABARMA GELİYOR" : $"KÜÇÜK KABARMA · Dalga {night.WaveIndex + 1}/{waves}";
-            _gosteri.Text = $"Gösteri ×{night.Gosteri:0.0}";
-            int lv = night.Level;
-            float lo = lv == 0 ? 0 : night.Threshold(lv), hi = night.Threshold(lv + 1);
-            bool capped = lv >= _d.Data.Kabarma.FirstNight.MaxCardLevels;
-            _oz.Value = capped ? 100 : Mathf.Clamp((night.Oz - lo) / (hi - lo) * 100f, 0, 100);
-            _level.Text = capped ? $"Seviye {lv} · Öz dolu · {night.Kills} kabarık söndü" : $"Seviye {lv} · Öz {(int)night.Oz}/{(int)hi} · {night.Kills} kabarık söndü";
-        }
+        UpdateNightBox(); // Hud.Night.cs
         _crosshair.Visible = !_report.Visible && !_menu.Visible && !_wheel.Visible;
         _headTag.Visible = _crosshair.Visible;
     }
@@ -375,147 +281,4 @@ public partial class Hud : CanvasLayer
         _bigText.AddThemeColorOverride("font_color", color);
         _bigT = seconds;
     }
-
-    public void OnHead(int h)
-    {
-        _headName.Text = "▸ " + Capa.HeadNames[h];
-        _headTag.AddThemeStyleboxOverride("panel", Box(new Color(Capa.HeadColors[h].Darkened(0.45f), 0.85f), 12, Capa.HeadColors[h], 2));
-    }
-
-    // ---------- Baslik carki ----------
-
-    public void OpenWheel(int current)
-    {
-        _wheel.Visible = true;
-        _wheelDir = Vector2.Zero;
-        _wheelSel = current;
-        PaintWheel();
-    }
-
-    /// <summary>Fare hareketi carkta yon secer (fare kilitli oldugu icin goreli hareket birikir).</summary>
-    public void WheelMotion(Vector2 rel)
-    {
-        _wheelDir = (_wheelDir + rel * 0.02f).LimitLength(1f);
-        if (_wheelDir.Length() > 0.35f)
-        {
-            int n = _wheelSlots.Count;
-            float a = Mathf.PosMod(Mathf.Atan2(_wheelDir.X, -_wheelDir.Y), Mathf.Tau);
-            _wheelSel = Mathf.PosMod((int)Mathf.Round(a / (Mathf.Tau / n)), n);
-            PaintWheel();
-        }
-    }
-
-    public int CloseWheel() { _wheel.Visible = false; return _wheelSel; }
-
-    void PaintWheel()
-    {
-        for (int i = 0; i < _wheelSlots.Count; i++)
-        {
-            bool on = i == _wheelSel;
-            _wheelSlots[i].AddThemeStyleboxOverride("panel", Box(on ? new Color(Capa.HeadColors[i].Darkened(0.3f), 0.95f) : new Color(Palette.NightDeep, 0.8f), 14, on ? Palette.Warning : new Color(Palette.OffWhite, 0.3f), on ? 3 : 2));
-        }
-    }
-
-    void LayoutWheel(Vector2 vp)
-    {
-        int n = _wheelSlots.Count;
-        var c = vp / 2f;
-        float r = Mathf.Min(vp.X, vp.Y) * 0.24f;
-        for (int i = 0; i < n; i++)
-        {
-            float a = i * Mathf.Tau / n;
-            var p = c + new Vector2(Mathf.Sin(a), -Mathf.Cos(a)) * r;
-            _wheelSlots[i].Position = p - _wheelSlots[i].Size / 2f;
-        }
-    }
-
-    void RefreshBelt()
-    {
-        var s = _d.State;
-        for (int i = 0; i < _beltSlots.Count; i++)
-        {
-            var id = s.Belt.At(i);
-            int n = id == null ? 0 : s.Backpack.Count(id);
-            _beltName[i].Text = id == null ? "" : ItemNames.Of(id);
-            _beltCount[i].Text = id == null ? "" : n.ToString();
-            _beltName[i].Modulate = n > 0 || id == null ? Colors.White : new Color(1, 1, 1, 0.4f);
-        }
-    }
-
-    public void FlashBelt(int i)
-    {
-        if (i < 0 || i >= _beltSlots.Count) return;
-        var p = _beltSlots[i];
-        p.PivotOffset = p.Size / 2f;
-        p.CreateTween().TweenProperty(p, "scale", Vector2.One, 0.2f).From(new Vector2(1.15f, 1.15f));
-    }
-
-
-    /// <summary>Kart secimi: oyun durmaz, kartlar altta belirir, tek tusla secilir (GDD 15).</summary>
-    public void ShowOffer(CardOffer offer, KabarmaNight night)
-    {
-        foreach (var c in _cards.GetChildren()) c.QueueFree();
-        _cards.Visible = offer != null;
-        if (offer == null) return;
-        string[] keys = { "Z", "X", "C" };
-        for (int i = 0; i < offer.Cards.Count; i++)
-        {
-            var card = offer.Cards[i];
-            int rank = night.Rank(card.Id);
-            var rc = card.Rarity switch { "N" => Palette.CoopBlue.Lerp(Palette.MayaTeal, 0.3f), "D" => Palette.MayaViolet, "E" => Palette.Warning, _ => Palette.OffWhite.Lerp(Palette.Shadow, 0.3f) };
-            var p = new PanelContainer { CustomMinimumSize = new Vector2(250, 150) };
-            p.AddThemeStyleboxOverride("panel", Box(new Color(Palette.NightDeep, 0.93f), 16, rc, 4));
-            var v = new VBoxContainer();
-            v.AddChild(L($"[{keys[i]}]  " + (card.Rarity switch { "N" => "Nadir", "D" => "Destansı", "E" => "Efsane", _ => "Sıradan" }), 16, rc, true));
-            v.AddChild(L(card.Name, 30, Palette.OffWhite, true));
-            var t = L(card.Text, 19, Palette.Fog);
-            t.AutowrapMode = TextServer.AutowrapMode.WordSmart;
-            v.AddChild(t);
-            v.AddChild(L(rank > 0 ? $"Rütbe {rank} → {rank + 1}" : "Yeni", 16, Palette.MayaTeal, true));
-            p.AddChild(v);
-            _cards.AddChild(p);
-            p.Scale = new Vector2(0.6f, 0.6f);
-            p.PivotOffset = new Vector2(125, 150);
-            p.CreateTween().TweenProperty(p, "scale", Vector2.One, 0.25f).SetTrans(Tween.TransitionType.Back).SetEase(Tween.EaseType.Out);
-        }
-        IgnoreMouse(_cards);
-    }
-
-    /// <summary>Hasat Raporu (PLAN 1.4, 10:00).</summary>
-    public void ShowReport(GameState s, KabarmaNight n, int swollenLeft)
-    {
-        foreach (var c in _report.GetChildren()) c.QueueFree();
-        var v = new VBoxContainer { CustomMinimumSize = new Vector2(620, 0) };
-        v.AddThemeConstantOverride("separation", 6);
-        v.AddChild(L("HASAT RAPORU · Gece 1", 34, Palette.CoopBlue, true));
-        v.AddChild(L("Küçük Kabarma atlatıldı.", 20, Palette.DarkGrey));
-        v.AddChild(new HSeparator());
-        void Row(string a, string b)
-        {
-            var h = new HBoxContainer();
-            var l = L(a, 22, Palette.DarkGrey); l.SizeFlagsHorizontal = Control.SizeFlags.ExpandFill;
-            h.AddChild(l);
-            h.AddChild(L(b, 22, Palette.Accent, true));
-            v.AddChild(h);
-        }
-        Row("Toplanan Maya", $"{(int)(n?.Maya ?? 0)}");
-        Row("Söndürülen kabarık", $"{n?.Kills ?? 0}");
-        Row("Seçilen kart", $"{n?.CardsCount ?? 0}");
-        Row("En yüksek Gösteri", $"×{n?.PeakGosteri ?? 1:0.0}");
-        Row("Kabarık ürün (tarlada)", $"{swollenLeft}");
-        int sold = 0; foreach (var x in s.Sales) sold += x.value;
-        Row("Kargo satışı", $"+{sold} Kredi");
-        Row("Yumurta", $"{s.Eggs}");
-        v.AddChild(new HSeparator());
-        v.AddChild(L($"Defter açıldı: {_d.Data.Scenario.OrdersTotal} iş emri.", 22, Palette.CoopBlue, true));
-        v.AddChild(L(_d.Data.Scenario.NextOrder, 22, Palette.DarkGrey, true));
-        v.AddChild(L("Enter: rapor kapanır, çiftlik seninle.", 17, Palette.Shadow));
-        _report.AddChild(v);
-        IgnoreMouse(_report);
-        _report.Visible = true;
-        _report.Scale = new Vector2(0.8f, 0.8f);
-        _report.CreateTween().TweenProperty(_report, "scale", Vector2.One, 0.3f).SetTrans(Tween.TransitionType.Back).SetEase(Tween.EaseType.Out);
-    }
-
-    public void HideReport() => _report.Visible = false;
 }
