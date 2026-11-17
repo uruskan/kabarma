@@ -1,0 +1,16 @@
+{
+  "_not": "Capa silah basliklari: baslangic silahi Tirpan Isini (ICERIK 6.2 #1) ve Civi Tabancasi (ICERIK 6.2 #2).",
+  "weapon": {
+    "id": "tirpan_isini", "name": "Tırpan Işını", "damage": 14, "fireInterval": 0.42,
+    "range": 11, "speed": 22, "width": 2.2, "spreadDegrees": 14,
+    "critChance": 0.05, "critMult": 2.0, "knockback": 4.0,
+    "burnDps": 0.2, "burnSeconds": 3, "freezeSlow": 0.4, "freezeSeconds": 2
+  },
+  "nailgun": {
+    "id": "civi_tabancasi", "name": "Çivi Tabancası", "damage": 22, "fireInterval": 0.24,
+    "range": 32, "speed": 70, "width": 0.25, "spreadDegrees": 4,
+    "critChance": 0.12, "critMult": 2.2, "knockback": 2.0,
+    "burnDps": 0.2, "burnSeconds": 3, "freezeSlow": 0.4, "freezeSeconds": 2,
+    "ammo": "civi", "ammoPerShot": 1
+  }
+}

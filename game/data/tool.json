@@ -1,45 +1,6 @@
 {
-  "_not": "GDD 4 Capa Mk.I. Is basliklari ve baslangic silahi Tirpan Isini (ICERIK 6.2 #1).",
-  "heads": ["kazma", "bicme", "toprak", "sulama", "cekim", "insa"],
-  "mowRadius": 1.6,
-  "mowRange": 5,
-  "mineRate": 2.5,
-  "mineRange": 9,
-  "tillRange": 7,
-  "waterRange": 9,
-  "carryRange": 10,
-  "buildRange": 8,
+  "_not": "Oyuncu ve sirt cantasi. Capa verisi bolundu: heads.json (basliklar), weapons.json (silahlar), recipes.json, placeables.json, foods.json, prices.json. Hepsi bellekte tek Data.Tool olarak birlesir.",
   "player": { "maxHp": 100, "walkSpeed": 5.0, "sprintSpeed": 8.0, "jump": 6.5 },
-  "weapon": {
-    "id": "tirpan_isini", "name": "Tırpan Işını", "damage": 14, "fireInterval": 0.42,
-    "range": 11, "speed": 22, "width": 2.2, "spreadDegrees": 14,
-    "critChance": 0.05, "critMult": 2.0, "knockback": 4.0,
-    "burnDps": 0.2, "burnSeconds": 3, "freezeSlow": 0.4, "freezeSeconds": 2
-  },
-  "nailgun": {
-    "id": "civi_tabancasi", "name": "Çivi Tabancası", "damage": 22, "fireInterval": 0.24,
-    "range": 32, "speed": 70, "width": 0.25, "spreadDegrees": 4,
-    "critChance": 0.12, "critMult": 2.2, "knockback": 2.0,
-    "burnDps": 0.2, "burnSeconds": 3, "freezeSlow": 0.4, "freezeSeconds": 2,
-    "ammo": "civi", "ammoPerShot": 1
-  },
-  "recipes": [
-    { "id": "civi", "name": "Çivi", "station": "tezgah", "in": { "stone": 2 }, "out": 10, "seconds": 2.0 },
-    { "id": "salgam_corbasi", "name": "Şalgam Çorbası", "station": "tas_firin", "in": { "turnip": 2 }, "out": 1, "seconds": 4.0 },
-    { "id": "salgam_kasasi", "name": "Şalgam Kasası", "station": "paketleme", "in": { "turnip": 5 }, "out": 1, "seconds": 3.0 }
-  ],
-  "foods": [
-    { "id": "salgam_corbasi", "name": "Şalgam Çorbası", "maxHp": 25, "regen": 1.0, "seconds": 300 }
-  ],
-  "placeables": [
-    { "id": "ocak", "name": "Ocak", "cost": {}, "once": true, "radius": 1.0 },
-    { "id": "tezgah", "name": "Tezgâh", "cost": { "stone": 6 }, "station": "tezgah", "model": "res://assets/models/tezgah/tezgah.glb", "radius": 1.0 },
-    { "id": "tas_firin", "name": "Taş Fırın", "cost": { "stone": 10 }, "station": "tas_firin", "radius": 1.0 },
-    { "id": "paketleme", "name": "Paketleme Tezgâhı", "cost": { "stone": 8 }, "station": "paketleme", "model": "res://assets/models/paketleme/paketleme.glb", "radius": 1.0 }
-  ],
-  "buildCosts": { "foundation": 6, "wall": 4, "floor": 4, "roof": 4, "stairs": 5, "pillar": 2, "beam": 2, "fence": 2, "platform": 6 },
-  "woodPerChop": 2,
-  "prices": { "turnip": 15, "salgam_kasasi": 90, "egg": 20 },
   "backpackSlots": 20,
   "stackResource": 50,
   "startItems": { "turnip_seed": 12, "wheat": 10, "civi": 40 }

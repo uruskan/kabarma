@@ -1,0 +1,6 @@
+{
+  "_not": "Yemekler: ek can ve yenilenme, belirli bir sure.",
+  "foods": [
+    { "id": "salgam_corbasi", "name": "Şalgam Çorbası", "maxHp": 25, "regen": 1.0, "seconds": 300 }
+  ]
+}

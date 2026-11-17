@@ -1,0 +1,13 @@
+{
+  "_not": "GDD 4 Capa Mk.I is basliklari: menziller ve hizlar. Silah basliklari weapons.json icinde.",
+  "heads": ["kazma", "bicme", "toprak", "sulama", "cekim", "insa"],
+  "mowRadius": 1.6,
+  "mowRange": 5,
+  "mineRate": 2.5,
+  "mineRange": 9,
+  "tillRange": 7,
+  "waterRange": 9,
+  "carryRange": 10,
+  "buildRange": 8,
+  "woodPerChop": 2
+}

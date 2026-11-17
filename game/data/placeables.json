@@ -1,0 +1,10 @@
+{
+  "_not": "Insa basligiyla konan yerlestirilebilirler (Ocak, istasyonlar) ve yapi seti parca turu basina odun bedeli (buildCosts).",
+  "placeables": [
+    { "id": "ocak", "name": "Ocak", "cost": {}, "once": true, "radius": 1.0 },
+    { "id": "tezgah", "name": "Tezgâh", "cost": { "stone": 6 }, "station": "tezgah", "model": "res://assets/models/tezgah/tezgah.glb", "radius": 1.0 },
+    { "id": "tas_firin", "name": "Taş Fırın", "cost": { "stone": 10 }, "station": "tas_firin", "radius": 1.0 },
+    { "id": "paketleme", "name": "Paketleme Tezgâhı", "cost": { "stone": 8 }, "station": "paketleme", "model": "res://assets/models/paketleme/paketleme.glb", "radius": 1.0 }
+  ],
+  "buildCosts": { "foundation": 6, "wall": 4, "floor": 4, "roof": 4, "stairs": 5, "pillar": 2, "beam": 2, "fence": 2, "platform": 6 }
+}

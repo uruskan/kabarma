@@ -1,0 +1,8 @@
+{
+  "_not": "Istasyon tarifleri: girdi cantadan alinir, cikti cantaya gider.",
+  "recipes": [
+    { "id": "civi", "name": "Çivi", "station": "tezgah", "in": { "stone": 2 }, "out": 10, "seconds": 2.0 },
+    { "id": "salgam_corbasi", "name": "Şalgam Çorbası", "station": "tas_firin", "in": { "turnip": 2 }, "out": 1, "seconds": 4.0 },
+    { "id": "salgam_kasasi", "name": "Şalgam Kasası", "station": "paketleme", "in": { "turnip": 5 }, "out": 1, "seconds": 3.0 }
+  ]
+}
