@@ -139,6 +139,15 @@ Hepsi shader ve parçacıkla, kodda yazılır. Liste:
 - **İkonlar modelden çekilir.** Her eşyanın ikonu kendi 3B modelinin aynı ışık ve açıyla alınmış görüntüsüdür; böylece ikon seti kendiliğinden tutarlıdır.
 - **Yazı tipi:** arayüz için yuvarlak hatlı bir sans, sayılar için sabit genişlikli; ikisi de açık lisanslı ve Türkçe, Kiril, Çince, Japonca, Korece kapsamı olan ailelerden.
 - **Her panel** klavye-fare ve oyun koluyla tam kullanılır; ipucu ikonları son kullanılan aygıta göre değişir.
+- **Görsel dil: Rust tarzı arayüz (sahibin kararı, 18 Kasım 2026).** Yerleşim, oran ve his Rust'ın arayüzüne yakın; kod, ikon ve çizimler özgün (Rust'ın varlıkları kullanılmaz). Başvuru: sahibin açık kaynak Godot C# projesi [Hollow-Universe](https://github.com/uruskan/Hollow-Universe): `game/scripts/Common/Ui.cs` (tasarım sistemi: palet, yazı rampası, tema, keskin ölçekleme), `game/scripts/App/UiScaler.cs`, `game/scripts/UI/GroundUi.*.cs` (HUD, envanter, çark, üretim, ayarlar), `docs/DESIGN.md` UI-01…UI-06, Barlow yazı tipleri (OFL). Yerel kopya (yalnız bu dosyalar, git dışı): `.tools/ref/Hollow-Universe/`. Kurallar:
+  - Koyu, yarı saydam, sıcak gri paneller; açık kenarlı yuvalar; büyük harf, kalın, hafif aralıklı dar yazı (Barlow Condensed, OFL, Türkçe kapsamlı); seçili yuva mavi-beyaz.
+  - **Kemer (hotbar)** alt ortada, 8 yuva, yuva numarası, adet ve dayanıklılık çubuğu; 1–8 tuşları kemeri seçer.
+  - **Can ve dayanıklılık** sağ altta, ikonlu yatay çubuklar ve sağa yaslı sayılar; Çivi Tabancası tutulurken cephane bunların üstünde.
+  - **Pusula** üst ortada şerit; Ocak ve etkin hedef işaretli. Defter'in etkin adımı pusulanın altında tek satır.
+  - **Etkileşim istemi** nişangâhın yanında (glif + fiil + nesne adı); toplanan eşya sağda birikip sönen satırlar.
+  - **Envanter (Tab):** solda kuşam yuvaları, ortada 20 yuvalı çanta ızgarası ve altında kemer, sağda seçili eşyanın ayrıntısı ya da açılan kabın (Sandık, istasyon) paneli; sürükle-bırak, Shift+tık hızlı aktarım.
+  - **Başlık çarkı:** Çapa'nın 6 iş başlığı ve silahları **yalnız** çarktan seçilir (Q basılı; kolda sol tampon basılı). Sayı tuşları başlık seçmez. Çark, Rust'ın inşa çarkı gibi krem halka üstünde kızıl-turuncu seçim dilimi.
+  - Kabarma'da dalga sayacı, Öz çubuğu, Gösteri ve kart şeridi aynı panel dilinde eklenir.
 
 ### 8.2 Ekranlar
 

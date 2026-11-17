@@ -79,7 +79,7 @@ Oyuncunun elindeki tek alet. Bütün işler ve silahlar başlık olarak takılı
 
 - **İş başlıkları** (6): Kazma, Biçme, Çekim, Toprak, Sulama, İnşa. Hepsi iniş kapsülünden çıkar, yuva harcamaz ve iş çarkından seçilir. Çapa basamağı ve çipler onları güçlendirir.
 - **Silah başlıkları** (12): [ICERIK.md](ICERIK.md) §6. Aynı anda silah yuvası kadarı takılı durur; Alet Askısı'nda değiştirilir.
-- Başlık değiştirme: sayı tuşları ya da çark (kol: sol tampon basılı).
+- Başlık değiştirme: yalnız çark (Q basılı; kol: sol tampon basılı). Sayı tuşları 1–8 kemeri seçer, başlık seçmez (sahibin kararı, 18 Kasım 2026; [SANAT-SES.md](SANAT-SES.md) §8.1).
 - **Tarayıcı** başlık değildir; her zaman açılabilen bir moddur. İlk kez taranan her tür, bitki ve maden Veri verir ve Ansiklopedi'ye yazılır.
 - **Cephane:** Çivi, saçma, havan mermisi, biyoyakıt ve tohum kullanan başlıklar gündüz cephane harcar. Kabarma sırasında Çapa aşırı yüklüdür ve cephane sınırsızdır; özel cephane takılıysa etkisi sürer.
 - **Çipler:** Başlığa takılan kalıcı geliştirmeler. 24 tür, 4 nadirlik. Çipler ganimetten ve üretimden gelir; en üst nadirlik yalnızca Holding parçasıyla yapılır.
