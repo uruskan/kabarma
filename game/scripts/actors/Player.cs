@@ -62,6 +62,14 @@ public partial class Player : CharacterBody3D
         Cam.AddToGroup("genex_shot");
         Arm.AddChild(Cam);
         Pitch.Rotation = new Vector3(-0.22f, 0, 0);
+        // Oyun acilinca fare dogrudan kilitlenir; Esc birakir, tiklama geri kilitler.
+        if (!Main.Args.ContainsKey("bot")) Input.MouseMode = Input.MouseModeEnum.Captured;
+    }
+
+    public override void _Notification(int what)
+    {
+        // Pencere odagi geri gelince (alt-tab) fareyi tekrar kilitle.
+        if (what == NotificationApplicationFocusIn && !Main.Args.ContainsKey("bot")) Input.MouseMode = Input.MouseModeEnum.Captured;
     }
 
     bool TryLoadModel()
@@ -188,7 +196,7 @@ public partial class Player : CharacterBody3D
         Visual.AddChild(_capa);
     }
 
-    public override void _UnhandledInput(InputEvent e)
+    public override void _Input(InputEvent e)
     {
         if (e is InputEventMouseMotion mm && Input.MouseMode == Input.MouseModeEnum.Captured)
         {
@@ -197,7 +205,8 @@ public partial class Player : CharacterBody3D
             r.X = Mathf.Clamp(r.X - mm.Relative.Y * MouseSens, -1.2f, 0.75f);
             Pitch.Rotation = r;
         }
-        if (e is InputEventMouseButton mb && mb.Pressed && Input.MouseMode != Input.MouseModeEnum.Captured && GetViewport().GuiGetHoveredControl() == null)
+        // Pencereye tiklayinca fare oyuna kilitlenir (pano tiklanabilir bir sey tasimaz).
+        if (e is InputEventMouseButton mb && mb.Pressed && Input.MouseMode != Input.MouseModeEnum.Captured)
             Input.MouseMode = Input.MouseModeEnum.Captured;
         if (e.IsActionPressed("ui_cancel")) Input.MouseMode = Input.MouseModeEnum.Visible;
     }

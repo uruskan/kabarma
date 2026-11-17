@@ -186,6 +186,14 @@ public partial class Hud : CanvasLayer
         _report.SetAnchorsPreset(Control.LayoutPreset.Center);
         root.AddChild(_report);
         OnHead(0);
+        IgnoreMouse(root);
+    }
+
+    /// <summary>Panoda tiklanacak bir sey yok: hicbir oge fareyi oyundan almasin (nisangah dahil).</summary>
+    static void IgnoreMouse(Node n)
+    {
+        if (n is Control c) c.MouseFilter = Control.MouseFilterEnum.Ignore;
+        foreach (var ch in n.GetChildren()) IgnoreMouse(ch);
     }
 
     public override void _Process(double delta)
@@ -306,6 +314,7 @@ public partial class Hud : CanvasLayer
             p.PivotOffset = new Vector2(125, 150);
             p.CreateTween().TweenProperty(p, "scale", Vector2.One, 0.25f).SetTrans(Tween.TransitionType.Back).SetEase(Tween.EaseType.Out);
         }
+        IgnoreMouse(_cards);
     }
 
     /// <summary>Hasat Raporu (PLAN 1.4, 10:00).</summary>
@@ -338,6 +347,7 @@ public partial class Hud : CanvasLayer
         v.AddChild(L(_d.Data.Scenario.NextOrder, 22, Palette.DarkGrey, true));
         v.AddChild(L("Enter: rapor kapanır, çiftlik seninle.", 17, Palette.Shadow));
         _report.AddChild(v);
+        IgnoreMouse(_report);
         _report.Visible = true;
         _report.Scale = new Vector2(0.8f, 0.8f);
         _report.CreateTween().TweenProperty(_report, "scale", Vector2.One, 0.3f).SetTrans(Tween.TransitionType.Back).SetEase(Tween.EaseType.Out);
