@@ -141,7 +141,7 @@ public partial class Capa : Node3D
                     beaming = true;
                     var padP = _d.Pod.PadCenter;
                     bool atRamp = _d.Pod.IsRamp && (OverPad(Held.GlobalPosition) || new Vector2(p.GlobalPosition.X - padP.X, p.GlobalPosition.Z - padP.Z).Length() < 4.5f);
-                    _d.Hud.Hint(atRamp ? "Bırak: kargoya yükle (sol tık)" : "Kargo Rampası'na taşı");
+                    _d.Hud.Hint(atRamp ? "Bırak: kargoya yükle ({act:fire})" : "Kargo Rampası'na taşı");
                 }
                 break;
             case Head.Insa:

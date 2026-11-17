@@ -5,14 +5,20 @@
 #   powershell -ExecutionPolicy Bypass -File tools/test.ps1
 #   powershell -ExecutionPolicy Bypass -File tools/test.ps1 -Only sim,bot -Log progress/m1/x.log
 #
-# Adimlar (-Only): build, sim, bot, buildtest. Godot: $env:KABARMA_GODOT, yoksa .tools/ altinda, yoksa ana calisma
-# kopyasinin .tools/ klasoru (worktree'ler icin, CLAUDE.md). Kosu gunlukleri .tools/run/test/ altinda.
+# Adimlar (-Only): build, sim, bench, bot, buildtest, input. Godot: $env:KABARMA_GODOT, yoksa .tools/ altinda, yoksa ana
+# calisma kopyasinin .tools/ klasoru (worktree'ler icin, CLAUDE.md). Kosu gunlukleri .tools/run/test/ altinda.
+#   input: gercek girdi surucusu (--test=input), botun kararlari sentetik olayla; iki kez: klavye-fare ve oyun kolu.
+#          Zincir bitince kendisi cikar; --quit_after yalnizca ust sinir (kol nisani daha yavas, ~520 oyun sn).
+#   bench: 1.000 oyun gunu Sim kiyaslamasi (TEKNIK 1.2 adim 2), Release; sonuc .tools/run/test/sim_bench.txt.
 # Yeni bir Godot sinamasi: game/scripts/Main.cs Tests sozlugune bir satir, buraya bir Invoke-GodotTest cagrisi.
 param(
-    [string[]]$Only = @('build', 'sim', 'bot', 'buildtest'),
+    [string[]]$Only = @('build', 'sim', 'bench', 'bot', 'buildtest', 'input'),
     [int]$BotTimeout = 600,
     [int]$BuildTestTimeout = 300,
     [string]$BotArgs = '--fast=4 --quit_after=400 --mute',
+    [int]$InputTimeout = 900,
+    [string]$InputArgs = '--fast=4 --quit_after=900 --mute',
+    [int]$BenchTimeout = 600,
     [string]$Log = ''
 )
 
@@ -84,7 +90,7 @@ if ($Only -contains 'build') {
 
 if ($Only -contains 'sim') {
     $sw.Restart()
-    $r = Invoke-Proc 'dotnet' "test `"$Root\src\Kabarma.Sim.Tests`" -nologo -v q" (Join-Path $RunDir 'sim.log') 600
+    $r = Invoke-Proc 'dotnet' "test `"$Root\src\Kabarma.Sim.Tests`" -nologo -v q --filter `"Category!=Bench`"" (Join-Path $RunDir 'sim.log') 600
     $line = ($r.Text -split "`r?`n" | Where-Object { $_ -match '(Passed|Failed)!\s+-' } | Select-Object -Last 1)
     if (-not $line) { $line = 'sonuc satiri yok' }
     $ok = (-not $r.TimedOut) -and $r.Code -eq 0 -and $line -match 'Passed!'
@@ -92,8 +98,25 @@ if ($Only -contains 'sim') {
     if (-not $ok) { Show-Tail $r }
 }
 
+if ($Only -contains 'bench') {
+    $sw.Restart()
+    $benchOut = Join-Path $RunDir 'sim_bench.txt'
+    if (Test-Path $benchOut) { Remove-Item $benchOut }
+    $env:KABARMA_BENCH_OUT = $benchOut
+    $r = Invoke-Proc 'dotnet' "test `"$Root\src\Kabarma.Sim.Tests`" -c Release -nologo -v q --filter `"Category=Bench`"" (Join-Path $RunDir 'bench.log') $BenchTimeout
+    Remove-Item Env:\KABARMA_BENCH_OUT
+    $detail = 'sonuc dosyasi yok'
+    if (Test-Path $benchOut) {
+        $m1 = (Get-Content $benchOut -Encoding UTF8 | Where-Object { $_ -match '^M1 ' } | Select-Object -First 1)
+        if ($m1 -match 'seconds=([0-9.]+).*allocated_mb=([0-9.]+).*peak_ws_mb=([0-9.]+)') { $detail = "1000 gun $($Matches[1]) sn, ayrilan $($Matches[2]) MB, tepe $($Matches[3]) MB (Release, 3x3)" }
+    }
+    $ok = (-not $r.TimedOut) -and $r.Code -eq 0
+    Add-Result 'bench' $ok "exit=$($r.Code) $detail" $sw.Elapsed.TotalSeconds
+    if (-not $ok) { Show-Tail $r }
+}
+
 $G = $null
-if (($Only -contains 'bot') -or ($Only -contains 'buildtest')) {
+if (($Only -contains 'bot') -or ($Only -contains 'buildtest') -or ($Only -contains 'input')) {
     $G = Find-Godot
     if (-not $G) { Say 'Godot bulunamadi: KABARMA_GODOT ortam degiskenini ver.' }
 }
@@ -131,6 +154,28 @@ if ($Only -contains 'buildtest') {
             $detail = "placed=$($Matches[1]) failed=$($Matches[2]) pieces=$($Matches[3])"
         }
         [pscustomobject]@{ Ok = $ok; Detail = $detail }
+    }
+}
+
+if ($Only -contains 'input') {
+    foreach ($dev in @('kbm', 'pad')) {
+        # Yeniden atama denetimi sahibin user://input.json dosyasina degil, buraya yazar.
+        $userFile = Join-Path $RunDir "input_user_$dev.json"
+        if (Test-Path $userFile) { Remove-Item $userFile }
+        Invoke-GodotTest "input_$dev" "--test=input --device=$dev --input_user=`"$userFile`" $InputArgs" $InputTimeout {
+            param($r)
+            $lines = $r.Text -split "`r?`n"
+            $res = ($lines | Where-Object { $_ -match '^RESULT ' } | Select-Object -Last 1)
+            if (-not $res) { $res = 'RESULT satiri yok' }
+            $probe = [bool]($lines | Where-Object { $_ -match '^INPUT probe ok' }) -and [bool]($lines | Where-Object { $_ -match '^INPUT heads ok' })
+            $sum = ($lines | Where-Object { $_ -match '^INPUT summary' } | Select-Object -Last 1)
+            $ev = ''
+            if ($sum -match 'events=(\d+) taps=(\d+) wheels=(\d+) menuNavs=(\d+) mouseMoves=(\d+) sidesteps=(\d+)') { $ev = " olay=$($Matches[1]) basis=$($Matches[2]) cark=$($Matches[3]) menu=$($Matches[4]) fare=$($Matches[5]) yanadim=$($Matches[6])" }
+            $ok = ($res -match '^RESULT ok') -and $probe -and [bool]$sum
+            $d = ($res -replace ' t=[0-9.]+$', '') + $ev
+            if (-not $probe) { $d += ' (INPUT probe ok / INPUT heads ok yok)' }
+            [pscustomobject]@{ Ok = $ok; Detail = $d }
+        }
     }
 }
 

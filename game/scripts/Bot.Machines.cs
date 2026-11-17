@@ -28,7 +28,7 @@ public partial class Bot
     /// <summary>Makine zinciri adimi: Hasat Raporu aciksa once kapatir; degilse menu zamanlayicisini isletip adimi Ocak konumuyla cagirir.</summary>
     Action Machine(Action<Vector3> step) => () =>
     {
-        if (_d.Hud.ReportOpen) { if (_stepT > 1.5f) { _d.CloseReport(); _stepT = 0; } P.MoveOverride = Vector3.Zero; return; }
+        if (_d.Hud.ReportOpen) { if (_stepT > 1.5f) { CloseReport(); _stepT = 0; } P.MoveOverride = Vector3.Zero; return; }
         _menuT -= (float)GetProcessDeltaTime();
         var o = _d.OcakPos;
         step(o);
@@ -36,7 +36,7 @@ public partial class Bot
 
     void StepSell()
     {
-        _d.Capa.Select(Capa.Head.Cekim);
+        Head(Capa.Head.Cekim);
         var held = _d.Capa.Held;
         var pad = _d.Pod.PadCenter;
         if (held == null)
@@ -45,7 +45,9 @@ public partial class Bot
             var loose = _d.GetTree().GetNodesInGroup("swollen").OfType<SwollenCrop>().FirstOrDefault(s => !s.Sold);
             Vector3? target = loose?.GlobalPosition ?? view?.CropTop;
             if (target == null) return;
-            Aim(target.Value);
+            // Kabarik urunun carpisma sekli yok: nisangah dibine (yere) tutulur, insan da oyle yapar; ust noktaya
+            // tutulan kamera isini urunun icinden gecip arkadaki yere carpar ve TryGrab menzil disinda kalir.
+            Aim(_d.World.Ground(target.Value));
             if (MoveTo(target.Value, 4.5f, false) && _stepT > 0.6f) { FirePressed = true; _stepT = 0; }
         }
         else
@@ -62,7 +64,7 @@ public partial class Bot
     bool EnsureStone(int need)
     {
         if (_d.State.Backpack.Count("stone") >= need) return true;
-        _d.Capa.Select(Capa.Head.Kazma);
+        Head(Capa.Head.Kazma);
         var rock = _d.World.Rocks.Where(r => IsInstanceValid(r) && r.Stones > 0 && r.Item == "stone").OrderBy(r => r.GlobalPosition.DistanceTo(P.GlobalPosition)).FirstOrDefault();
         if (rock == null) { GD.Print("BOT no rocks left"); return true; }
         Aim(rock.Center);
@@ -73,8 +75,8 @@ public partial class Bot
     /// <summary>Insa basliginda istenen yerlestirilebiliri secip verilen noktaya koyar.</summary>
     void PlaceAt(string id, Vector3 at)
     {
-        _d.Capa.Select(Capa.Head.Insa);
-        if (_d.Capa.CurrentPlaceable != id) { if (_stepT > 0.15f) { _d.Capa.CyclePlaceable(1); _stepT = 0; } return; }
+        Head(Capa.Head.Insa);
+        if (_d.Capa.CurrentPlaceable != id) { if (_stepT > 0.15f) { NextPlaceable(); _stepT = 0; } return; }
         var standAt = at + new Vector3(0, 0, -4.5f);
         Aim(_d.World.Ground(at));
         if (MoveTo(standAt, 0.6f, false) && _stepT > 1.0f) { FirePressed = true; _stepT = 0; }
@@ -87,8 +89,8 @@ public partial class Bot
     {
         Aim(st.GlobalPosition + Vector3.Up);
         if (!MoveTo(st.GlobalPosition + (P.GlobalPosition - st.GlobalPosition).Normalized() * 2.2f, 0.5f, false)) return;
-        if (!_d.Hud.MenuOpen && st.Queue.Active == null && _menuT <= 0) { _d.Interact(); _menuT = 0.6f; }
-        else if (_d.Hud.MenuOpen && _menuT <= 0) { _d.Hud.ActivateMenu(item); _d.Hud.HideMenu(); _menuT = 1.0f; }
+        if (!_d.Hud.MenuOpen && st.Queue.Active == null && _menuT <= 0) { Use(); _menuT = 0.6f; }
+        else if (_d.Hud.MenuOpen && _menuT <= 0) { MenuPick(item); MenuClose(); _menuT = 1.0f; }
     }
 
     void StepTezgahKur(Vector3 o)
@@ -104,7 +106,7 @@ public partial class Bot
 
     void StepHasat(Vector3 o)
     {
-        _d.Capa.Select(Capa.Head.Bicme);
+        Head(Capa.Head.Bicme);
         var v = _d.FarmView.Views.Where(x => x.Plot.Planted && x.Plot.Stage == Kabarma.Sim.CropStage.Mature)
             .OrderBy(x => x.GlobalPosition.DistanceTo(P.GlobalPosition)).FirstOrDefault();
         if (v == null) { GD.Print("BOT nothing to harvest"); return; }
@@ -124,8 +126,8 @@ public partial class Bot
         if (_d.State.Backpack.Count("sebze_corbasi") > 0)
         {
             P.MoveOverride = Vector3.Zero;
-            if (!_d.Hud.MenuOpen && _menuT <= 0) { _d.OpenBagMenu(); _menuT = 0.5f; }
-            else if (_d.Hud.MenuOpen && _menuT <= 0) { _d.Hud.ActivateMenu(0); _d.Hud.HideMenu(); _menuT = 1f; }
+            if (!_d.Hud.MenuOpen && _menuT <= 0) { Bag(); _menuT = 0.5f; }
+            else if (_d.Hud.MenuOpen && _menuT <= 0) { MenuPick(0); MenuClose(); _menuT = 1f; }
         }
         else if (st.Queue.Active == null) UseStation(st, 0);
         else { P.MoveOverride = Vector3.Zero; Aim(st.GlobalPosition + Vector3.Up); }
@@ -144,11 +146,11 @@ public partial class Bot
         var pad = _d.Pod.PadCenter;
         Aim(pad + Vector3.Up);
         if (!MoveTo(pad + (P.GlobalPosition - pad).Normalized() * 3.2f, 0.6f, false)) return;
-        if (!_d.Hud.MenuOpen && _menuT <= 0) { _d.Interact(); _menuT = 0.6f; }
+        if (!_d.Hud.MenuOpen && _menuT <= 0) { Use(); _menuT = 0.6f; }
         else if (_d.Hud.MenuOpen && _menuT <= 0)
         {
             int idx = _d.Data.Tool.Prices.Keys.ToList().IndexOf("kargo_kasasi");
-            _d.Hud.ActivateMenu(idx); _d.Hud.HideMenu(); _menuT = 1f;
+            MenuPick(idx); MenuClose(); _menuT = 1f;
         }
     }
 }

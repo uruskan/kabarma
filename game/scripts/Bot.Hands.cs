@@ -1,0 +1,113 @@
+using System;
+using Godot;
+
+namespace Kabarma.Game;
+
+/// <summary>
+/// Bot, eller: adim isleyicilerinin oyuna dokundugu tek yer. Dogrudan kipte (--test=bot) oyunun yontemini cagirir;
+/// girdi kipinde (--test=input) ayni karari sentetik klavye-fare ya da oyun kolu olayina cevirir (InputDriver) ve oyun
+/// onu gercek giris yolundan (Director.ReadInput, Player) isler.
+/// Kural: adim isleyicisi oyunu yalnizca bu yontemlerle, P.MoveOverride / P.AimOverride ve Fire / FirePressed ile surer.
+/// Girdi kipinde her isleyicinin cevresinde durum anlik goruntusu alinir; isleyici icinde durum degisirse dogrudan cagri
+/// vardir: "RESULT fail bypass" yazilir (baska daldan gelen adimlar da boylece yakalanir).
+/// </summary>
+public partial class Bot
+{
+    InputDriver _driver;
+    bool _summaryShown;
+    float _stepAge, _inDbg;
+    string _ageStep = "";
+
+    /// <summary>Girdi kipi: kararlar sentetik olaya doner.</summary>
+    public bool UsesInput => _driver != null;
+    public InputDriver Driver => _driver;
+
+    public Bot(Director d, InputDevice device) : this(d)
+    {
+        _driver = new InputDriver(d, this, device);
+    }
+
+    // ---------- Eller ----------
+
+    /// <summary>Capa basligini tak (klavye: sayi tusu; kol: LB basili + sag cubuk carki).</summary>
+    void Head(Capa.Head h)
+    {
+        if (!UsesInput) { _d.Capa.Select(h); return; }
+        if (_d.Capa.Current != h) _driver.SelectHead((int)h);
+    }
+
+    /// <summary>Insa basliginda sonraki yerlestirilebilir/parca (tekerlek / RB).</summary>
+    void NextPlaceable() { if (!UsesInput) _d.Capa.CyclePlaceable(1); else _driver.Tap("build_next"); }
+
+    /// <summary>Etkilesim (E / Ⓧ): istasyon menusu, rampa, Gidak'i besleme.</summary>
+    void Use() { if (!UsesInput) _d.Interact(); else _driver.Tap("interact"); }
+
+    /// <summary>Canta menusu (Tab / Ⓨ).</summary>
+    void Bag() { if (!UsesInput) _d.OpenBagMenu(); else _driver.Tap("bag"); }
+
+    /// <summary>Hasat Raporu'nu kapat (Enter / Ⓐ).</summary>
+    void CloseReport() { if (!UsesInput) _d.CloseReport(); else _driver.Tap("ui_accept"); }
+
+    /// <summary>Gece kart teklifinden i. karti sec (Z X C / ✚).</summary>
+    void Card(int i) { if (!UsesInput) _d.ChooseCard(i); else _driver.Tap($"card_{i + 1}"); }
+
+    /// <summary>Acik menuden i. satiri sec (klavye: sayi tusu; kol: ✚ ile imleci tasi, Ⓐ).</summary>
+    void MenuPick(int i) { if (!UsesInput) _d.Hud.ActivateMenu(i); else _driver.MenuPick(i); }
+
+    /// <summary>Acik menuyu kapat (Esc / Ⓑ).</summary>
+    void MenuClose() { if (!UsesInput) _d.Hud.HideMenu(); else _driver.Tap("ui_cancel"); }
+
+    // ---------- Adim calistirma ----------
+
+    /// <summary>Adim isleyicisini calistirir. Girdi kipinde: bypass denetimi, sonra sentetik olaylar.</summary>
+    void RunStep(string step, Action run)
+    {
+        if (!UsesInput) { run(); return; }
+        float dt = (float)GetProcessDeltaTime();
+        if (step != _ageStep) { _ageStep = step; _stepAge = 0; }
+        _stepAge += dt;
+        if (!_done && _stepAge > _driver.Config.StepTimeoutSeconds && !Failed)
+        {
+            Failed = true;
+            GD.Print($"RESULT fail input stuck step={step} age={_stepAge:0} device={_driver.Device} {_driver.Status()}");
+            GetTree().Quit(1);
+            return;
+        }
+        var before = Snapshot();
+        _driver.BeginFrame();
+        run();
+        var after = Snapshot();
+        if (before != after && !Failed)
+        {
+            Failed = true;
+            GD.Print($"RESULT fail bypass step={step} device={_driver.Device} before=({before}) after=({after}) : adim isleyicisi oyunu dogrudan degistirdi; Bot.Hands.cs yontemlerini kullan");
+            GetTree().Quit(1);
+            return;
+        }
+        _driver.Take(P, Fire, FirePressed);
+        FirePressed = false;
+        _driver.Tick(dt);
+        // Zincir bitti (RESULT ok yazildi): kanit satiri ve cikis; --quit_after yalnizca ust sinir.
+        if (_done && !_summaryShown && _driver.Error == null) { _summaryShown = true; GD.Print(_driver.Summary()); GetTree().Quit(Failed ? 1 : 0); }
+        _inDbg -= dt;
+        if (_inDbg <= 0 && Main.Args.ContainsKey("botdebug")) { _inDbg = 2f; GD.Print($"INPUTDBG {step} {_driver.Status()}"); }
+        if (_driver.Error != null && !Failed)
+        {
+            Failed = true;
+            GD.Print($"RESULT fail input {_driver.Error} step={step} device={_driver.Device}");
+            GetTree().Quit(1);
+        }
+    }
+
+    /// <summary>Isleyicinin oyuna dokunup dokunmadigini anlamaya yeten ucuz durum ozeti.</summary>
+    readonly record struct HandsState(int Head, string Placeable, bool Menu, bool Report, bool Wheel, int Cards, int Bag, int Slots, int Stations, int Pieces, int Credits, int Plots, bool Ocak);
+
+    HandsState Snapshot()
+    {
+        var s = _d.State;
+        int bag = 0;
+        foreach (var c in s.Backpack.Contents) bag = bag * 31 + c.id.GetHashCode() * 7 + c.count;
+        return new HandsState((int)_d.Capa.Current, _d.Capa.Current == Capa.Head.Insa ? _d.Capa.CurrentPlaceable : "", _d.Hud.MenuOpen, _d.Hud.ReportOpen, _d.Hud.WheelOpen,
+            _d.Night?.CardsCount ?? 0, bag, s.Backpack.UsedSlots, _d.Stations.Count, _d.Build?.System?.Pieces.Count ?? 0, s.Credits, System.Linq.Enumerable.Count(s.Farm.Plots), _d.Ocak != null);
+    }
+}

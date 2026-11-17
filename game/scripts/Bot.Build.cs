@@ -16,7 +16,7 @@ public partial class Bot
 
     void StepOdun(Vector3 o)
     {
-        _d.Capa.Select(Capa.Head.Bicme);
+        Head(Capa.Head.Bicme);
         var t = _d.World.TreePositions.OrderBy(x => x.DistanceTo(P.GlobalPosition)).First();
         Aim(t + Vector3.Up * 1.4f);
         if (MoveTo(t, 3.0f)) Fire = true;
@@ -43,14 +43,14 @@ public partial class Bot
         }
         if (_d.State.Backpack.Count("wood") < b.CostOf(want))
         {
-            _d.Capa.Select(Capa.Head.Bicme);
+            Head(Capa.Head.Bicme);
             var tr = _d.World.TreePositions.OrderBy(x => x.DistanceTo(P.GlobalPosition)).First();
             Aim(tr + Vector3.Up * 1.4f);
             if (MoveTo(tr, 3.0f)) Fire = true;
             return;
         }
-        _d.Capa.Select(Capa.Head.Insa);
-        if (_d.Capa.CurrentPlaceable != want) { if (_stepT > 0.12f) { _d.Capa.CyclePlaceable(1); _stepT = 0; } return; }
+        Head(Capa.Head.Insa);
+        if (_d.Capa.CurrentPlaceable != want) { if (_stepT > 0.12f) { NextPlaceable(); _stepT = 0; } return; }
         Aim(target);
         if (MoveTo(stand, 0.6f, false) && _stepT > 1.2f)
         {

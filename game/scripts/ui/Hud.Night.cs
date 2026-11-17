@@ -35,7 +35,7 @@ public partial class Hud
         foreach (var c in _cards.GetChildren()) c.QueueFree();
         _cards.Visible = offer != null;
         if (offer == null) return;
-        string[] keys = { "Z", "X", "C" };
+        string[] keys = { G("{act:card_1}"), G("{act:card_2}"), G("{act:card_3}") };
         for (int i = 0; i < offer.Cards.Count; i++)
         {
             var card = offer.Cards[i];
@@ -44,7 +44,7 @@ public partial class Hud
             var p = new PanelContainer { CustomMinimumSize = new Vector2(250, 150) };
             p.AddThemeStyleboxOverride("panel", Box(new Color(Palette.NightDeep, 0.93f), 16, rc, 4));
             var v = new VBoxContainer();
-            v.AddChild(L($"[{keys[i]}]  " + (card.Rarity switch { "N" => "Nadir", "D" => "Destansı", "E" => "Efsane", _ => "Sıradan" }), 16, rc, true));
+            v.AddChild(L($"{keys[i]}  " +(card.Rarity switch { "N" => "Nadir", "D" => "Destansı", "E" => "Efsane", _ => "Sıradan" }), 16, rc, true));
             v.AddChild(L(card.Name, 30, Palette.OffWhite, true));
             var t = L(card.Text, 19, Palette.Fog);
             t.AutowrapMode = TextServer.AutowrapMode.WordSmart;

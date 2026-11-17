@@ -14,7 +14,7 @@ public partial class Bot
     void StepNight()
     {
         var n = _d.Night;
-        if (n?.Offer != null && n.Offer.Age > 0.6f) _d.ChooseCard(0);
+        if (n?.Offer != null && n.Offer.Age > 0.6f) Card(0);
         var z = Zipzip.All.Where(e => !e.Dead).OrderBy(e => e.GlobalPosition.DistanceTo(P.GlobalPosition)).FirstOrDefault();
         var home = _d.FarmCenter() + new Vector3(-2.5f, 0, -2.5f);
         if (z != null)

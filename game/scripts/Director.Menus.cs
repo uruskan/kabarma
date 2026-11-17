@@ -44,7 +44,7 @@ public partial class Director
                 else Hud.Hint("Malzeme yetmiyor ya da istasyon başka bir şey üretiyor", 1.5f);
             }));
         }
-        Hud.ShowMenu(st.Def.Name, items, "1–9: sıraya ekle  ·  E / Esc: kapat");
+        Hud.ShowMenu(st.Def.Name, items, "{act:menu_pick}: sıraya ekle  ·  {act:interact} / {act:ui_cancel}: kapat");
     }
 
     /// <summary>Kemer yuvasini kullanir: yemekse yer, degilse ne oldugunu soyler.</summary>
@@ -103,7 +103,7 @@ public partial class Director
                 if (v > 0) { Events.RaiseSold(id, n, v); Pod.Launch(); Sfx.Play("rocket", Pod.PadCenter, 0f); Hud.Big($"+{v} Kredi", Palette.Warning, 2.5f); GD.Print($"SOLD {id} x{n} +{v}"); OpenSellMenu(); }
             }));
         }
-        Hud.ShowMenu("Kargo Rampası · Kooperatif alım fiyatları", items, "Kabarık ürünleri Çekim başlığıyla rampaya taşı.  ·  E / Esc: kapat");
+        Hud.ShowMenu("Kargo Rampası · Kooperatif alım fiyatları", items, "Kabarık ürünleri Çekim başlığıyla rampaya taşı.  ·  {act:menu_pick}: sat  ·  {act:interact} / {act:ui_cancel}: kapat");
     }
 
     public void PlaceOcak(Vector3 at)

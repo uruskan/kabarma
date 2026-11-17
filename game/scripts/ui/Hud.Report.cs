@@ -38,7 +38,7 @@ public partial class Hud
         v.AddChild(new HSeparator());
         v.AddChild(L($"Defter açıldı: {_d.Data.Scenario.OrdersTotal} iş emri.", 22, Palette.CoopBlue, true));
         v.AddChild(L(_d.Data.Scenario.NextOrder, 22, Palette.DarkGrey, true));
-        v.AddChild(L("Enter: rapor kapanır, çiftlik seninle.", 17, Palette.Shadow));
+        v.AddChild(L(G("{act:ui_accept}: rapor kapanır, çiftlik seninle."), 17, Palette.Shadow));
         _report.AddChild(v);
         IgnoreMouse(_report);
         _report.Visible = true;

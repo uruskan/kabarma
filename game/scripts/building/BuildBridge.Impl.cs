@@ -45,7 +45,7 @@ public partial class BuildBridge
         int wood = _d.State.Backpack.Count("wood");
         bool inClaim = cur != null && _d.Ocak != null && cur.Xf.Origin.DistanceTo(_d.OcakPos) <= Ocak.ClaimRadius;
         string why = cur == null ? "" : !cur.Valid ? cur.Reason : !inClaim ? "tapunun dışı" : wood < cost ? $"odun yetmiyor ({wood}/{cost})" : "";
-        _d.Hud.Hint($"İnşa: {NameOf(id)} ({cost} Odun){(why != "" ? "  ·  " + why : "")}  ·  tekerlek: değiştir  ·  R: döndür", 0.2f);
+        _d.Hud.Hint($"İnşa: {NameOf(id)} ({cost} Odun){(why != "" ? "  ·  " + why : "")}  ·  {{act:build_next}}: değiştir  ·  {{act:build_rotate}}: döndür", 0.2f);
         if (!place || cur == null) return;
         if (why != "") { Sfx.Play("hit", null, -10f); return; }
         var piece = _sys.TryPlace();
