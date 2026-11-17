@@ -110,6 +110,34 @@ public class OrdersTests
         Assert.Same(r, s.LastReport);
     }
 
+    [Fact]
+    public void Gosteri_rises_on_a_kill_streak_decays_and_its_peak_reaches_the_report()
+    {
+        // GDD 14.5: 3 saniyede 5 oldurme carpani artirir, zamanla duser; Maya ve Oz carpanla carpilir (GDD 14.4, 15).
+        var d = Data();
+        var g = d.Kabarma.Gosteri;
+        var s = new GameState(d);
+        var n = s.StartNight();
+        var zip = d.Creature("zipzip");
+        Assert.Equal(g.Min, n.Gosteri);
+        for (int i = 0; i < g.StreakKills - 1; i++) n.OnKill(zip);
+        Assert.Equal(g.Min, n.Gosteri);
+        float mayaBefore = n.Maya;
+        n.OnKill(zip); // seri tamam: bu oldurme artmis carpanla sayilir
+        float boosted = g.Min + g.StreakBonus;
+        Assert.Equal(boosted, n.Gosteri, 3);
+        float perKill = zip.Weight * d.Kabarma.MayaPerWeight * (1f + d.Kabarma.MayaKsFactor * n.Ks);
+        Assert.Equal(perKill * boosted, n.Maya - mayaBefore, 2);
+
+        n.Tick(2f);
+        Assert.Equal(boosted - g.DecayPerSecond * 2f, n.Gosteri, 3);
+        n.Tick(60f);
+        Assert.Equal(g.Min, n.Gosteri);
+
+        CardTests.RunToDawn(n, d);
+        Assert.Equal(boosted, s.BuildReport().PeakGosteri, 3);
+    }
+
     /// <summary>n kareyi ekip olgunlastirir ve kabartir (x0 sutunundan baslayarak).</summary>
     static void GrowAndSwell(GameState s, int n, int x0)
     {

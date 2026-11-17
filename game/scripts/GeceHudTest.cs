@@ -9,7 +9,7 @@ namespace Kabarma.Game;
 /// <summary>
 /// Basliksiz sinama --test=gece (gecehud akisi): ilk gece (kartlar, Catal, Cevik, safakta sonme), Hasat Raporu ve Defter,
 /// envanter izgarasi, takvim (normal gece, uyku), F1'den Kucuk Kabarma yeniden. Girdiler gercek olay olarak verilir
-/// (Input.ParseInputEvent): Tab, yon, sayi, Q, Enter, F1. Dusmanlari sinama vurur (bot yok); satis adimi senaryoya
+/// (Input.ParseInputEvent): Tab, yon, sayi, Q, Enter, F1 ve oyun kolu (d-pad, LB/RB, X). Dusmanlari sinama vurur (bot yok); satis adimi senaryoya
 /// bildirilir (satisin kendisi botun "sell" adiminda sinanir). Sonuc: "GECE RESULT ok|fail ...", cikis kodu 0|1.
 /// </summary>
 public partial class GeceHudTest : Node
@@ -43,6 +43,8 @@ public partial class GeceHudTest : Node
     static void Key(Key k, bool pressed) => Input.ParseInputEvent(new InputEventKey { Keycode = k, PhysicalKeycode = k, Pressed = pressed });
     void Tap(Key k) { _inputs.Enqueue(() => Key(k, true)); _inputs.Enqueue(() => Key(k, false)); }
     void Then(Action a) => _inputs.Enqueue(a);
+    static void Pad(JoyButton b, bool pressed) => Input.ParseInputEvent(new InputEventJoypadButton { ButtonIndex = b, Pressed = pressed, Device = 0 });
+    void PadTap(JoyButton b) { _inputs.Enqueue(() => Pad(b, true)); _inputs.Enqueue(() => Pad(b, false)); }
 
     void KillAll()
     {
@@ -67,6 +69,8 @@ public partial class GeceHudTest : Node
         {
             case 0: // ilk gun: F1 dugmesi daha ise yaramaz; geceyi bekle
                 if (_stageT < 0.5f) break;
+                foreach (var a in new[] { "ui_accept", "ui_cancel", "ui_right", "ui_down", "bag", "card_1" })
+                    GD.Print($"GECE input {a}: " + (InputMap.HasAction(a) ? string.Join(" | ", InputMap.ActionGetEvents(a).Select(e => e.AsText())) : "(eylem yok)"));
                 Check(!d.RestartKucukKabarma(), "ilk geceden once yeniden baslatma reddedilmeli");
                 Check(!s.Calendar.Running, "ilk geceden once saat islememeli");
                 Next();
@@ -176,6 +180,7 @@ public partial class GeceHudTest : Node
             case 10: // yeniden oynanan gecede rapor safakta acilir
                 if (!d.Hud.ReportOpen) { if (_stageT > 30f) Fail("ikinci rapor safakta acilmadi"); break; }
                 Check(s.LastReport?.NightNumber == 2, "ikinci raporun gece numarasi yanlis");
+                // Kolun A'si raporu kapatamaz: Godot'nun ui_accept'inde kol olayi yok, baglama girdi akisinin input.json'unda.
                 Tap(global::Godot.Key.Enter);
                 Next();
                 break;
@@ -183,6 +188,23 @@ public partial class GeceHudTest : Node
                 if (_stageT < 2f) break;
                 Check(!d.Hud.ReportOpen && d.Phase == Director.Act.Free, "ikinci rapor kapanmadi");
                 Check(s.Calendar.Seconds > _clockAtReplay, "safaktan sonra saat devam etmedi");
+                // Oyun kolu ile envanter: d-pad secer, RB/LB sayfa degistirir, X (interact) kapatir. Cantayi acan "bag"
+                // ile A/B (ui_accept/ui_cancel) kol baglamalari girdi akisinin input.json'unda; bu dalda yok: Tab ile acilir.
+                Tap(global::Godot.Key.Tab);
+                Then(() => { Check(d.Hud.InventoryOpen && d.Hud.InventoryPage == 0, "envanter acilmadi"); _sel0 = d.Hud.InventorySelected; });
+                PadTap(JoyButton.DpadRight);
+                Then(() => Check(d.Hud.InventorySelected == _sel0 + 1, $"kolun d-pad sagi secimi ilerletmedi ({_sel0} -> {d.Hud.InventorySelected})"));
+                PadTap(JoyButton.DpadDown);
+                Then(() => Check(d.Hud.InventorySelected == _sel0 + 1 + 6, $"kolun d-pad asagisi bir satir inmedi ({d.Hud.InventorySelected})"));
+                PadTap(JoyButton.RightShoulder);
+                Then(() => Check(d.Hud.InventoryPage == 1, "kolun RB'si Defter sayfasina gecmedi"));
+                PadTap(JoyButton.LeftShoulder);
+                Then(() => Check(d.Hud.InventoryPage == 0, "kolun LB'si Canta sayfasina donmedi"));
+                PadTap(JoyButton.X);
+                Then(() => Check(!d.Hud.InventoryOpen, "kolun X dugmesi envanteri kapatmadi"));
+                Next();
+                break;
+            case 12:
                 GD.Print($"GECE RESULT ok checks={_checks} nights={s.NightsStarted} day={s.Calendar.Day} t={_t:0.0}");
                 GetTree().Quit(0);
                 SetProcess(false);
@@ -191,4 +213,5 @@ public partial class GeceHudTest : Node
     }
 
     float _clockAtReplay;
+    int _sel0;
 }

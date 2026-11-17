@@ -1,16 +1,16 @@
-tools/test.ps1  2026-11-18 00:24  git 58442be
+tools/test.ps1  2026-11-18 00:36  git a80c525
 
 [PASS] build  exit=0 warnings=0 errors=0
-[PASS] sim  exit=0 Passed!  - Failed:     0, Passed:    51, Skipped:     0, Total:    51, Duration: 127 ms - Kabarma.Sim.Tests.dll (net8.0)
+[PASS] sim  exit=0 Passed!  - Failed:     0, Passed:    52, Skipped:     0, Total:    52, Duration: 138 ms - Kabarma.Sim.Tests.dll (net8.0)
 [PASS] bot  exit=0 RESULT ok credits=210 eggs=1 kills=21 cards=3 maya=48 stations=3 harvests=4
 [PASS] buildtest  exit=0 placed=60 failed=0 pieces=56
-[PASS] gece  exit=0 GECE RESULT ok checks=2245 nights=2 day=3
+[PASS] gece  exit=0 GECE RESULT ok checks=2552 nights=2 day=3
 
 sinama     sonuc  sure(sn)  ayrinti
 ------     -----  --------  -------
-build      PASS        1.2  exit=0 warnings=0 errors=0
-sim        PASS        1.8  exit=0 Passed!  - Failed:     0, Passed:    51, Skipped:     0, Total:    51, Duration: 127 ms - Kabarma.Sim.Tests.dll (net8.0)
-bot        PASS      105.3  exit=0 RESULT ok credits=210 eggs=1 kills=21 cards=3 maya=48 stations=3 harvests=4
-buildtest  PASS        3.1  exit=0 placed=60 failed=0 pieces=56
-gece       PASS       41.8  exit=0 GECE RESULT ok checks=2245 nights=2 day=3
+build      PASS        1.1  exit=0 warnings=0 errors=0
+sim        PASS        1.9  exit=0 Passed!  - Failed:     0, Passed:    52, Skipped:     0, Total:    52, Duration: 138 ms - Kabarma.Sim.Tests.dll (net8.0)
+bot        PASS      105.4  exit=0 RESULT ok credits=210 eggs=1 kills=21 cards=3 maya=48 stations=3 harvests=4
+buildtest  PASS        3.4  exit=0 placed=60 failed=0 pieces=56
+gece       PASS       43.3  exit=0 GECE RESULT ok checks=2552 nights=2 day=3
 TEST PASS
