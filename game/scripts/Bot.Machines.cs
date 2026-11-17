@@ -63,7 +63,7 @@ public partial class Bot
     {
         if (_d.State.Backpack.Count("stone") >= need) return true;
         _d.Capa.Select(Capa.Head.Kazma);
-        var rock = _d.World.Rocks.Where(r => IsInstanceValid(r) && r.Stones > 0).OrderBy(r => r.GlobalPosition.DistanceTo(P.GlobalPosition)).FirstOrDefault();
+        var rock = _d.World.Rocks.Where(r => IsInstanceValid(r) && r.Stones > 0 && r.Item == "stone").OrderBy(r => r.GlobalPosition.DistanceTo(P.GlobalPosition)).FirstOrDefault();
         if (rock == null) { GD.Print("BOT no rocks left"); return true; }
         Aim(rock.Center);
         if (MoveTo(rock.GlobalPosition, 4.5f)) Fire = true;
@@ -121,7 +121,7 @@ public partial class Bot
     {
         var st = StationOf("tas_firin");
         if (st == null) return;
-        if (_d.State.Backpack.Count("salgam_corbasi") > 0)
+        if (_d.State.Backpack.Count("sebze_corbasi") > 0)
         {
             P.MoveOverride = Vector3.Zero;
             if (!_d.Hud.MenuOpen && _menuT <= 0) { _d.OpenBagMenu(); _menuT = 0.5f; }
@@ -135,7 +135,7 @@ public partial class Bot
     {
         var st = StationOf("paketleme");
         if (st == null) { if (EnsureStone(8)) PlaceAt("paketleme", o + new Vector3(-1f, 0, 5.5f)); return; }
-        if (st.Queue.Active == null && _d.State.Backpack.Count("salgam_kasasi") == 0) UseStation(st, 0);
+        if (st.Queue.Active == null && _d.State.Backpack.Count("kargo_kasasi") == 0) UseStation(st, 0);
         else { P.MoveOverride = Vector3.Zero; Aim(st.GlobalPosition + Vector3.Up); }
     }
 
@@ -147,7 +147,7 @@ public partial class Bot
         if (!_d.Hud.MenuOpen && _menuT <= 0) { _d.Interact(); _menuT = 0.6f; }
         else if (_d.Hud.MenuOpen && _menuT <= 0)
         {
-            int idx = _d.Data.Tool.Prices.Keys.ToList().IndexOf("salgam_kasasi");
+            int idx = _d.Data.Tool.Prices.Keys.ToList().IndexOf("kargo_kasasi");
             _d.Hud.ActivateMenu(idx); _d.Hud.HideMenu(); _menuT = 1f;
         }
     }

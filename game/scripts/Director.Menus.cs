@@ -24,7 +24,7 @@ public partial class Director
     public void OnProduced(RecipeDef r)
     {
         Events.RaiseProduced(r.Id, r.Out);
-        GD.Print($"PRODUCED {r.Id} civi={State.Backpack.Count("civi")} soup={State.Backpack.Count("salgam_corbasi")} crates={State.Backpack.Count("salgam_kasasi")}");
+        GD.Print($"PRODUCED {r.Id} civi={State.Backpack.Count("civi")} soup={State.Backpack.Count("sebze_corbasi")} crates={State.Backpack.Count("kargo_kasasi")}");
     }
 
     // ---------- Menuler (istasyon, canta, satis) ----------
@@ -95,10 +95,10 @@ public partial class Director
         foreach (var kv in Data.Tool.Prices)
         {
             var id = kv.Key;
-            int have = id == "egg" ? State.Eggs : State.Backpack.Count(id);
-            items.Add(new Hud.MenuItem($"Sat: {ItemNames.Of(id)} ×{have}   ({kv.Value} Kredi/adet)", () => (id == "egg" ? State.Eggs : State.Backpack.Count(id)) > 0, () =>
+            int have = State.Backpack.Count(id);
+            items.Add(new Hud.MenuItem($"Sat: {ItemNames.Of(id)} ×{have}   ({kv.Value} Kredi/adet)", () => State.Backpack.Count(id) > 0, () =>
             {
-                int n = id == "egg" ? State.Eggs : State.Backpack.Count(id);
+                int n = State.Backpack.Count(id);
                 int v = State.SellItem(id, n);
                 if (v > 0) { Events.RaiseSold(id, n, v); Pod.Launch(); Sfx.Play("rocket", Pod.PadCenter, 0f); Hud.Big($"+{v} Kredi", Palette.Warning, 2.5f); GD.Print($"SOLD {id} x{n} +{v}"); OpenSellMenu(); }
             }));

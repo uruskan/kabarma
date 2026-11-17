@@ -61,13 +61,13 @@ public class ScenarioTests
         var firin = s.Stations["tas_firin"];
         firin.Enqueue(firin.Recipes.First(), s.Backpack);
         for (int i = 0; i < 50; i++) firin.Tick(0.1f, s.Backpack);
-        Assert.True(s.Food.Eat(d.Tool.Foods.First()) && s.Backpack.Remove("salgam_corbasi", 1));
+        Assert.True(s.Food.Eat(d.Tool.Foods.First()) && s.Backpack.Remove("sebze_corbasi", 1));
         sc.Report("corba");
         var pak = s.Stations["paketleme"];
         pak.Enqueue(pak.Recipes.First(), s.Backpack);
         for (int i = 0; i < 40; i++) pak.Tick(0.1f, s.Backpack);
         sc.Report("paketle");
-        Assert.Equal(90, s.SellItem("salgam_kasasi", 1));
+        Assert.Equal(90, s.SellItem("kargo_kasasi", 1));
         sc.Report("kasa_sat");
         sc.SetProgress("odun", 18);
         sc.Report("yapi", 4);

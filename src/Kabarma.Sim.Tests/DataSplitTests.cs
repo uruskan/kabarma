@@ -32,7 +32,7 @@ public class DataSplitTests
         Assert.Equal("civi", t.Nailgun.Ammo);
         Assert.Equal(1, t.Nailgun.AmmoPerShot);
         // recipes.json
-        Assert.Equal(new[] { "civi", "salgam_corbasi", "salgam_kasasi" }, t.Recipes.Select(r => r.Id));
+        Assert.Equal(new[] { "civi", "sebze_corbasi", "kargo_kasasi" }, t.Recipes.Select(r => r.Id));
         Assert.Equal(10, t.Recipes[0].Out);
         Assert.Equal(5, t.Recipes[2].In["turnip"]);
         // placeables.json
@@ -45,8 +45,8 @@ public class DataSplitTests
         Assert.Equal(25f, t.Foods.Single().MaxHp);
         Assert.Equal(300f, t.Foods.Single().Seconds);
         // prices.json: sira onemli (satis menusu ve bot bu siradan secer)
-        Assert.Equal(new[] { "turnip", "salgam_kasasi", "egg" }, t.Prices.Keys);
-        Assert.Equal(90, t.Prices["salgam_kasasi"]);
+        Assert.Equal(new[] { "turnip", "kargo_kasasi", "egg" }, t.Prices.Keys);
+        Assert.Equal(90, t.Prices["kargo_kasasi"]);
         // tool.json
         Assert.Equal(100f, t.Player.MaxHp);
         Assert.Equal(6.5f, t.Player.Jump);

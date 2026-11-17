@@ -27,8 +27,8 @@ public partial class Director
         Events.Harvested += _ => sc.SetProgress("hasat", State.Backpack.Count("turnip"));                                // hasat
         Events.StationPlaced += id => { if (id == "tas_firin") sc.Report("firin_kur"); };                                // firin_kur
         Events.Ate += _ => sc.Report("corba");                                                                           // corba
-        Events.Produced += (item, _) => { if (item == "salgam_kasasi") sc.Report("paketle"); };                          // paketle
-        Events.Sold += (item, _, _) => { if (item == "salgam_kasasi") sc.Report("kasa_sat"); };                          // kasa_sat
+        Events.Produced += (item, _) => { if (item == "kargo_kasasi") sc.Report("paketle"); };                          // paketle
+        Events.Sold += (item, _, _) => { if (item == "kargo_kasasi") sc.Report("kasa_sat"); };                          // kasa_sat
         Events.Gathered += (item, _) => { if (item == "wood") sc.SetProgress("odun", State.Backpack.Count("wood")); };   // odun
         Events.PiecePlaced += _ => sc.Report("yapi");                                                                    // yapi
 

@@ -26,10 +26,10 @@ public class CraftingTests
         var pak = s.Stations["paketleme"];
         pak.Enqueue(pak.Recipes.First(), s.Backpack);
         for (int i = 0; i < 50; i++) { firin.Tick(0.1f, s.Backpack); pak.Tick(0.1f, s.Backpack); }
-        Assert.Equal(1, s.Backpack.Count("salgam_corbasi"));
-        Assert.Equal(1, s.Backpack.Count("salgam_kasasi"));
+        Assert.Equal(1, s.Backpack.Count("sebze_corbasi"));
+        Assert.Equal(1, s.Backpack.Count("kargo_kasasi"));
         Assert.Equal(0, s.Backpack.Count("turnip"));
-        Assert.Equal(90, s.SellItem("salgam_kasasi", 1));
+        Assert.Equal(90, s.SellItem("kargo_kasasi", 1));
         Assert.True(s.Food.Eat(d.Tool.Foods.First()));
         Assert.Equal(25f, s.Food.BonusMaxHp);
         s.Food.Tick(301f);

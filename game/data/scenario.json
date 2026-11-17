@@ -91,14 +91,14 @@
     {
       "id": "corba",
       "target": 1,
-      "goal": "Şalgam çorbası pişir ve ye (Tab: çanta)",
+      "goal": "Sebze çorbası pişir ve ye (Tab: çanta)",
       "start": "Fırında çorba pişir. Sonra Tab ile çantayı aç ve ye. Çorba canını artırır.",
       "done": "Afiyet olsun. Yazılı olarak."
     },
     {
       "id": "paketle",
       "target": 1,
-      "goal": "Paketleme Tezgâhı kur ve bir şalgam kasası hazırla",
+      "goal": "Paketleme Tezgâhı kur ve bir kargo kasası hazırla",
       "start": "Kasalı mal daha iyi satılır. Paketleme Tezgâhı kur, beş şalgamı kasaya koy.",
       "done": "Kasa hazır. Etiketi ben yazdım."
     },

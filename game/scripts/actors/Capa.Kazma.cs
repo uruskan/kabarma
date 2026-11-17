@@ -21,9 +21,9 @@ public partial class Capa
         {
             Fx.FlyTo(hitPoint, () => _d.Player.BackpackPoint.GlobalPosition, Palette.Rock, 0.14f, () =>
             {
-                _d.State.Backpack.Add("stone", 1);
+                _d.State.Backpack.Add(rock.Item, 1);
                 Sfx.Play("pickup", null, -6f);
-                Events.RaiseGathered("stone", 1);
+                Events.RaiseGathered(rock.Item, 1);
             });
         }
         if (rock.Stones <= 0) _d.World.RemoveRock(rock);

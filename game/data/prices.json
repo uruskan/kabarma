@@ -1,4 +1,4 @@
 {
   "_not": "Kooperatif alim fiyatlari (Kargo Rampasi, adet basina Kredi). Sira satis menusundeki siradir.",
-  "prices": { "turnip": 15, "salgam_kasasi": 90, "egg": 20 }
+  "prices": { "turnip": 15, "kargo_kasasi": 90, "egg": 20 }
 }

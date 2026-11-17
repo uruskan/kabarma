@@ -36,6 +36,8 @@ public static class Events
     public static event Action NightStarted;
     /// <summary>Safak: gece bitti, kalan dusmanlar sondu.</summary>
     public static event Action Dawn;
+    /// <summary>Oyuncu Uyku Tulumu'nda uyudu (normal gece atlanir, GDD 2; ICERIK 10.2). Yayan: ekonomi, dinleyen: gun dongusu.</summary>
+    public static event Action Slept;
 
     public static void RaiseStationPlaced(string id) => StationPlaced?.Invoke(id);
     public static void RaisePiecePlaced(string id) => PiecePlaced?.Invoke(id);
@@ -50,6 +52,7 @@ public static class Events
     public static void RaiseStepChanged(string from, string to) => StepChanged?.Invoke(from, to);
     public static void RaiseNightStarted() => NightStarted?.Invoke();
     public static void RaiseDawn() => Dawn?.Invoke();
+    public static void RaiseSlept() => Slept?.Invoke();
 
     /// <summary>Butun aboneleri birakir.</summary>
     public static void Clear()
@@ -57,5 +60,6 @@ public static class Events
         StationPlaced = null; PiecePlaced = null; Produced = null; Sold = null; CropShipped = null;
         Harvested = null; Gathered = null; Ate = null; CreatureKilled = null; CardPicked = null;
         StepChanged = null; NightStarted = null; Dawn = null;
+        Slept = null;
     }
 }

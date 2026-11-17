@@ -21,7 +21,7 @@ public partial class Bot
     void StepMine()
     {
         _d.Capa.Select(Capa.Head.Kazma);
-        var rock = _d.World.Rocks.Where(r => IsInstanceValid(r) && r.Stones > 0).OrderBy(r => r.GlobalPosition.DistanceTo(P.GlobalPosition)).FirstOrDefault();
+        var rock = _d.World.Rocks.Where(r => IsInstanceValid(r) && r.Stones > 0 && r.Item == "stone").OrderBy(r => r.GlobalPosition.DistanceTo(P.GlobalPosition)).FirstOrDefault();
         if (rock == null) return;
         Aim(rock.Center);
         if (MoveTo(rock.GlobalPosition, 4.5f)) Fire = true;

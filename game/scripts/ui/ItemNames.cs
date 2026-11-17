@@ -13,9 +13,26 @@ public static class ItemNames
         ["turnip_seed"] = "Şalgam Tohumu",
         ["wheat"] = "Buğday",
         ["civi"] = "Çivi",
-        ["salgam_corbasi"] = "Şalgam Çorbası",
-        ["salgam_kasasi"] = "Şalgam Kasası",
+        ["sebze_corbasi"] = "Sebze Çorbası",
+        ["kargo_kasasi"] = "Kargo Kasası",
         ["egg"] = "Yumurta",
+        // M1 ortak kimlikleri (URETIM 6 M1 kapsami). Akislar bu kimlikleri kullanir; yeni kimlik satir eklenerek gelir.
+        ["fiber"] = "Lif",
+        ["clay"] = "Kil",
+        ["copper_ore"] = "Bakır Cevheri",
+        ["copper_ingot"] = "Bakır Külçe",
+        ["civi_tabancasi"] = "Çivi Tabancası",
+        ["el_arabasi"] = "El Arabası",
+        ["kozde_salgam"] = "Közde Şalgam",
+        ["haslanmis_yumurta"] = "Haşlanmış Yumurta",
+        ["ahsap_kapi"] = "Ahşap Kapı",
+        ["sandik"] = "Sandık",
+        ["uyku_tulumu"] = "Uyku Tulumu",
+        ["mesale"] = "Meşale",
+        ["yemlik"] = "Yemlik",
+        ["folluk"] = "Folluk",
+        ["ocakbasi"] = "Ocakbaşı",
+        ["kargo_rampasi"] = "Kargo Rampası",
     };
 
     public static string Of(string id) => Names.TryGetValue(id, out var n) ? n : id;

@@ -27,6 +27,7 @@ public partial class World : Node3D
         BuildHorizon();
         BuildDecor();
         BuildRocks();
+        BuildPlaceholderNodes();
         ApplyTime();
     }
 

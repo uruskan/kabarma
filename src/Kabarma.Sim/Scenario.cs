@@ -47,7 +47,8 @@ public sealed class GameState
     public Scenario Scenario { get; }
     public KabarmaNight? Night { get; private set; }
     public int Credits { get; private set; }
-    public int Eggs { get; set; }
+    /// <summary>Gidak yumurtasi canta esyasidir ("egg", ICERIK 15); sayi cantadan okunur.</summary>
+    public int Eggs => Backpack.Count("egg");
     public List<(string crop, string size, int value)> Sales { get; } = new();
     public ulong Seed { get; }
     public Rng Rng { get; }
@@ -74,10 +75,9 @@ public sealed class GameState
     public int SellItem(string id, int count)
     {
         if (!Data.Tool.Prices.TryGetValue(id, out int price) || count <= 0) return 0;
-        int have = id == "egg" ? Eggs : Backpack.Count(id);
-        int n = Math.Min(count, have);
+        int n = Math.Min(count, Backpack.Count(id));
         if (n <= 0) return 0;
-        if (id == "egg") Eggs -= n; else Backpack.Remove(id, n);
+        Backpack.Remove(id, n);
         int v = price * n;
         Credits += v;
         Sales.Add((id, "x" + n, v));
