@@ -11,6 +11,7 @@ namespace Kabarma.Game;
 public static class ActText
 {
     static readonly Regex Token = new(@"\{act:([a-z0-9_]+)\}", RegexOptions.Compiled);
+    static readonly bool Headless = DisplayServer.GetName() == "headless";
 
     /// <summary>Metindeki butun {act:eylem} yer tutucularini duz tus adina cevirir.</summary>
     public static string Plain(string text) => string.IsNullOrEmpty(text) ? text : Token.Replace(text, m => "[" + Label(m.Groups[1].Value) + "]");
@@ -23,7 +24,9 @@ public static class ActText
         {
             if (ev is InputEventKey k)
             {
-                var code = k.PhysicalKeycode != Key.None ? DisplayServer.KeyboardGetKeycodeFromPhysical(k.PhysicalKeycode) : k.Keycode;
+                // Basliksiz kosuda klavye duzeni yok (KeyboardGetKeycodeFromPhysical her cagrida hata yazar): fiziksel tus adi.
+                var code = k.PhysicalKeycode == Key.None ? k.Keycode
+                    : Headless ? k.PhysicalKeycode : DisplayServer.KeyboardGetKeycodeFromPhysical(k.PhysicalKeycode);
                 var s = OS.GetKeycodeString(code);
                 if (!string.IsNullOrEmpty(s)) return s;
             }

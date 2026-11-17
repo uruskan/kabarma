@@ -315,8 +315,7 @@ public partial class Bot
     /// </summary>
     void NightFight()
     {
-        var n = _d.Night;
-        if (n?.Offer != null && n.Offer.Age > 0.6f) _d.ChooseCard(0);
+        PickCard();
         var farm = _d.FarmCenter();
         var z = Zipzip.All.Where(e => !e.Dead).OrderBy(e => e.GlobalPosition.DistanceTo(farm)).FirstOrDefault();
         if (z == null) { Aim(_d.FarmCenter() + Vector3.Up); MoveRouted(_d.FarmCenter() + new Vector3(-2.5f, 0, -2.5f), 1.5f); return; }
@@ -334,6 +333,17 @@ public partial class Bot
     float _fenceWatchT;
     bool _fenceWatchDone;
 
+    /// <summary>Sunulan karttan secim: ilk kart; --botcard=KIMLIK verilmisse o kart (sinama: or. Catal'la gece).</summary>
+    void PickCard()
+    {
+        var o = _d.Night?.Offer;
+        if (o == null || o.Age <= 0.6f) return;
+        int i = 0;
+        if (Main.Args.TryGetValue("botcard", out var want))
+            for (int k = 0; k < o.Cards.Count; k++) if (o.Cards[k].Id == want) { i = k; break; }
+        _d.ChooseCard(i);
+    }
+
     bool HoldBehindFence()
     {
         var n = _d.Night;
@@ -345,7 +355,7 @@ public partial class Bot
             GD.Print($"BOT fence watch done hits={_d.Pens.FenceHits} t={_fenceWatchT:0.0}");
             return false;
         }
-        if (n.Offer != null && n.Offer.Age > 0.6f) _d.ChooseCard(0);
+        PickCard();
         var f = _d.FarmCenter() with { Y = 0 };
         var c = _d.Pens.Pens[0].Centroid;
         var toPen = new Vector3(c.X - f.X, 0, c.Z - f.Z).Normalized();

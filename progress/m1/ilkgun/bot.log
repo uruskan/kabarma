@@ -15,77 +15,77 @@ BOT step mine t=1.0
 HATCH intro done
 STEP mine -> odun t=4.4
 BOT step odun t=11.3
-STEP odun -> ocak t=6.6
-BOT step ocak t=20.2
+STEP odun -> ocak t=6.7
+BOT step ocak t=20.3
 STEP ocak -> tezgah t=8.0
-BOT step tezgah t=25.7
+BOT step tezgah t=25.9
 PLACED tezgah at (-2.5, 0, 4.5)
-STEP tezgah -> tarla t=8.3
-BOT step tarla t=27.0
-STEP tarla -> agil t=9.9
-BOT step agil t=33.5
+STEP tezgah -> tarla t=8.4
+BOT step tarla t=27.2
+STEP tarla -> agil t=10.0
+BOT step agil t=33.8
 TAS_FIRIN parts: base,body,part_4,part_5,door,door_handle door=True
-BOT aim cit err=1.41 valid=True reason= mode=ground
-BOT aim cit err=0.74 valid=True reason= mode=ground
-BOT aim cit err=0.44 valid=True reason= mode=ground
-BOT place cit at (-4.554767, 0, -9.28113)
+BOT aim cit err=1.42 valid=True reason= mode=ground
+BOT aim cit err=0.75 valid=True reason= mode=ground
+BOT aim cit err=0.45 valid=True reason= mode=ground
+BOT place cit at (-4.5561438, 0, -9.286533)
 BUILT cit pieces=1
-BOT place cit at (-3.0547671, 0, -7.78113)
+BOT place cit at (-3.0561438, 0, -7.7865334)
 BUILT cit pieces=2
-BOT place bahce_kapisi at (-3.0547671, 0, -4.78113)
+BOT place bahce_kapisi at (-3.0561438, 0, -4.7865334)
 BUILT bahce_kapisi pieces=3
 TAS_FIRIN parts: base,body,part_4,part_5,door,door_handle door=True
-BOT place cit at (-4.554767, 0, -3.28113)
+BOT place cit at (-4.5561438, 0, -3.2865336)
 BUILT cit pieces=4
-BOT place cit at (-6.054767, 0, -4.7811303)
+BOT place cit at (-6.0561438, 0, -4.786534)
 BUILT cit pieces=5
 BOT aim cit err=2.12 valid=True reason= mode=snap
-BOT place cit at (-6.054767, 0, -7.7811303)
+BOT place cit at (-6.0561438, 0, -7.786534)
 BUILT cit pieces=6
 PEN area=18.0 cells=2 walls=6 gate=True gidak=4
 STEP agil -> gidak t=16.8
-GIDAK appears at (0.4807657, 0, 1.5828315)
+GIDAK appears at (0.47939062, 0, 1.5774283)
 BOT step gidak t=60.9
 TAS_FIRIN parts: base,body,part_4,part_5,door,door_handle door=True
-BOT place folluk at (-5.254767, 0, -6.8811297)
-PLACED folluk at (-5.254767, 0, -6.8811297)
+BOT place folluk at (-5.2561436, 0, -6.8865333)
+PLACED folluk at (-5.2561436, 0, -6.8865333)
 TAS_FIRIN parts: base,body,part_4,part_5,door,door_handle door=True
-BOT place yemlik at (-4.5547667, 0, -8.38113)
-PLACED yemlik at (-4.5547667, 0, -8.38113)
+BOT place yemlik at (-4.5561438, 0, -8.386534)
+PLACED yemlik at (-4.5561438, 0, -8.386534)
 FEEDER +10 wheat -> 10
 GIDAK fed trust=1.00 tame=True
 GATE bahce_kapisi open
 GIDAK penned area=18.0 cells=2
-STEP gidak -> night t=23.8
-EGG laid nest at (-2.9210076, 0, -3.0248175)
-BOT step night t=88.8
+STEP gidak -> night t=23.7
+EGG laid nest at (-2.799457, 0, -3.8218555)
+BOT step night t=88.5
 NEST collected 1 eggs=1
 GATE bahce_kapisi closed
 NIGHT start
 FIRSTNIGHT ripen=9
 NIGHT swell crops=9
 NIGHT wave 1 count=3
-FENCE hit cit_1 hp=394/400 hits=1
-BOT fence watch done hits=6 t=18.2
+FENCE hit cit_6 hp=394/400 hits=1
+BOT fence watch done hits=6 t=17.1
 NIGHT card kiragi rank=1
 NIGHT wave 2 count=7
-NIGHT card cevik rank=1
+NIGHT card tokmak rank=1
 NIGHT wave 3 count=11
-NIGHT card miknatis rank=1
+NIGHT card seken rank=1
 NIGHT dawn kills=21 level=3 maya=48 swollenLeft=9
 FENCE night hits=6 lowest_hp=364/400 knocked_over=0
-STEP night -> sell t=55.3
+STEP night -> sell t=54.9
 BOT step sell t=202.4
 SOLD turnip S +120 credits=120
-STEP sell -> hasat t=56.2
-BOT step hasat t=205.6
-STEP hasat -> bakir_kil t=56.5
+STEP sell -> hasat t=55.5
+BOT step hasat t=204.7
+STEP hasat -> bakir_kil t=55.7
 HARVEST 5 total=5 turnips=35
-BOT step bakir_kil t=206.7
+BOT step bakir_kil t=205.8
 REPORT shown
-STEP bakir_kil -> end t=58.8
+STEP bakir_kil -> end t=58.1
 CHAIN done
-BOT step end t=216.3
-RESULT ok credits=120 eggs=1 kills=21 cards=3 maya=48 stations=1 harvests=5 skipped=yemek,firin,civi,kasa,barinak t=216.3
-EGG laid nest at (-4.666364, 0, -6.6855106)
+BOT step end t=215.4
+RESULT ok credits=120 eggs=1 kills=21 cards=3 maya=48 stations=1 harvests=5 skipped=yemek,firin,civi,kasa,barinak t=215.4
+EGG laid nest at (-3.9987586, 0, -8.411412)
 QUIT t=400.0
