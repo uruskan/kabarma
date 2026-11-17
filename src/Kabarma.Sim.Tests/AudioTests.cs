@@ -78,7 +78,7 @@ public class AudioTests
         Assert.Equal(-4f, a.Radio.DuckDb); // SANAT-SES §10.1: Suna konusurken muzik 4 dB kisilir
         Assert.True(a.Find(a.Ambience.Day)?.Loop);
         Assert.True(a.Find(a.Ambience.Night)?.Loop);
-        Assert.Equal("res://assets/audio/voice/tr/intro_1.mp3", a.VoicePath("tr", "intro_1"));
+        Assert.Equal("res://assets/audio/voice/tr/giris_1.mp3", a.VoicePath("tr", "giris_1"));
         Assert.True(a.MasterCeilingDb <= -1f);
     }
 
@@ -147,17 +147,74 @@ public class AudioTests
         Assert.Equal(2f, j.VolumeDb); // duzey ±2 dB
     }
 
+    /// <summary>
+    /// Bugunku scenario.json (yapisi ne olursa olsun): kimlikler tekil ve dosya adina uygun; ekrana gelen her Suna
+    /// satiri (giris, adim baslangici ve bitisi, gece) bir replige cozulur. Adim alani eski yapida metin, ilkgun
+    /// yapisinda kimliktir; ikisi de kabul edilir. Gece replikleri iki yapida da metin olarak ekrana gelir.
+    /// </summary>
     [Fact]
-    public void Voice_line_ids_are_unique_and_cover_every_suna_line()
+    public void Voice_lines_of_todays_scenario_cover_every_suna_line()
     {
+        string json = TestData.Read("scenario.json");
         var sc = TestData.Load().Scenario;
-        var lines = VoiceLines.FromScenario(sc);
+        var lines = VoiceLines.FromJson(json, "tr");
+        Assert.NotEmpty(lines);
         Assert.Equal(lines.Count, lines.Select(l => l.Id).Distinct().Count());
         Assert.All(lines, l => Assert.Matches("^[a-z0-9_]+$", l.Id));
-        int expected = sc.Intro.Count + sc.Steps.Count(s => !string.IsNullOrWhiteSpace(s.Start)) + sc.Steps.Count(s => !string.IsNullOrWhiteSpace(s.Done))
-                       + sc.NightLines.Count + (string.IsNullOrWhiteSpace(sc.NextOrder) ? 0 : 1);
-        Assert.Equal(expected, lines.Count);
-        Assert.Equal("intro_1", lines[0].Id);
-        Assert.Equal(sc.Intro[0], lines[0].Text);
+        Assert.All(lines, l => Assert.False(string.IsNullOrWhiteSpace(l.Text)));
+
+        var said = sc.Intro.Concat(sc.Steps.SelectMany(s => new[] { s.Start, s.Done })).Where(s => !string.IsNullOrWhiteSpace(s));
+        Assert.All(said, s => Assert.Contains(lines, l => l.Id == s || l.Text == s!.Trim()));
+        Assert.All(sc.NightLines.Values.Where(t => !string.IsNullOrWhiteSpace(t)), t => Assert.Contains(lines, l => l.Text == t.Trim()));
+    }
+
+    // ilkgun akisinin yapisi (claude/m1-ilkgun-3d5928): kimlik acik, iki dil ayni dosyada.
+    const string IdShape = """
+    {
+      "intro": ["giris_1", "giris_2"],
+      "steps": [ { "id": "mine", "target": 1, "goal": "Tas topla {act:fire}", "start": null, "done": "tas_bitti" } ],
+      "nightLineIds": { "alarm": "gece_alarm" },
+      "nextOrder": "Siradaki is Defter'de.",
+      "nextOrderLine": "siradaki_is",
+      "lines": {
+        "giris_1": { "tr": "Beni duyuyor musun?", "en": "Can you hear me?" },
+        "giris_2": { "tr": " Kapsul saglam. ", "en": "The pod is intact." },
+        "tas_bitti": { "tr": "Taslar tamam.", "en": "" },
+        "gece_alarm": { "tr": "Bir sey kabariyor!", "en": "Something is swelling!" },
+        "siradaki_is": { "tr": "Defteri ac.", "en": "Open the ledger." }
+      }
+    }
+    """;
+
+    [Fact]
+    public void Voice_lines_read_explicit_ids_in_both_languages()
+    {
+        var tr = VoiceLines.FromJson(IdShape, "tr");
+        Assert.Equal(new[] { "giris_1", "giris_2", "tas_bitti", "gece_alarm", "siradaki_is" }, tr.Select(l => l.Id));
+        Assert.Equal("Kapsul saglam.", tr[1].Text); // kirpilir: ekrandaki metinle eslesir
+        Assert.DoesNotContain(tr, l => l.Text.StartsWith("Siradaki is")); // nextOrder ekranda, seslendirilmez
+
+        var en = VoiceLines.FromJson(IdShape, "en");
+        Assert.Equal(new[] { "giris_1", "giris_2", "gece_alarm", "siradaki_is" }, en.Select(l => l.Id)); // bos metin atlanir
+        Assert.Equal("Can you hear me?", en[0].Text);
+    }
+
+    // Eski yapi (af67734): kimlik yok, Turkce metin; kimlik turetilir.
+    const string TextShape = """
+    {
+      "intro": ["Merhaba.", "Kapsul saglam."],
+      "steps": [ { "id": "mine", "start": "Tas topla.", "done": "Tamam." }, { "id": "ocak", "start": "", "done": null } ],
+      "nightLines": { "alarm": "Alarm!" },
+      "nextOrder": "Siradaki is."
+    }
+    """;
+
+    [Fact]
+    public void Voice_lines_derive_ids_from_the_old_text_shape()
+    {
+        var tr = VoiceLines.FromJson(TextShape, "tr");
+        Assert.Equal(new[] { "intro_1", "intro_2", "mine_start", "mine_done", "night_alarm", "next_order" }, tr.Select(l => l.Id));
+        Assert.Equal("Tas topla.", tr[2].Text);
+        Assert.Empty(VoiceLines.FromJson(TextShape, "en")); // eski yapida Ingilizce metin yok
     }
 }

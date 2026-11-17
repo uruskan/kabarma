@@ -1,3 +1,5 @@
+using System.Text.Json;
+
 namespace Kabarma.Sim;
 
 /// <summary>
@@ -85,28 +87,73 @@ public sealed class LayerPlan
 }
 
 /// <summary>
-/// Suna'nin replik kimlikleri, bugunku scenario.json yapisindan turetilir (ilkgun akisi kimlikleri yazana dek):
-/// intro_1.., {adim}_start, {adim}_done, night_{anahtar}, next_order. Ses dosyasi audio.json radio.path kalibiyla
-/// bulunur (voice/{dil}/{kimlik}.mp3). Ayni kural pipeline/eleven.py icinde (load_lines) tekrar edilir.
+/// Suna'nin replikleri (kimlik, metin), scenario.json'un ham metninden. Iki yapi okunur:
+/// <list type="bullet">
+/// <item>ilkgun yapisi: <c>"lines": { kimlik: { "tr": ..., "en": ... } }</c>. Kimlik acik, iki dil ayni dosyada
+/// (SANAT-SES §10.3). Adimlar ve gece olaylari bu kimlikleri verir; burada yalniz "lines" okunur.</item>
+/// <item>eski yapi (af67734, "lines" yok): kimlik turetilir (intro_N, {adim}_start, {adim}_done, night_{anahtar},
+/// next_order); yalniz Turkce metin vardir.</item>
+/// </list>
+/// ScenarioFile DTO'suna dayanmaz: iki dal ayri ayri derlenir, birlesince "lines" yapisi kendiliginden secilir.
+/// Ses dosyasi audio.json radio.path kalibiyla (voice/{dil}/{kimlik}.mp3). Ayni kural pipeline/eleven.py load_lines.
 /// </summary>
 public static class VoiceLines
 {
-    public static List<(string Id, string Text)> FromScenario(ScenarioFile sc)
+    static readonly JsonDocumentOptions Doc = new() { CommentHandling = JsonCommentHandling.Skip, AllowTrailingCommas = true };
+
+    /// <summary>Bir dildeki replikler, dosyadaki sirayla. Metni bos olan replik atlanir. lang: "tr" ya da "en".</summary>
+    public static List<(string Id, string Text)> FromJson(string json, string lang = "tr")
     {
         var list = new List<(string, string)>();
-        for (int i = 0; i < sc.Intro.Count; i++) Add(list, $"intro_{i + 1}", sc.Intro[i]);
-        foreach (var s in sc.Steps)
+        using var doc = JsonDocument.Parse(json, Doc);
+        var root = doc.RootElement;
+
+        if (Prop(root, "lines") is { ValueKind: JsonValueKind.Object } lines)
         {
-            Add(list, $"{s.Id}_start", s.Start);
-            Add(list, $"{s.Id}_done", s.Done);
+            foreach (var p in lines.EnumerateObject())
+            {
+                if (p.Name.StartsWith('_')) continue; // aciklama anahtari
+                string? text = p.Value.ValueKind == JsonValueKind.String
+                    ? (lang == "tr" ? p.Value.GetString() : null)
+                    : Str(Prop(p.Value, lang));
+                Add(list, p.Name, text);
+            }
+            return list;
         }
-        foreach (var (k, v) in sc.NightLines) Add(list, $"night_{k}", v);
-        Add(list, "next_order", sc.NextOrder);
+
+        if (lang != "tr") return list; // eski yapida yalniz Turkce metin var
+        if (Prop(root, "intro") is { ValueKind: JsonValueKind.Array } intro)
+        {
+            int i = 0;
+            foreach (var t in intro.EnumerateArray()) Add(list, $"intro_{++i}", Str(t));
+        }
+        if (Prop(root, "steps") is { ValueKind: JsonValueKind.Array } steps)
+            foreach (var s in steps.EnumerateArray())
+            {
+                string? id = Str(Prop(s, "id"));
+                if (id == null) continue;
+                Add(list, $"{id}_start", Str(Prop(s, "start")));
+                Add(list, $"{id}_done", Str(Prop(s, "done")));
+            }
+        if (Prop(root, "nightLines") is { ValueKind: JsonValueKind.Object } night)
+            foreach (var p in night.EnumerateObject()) Add(list, $"night_{p.Name}", Str(p.Value));
+        Add(list, "next_order", Str(Prop(root, "nextOrder")));
         return list;
     }
 
+    /// <summary>Buyuk-kucuk harf duyarsiz alan (GameData de oyle okur).</summary>
+    static JsonElement? Prop(JsonElement e, string name)
+    {
+        if (e.ValueKind != JsonValueKind.Object) return null;
+        foreach (var p in e.EnumerateObject())
+            if (string.Equals(p.Name, name, StringComparison.OrdinalIgnoreCase)) return p.Value;
+        return null;
+    }
+
+    static string? Str(JsonElement? e) => e is { ValueKind: JsonValueKind.String } s ? s.GetString() : null;
+
     static void Add(List<(string, string)> list, string id, string? text)
     {
-        if (!string.IsNullOrWhiteSpace(text)) list.Add((id, text));
+        if (!string.IsNullOrWhiteSpace(text)) list.Add((id, text.Trim()));
     }
 }

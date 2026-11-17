@@ -169,17 +169,41 @@ def load_audio_data(req):
     return json.loads(rel(req["audioData"]).read_text(encoding="utf-8"))
 
 
+def shown(p):
+    p = Path(p)
+    try:
+        return p.resolve().relative_to(ROOT).as_posix()
+    except ValueError:
+        return str(p)
+
+
 def load_lines(req, lang):
     """
-    Suna replikleri (kimlik, metin). Bugunku scenario.json yapisindan, oyundaki VoiceLines.FromScenario ile ayni
-    kural: intro_N, {adim}_start, {adim}_done, night_{anahtar}, next_order. Yapi yalnizca Turkce metin tasiyor;
-    baska dil icin ayni klasorde scenario.<dil>.json aranir (ilkgun akisi dili nasil yazarsa bu islev ona uyarlanir).
+    Suna replikleri (kimlik, metin); oyundaki VoiceLines.FromJson ile ayni kural:
+    - ilkgun yapisi: "lines": {kimlik: {"tr": ..., "en": ...}}. Kimlik acik, iki dil ayni dosyada. Bir replikte o
+      dilin metni bossa uyari doner (voice_plan bunu engel sayar: 30 + 30 replik eksiksiz olmali).
+    - eski yapi ("lines" yok): kimlik turetilir (intro_N, {adim}_start, {adim}_done, night_{anahtar}, next_order);
+      yalniz Turkce metin vardir.
+    Donus: ([(kimlik, metin)], uyari ya da None).
     """
-    base = rel(req["voice"]["lines"])
-    path = base if lang == "tr" else base.with_name(f"{base.stem}.{lang}{base.suffix}")
+    path = rel(req["voice"]["lines"])
     if not path.exists():
-        return [], f"{path.relative_to(ROOT)} yok"
+        return [], f"{shown(path)} yok"
     sc = json.loads(path.read_text(encoding="utf-8"))
+    lines = sc.get("lines")
+    if isinstance(lines, dict):
+        out, empty = [], []
+        for i, v in lines.items():
+            if i.startswith("_"):
+                continue  # aciklama anahtari
+            t = v.get(lang) if isinstance(v, dict) else (v if lang == "tr" else None)
+            if isinstance(t, str) and t.strip():
+                out.append((i, t.strip()))
+            else:
+                empty.append(i)
+        return out, (f"{lang}: metni bos replik: {', '.join(empty)}" if empty else None)
+    if lang != "tr":
+        return [], f"{shown(path)}: eski yapi ('lines' yok), {lang} metni yok"
     out = []
     for i, t in enumerate(sc.get("intro", [])):
         out.append((f"intro_{i + 1}", t))

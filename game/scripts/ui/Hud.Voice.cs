@@ -8,12 +8,15 @@ namespace Kabarma.Game;
 /// Hud: Suna'nin sesi (SANAT-SES §10.3). Suna kutusundaki satir altyazidir: seslendirilen metnin aynisi.
 /// Satir ekrana gelince basta telsiz mandali, ardindan replik "Suna (telsiz)" kanalinda calar (bant geciren suzgec ve
 /// hafif doyum kanalda: Sfx.Buses.cs); ses bitince sondaki mandal. Suna konusurken muzik 4 dB kisilir.
-/// Replik kimligi metinden bulunur (VoiceLines: bugunku scenario.json yapisi); dosya
-/// assets/audio/voice/{dil}/{kimlik}.mp3. Dosya yoksa satir altyaziyla sessiz gecer.
+/// Replik kimligi ekrandaki metinden bulunur (VoiceLines.FromJson: scenario.json "lines" kimlikleri, yoksa eski
+/// yapidan turetilen kimlik). Metinden bulmak, kimlikle soylenen (ilkgun: Director.SayLine) ve metinle soylenen
+/// (gecehud: gece replikleri) satirlarin ikisini de kapsar. Dosya assets/audio/voice/{dil}/{kimlik}.mp3; dosya
+/// yoksa satir altyaziyla sessiz gecer.
 /// Hud.cs'e iki satir: _Ready'de InitVoice(), _Process'te yeni satir basladiginda VoiceLineStarted(_full).
 /// </summary>
 public partial class Hud
 {
+    const string ScenarioPath = "res://data/scenario.json";
     readonly Dictionary<string, string> _voiceIds = new();
     AudioStreamPlayer _voice;
     int _voiceSerial;
@@ -21,7 +24,14 @@ public partial class Hud
     void InitVoice()
     {
         _voiceIds.Clear();
-        foreach (var (id, text) in VoiceLines.FromScenario(_d.Data.Scenario)) _voiceIds.TryAdd(text.Trim(), id);
+        try
+        {
+            string json = FileAccess.GetFileAsString(ScenarioPath);
+            if (!string.IsNullOrEmpty(json))
+                foreach (var lang in new[] { "tr", "en" })
+                    foreach (var (id, text) in VoiceLines.FromJson(json, lang)) _voiceIds.TryAdd(text, id);
+        }
+        catch (System.Exception e) { GD.PushWarning($"Suna sesi: {ScenarioPath} okunamadi ({e.Message}); replikler yalniz altyazi"); }
         _voice = new AudioStreamPlayer { Name = "SunaVoice", Bus = Sfx.BusOr(_d.Data.Audio.Radio.Bus) };
         AddChild(_voice);
         _voice.Finished += () => { Sfx.Play(_d.Data.Audio.Radio.Latch); Sfx.Duck(false); };
