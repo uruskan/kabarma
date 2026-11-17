@@ -39,7 +39,7 @@ public sealed class Scenario
 }
 
 /// <summary>Bir oyunun butun kural durumu. Godot katmani bunu tutar ve gorur.</summary>
-public sealed class GameState
+public sealed partial class GameState
 {
     public GameData Data { get; }
     public Inventory Backpack { get; }
@@ -69,6 +69,7 @@ public sealed class GameState
         Rng = new Rng(seed * 13 + 1);
         Belt = new Belt(Backpack);
         foreach (var st in data.Tool.Recipes.Select(r => r.Station).Distinct()) Stations[st] = new StationQueue(data, st);
+        InitNightAndDay(); // GameState.Night.cs: takvim, Defter (is emirleri), gece sayaclari
     }
 
     /// <summary>Kargo Rampasi'ndan normal mal satisi (kasa, urun, yumurta).</summary>
@@ -85,9 +86,10 @@ public sealed class GameState
         return v;
     }
 
-    public KabarmaNight StartNight()
+    public KabarmaNight StartNight(string? memberCard = null)
     {
-        Night = new KabarmaNight(Data, Data.Kabarma.FirstNight, Seed * 31 + 7);
+        Night = new KabarmaNight(Data, Data.Kabarma.FirstNight, Seed * 31 + 7 + (ulong)NightsStarted, memberCard);
+        OnNightStarted(Night); // GameState.Night.cs: gece sayaci, tarla olaylari
         return Night;
     }
 

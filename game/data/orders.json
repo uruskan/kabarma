@@ -1,0 +1,43 @@
+{
+  "_not": "Is emirleri: GDD 13 (48 zincir x 5 adim, Suna okur, Defter'de durur), GDD 24 (Ciraklik zinciri ilk iki saati tasir), ICERIK 18 (zincir tablosu ve adim odulleri), PLAN 1.4 (ilk safakta Defter acilir, siradaki: 5 kabarik urun). M1: Defter'in ilk sayfasi; veride yalniz Ciraklik ve siradaki is emri (Salgam Baronu). Kalan 46 zincir ve is emri altyapisi M2.",
+  "_odul": "stepRewards ICERIK 18'den (1.-5. adim). M1'de odenmez: odeme is emri altyapisiyla M2'de gelir.",
+  "_olcu": "Adim olculeri oyun olaylarindan sayilir: planted (ekilen kare), animal_registered (agila kayitli hayvan; ilkgun akisinin agil olayi baglanacak), cargo_sold (Kargo Rampasi satisi), kabarma_survived (Kabarma safagi), ata_defeated (M4), swollen_crop (kabaran ekin). 'Ilk tarla' hedefi 9: GDD 24 adim 5 (3x3 sur, 9 Salgam ek).",
+  "chainsTotal": 48,
+  "stepsPerChain": 5,
+  "stepRewards": {
+    "credits": [100, 400, 1500, 6000, 25000],
+    "veri": [10, 20, 40, 70, 100]
+  },
+  "chains": [
+    {
+      "id": "ciraklik",
+      "name": "Çıraklık",
+      "group": "Çiftçilik",
+      "measure": "Öğretici",
+      "opensAt": "start",
+      "reward": "Maya Feneri planı",
+      "steps": [
+        { "goal": "İlk tarla: dokuz şalgam ek", "measure": "planted", "target": 9 },
+        { "goal": "İlk hayvan: bir Gıdak'ı ağıla kaydet", "measure": "animal_registered", "target": 1 },
+        { "goal": "İlk kargo: Kargo Rampası'ndan sat", "measure": "cargo_sold", "target": 1 },
+        { "goal": "İlk Kabarma: geceyi atlat", "measure": "kabarma_survived", "target": 1 },
+        { "goal": "İlk Ata: bir Ata'yı yen", "measure": "ata_defeated", "target": 1 }
+      ]
+    },
+    {
+      "id": "salgam_baronu",
+      "name": "Şalgam Baronu",
+      "group": "Çiftçilik",
+      "measure": "Kabarık ürün",
+      "opensAt": "defter",
+      "reward": "Kart: Bereket",
+      "steps": [
+        { "goal": "5 kabarık ürün yetiştir", "measure": "swollen_crop", "target": 5 },
+        { "goal": "25 kabarık ürün yetiştir", "measure": "swollen_crop", "target": 25 },
+        { "goal": "100 kabarık ürün yetiştir", "measure": "swollen_crop", "target": 100 },
+        { "goal": "400 kabarık ürün yetiştir", "measure": "swollen_crop", "target": 400 },
+        { "goal": "1.500 kabarık ürün yetiştir", "measure": "swollen_crop", "target": 1500 }
+      ]
+    }
+  ]
+}
