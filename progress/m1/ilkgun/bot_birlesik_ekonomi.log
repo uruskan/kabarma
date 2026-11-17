@@ -1,0 +1,171 @@
+﻿Godot Engine v4.7.2.stable.mono.official.ed1daf0bf - https://godotengine.org
+
+TEST bot
+PLAYER model anims: carry,cheer,crouch_walk,hurt,idle,jump,kneel,knockdown,push,run,run_fast,shock_fall,walk,walk_casual,wave
+AUDIO ok 13/13
+POFUDUK anims: preset_quadruped_walk
+BUILD kit pieces=28
+BOOT Kabarma MVP
+BOT step mine t=1.0
+HATCH intro done
+STEP mine -> odun t=4.4
+BOT step odun t=11.3
+STEP odun -> ocak t=6.6
+BOT step ocak t=20.3
+STEP ocak -> tezgah t=8.0
+BOT step tezgah t=25.8
+PLACED tezgah at (-2.5, 0, 4.5)
+STEP tezgah -> tarla t=8.4
+BOT step tarla t=27.1
+STEP tarla -> agil t=10.0
+BOT step agil t=33.6
+TAS_FIRIN parts: base,body,part_4,part_5,door,door_handle door=True
+BOT aim cit err=1.44 valid=True reason= mode=ground
+BOT aim cit err=0.76 valid=True reason= mode=ground
+BOT aim cit err=0.46 valid=True reason= mode=ground
+BOT place cit at (-4.5579853, 0, -9.293668)
+BUILT cit pieces=1
+BOT place cit at (-3.0579853, 0, -7.793668)
+BUILT cit pieces=2
+BOT aim bahce_kapisi err=2.12 valid=True reason= mode=snap
+BOT place bahce_kapisi at (-3.0579853, 0, -4.793668)
+BUILT bahce_kapisi pieces=3
+TAS_FIRIN parts: base,body,part_4,part_5,door,door_handle door=True
+BOT place cit at (-4.5579853, 0, -3.293668)
+BUILT cit pieces=4
+BOT place cit at (-6.0579853, 0, -4.7936683)
+BUILT cit pieces=5
+BOT place cit at (-6.0579853, 0, -7.7936683)
+BUILT cit pieces=6
+PEN area=18.0 cells=2 walls=6 gate=True gidak=4
+STEP agil -> gidak t=17.1
+GIDAK appears at (0.47754753, 0, 1.5702935)
+BOT step gidak t=62.3
+TAS_FIRIN parts: base,body,part_4,part_5,door,door_handle door=True
+BOT place folluk at (-5.257985, 0, -6.893668)
+PLACED folluk at (-5.257985, 0, -6.893668)
+TAS_FIRIN parts: base,body,part_4,part_5,door,door_handle door=True
+BOT place yemlik at (-4.5579853, 0, -8.393668)
+PLACED yemlik at (-4.5579853, 0, -8.393668)
+FEEDER +10 wheat -> 10
+GIDAK fed trust=1.00 tame=True
+GATE bahce_kapisi open
+GIDAK penned area=18.0 cells=2
+STEP gidak -> night t=27.1
+EGG laid nest at (-2.890777, 0, -3.018462)
+BOT step night t=102.2
+NEST collected 1 eggs=1
+GATE bahce_kapisi closed
+NIGHT start
+FIRSTNIGHT ripen=9
+NIGHT swell crops=9
+NIGHT wave 1 count=3
+FENCE hit cit_6 hp=394/400 hits=1
+BOT fence watch done hits=6 t=18.3
+FENCE hit cit_6 hp=334/400 hits=11
+NIGHT card iri_tane rank=1
+NIGHT wave 2 count=7
+FENCE hit cit_6 hp=274/400 hits=21
+NIGHT card kivilcim rank=1
+FENCE hit cit_6 hp=232/400 hits=31
+FENCE hit cit_6 hp=172/400 hits=41
+FENCE hit cit_6 hp=112/400 hits=51
+FENCE hit cit_6 hp=52/400 hits=61
+NIGHT wave 3 count=11
+NIGHT card kivilcim rank=2
+FENCE hit cit_6 hp=40/400 hits=71
+FENCE hit cit_6 hp=40/400 hits=81
+FENCE hit cit_1 hp=370/400 hits=91
+FENCE hit cit_1 hp=328/400 hits=101
+FENCE hit cit_6 hp=40/400 hits=111
+FENCE hit cit_6 hp=40/400 hits=121
+FENCE hit cit_6 hp=40/400 hits=131
+FENCE hit cit_6 hp=40/400 hits=141
+FENCE hit cit_6 hp=40/400 hits=151
+FENCE hit cit_1 hp=166/400 hits=161
+NIGHT dawn kills=21 level=3 maya=48 swollenLeft=9
+FENCE night hits=163 lowest_hp=40/400 knocked_over=0
+STEP night -> sell t=65.4
+BOT step sell t=246.7
+PAID turnip S +120 credits=120
+SOLD turnip S +120 credits=120 instant=True
+STEP sell -> hasat t=66.0
+BOT step hasat t=249.1
+STEP hasat -> yemek t=66.3
+HARVEST 5 total=5 turnips=35
+BOT step yemek t=250.2
+REPORT shown
+TAS_FIRIN parts: base,body,part_4,part_5,door,door_handle door=True
+BOT place ocakbasi at (1, 0, 6.5)
+PLACED ocakbasi at (1, 0, 6.5)
+MENUDBG show Ocakbaşı
+QUEUED sebze_corbasi
+PRODUCED sebze_corbasi civi=40 ingot=0 soup=1
+MENUDBG show Sırt Çantası · 7/20 yuva
+ATE sebze_corbasi
+STEP yemek -> bakir_kil t=72.1
+BOT step bakir_kil t=273.4
+STEP bakir_kil -> firin t=74.6
+BOT step firin t=283.7
+TAS_FIRIN parts: base,body,part_4,part_5,door,door_handle door=True
+BOT place tas_firin at (2.5, 0, -5.5)
+TAS_FIRIN parts: base,body,part_4,part_5,door,door_handle door=True
+PLACED tas_firin at (2.5, 0, -5.5)
+MENUDBG show Taş Fırın
+QUEUED copper_ingot
+STEP firin -> civi t=83.8
+PRODUCED copper_ingot civi=40 ingot=1 soup=0
+BOT step civi t=320.2
+MENUDBG show Taş Fırın
+QUEUED copper_ingot
+PRODUCED copper_ingot civi=40 ingot=2 soup=0
+MENUDBG show Tezgâh
+QUEUED civi_tabancasi
+PRODUCED civi_tabancasi civi=40 ingot=0 soup=0
+MENUDBG show Taş Fırın
+QUEUED copper_ingot
+PRODUCED copper_ingot civi=40 ingot=1 soup=0
+MENUDBG show Tezgâh
+QUEUED civi
+STEP civi -> kasa t=95.7
+PRODUCED civi civi=60 ingot=0 soup=0
+BOT step kasa t=367.9
+BOT place paketleme at (1, 0, -11)
+PLACED paketleme at (1, 0, -11)
+MENUDBG show Paketleme Tezgâhı
+PACKED turnip x33
+MENUDBG show Paketleme Tezgâhı
+MENUDBG show Paketleme Tezgâhı
+QUEUED kargo_kasasi
+CRATE 1 value=495 stacks=1
+PRODUCED kargo_kasasi civi=60 ingot=0 soup=0
+RAMP load crate 1 pad=1
+MENUDBG show Kargo Rampası
+SOLD kargo_kasasi x1 +495 instant=False
+STEP kasa -> barinak t=100.4
+BOT step barinak t=386.6
+BOT place kare_temel at (9.157549, 0.35, 8.559038) mode=ground
+BUILT kare_temel pieces=7
+TAS_FIRIN parts: base,body,part_4,part_5,door,door_handle door=True
+EGG laid nest at (-3.5965168, 0, -5.0914173)
+BOT place uyku_tulumu at (8.357549, 0.34919998, 8.559038)
+PLACED uyku_tulumu at (8.357549, 0, 8.559038)
+BOT place duvar at (9.157549, 0.35, 7.059038) mode=snap
+BUILT duvar pieces=8
+PEN area=18.0 cells=2 walls=6 gate=True gidak=4
+PAID kargo_kasasi x1 +495 credits=615
+BOT place kapi_kasasi at (10.657549, 0.35, 8.559038) mode=snap
+BUILT kapi_kasasi pieces=9
+PEN area=18.0 cells=2 walls=6 gate=True gidak=4
+TAS_FIRIN parts: base,body,part_4,part_5,door,door_handle door=True
+BOT place ahsap_kapi at (10.657549, 1.35, 8.559038)
+PLACED ahsap_kapi at (10.657549, 0.35, 8.559038)
+BOT place duz_cati at (9.157549, 3.35, 8.559038) mode=snap
+BUILT duz_cati pieces=10
+STEP barinak -> end t=124.8
+CHAIN done
+BOT step end t=484.1
+RESULT ok credits=615 eggs=1 kills=21 cards=3 maya=48 stations=4 harvests=5 skipped=- t=484.1
+EGG laid nest at (-5.278731, 0, -7.634639)
+EGG laid nest at (-5.3436604, 0, -5.2032294)
+QUIT t=800.0

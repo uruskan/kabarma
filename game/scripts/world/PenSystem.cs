@@ -237,6 +237,9 @@ public partial class PenSystem : Node
 
     // ---------- Yerlestirilebilirler ----------
 
+    /// <summary>Agil sisteminin kurdugu yerlestirilebilirler (Capa.Insa bunlari PlaceProp'a yollar; Sandik, Uyku Tulumu, Mesale ekonomi'nin).</summary>
+    public static bool IsPenProp(string id) => id is "ahsap_kapi" or "yemlik" or "folluk";
+
     public PenProp PlaceProp(PlaceableDef def, Vector3 at, float yaw)
     {
         var prop = new PenProp(_d, this, def);

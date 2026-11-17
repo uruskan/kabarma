@@ -1,0 +1,179 @@
+Godot Engine v4.7.2.stable.mono.official.ed1daf0bf - https://godotengine.org
+
+TEST bot
+PLAYER model anims: carry,cheer,crouch_walk,hurt,idle,jump,kneel,knockdown,push,run,run_fast,shock_fall,walk,walk_casual,wave
+AUDIO ok 13/13
+POFUDUK anims: preset_quadruped_walk
+BUILD kit pieces=28
+BOOT Kabarma MVP
+BOT step mine t=1.1
+HATCH intro done
+STEP mine -> odun t=4.5
+BOT step odun t=11.3
+STEP odun -> ocak t=6.7
+BOT step ocak t=20.3
+STEP ocak -> tezgah t=8.1
+BOT step tezgah t=25.9
+PLACED tezgah at (-2.5, 0, 4.5)
+STEP tezgah -> tarla t=8.5
+BOT step tarla t=27.2
+STEP tarla -> agil t=10.1
+BOT step agil t=33.7
+TAS_FIRIN parts: base,body,part_4,part_5,door,door_handle door=True
+BOT aim cit err=1.40 valid=True reason= mode=ground
+BOT aim cit err=0.74 valid=True reason= mode=ground
+BOT aim cit err=0.44 valid=True reason= mode=ground
+BOT place cit at (-4.5564, 0, -9.285453)
+BUILT cit pieces=1
+BOT place cit at (-3.054606, 0, -7.7806196)
+BUILT cit pieces=2
+BOT place bahce_kapisi at (-3.054606, 0, -4.7806196)
+BUILT bahce_kapisi pieces=3
+TAS_FIRIN parts: base,body,part_4,part_5,door,door_handle door=True
+BOT place cit at (-4.554606, 0, -3.2806199)
+BUILT cit pieces=4
+BOT place cit at (-6.054606, 0, -4.78062)
+BUILT cit pieces=5
+BOT aim cit err=2.12 valid=True reason= mode=snap
+BOT place cit at (-6.054606, 0, -7.78062)
+BUILT cit pieces=6
+PEN area=18.0 cells=2 walls=6 gate=True gidak=4
+STEP agil -> gidak t=17.2
+GIDAK appears at (0.48092878, 0, 1.5833408)
+BOT step gidak t=62.3
+TAS_FIRIN parts: base,body,part_4,part_5,door,door_handle door=True
+BOT place folluk at (-5.254606, 0, -6.880619)
+PLACED folluk at (-5.254606, 0, -6.880619)
+TAS_FIRIN parts: base,body,part_4,part_5,door,door_handle door=True
+BOT place yemlik at (-4.554606, 0, -8.38062)
+PLACED yemlik at (-4.554606, 0, -8.38062)
+FEEDER +10 wheat -> 10
+MENUDBG show Tezgâh
+GIDAK fed trust=1.00 tame=True
+GATE bahce_kapisi open
+GIDAK penned area=18.0 cells=2
+STEP gidak -> night t=28.0
+EGG laid nest at (-2.8336954, 0, -3.3736067)
+BOT step night t=105.6
+NEST collected 1 eggs=1
+GATE bahce_kapisi closed
+NIGHT start
+FIRSTNIGHT ripen=9
+NIGHT swell crops=9
+NIGHT wave 1 count=3
+FENCE hit cit_6 hp=394/400 hits=1
+BOT fence watch done hits=6 t=17.2
+FENCE hit cit_5 hp=382/400 hits=11
+FENCE hit cit_6 hp=292/400 hits=21
+NIGHT card catal rank=1
+FENCE hit cit_6 hp=232/400 hits=31
+NIGHT wave 2 count=7
+FENCE hit cit_5 hp=352/400 hits=41
+FENCE hit cit_1 hp=376/400 hits=51
+FENCE hit cit_1 hp=328/400 hits=61
+FENCE hit cit_1 hp=298/400 hits=71
+FENCE hit cit_6 hp=136/400 hits=81
+FENCE hit cit_6 hp=106/400 hits=91
+FENCE hit cit_6 hp=64/400 hits=101
+FENCE hit cit_5 hp=226/400 hits=111
+FENCE hit cit_6 hp=40/400 hits=121
+FENCE hit cit_5 hp=178/400 hits=131
+NIGHT card kiragi rank=1
+FENCE hit cit_5 hp=136/400 hits=141
+FENCE hit cit_5 hp=100/400 hits=151
+FENCE hit cit_1 hp=256/400 hits=161
+FENCE hit cit_5 hp=40/400 hits=171
+FENCE hit cit_1 hp=226/400 hits=181
+FENCE hit cit_5 hp=40/400 hits=191
+FENCE hit cit_1 hp=196/400 hits=201
+FENCE hit cit_5 hp=40/400 hits=211
+FENCE hit cit_5 hp=40/400 hits=221
+FENCE hit cit_1 hp=142/400 hits=231
+FENCE hit cit_5 hp=40/400 hits=241
+FENCE hit cit_5 hp=40/400 hits=251
+FENCE hit cit_5 hp=40/400 hits=261
+FENCE hit cit_5 hp=40/400 hits=271
+FENCE hit cit_5 hp=40/400 hits=281
+FENCE hit cit_5 hp=40/400 hits=291
+NIGHT wave 3 count=11
+FENCE hit cit_5 hp=40/400 hits=301
+FENCE hit cit_5 hp=40/400 hits=311
+FENCE hit cit_5 hp=40/400 hits=321
+FENCE hit cit_1 hp=70/400 hits=331
+FENCE hit cit_5 hp=40/400 hits=341
+FENCE hit cit_5 hp=40/400 hits=351
+FENCE hit cit_5 hp=40/400 hits=361
+FENCE hit cit_5 hp=40/400 hits=371
+FENCE hit cit_5 hp=40/400 hits=381
+FENCE hit cit_5 hp=40/400 hits=391
+FENCE hit cit_5 hp=40/400 hits=401
+FENCE hit cit_5 hp=40/400 hits=411
+FENCE hit cit_5 hp=40/400 hits=421
+FENCE hit cit_5 hp=40/400 hits=431
+FENCE hit cit_1 hp=40/400 hits=441
+FENCE hit cit_5 hp=40/400 hits=451
+FENCE hit cit_5 hp=40/400 hits=461
+FENCE hit cit_5 hp=40/400 hits=471
+FENCE hit cit_5 hp=40/400 hits=481
+FENCE hit cit_5 hp=40/400 hits=491
+FENCE hit cit_1 hp=40/400 hits=501
+FENCE hit cit_5 hp=40/400 hits=511
+FENCE hit cit_5 hp=40/400 hits=521
+FENCE hit cit_6 hp=40/400 hits=531
+FENCE hit cit_5 hp=40/400 hits=541
+FENCE hit cit_5 hp=40/400 hits=551
+FENCE hit cit_1 hp=40/400 hits=561
+NIGHT card catal rank=2
+FENCE hit cit_5 hp=40/400 hits=571
+FENCE hit cit_5 hp=40/400 hits=581
+FENCE hit cit_5 hp=40/400 hits=591
+FENCE hit cit_6 hp=40/400 hits=601
+FENCE hit cit_5 hp=40/400 hits=611
+FENCE hit cit_5 hp=40/400 hits=621
+FENCE hit cit_1 hp=40/400 hits=631
+FENCE hit cit_1 hp=40/400 hits=641
+FENCE hit cit_1 hp=40/400 hits=651
+FENCE hit cit_1 hp=40/400 hits=661
+FENCE hit cit_1 hp=40/400 hits=671
+FENCE hit cit_1 hp=40/400 hits=681
+FENCE hit cit_1 hp=40/400 hits=691
+FENCE hit cit_1 hp=40/400 hits=701
+FENCE hit cit_1 hp=40/400 hits=711
+FENCE hit cit_5 hp=40/400 hits=721
+FENCE hit cit_5 hp=40/400 hits=731
+FENCE hit cit_6 hp=40/400 hits=741
+FENCE hit cit_6 hp=40/400 hits=751
+FENCE hit cit_5 hp=40/400 hits=761
+FENCE hit cit_5 hp=40/400 hits=771
+FENCE hit cit_5 hp=40/400 hits=781
+FENCE hit cit_5 hp=40/400 hits=791
+FENCE hit cit_1 hp=40/400 hits=801
+FENCE hit cit_5 hp=40/400 hits=811
+FENCE hit cit_5 hp=40/400 hits=821
+FENCE hit cit_6 hp=40/400 hits=831
+FENCE hit cit_5 hp=40/400 hits=841
+FENCE hit cit_5 hp=40/400 hits=851
+FENCE hit cit_1 hp=40/400 hits=861
+FENCE hit cit_5 hp=40/400 hits=871
+FENCE hit cit_5 hp=40/400 hits=881
+FENCE hit cit_5 hp=40/400 hits=891
+FENCE hit cit_1 hp=40/400 hits=901
+FENCE hit cit_5 hp=40/400 hits=911
+FENCE hit cit_5 hp=40/400 hits=921
+FENCE hit cit_5 hp=40/400 hits=931
+FENCE hit cit_1 hp=40/400 hits=941
+FENCE hit cit_5 hp=40/400 hits=951
+FENCE hit cit_5 hp=40/400 hits=961
+FENCE hit cit_5 hp=40/400 hits=971
+FENCE hit cit_1 hp=40/400 hits=981
+FENCE hit cit_5 hp=40/400 hits=991
+FENCE hit cit_5 hp=40/400 hits=1001
+FENCE hit cit_5 hp=40/400 hits=1011
+NIGHT dawn kills=13 level=3 maya=30 swollenLeft=9
+FENCE night hits=1013 lowest_hp=40/400 knocked_over=0
+STEP night -> sell t=72.3
+BOT step sell t=278.4
+EGG laid nest at (-4.972701, 0, -6.513719)
+EGG laid nest at (-4.9132795, 0, -4.975736)
+RESULT fail bot did not reach end step=sell t=700.0
+QUIT t=700.0
