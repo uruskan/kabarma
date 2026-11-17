@@ -8,7 +8,10 @@
     { "id": "paketleme", "name": "Paketleme Tezgâhı", "cost": { "wood": 8 }, "station": "paketleme", "model": "res://assets/models/paketleme/paketleme.glb", "radius": 1.0 },
     { "id": "sandik", "name": "Sandık", "cost": { "wood": 10 }, "slots": 20, "radius": 0.7 },
     { "id": "uyku_tulumu", "name": "Uyku Tulumu", "cost": { "fiber": 6 }, "spawn": true, "radius": 0.9 },
-    { "id": "mesale", "name": "Meşale", "cost": { "wood": 2 }, "lightRange": 6.0, "radius": 0.4 }
+    { "id": "mesale", "name": "Meşale", "cost": { "wood": 2 }, "lightRange": 6.0, "radius": 0.4 },
+    { "id": "ahsap_kapi", "name": "Ahşap Kapı", "cost": { "wood": 4 }, "model": "res://assets/models/yerlestirilebilir/ahsap_kapi.glb", "radius": 0.8 },
+    { "id": "yemlik", "name": "Yemlik", "cost": { "wood": 6 }, "model": "res://assets/models/yerlestirilebilir/yemlik.glb", "radius": 0.8 },
+    { "id": "folluk", "name": "Folluk", "cost": { "wood": 4, "fiber": 4 }, "model": "res://assets/models/yerlestirilebilir/folluk.glb", "radius": 0.7 }
   ],
   "buildCosts": {
     "kare_temel": 6, "kazik_temel": 6, "ucgen_temel": 3,

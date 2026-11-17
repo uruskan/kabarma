@@ -100,12 +100,13 @@ public partial class Director : Node3D
         InitCreatures(); // Director.Creatures.cs: Zipzip suruleri, poz kutuphanesi, gorunus sinamasi
         // Tas Firin artik Insa basligiyla kurulan bir istasyon (M1).
         Build = BuildBridge.TryCreate(this);
+        SetupPens(); // Director.Pen.cs: agil, kapilar, Yemlik, Folluk (yapi setinden sonra)
 
         State.Scenario.StepChanged += OnStepChanged;
         WireScenario(); // Director.Scenario.cs: olay -> adim sayaci
         InitEconomy();  // Director.Economy.cs: odeme, kargo, yerlestirilebilirler
         State.Farm.Eaten += p => { GD.Print($"EATEN plot {p.X},{p.Y}"); Sfx.Play("pop", FarmView.CellCenter(p.X, p.Y), -2f); };
-        foreach (var l in Data.Scenario.Intro) Hud.Say(l);
+        Pod.BeginHatchIntro(this); // Pod.Hatch.cs: kapak acilir, Suna giris repliklerini soyler (PLAN 1.4, 0:00)
 
         if (Main.Args.ContainsKey("bot")) { Bot = new Bot(this); AddChild(Bot); }
         // Sinama: --look=x,y,z:tx,ty,tz sabit bir kameradan bakar (varlik denetimi goruntuleri icin).

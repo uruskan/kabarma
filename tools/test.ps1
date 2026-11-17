@@ -143,6 +143,7 @@ if ($Only -contains 'buildtest') {
         [pscustomobject]@{ Ok = $ok; Detail = $detail }
     }
 }
+if ($Only -contains 'botstrict') { if (-not $G) { $G = Find-Godot }; Invoke-GodotTest 'botstrict' "--test=bot --strict-scenario $BotArgs" $BotTimeout { param($r) $res = ($r.Text -split "`r?`n" | Where-Object { $_ -match '^RESULT ' } | Select-Object -Last 1); if (-not $res) { $res = 'RESULT satiri yok' }; [pscustomobject]@{ Ok = ($res -match '^RESULT ok'); Detail = ($res -replace ' t=[0-9.]+$', '') } } } # siki kip (-Only botstrict): atlanan senaryo adimi basarisizlik; varsayilan listede yok (birlestirme sonrasi dogrulama)
 
 # Ses sinamasi (ses akisi): kanallar, 60 ses, muzik durum makinesi, Suna kismasi. "AUDIO RESULT ok" bekler.
 if ($Only -contains 'audio') {

@@ -49,6 +49,8 @@ public partial class Capa
         foreach (var kv in def.Cost) _d.State.Backpack.Remove(kv.Key, kv.Value);
         var at = _ghost.GlobalPosition; float yaw = _ghostYaw;
         _ghost.QueueFree(); _ghost = null; _ghostId = null;
+        bool furniture = def.Slots > 0 || def.Spawn || def.LightRange > 0; // Sandik, Uyku Tulumu, Mesale: ekonomi (entegrasyon)
+        if (def.Station == null && def.Id != "ocak" && !furniture) { _d.PlaceProp(def, at, yaw); return; } // Director.Pen.cs: Yemlik, Folluk, Ahsap Kapi
         if (def.Id == "ocak") _d.PlaceOcak(at);
         else if (def.Station != null) _d.PlaceStation(def, at, yaw);
         else _d.PlaceFurniture(def, at, yaw); // Sandik, Uyku Tulumu, Mesale (Director.Economy.cs)
@@ -91,6 +93,7 @@ public partial class Capa
             if (_d.State.Farm.Plots.Any(pl => _d.FarmView.CellCenter(pl.X, pl.Y).DistanceTo(at) < 1.6f)) _ghostOk = false;
             if (at.DistanceTo(_d.Pod.GlobalPosition) < 3.5f) _ghostOk = false;
         }
+        if (_ghostOk && _d.Pens != null) _ghostOk = _d.Pens.SnapGhost(id, _ghost, at); // Ahsap Kapi Kapi Kasasi'na oturur
         var def = DefOf(id);
         _okOverlay ??= new StandardMaterial3D { ShadingMode = BaseMaterial3D.ShadingModeEnum.Unshaded, Transparency = BaseMaterial3D.TransparencyEnum.Alpha, AlbedoColor = new Color(0.4f, 1f, 0.55f, 0.35f) };
         _badOverlay ??= new StandardMaterial3D { ShadingMode = BaseMaterial3D.ShadingModeEnum.Unshaded, Transparency = BaseMaterial3D.TransparencyEnum.Alpha, AlbedoColor = new Color(1f, 0.3f, 0.25f, 0.4f) };

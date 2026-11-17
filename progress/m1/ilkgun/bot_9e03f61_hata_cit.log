@@ -1,0 +1,257 @@
+﻿Godot Engine v4.7.2.stable.mono.official.ed1daf0bf - https://godotengine.org
+
+TEST bot
+PLAYER model anims: carry,cheer,crouch_walk,hurt,idle,jump,kneel,knockdown,push,run,run_fast,shock_fall,walk,walk_casual,wave
+AUDIO ok 13/13
+POFUDUK anims: preset_quadruped_walk
+BUILD kit pieces=28
+SCENARIO skip yemek: missing ocakbasi
+SCENARIO skip firin: missing copper_ingot
+SCENARIO skip civi: missing civi_tabancasi
+SCENARIO skip kasa: missing el_arabasi
+SCENARIO skip barinak: missing uyku_tulumu
+BOOT Kabarma MVP
+BOT step mine t=1.0
+HATCH intro done
+STEP mine -> odun t=4.3
+BOT step odun t=11.3
+STEP odun -> ocak t=6.6
+BOT step ocak t=20.2
+STEP ocak -> tezgah t=8.0
+BOT step tezgah t=25.8
+PLACED tezgah at (-2.5, 0, 4.5)
+STEP tezgah -> tarla t=8.3
+BOT step tarla t=27.2
+STEP tarla -> agil t=9.9
+BOT step agil t=33.7
+TAS_FIRIN parts: base,body,part_4,part_5,door,door_handle door=True
+BOT aim cit err=1.42 valid=True reason= mode=ground
+BOT aim cit err=0.75 valid=True reason= mode=ground
+BOT aim cit err=0.45 valid=True reason= mode=ground
+BOT place cit at (-4.556034, 0, -9.286135)
+BUILT cit pieces=1
+BOT place cit at (-3.0549436, 0, -7.7831926)
+BUILT cit pieces=2
+BOT place bahce_kapisi at (-3.0549436, 0, -4.7831926)
+BUILT bahce_kapisi pieces=3
+TAS_FIRIN parts: base,body,part_4,part_5,door,door_handle door=True
+BOT place cit at (-4.5549436, 0, -3.2831929)
+BUILT cit pieces=4
+BOT place cit at (-6.0549436, 0, -4.783193)
+BUILT cit pieces=5
+BOT aim cit err=2.12 valid=True reason= mode=snap
+BOT place cit at (-6.0549436, 0, -7.783193)
+BUILT cit pieces=6
+PEN area=18.0 cells=2 walls=6 gate=True gidak=4
+STEP agil -> gidak t=16.7
+GIDAK appears at (0.48059082, 0, 1.5807691)
+BOT step gidak t=60.6
+TAS_FIRIN parts: base,body,part_4,part_5,door,door_handle door=True
+BOT place folluk at (-5.2549434, 0, -6.8831925)
+PLACED folluk at (-5.2549434, 0, -6.8831925)
+TAS_FIRIN parts: base,body,part_4,part_5,door,door_handle door=True
+BOT place yemlik at (-4.5549436, 0, -8.383193)
+PLACED yemlik at (-4.5549436, 0, -8.383193)
+FEEDER +10 wheat -> 10
+GIDAK fed trust=1.00 tame=True
+GATE bahce_kapisi open
+GIDAK penned area=18.0 cells=2
+STEP gidak -> night t=23.9
+EGG laid nest at (-2.9321294, 0, -3.447515)
+BOT step night t=89.5
+NEST collected 1 eggs=1
+GATE bahce_kapisi closed
+NIGHT start
+FIRSTNIGHT ripen=9
+NIGHT swell crops=9
+NIGHT wave 1 count=3
+FENCE hit cit_6 hp=394/400 hits=1
+BOT fence watch done hits=6 t=17.2
+FENCE hit cit_6 hp=334/400 hits=11
+FENCE hit cit_6 hp=274/400 hits=21
+NIGHT card catal rank=1
+FENCE hit cit_1 hp=376/400 hits=31
+NIGHT wave 2 count=7
+FENCE hit cit_6 hp=226/400 hits=41
+FENCE hit cit_6 hp=178/400 hits=51
+FENCE hit cit_6 hp=148/400 hits=61
+FENCE hit cit_1 hp=244/400 hits=71
+FENCE hit cit_6 hp=106/400 hits=81
+FENCE hit cit_1 hp=166/400 hits=91
+FENCE hit cit_5 hp=394/400 hits=101
+FENCE hit cit_5 hp=376/400 hits=111
+FENCE hit cit_5 hp=346/400 hits=121
+FENCE hit cit_5 hp=340/400 hits=131
+FENCE hit cit_1 hp=40/400 hits=141
+FENCE hit cit_1 hp=40/400 hits=151
+FENCE hit cit_6 hp=40/400 hits=161
+FENCE hit cit_1 hp=40/400 hits=171
+FENCE hit cit_1 hp=40/400 hits=181
+FENCE hit cit_6 hp=40/400 hits=191
+FENCE hit cit_1 hp=40/400 hits=201
+FENCE hit cit_1 hp=40/400 hits=211
+FENCE hit cit_6 hp=40/400 hits=221
+FENCE hit cit_1 hp=40/400 hits=231
+FENCE hit cit_1 hp=40/400 hits=241
+FENCE hit cit_6 hp=40/400 hits=251
+FENCE hit cit_1 hp=40/400 hits=261
+FENCE hit cit_1 hp=40/400 hits=271
+FENCE hit cit_6 hp=40/400 hits=281
+FENCE hit cit_1 hp=40/400 hits=291
+FENCE hit cit_1 hp=40/400 hits=301
+FENCE hit cit_6 hp=40/400 hits=311
+FENCE hit cit_1 hp=40/400 hits=321
+FENCE hit cit_1 hp=40/400 hits=331
+FENCE hit cit_6 hp=40/400 hits=341
+FENCE hit cit_1 hp=40/400 hits=351
+FENCE hit cit_1 hp=40/400 hits=361
+FENCE hit cit_6 hp=40/400 hits=371
+FENCE hit cit_1 hp=40/400 hits=381
+FENCE hit cit_1 hp=40/400 hits=391
+FENCE hit cit_6 hp=40/400 hits=401
+FENCE hit cit_1 hp=40/400 hits=411
+FENCE hit cit_1 hp=40/400 hits=421
+FENCE hit cit_6 hp=40/400 hits=431
+FENCE hit cit_1 hp=40/400 hits=441
+FENCE hit cit_1 hp=40/400 hits=451
+FENCE hit cit_6 hp=40/400 hits=461
+FENCE hit cit_1 hp=40/400 hits=471
+NIGHT wave 3 count=11
+FENCE hit cit_1 hp=40/400 hits=481
+FENCE hit cit_6 hp=40/400 hits=491
+FENCE hit cit_1 hp=40/400 hits=501
+FENCE hit cit_6 hp=40/400 hits=511
+FENCE hit cit_1 hp=40/400 hits=521
+FENCE hit cit_1 hp=40/400 hits=531
+FENCE hit cit_1 hp=40/400 hits=541
+FENCE hit cit_6 hp=40/400 hits=551
+FENCE hit cit_1 hp=40/400 hits=561
+FENCE hit cit_1 hp=40/400 hits=571
+FENCE hit cit_1 hp=40/400 hits=581
+FENCE hit cit_6 hp=40/400 hits=591
+FENCE hit cit_1 hp=40/400 hits=601
+FENCE hit cit_6 hp=40/400 hits=611
+FENCE hit cit_1 hp=40/400 hits=621
+FENCE hit cit_1 hp=40/400 hits=631
+FENCE hit cit_1 hp=40/400 hits=641
+FENCE hit cit_1 hp=40/400 hits=651
+FENCE hit cit_1 hp=40/400 hits=661
+FENCE hit cit_1 hp=40/400 hits=671
+FENCE hit cit_1 hp=40/400 hits=681
+FENCE hit cit_1 hp=40/400 hits=691
+FENCE hit cit_1 hp=40/400 hits=701
+FENCE hit cit_1 hp=40/400 hits=711
+FENCE hit cit_1 hp=40/400 hits=721
+FENCE hit cit_1 hp=40/400 hits=731
+FENCE hit cit_1 hp=40/400 hits=741
+FENCE hit cit_6 hp=40/400 hits=751
+FENCE hit cit_1 hp=40/400 hits=761
+FENCE hit cit_6 hp=40/400 hits=771
+FENCE hit cit_6 hp=40/400 hits=781
+FENCE hit cit_6 hp=40/400 hits=791
+FENCE hit cit_6 hp=40/400 hits=801
+FENCE hit cit_6 hp=40/400 hits=811
+FENCE hit cit_5 hp=244/400 hits=821
+FENCE hit cit_1 hp=40/400 hits=831
+FENCE hit cit_1 hp=40/400 hits=841
+FENCE hit cit_1 hp=40/400 hits=851
+FENCE hit cit_1 hp=40/400 hits=861
+FENCE hit cit_1 hp=40/400 hits=871
+FENCE hit cit_6 hp=40/400 hits=881
+FENCE hit cit_6 hp=40/400 hits=891
+FENCE hit cit_5 hp=184/400 hits=901
+FENCE hit cit_1 hp=40/400 hits=911
+FENCE hit cit_1 hp=40/400 hits=921
+FENCE hit cit_1 hp=40/400 hits=931
+FENCE hit cit_6 hp=40/400 hits=941
+FENCE hit cit_5 hp=124/400 hits=951
+FENCE hit cit_1 hp=40/400 hits=961
+FENCE hit cit_6 hp=40/400 hits=971
+FENCE hit cit_6 hp=40/400 hits=981
+FENCE hit cit_5 hp=64/400 hits=991
+FENCE hit cit_1 hp=40/400 hits=1001
+FENCE hit cit_1 hp=40/400 hits=1011
+FENCE hit cit_6 hp=40/400 hits=1021
+FENCE hit cit_5 hp=40/400 hits=1031
+FENCE hit cit_1 hp=40/400 hits=1041
+FENCE hit cit_6 hp=40/400 hits=1051
+FENCE hit cit_5 hp=40/400 hits=1061
+NIGHT card kiragi rank=1
+FENCE hit cit_1 hp=40/400 hits=1071
+FENCE hit cit_1 hp=40/400 hits=1081
+FENCE hit cit_6 hp=40/400 hits=1091
+FENCE hit cit_5 hp=40/400 hits=1101
+FENCE hit cit_1 hp=40/400 hits=1111
+FENCE hit cit_6 hp=40/400 hits=1121
+FENCE hit cit_6 hp=40/400 hits=1131
+FENCE hit cit_5 hp=40/400 hits=1141
+FENCE hit cit_1 hp=40/400 hits=1151
+FENCE hit cit_6 hp=40/400 hits=1161
+FENCE hit cit_5 hp=40/400 hits=1171
+FENCE hit cit_1 hp=40/400 hits=1181
+FENCE hit cit_6 hp=40/400 hits=1191
+FENCE hit cit_5 hp=40/400 hits=1201
+FENCE hit cit_1 hp=40/400 hits=1211
+FENCE hit cit_6 hp=40/400 hits=1221
+FENCE hit cit_5 hp=40/400 hits=1231
+FENCE hit cit_1 hp=40/400 hits=1241
+FENCE hit cit_6 hp=40/400 hits=1251
+FENCE hit cit_5 hp=40/400 hits=1261
+FENCE hit cit_1 hp=40/400 hits=1271
+FENCE hit cit_6 hp=40/400 hits=1281
+FENCE hit cit_5 hp=40/400 hits=1291
+FENCE hit cit_1 hp=40/400 hits=1301
+FENCE hit cit_6 hp=40/400 hits=1311
+FENCE hit cit_5 hp=40/400 hits=1321
+FENCE hit cit_1 hp=40/400 hits=1331
+FENCE hit cit_6 hp=40/400 hits=1341
+FENCE hit cit_5 hp=40/400 hits=1351
+FENCE hit cit_1 hp=40/400 hits=1361
+FENCE hit cit_6 hp=40/400 hits=1371
+FENCE hit cit_5 hp=40/400 hits=1381
+FENCE hit cit_1 hp=40/400 hits=1391
+FENCE hit cit_6 hp=40/400 hits=1401
+FENCE hit cit_5 hp=40/400 hits=1411
+FENCE hit cit_1 hp=40/400 hits=1421
+FENCE hit cit_6 hp=40/400 hits=1431
+FENCE hit cit_5 hp=40/400 hits=1441
+FENCE hit cit_1 hp=40/400 hits=1451
+FENCE hit cit_6 hp=40/400 hits=1461
+FENCE hit cit_5 hp=40/400 hits=1471
+FENCE hit cit_1 hp=40/400 hits=1481
+FENCE hit cit_6 hp=40/400 hits=1491
+FENCE hit cit_5 hp=40/400 hits=1501
+FENCE hit cit_1 hp=40/400 hits=1511
+FENCE hit cit_6 hp=40/400 hits=1521
+FENCE hit cit_5 hp=40/400 hits=1531
+FENCE hit cit_1 hp=40/400 hits=1541
+FENCE hit cit_6 hp=40/400 hits=1551
+FENCE hit cit_5 hp=40/400 hits=1561
+FENCE hit cit_1 hp=40/400 hits=1571
+FENCE hit cit_6 hp=40/400 hits=1581
+FENCE hit cit_5 hp=40/400 hits=1591
+FENCE hit cit_1 hp=40/400 hits=1601
+FENCE hit cit_6 hp=40/400 hits=1611
+FENCE hit cit_6 hp=40/400 hits=1621
+FENCE hit cit_5 hp=40/400 hits=1631
+FENCE hit cit_1 hp=40/400 hits=1641
+FENCE hit cit_6 hp=40/400 hits=1651
+FENCE hit cit_6 hp=40/400 hits=1661
+FENCE hit cit_6 hp=40/400 hits=1671
+FENCE hit cit_1 hp=40/400 hits=1681
+FENCE hit cit_1 hp=40/400 hits=1691
+FENCE hit cit_6 hp=40/400 hits=1701
+FENCE hit cit_6 hp=40/400 hits=1711
+FENCE hit cit_5 hp=40/400 hits=1721
+FENCE hit cit_1 hp=40/400 hits=1731
+FENCE hit cit_1 hp=40/400 hits=1741
+FENCE hit cit_6 hp=40/400 hits=1751
+FENCE hit cit_6 hp=40/400 hits=1761
+FENCE hit cit_5 hp=40/400 hits=1771
+FENCE hit cit_1 hp=40/400 hits=1781
+NIGHT dawn kills=9 level=2 maya=21 swollenLeft=9
+FENCE night hits=1783 lowest_hp=40/400 knocked_over=0
+STEP night -> sell t=67.9
+BOT step sell t=262.4
+RESULT fail bot did not reach end step=sell t=400.0
+QUIT t=400.0

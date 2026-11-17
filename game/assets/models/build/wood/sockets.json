@@ -81,6 +81,14 @@
    ]
   },
   {
+   "attach": "wall_end",
+   "target": "wall_end",
+   "align": "any4",
+   "kinds": [
+    "fence"
+   ]
+  },
+  {
    "attach": "pillar_bottom",
    "target": "corner",
    "align": "any4"
