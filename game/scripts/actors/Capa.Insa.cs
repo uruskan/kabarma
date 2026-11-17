@@ -49,7 +49,7 @@ public partial class Capa
         foreach (var kv in def.Cost) _d.State.Backpack.Remove(kv.Key, kv.Value);
         var at = _ghost.GlobalPosition; float yaw = _ghostYaw;
         _ghost.QueueFree(); _ghost = null; _ghostId = null;
-        if (def.Station == null && def.Id != "ocak") { _d.PlaceProp(def, at, yaw); return; } // Director.Pen.cs: Yemlik, Folluk, Ahsap Kapi
+        if (PenSystem.IsPenProp(def.Id)) { _d.PlaceProp(def, at, yaw); return; } // Director.Pen.cs: Yemlik, Folluk, Ahsap Kapi
         if (def.Id == "ocak") _d.PlaceOcak(at);
         else _d.PlaceStation(def, at, yaw);
     }
