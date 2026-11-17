@@ -24,6 +24,13 @@ public partial class GeceHudTest : Node
 
     public GeceHudTest(Director d) { _d = d; ProcessMode = ProcessModeEnum.Always; }
 
+    public override void _Ready()
+    {
+        // Basliksiz pencere 64 x 64: arayuz geometrisi (fare sinamasi) tasarim boyunda olsun.
+        if (DisplayServer.GetName() == "headless") GetTree().Root.Size = new Vector2I(1600, 900);
+        GD.Print($"GECE viewport {GetViewport().GetVisibleRect().Size}");
+    }
+
     void Check(bool ok, string what)
     {
         if (!ok) Fail(what);
@@ -197,7 +204,7 @@ public partial class GeceHudTest : Node
                 PadTap(JoyButton.DpadRight);
                 Then(() => Check(d.Hud.InventorySelected == _sel0 + 1, $"kolun d-pad sagi secimi ilerletmedi ({_sel0} -> {d.Hud.InventorySelected})"));
                 PadTap(JoyButton.DpadDown);
-                Then(() => Check(d.Hud.InventorySelected == _sel0 + 1 + 6, $"kolun d-pad asagisi bir satir inmedi ({d.Hud.InventorySelected})"));
+                Then(() => Check(d.Hud.InventorySelected == _sel0 + 1 + d.Hud.InventoryColumns, $"kolun d-pad asagisi bir satir inmedi ({d.Hud.InventorySelected})"));
                 PadTap(JoyButton.RightShoulder);
                 Then(() => Check(d.Hud.InventoryPage == 1, "kolun RB'si Defter sayfasina gecmedi"));
                 PadTap(JoyButton.LeftShoulder);
@@ -206,7 +213,63 @@ public partial class GeceHudTest : Node
                 Then(() => Check(!d.Hud.InventoryOpen, "kolun X dugmesi envanteri kapatmadi"));
                 Next();
                 break;
-            case 12:
+            case 12: // M1 karari 20: 1-8 kemeri secer, baslik yalniz Q carkindan; envanterde surukle-birak ve Shift+tik
+            {
+                var head0 = d.Capa.Current;
+                int t = ((int)head0 + 4) % Capa.HeadNames.Length, u = (t + 2) % Capa.HeadNames.Length;
+                static Vector2 Dir(int i) { float a = i * Mathf.Tau / Capa.HeadNames.Length; return new Vector2(Mathf.Sin(a), -Mathf.Cos(a)) * 60f; }
+                Tap(global::Godot.Key.Key2);
+                Then(() => Check(d.Hud.BeltSelected == 1 && d.Capa.Current == head0, $"2 tusu kemeri secmeli, basligi degil (kemer {d.Hud.BeltSelected}, baslik {d.Capa.Current})"));
+                Then(() => Mouse(MouseButton.WheelDown, true, Vector2.Zero));
+                Then(() => Mouse(MouseButton.WheelDown, false, Vector2.Zero));
+                Then(() => Check(d.Capa.Current == head0, "fare tekerlegi basligi degistirmemeli"));
+                // Q basili: cark acilir, dilim secilir, birakinca takilir
+                Then(() => Key(global::Godot.Key.Q, true));
+                Then(() => Check(d.Hud.WheelOpen, "Q carki acmadi"));
+                Then(() => d.Hud.WheelMotion(Dir(t)));
+                Then(() => Check(d.Hud.WheelSelection == t, $"cark dilimi secmedi ({d.Hud.WheelSelection}, beklenen {t})"));
+                Then(() => Key(global::Godot.Key.Q, false));
+                Then(() => Check(!d.Hud.WheelOpen && (int)d.Capa.Current == t && !d.Player.LookLocked, $"Q birakilinca baslik takilmadi ({d.Capa.Current})"));
+                // Esc: cark secmeden kapanir
+                Then(() => Key(global::Godot.Key.Q, true));
+                Then(() => d.Hud.WheelMotion(Dir(u)));
+                Then(() => Key(global::Godot.Key.Escape, true));
+                Then(() => { Key(global::Godot.Key.Escape, false); Check(!d.Hud.WheelOpen, "Esc carki kapatmadi"); });
+                Then(() => Key(global::Godot.Key.Q, false));
+                Then(() => Check((int)d.Capa.Current == t && !d.Player.LookLocked, $"Esc'ten sonra baslik degismemeli ({d.Capa.Current})"));
+                // Envanter: fareyle cantadan kemere surukle-birak, Shift+tik ile kemerden cikar
+                Tap(global::Godot.Key.Tab);
+                Then(() =>
+                {
+                    Check(d.Hud.InventoryOpen, "envanter acilmadi");
+                    var c = s.Backpack.Contents;
+                    Check(c.Count > 0, "canta bos: surukle-birak sinanamaz");
+                    _dragIdx = Math.Max(0, Enumerable.Range(0, c.Count).FirstOrDefault(i => !s.Belt.Contains(c[i].id), 0));
+                    _dragId = c[_dragIdx].id;
+                    Mouse(MouseButton.Left, true, d.Hud.BagSlotRect(_dragIdx).GetCenter());
+                });
+                Then(() => MouseMove(d.Hud.BeltSlotRect(5).GetCenter()));
+                Then(() => Mouse(MouseButton.Left, false, d.Hud.BeltSlotRect(5).GetCenter()));
+                Then(() => Check(s.Belt.At(5) == _dragId && d.Hud.InventoryOpen, $"surukle-birak esyayi 6. kemer yuvasina koymadi ({_dragId} / {s.Belt.At(5)})"));
+                Then(() => Mouse(MouseButton.Left, true, d.Hud.BeltSlotRect(5).GetCenter(), shift: true));
+                Then(() => Mouse(MouseButton.Left, false, d.Hud.BeltSlotRect(5).GetCenter(), shift: true));
+                Then(() => Check(s.Belt.At(5) == null && d.Hud.InventoryOpen, $"Shift+tik kemerden cikarmadi ({s.Belt.At(5)})"));
+                Tap(global::Godot.Key.Tab);
+                Then(() => Check(!d.Hud.InventoryOpen, "Tab envanteri kapatmadi"));
+                // Istasyon paneli envanter sablonunda (sag sutun); bu sinamada istasyon kurulmaz, varsa sinanir
+                Then(() =>
+                {
+                    if (d.Stations.Count == 0) { GD.Print("GECE ui station: istasyon yok (atlandi)"); return; }
+                    d.OpenStationMenu(d.Stations[0]);
+                    Check(d.Hud.StationOpen && d.Hud.InventoryOpen && d.Hud.MenuRows > 0, "istasyon paneli envanter sablonunda acilmadi");
+                    // kuyruk bosalmadan sonraki asama kosmaz: buradan eklenen Tab sira sonuna girer
+                    Tap(global::Godot.Key.Tab);
+                    Then(() => Check(!d.Hud.MenuOpen, "istasyon paneli kapanmadi"));
+                });
+                Next();
+                break;
+            }
+            case 13:
                 GD.Print($"GECE RESULT ok checks={_checks} nights={s.NightsStarted} day={s.Calendar.Day} t={_t:0.0}");
                 GetTree().Quit(0);
                 SetProcess(false);
@@ -217,4 +280,11 @@ public partial class GeceHudTest : Node
     float _clockAtReplay;
     int _sel0;
     bool _sawOz;
+    int _dragIdx;
+    string _dragId;
+
+    static void Mouse(MouseButton b, bool pressed, Vector2 at, bool shift = false) =>
+        Input.ParseInputEvent(new InputEventMouseButton { ButtonIndex = b, Pressed = pressed, Position = at, GlobalPosition = at, ShiftPressed = shift });
+
+    static void MouseMove(Vector2 at) => Input.ParseInputEvent(new InputEventMouseMotion { Position = at, GlobalPosition = at, Relative = new Vector2(8, 8) });
 }
