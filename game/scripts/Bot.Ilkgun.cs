@@ -206,14 +206,15 @@ public partial class Bot
         var follukAt = _d.World.Ground(new Vector3(minX + 0.8f, 0, c.Z - 0.6f));
         var follukStand = _d.World.Ground(new Vector3(minX - 1.6f, 0, c.Z - 0.6f));
         var yemlikAt = _d.World.Ground(new Vector3(c.X, 0, minZ + 0.9f));
-        var yemlikStand = _d.World.Ground(new Vector3(c.X, 0, minZ - 1.5f));
+        // Entegrasyon: minZ - 1.5 ve 0.5 tolerans Yemlik'e 2.9 m'ye kadar birakiyordu (pen.json interactRange 2.6); yaklas.
+        var yemlikStand = _d.World.Ground(new Vector3(c.X, 0, minZ - 1.2f));
         if (PropIn("folluk") == null) { if (EnsureCost(PlaceableOf("folluk"))) PlacePropAt("folluk", follukAt, follukStand); return false; }
         var y = PropIn("yemlik");
         if (y == null) { if (EnsureCost(PlaceableOf("yemlik"))) PlacePropAt("yemlik", yemlikAt, yemlikStand); return false; }
         if (y.Feeder.Amount > 0) return true;
         if (!EnsureItem("wheat", 1)) return false;
         Aim(y.GlobalPosition + Vector3.Up * 0.4f);
-        if (MoveRouted(yemlikStand, 0.5f) && _menuT <= 0) { Use(); _menuT = 0.8f; }
+        if (MoveRouted(yemlikStand, 0.25f) && _menuT <= 0) { Use(); _menuT = 0.8f; }
         return false;
     }
 

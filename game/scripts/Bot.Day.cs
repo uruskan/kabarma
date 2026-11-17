@@ -54,7 +54,8 @@ public partial class Bot
             // oyuncuya (--test=input --device=pad) yetmiyordu.
             _cellT += (float)GetProcessDeltaTime();
             var plot = _d.State.Farm.Get(Mathf.FloorToInt(c.X), Mathf.FloorToInt(c.Z));
-            bool worked = _lastStep == "plant" ? plot?.Planted == true : plot != null;
+            // Entegrasyon: ilkgun'un tek "tarla" adimi (sur + ek) ekilmeyi bekler; eski "till" adimi yalniz surmeyi.
+            bool worked = _lastStep is "plant" or "tarla" ? plot?.Planted == true : plot != null;
             if (worked || _cellT > 3f) { _stepT = 0; _cell++; }
         }
     }
