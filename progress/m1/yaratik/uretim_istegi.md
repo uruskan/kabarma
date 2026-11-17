@@ -11,7 +11,7 @@ Alt oturum kredi harcamaz (CLAUDE.md). Asagidaki is ana oturumun onayiyla, onun 
 | Havuz | Tripo API (tripo-cli). 2026-11-17'de onaylanan 175 kredilik tavanin icinden |
 | Tahmini kredi | **~10** (onceki retarget-4b2662d5: 4 klip = 40 kredi, "billed per animation") |
 | Girdi | iskelet gorevi `ffa5acf2-146b-4485-b2ae-75fedd639433` (`.tools/tripo/zipzip.json`, animate_rig, 55 kredi harcanmisti) |
-| Ham cikti | `.tools/tripo/zipzip/anim-walk/tripo-out/` (`model.glb`, tam cozunurluk) |
+| Ham cikti | `.tools/tripo/zipzip/anim-walk/` altinda gorev klasoru (`model.glb`, tam cozunurluk) |
 | Oyuna giren cikti | `game/assets/models/zipzip/zipzip_5k.glb` (ayni dosya; yurume klibi eklenir, ucgen sayisi degismez: 4830) |
 | Yer tutucu isareti | `game/data/creatures.json` -> `zipzip.rig.placeholder: ["walk"]`, `clips.walk: "pose"` |
 
@@ -19,28 +19,38 @@ Su an yurume, poz kutuphanesinin iki ayakli planindan (`game/data/poses.json` ->
 yer tutucuyla calisiyor, istek zorunlu degil. Diger yedi yuva: idle/run/attack1(jump)/hit(hurt) Tripo klibi,
 attack2/eat/rest poz.
 
+Ilk dort klip `pipeline/gen_golden.sh` satir 53 ile `--animate-in-place` (kok hareketi yok) uretildi; yurume de
+ayni bicimde istenir, yoksa yerinde oynayan idle/run yaninda kok hareketli bir walk gelir.
+
 ### Kuru calistirma (cevrimdisi, kredisiz)
 
 ```
-tripo make ffa5acf2-146b-4485-b2ae-75fedd639433 --then "retarget:preset:walk" --dry-run --json
+tripo make ffa5acf2-146b-4485-b2ae-75fedd639433 --then "retarget:animation=preset:walk,animate_in_place=true" --dry-run --json
 ```
 
-Sonuc (2026-11-17): `valid=true`, `errors=[]`, adim `animate_retarget` `{"animation":"preset:walk"}`,
-`generation_credits_estimate=null` ("cost not estimated (not zero credits)"; "retarget 1 animation(s): billed per
-animation"). Uyari: "chain legality unverified: upstream task type unknown (no local history ...)". Gorev
-`.tools/tripo/` gecmisinde var; gercek kosu bunu API ile denetler.
+Sonuc (2026-11-18): `valid=true`, `errors=[]`, adim `animate_retarget`
+`{"animation":"preset:walk","animate_in_place":true}`, `generation_credits_estimate=null` ("cost not estimated (not
+zero credits)"; "retarget 1 animation(s): billed per animation"). Uyari: "chain legality unverified: upstream task
+type unknown (no local history ...)": gorev `.tools/tripo/zipzip.json`'da animate_rig olarak kayitli; gercek kosu
+bunu API ile denetler. (`--then "retarget:preset:walk:animate_in_place=true"` bicimi gecersiz: "retarget requires
+animation".)
 
 ### Calistirma (ana oturum, onaydan sonra)
 
+Kuru calistirmasi yapilan bicim (onerilen):
+
 ```
 cd C:\Users\uruskan\Documents\GitHub\kabarma\.tools\tripo
-tripo anim retarget ffa5acf2-146b-4485-b2ae-75fedd639433 --animation preset:walk --out zipzip\anim-walk\tripo-out --name zipzip-walk --json > zipzip.walk.json 2> zipzip.walk.err
+tripo make ffa5acf2-146b-4485-b2ae-75fedd639433 --then "retarget:animation=preset:walk,animate_in_place=true" --out zipzip\anim-walk --name zipzip-walk --json --yes --no-open > zipzip.walk.json 2> zipzip.walk.err
 ```
+
+gen_golden.sh'nin bicimi (`tripo anim retarget <rig> --animation preset:walk --animate-in-place ...`) ayni istegi
+yapar ama `--dry-run` desteklemez.
 
 Sonra kredisiz birlestirme (Blender 5.3; `pipeline/merge_clips.py`, bu dalda, var olan kliplerle sinandi):
 
 ```
-& "C:\Program Files\Blender Foundation\Blender 5.3\blender.exe" -b -P pipeline/merge_clips.py -- --base game/assets/models/zipzip/zipzip_5k.glb --clips C:\Users\uruskan\Documents\GitHub\kabarma\.tools\tripo\zipzip\anim-walk\tripo-out\<gorev>\model.glb --only walk --out game/assets/models/zipzip/zipzip_5k.glb
+& "C:\Program Files\Blender Foundation\Blender 5.3\blender.exe" -b -P pipeline/merge_clips.py -- --base game/assets/models/zipzip/zipzip_5k.glb --clips C:\Users\uruskan\Documents\GitHub\kabarma\.tools\tripo\zipzip\anim-walk\<gorev>\model.glb --only walk --out game/assets/models/zipzip/zipzip_5k.glb
 ```
 
 Ve veride iki satir: `zipzip.rig.clips.walk: "glb:walk"`, `placeholder: []`. Denetim:

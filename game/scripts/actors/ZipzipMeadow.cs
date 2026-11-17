@@ -81,6 +81,12 @@ public partial class ZipzipMeadow : Node
             c = _d.World.Ground(home + new Vector3(Mathf.Cos(a) * r, 0, Mathf.Sin(a) * r));
             if (c.DistanceTo(player) > _day.FleeRadius * 2.5f) break;
         }
+        SpawnAt(size, c);
+    }
+
+    /// <summary>c merkezli size uyeli bir suru kurar (Spawn ve gorunus sinamasi --creatureview=crop).</summary>
+    public ZipzipHerd SpawnAt(int size, Vector3 c)
+    {
         var h = new ZipzipHerd { Center = c, WanderTo = c, WanderT = _rng.Range(2f, 5f) };
         for (int i = 0; i < size; i++)
         {
@@ -96,12 +102,13 @@ public partial class ZipzipMeadow : Node
         }
         Herds.Add(h);
         GD.Print($"ZIPZIP herd size={size} at={c.X:0},{c.Z:0} herds={Herds.Count}");
+        return h;
     }
 
     void Leave(ZipzipHerd h)
     {
         h.Leaving = true;
-        h.LeaveT = 3f;
+        h.LeaveT = _day.LeaveSeconds;
         h.Crop = null;
         // Gece dalgasi sayaci (Director.Night) yalniz dalgayi saysin: cekilen suru hemen listeden cikar.
         foreach (var z in h.Members) Zipzip.All.Remove(z);
@@ -130,20 +137,23 @@ public partial class ZipzipMeadow : Node
             h.Crop = null;
             return;
         }
-        // Olgun ekini sezer (saniyede bir).
+        // Olgun ekini sezer (senseSeconds'ta bir).
         h.SenseT -= dt;
         if (h.SenseT <= 0)
         {
-            h.SenseT = 1f;
+            h.SenseT = _day.SenseSeconds;
+            var was = h.Crop;
             h.Crop = _d.FarmView.Views.Where(v => Kabarma.Sim.Herds.Attracts(v.Plot) && v.GlobalPosition.DistanceTo(h.Center) < _day.CropSense)
                 .OrderBy(v => v.GlobalPosition.DistanceSquaredTo(h.Center)).FirstOrDefault();
+            if (h.Crop != null && h.Crop != was)
+                GD.Print($"ZIPZIP herd crop plot={h.Crop.Plot.X},{h.Crop.Plot.Y} dist={h.Crop.GlobalPosition.DistanceTo(h.Center):0.0}");
         }
         if (h.Crop != null) { h.Center = h.Center.MoveToward(h.Crop.GlobalPosition, _def.Speed * _day.WalkSpeedMult * dt); return; }
         // Dolasma: merkez yavasca yeni bir noktaya kayar; Ocak cevresindeki halkada kalir.
         h.WanderT -= dt;
         if (h.WanderT <= 0)
         {
-            h.WanderT = _rng.Range(5f, 10f);
+            h.WanderT = _rng.Range(_day.RetargetMin, _day.RetargetMax);
             var to = h.Center + new Vector3(_rng.Range(-1f, 1f), 0, _rng.Range(-1f, 1f)) * _day.WanderRadius * 2f;
             var fromHome = to - _d.OcakPos; fromHome.Y = 0;
             float r = Mathf.Clamp(fromHome.Length(), _day.SpawnMin * 0.6f, _day.SpawnMax * 1.2f);

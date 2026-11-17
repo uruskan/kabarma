@@ -66,7 +66,7 @@ public partial class Zipzip
             var off = _daySlot with { Y = 0 };
             goal = c + (off.LengthSquared() > 0.01f ? off.Normalized() : Vector3.Back) * (d?.CropStop ?? 1.2f);
             still = "eat";
-            if (d != null && d.Eats && new Vector2(goal.X - pos.X, goal.Z - pos.Z).Length() < 0.4f)
+            if (d != null && d.DayEats && new Vector2(goal.X - pos.X, goal.Z - pos.Z).Length() < 0.4f)
             {
                 _eatT += dt * slow;
                 if (_eatT >= Def.EatSeconds) { _dir.State.Farm.Eat(h.Crop.Plot.X, h.Crop.Plot.Y); _eatT = 0; }
@@ -79,9 +79,9 @@ public partial class Zipzip
             if (_dayPauseT <= 0)
             {
                 // Dururken: bekleme, otlanma ya da dinlenme (8 klibin gunduzlukleri).
-                _dayPauseT = (float)GD.RandRange(2.5, 6.0);
-                float r = GD.Randf();
-                _dayIdle = r < 0.45f ? "idle" : r < 0.8f ? "eat" : "rest";
+                _dayPauseT = (float)GD.RandRange(d?.PauseMin ?? 2.5f, d?.PauseMax ?? 6f);
+                float r = GD.Randf(), idle = d?.IdleShare ?? 0.45f, graze = d?.GrazeShare ?? 0.35f;
+                _dayIdle = r < idle ? "idle" : r < idle + graze ? "eat" : "rest";
             }
             still = _dayIdle;
         }

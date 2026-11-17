@@ -25,7 +25,7 @@ public partial class Gidak
         Sfx.Play("hit", GlobalPosition, 2f);
         _rig?.Play(_kickAlt ? "attack2" : "attack1", 0.05f, 1f, restart: true);
         _kickAlt = !_kickAlt;
-        _kickAnimT = 0.6f;
+        _kickAnimT = Def.KickClipSeconds;
         _sw?.HitJiggle();
         if (_rig == null) _visual.Rotation = new Vector3(-0.5f, _visual.Rotation.Y, 0);
         GD.Print($"GIDAK kick to={dir.Normalized().X:0.00},{dir.Normalized().Z:0.00}");

@@ -25,6 +25,8 @@ public sealed class CreatureDef
     public float KickClearHeight { get; set; }
     public float KickLandStun { get; set; }
     public float KickSpinTurns { get; set; }
+    /// <summary>Tekme klibinin yurume ve bekleme kliplerine karsi korundugu sure (sn).</summary>
+    public float KickClipSeconds { get; set; } = 0.6f;
     public RigDef? Rig { get; set; }
     public SwellDef Swell { get; set; } = new();
     public DayHerdDef? Day { get; set; }
@@ -76,9 +78,21 @@ public sealed class DayHerdDef
     public float FleeSeconds { get; set; }
     public float CropSense { get; set; }
     public float CropStop { get; set; }
-    public bool Eats { get; set; }
+    /// <summary>Gunduz olgun ekini yer mi. M1 karari 17: hayir (ekin kaybi ve onlemleri, Korkuluk, M2).</summary>
+    public bool DayEats { get; set; }
     public float RespawnSeconds { get; set; }
     public float RagdollSeconds { get; set; }
+    /// <summary>Surunun yeni bir dolasma noktasi secme araligi (sn).</summary>
+    public float RetargetMin { get; set; } = 5f;
+    public float RetargetMax { get; set; } = 10f;
+    /// <summary>Uyenin dururken bekleme, otlanma ya da dinlenme secme araligi (sn) ve paylari (kalan: dinlenme).</summary>
+    public float PauseMin { get; set; } = 2.5f;
+    public float PauseMax { get; set; } = 6f;
+    public float IdleShare { get; set; } = 0.45f;
+    public float GrazeShare { get; set; } = 0.35f;
+    /// <summary>Aksam ayrilan surunun sahneden kalkmasina kadar gecen sure (sn) ve ekin tarama araligi (sn).</summary>
+    public float LeaveSeconds { get; set; } = 3f;
+    public float SenseSeconds { get; set; } = 1f;
 }
 
 public sealed class CreaturesFile

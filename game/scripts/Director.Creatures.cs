@@ -12,6 +12,7 @@ namespace Kabarma.Game;
 ///   --creatureview=farm                          tarlaya yukaridan bakan kamera (--skip=night ile gece dalgasi).
 ///   --creatureview=gidak                         Gidak'i yandan izleyen kamera (--skip=night: tekme yayi).
 ///   --creatureview=kick                          kabarmis Gidak, kabarmis Zipzip'i citin ustunden atar (3 sn'de bir).
+///   --creatureview=crop                          olgun Salgam tarlasina gelen gunduz surusu.
 /// </summary>
 public partial class Director
 {
@@ -81,6 +82,7 @@ public partial class Director
         }
         if (view == "both") { CreaturePairs(cam, clip); return; }
         if (view == "kick") { KickDemo(cam); return; }
+        if (view == "crop") { CropDemo(cam); return; }
         bool swollen = view == "swollen";
         var center = World.Ground(PodPos + new Vector3(-9f, 0, 9f));
         float gap = swollen ? 2.6f : 1.1f;
@@ -133,6 +135,33 @@ public partial class Director
         cam.LookAt(center + new Vector3(0, 1.8f, 1.5f));
         cam.MakeCurrent();
         GD.Print("CREATUREVIEW kick");
+    }
+
+    /// <summary>
+    /// Olgun ekine gelen gunduz surusu (GDD §8.1): 3 x 3 Salgam kurallar uzerinden olgunlasir (SkipToNight'taki yol),
+    /// oyuncu kacma yaricapinin disinda bekler, tarladan 15 m uzakta bir suru kurulur; kamera suruyle tarlanin arasina bakar.
+    /// </summary>
+    void CropDemo(Camera3D cam)
+    {
+        var f = State.Farm;
+        for (int x = 3; x < 6; x++) for (int y = -1; y < 2; y++) { f.Till(x, y); f.Plant(x, y, "turnip", State.Backpack); f.Water(x, y); }
+        for (int i = 0; i < 100000 && f.MatureCount < 9; i++) f.Tick(1f, true);
+        var c = FarmCenter();
+        Player.GlobalPosition = World.Ground(c + new Vector3(0, 0, -30f)) + Vector3.Up * 0.3f;
+        var h = Meadow.SpawnAt(3, World.Ground(c + new Vector3(13f, 0, 7f)));
+        void Follow()
+        {
+            if (!IsInstanceValid(cam)) return;
+            var live = h.Members.Where(IsInstanceValid).ToList();
+            var hc = live.Count > 0 ? live.Aggregate(Vector3.Zero, (s, z) => s + z.GlobalPosition) / live.Count : h.Center;
+            var mid = (hc + c) * 0.5f;
+            cam.GlobalPosition = mid + new Vector3(-3.5f, 5.5f, 11f);
+            cam.LookAt(mid + Vector3.Up * 0.3f);
+        }
+        Follow();
+        GetTree().ProcessFrame += Follow;
+        cam.MakeCurrent();
+        GD.Print($"CREATUREVIEW crop mature={f.MatureCount}");
     }
 
     /// <summary>Her tur normal ve kabarmis yan yana: Zipzip, Gidak, Pofuduk (M1 teslimi "normal ve kabarmis").</summary>

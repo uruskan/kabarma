@@ -49,6 +49,11 @@ public partial class Zipzip
         if (_launchT >= 0f)
         {
             _launchT += dt;
+            // Ucus bir itmedir: ilkgun'un Zipzip.Fence.cs'i duvari kesen hareketi ancak itme yokken (_knock ~ 0) geri
+            // alir. _knock'u yatay ucus hiziyla dolu tutmak tekmeyi citin ustunden gecirir; burada hareket ettirmez
+            // (_Process TickLaunch'tan sonra donuyor), inince sifirlanir.
+            var span = G(_arc.To) - G(_arc.From); span.Y = 0;
+            _knock = span / Mathf.Max(0.05f, _arc.Seconds);
             float u = _arc.Progress(_launchT);
             GlobalPosition = G(_arc.At(u));
             float yaw = _body.Rotation.Y;
@@ -57,6 +62,7 @@ public partial class Zipzip
             if (u >= 1f)
             {
                 _launchT = -1f;
+                _knock = Vector3.Zero;
                 _body.Rotation = new Vector3(0, yaw, 0);
                 GlobalPosition = _dir.World.Ground(GlobalPosition);
                 _squash = 1f;
