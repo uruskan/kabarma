@@ -22,8 +22,16 @@ Tripo web havuzu (3.200) tarayıcı oturumu ister; alt oturum kullanmadı.
 İstemler `pipeline/gen_retry.py` içinde (`REQUESTS`); stil cümlesi `gen_golden.sh` ile aynı. Ana fikir her birinde aynı:
 ince çubuk, diken ve boru yerine "kalın, yuvarlatılmış, bilek kalınlığında" parçalar.
 
-## Ölçüt 6–8'de kalanlar (sahibin yargısına bağlı, istem yazılmadı)
+## Ölçüt 6–8'de kalanlar (koşullu: önce sahip puanı onaylamalı; istem yazılmadı)
 
-Ölçüt 6–8'i ben puanladım (`game/data/assets.json`, gerekçeler `progress/m1/varlik/puanlar.md`). Bunlarda 8'in altında kalan
-varlıklar için yeniden üretim, sahip puanı onaylarsa gündeme gelir; kredi tahmini yine model başına 30 (Tripo API, parçalamasız).
-Ayrıntı ve öneriler `puanlar.md`'de.
+Ölçüt 6–8'i varlık akışı puanladı (`game/data/assets.json`, gerekçeler `puanlar.md`). Sahip puanı onaylarsa yeniden üretim gündeme gelir.
+Tahminler aynı hatla: Tripo API model 30, parçalama 40 (M0 ölçümü).
+
+| Varlık | Kalan ölçüt (puan) | Önce | Yeniden üretilirse | Tahmin (bir deneme) |
+|---|---|---|---|---|
+| Ocak (`ocak`) | 7 dil uyumu (7), 8 okunaklılık (7): çok koyu, ateş ağzı görünmüyor | sahip puanı onaylar | daha açık taş, önde görünür ateş ağzı | 30 |
+| İniş kapsülü (`kapsul`) | 7 dil uyumu (7): pencere içi kaynağın açık renkli levhaları | sahip puanı onaylar | `hatch` parçası gerektiği için parçalamalı | 30 + 40 = 70 |
+| Paketleme Tezgâhı (`paketleme`) | 8 okunaklılık (7): işlevi etiketsiz okunmuyor | sahip puanı onaylar; dunya akışının yer imi görüntüsüyle yeniden bakılır | üstünde kasa ya da kutu biçimi | 30 |
+| Sulama kovası (`kova`) | 6 siluet (7), yalnız ikon açısında | **siluet açısı kararı** (belge susuyor); yan siluette geçer | yeniden üretim yok | 0 |
+| Tezgâh (`tezgah`) | 6 siluet (7), yalnız ikon açısında | **siluet açısı kararı** | yeniden üretim yok | 0 |
+| **Koşullu toplam** | | | | **130** (en kötü 4 deneme: 520) |

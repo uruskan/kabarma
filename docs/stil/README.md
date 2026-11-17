@@ -13,6 +13,7 @@
 
 Durum ve sekiz ölçüt tek kaynakta: [`game/data/assets.json`](../../game/data/assets.json) (`yer_tutucu` / `onay_bekliyor` / `altin`; `altin` yalnız sahip onaylayınca). Kartlar `progress/m1/varlik/kart/`, puan gerekçeleri `progress/m1/varlik/puanlar.md`.
 Durum 18 Kasım 2026: **11 altın varlıktan 3'ü (Kaya, Şalgam, Taş Fırın) sekiz ölçütten geçti ve sahibin onayını bekliyor; 8'i yer tutucu.** Ölçüt 6–8 puanlarını varlık akışı verdi, hepsi sahibin onayını bekliyor.
+Bu sayı ölçüt 3'ün aşağıdaki yorumuna bağlı (levhalar sayılmaz, çubuk/diken alanına %2 pay): SANAT-SES §9'u levhaları da sayarak harfiyen okursak Şalgam (yaprakların levha payı %41) ve Taş Fırın (kapak ve pano, %10) da kalır, yalnız Kaya geçer. Eski parça kutusu ölçüsünde üçü de geçiyor. Yorumu sahip onaylamalı.
 
 | URETIM §4 sınıfı | Varlık | Kaynak | Üçgen (LOD0 / 1 / 2) | Doku | 3 kalınlık (çubuk alanı, izin %2) | 6 / 7 / 8 | Durum |
 |---|---|---|---|---|---|---|---|

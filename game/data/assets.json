@@ -235,7 +235,7 @@
           "name": "kalinlik",
           "pass": true,
           "value": "cubuk/diken alani %0.1 (izin %2, sinir 0.036 m, en ince 0.0002 m); levha payi %41.0; eski kutu olcusu 0.556",
-          "note": ""
+          "note": "yorum: yapraklar levha sayıldı (levha payı %41, sınırın altında); levhaları da sayan harfiyen okumada kalır. Sahip yorumu onaylamalı (docs/stil/README.md)"
         },
         {
           "id": 4,
@@ -369,7 +369,7 @@
           "name": "kalinlik",
           "pass": true,
           "value": "cubuk/diken alani %1.1 (izin %2, sinir 0.0886 m, en ince 0.0002 m); levha payi %10.4; eski kutu olcusu 0.062",
-          "note": ""
+          "note": "yorum: kapak ve pano levha sayıldı (levha payı %10); levhaları da sayan harfiyen okumada kalır. Eski parça kutusu ölçüsü 0,062 (sınırda geçer). Sahip yorumu onaylamalı"
         },
         {
           "id": 4,

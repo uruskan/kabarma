@@ -23,6 +23,8 @@ Kanıt:
 | Paketleme Tezgâhı | geçti | geçti | geçti | geçti | geçti | 8/10 | 8/10 | **7/10** | yer tutucu |
 | Çapa | geçti | geçti | **kaldı** | geçti | geçti | **6/10** | 8/10 | **7/10** | yer tutucu |
 
+**Ölçüt 3 yorumu:** "geçti" sütunu levhaları (yaprak, kapak, pano) saymayan, çubuk/diken alanına %2 pay veren ölçüye göre. Levhaları da sayan harfiyen okumada Şalgam (levha %41) ve Taş Fırın (%10) da kalır; sekiz ölçütten geçen yalnız Kaya olur. Bu yorum kod yazılmadan önce sorulmadı; sahip onaylamalı.
+
 ## Gözlemler
 
 - **El Arabası**: siluet çok iyi, ama ince boru çerçeve ve gerçekçi metal tekne diğerlerinin "kalın, yumuşak, el boyaması" dilinden ayrılıyor (ölçüt 3 ile aynı kök). Oyunda yok: ölçüt 8 puanlanamaz.
