@@ -269,6 +269,8 @@ Belgelerin sustuğu ya da çeliştiği yerler için verilen kararlar. Sahibin te
 | 14 | Kargo M1'de GDD §13 olduğu gibi; kasa 25 kg ve değeri içeriği; ilk satış anında öder. | GDD §13, §24 |
 | 15 | El Arabası: Tezgâh'ta 12 Odun + 4 Taş; 1 yük nesnesi (≤ 200 kg) ya da 6 yuva; itilir. | ICERIK §14, §20 |
 | 16 | Bayat bilgiler düzeltildi: hat denemeleri, altın varlık durumu, eldeki krediler, M0 durumları, test sayısı, dışa aktarma; Zıpzıp küçük sınıfta, 5.000 üçgene indirilir. | §2.3.1, §4, §5.1, M0; TEKNIK §1.3; SANAT-SES §4; stil/README |
+| 17 | Gündüz Zıpzıp grupları M1'de olgun ekine gelir, yanında durup koklar, oyuncu yaklaşınca kaçar; ekini **yemez**. Ekin kaybı (GDD §8.1 gündüz zararlısı) korkulukla birlikte M2'de açılır (`creatures.json` `dayEats`). | bu bölüm; GDD §8.1 |
+| 18 | İlk günün ilk 10 dakikadan sonraki adımları (GDD §24) veride ön koşul taşır (gereken tarif ya da yerleştirilebilir kimliği). Ön koşulu oyunda olmayan adım atlanır ve görünür biçimde raporlanır; sıkı kipte atlama hatadır. Paralel dallar birleştikten sonraki doğrulama sıkı kipte yapılır. | bu bölüm; GDD §24 |
 | — | Takvim: ilk geceden sonra Kabarma yok; Küçük Kabarma F1'den yeniden oynanır. | bu bölüm |
 | — | Koddan varlıklar: Ocakbaşı (kaya modelinden halka + ızgara), 6 yerleştirilebilir (yapı kitinin kalas dili) ve kil yatağı §2.2 A yolu yerine Blender betiğinden, kredisiz. [SANAT-SES.md](SANAT-SES.md) §9'dan geçemeyen Tripo API ile üretilir (yaklaşık 30'ar kredi, onaylı; elde 320). | bu bölüm |
 
