@@ -26,6 +26,8 @@ public partial class WorldShots : Node
     bool _nightDone, _dayDone, _deckQueued, _finished;
     float _savedSpeed = 1f;
     float _batchAt;
+    double _gpuSum;
+    int _gpuN;
     string _outDir;
 
     public override void _Ready()
@@ -132,12 +134,16 @@ public partial class WorldShots : Node
             _cam = W.ShowBookmark(W.Bookmark(bm), _cam, _d.OcakPos);
         }
         _wait++;
+        // GPU cizim suresi (gorsel-dunya): yer imi basina son karelerin ortalamasi, kademe karsilastirmasi icin.
+        var vrid = GetViewport().GetViewportRid();
+        if (_wait == 1) { RenderingServer.ViewportSetMeasureRenderTime(vrid, true); _gpuSum = 0; _gpuN = 0; }
+        else if (_wait > 6) { _gpuSum += RenderingServer.ViewportGetMeasuredRenderTimeGpu(vrid); _gpuN++; }
         if (_wait < 12 || _t < _batchAt) return; // golge, SSAO, isik kupu ve arayuz ipucu otursun
         var img = GetViewport().GetTexture().GetImage();
         var path = $"{_outDir}/{(sub == "" ? "" : sub + "/")}{bm}_{time}.png";
         img.SavePng(path);
         _saved.Add(path);
-        GD.Print($"SHOTS saved {path} {img.GetWidth()}x{img.GetHeight()}");
+        GD.Print($"SHOTS saved {path} {img.GetWidth()}x{img.GetHeight()} gpu_ms={(_gpuN > 0 ? _gpuSum / _gpuN : 0):0.00} frames={_gpuN}");
         _queue.Dequeue();
         _wait = 0;
         if (_queue.Count == 0) W.ForceTime(null);

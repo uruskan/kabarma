@@ -9,7 +9,9 @@ namespace Kabarma.Game;
 /// Dunya: zemin katmanlari (gorsel-dunya). Arazi malzemesi bes dosenebilir PBR katmani karistirir (terrain.gdshader):
 /// cimen (taban), toprak (patika, aciklik), kum (gol kiyisi), tarla (surulmus), kaya (egim). Dokular
 /// pipeline/gen_terrain_textures.py ile koddan uretilir (assets/textures/terrain/).
-/// Denetim dokusu (dunya XZ, ControlRes^2, RGBA8): R toprak/patika, G kiyi kumu, B surulmus tarla, A ot yok (aciklik, yapi).
+/// Denetim dokusu (dunya XZ, ControlRes^2, RGBA8): R toprak/patika, G kiyi kumu, B surulmus tarla, A ot sikligi
+/// (CPU'da bir kez: patika, kum, tarla, aciklik, dik egim, su, ciplak leke; yapi ve tarla dusurur). Ot shader'i
+/// kose basina az doku okusun diye butun "ot olur mu" burada.
 /// Yukseklik dokusu (Rf, 301^2) ot alaninin (GrassField) koklerini araziye oturtur.
 /// </summary>
 public partial class World
@@ -79,13 +81,14 @@ public partial class World
         _ctl = new byte[ControlRes * ControlRes * 4];
         var edge = new FastNoiseLite { Seed = T.Seed + 43, Frequency = 0.18f, FractalOctaves = 2 };
         var wear = new FastNoiseLite { Seed = T.Seed + 44, Frequency = 0.05f, FractalOctaves = 3 };
+        var bare = new FastNoiseLite { Seed = T.Seed + 45, Frequency = 0.045f, FractalOctaves = 3 };
         var paths = Biomes.World.Paths;
         float pw = Biomes.World.PathWidth;
         for (int z = 0; z < ControlRes; z++)
         for (int x = 0; x < ControlRes; x++)
         {
             var w = CtlWorld(x, z);
-            float r = 0, g = 0, a = 0;
+            float r = 0, g = 0, a = 0; // a once "ot yok" olarak toplanir, sonra ot sikligina doner
             // Patikalar: kenari gurultuyle titreyen toprak seridi, ortasi daha cignenmis.
             float dp = PathDistance(paths, w);
             if (dp < pw * 2f)
@@ -112,11 +115,17 @@ public partial class World
                 float reach = 2.2f + 1.4f * (edge.GetNoise2D(w.X * 0.7f, w.Y * 0.7f) * 0.5f + 0.5f);
                 g = 1f - Mathf.SmoothStep(0.2f, reach, sd);
             }
+            // Ot sikligi (GrassField shader'i yalniz bunu okur): patika, kum, aciklik, dik egim, su, ciplak lekeler.
+            float slope = SlopeAt(w.X, w.Y);
+            float dens = (1f - Mathf.Clamp(r, 0, 1)) * (1f - Mathf.Clamp(g, 0, 1)) * (1f - Mathf.Clamp(a, 0, 1));
+            dens *= 1f - Mathf.SmoothStep(24f, 34f, slope + bare.GetNoise2D(w.X * 3f, w.Y * 3f) * 4f);
+            if (HasLake) dens *= Mathf.SmoothStep(WaterLevel + 0.05f, WaterLevel + 0.3f, HeightAt(w.X, w.Y));
+            dens *= Mathf.SmoothStep(-0.55f, -0.2f, bare.GetNoise2D(w.X, w.Y));
             int i = (z * ControlRes + x) * 4;
             _ctl[i] = (byte)(Mathf.Clamp(r, 0, 1) * 255);
             _ctl[i + 1] = (byte)(Mathf.Clamp(g, 0, 1) * 255);
             _ctl[i + 2] = 0;
-            _ctl[i + 3] = (byte)(Mathf.Clamp(a, 0, 1) * 255);
+            _ctl[i + 3] = (byte)(Mathf.Clamp(dens, 0, 1) * 255);
         }
         _ctlImg = Image.CreateFromData(ControlRes, ControlRes, false, Image.Format.Rgba8, _ctl);
         ControlTex = ImageTexture.CreateFromImage(_ctlImg);
@@ -141,8 +150,9 @@ public partial class World
     public void MarkSoil(Vector3 center, float half) => PaintCtl(center, half, 2, square: true);
 
     /// <summary>Yapi ya da yerlestirilen esya: altindaki ot kalkar.</summary>
-    public void ClearGrass(Vector3 center, float radius) => PaintCtl(center, radius, 3, square: false);
+    public void ClearGrass(Vector3 center, float radius) => PaintCtl(center, radius, -1, square: false);
 
+    /// <summary>channel 0..2: katmani artirir ve otu kaldirir; -1: yalniz otu kaldirir (A = ot sikligi).</summary>
     void PaintCtl(Vector3 c, float half, int channel, bool square)
     {
         if (_ctl == null) return;
@@ -155,8 +165,9 @@ public partial class World
             var w = CtlWorld(x, z);
             float d = square ? Mathf.Max(Mathf.Abs(w.X - c.X), Mathf.Abs(w.Y - c.Z)) : new Vector2(w.X - c.X, w.Y - c.Z).Length();
             float v = 1f - Mathf.SmoothStep(half - texel * 0.5f, half + texel * 0.5f, d);
-            int i = (z * ControlRes + x) * 4 + channel;
-            _ctl[i] = (byte)Mathf.Max(_ctl[i], (int)(v * 255));
+            int i = (z * ControlRes + x) * 4;
+            if (channel >= 0) _ctl[i + channel] = (byte)Mathf.Max(_ctl[i + channel], (int)(v * 255));
+            _ctl[i + 3] = (byte)Mathf.Min(_ctl[i + 3], (int)((1f - v) * 255));
         }
         _ctlImg.SetData(ControlRes, ControlRes, false, Image.Format.Rgba8, _ctl);
         ControlTex.Update(_ctlImg);
@@ -186,7 +197,7 @@ public partial class World
         m.SetShaderParameter("water_level", WaterLevel);
         m.SetShaderParameter("detail", Preset.TerrainDetail);
         m.SetShaderParameter("tint_lush", TintFor(Pal("plant", Palette.Plant), CimenMean, 0.45f));
-        m.SetShaderParameter("tint_dry", TintFor(Pal("ground", Palette.Ground), CimenMean, 0.55f));
+        m.SetShaderParameter("tint_dry", TintFor(Pal("ground", Palette.Ground).Lerp(new Color(0.78f, 0.72f, 0.5f), 0.35f), CimenMean, 0.4f));
         m.SetShaderParameter("maya_a", Palette.MayaTeal);
         m.SetShaderParameter("maya_b", Palette.MayaViolet);
         return m;

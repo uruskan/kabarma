@@ -36,6 +36,9 @@ public sealed class GraphicsPreset
     /// <summary>Hacimsel sis yogunlugu (VolumetricFog acikken) ve SSIL/SSAO yari cozunurluk.</summary>
     public float VolumetricDensity { get; set; } = 0.004f;
     public bool SsilHalf { get; set; } = true;
+    /// <summary>Ekran uzayi kenar yumusatma (SMAA; ot gibi ince geometride MSAA'dan ucuz) ve zamansal (TAA).</summary>
+    public bool Smaa { get; set; }
+    public bool Taa { get; set; }
     public bool Vsync { get; set; }
     public int MaxFps { get; set; }
 }

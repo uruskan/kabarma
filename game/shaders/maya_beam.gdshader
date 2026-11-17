@@ -5,7 +5,7 @@ render_mode unshaded, blend_add, cull_disabled, depth_draw_never, fog_disabled;
 
 uniform vec4 color_a : source_color = vec4(0.373, 0.941, 0.784, 1.0);
 uniform vec4 color_b : source_color = vec4(0.831, 0.357, 1.0, 1.0);
-uniform float intensity = 1.1;
+uniform float intensity = 0.55;
 
 varying vec3 v_local;
 
@@ -22,7 +22,7 @@ void vertex() {
 void fragment() {
 	float h = v_local.y / 900.0 + 0.5;                 // 0 dip, 1 tepe
 	float ndv = abs(dot(normalize(NORMAL), normalize(VIEW)));
-	float edge = pow(1.0 - ndv, 1.6);                  // kenar: hacmin kalin gorundugu yer
+	float edge = pow(1.0 - ndv, 2.5);                  // kenar: hacmin kalin gorundugu yer
 	float core = pow(ndv, 4.0) * 0.35;                 // orta: ince parlak cekirdek
 	float ang = atan(v_local.x, v_local.z);
 	float strands = noise(vec2(ang * 6.0, h * 18.0 - TIME * 0.35)) * 0.6 + noise(vec2(ang * 15.0, h * 40.0 - TIME * 0.8)) * 0.4;

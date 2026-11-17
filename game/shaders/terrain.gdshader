@@ -174,9 +174,9 @@ void fragment() {
 	// Maya damarlari (Kabarma gecesi).
 	if (glow > 0.0) {
 		float vn = vnoise(v_world * vein_scale + vec3(0.0, TIME * 0.6, 0.0));
-		float vein = smoothstep(0.47, 0.5, vn) * (1.0 - smoothstep(0.5, 0.53, vn));
+		float vein = smoothstep(0.485, 0.5, vn) * (1.0 - smoothstep(0.5, 0.515, vn));
 		vec3 maya = mix(maya_a.rgb, maya_b.rgb, 0.5 + 0.5 * sin(TIME * 1.7 + v_world.y * 2.0));
-		EMISSION = maya * vein * 2.5 * glow;
+		EMISSION = maya * vein * 1.3 * glow;
 	}
 	EMISSION += vec3(1.0, 0.95, 0.85) * flash;
 }

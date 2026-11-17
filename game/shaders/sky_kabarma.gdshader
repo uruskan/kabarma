@@ -84,7 +84,7 @@ void sky() {
 	col = mix(col, mix(hor, ground_color.rgb, 0.65), smoothstep(0.0, -0.12, up));
 
 	// Gunes cevresi isima (ileri sacilma): genis hale + dar parlama; alcak guneste guclu.
-	float mie = pow(max(cs, 0.0), 6.0) * (0.12 + 0.35 * sun_low) + pow(max(cs, 0.0), 48.0) * 0.45 + pow(max(cs, 0.0), 600.0) * 1.2;
+	float mie = pow(max(cs, 0.0), 6.0) * (0.08 + 0.2 * sun_low) + pow(max(cs, 0.0), 48.0) * 0.3 + pow(max(cs, 0.0), 600.0) * 0.8;
 	col += sun_color.rgb * mie * sun_disk * smoothstep(-0.15, 0.05, up);
 
 	// Yildizlar: hucre basina bir yildiz, ufka dogru soner. Isik kupunde gerekmez.
@@ -111,7 +111,7 @@ void sky() {
 		float band = smoothstep(0.0, 0.08, up) * (1.0 - smoothstep(0.12 + wave * 0.06, 0.38 + wave * 0.1, up));
 		float curtain = 0.55 + 0.45 * sin(az * 37.0 + TIME * 0.4 + wave * 4.0) * (0.6 + 0.4 * vnoise(vec3(az * 8.0, up * 20.0, TIME * 0.2)));
 		vec3 ac = mix(aurora_a.rgb, aurora_b.rgb, smoothstep(0.05, 0.3, up + wave * 0.05));
-		col += ac * band * curtain * aurora * 0.8;
+		col += ac * band * curtain * aurora * 0.42;
 	}
 
 	// Bulutlar: ust yarim kurede egri tabaka; isikli (oz golge), ufka dogru pusla karisir.

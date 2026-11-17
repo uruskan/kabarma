@@ -114,7 +114,7 @@ public partial class World
             // Uzak tepeler gokyuzu rengine erir (hava perspektifi); gunes yonunde sis isir.
             FogAerialPerspective = 0.7f,
             FogSkyAffect = 0.3f,
-            FogSunScatter = 0.25f,
+            FogSunScatter = 0.15f,
             GlowEnabled = true,
             GlowIntensity = 0.45f,
             GlowStrength = 0.9f,
@@ -171,8 +171,8 @@ public partial class World
         // Uzak tepeler: duz renk yerine orman lekeli, kayali yuzey (far_hills.gdshader); sis gokyuzune eritir.
         var hillMat = new ShaderMaterial { Shader = GD.Load<Shader>("res://shaders/far_hills.gdshader") };
         hillMat.SetShaderParameter("macro_noise", MacroNoise);
-        hillMat.SetShaderParameter("forest", Pal("plant", Palette.Plant).Lerp(Pal("shadow", Palette.Shadow), 0.55f));
-        hillMat.SetShaderParameter("meadow", Pal("ground", Palette.Ground).Lerp(Pal("plant", Palette.Plant), 0.4f));
+        hillMat.SetShaderParameter("forest", Pal("plant", Palette.Plant).Lerp(Pal("shadow", Palette.Shadow), 0.55f).Darkened(0.3f));
+        hillMat.SetShaderParameter("meadow", Pal("ground", Palette.Ground).Lerp(Pal("plant", Palette.Plant), 0.55f).Darkened(0.35f));
         hillMat.SetShaderParameter("rock", new Color(0.52f, 0.48f, 0.43f));
         hills.MaterialOverride = hillMat;
         AddChild(hills);

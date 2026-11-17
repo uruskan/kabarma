@@ -34,7 +34,6 @@ public partial class GrassField : MultiMeshInstance3D
         mat.SetShaderParameter("keep_far", keepFar);
         mat.SetShaderParameter("widen", widen);
         mat.SetShaderParameter("blade_height", new Vector2(g.Height[0], g.Height.Count > 1 ? g.Height[1] : g.Height[0]));
-        mat.SetShaderParameter("water_level", w.WaterLevel);
         mat.SetShaderParameter("wind_strength", g.Wind);
         // Renkler biyom paletinden: taze uc "plant", kuru uc "ground" (Altin Cayir), dipler golgeli.
         var plant = w.Pal("plant", Palette.Plant); var ground = w.Pal("ground", Palette.Ground); var shadow = w.Pal("shadow", Palette.Shadow);

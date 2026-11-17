@@ -54,6 +54,8 @@ public partial class World
         {
             vp.Msaa3D = g.Msaa switch { >= 8 => Viewport.Msaa.Msaa8X, >= 4 => Viewport.Msaa.Msaa4X, >= 2 => Viewport.Msaa.Msaa2X, _ => Viewport.Msaa.Disabled };
             vp.Scaling3DScale = g.Scale;
+            vp.ScreenSpaceAA = g.Smaa ? Viewport.ScreenSpaceAAEnum.Smaa : Viewport.ScreenSpaceAAEnum.Disabled;
+            vp.UseTaa = g.Taa;
         }
         if (Main.Args.ContainsKey("preset")) ApplyWindow(g);
     }

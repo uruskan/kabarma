@@ -320,8 +320,8 @@ def gen_kum():
     u = (np.arange(N) / N)[None, :] * np.ones((N, 1))
     ripple = 0.5 + 0.5 * np.sin(2 * np.pi * (u * 18 + warp * 2.5 + fbm(N, 53, 2.0, 2, 14) * 0.5))
     big = fbm(N, 54, 1.8, 1, 10)
-    h = ripple * 0.35 + big * 0.25 + grain * 0.12
-    colour = lerp(rgb(0.56, 0.49, 0.37), rgb(0.78, 0.70, 0.54), np.clip(big * 0.6 + ripple * 0.3 + grain * 0.2, 0, 1))
+    h = ripple * 0.18 + big * 0.3 + grain * 0.14
+    colour = lerp(rgb(0.56, 0.49, 0.37), rgb(0.78, 0.70, 0.54), np.clip(big * 0.7 + ripple * 0.1 + grain * 0.2, 0, 1))
     colour *= (0.92 + 0.16 * grain)[..., None]
     for cells, seed, size, amt in ((80, 55, 0.3, 0.25), (190, 56, 0.25, 0.3)):
         p1, _, pid = voronoi(N, cells, seed, 0.8)

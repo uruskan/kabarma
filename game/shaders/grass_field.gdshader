@@ -1,13 +1,13 @@
 // Ot alani (gorsel-dunya, GrassField.cs): kameraya bagli bir kafes; her ornek bir tutam. Kafes ornek araligina
 // oturtularak tasinir, kokler dunyada sabit kalir. Kok konumu, donus, boy, renk dunya hucresinin karmasindan;
-// yukseklik ve "ot olur mu" (patika, kum, tarla, aciklik, su, dik egim, cplak leke) dunya dokularindan.
+// yukseklik ve ot sikligi dunya dokularindan (sikligi CPU hesaplar: World.Ground.cs). Kose basina en cok 4 doku okumasi.
 // Uzakliga gore tutamlar sirayla seyrelir (kalanlar genisler), halkanin kenarinda erir. Ruzgar: suruklenen gurultu
 // lekeleri (esinti) + dalgacik + bicak titremesi; egilen bicak boyunu korur. Oyuncu ayagi otu iter.
 // Kose rengi alfa: bicak boyunca 0 (dip) .. 1 (uc). UV.x: bicak sirasi (titreme payi).
 shader_type spatial;
 render_mode cull_disabled, diffuse_burley, specular_schlick_ggx, skip_vertex_transform;
 
-uniform sampler2D height_tex : filter_nearest, repeat_disable;
+uniform sampler2D height_tex : filter_linear, repeat_disable;
 uniform float height_res = 301.0;
 uniform sampler2D control : filter_linear, repeat_disable;
 uniform sampler2D macro_noise : filter_linear_mipmap, repeat_enable;
@@ -19,7 +19,6 @@ uniform float fade_band = 4.0;
 uniform float keep_far = 0.5;      // dis kenarda kalan tutam payi
 uniform float widen = 1.0;         // uzak halka tutamlari genis
 uniform vec2 blade_height = vec2(0.3, 0.6);
-uniform float water_level = -1000.0;
 uniform float wind_strength = 1.0;
 uniform vec2 wind_dir = vec2(0.8, 0.6);
 uniform vec4 trample = vec4(0.0);  // xyz oyuncu ayagi, w yaricap
@@ -35,17 +34,6 @@ varying vec3 v_up;
 
 float h21(vec2 p) { vec3 p3 = fract(vec3(p.xyx) * 0.1031); p3 += dot(p3, p3.yzx + 33.33); return fract((p3.x + p3.y) * p3.z); }
 
-float ground_h(vec2 xz) {
-	vec2 f = clamp(xz + world_size * 0.5, vec2(0.0), vec2(height_res - 1.001));
-	ivec2 i = ivec2(floor(f));
-	vec2 t = f - vec2(i);
-	float a = texelFetch(height_tex, i, 0).r;
-	float b = texelFetch(height_tex, i + ivec2(1, 0), 0).r;
-	float c = texelFetch(height_tex, i + ivec2(0, 1), 0).r;
-	float d = texelFetch(height_tex, i + ivec2(1, 1), 0).r;
-	return mix(mix(a, b, t.x), mix(c, d, t.x), t.y);
-}
-
 void vertex() {
 	vec3 cellw = MODEL_MATRIX[3].xyz;
 	vec2 cell = floor(cellw.xz / spacing + 0.5);
@@ -53,31 +41,28 @@ void vertex() {
 	vec2 root = (cell + (vec2(r1, r2) - 0.5) * 0.95) * spacing;
 	float dist = length(root - CAMERA_POSITION_WORLD.xz);
 
-	vec4 ctl = textureLod(control, (root + world_size * 0.5) / world_size, 0.0);
-	float m1 = textureLod(macro_noise, root / 110.0, 0.0).r;
-	float m2 = textureLod(macro_noise, root / 27.0 + 0.5, 0.0).r;
-	float m3 = textureLod(macro_noise, root / 7.0 + 0.25, 0.0).r;
-	float gh = ground_h(root);
-	float gx = ground_h(root + vec2(0.7, 0.0)) - ground_h(root - vec2(0.7, 0.0));
-	float gz = ground_h(root + vec2(0.0, 0.7)) - ground_h(root - vec2(0.0, 0.7));
-	float grad = length(vec2(gx, gz)) / 1.4;
-	float allow = (1.0 - ctl.r) * (1.0 - ctl.g) * (1.0 - ctl.b) * (1.0 - ctl.a);
-	allow *= 1.0 - smoothstep(0.45, 0.75, grad + (m3 - 0.5) * 0.2);       // dik egim: kaya
-	allow *= smoothstep(water_level + 0.05, water_level + 0.3, gh);
-	allow *= smoothstep(0.18, 0.4, m2 * 0.7 + m3 * 0.5);                    // ciplak lekeler
-
+	// Once dokusuz eleme (uzaklik), sonra tek doku okumasiyla ot sikligi (World.Ground.cs, denetim A).
 	float keep = mix(1.0, keep_far, smoothstep(radius_in, radius_out, dist));
 	keep *= 1.0 - smoothstep(radius_out - fade_band, radius_out, dist);
 	if (radius_in > 0.0) keep *= smoothstep(radius_in - fade_band * 0.5, radius_in + fade_band * 0.5, dist);
-	float size = clamp((keep * allow - r3) / 0.08, 0.0, 1.0);
+	float size = 0.0;
+	vec4 ctl = vec4(0.0);
+	if (keep > r3) {
+		ctl = textureLod(control, (root + world_size * 0.5) / world_size, 0.0);
+		size = clamp((keep * ctl.a - r3) / 0.08, 0.0, 1.0);
+	}
 
 	v_t = COLOR.a;
 	v_col = vec3(0.0);
-	v_up = vec3(0.0, 1.0, 0.0);
-	if (size <= 0.001) {
+	v_up = vec3(0.0, 1.0, 0.0);	if (size <= 0.001) {
 		VERTEX = vec3(0.0, 0.0, 1e6); // kameranin arkasina, tum ucgenler bir noktada
 		NORMAL = vec3(0.0, 0.0, 1.0);
 	} else {
+		float gh = textureLod(height_tex, (root + world_size * 0.5 + 0.5) / height_res, 0.0).r;
+		float m1 = textureLod(macro_noise, root / 110.0, 0.0).r;
+		float m3 = r5 * 0.6 + 0.2;
+		float m2 = r1 * 0.5 + 0.25;
+		float allow = ctl.a;
 		float lush = smoothstep(0.3, 0.6, m1 + (m3 - 0.5) * 0.25);
 		float ang = r4 * 6.2831853;
 		float ca = cos(ang), sa = sin(ang);
