@@ -97,6 +97,7 @@ public partial class Director : Node3D
         // M0 hat denemeleri: Pofuduk (dort ayak, iskelet + yurume) ve Tas Firin (adli parcalar).
         Pofuduk = new Pofuduk(this, new Vector3(-12, 0, 10)) { Name = "Pofuduk" };
         AddChild(Pofuduk);
+        InitCreatures(); // Director.Creatures.cs: Zipzip suruleri, poz kutuphanesi, gorunus sinamasi
         // Tas Firin artik Insa basligiyla kurulan bir istasyon (M1).
         Build = BuildBridge.TryCreate(this);
 

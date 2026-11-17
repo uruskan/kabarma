@@ -19,6 +19,8 @@ uniform vec4 maya_a : source_color = vec4(0.373, 0.941, 0.784, 1.0);
 uniform vec4 maya_b : source_color = vec4(0.831, 0.357, 1.0, 1.0);
 uniform float flash = 0.0;
 uniform vec4 tint : source_color = vec4(1.0);
+// Adim ve darbe esnemesi (SANAT-SES §4.2): Swellable.Impulse ile verilir, kendiliginden soner. Model birimi.
+uniform float jiggle = 0.0;
 
 varying vec3 obj_pos;
 
@@ -32,7 +34,8 @@ float noise(vec3 p) {
 void vertex() {
 	obj_pos = VERTEX;
 	float w = sin(TIME * 7.0 + VERTEX.y * 6.0 + VERTEX.x * 3.0) * wobble_amp * swell;
-	VERTEX += NORMAL * (w + swell_push * swell);
+	float j = sin(TIME * 23.0 + VERTEX.y * 11.0 + VERTEX.z * 5.0) * jiggle;
+	VERTEX += NORMAL * (w + j + swell_push * swell);
 }
 
 void fragment() {

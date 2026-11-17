@@ -1,6 +1,51 @@
 {
+  "_rig": "Gorunus ve animasyon (SANAT-SES §4, URETIM §2.2 E). plan: poses.json'daki govde plani. bones: rol -> iskeletteki kemik adi. clips: 8 klip yuvasi -> 'glb:<ad parcasi>' (modelin kendi klibi) ya da 'pose' (PoseLibrary). placeholder: yer tutucu klipler (URETIM §3: veride isaretli). yaw: modelin ileri yonunu +Z'ye ceviren donus (derece). restFix: rol -> dinlenme duzeltmesi (karakter ekseninde derece; her poz klibine eklenir). triBudget: SANAT-SES §4 sinif butcesi.",
+  "_swell": "Kabarma gorunusu (SANAT-SES §4): push normal yonunde ek sisme (model birimi), wobble yay titremesi, glow damar isimasi, veinScale damar sikligi, seconds sisme suresi, stepJiggle/hitJiggle adim ve darbe esnemesi.",
+  "_day": "Zipzip gunduz surusu (URETIM §6 M1, GDD §8.1): groups grup sayisi, groupMin/groupMax grup boyu, spawnMin/spawnMax Ocak'a uzaklik (m), wanderRadius, walkSpeedMult, fleeRadius (oyuncu bu kadar yaklasinca kacar), fleeSpeedMult, fleeSeconds, cropSense (olgun ekini bu uzakliktan sezer), cropStop (ekinin bu kadar yaninda durur), eats (ekini yer mi; M1: hayir, bkz. rapor), respawnSeconds (gece sonrasi ve yok olan grup icin), ragdollSeconds (gunduz avlanan Zipzip'in serili kalma suresi).",
+  "_kick": "Koc Gidak tekmesi (PLAN §1.4: 'citin ustunden'): kickApex yayin tepe yuksekligi (m), kickDistance yatay menzil (m), kickFlightSeconds ucus suresi, kickClearAt / kickClearHeight: firlatma noktasindan bu uzaklikta en az bu yukseklik (cit 1,3 m, build_kit.py p_cit). kickLandStun inince sersemleme (sn), kickSpinTurns ucarken takla sayisi.",
   "creatures": [
-    { "id": "zipzip", "name": "Zıpzıp", "archetype": "jumper", "weight": 1, "hp": 30, "damage": 6, "speed": 4.2, "swollenScale": 2.6, "weakPointMult": 2.0, "eatSeconds": 2.5 },
-    { "id": "gidak", "name": "Gıdak", "archetype": "runner", "weight": 1, "hp": 60, "damage": 8, "speed": 2.2, "swollenScale": 2.8, "kickInterval": 2.4, "kickRange": 3.0, "swollenSpeedMult": 1.5 }
+    {
+      "id": "zipzip", "name": "Zıpzıp", "archetype": "jumper", "weight": 1, "hp": 30, "damage": 6, "speed": 4.2, "swollenScale": 2.6, "weakPointMult": 2.0, "eatSeconds": 2.5,
+      "rig": {
+        "plan": "biped", "model": "res://assets/models/zipzip/zipzip_5k.glb", "height": 0.75, "yaw": -90, "triBudget": 5000,
+        "bones": {
+          "hips": "Hip", "spine": "Spine01", "chest": "Spine02", "neck": "NeckTwist01", "head": "Head",
+          "upperarm_l": "L_Upperarm", "forearm_l": "L_Forearm", "upperarm_r": "R_Upperarm", "forearm_r": "R_Forearm",
+          "thigh_l": "L_Thigh", "calf_l": "L_Calf", "foot_l": "L_Foot", "thigh_r": "R_Thigh", "calf_r": "R_Calf", "foot_r": "R_Foot"
+        },
+        "clips": { "idle": "glb:idle", "walk": "pose", "run": "glb:run", "attack1": "glb:jump", "attack2": "pose", "hit": "glb:hurt", "eat": "pose", "rest": "pose" },
+        "placeholder": ["walk"],
+        "restFix": { "upperarm_l": [0, 0, -90], "forearm_l": [0, 0, -20] },
+        "ragdoll": { "hips": 0.16, "spine": 0.15, "head": 0.18, "thigh_l": 0.07, "calf_l": 0.06, "thigh_r": 0.07, "calf_r": 0.06 }
+      },
+      "swell": { "push": 0.04, "wobble": 0.02, "glow": 0.9, "veinScale": 4.0, "seconds": 0.6, "stepJiggle": 0.012, "hitJiggle": 0.03 },
+      "day": { "groups": 3, "groupMin": 2, "groupMax": 3, "spawnMin": 24, "spawnMax": 42, "wanderRadius": 5, "walkSpeedMult": 0.3, "fleeRadius": 7, "fleeSpeedMult": 1.0, "fleeSeconds": 2.5, "cropSense": 40, "cropStop": 1.4, "eats": false, "respawnSeconds": 45, "ragdollSeconds": 6 }
+    },
+    {
+      "id": "gidak", "name": "Gıdak", "archetype": "runner", "weight": 1, "hp": 60, "damage": 8, "speed": 2.2, "swollenScale": 2.8, "kickInterval": 2.4, "kickRange": 3.0, "swollenSpeedMult": 1.5,
+      "kickApex": 3.5, "kickDistance": 9.0, "kickFlightSeconds": 1.1, "kickClearAt": 1.5, "kickClearHeight": 1.5, "kickLandStun": 0.6, "kickSpinTurns": 1.0,
+      "rig": {
+        "plan": "bird", "model": "res://assets/models/gidak/gidak_rig.glb", "height": 0.75, "yaw": 0, "triBudget": 5000,
+        "bones": {
+          "root": "root", "body": "body", "head": "head", "comb": "comb", "tail": "tail", "wing_l": "wing_l", "wing_r": "wing_r",
+          "thigh_l": "thigh_l", "shin_l": "shin_l", "foot_l": "foot_l", "thigh_r": "thigh_r", "shin_r": "shin_r", "foot_r": "foot_r"
+        },
+        "clips": { "idle": "pose", "walk": "pose", "run": "pose", "attack1": "pose", "attack2": "pose", "hit": "pose", "eat": "pose", "rest": "pose" }
+      },
+      "swell": { "push": 0.03, "wobble": 0.02, "glow": 0.8, "veinScale": 4.0, "seconds": 1.4, "stepJiggle": 0.01, "hitJiggle": 0.03 }
+    },
+    {
+      "id": "pofuduk", "name": "Pofuduk", "archetype": "tank", "weight": 3, "speed": 1.1, "swollenScale": 2.4,
+      "rig": {
+        "plan": "quadruped", "model": "res://assets/models/pofuduk/pofuduk.glb", "height": 0.75, "yaw": -90, "triBudget": 8000,
+        "bones": {
+          "root": "tripo::Root", "spine": "tripo::Spine_0", "head": "tripo::Head_0", "top": "bone_3",
+          "ear_l": "tripo::Head_1", "ear_r": "bone_4",
+          "back_l": "tripo::0_Left_Limb_0", "backlow_l": "tripo::0_Left_Limb_1", "back_r": "bone_11", "backlow_r": "tripo::0_Right_Limb_0"
+        },
+        "clips": { "idle": "pose", "walk": "glb:walk", "run": "pose", "attack1": "pose", "attack2": "pose", "hit": "pose", "eat": "pose", "rest": "pose" }
+      },
+      "swell": { "push": 0.05, "wobble": 0.03, "glow": 0.7, "veinScale": 3.0, "seconds": 1.6, "stepJiggle": 0.015, "hitJiggle": 0.03 }
+    }
   ]
 }
