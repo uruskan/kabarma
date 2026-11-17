@@ -54,6 +54,7 @@ public partial class Hud
             _beltName[i].AddThemeFontSizeOverride("font_size", _beltName[i].Text.Length > 10 ? 12 : 15); // uzun ad kirpilmasin
             _beltCount[i].Text = id == null ? "" : n.ToString();
             _beltName[i].Modulate = n > 0 || id == null ? Colors.White : new Color(1, 1, 1, 0.4f);
+            SetBeltIcon(i, id, n); // Hud.ItemIcons.cs
         }
     }
 

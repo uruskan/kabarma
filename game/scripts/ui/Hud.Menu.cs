@@ -7,7 +7,7 @@ namespace Kabarma.Game;
 public partial class Hud
 {
     // ---------- Menu: istasyon, canta, satis (ortak sablon, SANAT-SES §8.2) ----------
-    public sealed record MenuItem(string Label, System.Func<bool> Enabled, System.Action Act);
+    public sealed record MenuItem(string Label, System.Func<bool> Enabled, System.Action Act, string Icon = null);
     PanelContainer _menu;
     VBoxContainer _menuList;
     Label _menuTitle, _menuFoot;
@@ -26,6 +26,7 @@ public partial class Hud
         {
             var l = L($"{i + 1}   {items[i].Label}", 21, Palette.OffWhite, true);
             l.SetMeta("i", i);
+            if (items[i].Icon != null) AddMenuIcon(l, items[i].Icon); // Hud.ItemIcons.cs
             _menuList.AddChild(l);
         }
         if (items.Count == 0) _menuList.AddChild(L("Burada yapılacak bir şey yok.", 20, Palette.Fog));

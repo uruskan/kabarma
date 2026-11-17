@@ -49,7 +49,7 @@ public partial class Director
             {
                 if (st.Queue.Enqueue(rr, State.Backpack)) { Sfx.Play("place", st.GlobalPosition, -4f); GD.Print($"QUEUED {rr.Id}"); }
                 else Hud.Hint(!st.Queue.IsUnlocked(rr) ? "Tarif kilitli" : !st.Queue.HasFuel(rr, State.Backpack) ? "Yakıt yok: Odun" : "Malzeme yetmiyor ya da istasyon başka bir şey üretiyor", 1.5f);
-            }));
+            }, r.Id));
         }
         Hud.ShowMenu(st.Def.Name, items, "{act:menu_pick}: sıraya ekle  ·  {act:interact} / {act:ui_cancel}: kapat");
     }

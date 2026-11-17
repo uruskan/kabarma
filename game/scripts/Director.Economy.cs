@@ -145,14 +145,14 @@ public partial class Director
             var iid = id;
             if (items.Count >= max) break;
             items.Add(new Hud.MenuItem($"Al: {ItemNames.Of(iid)} ×{store.Count(iid)}", () => store.Count(iid) > 0 && State.Backpack.Room(iid) > 0,
-                () => { store.MoveTo(State.Backpack, iid, store.Count(iid)); Sfx.Play("pickup", null, -6f); reopen(); }));
+                () => { store.MoveTo(State.Backpack, iid, store.Count(iid)); Sfx.Play("pickup", null, -6f); reopen(); }, iid));
         }
         foreach (var id in State.Backpack.Contents.Select(c => c.id).Distinct().ToList())
         {
             var iid = id;
             if (items.Count >= max) break;
             items.Add(new Hud.MenuItem($"Koy: {ItemNames.Of(iid)} ×{State.Backpack.Count(iid)}", () => allowPut() && State.Backpack.Count(iid) > 0 && store.Room(iid) > 0,
-                () => { State.Backpack.MoveTo(store, iid, State.Backpack.Count(iid)); Sfx.Play("place", null, -8f); reopen(); }));
+                () => { State.Backpack.MoveTo(store, iid, State.Backpack.Count(iid)); Sfx.Play("place", null, -8f); reopen(); }, iid));
         }
     }
 
@@ -192,7 +192,7 @@ public partial class Director
             var iid = id;
             items.Add(new Hud.MenuItem($"Kasaya koy: {ItemNames.Of(iid)} ×{State.Backpack.Count(iid)}{Stars(State.Backpack, iid)}  ({cargo.Pricing.Base(iid):0.##} Kredi/adet × kalite)",
                 () => State.Backpack.Count(iid) > 0 && st.Queue.Active == null && (cargo.Open == null || cargo.Open.Items.Room(iid) > 0),
-                () => { int n = cargo.Pack(State.Backpack, iid, State.Backpack.Count(iid)); if (n > 0) { Sfx.Play("place", st.GlobalPosition, -8f); GD.Print($"PACKED {iid} x{n}"); } OpenPackingMenu(st); }));
+                () => { int n = cargo.Pack(State.Backpack, iid, State.Backpack.Count(iid)); if (n > 0) { Sfx.Play("place", st.GlobalPosition, -8f); GD.Print($"PACKED {iid} x{n}"); } OpenPackingMenu(st); }, iid));
         }
         var open = cargo.Open;
         string foot = open == null ? "Kasa boş." : $"Kasa: {open.Items.UsedSlots}/{open.Items.Slots} yığın · değeri {cargo.Value(open)} Kredi · {open.Kg:0} kg\n{Stack(open.Items)}";

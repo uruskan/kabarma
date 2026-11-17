@@ -311,6 +311,7 @@ public partial class Hud
                 col.AddChild(nm);
                 col.AddChild(L(inv.Count(bid).ToString(), 14, Palette.Warning, true));
             }
+            if (bid != null && ItemIcons.Has(bid)) { var ic = ItemIcons.Rect(bid, 52); ic.Modulate = new Color(1, 1, 1, 0.9f); cell.AddChild(ic); } // ikon yazinin arkasinda
             cell.AddChild(col);
         }
 
@@ -329,6 +330,7 @@ public partial class Hud
                 var nm = L(active[i].food.Name, 13, Palette.OffWhite, true); nm.ClipText = true; nm.CustomMinimumSize = new Vector2(92, 0);
                 col.AddChild(nm);
                 col.AddChild(L($"{active[i].left / 60f:0.0} dk", 14, Palette.Plant, true));
+                if (ItemIcons.Has(active[i].food.Id)) cell.AddChild(ItemIcons.Rect(active[i].food.Id, 52));
             }
             else col.AddChild(L("boş", 13, new Color(Palette.Fog, 0.5f), true));
             cell.AddChild(col);
@@ -349,7 +351,8 @@ public partial class Hud
         icon.AddThemeStyleboxOverride("panel", isb);
         var ini = L(Initials(name), 13, Palette.NightDeep, true); ini.HorizontalAlignment = HorizontalAlignment.Center; ini.VerticalAlignment = VerticalAlignment.Center;
         icon.AddChild(ini);
-        row.AddChild(icon);
+        if (ItemIcons.Has(id)) { icon.QueueFree(); row.AddChild(ItemIcons.Rect(id, 44)); } // SANAT-SES 8.1 ikonu; yoksa renkli harf karesi
+        else row.AddChild(icon);
         var cnt = L(count.ToString(), 18, Palette.Warning, true);
         cnt.SizeFlagsHorizontal = Control.SizeFlags.ExpandFill;
         cnt.HorizontalAlignment = HorizontalAlignment.Right;
