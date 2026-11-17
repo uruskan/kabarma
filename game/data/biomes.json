@@ -28,19 +28,20 @@
       "shoreNoise": 1.5,
       "depth": 0.9,
       "ocakDistance": [60, 90],
-      "shallow": "7FC7C0",
-      "deep": "3E78B2",
+      "shallow": "6FBFB5",
+      "deep": "2E5580",
       "foam": "EDE6D6",
-      "foamWidth": 0.35,
+      "foamWidth": 0.1,
       "clarity": 0.6
     },
     "pillar": [-350, 606],
     "horizonRings": [240, 340, 460],
+    "heightFog": [1, 0.01],
     "_clearings": "Bitki ve ot konmayan aciklik [x, z, yaricap]: inis kapsulu (Director.PodPos), Ocak cevresi (tarla, istasyonlar, agil).",
     "clearings": [[9, -9, 6], [0, 1, 9]],
     "bookmarks": [
       { "id": "kapsul", "name": "İniş kapsülü", "eye": [14.5, -15.5], "eyeHeight": 2.5, "target": [-3.5, 5, 12], "fov": 68 },
-      { "id": "us", "name": "Üs", "eye": [12, -3], "eyeHeight": 3.2, "target": [-3, 0.6, 2], "fov": 68 },
+      { "id": "us", "name": "Üs", "anchor": "ocak", "eye": [-1, -13], "eyeHeight": 3.5, "target": [1.5, 0.5, 2], "fov": 68 },
       { "id": "gol", "name": "Göl kıyısı", "eye": [-50, 24], "eyeHeight": 2.5, "target": [-82, 2.5, 46], "fov": 68 },
       { "id": "tepe", "name": "Tepe", "eye": [50, -87], "eyeHeight": 2.5, "target": [0, 3, 0], "fov": 68 }
     ]
@@ -59,11 +60,11 @@
       },
       "_times": "SANAT-SES §2 tablosu. 16 goruntu ilk dort saattendir; normal gece isik olarak vardir, goruntu setine girmez (M1 karari 7).",
       "times": {
-        "sabah": { "name": "Sabah", "lightElevation": 12, "lightAzimuth": 90, "lightColor": "FFE2B8", "lightEnergy": 1.05, "sunDisk": 1, "moonDisk": 0, "moonElevation": -20, "moonAzimuth": 270, "skyTop": "A3CFE6", "skyHorizon": "F6D7B0", "fog": "F3D9A4", "fogDensity": 0.0042, "ambient": 0.95, "stars": 0, "aurora": 0, "clouds": 0.45, "cloudColor": "FFF1E0", "veins": 0 },
-        "ogle": { "name": "Öğle", "lightElevation": 62, "lightAzimuth": 180, "lightColor": "FFF4DE", "lightEnergy": 1.25, "sunDisk": 1, "moonDisk": 0, "moonElevation": -20, "moonAzimuth": 0, "skyTop": "8CC8E8", "skyHorizon": "F3D9A4", "fog": "F3D9A4", "fogDensity": 0.0028, "ambient": 1.0, "stars": 0, "aurora": 0, "clouds": 0.4, "cloudColor": "FFFFFF", "veins": 0 },
-        "gunbatimi": { "name": "Gün batımı", "lightElevation": 4, "lightAzimuth": 270, "lightColor": "FF9A5C", "lightEnergy": 1.0, "sunDisk": 1, "moonDisk": 0.25, "moonElevation": 18, "moonAzimuth": 100, "skyTop": "6E79B0", "skyHorizon": "F58A5B", "fog": "F2A878", "fogDensity": 0.0032, "ambient": 0.85, "stars": 0.05, "aurora": 0, "clouds": 0.5, "cloudColor": "FFB48A", "veins": 0 },
-        "kabarma_gecesi": { "name": "Kabarma gecesi", "lightElevation": 35, "lightAzimuth": 140, "lightColor": "A9B8E8", "lightEnergy": 0.6, "sunDisk": 0, "moonDisk": 1, "moonElevation": 35, "moonAzimuth": 140, "skyTop": "1A2238", "skyHorizon": "5FF0C8", "fog": "2A3358", "fogDensity": 0.0035, "ambient": 1.35, "stars": 1, "aurora": 1, "clouds": 0.15, "cloudColor": "3A4570", "veins": 0.55 },
-        "normal_gece": { "name": "Normal gece", "lightElevation": 35, "lightAzimuth": 140, "lightColor": "A9B8E8", "lightEnergy": 0.55, "sunDisk": 0, "moonDisk": 1, "moonElevation": 35, "moonAzimuth": 140, "skyTop": "1A2238", "skyHorizon": "2E3E66", "fog": "2A3358", "fogDensity": 0.0035, "ambient": 1.25, "stars": 1, "aurora": 0, "clouds": 0.2, "cloudColor": "3A4570", "veins": 0 }
+        "sabah": { "name": "Sabah", "lightElevation": 12, "lightAzimuth": 90, "lightColor": "FFE2B8", "lightEnergy": 1.05, "sunDisk": 1, "moonDisk": 0, "moonElevation": -20, "moonAzimuth": 270, "skyTop": "A3CFE6", "skyHorizon": "F6D7B0", "fog": "F3D9A4", "fogDensity": 0.0033, "ambient": 0.95, "stars": 0, "aurora": 0, "clouds": 0.45, "cloudColor": "FFF1E0", "veins": 0 },
+        "ogle": { "name": "Öğle", "lightElevation": 62, "lightAzimuth": 180, "lightColor": "FFF4DE", "lightEnergy": 1.25, "sunDisk": 1, "moonDisk": 0, "moonElevation": -20, "moonAzimuth": 0, "skyTop": "8CC8E8", "skyHorizon": "F3D9A4", "fog": "F3D9A4", "fogDensity": 0.0022, "ambient": 1.0, "stars": 0, "aurora": 0, "clouds": 0.4, "cloudColor": "FFFFFF", "veins": 0 },
+        "gunbatimi": { "name": "Gün batımı", "lightElevation": 4, "lightAzimuth": 270, "lightColor": "FF9A5C", "lightEnergy": 1.0, "sunDisk": 1, "moonDisk": 0.25, "moonElevation": 18, "moonAzimuth": 100, "skyTop": "6E79B0", "skyHorizon": "F58A5B", "fog": "F2A878", "fogDensity": 0.0026, "ambient": 0.85, "stars": 0.05, "aurora": 0, "clouds": 0.5, "cloudColor": "FFB48A", "veins": 0 },
+        "kabarma_gecesi": { "name": "Kabarma gecesi", "lightElevation": 35, "lightAzimuth": 140, "lightColor": "A9B8E8", "lightEnergy": 0.6, "sunDisk": 0, "moonDisk": 1, "moonElevation": 35, "moonAzimuth": 140, "skyTop": "1A2238", "skyHorizon": "5FF0C8", "fog": "2A3358", "fogDensity": 0.003, "ambient": 1.35, "stars": 1, "aurora": 1, "clouds": 0.15, "cloudColor": "3A4570", "veins": 0.55 },
+        "normal_gece": { "name": "Normal gece", "lightElevation": 35, "lightAzimuth": 140, "lightColor": "A9B8E8", "lightEnergy": 0.55, "sunDisk": 0, "moonDisk": 1, "moonElevation": 35, "moonAzimuth": 140, "skyTop": "1A2238", "skyHorizon": "2E3E66", "fog": "2A3358", "fogDensity": 0.003, "ambient": 1.25, "stars": 1, "aurora": 0, "clouds": 0.2, "cloudColor": "3A4570", "veins": 0 }
       },
       "decor": [
         { "id": "agac", "model": "res://assets/models/agac/agac.glb", "count": 95, "scale": [0.8, 1.5], "minDistance": 24, "lakeClear": 3, "wind": 0.35, "tree": true, "sink": 0.1, "collideRadius": 0.45, "collideHeight": 3 },
@@ -90,7 +91,7 @@
         { "_not": "Kil yatagi: koddan yumru (M1 karari 'Koddan varliklar'), kredi yok. Gol kiyisinda, Ussun tarafinda.", "id": "kil", "item": "clay", "model": "", "units": [8, 8], "size": [0.9, 1.15], "shoreCount": 4, "shoreOffset": 1.2, "shoreArc": [-70, 15] },
         { "id": "bakir", "item": "copper_ore", "placeholder": "olcut 4: 10 manifold disi kenar (hat sorunu, varlik akisi)", "model": "res://assets/models/bakir/bakir.glb", "units": [8, 8], "size": [0.9, 1.1], "positions": [[30, -14], [34, -20], [27, -21]] }
       ],
-      "grass": { "chunk": 16, "perChunk": 170, "height": [0.3, 0.6], "baseClear": 7, "wind": 1.0 }
+      "grass": { "chunk": 16, "perChunk": 380, "height": [0.3, 0.6], "baseClear": 7, "wind": 1.0 }
     }
   }
 }

@@ -72,7 +72,7 @@ public partial class World
             float a = b * Mathf.Tau / blades + r.Randf() * 0.6f;
             var dir = new Vector3(Mathf.Cos(a), 0, Mathf.Sin(a));
             var side = new Vector3(-dir.Z, 0, dir.X);
-            float lean = r.RandfRange(0.15f, 0.35f), w = r.RandfRange(0.035f, 0.05f), h = r.RandfRange(0.75f, 1f);
+            float lean = r.RandfRange(0.15f, 0.35f), w = r.RandfRange(0.05f, 0.07f), h = r.RandfRange(0.75f, 1f);
             var basePos = dir * r.RandfRange(0.02f, 0.08f);
             Vector3 At(float t) => basePos + dir * lean * t * t + Vector3.Up * h * t;
             for (int s = 0; s < segs; s++)

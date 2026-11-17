@@ -7,7 +7,7 @@
 #
 # Boy (m) 1,6 m'lik karaktere gore; ucgen butceleri SANAT-SES §4 (agac 5-8 bin, esya ve kaya 2-6 bin; kucuk bitki
 # icin en dusuk esya butcesi, cunku cok sayida orneklenir). Kredi harcamaz.
-param([string[]]$Only = @())
+param([string[]]$Only = @(), [string]$Suffix = '')  # -Suffix _v2: yeniden uretilen kaynak (.tools/tripo/<ad>_v2), cikti ayni yol
 
 $ErrorActionPreference = 'Continue'
 $Root = Split-Path -Parent $PSScriptRoot
@@ -33,7 +33,7 @@ $Only = @($Only | ForEach-Object { $_ -split ',' } | Where-Object { $_ })
 foreach ($a in $assets) {
     $name = $a[0]
     if ($Only.Count -gt 0 -and $Only -notcontains $name) { continue }
-    $in = Get-ChildItem -Path (Join-Path $Src "$name\tripo-out") -Recurse -Filter model.glb | Select-Object -First 1
+    $in = Get-ChildItem -Path (Join-Path $Src "$name$Suffix\tripo-out") -Recurse -Filter model.glb | Select-Object -First 1
     if (-not $in) { Write-Host "YOK $name"; continue }
     $out = "game/assets/models/$name/$name.glb"
     $renders = "progress/m1/dunya/models/$name"

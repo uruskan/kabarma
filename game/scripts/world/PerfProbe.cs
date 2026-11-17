@@ -86,7 +86,7 @@ public partial class PerfProbe : Node
                 _fastBefore = _d.SpeedScale;
                 _d.SpeedScale = 1f;
                 _cur = _d.World.Bookmark(_only ?? "us");
-                _cam = _d.World.ShowBookmark(_cur, _cam);
+                _cam = _d.World.ShowBookmark(_cur, _cam, _d.OcakPos);
                 _phaseT = 0;
                 GD.Print($"PERF night last wave {n.WaveIndex + 1} bookmark={_cur.Id}");
             }
@@ -108,7 +108,7 @@ public partial class PerfProbe : Node
         if (_todo.Count == 0) { _cur = null; Finish(); return; }
         _cur = _todo[0];
         _todo.RemoveAt(0);
-        _cam = _d.World.ShowBookmark(_cur, _cam);
+        _cam = _d.World.ShowBookmark(_cur, _cam, _d.OcakPos);
     }
 
     void Record(string what)

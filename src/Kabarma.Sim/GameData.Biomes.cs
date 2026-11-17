@@ -55,6 +55,8 @@ public sealed class BookmarkDef
     /// <summary>[x, y, z] bakilan nokta; y zemine gore.</summary>
     public List<float> Target { get; set; } = new();
     public float Fov { get; set; } = 68f;
+    /// <summary>"ocak": goz ve hedef Ocak'in gercek konumuna gore (us oyuncuyla kurulur; yeri oyundan oyuna kayar).</summary>
+    public string Anchor { get; set; } = "";
 }
 
 public sealed class WorldDef
@@ -65,6 +67,8 @@ public sealed class WorldDef
     /// <summary>Krater isik sutunu [x, z] ve ufuk tepe katmanlarinin uzakliklari.</summary>
     public List<float> Pillar { get; set; } = new();
     public List<float> HorizonRings { get; set; } = new();
+    /// <summary>Yukseklik sisi [baslangic yuksekligi m, yogunluk]: vadilerde birikir, tepeden bakista sis katmanlari (SANAT-SES §9 tepe).</summary>
+    public List<float> HeightFog { get; set; } = new() { 1f, 0.015f };
     /// <summary>Bitki konmayan aciklik [x, z, yaricap]: inis kapsulu, ussun tarlasi ve istasyonlari.</summary>
     public List<List<float>> Clearings { get; set; } = new();
     public List<BookmarkDef> Bookmarks { get; set; } = new();

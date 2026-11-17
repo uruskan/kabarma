@@ -86,7 +86,7 @@ void sky() {
 		}
 		// Gunes: yumusak kenarli disk ve hale.
 		float sd = dot(eye, normalize(sun_dir));
-		col += sun_color.rgb * sun_disk * (smoothstep(cos(sun_size * 1.15), cos(sun_size), sd) * 6.0 + pow(max(sd, 0.0), 220.0) * 0.6 + pow(max(sd, 0.0), 12.0) * 0.12);
+		col += sun_color.rgb * sun_disk * (smoothstep(cos(sun_size * 1.15), cos(sun_size), sd) * 3.2 + pow(max(sd, 0.0), 220.0) * 0.6 + pow(max(sd, 0.0), 12.0) * 0.12);
 		// Iki ay (SANAT-SES §6).
 		col += moon(eye, normalize(moon_dir), moon_size, moon_color.rgb * 1.6, normalize(sun_dir)) * moon_disk;
 		col += moon(eye, normalize(moon2_dir), moon_size * 0.55, moon2_color.rgb * 1.4, normalize(sun_dir)) * moon_disk;

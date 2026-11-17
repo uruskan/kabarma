@@ -31,7 +31,7 @@
     "preset": "yuksek",
     "warmupSeconds": 3,
     "noonSeconds": 60,
-    "nightSeconds": 20,
+    "nightSeconds": 70,
     "budgetMs": 11.1,
     "drawCallBudget": 2000
   }

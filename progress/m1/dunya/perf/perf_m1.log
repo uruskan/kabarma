@@ -1,0 +1,16 @@
+night_kapsul  PERF night last wave 3 bookmark=kapsul
+night_kapsul  PERF kapsul kabarma_gecesi_son_dalga mean=4.36ms fps=229.5 p99=6.556ms draws=278 prims=1467150 frames=11118
+night_kapsul  PERF file C:/Users/uruskan/Documents/GitHub/kabarma/.claude/worktrees/m1-dunya-a5c492/game/../progress/m1/dunya/perf/perf_night_kapsul.json gpu=NVIDIA GeForce RTX 2070 SUPER res=1920x1080 vsync=Disabled siblings=7
+night_kapsul  PERF RESULT ok budget=11.1ms
+night_us  PERF night last wave 3 bookmark=us
+night_us  PERF us kabarma_gecesi_son_dalga mean=9.87ms fps=101.3 p99=21.947ms draws=285 prims=1504789 frames=4635
+night_us  PERF file C:/Users/uruskan/Documents/GitHub/kabarma/.claude/worktrees/m1-dunya-a5c492/game/../progress/m1/dunya/perf/perf_night_us.json gpu=NVIDIA GeForce RTX 2070 SUPER res=1920x1080 vsync=Disabled siblings=9
+night_us  PERF RESULT ok budget=11.1ms
+night_gol  PERF night last wave 3 bookmark=gol
+night_gol  PERF gol kabarma_gecesi_son_dalga mean=9.41ms fps=106.3 p99=15.697ms draws=149 prims=996823 frames=4818
+night_gol  PERF file C:/Users/uruskan/Documents/GitHub/kabarma/.claude/worktrees/m1-dunya-a5c492/game/../progress/m1/dunya/perf/perf_night_gol.json gpu=NVIDIA GeForce RTX 2070 SUPER res=1920x1080 vsync=Disabled siblings=13
+night_gol  PERF RESULT ok budget=11.1ms
+night_tepe  PERF night last wave 3 bookmark=tepe
+night_tepe  PERF tepe kabarma_gecesi_son_dalga mean=4.95ms fps=201.8 p99=8.123ms draws=310 prims=1402042 frames=8820
+night_tepe  PERF file C:/Users/uruskan/Documents/GitHub/kabarma/.claude/worktrees/m1-dunya-a5c492/game/../progress/m1/dunya/perf/perf_night_tepe.json gpu=NVIDIA GeForce RTX 2070 SUPER res=1920x1080 vsync=Disabled siblings=9
+night_tepe  PERF RESULT ok budget=11.1ms

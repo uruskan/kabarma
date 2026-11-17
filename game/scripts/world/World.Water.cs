@@ -109,7 +109,7 @@ public partial class World
         _waterMat.SetShaderParameter("shallow", Hex(Lake.Shallow, Palette.SkyNoon));
         _waterMat.SetShaderParameter("deep", Hex(Lake.Deep, Palette.CoopBlue));
         _waterMat.SetShaderParameter("foam", Hex(Lake.Foam, Palette.OffWhite));
-        _waterMat.SetShaderParameter("depth_scale", Mathf.Max(0.1f, Lake.Depth));
+        _waterMat.SetShaderParameter("depth_scale", Mathf.Max(0.1f, Lake.Depth * 0.6f));
         _waterMat.SetShaderParameter("foam_width", Lake.FoamWidth);
         _waterMat.SetShaderParameter("clarity", Lake.Clarity);
         var mi = new MeshInstance3D

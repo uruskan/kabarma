@@ -44,7 +44,7 @@ void fragment() {
 	float f = max(band, band2 * 0.8);
 	col = mix(col, foam.rgb, f);
 	ALBEDO = col * tint.rgb;
-	ROUGHNESS = mix(0.12, 0.6, f);
-	SPECULAR = 0.35;
+	ROUGHNESS = mix(0.5, 0.6, f);
+	SPECULAR = 0.15;
 	ALPHA = clamp(mix(clarity, 0.97, t) + f, 0.0, 1.0);
 }

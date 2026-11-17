@@ -25,8 +25,9 @@ public partial class World
         env.VolumetricFogEnabled = g.VolumetricFog;
         env.FogEnabled = g.DistanceFog || g.HeightFog;
         // Yukseklik sisi: gol cukuru ve vadiler daha sisli (uc derinlik katmani, SANAT-SES §1.4).
-        env.FogHeight = g.HeightFog ? 3f : -1000f;
-        env.FogHeightDensity = g.HeightFog ? 0.04f : 0f;
+        var hf = Biomes.World.HeightFog;
+        env.FogHeight = g.HeightFog ? hf[0] : -1000f;
+        env.FogHeightDensity = g.HeightFog ? hf[1] : 0f;
         Sun.DirectionalShadowMode = g.ShadowSplits >= 4 ? DirectionalLight3D.ShadowMode.Parallel4Splits
             : g.ShadowSplits == 2 ? DirectionalLight3D.ShadowMode.Parallel2Splits : DirectionalLight3D.ShadowMode.Orthogonal;
         Sun.DirectionalShadowMaxDistance = g.ShadowDistance;

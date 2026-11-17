@@ -25,6 +25,7 @@ public partial class WorldShots : Node
     float _t, _settle;
     bool _nightDone, _dayDone, _deckQueued, _finished;
     float _savedSpeed = 1f;
+    float _batchAt;
     string _outDir;
 
     public override void _Ready()
@@ -41,6 +42,7 @@ public partial class WorldShots : Node
         _d ??= GetParent().GetNodeOrNull<Director>("Director");
         if (_d == null || _finished) return;
 
+        if (_clip != null) { Clip(); return; }
         if (_queue.Count > 0) { Capture(); return; }
         if (_cam != null && _cam.Current) { _d.Player.Cam.MakeCurrent(); _d.SpeedScale = _savedSpeed; if (_deckQueued && _dayDone) Finish(); return; }
 
@@ -78,11 +80,35 @@ public partial class WorldShots : Node
         }
     }
 
+    // --shots_clip=YER_IMI[:saat]: yalniz kisa klip (ruzgar salinimi, su), 0,1 sn arayla 40 kare; GIF'e pipeline/clip_gif.py cevirir.
+    readonly string _clip = Main.Args.TryGetValue("shots_clip", out var c) ? c : null;
+    int _clipFrame;
+    double _clipNext;
+
+    void Clip()
+    {
+        var parts = _clip.Split(':');
+        string bm = parts[0], time = parts.Length > 1 ? parts[1] : "ogle";
+        if (_t < 3f) return;
+        if (_cam == null || !_cam.Current) { W.ForceTime(time); _cam = W.ShowBookmark(W.Bookmark(bm), _cam, _d.OcakPos); _clipNext = _t + 1.0; return; }
+        if (_t < _clipNext) return;
+        _clipNext = _t + 0.1;
+        var dir = $"{_outDir}/clip";
+        DirAccess.MakeDirRecursiveAbsolute(dir);
+        GetViewport().GetTexture().GetImage().SavePng($"{dir}/{bm}_{time}_{_clipFrame:000}.png");
+        if (++_clipFrame >= 40) { _finished = true; GD.Print($"SHOTS RESULT ok clip={bm}:{time} frames={_clipFrame}"); GetTree().Quit(0); }
+    }
+
     void Enqueue(string time, string sub)
     {
         foreach (var b in W.Biomes.World.Bookmarks) _queue.Enqueue((b.Id, time, sub));
         _savedSpeed = _d.SpeedScale;
         _d.SpeedScale = 0.001f; // eylem durur, cizim surer
+        // Insa basligi acik kalirsa hayalet ve ipucu kadraja girer: oyuncunun yapacagi gibi Kazma'ya gecilir.
+        if (_d.Capa.Current == Capa.Head.Insa) _d.Capa.Select(Capa.Head.Kazma);
+        // Ipucu suresi oyun zamaniyla akar; yavaslatilmis zamanda donar, elle temizlenir.
+        _d.Hud.Hint("", 0f);
+        _batchAt = _t + 1.0f;
         _wait = 0;
     }
 
@@ -92,10 +118,10 @@ public partial class WorldShots : Node
         if (_wait == 0)
         {
             W.ForceTime(time);
-            _cam = W.ShowBookmark(W.Bookmark(bm), _cam);
+            _cam = W.ShowBookmark(W.Bookmark(bm), _cam, _d.OcakPos);
         }
         _wait++;
-        if (_wait < 12) return; // golge, SSAO ve isik kupu otursun
+        if (_wait < 12 || _t < _batchAt) return; // golge, SSAO, isik kupu ve arayuz ipucu otursun
         var img = GetViewport().GetTexture().GetImage();
         var path = $"{_outDir}/{(sub == "" ? "" : sub + "/")}{bm}_{time}.png";
         img.SavePng(path);
