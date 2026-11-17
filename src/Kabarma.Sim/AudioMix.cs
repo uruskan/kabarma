@@ -64,6 +64,8 @@ public sealed class LayerPlan
 {
     public int Active { get; private set; } = 1;
     public int HoldBars { get; }
+    /// <summary>Katman sayisinin son degistigi olcu.</summary>
+    public long ChangedBar => _changedBar;
     long _changedBar;
 
     public LayerPlan(int holdBars) { HoldBars = Math.Max(0, holdBars); }

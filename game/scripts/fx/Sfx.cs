@@ -58,7 +58,7 @@ public static partial class Sfx
     {
         _root = root;
         _a = data;
-        Streams.Clear(); VariantFiles.Clear(); LastVariant.Clear(); Live.Clear(); Warned.Clear();
+        Streams.Clear(); VariantFiles.Clear(); LastVariant.Clear(); Live.Clear(); Warned.Clear(); Held.Clear();
         _beam = null; _beamId = null; _music = null;
         SetupBuses(); // Sfx.Buses.cs
     }
@@ -146,6 +146,13 @@ public static partial class Sfx
     {
         if (_root == null || Muted || !_root.IsInsideTree()) return;
         var s = Find(name);
+        // Dongu sesi tek seferlik cagrildi (ornegin Sulama her karede "water"): tek dongu calar, cagri kesilince soner.
+        if (s != null && s.Loop && Variants(s).Count > 0)
+        {
+            var hs = Load(PickHeld(s), true);
+            HoldStream(s.Id, hs, at, s.VolumeDb + db, s.Bus, pitch);
+            return;
+        }
         AudioStream stream;
         if (s != null) stream = Load(PickPath(s), false);
         else
@@ -183,6 +190,53 @@ public static partial class Sfx
         }
         Live[liveKey] = live + 1;
     }
+
+    static readonly Dictionary<string, Node> Held = new();
+
+    /// <summary>Tutulan dongunun dosyasi: dongu suruyorsa ayni dosya (her cagrida varyasyon degismesin).</summary>
+    static string PickHeld(SoundDef s) => Held.TryGetValue(s.Id, out var n) && GodotObject.IsInstanceValid(n) ? null : PickPath(s);
+
+    /// <summary>
+    /// Tutulan dongu: <paramref name="key"/> icin tek oynatici; her cagri konumu gunceller ve sonme sayacini yeniler
+    /// (audio.json holdSeconds). Cagri kesilince kisa bir sonmeyle durur. Akis null ise var olan dongu surer.
+    /// </summary>
+    public static void HoldStream(string key, AudioStream stream, Vector3? at, float volumeDb, string bus, float pitch = 1f)
+    {
+        if (_root == null || !_root.IsInsideTree()) return;
+        if (!Held.TryGetValue(key, out var node) || !GodotObject.IsInstanceValid(node))
+        {
+            if (stream == null) return;
+            if (at is Vector3)
+            {
+                var sp = _a?.Spatial;
+                var p3 = new AudioStreamPlayer3D { Stream = stream, VolumeDb = volumeDb, Bus = BusOr(bus), PitchScale = pitch };
+                if (sp != null) { p3.UnitSize = sp.UnitSize; p3.MaxDistance = sp.MaxDistance; p3.AttenuationFilterCutoffHz = sp.LowPassHz; p3.AttenuationFilterDb = sp.LowPassDb; }
+                node = p3;
+            }
+            else node = new AudioStreamPlayer { Stream = stream, VolumeDb = volumeDb, Bus = BusOr(bus), PitchScale = pitch };
+            node.Name = $"Hold_{key}";
+            var timer = new Timer { Name = "Off", OneShot = true, WaitTime = Mathf.Max(0.05f, _a?.HoldSeconds ?? 0.3f), IgnoreTimeScale = true };
+            node.AddChild(timer);
+            var held = node;
+            timer.Timeout += () =>
+            {
+                if (Held.TryGetValue(key, out var cur) && cur == held) Held.Remove(key);
+                var tw = held.CreateTween();
+                tw.SetIgnoreTimeScale(true);
+                tw.TweenProperty(held, "volume_db", -40f, 0.12f);
+                tw.TweenCallback(Callable.From(held.QueueFree));
+            };
+            _root.AddChild(node);
+            if (node is AudioStreamPlayer3D a3) { if (at is Vector3 p0) a3.GlobalPosition = p0; a3.Play(); }
+            else ((AudioStreamPlayer)node).Play();
+            Held[key] = node;
+        }
+        if (at is Vector3 p && node is AudioStreamPlayer3D n3) n3.GlobalPosition = p;
+        node.GetNode<Timer>("Off").Start();
+    }
+
+    /// <summary>Su an tutulan dongu sayisi (sinama icin).</summary>
+    public static int HeldCount => Held.Values.Count(GodotObject.IsInstanceValid);
 
     static void Done(string key, Node pl)
     {

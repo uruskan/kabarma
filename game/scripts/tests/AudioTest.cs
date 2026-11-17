@@ -78,23 +78,32 @@ public partial class AudioTest : Node
         night = new MusicDirector.NightInfo(-1, waves, g.Min, g.Min, g.Max);
         await Wait(0.4);
         Check(m.Current == MusicDirector.State.Kabarma && m.LayersActive == 1, $"alarm: Kabarma ve 1 katman bekleniyordu: {m.Current} {m.LayersActive}");
+        // Sureler bilerek genis (paralel Godot oturumlarinda kare takilmasi): her bekleme en az 4 olcu.
         night = new MusicDirector.NightInfo(1, waves, g.Min, g.Min, g.Max);
-        await Wait(0.6);
+        await Wait(1.0);
         Check(m.LayersActive == 2, $"2. dalga: 2 katman bekleniyordu: {m.LayersActive}");
         night = new MusicDirector.NightInfo(waves - 1, waves, g.Max, g.Min, g.Max);
-        await Wait(0.6);
+        await Wait(1.0);
         Check(m.LayersActive == 3, $"son dalga + Gosteri: 3 katman bekleniyordu: {m.LayersActive}");
+        // Azalis: zamandan bagimsiz denetim. Kapandigi olcu, acildigi olcudan en az HoldBars sonra olmali.
+        long openedAt = m.LayerChangedBar;
         night = new MusicDirector.NightInfo(0, waves, g.Min, g.Min, g.Max);
-        await Wait(0.1); // 3. katman en gec 0,85 sn once acildi; bekleme 4 olcu = 1 sn
-        Check(m.LayersActive == 3, "katman bekleme olcusunden once kapandi");
-        await Wait(1.5);
+        for (int i = 0; i < 60 && m.LayersActive == 3; i++) await Wait(0.05);
         Check(m.LayersActive == 1, $"bekleme sonrasi 1 katman bekleniyordu: {m.LayersActive}");
+        Check(m.LayerChangedBar - openedAt >= a.Music.Kabarma.HoldBars, $"katman {a.Music.Kabarma.HoldBars} olcu beklemeden kapandi ({openedAt} -> {m.LayerChangedBar})");
         target = MusicDirector.State.Day;
         await Wait(0.2);
         Check(m.Current == MusicDirector.State.Day, "safak: Gunduz'e donmedi");
         target = MusicDirector.State.Silence;
         await Wait(0.2);
         Check(m.Current == MusicDirector.State.Silence, "aksam: Sessizlik'e gecmedi");
+
+        // Tutulan dongu: ayni anahtarla tekrar tekrar cagri tek oynatici kurar, cagri kesilince soner.
+        var loop = new AudioStreamWav { Format = AudioStreamWav.FormatEnum.Format16Bits, MixRate = 22050, Data = new byte[22050 * 2], LoopMode = AudioStreamWav.LoopModeEnum.Forward, LoopEnd = 22050 };
+        for (int i = 0; i < 5; i++) { Sfx.HoldStream("sinama_dongu", loop, Vector3.Zero, -6f, "Sfx"); await Wait(0.05); }
+        Check(Sfx.HeldCount == 1, $"tutulan dongu tek olmali: {Sfx.HeldCount}");
+        await Wait(a.HoldSeconds + 0.6);
+        Check(Sfx.HeldCount == 0, "tutulan dongu cagri kesilince sonmedi");
 
         // Suna kismasi
         Sfx.Duck(true);

@@ -339,15 +339,18 @@ def estimate_speech_seconds(text):
 # ---------- Gercek kosu ----------
 
 def post_process(path, loop):
-    """Bas sessizligi ve tepe: audio_qc ile olc, gerekirse kirp ve -1,5 dBTP'ye indir (dosyanin yerinde)."""
+    """
+    Bas/son sessizlik ve tepe: audio_qc ile olc; yalniz KALDI varsa kirp ve -1,5 dBTP'ye indir (dosyanin yerinde).
+    Duzeltme basarisizsa indirilen dosya oldugu gibi kalir (para harcandi, dosya kaybolmasin).
+    """
     import audio_qc
     data = json.loads((ROOT / "game" / "data" / "audio.json").read_text(encoding="utf-8"))
-    verdicts = []
-    r, _ = audio_qc.check_file(path, data, verdicts)
-    if not r["checks"]:
+    r, _ = audio_qc.check_file(path, data, [])
+    if not audio_qc.needs_fix(r):
         return r
-    tmp = RAW / "fixed"
-    fixed = audio_qc.fix(path, r, tmp)
+    fixed = audio_qc.fix(path, r, RAW / "fixed")
+    if fixed is None:
+        return r
     shutil.move(str(fixed), str(path))
     r2, _ = audio_qc.check_file(path, data, [])
     return r2

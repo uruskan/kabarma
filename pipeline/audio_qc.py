@@ -352,9 +352,17 @@ def layer_alignment(results, pcms, verdicts):
     return out
 
 
+def needs_fix(r):
+    """Yalniz KALDI'da duzeltilir: UYARI icin kayipli yeniden kodlama yapilmaz (dongu dikisi bozulmasin)."""
+    return any(c["level"] == "KALDI" and c["check"] in ("tepe", "bas_sessizlik", "son_sessizlik") for c in r["checks"])
+
+
 def fix(path, r, out_dir):
-    """Bas sessizligini 10 ms'ye, son sessizligi 100 ms'ye kirpar; gercek tepe -1 dBTP ustundeyse -1,5'e indirir."""
-    out = Path(out_dir) / Path(r["file"]).relative_to("game/assets/audio") if r["file"].startswith("game/") else Path(out_dir) / Path(path).name
+    """
+    Bas sessizligini 10 ms'ye, son sessizligi 100 ms'ye kirpar (donguler kirpilmaz); gercek tepe -1 dBTP ustundeyse
+    -1,5'e indirir. Duzeltilmis dosyanin yolu; ffmpeg basarisizsa None (asil dosyaya dokunulmaz).
+    """
+    out = Path(out_dir) / Path(r["file"]).relative_to("game/assets/audio") if r["file"].startswith("game/assets/audio/") else Path(out_dir) / Path(path).name
     out.parent.mkdir(parents=True, exist_ok=True)
     filters = []
     if not r["loop"]:
@@ -369,7 +377,10 @@ def fix(path, r, out_dir):
     if filters:
         cmd += ["-af", ",".join(filters)]
     cmd += ["-c:a", "libmp3lame", "-q:a", "2", str(out)]
-    run(cmd)
+    res = run(cmd)
+    if res.returncode != 0 or not out.exists() or out.stat().st_size == 0:
+        print(f"DUZELTME BASARISIZ {path}: {res.stderr.strip()[:300]}")
+        return None
     return out
 
 
@@ -424,7 +435,7 @@ def main():
 
     if args.fix_dir:
         for f, r in zip(files, results):
-            if r["checks"]:
+            if needs_fix(r):
                 print("duzeltildi:", fix(f, r, args.fix_dir))
     return 0 if (not fails or args.report_only) else 1
 

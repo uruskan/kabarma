@@ -165,6 +165,11 @@ public sealed class AudioFile
     public AudioVariationDef Variation { get; set; } = new();
     public AudioSpatialDef Spatial { get; set; } = new();
     public int MaxVoices { get; set; }
+    /// <summary>
+    /// Dongu sesi tek seferlik cagrilirsa (her karede Sfx.Play) dongu calar ve son cagridan bu kadar sonra durur.
+    /// Yalniz M0 yedegi olan dongu sesi eski tek seferlik davranisla calar.
+    /// </summary>
+    public float HoldSeconds { get; set; }
     public string SfxPath { get; set; } = "";
     public string M0Path { get; set; } = "";
     public RadioDef Radio { get; set; } = new();

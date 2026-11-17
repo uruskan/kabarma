@@ -37,6 +37,8 @@ public partial class MusicDirector : Node
 
     public State Current { get; private set; } = State.Silence;
     public int LayersActive => _plan?.Active ?? 0;
+    /// <summary>Katman sayisinin son degistigi olcu (sinama icin).</summary>
+    public long LayerChangedBar => _plan?.ChangedBar ?? 0;
     /// <summary>Calinabilir katman sayisi (dosyasi ya da M0 yedegi olan).</summary>
     public int LayersLoaded { get; private set; }
     public bool DayLoaded => _day?.Stream != null;

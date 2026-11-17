@@ -13,6 +13,8 @@
   "variation": { "pitch": 0.08, "volumeDb": 2.0 },
   "spatial": { "unitSize": 8, "maxDistance": 70, "lowPassHz": 5000, "lowPassDb": -24 },
   "maxVoices": 8,
+  "holdSeconds": 0.3,
+  "_holdSeconds": "Dongu sesi Sfx.Play ile tekrar tekrar cagrilirsa (Capa.Sulama her karede 'water'): tek dongu calar, son cagridan holdSeconds sonra soner. Yalniz M0 yedegi varsa eski tek seferlik davranis.",
   "sfxPath": "res://assets/audio/sfx/{id}_{n}.mp3",
   "m0Path": "res://assets/audio/sfx/{m0}.mp3",
   "radio": {
