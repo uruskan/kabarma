@@ -171,9 +171,8 @@ public partial class Bot
         if (_d.State.Backpack.Count("sebze_corbasi") > 0)
         {
             P.MoveOverride = Vector3.Zero;
-            int idx = _d.Data.Tool.Foods.FindIndex(f => f.Id == "sebze_corbasi");
             if (!_d.Hud.MenuOpen && _menuT <= 0) { _d.OpenBagMenu(); _menuT = 0.5f; }
-            else if (_d.Hud.MenuOpen && _menuT <= 0) { _d.Hud.ActivateMenu(idx); _d.Hud.HideMenu(); _menuT = 1f; }
+            else if (_d.Hud.MenuOpen && _menuT <= 0) { _d.Hud.InventorySelect("sebze_corbasi"); _d.Hud.InventoryAccept(); _d.Hud.HideMenu(); _menuT = 1f; } // envanter izgarasi: corbayi sec, Enter
         }
         else if (st.Queue.Active != null) WaitAt(st);
         else if (EnsureItem("wood", 1)) UseStation(st, RecipeIndex(st, "sebze_corbasi"));

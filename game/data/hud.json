@@ -1,0 +1,40 @@
+{
+  "_not": "Pano (SANAT-SES 8.1): pusula Ocak'i ve etkin hedefi isaretler; altinda Defter'in etkin adimi tek satir (URETIM 6 M1 karar 11). stepTargets: senaryo adimi -> etkin hedefin turu (rock, farm, ramp, gidak, tezgah, tas_firin, paketleme, pod). Listede olmayan adimda yalnizca Ocak isaretlenir; yeni adim satir eklenerek gelir.",
+  "_yer_tutucu": "compassFovDegrees belgede yazmiyor.",
+  "_ilkgun": "stepTargets'ta tezgah, tarla, gidak, yemek, firin, kasa: ilkgun dalinin yeni adim kimlikleri (birlesince gecerli; bu dalda kullanilmaz). odun, agil, bakir_kil, barinak icin hedef turu yok: yalnizca Ocak isaretlenir.",
+  "compassFovDegrees": 150,
+  "stepTargets": {
+    "mine": "rock",
+    "ocak": "pod",
+    "till": "farm",
+    "plant": "farm",
+    "water": "farm",
+    "grow": "farm",
+    "night": "farm",
+    "sell": "ramp",
+    "tezgah_kur": "ocak",
+    "civi": "tezgah",
+    "hasat": "farm",
+    "firin_kur": "ocak",
+    "corba": "tas_firin",
+    "paketle": "paketleme",
+    "kasa_sat": "ramp",
+    "tezgah": "ocak",
+    "tarla": "farm",
+    "gidak": "gidak",
+    "yemek": "tas_firin",
+    "firin": "ocak",
+    "kasa": "paketleme"
+  },
+  "targetNames": {
+    "rock": "Kaya",
+    "farm": "Tarla",
+    "ramp": "Rampa",
+    "gidak": "Gıdak",
+    "pod": "Kapsül",
+    "ocak": "Ocak",
+    "tezgah": "Tezgâh",
+    "tas_firin": "Taş Fırın",
+    "paketleme": "Paketleme"
+  }
+}

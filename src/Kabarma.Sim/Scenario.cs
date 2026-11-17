@@ -99,6 +99,7 @@ public sealed partial class GameState
         foreach (var st in data.Tool.Recipes.Select(r => r.Station).Distinct()) Stations[st] = new StationQueue(data, st) { Known = Known };
         Cargo = new Cargo(data, Credit);
         Coop = new Coop(data.Pen);
+        InitNightAndDay(); // GameState.Night.cs: takvim, Defter (is emirleri), gece sayaclari
     }
 
     /// <summary>Odeme hesaba gecer (Kargo Rampasi; ilk satis aninda, sonrakiler 60 sn sonra).</summary>
@@ -109,9 +110,10 @@ public sealed partial class GameState
         Sold?.Invoke(v, Credits);
     }
 
-    public KabarmaNight StartNight()
+    public KabarmaNight StartNight(string? memberCard = null)
     {
-        Night = new KabarmaNight(Data, Data.Kabarma.FirstNight, Seed * 31 + 7);
+        Night = new KabarmaNight(Data, Data.Kabarma.FirstNight, Seed * 31 + 7 + (ulong)NightsStarted, memberCard);
+        OnNightStarted(Night); // GameState.Night.cs: gece sayaci, tarla olaylari
         return Night;
     }
 

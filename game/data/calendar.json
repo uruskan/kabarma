@@ -1,0 +1,16 @@
+{
+  "_not": "GDD 2: bir oyun gunu 30 gercek dakika = 22 dk gunduz + 8 dk gece; dunya ayariyla x0,5-x2. M1 (URETIM 6 Takvim): ilk Kabarma'nin safagindan sonra saat isler, normal gece Kabarma'sizdir; Kabarma takvimi ve Can M3. Uyuyunca normal gece atlanir, Kabarma gecesi atlanamaz.",
+  "_yer_tutucu": "parts[].until (sabah/ogle/aksam sinirlari, gunduzun kesri) belgede yazmiyor; dunya akisinin 4 gun saati isigi gelince birlikte ayarlanir.",
+  "daylightMinutes": 22,
+  "nightMinutes": 8,
+  "lengthScale": 1.0,
+  "lengthScaleMin": 0.5,
+  "lengthScaleMax": 2.0,
+  "firstDay": 2,
+  "parts": [
+    { "id": "sabah", "name": "Sabah", "until": 0.25 },
+    { "id": "ogle", "name": "Öğle", "until": 0.8 },
+    { "id": "aksam", "name": "Gün batımı", "until": 1.0 }
+  ],
+  "nightPart": { "id": "gece", "name": "Gece" }
+}

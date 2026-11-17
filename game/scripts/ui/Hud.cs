@@ -210,6 +210,7 @@ public partial class Hud : CanvasLayer
         _report.AddThemeStyleboxOverride("panel", Box(new Color(Palette.OffWhite, 0.96f), 22, Palette.CoopBlue, 5));
         _report.SetAnchorsPreset(Control.LayoutPreset.Center);
         root.AddChild(_report);
+        BuildGeceHud(root); // Hud.Compass.cs: pusula, adim satiri, Kabarma panosu, envanter ve Defter
         OnHead(0);
         BuildStamina(); // Hud.Stamina.cs
         IgnoreMouse(root);
@@ -272,6 +273,7 @@ public partial class Hud : CanvasLayer
         UpdateNightBox(); // Hud.Night.cs
         _crosshair.Visible = !_report.Visible && !_menu.Visible && !_wheel.Visible;
         _headTag.Visible = _crosshair.Visible;
+        UpdateGeceHud(dt); // Hud.Compass.cs
     }
 
     public void Say(string line) { if (!string.IsNullOrEmpty(line)) _lines.Enqueue(line); }

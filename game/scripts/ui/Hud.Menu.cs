@@ -12,7 +12,8 @@ public partial class Hud
     VBoxContainer _menuList;
     Label _menuTitle, _menuFoot;
     readonly List<MenuItem> _menuItems = new();
-    public bool MenuOpen => _menu != null && _menu.Visible;
+    /// <summary>Herhangi bir panel acik (istasyon menusu ya da envanter): tetik ve E dunyaya gitmez.</summary>
+    public bool MenuOpen => (_menu != null && _menu.Visible) || InventoryOpen;
 
     public void ShowMenu(string title, List<MenuItem> items, string footer)
     {
@@ -32,10 +33,11 @@ public partial class Hud
         RefreshMenu();
     }
 
-    public void HideMenu() { if (_menu != null) _menu.Visible = false; }
+    public void HideMenu() { if (_menu != null) _menu.Visible = false; CloseInventory(); }
 
     public void ActivateMenu(int i)
     {
+        if (InventoryOpen) { InventoryNumber(i); return; } // envanterde sayi tusu: kemer yuvasi
         if (!MenuOpen || i < 0 || i >= _menuItems.Count) return;
         var it = _menuItems[i];
         if (!it.Enabled()) { Sfx.Play("hit", null, -12f); return; }

@@ -149,6 +149,7 @@ public partial class FeelPanel : CanvasLayer
         _panel.AddThemeStyleboxOverride("panel", sb);
         var v = new VBoxContainer { CustomMinimumSize = new Vector2(470, 0) };
         v.AddChild(new Label { Text = "F1 · His ayarları (feel.json)" });
+        v.AddChild(NightRestartButton()); // FeelPanel.Night.cs (gecehud): Kucuk Kabarma yeniden
         _stats = new Label { AutowrapMode = TextServer.AutowrapMode.WordSmart, CustomMinimumSize = new Vector2(460, 0) };
         v.AddChild(_stats);
         var c = _d.Feel.Data.Criteria;

@@ -1,5 +1,5 @@
 {
-  "_not": "GDD 14-15. Ilk gece senaryolu Kucuk Kabarma: sureler ve dalgalar elle yazili (PLAN 1.4: 3 dakika).",
+  "_not": "GDD 14-15. Ilk gece senaryolu Kucuk Kabarma: sureler ve dalgalar elle yazili (PLAN 1.4: 3 dakika). firstOfferCard ve memberStartCard: GDD 24 (ilk teklifte Catal, ilk gecede uye tipinin baslangic karti verilmez; URETIM 6 M1 karar 5).",
   "firstNight": {
     "ks": 1,
     "alarmSeconds": 12,
@@ -10,12 +10,16 @@
       { "count": 11, "seconds": 60, "gapAfter": 0 }
     ],
     "maxCardLevels": 3,
-    "enemy": "zipzip"
+    "enemy": "zipzip",
+    "firstOfferCard": "catal",
+    "memberStartCard": false
   },
   "levelBase": 20,
   "levelExponent": 1.5,
   "gosteri": { "min": 1.0, "max": 5.0, "streakKills": 5, "streakWindow": 3.0, "streakBonus": 0.5, "decayPerSecond": 0.08 },
   "ozPerWeight": 10,
+  "_oz": "URETIM 6 M1 karari 19: Oz oldurulen dusmanin yerine duser (deger oldurme aninda: tur Oz degeri x Gosteri). ozPickupRadius icindeki Oz toplanir, Miknatis karti carpar (ICERIK 8.3: +%40). Dalga bitince ve safakta yerde kalan Oz oyuncuya ucar ve sayilir; kayip yok.",
+  "ozPickupRadius": 4,
   "mayaPerWeight": 2,
   "mayaKsFactor": 0.15,
   "hpGrowth": 1.15,
