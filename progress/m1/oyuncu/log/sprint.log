@@ -1,0 +1,54 @@
+Godot Engine v4.7.2.stable.mono.official.ed1daf0bf - https://godotengine.org
+Vulkan 1.4.357 - Forward+ - Using Device #0: NVIDIA - NVIDIA GeForce RTX 2070 SUPER
+
+PLAYER model anims: carry,cheer,crouch_walk,eat,getup_back_pose,getup_front_pose,hurt,idle,jump,jump_air,jump_land,jump_start,kneel,knockdown,plant,push,run,shock_fall,sleep,sprint,walk,walk_casual,wave
+AUDIO ok 13/13
+POFUDUK anims: preset_quadruped_walk
+BUILD kit pieces=28
+BOOT Kabarma MVP
+RIG t=10.1 clip=idle->idle mode=Move sp=0.0 sprint=False stam=100 ex=False bag=(0.053335655, 0.14313425) capaFromHand=0.12 handY=0.76 capaY=0.76 down=False visor=notr
+PLAYER at (7.5, 0.0003124997, -5.5) visualYaw=0.00 bag=True
+RIG t=10.6 clip=idle->idle mode=Move sp=0.0 sprint=False stam=100 ex=False bag=(-0.009515992, -0.023376498) capaFromHand=0.12 handY=0.74 capaY=0.74 down=False visor=notr
+RIG t=11.1 clip=sprint->sprint mode=Move sp=8.0 sprint=True stam=96 ex=False bag=(0.0037368294, -0.006864561) capaFromHand=0.12 handY=0.79 capaY=0.79 down=False visor=notr
+RIG t=11.6 clip=sprint->sprint mode=Move sp=8.0 sprint=True stam=92 ex=False bag=(-0.0033248896, 0.0048952694) capaFromHand=0.12 handY=0.74 capaY=0.74 down=False visor=notr
+RIG t=12.1 clip=sprint->sprint mode=Move sp=8.0 sprint=True stam=88 ex=False bag=(0.006402088, -0.0014594804) capaFromHand=0.12 handY=0.77 capaY=0.77 down=False visor=notr
+SCREENSHOT C:/Users/uruskan/Documents/GitHub/kabarma/.claude/worktrees/m1-oyuncu-7059e8/game/../progress/shots/oy_sprint_003.00.png
+RIG t=12.8 clip=sprint->sprint mode=Move sp=8.0 sprint=True stam=84 ex=False bag=(0.00042109878, 0.004602846) capaFromHand=0.12 handY=0.68 capaY=0.68 down=False visor=notr
+RIG t=13.1 clip=sprint->sprint mode=Move sp=8.0 sprint=True stam=80 ex=False bag=(-0.08413825, 0.00484126) capaFromHand=0.12 handY=0.69 capaY=0.69 down=False visor=notr
+RIG t=13.7 clip=sprint->sprint mode=Move sp=8.0 sprint=True stam=76 ex=False bag=(-0.01623136, 0.01027299) capaFromHand=0.12 handY=0.82 capaY=0.82 down=False visor=notr
+RIG t=14.2 clip=sprint->sprint mode=Move sp=8.0 sprint=True stam=72 ex=False bag=(0.015111069, -0.010635522) capaFromHand=0.12 handY=0.66 capaY=0.66 down=False visor=notr
+RIG t=14.7 clip=sprint->sprint mode=Move sp=8.0 sprint=True stam=68 ex=False bag=(-0.035440415, 0.013770981) capaFromHand=0.12 handY=0.67 capaY=0.67 down=False visor=notr
+RIG t=15.2 clip=sprint->sprint mode=Move sp=8.0 sprint=True stam=64 ex=False bag=(0.00034860912, -0.00759732) capaFromHand=0.12 handY=0.85 capaY=0.85 down=False visor=notr
+RIG t=15.6 clip=sprint->sprint mode=Move sp=8.0 sprint=True stam=60 ex=False bag=(0.0059033353, -0.001344048) capaFromHand=0.12 handY=0.69 capaY=0.69 down=False visor=notr
+RIG t=16.1 clip=sprint->sprint mode=Move sp=8.0 sprint=True stam=56 ex=False bag=(-0.013174615, 0.007893688) capaFromHand=0.12 handY=0.67 capaY=0.67 down=False visor=notr
+RIG t=16.6 clip=sprint->sprint mode=Move sp=8.0 sprint=True stam=52 ex=False bag=(-0.013417135, -0.0035804533) capaFromHand=0.12 handY=0.64 capaY=0.64 down=False visor=notr
+RIG t=17.2 clip=sprint->sprint mode=Move sp=8.0 sprint=True stam=48 ex=False bag=(-0.0039640893, 0.004786038) capaFromHand=0.12 handY=0.70 capaY=0.70 down=False visor=notr
+SCREENSHOT C:/Users/uruskan/Documents/GitHub/kabarma/.claude/worktrees/m1-oyuncu-7059e8/game/../progress/shots/oy_sprint_008.00.png
+RIG t=17.8 clip=sprint->sprint mode=Move sp=8.0 sprint=True stam=44 ex=False bag=(0.004237868, -0.0075528794) capaFromHand=0.12 handY=0.77 capaY=0.77 down=False visor=notr
+RIG t=18.2 clip=sprint->sprint mode=Move sp=8.0 sprint=True stam=40 ex=False bag=(-0.09748566, 0.006982616) capaFromHand=0.12 handY=0.49 capaY=0.49 down=False visor=notr
+RIG t=18.7 clip=sprint->sprint mode=Move sp=8.0 sprint=True stam=36 ex=False bag=(-0.014069873, 0.009730694) capaFromHand=0.12 handY=0.49 capaY=0.49 down=False visor=notr
+RIG t=19.2 clip=sprint->sprint mode=Move sp=8.0 sprint=True stam=32 ex=False bag=(0.009533919, -0.0076770335) capaFromHand=0.12 handY=0.66 capaY=0.66 down=False visor=notr
+RIG t=19.7 clip=sprint->sprint mode=Move sp=8.0 sprint=True stam=28 ex=False bag=(0.0048725074, -0.0018291166) capaFromHand=0.12 handY=0.48 capaY=0.48 down=False visor=notr
+RIG t=20.2 clip=sprint->sprint mode=Move sp=8.0 sprint=True stam=24 ex=False bag=(-0.0070693386, 0.010282586) capaFromHand=0.12 handY=0.53 capaY=0.53 down=False visor=notr
+RIG t=20.7 clip=sprint->sprint mode=Move sp=8.0 sprint=True stam=20 ex=False bag=(0.002687828, -0.00963378) capaFromHand=0.12 handY=0.73 capaY=0.73 down=False visor=notr
+RIG t=21.2 clip=sprint->sprint mode=Move sp=8.0 sprint=True stam=16 ex=False bag=(0.0061521484, -0.0035654465) capaFromHand=0.12 handY=0.74 capaY=0.74 down=False visor=yorgun
+RIG t=21.7 clip=sprint->sprint mode=Move sp=8.0 sprint=True stam=12 ex=False bag=(0.0022254945, 0.005645935) capaFromHand=0.12 handY=0.74 capaY=0.74 down=False visor=yorgun
+RIG t=22.2 clip=jump_air->jump_air mode=Air sp=8.0 sprint=True stam=8 ex=False bag=(0.02879488, 0.00121654) capaFromHand=0.12 handY=1.27 capaY=1.27 down=False visor=yorgun
+RIG t=22.7 clip=fall->jump_air mode=Air sp=8.0 sprint=True stam=4 ex=False bag=(0.002338542, 0.009278596) capaFromHand=0.12 handY=1.23 capaY=1.23 down=False visor=yorgun
+SCREENSHOT C:/Users/uruskan/Documents/GitHub/kabarma/.claude/worktrees/m1-oyuncu-7059e8/game/../progress/shots/oy_sprint_013.20.png
+RIG t=23.2 clip=fall->jump_air mode=Air sp=8.0 sprint=True stam=0 ex=False bag=(0.0058390535, -0.0021448312) capaFromHand=0.12 handY=1.24 capaY=1.24 down=False visor=yorgun
+RIG t=23.7 clip=fall->jump_air mode=Air sp=5.0 sprint=False stam=0 ex=True bag=(-0.0011911845, -0.011421654) capaFromHand=0.12 handY=1.36 capaY=1.36 down=False visor=yorgun
+SCREENSHOT C:/Users/uruskan/Documents/GitHub/kabarma/.claude/worktrees/m1-oyuncu-7059e8/game/../progress/shots/oy_sprint_014.20.png
+RIG t=24.2 clip=fall->jump_air mode=Air sp=5.0 sprint=False stam=0 ex=True bag=(0.020763928, 0.018525215) capaFromHand=0.12 handY=1.31 capaY=1.31 down=False visor=yorgun
+RIG t=24.7 clip=fall->jump_air mode=Air sp=5.0 sprint=False stam=7 ex=True bag=(-0.0046801227, -0.004633286) capaFromHand=0.12 handY=1.27 capaY=1.27 down=False visor=yorgun
+SCREENSHOT C:/Users/uruskan/Documents/GitHub/kabarma/.claude/worktrees/m1-oyuncu-7059e8/game/../progress/shots/oy_sprint_015.20.png
+RIG t=25.2 clip=fall->jump_air mode=Air sp=5.0 sprint=False stam=15 ex=True bag=(0.004544833, 0.006392192) capaFromHand=0.12 handY=1.24 capaY=1.24 down=False visor=yorgun
+RIG t=25.7 clip=fall->jump_air mode=Air sp=8.0 sprint=True stam=19 ex=False bag=(0.0069322563, 0.0018740066) capaFromHand=0.12 handY=1.20 capaY=1.20 down=False visor=yorgun
+RIG t=26.2 clip=fall->jump_air mode=Air sp=8.0 sprint=True stam=15 ex=False bag=(0.001194754, -0.004222692) capaFromHand=0.12 handY=1.36 capaY=1.36 down=False visor=yorgun
+RIG t=26.7 clip=fall->jump_air mode=Air sp=8.0 sprint=True stam=11 ex=False bag=(-0.011063527, -0.017908202) capaFromHand=0.12 handY=1.33 capaY=1.33 down=False visor=yorgun
+SCREENSHOT C:/Users/uruskan/Documents/GitHub/kabarma/.claude/worktrees/m1-oyuncu-7059e8/game/../progress/shots/oy_sprint_017.50.png
+RIG t=27.4 clip=fall->jump_air mode=Air sp=8.0 sprint=True stam=7 ex=False bag=(0.0031986726, 0.01139982) capaFromHand=0.12 handY=1.28 capaY=1.28 down=False visor=yorgun
+RIG t=27.7 clip=fall->jump_air mode=Air sp=8.0 sprint=True stam=3 ex=False bag=(-0.017794957, 0.0004884935) capaFromHand=0.12 handY=1.24 capaY=1.24 down=False visor=yorgun
+RIG t=28.2 clip=fall->jump_air mode=Air sp=5.8 sprint=False stam=0 ex=True bag=(-0.013853188, -0.00023908966) capaFromHand=0.12 handY=1.21 capaY=1.21 down=False visor=yorgun
+QUIT t=19.0
+RIG t=28.7 clip=fall->jump_air mode=Air sp=5.0 sprint=False stam=0 ex=True bag=(0.012439645, -0.009175902) capaFromHand=0.12 handY=1.36 capaY=1.36 down=False visor=yorgun

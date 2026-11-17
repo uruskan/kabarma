@@ -219,12 +219,19 @@ public partial class Hud
     // ---------- Yuva ve ikon ----------
 
     /// <summary>
-    /// Yer tutucu ikon: esyanin tonunda kare ve icinde adi (dar yazi, en cok iki satir). Modelden cekilen ikon (SANAT-SES 8.1)
-    /// varlik hattinda; gelince bu tek yontem degisir.
+    /// Esya ikonu (Hud.Icons.cs: assets/icons/items/&lt;kimlik&gt;.png), kutuya oranini bozmadan ortali. Ikon yoksa yer tutucu:
+    /// esyanin tonunda kare ve icinde adi (dar yazi, en cok iki satir).
     /// </summary>
     void ItemIcon(string id, float x, float y, float w, float h, float alpha = 1f, bool label = true)
     {
         if (string.IsNullOrEmpty(id)) return;
+        var tex = ItemIconTexture(id);
+        if (tex != null)
+        {
+            float side = Math.Min(w, h) * 0.86f;
+            _p.DrawTextureRect(tex, Area(x + (w - side) / 2f, y + (h - side) / 2f, side, side), false, new Color(1, 1, 1, alpha));
+            return;
+        }
         var tone = T.ItemTone(id);
         Rect(x, y, w, h, new Color(tone.Darkened(0.35f), 0.55f * alpha));
         if (!label) return;

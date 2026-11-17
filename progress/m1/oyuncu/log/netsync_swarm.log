@@ -1,0 +1,24 @@
+﻿# 2026-11-18, MinSpeed degisikliginden sonra: build 0 uyari 0 hata, Sim 34/34
+== oyuncu_t_swarm.log
+Godot Engine v4.7.2.stable.mono.official.ed1daf0bf - https://godotengine.org
+
+TEST swarm
+SWARM instances=2000 verts=1260 frames=16
+SWARM gpu_ms_on=0.000 gpu_ms_off=0.000 swarm_cost_ms=0.000 fps_on~100000
+RESULT swarm PASS cost_ms=0.000 (limit 2.0)
+== oyuncu_ns_host.log
+Godot Engine v4.7.2.stable.mono.official.ed1daf0bf - https://godotengine.org
+
+TEST netsync
+NETSYNC host listening port=27021
+NETSYNC peer connected 680646359
+NETSYNC host start
+NETSYNC host done ticks=600
+== oyuncu_ns_client.log
+Godot Engine v4.7.2.stable.mono.official.ed1daf0bf - https://godotengine.org
+
+TEST netsync
+NETSYNC client connecting port=27021
+NETSYNC peer connected 1
+NETSYNC client final tick=599 snapshots=600 gaps=0 final_max_diff_mm=0.000
+RESULT netsync PASS final_max_diff_mm=0.000

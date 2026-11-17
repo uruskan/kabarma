@@ -136,6 +136,7 @@ public partial class Director
         var def = Data.Creature(Data.Kabarma.FirstNight.Enemy);
         var center = FarmCenter();
         float a = (float)GD.RandRange(0, Mathf.Tau);
+        a = WaveAngle(a); // Director.Pen.cs: ilk gece dalgalar agilin yonunden girer (GDD 24)
         float r = (float)GD.RandRange(22, 28);
         var p = World.Ground(center + new Vector3(Mathf.Cos(a) * r, 0, Mathf.Sin(a) * r));
         var z = new Zipzip(def, this, Night.HpMult, Night.DamageMult, swollen: true);

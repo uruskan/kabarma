@@ -39,6 +39,8 @@ public partial class Bot : Node
         RegisterNight();     // Bot.Night.cs: night
         RegisterMachines();  // Bot.Machines.cs: sell, tezgah_kur, civi, hasat, firin_kur, corba, paketle, kasa_sat
         RegisterBuild();     // Bot.Build.cs: odun, yapi
+        RegisterIlkgun();    // Bot.Ilkgun.cs: ilk gun (GDD 24): mine (kapak), tezgah, tarla, agil, gidak, night (agil kapisi)
+        RegisterZincir();    // Bot.Zincir.cs (entegrasyon): yemek, firin, civi, kasa, barinak
         _steps["end"] = StepEnd;
     }
 
@@ -73,7 +75,7 @@ public partial class Bot : Node
         _dbg -= dt;
         if (_dbg <= 0 && Main.Args.ContainsKey("botdebug")) { _dbg = 2f; GD.Print($"BOTDBG {step} pos={P.GlobalPosition} aim={P.AimOverride} cell={_cell} prog={sc.Progress} ocak={_d.OcakPos} head={_d.Capa.Current} vel={P.Velocity} floor={P.IsOnFloor()} down={P.Down} move={P.MoveOverride} held={_d.Capa.Held != null}"); }
 
-        if (_steps.TryGetValue(step, out var run)) run();
+        if (_steps.TryGetValue(step, out var run)) RunStep(step, run); // Bot.Hands.cs: girdi kipinde sentetik olay
         else UnknownStep(step);
     }
 
@@ -96,7 +98,7 @@ public partial class Bot : Node
         {
             _done = true;
             var s = _d.State;
-            GD.Print($"RESULT ok credits={s.Credits} eggs={s.Eggs} kills={_d.Night?.Kills} cards={_d.Night?.CardsCount} maya={_d.Night?.Maya:0} stations={_d.Stations.Count} harvests={_d.Harvests} t={_t:0.0}");
+            GD.Print($"RESULT ok credits={s.Credits} eggs={s.Eggs} kills={_d.Night?.Kills} cards={_d.Night?.CardsCount} maya={_d.Night?.Maya:0} stations={_d.Stations.Count} harvests={_d.Harvests} skipped={_d.SkippedIds} t={_t:0.0}");
         }
     }
 

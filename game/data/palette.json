@@ -1,5 +1,5 @@
 {
-  "_not": "SANAT-SES §2. Izinli renkler: biyom paleti + ortak notr + Maya + turetilmis tonlar (Palette.cs ile ayni). Uretim hatti (pipeline/clean_asset.py) yuzeyleri bu listeye oturtur.",
+  "_not": "SANAT-SES §2. Izinli renkler: biyom paleti + ortak notr + Maya + turetilmis tonlar. Taban renkler ve Palette.cs'te tanimli tonlar (soil, soil_wet, turnip_body, turnip_top, rock, rock_dark) Palette.cs ile ayni (PaletteTests denetler). Dokulu yonde palet renk yonudur: uretim hatti (pipeline/clean_asset.py) kartta dokunun palete uzakligini yazar, stil foyu (pipeline/style_sheet.py) bu renkleri gosterir.",
   "sets": {
     "altin_cayir": {
       "ground": "E2B54A",
@@ -7,7 +7,8 @@
       "accent": "F26B3A",
       "shadow": "5A4A6B",
       "fog": "F3D9A4",
-      "sky": "8CC8E8"
+      "sky": "8CC8E8",
+      "sky_sunset": "F58A5B"
     },
     "neutral": {
       "off_white": "EDE6D6",
@@ -27,10 +28,12 @@
       "plant_light": "A9C477",
       "ground_dark": "A88A52",
       "wood_dark": "7E5A48",
-      "rock": "A49AA2",
-      "rock_dark": "7A6E80",
-      "soil": "83615A",
-      "turnip_top": "8E5AAE",
+      "rock": "9C909B",
+      "rock_dark": "827488",
+      "soil": "81605C",
+      "soil_wet": "6D5564",
+      "turnip_body": "E1DACD",
+      "turnip_top": "9158B7",
       "accent_dark": "B85A48",
       "blue_dark": "2E5580"
     }

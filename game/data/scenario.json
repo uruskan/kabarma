@@ -1,136 +1,66 @@
 {
-  "_not": "PLAN 1.4 ilk 10 dakika, MVP icin kucultuldu. Suna replikleri metin olarak.",
-  "intro": [
-    "Kooperatife hoş geldin, üye 4417. Tarla senin, borç bizim.",
-    "Çapa'nın Kazma başlığı takılı. Kayaya tut, tetiğe bas. Taşlar çantana kendisi gelir."
-  ],
+  "_not": "Ilk gun (PLAN 1.4, GDD 24, SANAT-SES 10.3). Adimlar GDD 24 sirasinda: 1-9 ilk 10 dakika, 10-16 ilk 10 dakikadan sonra. Suna'nin 30 repligi 'lines' icinde (TR + EN); seslendirilen replikte tus adi yok. Hedef satirlari ekranda durur, seslendirilmez; {act:eylem} girdi glifidir.",
+  "_dagilim": "Giris 2 (giris_*), ilk gunun dokuz adimi 14, Kucuk Kabarma ve safak 6 (gece_*, safak), ilk 10 dakikadan sonraki yedi adim 7, siradaki is emri 1 = 30. Ses dosyasi: assets/audio/voice/<tr|en>/<kimlik>.mp3 (ses akisi).",
+  "hatch": { "delay": 0.6, "openSeconds": 1.8, "openDegrees": 82, "holdSeconds": 0.9, "exitSeconds": 1.8, "closeSeconds": 1.2 },
+  "waveSpreadDegrees": 10,
+  "firstNightSwellsAll": true,
+  "intro": ["giris_1", "giris_2"],
   "steps": [
-    {
-      "id": "mine",
-      "target": 10,
-      "goal": "Kazma ile taş topla",
-      "done": "Güzel. Taş, kooperatifin en sadık üyesidir. Şikâyet etmez."
-    },
-    {
-      "id": "ocak",
-      "target": 1,
-      "goal": "İnşa başlığıyla Ocak'ı kur",
-      "start": "İnşa başlığına geç (6). Ocak'ı düz bir yere koy. Etrafındaki ışık tapundur.",
-      "done": "Ocak yandı. Tapu senin. Kira yok, sadece borç."
-    },
-    {
-      "id": "till",
-      "target": 9,
-      "goal": "Toprak başlığıyla 3×3 tarla sür",
-      "start": "Toprak başlığı (3). Ocak'ın yanında dokuz kare aç.",
-      "done": "Toprak hazır."
-    },
-    {
-      "id": "plant",
-      "target": 9,
-      "goal": "Sürülmüş karelere şalgam ek",
-      "start": "Aynı başlıkla sürülmüş kareye bir daha bas: tohum düşer.",
-      "done": "Dokuz şalgam. Kooperatif adına gurur duyuyorum. Bir miktar."
-    },
-    {
-      "id": "water",
-      "target": 9,
-      "goal": "Sulama başlığıyla şalgamları sula",
-      "start": "Sulama başlığı (4). Kuru toprak büyümez. Bu bilimsel bir gerçektir.",
-      "done": "Filizler çıktı. Hızlı büyürler, bu ayda her şey hızlı büyür. Fazla hızlı."
-    },
-    {
-      "id": "grow",
-      "target": 9,
-      "goal": "Şalgamlar olgunlaşsın (Gıdak'a buğday verebilirsin: E)",
-      "start": "Bir Gıdak geçiyor. Önüne buğday atarsan yumurtlar. Bekle, şalgamlar olgunlaşsın.",
-      "done": "Hepsi olgun. Küçük bir ayrıntı kaldı. Bu ayın bir huyu var."
-    },
-    {
-      "id": "night",
-      "target": 1,
-      "goal": "Kabarma'yı atlat: tarlanı koru",
-      "start": "Gökyüzüne bakma. Tarlana bak. Çapa'n artık ateş ediyor, tetiğe bas.",
-      "done": "Şafak. Kabarma bitti. Ayakta kalanı satabiliriz."
-    },
-    {
-      "id": "sell",
-      "target": 1,
-      "goal": "Kabarık şalgamı Çekim başlığıyla Kargo Rampası'na taşı",
-      "start": "Çekim başlığı (5). Kabarık şalgamı ışınla tut, kapsülden bozma rampaya bırak.",
-      "done": "Roket kalktı. Hesabına yazdım."
-    },
-    {
-      "id": "tezgah_kur",
-      "target": 1,
-      "goal": "İnşa başlığıyla bir Tezgâh kur (6 Taş)",
-      "start": "Rapor bitti. Şimdi iş. İnşa başlığına geç (6), tekerlekle Tezgâh'ı seç. Taş yetmezse kazmaya devam.",
-      "done": "Tezgâh kuruldu. Kooperatif bu yatırımı not etti."
-    },
-    {
-      "id": "civi",
-      "target": 1,
-      "goal": "Tezgâh'ta çivi yap (E)",
-      "start": "Tezgâh'ın yanında E'ye bas. Taştan çivi çıkar. Bunun nasıl olduğunu sorma.",
-      "done": "Çiviler hazır. Çivi Tabancası (8) artık dolu."
-    },
-    {
-      "id": "hasat",
-      "target": 5,
-      "goal": "Biçme başlığıyla 5 şalgam hasat et",
-      "start": "Biçme başlığı (2). Kabarık şalgamlar da biçilir; sönünce iki kat ürün verirler. Kimse nedenini bilmiyor.",
-      "done": "Hasat tamam. Ambar dolu, yürek dolu."
-    },
-    {
-      "id": "firin_kur",
-      "target": 1,
-      "goal": "Bir Taş Fırın kur (10 Taş)",
-      "start": "Şimdi bir Taş Fırın. Yemek güç verir, açlık yok. Kooperatif açlığı yasakladı.",
-      "done": "Fırın yandı. Bacası tütüyor. Bu iyiye işaret."
-    },
-    {
-      "id": "corba",
-      "target": 1,
-      "goal": "Sebze çorbası pişir ve ye (Tab: çanta)",
-      "start": "Fırında çorba pişir. Sonra Tab ile çantayı aç ve ye. Çorba canını artırır.",
-      "done": "Afiyet olsun. Yazılı olarak."
-    },
-    {
-      "id": "paketle",
-      "target": 1,
-      "goal": "Paketleme Tezgâhı kur ve bir kargo kasası hazırla",
-      "start": "Kasalı mal daha iyi satılır. Paketleme Tezgâhı kur, beş şalgamı kasaya koy.",
-      "done": "Kasa hazır. Etiketi ben yazdım."
-    },
-    {
-      "id": "kasa_sat",
-      "target": 1,
-      "goal": "Kasayı Kargo Rampası'nda sat (E)",
-      "start": "Kasayı rampaya götür, E'ye bas. Roket gerisini halleder.",
-      "done": "Satış tamam. Kooperatif memnun. Şimdi bir çatı. Yağmur yağmıyor ama kooperatif önlem sever."
-    },
-    {
-      "id": "odun",
-      "target": 18,
-      "goal": "Biçme başlığıyla ağaçlardan 18 odun kes",
-      "start": "Biçme başlığı (2) ağaca tutulunca odun verir. Ağaç yerinde kalır. Bu ayın ağaçları kin tutmaz.",
-      "done": "Odun tamam. Kokusu güzel. Kayda geçmedi."
-    },
-    {
-      "id": "yapi",
-      "target": 4,
-      "goal": "İnşa başlığıyla 4 parçalık bir barınak kur (temel ve duvarlar)",
-      "start": "İnşa başlığı (6), tekerlekle Kare Temel'i seç, yere koy. Sonra duvarları temelin kenarına oturt.",
-      "done": "Barınak ayakta. Bu ilk iş emrinin sonu. Sıradaki: beş kabarık ürün. Kooperatif sabırsız değil. Biraz."
-    }
+    { "id": "mine", "target": 10, "goal": "Kazma {act:head_1} ile 10 Taş topla", "done": "tas_bitti" },
+    { "id": "odun", "target": 25, "goal": "Biçme {act:head_2} ile ağaçtan 25 Odun kes", "start": "odun_basla" },
+    { "id": "ocak", "target": 1, "goal": "İnşa {act:head_6} ile Ocak'ı kur", "start": "ocak_basla", "done": "ocak_bitti" },
+    { "id": "tezgah", "target": 1, "goal": "İnşa {act:head_6} ile Tezgâh'ı kur (10 Odun + 5 Taş)  ·  {act:build_next}: parça seç", "start": "tezgah_basla" },
+    { "id": "tarla", "target": 9, "goal": "3×3 tarla: Toprak {act:head_3} ile sür ve ek, Sulama {act:head_4} ile sula", "start": "tarla_basla", "done": "tarla_bitti" },
+    { "id": "agil", "target": 2, "goal": "En az 1×2 hücrelik kapalı ağıl: 5 Çit ve 1 Bahçe Kapısı  ·  {act:build_rotate}: döndür", "start": "agil_basla", "done": "agil_bitti" },
+    { "id": "gidak", "target": 1, "goal": "Gıdak'a Buğday ver {act:interact}, kapıyı aç {act:interact}, Gıdak'ı ağıla sok", "start": "gidak_basla", "done": "gidak_bitti" },
+    { "id": "night", "target": 1, "goal": "Kabarma'yı atlat: tarlanı koru {act:fire}", "start": "kabarma_basla", "done": "safak" },
+    { "id": "sell", "target": 1, "goal": "Kabarık şalgamı Çekim {act:head_5} ile Kargo Rampası'na taşı", "start": "kargo_basla", "done": "kargo_bitti" },
+    { "id": "hasat", "target": 5, "goal": "Biçme {act:head_2} ile 5 şalgam hasat et", "start": "hasat_basla", "afterTen": true },
+    { "id": "yemek", "target": 1, "goal": "Ocakbaşı kur, bir yemek pişir ve ye {act:bag}", "start": "yemek_basla", "afterTen": true, "requires": ["ocakbasi"] },
+    { "id": "bakir_kil", "target": 2, "goal": "Kazma {act:head_1} ile bakır damarından Bakır Cevheri, göl kıyısından Kil", "start": "bakir_kil_basla", "afterTen": true },
+    { "id": "firin", "target": 1, "goal": "Taş Fırın kur (15 Taş + 5 Kil), Bakır Külçe erit {act:interact}", "start": "firin_basla", "afterTen": true, "requires": ["tas_firin", "copper_ingot"] },
+    { "id": "civi", "target": 2, "goal": "Tezgâh'ta {act:interact} Bakır Külçe'den Çivi Tabancası ve Çivi yap", "start": "civi_basla", "afterTen": true, "requires": ["civi_tabancasi", "civi"] },
+    { "id": "kasa", "target": 1, "goal": "Paketleme Tezgâhı'nda kasa doldur, El Arabası ile rampaya götür, sat", "start": "kasa_basla", "afterTen": true, "requires": ["paketleme", "kargo_kasasi", "el_arabasi"] },
+    { "id": "barinak", "target": 6, "goal": "Barınak: temel, duvar, kapı kasası ve Ahşap Kapı, çatı; içine Uyku Tulumu", "start": "barinak_basla", "afterTen": true, "requires": ["ahsap_kapi", "uyku_tulumu"] }
   ],
-  "nightLines": {
-    "alarm": "Gökyüzü dalgalanıyor. Bu normal. Yani, bu ay için normal.",
-    "swell": "Şalgamların fıçı boyuna geliyor. Broşürde yazmıyordu, biliyorum.",
-    "wave": "Zıpzıplar geliyor. Kabarmışlar. Plaj topu gibi. Tarlana dikkat.",
-    "level": "Çapa'n çatırdıyor. Kart seç. Hepsi iyi kart. Bazıları daha iyi.",
-    "gidak": "Gıdak'ın midilli boyuna geldi. Tarafını seçmiş görünüyor."
-  },
+  "nightLineIds": { "alarm": "gece_alarm", "swell": "gece_kabarma", "wave": "gece_dalga", "level": "gece_kart", "gidak": "gece_gidak" },
   "nextOrder": "Sıradaki iş emri: 5 kabarık ürün yetiştir.",
-  "ordersTotal": 240
+  "nextOrderLine": "siradaki_is",
+  "ordersTotal": 240,
+  "lines": {
+    "giris_1": { "tr": "Kooperatife hoş geldin, üye 4417. Tarla senin, borç bizim.", "en": "Welcome to the Cooperative, member 4417. The field is yours. The debt is ours." },
+    "giris_2": { "tr": "Çapa'nın Kazma başlığı takılı. Kayaya tut, tetiğe bas. Taşlar çantana kendisi gelir.", "en": "Your Çapa has the Pick head on. Point it at a rock and squeeze the trigger. The stones come to your pack on their own." },
+
+    "tas_bitti": { "tr": "Güzel. Taş, kooperatifin en sadık üyesidir. Şikâyet etmez.", "en": "Good. Stone is the Cooperative's most loyal member. It never complains." },
+    "odun_basla": { "tr": "Şimdi odun. Biçme başlığını bir ağaca tut. Ağaç yerinde kalır; bu ayın ağaçları kin tutmaz.", "en": "Now, wood. Point the Mower head at a tree. The tree stays put. Trees on this moon don't hold grudges." },
+    "ocak_basla": { "tr": "Ocak'ı düz bir yere koy. Çevresine yayılan ışık tapundur.", "en": "Set the Hearth down on level ground. The light that spreads around it is your claim." },
+    "ocak_bitti": { "tr": "Ocak yandı. Tapu senin. Kira yok, sadece borç.", "en": "The Hearth is lit. The claim is yours. No rent. Only debt." },
+    "tezgah_basla": { "tr": "Şimdi bir tezgâh. Kooperatif çalışan üyeyi sever.", "en": "Now, a Workbench. The Cooperative likes a member who works." },
+    "tarla_basla": { "tr": "Toprak başlığıyla dokuz kare aç, şalgam ek, sonra sula. Kuru toprak büyümez. Bu bilimsel bir gerçektir.", "en": "Open nine squares with the Soil head, plant turnips, then water them. Dry soil grows nothing. That is a scientific fact." },
+    "tarla_bitti": { "tr": "Filizler çıktı. Bu ayda her şey hızlı büyür. Fazla hızlı.", "en": "Sprouts are up. Everything grows fast on this moon. Too fast." },
+    "agil_basla": { "tr": "Bir ağıl çak. Çitler kapalı bir halka olsun, bir de kapısı. Hayvan kaçarsa tutanak tutarım.", "en": "Put up a pen. Fences in a closed ring, and a gate. If an animal escapes, I file a report." },
+    "agil_bitti": { "tr": "Ağıl kapalı. Kapıya dikkat: açık kapıdan her şey geçer.", "en": "The pen is closed. Mind the gate. Anything can walk through an open one." },
+    "gidak_basla": { "tr": "Bir Gıdak geçiyor. Önüne buğday at, peşinden gelir. Açık kapıdan ağıla sok.", "en": "A Gıdak is passing by. Toss it some wheat and it will follow you. Lead it into the pen through the open gate." },
+    "gidak_bitti": { "tr": "Kayıt oldu. İlk yumurtası da geldi. Kooperatif adına tebrik ederim. Bir miktar.", "en": "Registered. And there's its first egg. Congratulations on behalf of the Cooperative. Moderately." },
+    "kabarma_basla": { "tr": "Küçük bir ayrıntı kaldı. Bu ayın bir huyu var.", "en": "One small detail remains. This moon has a habit." },
+    "kargo_basla": { "tr": "Fıçı boyundaki şalgamı Çekim başlığıyla tut, kapsülden bozma rampaya taşı.", "en": "Grab the barrel-sized turnip with the Pull head and carry it to the ramp. It used to be your pod." },
+    "kargo_bitti": { "tr": "Roket kalktı. Hesabına yazdım.", "en": "The rocket's away. I've credited your account." },
+
+    "gece_alarm": { "tr": "Gökyüzü dalgalanıyor. Bu normal. Yani, bu ay için normal.", "en": "The sky is rippling. This is normal. For this moon, that is." },
+    "gece_kabarma": { "tr": "Şalgamların fıçı boyuna geliyor. Broşürde yazmıyordu, biliyorum.", "en": "Your turnips are reaching barrel size. It wasn't in the brochure, I know." },
+    "gece_dalga": { "tr": "Zıpzıplar geliyor. Kabarmışlar. Plaj topu gibi. Çite yükleniyorlar.", "en": "Zıpzıps incoming. Swollen. Like beach balls. They're charging the fence." },
+    "gece_kart": { "tr": "Çapa'n çatırdıyor. Bir kart seç. Hepsi iyi kart. Bazıları daha iyi.", "en": "Your Çapa is crackling. Pick a card. They're all good cards. Some are better." },
+    "gece_gidak": { "tr": "Gıdak'ın midilli boyuna geldi. Tarafını seçmiş görünüyor.", "en": "Your Gıdak is pony-sized now. It seems to have picked a side." },
+    "safak": { "tr": "Şafak. Kabarma bitti. Ayakta kalanı satabiliriz.", "en": "Dawn. The Swelling is over. Whatever's still standing, we can sell." },
+
+    "hasat_basla": { "tr": "Biçme başlığıyla beş şalgam hasat et. Kabarık olanlar sönünce iki kat ürün verir. Kimse nedenini bilmiyor.", "en": "Harvest five turnips with the Mower head. Swollen ones give double once they deflate. Nobody knows why." },
+    "yemek_basla": { "tr": "Ocakbaşı kur, bir yemek pişir, ye. Kooperatif açlığı yasakladı.", "en": "Build a Grill, cook a meal, eat it. The Cooperative has banned hunger." },
+    "bakir_kil_basla": { "tr": "Bakır damarından cevher, göl kıyısından kil. Kazma başlığı ikisini de alır.", "en": "Ore from the copper vein, clay from the lakeshore. The Pick head takes both." },
+    "firin_basla": { "tr": "Taş Fırın kur ve bakırı erit. Bacası tütüyorsa iyiye işarettir.", "en": "Build a Stone Kiln and smelt the copper. If the chimney smokes, that's a good sign." },
+    "civi_basla": { "tr": "Tezgâhta bir Çivi Tabancası ve çivi yap. Bunun nasıl olduğunu sorma.", "en": "Make a Nail Gun and some nails at the Workbench. Don't ask how that works." },
+    "kasa_basla": { "tr": "Kasalı mal daha iyi satılır. Kasayı doldur, El Arabası'yla rampaya götür. Etiketi ben yazarım.", "en": "Crated goods sell better. Fill a crate and wheel it to the ramp in a Barrow. I'll write the label." },
+    "barinak_basla": { "tr": "Şimdi bir çatı. Temel, duvar, kapı, çatı; içine bir uyku tulumu. Yağmur yağmıyor ama kooperatif önlem sever.", "en": "Now, a roof. Foundation, walls, a door, a roof, and a sleeping bag inside. It isn't raining, but the Cooperative likes precautions." },
+
+    "siradaki_is": { "tr": "Defterin açıldı: iki yüz kırk iş emri. Sıradaki: beş kabarık ürün yetiştir. Kooperatif sabırsız değil. Biraz.", "en": "Your Ledger is open: two hundred and forty work orders. Next: grow five swollen crops. The Cooperative isn't impatient. Slightly." }
+  }
 }

@@ -1,5 +1,6 @@
 {
   "_not": "MVP ekin verisi. Olgunlasma suresi MVP icin saniyeye sikistirildi (GDD 8.2: tasarim 2 oyun gunu).",
+  "_not_m1": "Tarla kucuk kurallari (URETIM 6 M1, Salgam tarlasi): maxSlopeDegrees GDD 8.1 (egim 15 dereceden az). qualityMult GDD 13'un kalite carpani (1,0 / 1,3 / 1,7); GDD 8.2 hasat veriminde de 'kalite' der. star3MinFertility GDD 8.2. deflateAfterSeconds GDD 8.4 'safaktan sonra 1 gun' = 1 oyun gunu, GDD 2: 30 gercek dakika. deflateYieldMult GDD 8.4 'iki kat normal urun'.",
   "crops": [
     {
       "id": "turnip",
@@ -16,12 +17,16 @@
   ],
   "moisture": { "stopBelow": 20, "halfBelow": 40, "wetAbove": 80, "wetFactor": 0.8 },
   "startFertility": 60,
-  "qualityMult": [1.0, 1.25, 1.5],
+  "qualityMult": [1.0, 1.3, 1.7],
   "harvestFertilityLoss": 10,
   "sizeClasses": [
     { "id": "S", "minScore": 0, "kg": 40, "priceMult": 8, "scale": 2.6 },
     { "id": "M", "minScore": 6, "kg": 150, "priceMult": 12, "scale": 3.6 },
     { "id": "L", "minScore": 10, "kg": 600, "priceMult": 16, "scale": 5.0 },
     { "id": "XL", "minScore": 14, "kg": 2500, "priceMult": 24, "scale": 7.0 }
-  ]
+  ],
+  "maxSlopeDegrees": 15,
+  "star3MinFertility": 70,
+  "deflateAfterSeconds": 1800,
+  "deflateYieldMult": 2
 }

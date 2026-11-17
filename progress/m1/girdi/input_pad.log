@@ -1,0 +1,53 @@
+﻿TEST input
+INPUT driver device=Pad problems=0 user=.tools\run\test\input_user_pad.json
+BOT step mine t=1.0
+INPUT rebind interact Pad -> R3
+INPUT probe ok device=Pad interact: X->R3->X glyph R3->Ⓧ last=Pad user=.tools\run\test\input_user_pad.json
+INPUT heads ok device=Pad n=8 via=wheel
+STEP mine -> ocak t=4.5
+BOT step ocak t=11.9
+STEP ocak -> till t=5.1
+BOT step till t=14.4
+STEP till -> plant t=6.2
+BOT step plant t=18.6
+STEP plant -> water t=7.2
+BOT step water t=22.6
+STEP water -> grow t=7.8
+BOT step grow t=25.2
+STEP grow -> night t=32.4
+BOT step night t=123.4
+STEP night -> sell t=65.5
+BOT step sell t=242.1
+SOLD turnip S +120 credits=120
+STEP sell -> tezgah_kur t=66.7
+BOT step tezgah_kur t=246.4
+PLACED tezgah at (-5.3666177, 0, 1.5993433)
+STEP tezgah_kur -> civi t=67.4
+BOT step civi t=249.5
+QUEUED civi
+STEP civi -> hasat t=68.6
+PRODUCED civi civi=50 soup=0 crates=0
+BOT step hasat t=254.4
+STEP hasat -> firin_kur t=69.4
+BOT step firin_kur t=257.5
+PLACED tas_firin at (-5.8817453, 0, -5.627291)
+STEP firin_kur -> corba t=71.9
+BOT step corba t=267.2
+QUEUED sebze_corbasi
+PRODUCED sebze_corbasi civi=50 soup=1 crates=0
+STEP corba -> paketle t=73.2
+BOT step paketle t=272.5
+PLACED paketleme at (-1.0194731, 0, 5.447119)
+QUEUED kargo_kasasi
+STEP paketle -> kasa_sat t=76.6
+PRODUCED kargo_kasasi civi=50 soup=0 crates=1
+BOT step kasa_sat t=286.2
+STEP kasa_sat -> odun t=77.6
+SOLD kargo_kasasi x1 +90
+BOT step odun t=290.0
+STEP odun -> yapi t=79.4
+BOT step yapi t=297.3
+STEP yapi -> end t=83.7
+BOT step end t=314.5
+RESULT ok credits=210 eggs=1 kills=21 cards=3 maya=48 stations=3 harvests=4 t=314.5
+INPUT summary device=Pad events=10475 taps=36 wheels=17 menuNavs=5 mouseMoves=0 sidesteps=1 last=Pad actions=bag,build_next,card_1,fire,head_wheel,interact,look_down,look_left,look_right,look_up,move_back,move_forward,move_left,move_right,sprint,ui_accept,ui_cancel,ui_down

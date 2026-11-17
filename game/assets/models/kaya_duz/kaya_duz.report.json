@@ -1,0 +1,47 @@
+{
+  "name": "kaya_duz",
+  "input": "C:\\Users\\uruskan\\Documents\\GitHub\\kabarma\\.tools\\tripo\\kaya_duz\\tripo-out\\kaya-duz-e4b0adac\\model.glb",
+  "checks": {
+    "1_palette": {
+      "pass": true,
+      "note": "dokulu mod: palet oturtma yapilmadi"
+    },
+    "2_polygon": {
+      "pass": true,
+      "value": 2866,
+      "budget": 4000
+    },
+    "3_thickness": {
+      "pass": true,
+      "min_ratio": 0.452,
+      "note": "parca basina en dar boyut / en uzun kenar"
+    },
+    "4_integrity": {
+      "pass": false,
+      "non_manifold_edges": 4,
+      "boundary_edges": 2,
+      "inward_faces": 131,
+      "loose_parts": 1
+    },
+    "5_scale_axis": {
+      "pass": true,
+      "height": 0.7,
+      "target": 0.7
+    }
+  },
+  "tris_in": 2868,
+  "welded_verts": 563,
+  "tex_size": 1024,
+  "source_mean_dE": null,
+  "source_within_dE8": null,
+  "palette_use": "textured (palette snap skipped)",
+  "tris": 2866,
+  "size_m": [
+    1.477,
+    1.549,
+    0.7
+  ],
+  "parts": 1,
+  "out": "game/assets/models/kaya_duz/kaya_duz.glb",
+  "pass_scripted": false
+}

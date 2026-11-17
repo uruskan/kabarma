@@ -1,16 +1,23 @@
 {
   "_not": "Capa silah basliklari: baslangic silahi Tirpan Isini (ICERIK 6.2 #1) ve Civi Tabancasi (ICERIK 6.2 #2).",
+  "_not_m1": "Civi Tabancasi yari otomatik (semiAuto): her basis bir civi; bekleme bitmeden gelen basis inputBufferSeconds icinde saklanir. unlockedAtStart: Tirpan bastan (B); Civi tarifle acilir (ekonomi akisi, ilk Bakir Kulce), main'de acik. Vurus hissi sayilari feel.json'da.",
   "weapon": {
     "id": "tirpan_isini", "name": "Tırpan Işını", "damage": 14, "fireInterval": 0.42,
     "range": 11, "speed": 22, "width": 2.2, "spreadDegrees": 14,
     "critChance": 0.05, "critMult": 2.0, "knockback": 4.0,
-    "burnDps": 0.2, "burnSeconds": 3, "freezeSlow": 0.4, "freezeSeconds": 2
+    "burnDps": 0.2, "burnSeconds": 3, "freezeSlow": 0.4, "freezeSeconds": 2,
+    "semiAuto": false, "inputBufferSeconds": 0, "unlockedAtStart": true,
+    "bounceSearch": 12, "bounceRefund": 4, "hitRadius": 0, "weakRadius": 0.9, "maxPitch": 0.3, "groundOffset": 0.35,
+    "spin": 18, "fadeStart": 0.7, "glow": 3
   },
   "nailgun": {
     "id": "civi_tabancasi", "name": "Çivi Tabancası", "damage": 22, "fireInterval": 0.24,
     "range": 32, "speed": 70, "width": 0.25, "spreadDegrees": 4,
     "critChance": 0.12, "critMult": 2.2, "knockback": 2.0,
     "burnDps": 0.2, "burnSeconds": 3, "freezeSlow": 0.4, "freezeSeconds": 2,
-    "ammo": "civi", "ammoPerShot": 1
+    "ammo": "civi", "ammoPerShot": 1,
+    "semiAuto": true, "inputBufferSeconds": 0.12, "unlockedAtStart": true,
+    "bounceSearch": 14, "bounceRefund": 6, "hitRadius": 0.1, "weakRadius": 0.7, "maxPitch": 0, "groundOffset": 0,
+    "spin": 0, "fadeStart": 1, "glow": 1.5
   }
 }

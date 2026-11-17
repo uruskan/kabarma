@@ -1,0 +1,113 @@
+Godot Engine v4.7.2.stable.mono.official.ed1daf0bf - https://godotengine.org
+Vulkan 1.4.357 - Forward+ - Using Device #0: NVIDIA - NVIDIA GeForce RTX 2070 SUPER
+
+TEST bot
+PLAYER model anims: carry,cheer,crouch_walk,hurt,idle,jump,kneel,knockdown,push,run,run_fast,shock_fall,walk,walk_casual,wave
+AUDIO ok 13/13
+POFUDUK anims: preset_quadruped_walk
+BUILD kit pieces=28
+BOOT Kabarma MVP
+BOT step mine t=1.0
+STEP mine -> ocak t=19.9
+BOT step ocak t=7.4
+STEP ocak -> till t=21.7
+BOT step till t=9.3
+STEP till -> plant t=23.5
+BOT step plant t=11.0
+STEP plant -> water t=25.3
+BOT step water t=12.9
+STEP water -> grow t=27.2
+BOT step grow t=14.7
+STEP grow -> night t=125.5
+BOT step night t=113.0
+NIGHT start
+NIGHT swell crops=9
+NIGHT wave 1 count=3
+NIGHT card cevik rank=1
+NIGHT wave 2 count=7
+NIGHT card kivilcim rank=1
+NIGHT wave 3 count=11
+NIGHT card miknatis rank=1
+NIGHT dawn kills=21 level=3 maya=48 swollenLeft=9
+STEP night -> sell t=267.1
+BOT step sell t=228.2
+SOLD turnip S +120 credits=120
+STEP sell -> tezgah_kur t=269.8
+BOT step tezgah_kur t=230.2
+PLACED tezgah at (-5, 0, 1.5000002)
+STEP tezgah_kur -> civi t=272.4
+BOT step civi t=232.8
+REPORT shown
+QUEUED civi
+SCREENSHOT C:/Users/uruskan/Documents/GitHub/kabarma/.claude/worktrees/m1-varlik-72a21b/game/../progress/shots/varlik2_236.00.png
+STEP civi -> hasat t=276.0
+PRODUCED civi civi=50 soup=0 crates=0
+BOT step hasat t=236.4
+STEP hasat -> firin_kur t=277.2
+HARVEST 4 total=4 turnips=28
+BOT step firin_kur t=237.6
+SCREENSHOT C:/Users/uruskan/Documents/GitHub/kabarma/.claude/worktrees/m1-varlik-72a21b/game/../progress/shots/varlik2_238.00.png
+SCREENSHOT C:/Users/uruskan/Documents/GitHub/kabarma/.claude/worktrees/m1-varlik-72a21b/game/../progress/shots/varlik2_240.00.png
+SCREENSHOT C:/Users/uruskan/Documents/GitHub/kabarma/.claude/worktrees/m1-varlik-72a21b/game/../progress/shots/varlik2_242.00.png
+TAS_FIRIN parts: base,body,chimney,panel,door,door_handle door=True
+SCREENSHOT C:/Users/uruskan/Documents/GitHub/kabarma/.claude/worktrees/m1-varlik-72a21b/game/../progress/shots/varlik2_244.00.png
+TAS_FIRIN parts: base,body,chimney,panel,door,door_handle door=True
+PLACED tas_firin at (-5, 0, -3.5)
+STEP firin_kur -> corba t=284.1
+BOT step corba t=244.5
+TAS_FIRIN parts: base,body,chimney,panel,door,door_handle door=True
+QUEUED sebze_corbasi
+SCREENSHOT C:/Users/uruskan/Documents/GitHub/kabarma/.claude/worktrees/m1-varlik-72a21b/game/../progress/shots/varlik2_246.00.png
+SCREENSHOT C:/Users/uruskan/Documents/GitHub/kabarma/.claude/worktrees/m1-varlik-72a21b/game/../progress/shots/varlik2_248.00.png
+PRODUCED sebze_corbasi civi=50 soup=1 crates=0
+ATE sebze_corbasi
+STEP corba -> paketle t=289.6
+BOT step paketle t=249.9
+SCREENSHOT C:/Users/uruskan/Documents/GitHub/kabarma/.claude/worktrees/m1-varlik-72a21b/game/../progress/shots/varlik2_250.00.png
+SCREENSHOT C:/Users/uruskan/Documents/GitHub/kabarma/.claude/worktrees/m1-varlik-72a21b/game/../progress/shots/varlik2_252.00.png
+SCREENSHOT C:/Users/uruskan/Documents/GitHub/kabarma/.claude/worktrees/m1-varlik-72a21b/game/../progress/shots/varlik2_254.00.png
+SCREENSHOT C:/Users/uruskan/Documents/GitHub/kabarma/.claude/worktrees/m1-varlik-72a21b/game/../progress/shots/varlik2_256.00.png
+PLACED paketleme at (-1, 0, 5.5)
+SCREENSHOT C:/Users/uruskan/Documents/GitHub/kabarma/.claude/worktrees/m1-varlik-72a21b/game/../progress/shots/varlik2_258.00.png
+QUEUED kargo_kasasi
+SCREENSHOT C:/Users/uruskan/Documents/GitHub/kabarma/.claude/worktrees/m1-varlik-72a21b/game/../progress/shots/varlik2_260.00.png
+STEP paketle -> kasa_sat t=301.4
+PRODUCED kargo_kasasi civi=50 soup=0 crates=1
+BOT step kasa_sat t=261.8
+SCREENSHOT C:/Users/uruskan/Documents/GitHub/kabarma/.claude/worktrees/m1-varlik-72a21b/game/../progress/shots/varlik2_262.00.png
+SCREENSHOT C:/Users/uruskan/Documents/GitHub/kabarma/.claude/worktrees/m1-varlik-72a21b/game/../progress/shots/varlik2_264.00.png
+STEP kasa_sat -> odun t=305.1
+SOLD kargo_kasasi x1 +90
+BOT step odun t=265.4
+SCREENSHOT C:/Users/uruskan/Documents/GitHub/kabarma/.claude/worktrees/m1-varlik-72a21b/game/../progress/shots/varlik2_266.00.png
+SCREENSHOT C:/Users/uruskan/Documents/GitHub/kabarma/.claude/worktrees/m1-varlik-72a21b/game/../progress/shots/varlik2_268.00.png
+SCREENSHOT C:/Users/uruskan/Documents/GitHub/kabarma/.claude/worktrees/m1-varlik-72a21b/game/../progress/shots/varlik2_270.00.png
+STEP odun -> yapi t=311.7
+BOT step yapi t=271.9
+SCREENSHOT C:/Users/uruskan/Documents/GitHub/kabarma/.claude/worktrees/m1-varlik-72a21b/game/../progress/shots/varlik2_272.00.png
+SCREENSHOT C:/Users/uruskan/Documents/GitHub/kabarma/.claude/worktrees/m1-varlik-72a21b/game/../progress/shots/varlik2_274.00.png
+SCREENSHOT C:/Users/uruskan/Documents/GitHub/kabarma/.claude/worktrees/m1-varlik-72a21b/game/../progress/shots/varlik2_276.00.png
+SCREENSHOT C:/Users/uruskan/Documents/GitHub/kabarma/.claude/worktrees/m1-varlik-72a21b/game/../progress/shots/varlik2_278.00.png
+BUILT kare_temel pieces=1
+BOT built kare_temel -> 1
+SCREENSHOT C:/Users/uruskan/Documents/GitHub/kabarma/.claude/worktrees/m1-varlik-72a21b/game/../progress/shots/varlik2_280.00.png
+BUILT duvar pieces=2
+BOT built duvar -> 2
+SCREENSHOT C:/Users/uruskan/Documents/GitHub/kabarma/.claude/worktrees/m1-varlik-72a21b/game/../progress/shots/varlik2_282.00.png
+BUILT duvar pieces=3
+BOT built duvar -> 3
+SCREENSHOT C:/Users/uruskan/Documents/GitHub/kabarma/.claude/worktrees/m1-varlik-72a21b/game/../progress/shots/varlik2_284.00.png
+SCREENSHOT C:/Users/uruskan/Documents/GitHub/kabarma/.claude/worktrees/m1-varlik-72a21b/game/../progress/shots/varlik2_286.00.png
+BUILT duvar pieces=4
+STEP yapi -> end t=327.2
+CHAIN done
+BOT step end t=287.4
+RESULT ok credits=210 eggs=1 kills=21 cards=3 maya=48 stations=3 harvests=4 t=287.4
+SCREENSHOT C:/Users/uruskan/Documents/GitHub/kabarma/.claude/worktrees/m1-varlik-72a21b/game/../progress/shots/varlik2_288.00.png
+SCREENSHOT C:/Users/uruskan/Documents/GitHub/kabarma/.claude/worktrees/m1-varlik-72a21b/game/../progress/shots/varlik2_290.00.png
+SCREENSHOT C:/Users/uruskan/Documents/GitHub/kabarma/.claude/worktrees/m1-varlik-72a21b/game/../progress/shots/varlik2_292.00.png
+SCREENSHOT C:/Users/uruskan/Documents/GitHub/kabarma/.claude/worktrees/m1-varlik-72a21b/game/../progress/shots/varlik2_294.00.png
+SCREENSHOT C:/Users/uruskan/Documents/GitHub/kabarma/.claude/worktrees/m1-varlik-72a21b/game/../progress/shots/varlik2_296.00.png
+SCREENSHOT C:/Users/uruskan/Documents/GitHub/kabarma/.claude/worktrees/m1-varlik-72a21b/game/../progress/shots/varlik2_298.00.png
+SCREENSHOT C:/Users/uruskan/Documents/GitHub/kabarma/.claude/worktrees/m1-varlik-72a21b/game/../progress/shots/varlik2_300.00.png
+QUIT t=310.0

@@ -1,0 +1,121 @@
+{
+  "gol_gunbatimi.png": {
+    "size": "1920x1080",
+    "black": 0.0,
+    "white": 0.0,
+    "maya_glow": 0.0005,
+    "sky_gradient": 7.9
+  },
+  "gol_kabarma_gecesi.png": {
+    "size": "1920x1080",
+    "black": 0.0,
+    "white": 0.0,
+    "maya_glow": 0.0069,
+    "sky_gradient": 33.9
+  },
+  "gol_ogle.png": {
+    "size": "1920x1080",
+    "black": 0.0,
+    "white": 0.0,
+    "maya_glow": 0.0005,
+    "sky_gradient": 13.5
+  },
+  "gol_sabah.png": {
+    "size": "1920x1080",
+    "black": 0.0,
+    "white": 0.0,
+    "maya_glow": 0.0005,
+    "sky_gradient": 9.9
+  },
+  "kapsul_gunbatimi.png": {
+    "size": "1920x1080",
+    "black": 0.0,
+    "white": 0.0,
+    "maya_glow": 0.0005,
+    "sky_gradient": 9.0
+  },
+  "kapsul_kabarma_gecesi.png": {
+    "size": "1920x1080",
+    "black": 0.0,
+    "white": 0.0,
+    "maya_glow": 0.0055,
+    "sky_gradient": 30.4
+  },
+  "kapsul_ogle.png": {
+    "size": "1920x1080",
+    "black": 0.0,
+    "white": 0.0,
+    "maya_glow": 0.0005,
+    "sky_gradient": 8.4
+  },
+  "kapsul_sabah.png": {
+    "size": "1920x1080",
+    "black": 0.0,
+    "white": 0.0,
+    "maya_glow": 0.0005,
+    "sky_gradient": 5.2
+  },
+  "sheet_16.png": {
+    "size": "1920x1080",
+    "black": 0.0,
+    "white": 0.0,
+    "maya_glow": 0.0011,
+    "sky_gradient": 68.1
+  },
+  "tepe_gunbatimi.png": {
+    "size": "1920x1080",
+    "black": 0.0,
+    "white": 0.0,
+    "maya_glow": 0.0004,
+    "sky_gradient": 17.2
+  },
+  "tepe_kabarma_gecesi.png": {
+    "size": "1920x1080",
+    "black": 0.0,
+    "white": 0.0,
+    "maya_glow": 0.0057,
+    "sky_gradient": 39.6
+  },
+  "tepe_ogle.png": {
+    "size": "1920x1080",
+    "black": 0.0,
+    "white": 0.0,
+    "maya_glow": 0.0005,
+    "sky_gradient": 17.0
+  },
+  "tepe_sabah.png": {
+    "size": "1920x1080",
+    "black": 0.0,
+    "white": 0.0,
+    "maya_glow": 0.0005,
+    "sky_gradient": 13.5
+  },
+  "us_gunbatimi.png": {
+    "size": "1920x1080",
+    "black": 0.0,
+    "white": 0.0,
+    "maya_glow": 0.0005,
+    "sky_gradient": 23.3
+  },
+  "us_kabarma_gecesi.png": {
+    "size": "1920x1080",
+    "black": 0.0,
+    "white": 0.0,
+    "maya_glow": 0.0042,
+    "sky_gradient": 45.5
+  },
+  "us_ogle.png": {
+    "size": "1920x1080",
+    "black": 0.0,
+    "white": 0.0,
+    "maya_glow": 0.0005,
+    "sky_gradient": 19.5
+  },
+  "us_sabah.png": {
+    "size": "1920x1080",
+    "black": 0.0,
+    "white": 0.0,
+    "maya_glow": 0.0005,
+    "sky_gradient": 16.9
+  }
+}

@@ -5,9 +5,15 @@ using Kabarma.Sim;
 
 namespace Kabarma.Game;
 
+/// <summary>Zipzip'in davranis kipi: gece dalgasi, gunduz surusu (Zipzip.Day.cs) ya da sinama (yerinde durur).</summary>
+public enum ZipzipMode { Wave, Day, Display }
+
 /// <summary>
-/// Zipzip: tarlaya dadanan zararli. Kabarma'da plaj topu gibi sisip saldirir (ICERIK §3.1: Sicrayan, Sok zaafi).
-/// Govde, kulaklar ve gozler koddan; sisme, titreme, damar ve maya kesesi shader ile (SANAT-SES §4).
+/// Zipzip: tarlaya dadanan zararli. Gunduz cayirda 2-3'luk urkek gruplar halinde dolasir (Zipzip.Day.cs, ZipzipMeadow.cs);
+/// Kabarma'da plaj topu gibi sisip saldirir (ICERIK §3.1: Sicrayan, Sok zaafi).
+/// Gorunus: kucuk sinif model (en cok 5.000 ucgen), ortak sisme shader'i (Swellable), 8 klip (CreatureRig: modelin
+/// bekleme/kosu/ziplama/aci klipleri + PoseLibrary). Gidak tekmesiyle havada ucus: Zipzip.Launch.cs.
+/// Cit hucumu (ilkgun, Zipzip.Fence.cs) FenceHop/FenceTick ile baglanir.
 /// </summary>
 public partial class Zipzip : Node3D
 {
@@ -17,12 +23,19 @@ public partial class Zipzip : Node3D
     public bool Dead;
     public float Scale0 = 1f;
     public bool Display; // sinama: yerinde durur, klipler oynar
+    /// <summary>Davranis kipi. Sinama icin Display de kullanilabilir (eski bayrak).</summary>
+    public ZipzipMode Mode = ZipzipMode.Wave;
+    /// <summary>Kabarmis mi (gece dalgasi). Gunduz Zipzip'i normal gorunur ve avlaninca ragdoll olur (SANAT-SES §4).</summary>
+    public bool Swollen { get; }
+    /// <summary>Sinamada oynatilacak klip yuvasi (Display).</summary>
+    public string DisplaySlot = "run";
     Node3D _body;
     MeshInstance3D _sac;
     ShaderMaterial _mat;
     Swellable _sw;
     AnimationPlayer _anim;
     string _aRun, _aJump, _aHurt, _aIdle;
+    CreatureRig _rig;
     float _hurtT;
     Director _dir;
     float _hopT, _hopDur = 0.55f;
@@ -32,6 +45,7 @@ public partial class Zipzip : Node3D
     PlotView _target;
     float _eatT;
     float _attackCd;
+    float _attackAnimT;
     public float BurnT, FreezeT;
     float _burnTick;
     float _spawnT;
@@ -39,26 +53,20 @@ public partial class Zipzip : Node3D
 
     public Zipzip(CreatureDef def, Director dir, float hpMult, float dmgMult, bool swollen)
     {
-        Def = def; _dir = dir; _damageMult = dmgMult;
+        Def = def; _dir = dir; _damageMult = dmgMult; Swollen = swollen;
         MaxHp = Hp = def.Hp * hpMult;
         _body = new Node3D();
         AddChild(_body);
-        // M1 altin varlik: Tripo'dan iskeletli, dokulu Zipzip (idle, run, jump, hurt). Yoksa koddan govde.
-        var model = Assets.Load("res://assets/models/zipzip/zipzip.glb");
-        if (model != null)
+        // M1: kucuk sinif model (zipzip_5k.glb, 4.830 ucgen), iskelet ve dort klip Tripo'dan; eksik klipler PoseLibrary'den.
+        _rig = CreatureRig.Load(def, dir?.Poses, _body, "res://assets/models/zipzip/zipzip.glb");
+        if (_rig != null)
         {
-            _body.AddChild(model);
-            _sw = new Swellable(model, 4f);
-            _anim = model.FindChildren("*", "AnimationPlayer", true, false).OfType<AnimationPlayer>().FirstOrDefault();
-            if (_anim != null)
+            _sw = new Swellable(_rig.Model, def.Swell);
+            _anim = _rig.Player;
+            if (_rig.Animated)
             {
-                foreach (var n in _anim.GetAnimationList())
-                {
-                    var l = n.ToLower();
-                    if (l.Contains("run")) _aRun = n; else if (l.Contains("jump")) _aJump = n; else if (l.Contains("hurt")) _aHurt = n; else if (l.Contains("idle")) _aIdle = n;
-                }
-                foreach (var n in new[] { _aRun, _aIdle }) if (n != null) _anim.GetAnimation(n).LoopMode = Animation.LoopModeEnum.Linear;
-                _anim.Play(_aIdle ?? _aRun);
+                _aIdle = _rig.SlotAnim["idle"]; _aRun = _rig.SlotAnim["run"]; _aJump = _rig.SlotAnim["attack1"]; _aHurt = _rig.SlotAnim["hit"];
+                _rig.Play(swollen ? "run" : "idle", 0f);
                 _anim.Seek((float)GD.RandRange(0.0, 0.8), true);
             }
         }
@@ -76,7 +84,7 @@ public partial class Zipzip : Node3D
             _body.AddChild(kit.Instance(_mat));
         }
 
-        // Zayif nokta: parlayan maya kesesi (sirtta)
+        // Zayif nokta: parlayan maya kesesi (sirtta), yalniz kabarmis Zipzip'te (SANAT-SES §4.4)
         _sac = new MeshInstance3D
         {
             Mesh = new SphereMesh { Radius = 0.12f, Height = 0.24f, RadialSegments = 10, Rings = 5 },
@@ -90,7 +98,7 @@ public partial class Zipzip : Node3D
             Scale0 = def.SwollenScale;
             _mat?.SetShaderParameter("swell", 1f);
             _mat?.SetShaderParameter("glow", 0.9f);
-            _sw?.Set(swell: 1f, glow: 0.9f, push: 0.04f, wobble: 0.02f);
+            _sw?.Snap(true);
         }
         _body.Scale = Vector3.One * 0.05f;
         All.Add(this);
@@ -102,6 +110,24 @@ public partial class Zipzip : Node3D
     public Vector3 SacPos => _sac.GlobalPosition;
     public float Radius => 0.42f * Scale0;
     public bool HasSac => _sac.Visible;
+    /// <summary>Gorunus ve klipler (sinama ve baglanan partial'lar icin).</summary>
+    public CreatureRig Rig => _rig;
+    public Swellable Look => _sw;
+
+    // ---------- ilkgun baglantisi: cit hucumu (Zipzip.Fence.cs) ----------
+    /// <summary>Gece dalgasinda her yeni sicrayis secilirken: yolda cit varsa to'yu citin onune cek, blocked = true.</summary>
+    partial void FenceHop(Vector3 from, ref Vector3 to, ref bool blocked);
+    /// <summary>Her kare, hareketten once: handled = true ise o kare Zipzip yerinden kipirdamaz (cite yuklenir).</summary>
+    partial void FenceTick(float dt, ref bool handled);
+
+    /// <summary>Saldiri klibini oynatir (oyuncuya, cite ya da hayvana yuklenirken).</summary>
+    public void PlayAttack()
+    {
+        _attackAnimT = 0.5f;
+        _rig?.Play(GD.Randf() < 0.5f ? "attack1" : "attack2", 0.06f, 1.2f, restart: true);
+        _squash = 1f;
+        _sw?.HitJiggle();
+    }
 
     public void Hit(float dmg, bool crit, Vector3 knockDir, float knock, bool weak)
     {
@@ -109,28 +135,34 @@ public partial class Zipzip : Node3D
         Hp -= dmg;
         _flash = 1f;
         _squash = 1f;
-        if (_anim != null && _aHurt != null && _hurtT <= 0) { _anim.Play(_aHurt, 0.05); _hurtT = 0.35f; }
+        _sw?.HitJiggle();
+        if (_rig != null && _hurtT <= 0) { _rig.Play("hit", 0.05f, 1f, restart: true); _hurtT = 0.35f; }
         _knock += knockDir.Normalized() * knock / Mathf.Max(1f, Scale0 * 0.6f);
         Fx.DamageNumber(Center + Vector3.Up * Radius, dmg, crit || weak);
-        if (Hp <= 0) Die();
+        if (Mode == ZipzipMode.Day) DayStartled(); // Zipzip.Day.cs: surusu kacar
+        if (Hp <= 0) Die(knockDir);
     }
 
-    void Die()
+    void Die() => Die(Vector3.Zero);
+
+    void Die(Vector3 knockDir)
     {
         Dead = true;
         if (_target != null) { _target.Claimed = false; _target = null; }
-        // Balon gibi patlar; Maya ve parca sacilir (SANAT-SES §4.5)
+        _dir.OnZipzipKilled(this);
+        // Gunduz avlanan yaratik ragdoll olur; kabarmis olan balon gibi patlar (SANAT-SES §4).
+        if (!Swollen && StartRagdoll(knockDir)) return; // Zipzip.Ragdoll.cs
         Fx.Burst(Center, Palette.MayaTeal, 26, 7f, 0.13f, 0.7f, true, 2f);
         Fx.Burst(Center, Palette.MayaViolet, 14, 5f, 0.1f, 0.6f, true, 2f);
         Fx.Burst(Center, Palette.Ground.Lerp(Palette.Accent, 0.35f), 16, 6f, 0.12f, 0.6f);
         Sfx.Play("pop", Center, 0f);
-        _dir.OnZipzipKilled(this);
         QueueFree();
     }
 
     public override void _Process(double delta)
     {
         float dt = (float)delta;
+        if (TickRagdoll(dt)) return; // Zipzip.Ragdoll.cs
         if (Dead) return;
         _spawnT += dt;
         float slow = FreezeT > 0 ? 0.6f : 1f;
@@ -142,19 +174,27 @@ public partial class Zipzip : Node3D
             if (Dead) return;
         }
         _attackCd -= dt;
+        _attackAnimT -= dt;
+        _hurtT -= dt;
 
         // dogus: yerden fiskirir
         float grow = Mathf.Min(1f, _spawnT / 0.5f);
         float baseScale = Scale0 * (1f - Mathf.Pow(1f - grow, 3f));
 
-        if (Display)
+        if (TickLaunch(dt, baseScale)) return; // Zipzip.Launch.cs: Gidak tekmesiyle havada
+        if (Display || Mode == ZipzipMode.Display)
         {
-            float g0 = Mathf.Min(1f, _spawnT / 0.5f);
-            _body.Scale = Vector3.One * Scale0 * g0;
-            if (_anim != null && _aRun != null && _anim.CurrentAnimation != _aRun) _anim.Play(_aRun);
+            _body.Scale = Vector3.One * Scale0 * grow;
+            if (_hurtT <= 0) _rig?.PlayRepeat(DisplaySlot);
+            _sw?.Tick(dt);
             _sw?.Set(flash: 0f);
             return;
         }
+        bool fenced = false;
+        FenceTick(dt, ref fenced);
+        if (fenced) { TickLook(dt, baseScale, 0f); return; }
+        if (Mode == ZipzipMode.Day) { TickDay(dt, baseScale, slow); return; } // Zipzip.Day.cs
+
         var player = _dir.Player;
         var pos = GlobalPosition;
         // Hedef secimi: kendi ailesinin ekini -> saldirani (GDD 14.3). Oyuncu yakinsa ona dalar.
@@ -169,12 +209,14 @@ public partial class Zipzip : Node3D
 
         Vector3 goal = chasePlayer ? player.GlobalPosition : _target?.GlobalPosition ?? _dir.OcakPos;
         float dist = new Vector2(goal.X - pos.X, goal.Z - pos.Z).Length();
+        bool eating = false;
 
         if (!chasePlayer && _target != null && dist < 0.6f + Radius * 0.8f && _hopT <= 0)
         {
-            // Yeme: kafa sallama
+            // Yeme klibi (kafa sallama)
+            eating = true;
             _eatT += dt * slow;
-            _body.Rotation = new Vector3(Mathf.Sin(_eatT * 18f) * 0.25f, _body.Rotation.Y, 0);
+            if (_rig == null) _body.Rotation = new Vector3(Mathf.Sin(_eatT * 18f) * 0.25f, _body.Rotation.Y, 0);
             if (_eatT >= Def.EatSeconds)
             {
                 _dir.State.Farm.Eat(_target.Plot.X, _target.Plot.Y);
@@ -187,7 +229,7 @@ public partial class Zipzip : Node3D
         {
             _attackCd = 1.3f;
             player.Hurt(Mathf.Round(Def.Damage * _damageMult * (Scale0 > 1.5f ? 1.6f : 1f)), pos);
-            _squash = 1f;
+            PlayAttack();
         }
 
         // Ziplama hareketi
@@ -198,6 +240,8 @@ public partial class Zipzip : Node3D
             var dir = new Vector3(goal.X - pos.X, 0, goal.Z - pos.Z).Normalized();
             float step = Mathf.Min(dist - Radius * 0.5f, Def.Speed * _hopDur * (0.8f + Scale0 * 0.1f));
             _hopTo = _dir.World.Ground(pos + dir * Mathf.Max(0.2f, step));
+            bool blocked = false;
+            FenceHop(pos, ref _hopTo, ref blocked);
             _body.Rotation = new Vector3(0, Mathf.Atan2(dir.X, dir.Z), 0);
         }
         float hopH = 0;
@@ -208,34 +252,34 @@ public partial class Zipzip : Node3D
             var p = _hopFrom.Lerp(_hopTo, k);
             hopH = Mathf.Sin(k * Mathf.Pi) * (0.5f + Scale0 * 0.25f);
             GlobalPosition = p;
-            if (_hopT <= 0) _squash = Mathf.Max(_squash, 0.6f);
+            if (_hopT <= 0) { _squash = Mathf.Max(_squash, 0.6f); _sw?.StepJiggle(); }
         }
         if (_knock.LengthSquared() > 0.001f)
         {
             GlobalPosition = _dir.World.Ground(GlobalPosition + _knock * dt);
             _knock = _knock.Lerp(Vector3.Zero, Mathf.Min(1f, dt * 6f));
         }
-        _body.Position = new Vector3(0, hopH, 0);
+        TickLook(dt, baseScale, hopH);
+        // Klip secimi: vurulunca aci, saldiriyorsa saldiri, yerken yeme, ziplarken kosu, yoksa bekleme.
+        if (_rig != null && _hurtT <= 0 && _attackAnimT <= 0)
+        {
+            string want = eating ? "eat" : _hopT > 0 || _knock.LengthSquared() > 0.5f ? "run" : "idle";
+            _rig.Play(want, 0.15f, (FreezeT > 0 ? 0.6f : 1f) * (want == "run" ? 1.3f : 1f));
+        }
+    }
 
-        // Ezilip esneme (yay) ve isabet parlamasi
+    /// <summary>Ezilip esneme (yay), ziplama yuksekligi, isabet parlamasi, sisme shader'i.</summary>
+    void TickLook(float dt, float baseScale, float hopH)
+    {
+        _body.Position = new Vector3(0, hopH, 0);
         _squash = Mathf.Max(0, _squash - dt * 4f);
         float sq = Mathf.Sin(_squash * Mathf.Pi) * 0.25f;
         _body.Scale = new Vector3(baseScale * (1 + sq), baseScale * (1 - sq), baseScale * (1 + sq));
         _flash = Mathf.Max(0, _flash - dt * 6f);
         _mat?.SetShaderParameter("flash", _flash * 0.8f);
         _mat?.SetShaderParameter("tint", FreezeT > 0 ? new Color(0.7f, 0.85f, 1f) : Colors.White);
+        _sw?.Tick(dt);
         _sw?.Set(flash: _flash * 0.6f);
         _sw?.Tint(FreezeT > 0 ? new Color(0.7f, 0.85f, 1f) : Colors.White);
-        // Klip secimi: vurulunca acı, hareket halinde kosu, yerken bekleme.
-        if (_anim != null)
-        {
-            _hurtT -= dt;
-            if (_hurtT <= 0)
-            {
-                string want = _hopT > 0 || _knock.LengthSquared() > 0.5f ? (_aRun ?? _aIdle) : (_aIdle ?? _aRun);
-                if (want != null && _anim.CurrentAnimation != want) _anim.Play(want, 0.15);
-                _anim.SpeedScale = (FreezeT > 0 ? 0.6f : 1f) * (want == _aRun ? 1.3f : 1f);
-            }
-        }
     }
 }

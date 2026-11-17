@@ -22,11 +22,14 @@ public partial class Hud
     Control _legacy;
     double _now;
 
-    /// <summary>
-    /// Dayaniklilik cubugunun degeri (deger, en cok, tukendi). Oyuncu akisinin Sim'i (GameState.Stamina) birlesince tek
-    /// satirla baglanir; bu dalda dayaniklilik verisi yok, cubuk dolu cizilir (yer tutucu).
-    /// </summary>
+    /// <summary>Dayaniklilik cubugunun degeri (deger, en cok, tukendi): oyuncu akisinin Sim'i (GameState.Stamina).</summary>
     public Func<(float value, float max, bool exhausted)> StaminaSource { get; set; }
+
+    (float, float, bool) ReadStamina()
+    {
+        var s = _d?.State?.Stamina;
+        return s == null ? (1f, 1f, false) : (s.Value, s.Max, s.Exhausted);
+    }
 
     const string BlurShader = @"shader_type canvas_item;
 uniform sampler2D screen_texture : hint_screen_texture, filter_linear_mipmap;
@@ -43,6 +46,7 @@ void fragment() {
     {
         T.Load(_d.Data.Ui);
         AddChild(new UiScaler { Name = "UiScaler" });
+        StaminaSource ??= ReadStamina; // eski ince cubuk (Hud.Stamina.cs) gizli tutucuda; sag alttaki cubuk bunu cizer
 
         // Eski dugumler gizli tutucuya: alanlari ve kendi Visible bayraklari yerinde (MenuOpen, WheelOpen onlara bakar).
         _legacy = new Control { Name = "Legacy", Visible = false, MouseFilter = Control.MouseFilterEnum.Ignore };
@@ -162,13 +166,13 @@ void fragment() {
         if (_promptVerb != null)
         {
             float h = 26, x = cx + pr.Dx, y = cy + pr.Dy;
-            float w = Keycap(_promptKey, x, y, h, T.Ink, _padLast);
+            float w = Keycap(_promptKey, x, y, h, T.Ink, PadDevice);
             float tx = x + w + 9;
             float vw = Text(T.Upper(_promptVerb), tx, y - 1, T.Data.Type.Prompt, T.Ink, true, true, true);
             if (!string.IsNullOrEmpty(_promptObject))
                 Text(_promptObject, tx + vw + 8, y - 1, T.Data.Type.Prompt, T.A(T.Ink, 0.78f), false, true, true);
         }
-        if (_hintT > 0 && !string.IsNullOrEmpty(_hint.Text) && !(_promptVerb != null && _hint.Text.StartsWith("E: ")))
+        if (_hintT > 0 && !string.IsNullOrEmpty(_hint.Text) && !(_promptVerb != null && (_hint.Text.StartsWith("E: ") || _hint.Text.StartsWith(G("{act:interact}")))))
             CentreText(_hint.Text, pr.HintY, T.Data.Type.Body + 2, T.Ink, true, false, true);
     }
 
@@ -185,7 +189,7 @@ void fragment() {
         _promptObject = null;
         if (MenuOpen || _report.Visible || WheelOpen || _d.Player.Down) return;
         var p = _d.Player.GlobalPosition;
-        _promptKey = _padLast ? "X" : "E";
+        _promptKey = KeyText("interact", PadDevice ? "X" : "E");
         var st = _d.Stations.Where(s => s.InReach(p)).OrderBy(s => s.GlobalPosition.DistanceTo(p)).FirstOrDefault();
         if (st != null) { _promptVerb = "Kullan"; _promptObject = st.Def.Name; return; }
         if (_d.Pod != null && _d.Pod.IsRamp && new Vector2(p.X - _d.Pod.PadCenter.X, p.Z - _d.Pod.PadCenter.Z).Length() < 4.5f)

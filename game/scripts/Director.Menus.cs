@@ -24,27 +24,34 @@ public partial class Director
     public void OnProduced(RecipeDef r)
     {
         Events.RaiseProduced(r.Id, r.Out);
-        GD.Print($"PRODUCED {r.Id} civi={State.Backpack.Count("civi")} soup={State.Backpack.Count("sebze_corbasi")} crates={State.Backpack.Count("kargo_kasasi")}");
+        GD.Print($"PRODUCED {r.Id} civi={State.Backpack.Count("civi")} ingot={State.Backpack.Count("copper_ingot")} soup={State.Backpack.Count("sebze_corbasi")}");
     }
 
     // ---------- Menuler (istasyon, canta, satis) ----------
 
     public bool MenuOpen => Hud.MenuOpen;
 
+    /// <summary>Istasyon menusu: tarifler veri sirasiyla (kilitli tarif soluk). Paketleme Tezgahi'nin kendi menusu var (kasa doldurma).</summary>
     public void OpenStationMenu(Station st)
     {
+        if (st.Def.Station == "paketleme") { OpenPackingMenu(st); return; }
         var items = new System.Collections.Generic.List<Hud.MenuItem>();
+        var def = st.Def;
+        string fuelText = def.FuelPerJob > 0 && def.Fuel.Count > 0 ? $" + {def.FuelPerJob} {ItemNames.Of(def.Fuel[0])} (yakıt)" : "";
         foreach (var r in st.Queue.Recipes)
         {
             var rr = r;
-            string cost = string.Join(" + ", r.In.Select(kv => $"{kv.Value} {ItemNames.Of(kv.Key)}"));
-            items.Add(new Hud.MenuItem($"{r.Name} ×{r.Out}   ←   {cost}   ({r.Seconds:0.#} sn)", () => StationQueue.CanAfford(rr, State.Backpack), () =>
+            string cost = r.In.Count == 0 ? "—" : string.Join(" + ", r.In.Select(kv => $"{kv.Value} {ItemNames.Of(kv.Key)}"));
+            string label = st.Queue.IsUnlocked(r)
+                ? $"{r.Name} ×{r.Out}   ←   {cost}{fuelText}   ({r.Seconds:0.#} sn){(r.Load ? "  · dünyaya çıkar" : "")}"
+                : $"{r.Name}   (kilitli: ilk {ItemNames.Of(r.UnlockOn)} ile açılır)";
+            items.Add(new Hud.MenuItem(label, () => st.Queue.CanMake(rr, State.Backpack), () =>
             {
                 if (st.Queue.Enqueue(rr, State.Backpack)) { Sfx.Play("place", st.GlobalPosition, -4f); GD.Print($"QUEUED {rr.Id}"); }
-                else Hud.Hint("Malzeme yetmiyor ya da istasyon başka bir şey üretiyor", 1.5f);
+                else Hud.Hint(!st.Queue.IsUnlocked(rr) ? "Tarif kilitli" : !st.Queue.HasFuel(rr, State.Backpack) ? "Yakıt yok: Odun" : "Malzeme yetmiyor ya da istasyon başka bir şey üretiyor", 1.5f);
             }));
         }
-        Hud.ShowMenu(st.Def.Name, items, "1–9: sıraya ekle  ·  E / Esc: kapat");
+        Hud.ShowMenu(st.Def.Name, items, "{act:menu_pick}: sıraya ekle  ·  {act:interact} / {act:ui_cancel}: kapat");
     }
 
     /// <summary>Kemer yuvasini kullanir: yemekse yer, degilse ne oldugunu soyler.</summary>
@@ -75,22 +82,8 @@ public partial class Director
     /// <summary>Tab: envanter izgarasi (Hud.Inventory.cs; canta, kemer, 3 yemek yuvasi; ikinci sayfa Defter).</summary>
     public void OpenBagMenu() => Hud.OpenInventory();
 
-    public void OpenSellMenu()
-    {
-        var items = new System.Collections.Generic.List<Hud.MenuItem>();
-        foreach (var kv in Data.Tool.Prices)
-        {
-            var id = kv.Key;
-            int have = State.Backpack.Count(id);
-            items.Add(new Hud.MenuItem($"Sat: {ItemNames.Of(id)} ×{have}   ({kv.Value} Kredi/adet)", () => State.Backpack.Count(id) > 0, () =>
-            {
-                int n = State.Backpack.Count(id);
-                int v = State.SellItem(id, n);
-                if (v > 0) { Events.RaiseSold(id, n, v); Pod.Launch(); Sfx.Play("rocket", Pod.PadCenter, 0f); Hud.Big($"+{v} Kredi", Palette.Warning, 2.5f); GD.Print($"SOLD {id} x{n} +{v}"); OpenSellMenu(); }
-            }));
-        }
-        Hud.ShowMenu("Kargo Rampası · Kooperatif alım fiyatları", items, "Kabarık ürünleri Çekim başlığıyla rampaya taşı.  ·  E / Esc: kapat");
-    }
+    /// <summary>Kargo Rampasi (rampanin dibinde E). Mal cantadan satilmaz: kasayla ya da kabarik urun olarak gider (GDD 13).</summary>
+    public void OpenSellMenu() => OpenRampMenu(); // Director.Economy.cs
 
     public void PlaceOcak(Vector3 at)
     {
@@ -106,9 +99,22 @@ public partial class Director
 
     // ---------- Satis ----------
 
+    /// <summary>
+    /// Cekim'le rampaya birakilan yuk nesnesi (Capa.Cekim). Kargo kasasi rampaya yuklenir (E ile gonderilir);
+    /// kabarik urun bos rampadan tek basina hemen firlatilir. Rampada kasa varken kabarik urun alinmaz (GDD 13).
+    /// </summary>
     public void SellCrop(SwollenCrop s)
     {
         if (s.Sold) return;
+        if (s is CargoCrateNode crate) { LoadCrateOnRamp(crate); return; }
+        if (!State.Cargo.CanShipSwollen)
+        {
+            Hud.Hint("Rampada kasa var: önce kasaları gönder", 2f);
+            var g = World.Ground(Pod.PadCenter + (Player.GlobalPosition - Pod.PadCenter).Normalized() * 3.5f);
+            s.CreateTween().TweenProperty(s, "global_position", g + Vector3.Up * s.Radius * 0.6f, 0.35f);
+            return;
+        }
+        bool instant = !State.Cargo.FirstSaleDone && Data.Economy.Ramp.FirstSaleInstant;
         s.Sold = true;
         int v = State.Sell(s.CropId, s.Size);
         var tw = s.CreateTween();
@@ -117,9 +123,9 @@ public partial class Director
         tw.TweenCallback(Callable.From(s.QueueFree));
         Pod.Launch();
         Sfx.Play("rocket", Pod.PadCenter, 2f);
-        Hud.Big($"+{v} Kredi", Palette.Warning, 3.5f);
+        if (!instant) Hud.Big($"Gönderildi: {v} Kredi ({Data.Economy.Ramp.PayoutSeconds:0} sn)", Palette.Warning, 3.5f);
         Fx.Burst(Pod.PadCenter + Vector3.Up, Palette.Warning, 40, 8f, 0.12f, 1.2f, true, 6f);
-        GD.Print($"SOLD {s.CropId} {s.Size.Id} +{v} credits={State.Credits}");
+        GD.Print($"SOLD {s.CropId} {s.Size.Id} +{v} credits={State.Credits} instant={instant}");
         Events.RaiseCropShipped(s.CropId, s.Size.Id, v);
     }
 }

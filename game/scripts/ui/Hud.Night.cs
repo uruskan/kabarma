@@ -142,7 +142,7 @@ public partial class Hud
             float x = x0 + i * (cw + gap), yy = y + (1 - appear) * 24;
             Rect(x, yy, cw, ch, T.A(T.Dialog, appear));
             Rect(x, yy, cw, 4, T.A(rc, appear));
-            Keycap(i < OfferKeys.Length ? OfferKeys[i] : "", x + 12, yy + 14, 24, T.A(T.Ink, appear));
+            Keycap(KeyText($"card_{i + 1}", i < OfferKeys.Length ? OfferKeys[i] : ""), x + 12, yy + 14, 24, T.A(T.Ink, appear), PadDevice);
             TextIn(T.Upper(RarityName(card.Rarity)), x, yy + 18, cw - 12, T.Data.Type.Caption, T.A(rc, appear), HorizontalAlignment.Right, true, true);
             Text(Fit(T.Upper(card.Name), cw - 24, T.Data.Type.Title, true, true), x + 12, yy + 44, T.Data.Type.Title, T.A(T.Ink, appear), true, true);
             var lines = WrapLines(card.Text, cw - 24, 16);

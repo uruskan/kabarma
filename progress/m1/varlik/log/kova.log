@@ -1,0 +1,45 @@
+00:16:19 | INFO: Data are loaded, start creating Blender stuff
+00:16:19 | INFO: Blender create Mesh node meshes[0]
+00:16:23 | INFO: glTF import finished in 4.10s
+C:\Users\uruskan\Documents\GitHub\kabarma\.claude\worktrees\m1-varlik-72a21b\pipeline\clean_asset.py:760: DeprecationWarning: 'Material.use_nodes' is expected to be removed in Blender 6.0
+  if m and m.use_nodes:
+C:\Users\uruskan\Documents\GitHub\kabarma\.claude\worktrees\m1-varlik-72a21b\pipeline\clean_asset.py:145: DeprecationWarning: 'Material.use_nodes' is expected to be removed in Blender 6.0
+  if not mat or not mat.use_nodes:
+00:51.219  render           | Saved: 'C:\Users\uruskan\Documents\GitHub\kabarma\.claude\worktrees\m1-varlik-72a21b\progress\m1\varlik\render\kova\kova_0.png'
+00:51.266  render           | Saved: 'C:\Users\uruskan\Documents\GitHub\kabarma\.claude\worktrees\m1-varlik-72a21b\progress\m1\varlik\render\kova\kova_1.png'
+00:51.328  render           | Saved: 'C:\Users\uruskan\Documents\GitHub\kabarma\.claude\worktrees\m1-varlik-72a21b\progress\m1\varlik\render\kova\kova_2.png'
+00:51.391  render           | Saved: 'C:\Users\uruskan\Documents\GitHub\kabarma\.claude\worktrees\m1-varlik-72a21b\progress\m1\varlik\render\kova\kova_3.png'
+00:51.453  render           | Saved: 'C:\Users\uruskan\Documents\GitHub\kabarma\.claude\worktrees\m1-varlik-72a21b\progress\m1\varlik\render\kova\kova_kalinlik_0.png'
+00:51.516  render           | Saved: 'C:\Users\uruskan\Documents\GitHub\kabarma\.claude\worktrees\m1-varlik-72a21b\progress\m1\varlik\render\kova\kova_kalinlik_1.png'
+00:51.531  render           | Saved: 'C:\Users\uruskan\Documents\GitHub\kabarma\.claude\worktrees\m1-varlik-72a21b\progress\m1\varlik\render\kova\kova_silhouette64.png'
+00:51.547  render           | Saved: 'C:\Users\uruskan\Documents\GitHub\kabarma\.claude\worktrees\m1-varlik-72a21b\game\assets\models\kova\kova_icon.png'
+INFO Draco is available, use library at C:\Program Files\Blender Foundation\Blender 5.3\blender.shared\bf_intern_draco_bridge.dll
+INFO MeshOptimizer is available, use library at C:\Program Files\Blender Foundation\Blender 5.3\blender.shared\bf_intern_meshopt_bridge.dll
+00:17:08 | INFO: Starting glTF 2.0 export
+00:17:08 | INFO: Extracting primitive: meshes[0]
+00:17:08 | WARNING: More than one shader node tex image used for a texture. The resulting glTF sampler will behave like the first shader node tex image.
+00:17:08 | INFO: Primitives created: 1
+00:17:08 | INFO: Finished glTF 2.0 export in 0.07371711730957031 s
+
+00:17:08 | INFO: Starting glTF 2.0 export
+00:17:08 | INFO: Extracting primitive: kova_lod1
+00:17:08 | WARNING: More than one shader node tex image used for a texture. The resulting glTF sampler will behave like the first shader node tex image.
+00:17:08 | INFO: Primitives created: 1
+00:17:08 | INFO: Finished glTF 2.0 export in 0.011624336242675781 s
+
+00:17:08 | INFO: Starting glTF 2.0 export
+00:17:08 | INFO: Extracting primitive: kova_lod2
+00:17:08 | WARNING: More than one shader node tex image used for a texture. The resulting glTF sampler will behave like the first shader node tex image.
+00:17:08 | INFO: Primitives created: 1
+00:17:08 | INFO: Finished glTF 2.0 export in 0.007718324661254883 s
+00:52.344  render           | Saved: 'C:\Users\uruskan\Documents\GitHub\kabarma\.claude\worktrees\m1-varlik-72a21b\progress\m1\varlik\kart\kova.png.text.png'
+
+PIPELINE_REPORT {"name": "kova", "tris_in": 1941800, "tris": 2846, "size_m": [0.79, 0.392, 0.55], "parts": 1, "pass_scripted": true}
+CHECK 1_texture PASS {"base_color_maps": 1, "max_tex": 1024}
+CHECK 2_polygon PASS {"value": 2846, "budget": 6000, "class": "esya_kaya", "below_min": false}
+CHECK 3_thickness PASS {"thin_share": 0.0038, "allowed_share": 0.02, "limit_m": 0.0474, "stick_min_t_m": 0.0001, "plate_share": 0.0528, "faces_measured": 2842, "old_bbox_min_ratio": 0.496, "note": "cubuk/diken alani (iki yonde ince) / yuzey; levha payi (tek yonde ince: yaprak, kapak) bilgi; eski olcu: parca kutusunun en dar boyutu / en uzun kenar"}
+CHECK 4_integrity PASS {"non_manifold_edges": 0, "boundary_edges": 0, "inverted_faces": 0, "inverted_note": "ters sarimli kenar sayisi", "negative_volume_parts": 0, "floating_parts": [], "loose_parts": 1}
+CHECK 5_scale_axis PASS {"height": 0.55, "target": 0.55, "base_z": 0.0, "center_xy": [0.0, 0.0], "forward": "+X", "note": "on yon betikle olculemez; bildirilen eksen yazilir"}
+Blender 5.3.0 (hash 02f0899d78e3 built 2026-11-10 01:33:43)
+
+Blender quit

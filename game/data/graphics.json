@@ -1,0 +1,38 @@
+{
+  "_not": "Grafik on ayarlari (SANAT-SES 8.3) ve M1 performans olcumu (TEKNIK §10). Oyun varsayilani 'default'; dikey esitleme ve kare siniri yalniz olcumde ya da --preset ile uygulanir.",
+  "default": "yuksek",
+  "presets": {
+    "yuksek": {
+      "name": "Yüksek",
+      "width": 1920,
+      "height": 1080,
+      "scale": 1.0,
+      "msaa": 2,
+      "shadowSplits": 2,
+      "shadowAtlas": 4096,
+      "shadowDistance": 150,
+      "ssao": true,
+      "ssaoHalf": true,
+      "glow": true,
+      "sdfgi": false,
+      "ssil": false,
+      "ssr": false,
+      "volumetricFog": false,
+      "distanceFog": true,
+      "heightFog": true,
+      "plantDensity": 1.0,
+      "grassRadius": 40,
+      "vsync": false,
+      "maxFps": 0
+    }
+  },
+  "perf": {
+    "_not": "TEKNIK §10 M1 olcumu: dort yer iminin her birinde ogle 60 sn ve ilk gecenin son dalgasi; her birinde ortalama kare suresi <= 11,1 ms. Cizim cagrisi butcesi 2.000.",
+    "preset": "yuksek",
+    "warmupSeconds": 3,
+    "noonSeconds": 60,
+    "nightSeconds": 70,
+    "budgetMs": 11.1,
+    "drawCallBudget": 2000
+  }
+}

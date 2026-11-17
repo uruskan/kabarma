@@ -1,0 +1,12 @@
+﻿agac: exit=0 52 sn
+kaya: exit=0 54 sn
+kova: exit=0 53 sn
+salgam: exit=0 7 sn
+tezgah: exit=0 6 sn
+tas_firin: exit=0 5 sn
+el_arabasi: exit=0 9 sn
+ocak: exit=0 10 sn
+kapsul: exit=0 8 sn
+paketleme: exit=0 8 sn
+capa: exit=0 5 sn
+assets.json: {'yer_tutucu': 34}

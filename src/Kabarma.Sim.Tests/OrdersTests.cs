@@ -47,7 +47,7 @@ public class OrdersTests
         var item = d.Tool.Prices.Keys.First();
         s.Backpack.Add(item, 1);
         Assert.False(s.Orders.Chain("ciraklik")!.StepDone(2));
-        Assert.True(s.SellItem(item, 1) > 0);
+        Assert.True(SellByCrate(s, item, 1) > 0);
         Assert.True(s.Orders.Chain("ciraklik")!.StepDone(2));
     }
 
@@ -89,7 +89,7 @@ public class OrdersTests
         CardTests.RunToDawn(n, d);
         var item = d.Tool.Prices.Keys.First();
         s.Backpack.Add(item, 2);
-        int sold = s.SellItem(item, 2);
+        int sold = SellByCrate(s, item, 2);
 
         var r = s.BuildReport();
         Assert.Equal(1, r.NightNumber);
@@ -137,6 +137,20 @@ public class OrdersTests
 
         CardTests.RunToDawn(n, d);
         Assert.Equal(boosted, s.BuildReport().PeakGosteri, 3);
+    }
+
+    /// <summary>
+    /// Satis ekonomi akisinin yolundan (entegrasyon: GameState.SellItem kaldirildi, GDD 13): kasaya koy, kapat, rampaya
+    /// yukle, firlat; odeme ilk satista aninda, sonrakiler gecikmeli (Cargo.Tick). Donen: vaat edilen Kredi.
+    /// </summary>
+    static int SellByCrate(GameState s, string item, int n)
+    {
+        s.Cargo.Pack(s.Backpack, item, n);
+        s.Cargo.Close();
+        s.Cargo.LoadCrate(s.Cargo.TakeClosed()!);
+        int v = s.Cargo.LaunchCrates();
+        s.Cargo.Tick(s.Data.Economy.Ramp.PayoutSeconds + 1f);
+        return v;
     }
 
     /// <summary>n kareyi ekip olgunlastirir ve kabartir (x0 sutunundan baslayarak).</summary>

@@ -1,6 +1,9 @@
 {
-  "_not": "Yemekler: ek can ve yenilenme, belirli bir sure.",
+  "_not": "Yemekler (ICERIK §15, GDD §3.3). maxHp ve stamina: yemegin suresi boyunca azami Can ve Dayaniklilik'a eklenir. regen: can/sn (Sebze Corbasi'nin 'can yenilenmesi'). seconds: 15-25 dk araligi; yemek basina sure belgede yok (varsayilan). foodSlots: uc yemek yuvasi; ayni yemek iki yuvaya konmaz.",
+  "foodSlots": 3,
   "foods": [
-    { "id": "sebze_corbasi", "name": "Sebze Çorbası", "maxHp": 25, "regen": 1.0, "seconds": 300 }
+    { "id": "kozde_salgam", "name": "Közde Şalgam", "maxHp": 15, "stamina": 10, "regen": 0, "seconds": 900 },
+    { "id": "haslanmis_yumurta", "name": "Haşlanmış Yumurta", "maxHp": 10, "stamina": 20, "regen": 0, "seconds": 900 },
+    { "id": "sebze_corbasi", "name": "Sebze Çorbası", "maxHp": 25, "stamina": 10, "regen": 1.0, "seconds": 1200 }
   ]
 }

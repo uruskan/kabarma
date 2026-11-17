@@ -1,0 +1,126 @@
+{
+  "_not": "M1 ses paketi uretim istegi (pipeline/eleven.py). Sahibin onayi: URETIM §6 M1 kararlari, ElevenLabs M1 ses paketi. Istemler URETIM §2.2 H.1: kaynak, malzeme, mesafe, sure. Arayuz grubu (5 ses) pipeline/synth_ui.py ile sentezlendi: kapali (enabled false).",
+  "audioData": "game/data/audio.json",
+  "outputs": {
+    "sfx": "game/assets/audio/sfx/{id}_{n}.mp3",
+    "music": "game/assets/audio/music/{file}",
+    "voice": "game/assets/audio/voice/{lang}/{line}.mp3",
+    "voiceCandidates": "progress/m1/ses/suna_adaylari/aday_{n}.mp3"
+  },
+  "sfx": {
+    "variants": 3,
+    "promptInfluence": 0.45,
+    "style": "Stylized cozy sci-fi farming game on the moon, warm and slightly comedic, clean close recording, no music, no speech.",
+    "sounds": [
+      { "id": "kazma_isini", "seconds": 3.0, "loop": true, "prompt": "Continuous mining beam hum from a handheld farming tool: warm electric buzz with gentle pulsing and faint crackle, close, seamless loop." },
+      { "id": "kaya_kemirme", "seconds": 3.0, "loop": true, "variantPrompts": [
+        "Energy beam gnawing into solid stone: gritty grinding and crumbling, small pebbles trickling, close, seamless loop.",
+        "Energy beam gnawing into wet clay: soft squelchy scraping and dull crumbling, close, seamless loop.",
+        "Energy beam gnawing into copper ore rock: metallic grinding with bright scraping overtones, close, seamless loop." ] },
+      { "id": "parca_emilis", "seconds": 0.5, "prompt": "Tiny cartoon suction 'pit' as a small stone fragment is vacuumed into a backpack, soft and satisfying, very short." },
+      { "id": "bicme_supurme", "seconds": 0.6, "prompt": "Quick airy whoosh of a wide energy scythe sweeping through grass, soft electric shimmer." },
+      { "id": "bitki_darbe", "seconds": 0.5, "variantPrompts": [
+        "Energy blade striking a tree trunk: solid wooden thock with a few wood chips.",
+        "Energy blade snapping through a bush: twigs crack and leaves rustle.",
+        "Energy blade cutting tall grass: soft swishy snip." ] },
+      { "id": "cekim_isini", "seconds": 3.0, "loop": true, "prompt": "Tractor beam holding a heavy object: low warbling magnetic hum with slow wobble, warm analog sci-fi, seamless loop." },
+      { "id": "firlatma", "seconds": 0.7, "prompt": "Tractor beam launching an object: rising zip followed by a soft whoomp of release." },
+      { "id": "toprak_surme", "seconds": 0.6, "prompt": "Soil being tilled by a tool: crunchy dirt turning over, short earthy scrape." },
+      { "id": "sulama", "seconds": 3.0, "loop": true, "prompt": "Steady water spray from a handheld nozzle hitting soil and leaves, even hiss, seamless loop." },
+
+      { "id": "atis_tirpan", "seconds": 0.5, "prompt": "Energy scythe projectile shot: punchy swoosh with a bright synth zap, cartoonish, not violent." },
+      { "id": "atis_civi", "seconds": 0.5, "prompt": "Pneumatic nail gun shot: punchy thunk and metallic clack, close." },
+      { "id": "isabet_kesme", "seconds": 0.5, "prompt": "Energy blade slicing into a rubbery inflated creature: squishy thwack with a short zing." },
+      { "id": "isabet_civi", "seconds": 0.5, "prompt": "Nail embedding into thick rubber: dull thud with a springy twang." },
+      { "id": "isabet_kritik", "seconds": 0.6, "prompt": "Critical hit on a rubbery creature: heavy punchy impact topped with a bright metallic ding." },
+      { "id": "isabet_zayif", "seconds": 0.6, "prompt": "Hitting a weak spot on an inflated creature: hollow rubber bonk with a satisfying deflating squeak." },
+      { "id": "parca_sacilma", "seconds": 0.7, "prompt": "Small rubber bits and glittering crumbs scattering and pattering on grass." },
+      { "id": "cephane_bitti", "seconds": 0.5, "prompt": "Empty nail gun dry-fire click, small and dull." },
+
+      { "id": "adim_ot", "seconds": 0.5, "prompt": "Single footstep of a small boot on dry meadow grass, soft crunch." },
+      { "id": "adim_toprak", "seconds": 0.5, "prompt": "Single footstep of a small boot on soft tilled soil, dull earthy thud." },
+      { "id": "adim_tahta", "seconds": 0.5, "prompt": "Single footstep of a small boot on a wooden plank floor, hollow knock." },
+      { "id": "inis", "seconds": 0.6, "variantPrompts": [
+        "Landing on grass after a jump: soft body thump.",
+        "Landing on grass after a jump: firm thump with a little boot scuff.",
+        "Heavy body flopping onto grassy ground: cartoon thud with a rubbery bounce." ] },
+      { "id": "oyuncu_aci", "seconds": 0.5, "prompt": "Short muffled cartoon 'oof' of a small adult character inside a helmet, not a scream." },
+      { "id": "yeme", "seconds": 0.8, "prompt": "Quick crunchy bite and munching through a helmet visor, cartoonish and satisfied." },
+
+      { "id": "gidak_gidaklama", "seconds": 1.0, "variantPrompts": [
+        "Plump alien hen clucking two bubbly clucks with a rubbery squeak, comedic.",
+        "Plump alien hen clucking three quick curious clucks, comedic.",
+        "Plump alien hen startled squawk with flapping wings, comedic." ] },
+      { "id": "gidak_yumurtlama", "seconds": 1.0, "prompt": "Alien hen laying an egg: strained cluck then a soft plop of an egg onto straw." },
+      { "id": "gidak_tekme", "seconds": 0.6, "prompt": "Giant inflated hen kicking a rubber ball creature: big rubbery boing and thump." },
+      { "id": "zipzip_sicrama", "seconds": 0.5, "prompt": "Small rubbery hopping creature landing a bounce: light springy boing." },
+      { "id": "zipzip_kemirme", "seconds": 0.8, "prompt": "Small creature nibbling rapidly on a turnip: fast crunchy nibbles." },
+      { "id": "zipzip_aci", "seconds": 0.5, "prompt": "Small rubber creature squeak of pain, cartoonish, short." },
+      { "id": "kabarmis_patlama", "seconds": 0.8, "prompt": "Inflated balloon-like creature popping: big rubber pop with a puff of air and glittery crumbs." },
+
+      { "id": "tohum_ekme", "seconds": 0.5, "prompt": "Seed dropped into soft soil: tiny pat and sprinkle." },
+      { "id": "filiz_cikisi", "seconds": 0.8, "prompt": "Sprout popping out of soil: soft upward bloop with earthy rustle, subtle magic." },
+      { "id": "hasat_cekme", "seconds": 0.7, "prompt": "Pulling a turnip out of the ground: roots tearing and a satisfying pluck." },
+      { "id": "kabarik_gumleme", "seconds": 0.8, "prompt": "Giant inflated turnip dropped on the ground: deep rubbery thud with a small bounce." },
+
+      { "id": "parca_yerlesme", "seconds": 0.6, "prompt": "Wooden building piece snapping into place: solid wooden clack and click." },
+      { "id": "sokum", "seconds": 0.7, "prompt": "Wooden piece being dismantled: creaky pull and boards clattering down lightly." },
+      { "id": "parca_darbe", "seconds": 0.5, "prompt": "Small creature ramming a wooden fence: dull knock with a wood creak." },
+      { "id": "ahsap_kapi", "seconds": 0.8, "variantPrompts": [
+        "Wooden door creaking open.",
+        "Wooden door swinging shut with a soft clunk.",
+        "Small wooden lid of a chest opening and closing with a clack." ] },
+
+      { "id": "ocak_yanma", "seconds": 2.0, "prompt": "Stone hearth fire igniting with a whoosh, then a soft rising magical shimmer like a dome of light spreading out." },
+      { "id": "ates_citirti", "seconds": 5.0, "loop": true, "prompt": "Small crackling wood fire, close, steady, seamless loop." },
+      { "id": "tezgah_calisma", "seconds": 4.0, "loop": true, "prompt": "Workbench crafting: rhythmic tinkering, small hammer taps and saw scrapes, steady, seamless loop." },
+      { "id": "firin_kapagi", "seconds": 0.8, "prompt": "Heavy stone oven door opening: iron hinge creak and stone scrape." },
+      { "id": "kargo_roketi", "seconds": 2.0, "prompt": "Small cargo rocket launching with a whoosh, followed by a cheerful cash register ka-ching." },
+      { "id": "el_arabasi_teker", "seconds": 3.0, "loop": true, "prompt": "Wooden wheelbarrow wheel rolling over dirt with a slight squeak, steady, seamless loop." },
+
+      { "id": "siren", "seconds": 3.0, "prompt": "Retro farm cooperative alarm siren rising and falling, analog, slightly comedic." },
+      { "id": "gokyuzu_dalga", "seconds": 8.0, "loop": true, "prompt": "Eerie shimmering night sky: deep swelling drone with sparkling high harmonics moving like slow waves, seamless loop." },
+      { "id": "sisme", "seconds": 1.2, "prompt": "Something inflating rapidly like a balloon: rubbery stretching squeal rising in pitch." },
+      { "id": "dalga_girisi", "seconds": 2.0, "prompt": "Enemy wave arriving: deep drum hit with a rising swoosh and distant bouncing creatures." },
+      { "id": "safak_sonme", "seconds": 2.5, "prompt": "Everything deflating at dawn: long airy hiss and descending rubbery whine that settles calm." },
+
+      { "id": "seviye_atlama", "seconds": 1.0, "prompt": "Level up: electric crackle burst with a bright rising chime, energetic." },
+      { "id": "kart_secimi", "seconds": 0.6, "prompt": "Card selected: paper card flick with a small magical sparkle." },
+      { "id": "yanik_tutusma", "seconds": 0.7, "prompt": "Small flame igniting on a creature: quick fwoosh and crackle." },
+      { "id": "donma_citirti", "seconds": 0.8, "prompt": "Freezing: crystalline ice crackle and tinkle." },
+
+      { "id": "ui_odak", "seconds": 0.5, "enabled": false, "prompt": "Soft short UI focus tick, glassy wood." },
+      { "id": "ui_onay", "seconds": 0.5, "enabled": false, "prompt": "Warm two-note rising UI confirm chime." },
+      { "id": "ui_hata", "seconds": 0.5, "enabled": false, "prompt": "Low soft double bonk UI error." },
+      { "id": "ui_baslik_carki", "seconds": 0.5, "enabled": false, "prompt": "Mechanical ratchet click of a selection wheel." },
+      { "id": "telsiz_mandali", "seconds": 0.5, "enabled": false, "prompt": "Walkie-talkie push-to-talk click with a short squelch." },
+
+      { "id": "ortam_cayir_gunduz", "seconds": 20.0, "loop": true, "prompt": "Calm alien meadow in daytime: soft wind through tall grass, distant gentle birds and insects, peaceful, seamless loop." },
+      { "id": "ortam_gol_kiyisi", "seconds": 20.0, "loop": true, "prompt": "Quiet lakeshore: gentle water lapping, soft breeze, distant frogs, seamless loop." }
+    ]
+  },
+  "music": {
+    "_not": "SANAT-SES §10.2 'uzay turkusu'. Kabarma tek parca uretilir, katman ayristirmayla 3 katmana bolunur (URETIM §2.2 I.2); layers: katman dosyasi -> kok adinda aranan sozcukler (ilk katman eslesmeyenleri de alir).",
+    "tracks": [
+      { "id": "cayir_gunduz", "file": "cayir_gunduz.mp3", "seconds": 180, "stems": false,
+        "prompt": "'Space türkü' daytime meadow theme for a cozy farming game on the moon. Turkish folk instruments, bağlama (saz) and kaval (shepherd's flute) with a soft frame drum, blended with warm analog synth pads. Calm, wide, spacious and sparse, long gentle phrases. D dorian, 84 BPM. Soft intro, two calm sections, natural quiet ending. Instrumental only." },
+      { "id": "kabarma", "file": "kabarma_full.mp3", "seconds": 120, "stems": true,
+        "_layersNot": "Yogunluk sirasi: 1 bas (alarm), 2 + davul, 3 + ezgi ve sentez (zurna, baglama, arpej 'other' kokunde). 18 Kasim ayristirmasi: bass, drums, other sesli; guitar, piano, vocals bos. Bos kok katmana girmez; uymayan kok son katmana gider.",
+        "layers": { "kabarma_1.mp3": ["bass"], "kabarma_2.mp3": ["drum", "percussion"], "kabarma_3.mp3": ["other", "lead", "vocal", "piano", "guitar", "synth", "instrument"] },
+        "prompt": "'Space türkü' night battle track for a comedic-heroic farming game: driving Turkish halay dance groove, exactly 120 BPM in 4/4, D minor with hicaz flavour. Davul bass drum and zurna lead melody drive the rhythm, bağlama riffs, punchy analog synth bass and arpeggios. Constant high energy from the first bar to the last, no intro and no outro, so it loops seamlessly; length is an exact number of bars. Instrumental only." }
+    ]
+  },
+  "voice": {
+    "lines": "game/data/scenario.json",
+    "voiceId": null,
+    "design": {
+      "name": "Suna (Kabarma)",
+      "description": "Middle-aged woman, a calm and dry cooperative switchboard operator. Deadpan, never shouts, never laughs; reads even disasters like an official report. Mid-low pitch, precise diction, slight nasal tone, unhurried. Clean studio recording.",
+      "previewText": "Kooperatife hoş geldin, üye 4417. Tarla senin, borç bizim. Gökyüzü dalgalanıyor. Bu normal. Yani, bu ay için normal. Kooperatif bunu not etti."
+    },
+    "settings": { "stability": 0.5, "similarity_boost": 0.75, "style": 0.0, "speed": 0.95 },
+    "backTranscription": true,
+    "minMatch": 0.9,
+    "maxRetriesPerLine": 1
+  }
+}

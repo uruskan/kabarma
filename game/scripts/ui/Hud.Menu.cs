@@ -34,7 +34,7 @@ public partial class Hud
         _menuItems.Clear();
         _menuItems.AddRange(items);
         _menuTitle.Text = title;
-        _menuFoot.Text = footer;
+        _menuFootRaw = footer; _menuFoot.Text = G(footer); // Hud.Controls.cs: aygit degisince yenilenir
         foreach (var c in _menuList.GetChildren()) c.QueueFree();
         for (int i = 0; i < items.Count; i++)
         {

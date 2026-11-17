@@ -1,0 +1,202 @@
+{
+  "name": "gidak_rig",
+  "input": "game/assets/models/gidak/gidak.glb",
+  "height": 0.75,
+  "src_forward": "+x",
+  "weights": "geo",
+  "heat_error": null,
+  "heat_check": {
+    "vertices": 3748,
+    "unweighted": 3748,
+    "region_vertices": 0,
+    "wrong_region": 0,
+    "wrong_ratio": 0.0
+  },
+  "check": {
+    "vertices": 3748,
+    "unweighted": 0,
+    "region_vertices": 1257,
+    "wrong_region": 0,
+    "wrong_ratio": 0.0
+  },
+  "tris": 3544,
+  "bones": {
+    "root": {
+      "head": [
+        0.0,
+        -0.08,
+        0.0
+      ],
+      "tail": [
+        0.0,
+        -0.08,
+        0.09
+      ],
+      "parent": null
+    },
+    "body": {
+      "head": [
+        0.0,
+        -0.08,
+        0.045
+      ],
+      "tail": [
+        0.0,
+        -0.08,
+        0.435
+      ],
+      "parent": "root"
+    },
+    "head": {
+      "head": [
+        0.0,
+        -0.08,
+        0.435
+      ],
+      "tail": [
+        0.0,
+        -0.08,
+        0.645
+      ],
+      "parent": "body"
+    },
+    "comb": {
+      "head": [
+        0.0,
+        -0.047,
+        0.645
+      ],
+      "tail": [
+        0.0,
+        -0.047,
+        0.75
+      ],
+      "parent": "head"
+    },
+    "tail": {
+      "head": [
+        0.0,
+        0.15,
+        0.259
+      ],
+      "tail": [
+        0.0,
+        0.301,
+        0.304
+      ],
+      "parent": "body"
+    },
+    "wing_l": {
+      "head": [
+        0.2,
+        -0.057,
+        0.319
+      ],
+      "tail": [
+        0.312,
+        -0.057,
+        0.236
+      ],
+      "parent": "body"
+    },
+    "thigh_l": {
+      "head": [
+        0.097,
+        0.0,
+        0.06
+      ],
+      "tail": [
+        0.097,
+        0.0,
+        0.0
+      ],
+      "parent": "body"
+    },
+    "shin_l": {
+      "head": [
+        0.097,
+        0.0,
+        0.0
+      ],
+      "tail": [
+        0.097,
+        0.0,
+        0.023
+      ],
+      "parent": "thigh_l"
+    },
+    "foot_l": {
+      "head": [
+        0.097,
+        0.0,
+        0.023
+      ],
+      "tail": [
+        0.097,
+        0.0,
+        0.007
+      ],
+      "parent": "shin_l"
+    },
+    "wing_r": {
+      "head": [
+        -0.2,
+        -0.052,
+        0.317
+      ],
+      "tail": [
+        -0.312,
+        -0.052,
+        0.234
+      ],
+      "parent": "body"
+    },
+    "thigh_r": {
+      "head": [
+        -0.097,
+        0.0,
+        0.06
+      ],
+      "tail": [
+        -0.097,
+        0.0,
+        0.0
+      ],
+      "parent": "body"
+    },
+    "shin_r": {
+      "head": [
+        -0.097,
+        0.0,
+        0.0
+      ],
+      "tail": [
+        -0.097,
+        0.0,
+        0.023
+      ],
+      "parent": "thigh_r"
+    },
+    "foot_r": {
+      "head": [
+        -0.097,
+        0.0,
+        0.023
+      ],
+      "tail": [
+        -0.097,
+        0.0,
+        0.007
+      ],
+      "parent": "shin_r"
+    }
+  },
+  "landmarks": {
+    "body_bottom": 0.0,
+    "head_base": 0.435,
+    "beak_y": -0.301,
+    "W": 0.644,
+    "D": 0.602
+  },
+  "pass": true
+}

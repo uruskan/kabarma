@@ -1,0 +1,41 @@
+# --test=bot --fast=4 --quit_after=800 --mute (2026-11-17, ekonomi dali, commit oncesi): ekonomi zinciri satirlari
+BOT step mine t=1.2
+BOT step ocak t=8.1
+BOT step till t=10.0
+BOT step plant t=13.0
+BOT step water t=18.0
+BOT step grow t=20.7
+BOT step night t=119.0
+BOT step sell t=238.1
+PAID turnip S +120 credits=120
+SOLD turnip S +120 credits=120 instant=True
+BOT step tezgah_kur t=244.9
+PLACED tezgah at (-5, 0, 1.5)
+BOT step hasat t=258.7
+BOT step corba t=260.2
+PLACED ocakbasi at (-9, 0, -1)
+QUEUED sebze_corbasi
+PRODUCED sebze_corbasi civi=40 ingot=0 soup=1
+ATE sebze_corbasi
+BOT step firin_kur t=277.2
+PLACED tas_firin at (-5, 0, -3.5)
+BOT step civi t=299.7
+QUEUED copper_ingot
+PRODUCED copper_ingot civi=40 ingot=1 soup=0
+QUEUED civi
+PRODUCED civi civi=60 ingot=0 soup=0
+BOT step paketle t=320.4
+PLACED paketleme at (-1, 0, 5.5)
+PACKED turnip x26
+QUEUED kargo_kasasi
+CRATE 1 value=390 stacks=1
+PRODUCED kargo_kasasi civi=60 ingot=0 soup=0
+BOT step kasa_sat t=338.8
+RAMP load crate 1 pad=1
+SOLD kargo_kasasi x1 +390 instant=False
+BOT step odun t=343.0
+BOT step yapi t=349.9
+PLACED uyku_tulumu at (-1.5, 0, -3.1999998)
+BOT step end t=365.5
+RESULT ok credits=120 eggs=1 kills=21 cards=3 maya=48 stations=4 harvests=4 t=365.5
+PAID kargo_kasasi x1 +390 credits=510

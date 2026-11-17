@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using Godot;
+using Kabarma.Sim;
 
 namespace Kabarma.Game;
 
@@ -12,8 +13,11 @@ namespace Kabarma.Game;
 ///   --shot_prefix=x  goruntu adlarinin oneki
 ///   --quit_after=N   N oyun saniyesi sonra kapanir (bot bu sure icinde zincirin sonuna varmadiysa cikis kodu 1)
 ///   --mute           ses yok
-///   --test=AD        basliksiz sinama (TEKNIK §11): bot, build, netsync (--role=host|client), swarm.
+///   --test=AD        basliksiz sinama (TEKNIK §11): bot, build, netsync (--role=host|client), swarm,
+///                    input (--device=kbm|pad: botun kararlari sentetik klavye-fare / oyun kolu olayiyla).
 ///                    Sifir olmayan cikis kodu = hata. Eski bayraklar (--bot, --netsync=..., --swarm) de calisir.
+///   --input_user=YOL tus atamalarinin kalici dosyasi (varsayilan user://input.json; --test kosularinda yok)
+///   --botdebug       bot ve girdi surucusu durum satirlari (BOTDBG, INPUTDBG); --aimtrace kare kare nisan izi (AIMTRACE)
 /// Yeni sinama: Tests sozlugune bir satir; sinama dugumu bitince GetTree().Quit(kod) cagirir.
 /// </summary>
 public partial class Main : Node3D
@@ -25,6 +29,8 @@ public partial class Main : Node3D
     string _prefix = "shot";
     float _quitAfter = -1;
     bool _quitting;
+    Controls _controls;
+    InputDevice? _inputDevice;
 
     /// <summary>--test=AD: sinama adi -> calistir. true donerse oyun (Director) kurulmaz.</summary>
     static readonly Dictionary<string, System.Func<Main, bool>> Tests = new()
@@ -33,7 +39,15 @@ public partial class Main : Node3D
         ["build"] = m => { m.AddChild(new BuildTest()); return true; },
         ["netsync"] = m => { if (!Args.ContainsKey("netsync")) Args["netsync"] = Args.TryGetValue("role", out var r) ? r : "host"; m.AddChild(new NetSyncTest()); return true; },
         ["swarm"] = m => { m.AddChild(new SwarmTest()); return true; },
+        ["audio"] = m => { m.AddChild(new AudioTest()); return true; }, // ses akisi: kanallar, 60 ses, muzik durumlari
+        ["world"] = m => { m.AddChild(new WorldTest()); return true; },
+        ["shots"] = m => { Args.TryAdd("preset", "yuksek"); if (!Args.ContainsKey("shots_quick") && !Args.ContainsKey("shots_clip")) Args["bot"] = "1"; m.AddChild(new WorldShots()); return false; },
+        ["perf"] = m => { Args.TryAdd("preset", "yuksek"); if (Args.GetValueOrDefault("perf") == "night") Args["bot"] = "1"; m.AddChild(new PerfProbe()); return false; },
+        ["creatures"] = m => { m.AddChild(new CreatureTest()); return true; },
+        ["latency"] = m => { m.AddChild(new LatencyTest()); return false; }, // his olcutleri: girdi->tepki, vurus duraklamasi
+        ["ekonomi"] = m => { Args["ekonomi"] = "1"; Args["mute"] = "1"; Sfx.Muted = true; return false; }, // Director + EconomyTest (Director.Economy.cs)
         ["gece"] = m => { Args["skip"] = "night"; Args["gecetest"] = "1"; if (!Args.ContainsKey("fast")) Args["fast"] = "6"; return false; }, // GeceHudTest.cs (gecehud)
+        ["input"] = m => { m._inputDevice = InputDriver.ParseDevice(Args.TryGetValue("device", out var d) ? d : "kbm"); if (m._quitAfter <= 0) m._quitAfter = 900; return false; }, // zincir bitince Bot.Hands cikar; bu ust sinir
     };
 
     public override void _Ready()
@@ -64,9 +78,10 @@ public partial class Main : Node3D
         }
         if (Args.ContainsKey("netsync")) { AddChild(new NetSyncTest()); return; }
         if (Args.ContainsKey("swarm")) { AddChild(new SwarmTest()); return; }
-        _dir = new Director { Name = "Director" };
+        _dir = new Director { Name = "Director", Controls = _controls };
         if (Args.TryGetValue("fast", out var f)) _dir.SpeedScale = float.Parse(f, System.Globalization.CultureInfo.InvariantCulture);
         AddChild(_dir);
+        if (_inputDevice is InputDevice dev) _dir.StartInputDriver(dev);
         GD.Print("BOOT Kabarma MVP");
     }
 
@@ -83,44 +98,26 @@ public partial class Main : Node3D
         }
     }
 
+    /// <summary>Kodla klavye baglamasi ekler (eski yol). Yeni eylem input.json'a yazilir; boylece kol baglamasi, glif ve yeniden atama da gelir.</summary>
     static void Key(string action, params Key[] keys)
     {
         if (!InputMap.HasAction(action)) InputMap.AddAction(action);
         foreach (var k in keys) InputMap.ActionAddEvent(action, new InputEventKey { PhysicalKeycode = k });
     }
 
-    static void SetupInput()
+    /// <summary>
+    /// Girdi eslemesi veriden (game/data/input.json): her eylemin klavye-fare ve oyun kolu baglamasi, Controls dugumu
+    /// (yeniden atama, son aygit, glif). Oyuncunun degisiklikleri user://input.json'da; sinamalar (--test=...) o dosyaya
+    /// dokunmaz, yalnizca --input_user=YOL verilirse onu kullanir. Veride olmayan eylem eklemek: input.json'a bir satir.
+    /// </summary>
+    void SetupInput()
     {
-        Key("move_forward", Godot.Key.W, Godot.Key.Up);
-        Key("move_back", Godot.Key.S, Godot.Key.Down);
-        Key("move_left", Godot.Key.A, Godot.Key.Left);
-        Key("move_right", Godot.Key.D, Godot.Key.Right);
-        Key("jump", Godot.Key.Space);
-        Key("sprint", Godot.Key.Shift);
-        Key("interact", Godot.Key.E);
-        Key("bag", Godot.Key.Tab, Godot.Key.I);
-        Key("head_wheel", Godot.Key.Q);
-        Key("build_rotate", Godot.Key.R);
-        if (!InputMap.HasAction("build_next")) InputMap.AddAction("build_next");
-        InputMap.ActionAddEvent("build_next", new InputEventMouseButton { ButtonIndex = MouseButton.WheelDown });
-        InputMap.ActionAddEvent("build_next", new InputEventKey { PhysicalKeycode = Godot.Key.Period });
-        if (!InputMap.HasAction("build_prev")) InputMap.AddAction("build_prev");
-        InputMap.ActionAddEvent("build_prev", new InputEventMouseButton { ButtonIndex = MouseButton.WheelUp });
-        InputMap.ActionAddEvent("build_prev", new InputEventKey { PhysicalKeycode = Godot.Key.Comma });
-        Key("card_1", Godot.Key.Z);
-        Key("card_2", Godot.Key.X);
-        Key("card_3", Godot.Key.C);
-        for (int i = 1; i <= 9; i++) Key($"head_{i}", Godot.Key.Key0 + i);
-        if (!InputMap.HasAction("fire")) InputMap.AddAction("fire");
-        InputMap.ActionAddEvent("fire", new InputEventMouseButton { ButtonIndex = MouseButton.Left });
-        // Oyun kolu: sol cubuk hareket, sag tetik kullan, A zipla
-        InputMap.ActionAddEvent("fire", new InputEventJoypadMotion { Axis = JoyAxis.TriggerRight, AxisValue = 1 });
-        InputMap.ActionAddEvent("jump", new InputEventJoypadButton { ButtonIndex = JoyButton.A });
-        InputMap.ActionAddEvent("interact", new InputEventJoypadButton { ButtonIndex = JoyButton.X });
-        InputMap.ActionAddEvent("move_left", new InputEventJoypadMotion { Axis = JoyAxis.LeftX, AxisValue = -1 });
-        InputMap.ActionAddEvent("move_right", new InputEventJoypadMotion { Axis = JoyAxis.LeftX, AxisValue = 1 });
-        InputMap.ActionAddEvent("move_forward", new InputEventJoypadMotion { Axis = JoyAxis.LeftY, AxisValue = -1 });
-        InputMap.ActionAddEvent("move_back", new InputEventJoypadMotion { Axis = JoyAxis.LeftY, AxisValue = 1 });
+        var data = GameData.LoadInput(f => FileAccess.GetFileAsString("res://data/" + f));
+        string userPath = Args.TryGetValue("input_user", out var u) ? u : Args.ContainsKey("test") ? null : "user://input.json";
+        _controls = new Controls();
+        _controls.Init(data, userPath);
+        AddChild(_controls);
+        foreach (var p in _controls.Problems) GD.PushWarning($"INPUT cozulemeyen baglama {p}");
     }
 
     public override void _Process(double delta)

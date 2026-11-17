@@ -1,0 +1,36 @@
+# ses + ilkgun birlesme denemesi (18 Kasim): detached worktree, ses 6ec5e6a + ilkgun f472a1a, cakisma yok. Sim 45/45, derleme 0 uyari. Bot (--test=bot) suzulmus satirlar: Not: bu kosuda 12.937 'ERROR: Not supported by this display server' satiri var; kaynak ilkgun'un ActText.Label (ActText.cs:26, DisplayServer.KeyboardGetKeycodeFromPhysical, --headless). Ses akisindan degil; bot sonucu ok. ActText.cs bu dalda yok (ilkgun dosyasi).
+MUSIC ready day=no layers=1/3 bar=2.00s
+AUDIO sounds=60 playable=17 variant_files=15 m0_only=12 silent=43 placeholder=60
+AUDIO ok 17/60
+MUSIC Silence -> Day
+SUNA line=giris_1 voice=no
+SUNA line=giris_2 voice=no
+SUNA line=tas_bitti voice=no
+SUNA line=odun_basla voice=no
+SUNA line=ocak_basla voice=no
+SUNA line=ocak_bitti voice=no
+SUNA line=tezgah_basla voice=no
+SUNA line=tarla_basla voice=no
+SUNA line=tarla_bitti voice=no
+SUNA line=agil_basla voice=no
+SUNA line=agil_bitti voice=no
+SUNA line=gidak_basla voice=no
+MUSIC Day -> Silence
+SUNA line=gidak_bitti voice=no
+MUSIC Silence -> Kabarma
+SUNA line=kabarma_basla voice=no
+SUNA line=gece_alarm voice=no
+SUNA line=gece_kabarma voice=no
+SUNA line=gece_gidak voice=no
+SUNA line=gece_dalga voice=no
+SUNA line=gece_kart voice=no
+MUSIC layers=2 bar=22
+MUSIC layers=3 bar=43
+MUSIC Kabarma -> Day
+SUNA line=safak voice=no
+SUNA line=kargo_basla voice=no
+SUNA line=kargo_bitti voice=no
+SUNA line=siradaki_is voice=no
+SUNA line=bakir_kil_basla voice=no
+RESULT ok credits=120 eggs=1 kills=21 cards=3 maya=48 stations=1 harvests=5 t=194.0
+SUNA line=bakir_kil_basla voice=no

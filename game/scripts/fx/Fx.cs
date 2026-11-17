@@ -84,31 +84,36 @@ public static class Fx
         p.GetTree().CreateTimer(life + 0.5f).Timeout += p.QueueFree;
     }
 
-    /// <summary>Hasar sayisi: kritik buyuk ve sari (SANAT-SES §7 Vurus).</summary>
+    /// <summary>Hasar sayisi: kritik buyuk ve sari (SANAT-SES §7 Vurus). Sayilar feel.json damageNumbers; master.damageNumbers 0 kapatir.</summary>
     public static void DamageNumber(Vector3 pos, float dmg, bool crit)
     {
         if (Root == null) return;
+        var feel = (Root as Director)?.Feel.Data;
+        if (feel == null) return;
+        var f = feel.DamageNumbers;
+        float m = feel.Master.DamageNumbers;
+        if (m <= 0f) return;
         var l = new Label3D
         {
             Text = ((int)dmg).ToString(),
             Billboard = BaseMaterial3D.BillboardModeEnum.Enabled,
             NoDepthTest = true,
-            FontSize = (int)((crit ? 96 : 64) * Mathf.Clamp(Feel.DamageNumbers, 0.3f, 2f)),
-            OutlineSize = crit ? 22 : 16,
+            FontSize = Mathf.Max(1, (int)((crit ? f.CritSize : f.Size) * m)),
+            OutlineSize = (int)(crit ? f.CritOutline : f.Outline),
             Modulate = crit ? Palette.Warning : Palette.OffWhite,
             OutlineModulate = Palette.NightDeep,
-            PixelSize = 0.006f,
+            PixelSize = f.PixelSize,
             RenderPriority = 10,
             OutlineRenderPriority = 9,
         };
         Root.AddChild(l);
-        var start = pos + new Vector3((float)GD.RandRange(-0.4, 0.4), 0.4f, (float)GD.RandRange(-0.4, 0.4));
+        var start = pos + new Vector3((float)GD.RandRange(-f.Jitter, f.Jitter), f.Lift, (float)GD.RandRange(-f.Jitter, f.Jitter));
         l.GlobalPosition = start;
         var tw = l.CreateTween();
         tw.SetParallel();
-        tw.TweenProperty(l, "global_position", start + Vector3.Up * 1.4f, 0.8f).SetTrans(Tween.TransitionType.Cubic).SetEase(Tween.EaseType.Out);
-        tw.TweenProperty(l, "scale", Vector3.One * (crit ? 1.3f : 1f), 0.12f).From(Vector3.One * 0.4f);
-        tw.TweenProperty(l, "modulate:a", 0f, 0.35f).SetDelay(0.5f);
+        tw.TweenProperty(l, "global_position", start + Vector3.Up * f.Rise, f.RiseSeconds).SetTrans(Tween.TransitionType.Cubic).SetEase(Tween.EaseType.Out);
+        tw.TweenProperty(l, "scale", Vector3.One * (crit ? f.CritScale : 1f), f.PopSeconds).From(Vector3.One * f.PopFrom);
+        tw.TweenProperty(l, "modulate:a", 0f, f.FadeSeconds).SetDelay(f.FadeDelay);
         tw.Chain().TweenCallback(Callable.From(l.QueueFree));
     }
 

@@ -5,41 +5,60 @@ namespace Kabarma.Game;
 
 /// <summary>
 /// Pofuduk: bacakli yun yumagi (ICERIK §3.1). M0 denemesi #4: Tripo dort ayak iskeleti + hazir yurume klibi,
-/// uretim hattindan gecmis model. Gunduz otlar, Kabarma'da sisip "Yastik" olur (simdilik yalnizca gorunus).
+/// uretim hattindan gecmis model. Bekleme, otlanma ve dinlenme PoseLibrary'nin dort ayak planindan (kodla yazilmis
+/// klipler); Kabarma'da ortak sisme shader'iyla (Swellable) sisip "Yastik" olur (simdilik yalnizca gorunus).
 /// </summary>
 public partial class Pofuduk : Node3D
 {
-    const string ModelPath = "res://assets/models/pofuduk/pofuduk.glb";
     Node3D _visual;
     AnimationPlayer _anim;
     string _walk;
     Director _d;
     Vector3 _home, _to;
     float _t, _wait, _scale = 1f, _targetScale = 1f;
-    readonly float _speed = 1.1f;
+    float _speed = 1.1f;
     public bool Loaded { get; private set; }
+    CreatureRig _rig;
+    Swellable _sw;
+    Kabarma.Sim.CreatureDef _def;
+    string _still = "idle";
+    /// <summary>Sinama: yerinde durur, DisplaySlot klibini oynatir.</summary>
+    public bool Display;
+    public string DisplaySlot = "idle";
 
     public Pofuduk(Director d, Vector3 home) { _d = d; _home = home; }
 
+    /// <summary>Gorunus ve klipler (sinama icin).</summary>
+    public CreatureRig Rig => _rig;
+    public Swellable Look => _sw;
+
     public override void _Ready()
     {
-        _visual = Assets.Load(ModelPath);
-        if (_visual == null) { GD.PrintErr("POFUDUK model yok"); return; }
-        AddChild(_visual);
+        _def = _d.Data.Creature("pofuduk");
+        _speed = _def.Speed;
+        var frame = new Node3D { Name = "Visual" };
+        AddChild(frame);
+        _rig = CreatureRig.Load(_def, _d.Poses, frame);
+        if (_rig == null) { GD.PrintErr("POFUDUK model yok"); return; }
+        _visual = frame;
         Loaded = true;
-        _anim = _visual.FindChildren("*", "AnimationPlayer", true, false).OfType<AnimationPlayer>().FirstOrDefault();
-        if (_anim != null)
+        _anim = _rig.Player;
+        _sw = new Swellable(_rig.Model, _def.Swell);
+        if (_rig.Animated)
         {
-            var names = _anim.GetAnimationList();
-            _walk = names.FirstOrDefault(n => n.ToLower().Contains("walk")) ?? names.FirstOrDefault();
-            if (_walk != null) { _anim.GetAnimation(_walk).LoopMode = Animation.LoopModeEnum.Linear; _anim.Play(_walk); }
-            GD.Print($"POFUDUK anims: {string.Join(",", names)}");
+            _walk = _rig.SlotAnim["walk"];
+            _rig.Play("walk", 0f);
+            GD.Print($"POFUDUK anims: {string.Join(",", _anim.GetAnimationList())}");
         }
         _to = _home;
         GlobalPosition = _d.World.Ground(_home);
     }
 
-    public void Swell(bool on) => _targetScale = on ? 2.4f : 1f;
+    public void Swell(bool on)
+    {
+        _targetScale = on ? (_def?.SwollenScale ?? 2.4f) : 1f;
+        _sw?.Swell(on);
+    }
 
     // Sinama (--animcheck): bacak kemiklerinin yurume sirasinda ne kadar dondugunu olcer.
     Skeleton3D _skel;
@@ -66,23 +85,27 @@ public partial class Pofuduk : Node3D
         float dt = (float)delta;
         _t += dt;
         if (Main.Args.ContainsKey("animcheck")) AnimCheck();
-        _scale = Mathf.Lerp(_scale, _targetScale, Mathf.Min(1f, dt * 2f));
-        float wob = _targetScale > 1f ? 1f + Mathf.Sin(_t * 6f) * 0.03f : 1f;
-        _visual.Scale = new Vector3(_scale * wob, _scale / wob, _scale * wob);
+        // Ortak sisme shader'i: elastik sisme, adim ve darbe esnemesi (SANAT-SES §4).
+        _scale = _sw != null ? Mathf.Lerp(1f, _def.SwollenScale, _sw.Tick(dt)) : Mathf.Lerp(_scale, _targetScale, Mathf.Min(1f, dt * 2f));
+        _visual.Scale = Vector3.One * _scale;
+        if (Display) { _rig?.PlayRepeat(DisplaySlot); return; }
 
         var d = _to - GlobalPosition; d.Y = 0;
         if (d.Length() < 0.3f)
         {
             _wait -= dt;
-            if (_anim != null && _anim.IsPlaying()) _anim.Pause();
+            _rig?.Play(_still, 0.25f); // durunca kodla yazilan klipler: bekleme, otlanma, dinlenme
             if (_wait <= 0)
             {
                 _wait = (float)GD.RandRange(1.5, 4.0);
                 _to = _home + new Vector3((float)GD.RandRange(-6, 6), 0, (float)GD.RandRange(-6, 6));
+                float r = GD.Randf();
+                _still = r < 0.5f ? "idle" : r < 0.85f ? "eat" : "rest";
             }
             return;
         }
-        if (_anim != null && !_anim.IsPlaying() && _walk != null) _anim.Play(_walk);
+        _rig?.Play("walk", 0.2f);
+        if (_t % 0.4f < dt) _sw?.StepJiggle();
         var step = d.Normalized() * Mathf.Min(d.Length(), _speed * dt);
         GlobalPosition = _d.World.Ground(GlobalPosition + step);
         float yaw = Mathf.Atan2(d.X, d.Z);

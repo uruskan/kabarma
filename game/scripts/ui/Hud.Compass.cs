@@ -79,13 +79,8 @@ public partial class Hud
         }
     }
 
-    static readonly System.Text.RegularExpressions.Regex ActToken = new(@"\{act:([a-z0-9_]+)\}");
-
-    /// <summary>
-    /// Adim metni ekranda. ilkgun/girdi dallari adim metnine {act:eylem} yer tutucusu koyar; birlesince bu tek satir
-    /// onlarin genisleticisine (ActText.Plain / Controls.Expand) baglanir. O zamana dek yer tutucu cig gorunmesin: [eylem].
-    /// </summary>
-    static string GoalText(string goal) => ActToken.Replace(goal, "[$1]");
+    /// <summary>Adim metni ekranda: {act:eylem} yer tutucusu girdi akisinin genisleticisiyle aygitin glifine doner.</summary>
+    string GoalText(string goal) => G(goal); // entegrasyon: girdi akisinin genisleticisi (Hud.Controls.cs)
 
     // ---------- Cizim ----------
 

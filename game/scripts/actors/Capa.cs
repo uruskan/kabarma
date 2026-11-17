@@ -27,7 +27,11 @@ public partial class Capa : Node3D
     StandardMaterial3D _beamMat;
     GpuParticles3D _spray;
     float _actCd, _fireCd, _waterTick;
+    float _shotBuffer;   // yari otomatik: beklemede gelen basis (Capa.Weapons.cs)
+    bool _reacted;       // bu karede girdiye gorsel tepki verildi (gecikme olcumu)
     public bool UsingNow { get; private set; }
+    /// <summary>Girise tepki verilen son kare ve baslik (gecikme sinamasi).</summary>
+    public ulong LastReactionFrame { get; private set; }
 
     public void Init(Director d) { _d = d; _t = d.Data.Tool; }
 
@@ -64,11 +68,22 @@ public partial class Capa : Node3D
         AddChild(_spray);
     }
 
+    /// <summary>Baslik takili olabilir mi: is basliklari hep; silahlar CapaState'e gore (Civi Tabancasi tarifle acilir).</summary>
+    public bool IsAvailable(Head h) => h switch
+    {
+        Head.Tirpan => _d.State.Capa.IsUnlocked(_t.Weapon.Id),
+        Head.Civi => _d.State.Capa.IsUnlocked(_t.Nailgun.Id),
+        _ => true,
+    };
+
     public void Select(Head h)
     {
         if (Current == h) return;
+        if (!IsAvailable(h)) { _d.Hud.Hint($"{HeadNames[(int)h]} henüz yok: Tezgâh'ta yapılır", 1.5f); return; }
         if (Current == Head.Cekim && Held != null) Drop();
         Current = h;
+        _shotBuffer = 0f;
+        if (h == Head.Civi) NailLook(_t.Nailgun, _d.Night?.Stats ?? new CombatStats(), F.Source("civi").Trail > 0); // ilk atista kurulmasin
         Sfx.Play("place", null, -14f);
         _d.Hud.OnHead((int)h);
     }
@@ -81,6 +96,10 @@ public partial class Capa : Node3D
         _spray.GlobalPosition = muzzle;
         _actCd -= dt; _fireCd -= dt; _waterTick -= dt;
         _beam.Visible = false;
+        _reacted = false;
+        TickFlash(); // Capa.Feel.cs
+        // F1 paneli acikken tiklama panele gider, aleti tetiklemez.
+        if (_d.FeelPanel?.Open == true) { fire = false; firePressed = false; }
         bool spraying = false;
         bool beaming = false;
         UsingNow = fire || Held != null;
@@ -97,7 +116,7 @@ public partial class Capa : Node3D
             case Head.Kazma:
                 if (fire)
                 {
-                    var rock = (hitNode as Node)?.GetParent() as Rock ?? NearestRockTo(aim, 1.2f);
+                    var rock = (hitNode as Node)?.GetParent() as Rock ?? NearestRockTo(aim, _t.MineAimSlack);
                     float dist = muzzle.DistanceTo(aim);
                     if (rock != null && IsInstanceValid(rock) && dist <= _t.MineRange)
                     {
@@ -109,11 +128,11 @@ public partial class Capa : Node3D
                 }
                 break;
             case Head.Bicme:
-                if (fire && _actCd <= 0) { _actCd = 0.35f; Mow(aim); }
+                if (fire && _actCd <= 0) { _actCd = _t.MowInterval; Mow(aim); }
                 if (fire && muzzle.DistanceTo(aim) <= _t.MowRange) { ShowBeam(muzzle, aim, HeadColors[1], 0.5f); beaming = true; }
                 break;
             case Head.Toprak:
-                if (fire && _actCd <= 0) { _actCd = 0.16f; TillOrPlant(aim); }
+                if (fire && _actCd <= 0) { _actCd = _t.TillInterval; TillOrPlant(aim); }
                 if (fire && muzzle.DistanceTo(aim) <= _t.TillRange) { ShowBeam(muzzle, aim, HeadColors[1], 0.35f); beaming = true; }
                 break;
             case Head.Sulama:
@@ -122,43 +141,37 @@ public partial class Capa : Node3D
                     spraying = true;
                     var dir = (aim - muzzle).Normalized();
                     _spray.GlobalBasis = Basis.LookingAt(dir, Vector3.Up);
-                    if (_waterTick <= 0) { _waterTick = 0.08f; WaterAt(aim); }
+                    if (_waterTick <= 0) { _waterTick = _t.WaterInterval; WaterAt(aim); PushSmallEnemies(muzzle, aim); } // Capa.Itme.cs
                 }
                 break;
             case Head.Cekim:
-                if (firePressed)
-                {
-                    if (Held != null) Drop();
-                    else TryGrab(aim);
-                }
-                if (Held != null)
-                {
-                    var holdAt = muzzle + p.AimDir * (2.2f + Held.Radius) + Vector3.Up * (0.3f + Held.Radius * 0.4f);
-                    var floor = _d.World.HeightAt(holdAt.X, holdAt.Z) + Held.Radius;
-                    if (holdAt.Y < floor) holdAt.Y = floor;
-                    Held.GlobalPosition = Held.GlobalPosition.Lerp(holdAt, Mathf.Min(1f, dt * 8f));
-                    ShowBeam(muzzle, Held.GlobalPosition, HeadColors[3], 0.5f);
-                    beaming = true;
-                    var padP = _d.Pod.PadCenter;
-                    bool atRamp = _d.Pod.IsRamp && (OverPad(Held.GlobalPosition) || new Vector2(p.GlobalPosition.X - padP.X, p.GlobalPosition.Z - padP.Z).Length() < 4.5f);
-                    _d.Hud.Hint(atRamp ? "Bırak: kargoya yükle (sol tık)" : "Kargo Rampası'na taşı");
-                }
+                beaming |= TickCekim(dt, fire, firePressed, aim, muzzle); // Capa.Cekim.cs: tut, tasi, birak, firlat
                 break;
             case Head.Insa:
-                if (_d.Build != null && _d.Build.Handles(CurrentPlaceable)) { _d.Build.Tick(p, aim, firePressed); break; }
-                if (firePressed && _ghost != null && _ghost.Visible) TryPlace();
+                if (_d.Build != null && _d.Build.Handles(CurrentPlaceable))
+                {
+                    int before = _d.Build.System.Pieces.Count;
+                    _d.Build.Tick(p, aim, firePressed);
+                    _reacted |= _d.Build.System.Pieces.Count > before;
+                    break;
+                }
+                if (firePressed && _ghost != null && _ghost.Visible) { TryPlace(); _reacted = true; } // yerlesir ya da "konmaz/yetmiyor" ipucu
                 break;
             case Head.Tirpan:
-                float interval = _d.Data.Tool.Weapon.FireInterval / (_d.Night?.Stats.FireRateMult ?? 1f);
-                if (fire && _fireCd <= 0) { _fireCd = interval; FireTirpan(aim); }
+                TickWeapon(_d.Data.Tool.Weapon, fire, firePressed, dt, () => FireTirpan(aim)); // Capa.Weapons.cs
                 break;
             case Head.Civi:
-                float ni = _d.Data.Tool.Nailgun.FireInterval / (_d.Night?.Stats.FireRateMult ?? 1f);
-                if ((firePressed || fire) && _fireCd <= 0) { _fireCd = ni; FireNail(aim); }
+                TickWeapon(_d.Data.Tool.Nailgun, fire, firePressed, dt, () => FireNail(aim)); // yari otomatik
                 break;
         }
         _spray.Emitting = spraying;
         Sfx.Beam(beaming && Current is Head.Kazma or Head.Cekim);
+        // Girdi -> ilk gorsel tepki (GDD 4: en fazla 50 ms): isin, puskurtme, mermi, tutma, yerlestirme.
+        if (_reacted || ((fire || firePressed) && (beaming || spraying)))
+        {
+            LastReactionFrame = Engine.GetProcessFrames();
+            _d.MarkReaction(HeadId(Current));
+        }
     }
 
     void ShowBeam(Vector3 from, Vector3 to, Color color, float intensity)

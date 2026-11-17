@@ -1,0 +1,4 @@
+﻿PERF night last wave 3 bookmark=us
+PERF us kabarma_gecesi_son_dalga mean=19.04ms fps=52.5 p99=40.54ms draws=334 prims=1746052 frames=2243
+PERF file C:/Users/uruskan/Documents/GitHub/kabarma/.claude/worktrees/m1-dunya-a5c492/game/../progress/m1/dunya/perf/perf_night_us.json gpu=NVIDIA GeForce RTX 2070 SUPER res=1920x1080 vsync=Disabled siblings=13
+PERF RESULT over budget=11.1ms

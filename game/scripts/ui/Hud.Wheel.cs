@@ -107,7 +107,7 @@ public partial class Hud
             WheelText(head.Text, cy + 26, 320, 50, 18, T.Ivory, false);
             if (shown == _wheelCurrent) WheelText("TAKILI", cy + 80, 300, 30, 16, T.Short, true);
         }
-        string key = _padLast ? "LB" : "Q";
+        string key = KeyText("head_wheel", PadDevice ? "LB" : "Q");
         CentreText($"{key} BIRAKILINCA TAKILIR   ·   ESC / SAĞ TIK: VAZGEÇ", T.DesignH - 108, 17, T.Ivory, false, false, true);
     }
 

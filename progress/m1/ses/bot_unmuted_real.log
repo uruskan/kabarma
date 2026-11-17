@@ -1,0 +1,55 @@
+# bot --mute OLMADAN, uretilen gercek dosyalarla (18 Kasim; 180 varyasyon dosyasi, gunduz muzigi, 3 katman ice aktarilmis; dosyalar commit'te yok).
+# Komut: Godot --headless --path game -- --test=bot --fast=4 --quit_after=400
+# Hata satirlari: 3, hepsi cikista: '6 ObjectDB instances were leaked' ve '1 resources still in use'. Neden: calan ses varken cikis (Sfx.StopAll; audio sinamasinda giderildi, bot cikisi baska akisin dosyasinda).
+MUSIC ready day=yes layers=3/3 bar=2.00s
+AUDIO sounds=60 playable=60 variant_files=180 m0_only=0 silent=0 placeholder=60
+AUDIO ok 60/60
+MUSIC Silence -> Day
+SUNA line=intro_1 voice=no
+SUNA line=intro_2 voice=no
+SUNA line=mine_done voice=no
+SUNA line=ocak_start voice=no
+SUNA line=ocak_done voice=no
+SUNA line=till_start voice=no
+SUNA line=till_done voice=no
+SUNA line=plant_start voice=no
+SUNA line=plant_done voice=no
+SUNA line=water_start voice=no
+SUNA line=water_done voice=no
+SUNA line=grow_start voice=no
+MUSIC Day -> Silence
+SUNA line=grow_done voice=no
+SUNA line=night_start voice=no
+MUSIC Silence -> Kabarma
+SUNA line=night_alarm voice=no
+SUNA line=night_swell voice=no
+SUNA line=night_gidak voice=no
+SUNA line=night_wave voice=no
+SUNA line=night_level voice=no
+MUSIC layers=2 bar=6
+MUSIC layers=3 bar=11
+MUSIC Kabarma -> Day
+SUNA line=night_done voice=no
+SUNA line=sell_start voice=no
+SUNA line=sell_done voice=no
+SUNA line=tezgah_kur_done voice=no
+SUNA line=civi_start voice=no
+SUNA line=civi_start voice=no
+SUNA line=civi_done voice=no
+SUNA line=hasat_start voice=no
+SUNA line=hasat_done voice=no
+SUNA line=firin_kur_start voice=no
+SUNA line=firin_kur_done voice=no
+SUNA line=corba_start voice=no
+SUNA line=corba_done voice=no
+SUNA line=paketle_start voice=no
+SUNA line=paketle_done voice=no
+SUNA line=kasa_sat_start voice=no
+SUNA line=kasa_sat_done voice=no
+SUNA line=odun_start voice=no
+SUNA line=odun_done voice=no
+SUNA line=yapi_start voice=no
+SUNA line=yapi_done voice=no
+RESULT ok credits=210 eggs=1 kills=21 cards=3 maya=48 stations=3 harvests=4 t=288.2
+Godot_v4.7.2-stable_mono_win64_console.exe : WARNING: 6 ObjectDB instances were leaked at exit (run with `--verbose` 
+ERROR: 1 resources still in use at exit (run with --verbose for details).

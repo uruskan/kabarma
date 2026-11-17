@@ -1,0 +1,33 @@
+{
+  "_not": "Vizor ifadeleri (SANAT-SES §3: saskin, yorgun, mutlu, korkmus; URETIM §2.2 G: vizor yuzleri kodla cizilir). Visor.cs okur. Olaylar: Player.Hooks.cs. Oncelik: bayilma > uyku > olay sirasi > yorgun > notr. Konusurken agzin ses duzeyiyle oynamasi sesli sohbetle (M2) gelir.",
+  "color": "#EDE6D6",
+  "emission": 1.4,
+  "blinkMin": 2.0,
+  "blinkMax": 5.5,
+  "blinkSeconds": 0.13,
+  "tiredBelow": 0.2,
+  "blend": 10,
+  "expressions": {
+    "notr":    { "eye": "round",  "eyeScale": 1.0,  "open": 1.0,  "mouthCurve": 0.3,  "mouthOpen": 0.0,  "mouthWidth": 0.45 },
+    "mutlu":   { "eye": "happy",  "eyeScale": 1.05, "open": 1.0,  "mouthCurve": 1.0,  "mouthOpen": 0.45, "mouthWidth": 0.7 },
+    "saskin":  { "eye": "wide",   "eyeScale": 1.35, "open": 1.0,  "mouthCurve": 0.0,  "mouthOpen": 0.9,  "mouthWidth": 0.28 },
+    "yorgun":  { "eye": "round",  "eyeScale": 0.95, "open": 0.32, "mouthCurve": -0.35, "mouthOpen": 0.25, "mouthWidth": 0.4 },
+    "korkmus": { "eye": "wide",   "eyeScale": 1.2,  "open": 1.0,  "mouthCurve": -0.9, "mouthOpen": 0.35, "mouthWidth": 0.6, "shake": 1.0 },
+    "uyku":    { "eye": "closed", "eyeScale": 1.0,  "open": 0.0,  "mouthCurve": 0.15, "mouthOpen": 0.12, "mouthWidth": 0.25, "zzz": true },
+    "bayilma": { "eye": "x",      "eyeScale": 1.0,  "open": 1.0,  "mouthCurve": -0.5, "mouthOpen": 0.2,  "mouthWidth": 0.4 },
+    "odak":    { "eye": "round",  "eyeScale": 0.85, "open": 0.62, "mouthCurve": 0.0,  "mouthOpen": 0.0,  "mouthWidth": 0.32 }
+  },
+  "events": {
+    "hasar":      [ { "expr": "korkmus", "seconds": 1.1 } ],
+    "kart":       [ { "expr": "saskin", "seconds": 0.5 }, { "expr": "mutlu", "seconds": 1.6 } ],
+    "satis":      [ { "expr": "mutlu", "seconds": 2.5 } ],
+    "yemek":      [ { "expr": "mutlu", "seconds": 1.8 } ],
+    "uyanma":     [ { "expr": "yorgun", "seconds": 0.8 }, { "expr": "mutlu", "seconds": 1.2 } ],
+    "gece":       [ { "expr": "saskin", "seconds": 0.8 }, { "expr": "korkmus", "seconds": 2.0 } ],
+    "safak":      [ { "expr": "mutlu", "seconds": 2.5 } ],
+    "hasat":      [ { "expr": "mutlu", "seconds": 1.2 } ],
+    "ekim":       [ { "expr": "mutlu", "seconds": 0.8 } ],
+    "kabarik_av": [ { "expr": "mutlu", "seconds": 0.8 } ],
+    "kalkis":     [ { "expr": "yorgun", "seconds": 1.0 }, { "expr": "saskin", "seconds": 0.6 } ]
+  }
+}

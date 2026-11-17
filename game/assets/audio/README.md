@@ -1,4 +1,13 @@
-# Kabarma audio (MVP)
+# Kabarma audio
+
+## M1 layout (ses akışı)
+
+- The sound list is `game/data/audio.json` (SANAT-SES §10.1, M1's 60 sounds). Each sound has 3 variants: `sfx/<id>_<n>.mp3` (n = 1..3). A missing variant falls back to the sound's M0 file (`m0`), otherwise it is silent.
+- Music: `music/cayir_gunduz.mp3` (day), `music/kabarma_1.mp3`, `kabarma_2.mp3`, `kabarma_3.mp3` (Kabarma layers that add up: base, drums, zurna/lead; they start together and loop). Until they exist, layer 1 falls back to `music/kabarma_night.mp3`.
+- Suna: `voice/<lang>/<line_id>.mp3` (`tr`, `en`). Line ids come from `game/data/scenario.json` (see `VoiceLines` in `src/Kabarma.Sim/AudioMix.cs`).
+- Made with code, no credits: `pipeline/synth_ui.py` (the 5 UI sounds). Paid generation: `pipeline/eleven.py` with the request `pipeline/requests/m1_audio.json`. Checks: `pipeline/audio_qc.py`. Sources and licences: `pipeline/licenses.md`.
+
+## MVP files (Genex)
 
 All audio was generated with Genex on 2026-11-17. Total spent: **51 credits** (1 music track at 27, plus 12 SFX at 2 each). Nothing was retried.
 

@@ -1,0 +1,19 @@
+# --test=build (tools/test.ps1 son kosusu): yeni sekiller ve sonuc
+PLACE yarim_duvar      snap   at (-16.00,0.35,-3.50) yaw=-180 span=0
+PLACE alcak_duvar      snap   at (-14.50,0.35,-2.00) yaw=90 span=0
+PLACE cati_kosesi      snap   at (-16.00,3.35,-0.50) yaw=0 span=1
+PLACE rampa            snap   at (-16.00,0.35,-2.00) yaw=-90 span=0
+PLACE ucgen_zemin      snap   at (-18.37,0.35,-2.00) yaw=-30 span=1
+PLACE ucgen_temel      ground at (-23.00,0.15,-2.00) yaw=0 span=0
+PLACE kazik_temel      ground at (-16.00,0.60,-10.00) yaw=0 span=0
+PLACE sur_duvari       ground at (-23.00,-0.96,-11.00) yaw=0 span=0
+PLACE sur_kapisi       snap   at (-20.00,-0.96,-11.00) yaw=0 span=0
+TRY kule_tabani @(-26, -0.9942273, 2): arazi Ã§ok eÄŸimli
+TRY kule_tabani @(-30, -2.1634674, -2): arazi Ã§ok eÄŸimli
+PLACE kule_tabani      ground at (-14.00,-0.00,7.00) yaw=-120 span=0
+PLACE makine_platformu_kucuk ground at (-30.00,-1.81,-10.00) yaw=-105 span=0
+PLACE makine_platformu_orta ground at (-20.00,0.30,8.01) yaw=-105 span=0
+PLACE makine_platformu_buyuk ground at (-32.00,-0.62,13.86) yaw=-105 span=0
+SHOT build_all_shapes.png (basliksiz: atlandi)
+SHAPES placed=28/28
+BUILD RESULT placed=75 failed=0 pieces=71

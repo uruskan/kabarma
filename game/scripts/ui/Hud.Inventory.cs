@@ -291,7 +291,7 @@ public partial class Hud
         float fy = top + 112;
         Section("Yemek", LeftX, fy);
         var active = _d.State.Food.Active;
-        int slots = FoodBuffs.Slots;
+        int slots = Math.Max(1, _d.State.Food.Slots); // yuva sayisi tool.json "foodSlots" (ekonomi)
         float fw = (ColW - (slots - 1) * 8) / slots;
         for (int i = 0; i < slots; i++)
         {

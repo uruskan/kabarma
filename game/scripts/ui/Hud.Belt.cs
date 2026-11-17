@@ -88,7 +88,7 @@ public partial class Hud
         Glyph(HeadGlyphName(h), new Vector2(x + size / 2f, y + size / 2f - 7), 17, T.Ivory);
         string name = T.Upper(h < T.Data.Heads.Count ? T.Data.Heads[h].Title : Capa.HeadNames[h]);
         TextIn(Fit(name, size - 8, 13, true, true), x + 4, y + size - 19, size - 8, 13, T.Ink, HorizontalAlignment.Center, true, true);
-        Keycap(_padLast ? "LB" : "Q", x + 4, y + 4, 20, T.A(T.Ink, 0.8f));
+        Keycap(KeyText("head_wheel", PadDevice ? "LB" : "Q"), x + 4, y + 4, 20, T.A(T.Ink, 0.8f), PadDevice);
     }
 
     /// <summary>Takili baslik degisti (Capa.Select -> OnHead): baslik yuvasi bir an parlar.</summary>
@@ -138,11 +138,13 @@ public partial class Hud
     static float? ItemCondition(string id) => null;
 
     /// <summary>
-    /// Esyanin kalite yildizi (1-3). Bu dalda canta kaliteyi tasimaz (ekonomi akisi Inventory'ye ★ ekliyor: Stacks); birlesince
-    /// bu tek yontem yigindan okur. 0: yildiz cizilmez.
+    /// Kemer yuvasinin kalite yildizi: cantadaki o esyanin en yuksek kalitesi (Inventory.Stacks, ekonomi). 0: cizilmez.
     /// </summary>
-    int StarsOf(string id) => 0;
+    int StarsOf(string id) => id == null ? 0 : Shown(_d.State.Backpack.Stacks.Where(s => s.id == id).Select(s => s.stars).DefaultIfEmpty(0).Max());
 
-    /// <summary>Canta yuvasinin kalite yildizi (birlesince Inventory.Stacks[i].stars).</summary>
-    int StarsAt(int bagIndex) => 0;
+    /// <summary>Canta yuvasinin kalite yildizi (Inventory.Stacks[i].stars; Contents ile ayni sira).</summary>
+    int StarsAt(int bagIndex) { var st = _d.State.Backpack.Stacks; return bagIndex >= 0 && bagIndex < st.Count ? Shown(st[bagIndex].stars) : 0; }
+
+    /// <summary>Taban kalite (Inventory.BaseStars) yildizsiz gorunur; ustu yuvada yildizla.</summary>
+    static int Shown(int stars) => stars > Inventory.BaseStars ? stars : 0;
 }
