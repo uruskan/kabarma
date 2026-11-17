@@ -1,6 +1,6 @@
 {
   "_not": "Oyuncu ve sirt cantasi. Capa verisi bolundu: heads.json (basliklar), weapons.json (silahlar), recipes.json, placeables.json, foods.json, prices.json. Hepsi bellekte tek Data.Tool olarak birlesir.",
-  "player": { "maxHp": 100, "walkSpeed": 5.0, "sprintSpeed": 8.0, "jump": 6.5 },
+  "player": { "maxHp": 100, "walkSpeed": 5.0, "sprintSpeed": 8.0, "jump": 6.5, "stamina": { "max": 100, "sprintDrain": 8, "regen": 15, "regenDelay": 1.0, "unlockAt": 20 } },
   "backpackSlots": 20,
   "stackResource": 50,
   "startItems": { "turnip_seed": 12, "wheat": 10, "civi": 40 }

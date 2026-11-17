@@ -1,0 +1,27 @@
+Godot Engine v4.7.2.stable.mono.official.ed1daf0bf - https://godotengine.org
+Vulkan 1.4.357 - Forward+ - Using Device #0: NVIDIA - NVIDIA GeForce RTX 2070 SUPER
+
+PLAYER model anims: carry,cheer,crouch_walk,eat,getup_back_pose,getup_front_pose,hurt,idle,jump,jump_air,jump_land,jump_start,kneel,knockdown,plant,push,run,shock_fall,sleep,sprint,walk,walk_casual,wave
+AUDIO ok 13/13
+POFUDUK anims: preset_quadruped_walk
+BUILD kit pieces=28
+BOOT Kabarma MVP
+RIG t=12.2 clip=idle->idle mode=Move sp=0.0 sprint=False stam=100 ex=False bag=(0.039615497, 0.15681255) capaFromHand=0.12 handY=0.76 capaY=0.76 down=False visor=notr
+PLAYER at (7.5, 0.0003124997, -5.5) visualYaw=0.00 bag=True
+RIG t=12.7 clip=idle->idle mode=Move sp=0.0 sprint=False stam=100 ex=False bag=(-0.0064972634, -0.02130232) capaFromHand=0.12 handY=0.74 capaY=0.74 down=False visor=notr
+RIG t=13.2 clip=run->run mode=Move sp=5.0 sprint=False stam=100 ex=False bag=(-0.015779521, -0.01165499) capaFromHand=0.12 handY=0.98 capaY=0.98 down=False visor=notr
+RIG t=13.8 clip=run->run mode=Move sp=5.0 sprint=False stam=100 ex=False bag=(0.0213054, -0.001962966) capaFromHand=0.12 handY=0.78 capaY=0.78 down=False visor=notr
+POSE push_cart clip=run
+RIG t=14.2 clip=run->run mode=Move sp=5.0 sprint=False stam=100 ex=False bag=(-0.041398242, 0.0035514948) capaFromHand=0.12 handY=0.96 capaY=0.96 down=False visor=notr
+RIG t=14.7 clip=run->run mode=Move sp=5.0 sprint=False stam=100 ex=False bag=(-0.009994447, 0.001811961) capaFromHand=0.12 handY=0.95 capaY=0.95 down=False visor=notr
+RIG t=15.2 clip=run->run mode=Move sp=5.0 sprint=False stam=100 ex=False bag=(0.0007478262, -0.011019715) capaFromHand=0.12 handY=1.02 capaY=1.02 down=False visor=notr
+SCREENSHOT C:/Users/uruskan/Documents/GitHub/kabarma/.claude/worktrees/m1-oyuncu-7059e8/game/../progress/shots/oy_push_004.00.png
+RIG t=15.9 clip=run->run mode=Move sp=5.0 sprint=False stam=100 ex=False bag=(0.010000765, 0.0072189705) capaFromHand=0.12 handY=0.94 capaY=0.94 down=False visor=notr
+RIG t=16.3 clip=run->run mode=Move sp=5.0 sprint=False stam=100 ex=False bag=(-0.061436214, 0.007499195) capaFromHand=0.12 handY=0.96 capaY=0.96 down=False visor=notr
+RIG t=16.8 clip=run->run mode=Move sp=5.0 sprint=False stam=100 ex=False bag=(-0.013089492, 0.008524512) capaFromHand=0.12 handY=0.96 capaY=0.96 down=False visor=notr
+SCREENSHOT C:/Users/uruskan/Documents/GitHub/kabarma/.claude/worktrees/m1-oyuncu-7059e8/game/../progress/shots/oy_push_005.50.png
+RIG t=17.5 clip=idle->idle mode=Move sp=0.0 sprint=False stam=100 ex=False bag=(0.0039604306, 0.0087110745) capaFromHand=0.12 handY=0.99 capaY=0.99 down=False visor=notr
+RIG t=17.8 clip=idle->idle mode=Move sp=0.0 sprint=False stam=100 ex=False bag=(0.0043483763, -0.004931688) capaFromHand=0.12 handY=0.96 capaY=0.96 down=False visor=notr
+RIG t=18.3 clip=idle->idle mode=Move sp=0.0 sprint=False stam=100 ex=False bag=(0.00020867996, 0.0004304065) capaFromHand=0.12 handY=0.94 capaY=0.94 down=False visor=notr
+QUIT t=7.0
+RIG t=18.8 clip=idle->idle mode=Move sp=0.0 sprint=False stam=100 ex=False bag=(4.072226E-06, -0.00012142348) capaFromHand=0.12 handY=0.95 capaY=0.95 down=False visor=notr
