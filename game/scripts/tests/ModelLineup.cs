@@ -85,6 +85,9 @@ public partial class ModelLineup : Node3D
         yield return new("bakir", G("bakir/bakir.glb"), PX);
         yield return new("kil_yatagi", G("kil_yatagi/kil_yatagi.glb"), PX);
         yield return new("salgam", G("salgam/salgam.glb"), PX);
+        // Kutuphaneden alinan kayalar (F:\Assets, pipeline/lib_import.py)
+        foreach (var id in new[] { "kaya", "kaya_duz", "kaya_dik" })
+            yield return new("lib_" + id, G($"lib/{id}/{id}.glb"), PX);
         // Dekor
         foreach (var id in new[] { "agac", "turuncu_agac", "cali", "ot", "bugday", "cicek", "egrelti", "kaya_duz", "kaya_dik" })
             yield return new(id, G($"{id}/{id}.glb"), PX);
