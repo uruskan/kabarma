@@ -1,8 +1,8 @@
 # dunya akışı: M1 raporu
 
-**(a) Dal:** `claude/m1-dunya-a5c492`. Taban `af67734` (dal `0c22fab`'dan kesilmişti; boşken `git merge --ff-only af67734` ile ileri sarıldı). Commit'ler: `3c64482` (dünya, göl, gökyüzü, 9 süs modeli, gerçek kaynaklar, dünya sınaması) + bu raporla gelen son commit (yer imleri, görüntü ve ölçüm araçları, ince ayar). Push yok, main'e birleştirme yok.
+**(a) Dal:** `claude/m1-dunya-a5c492`. Taban `af67734` (dal `0c22fab`'dan kesilmişti; boşken `git merge --ff-only af67734` ile ileri sarıldı). Commit'ler: `3c64482` (dünya, göl, gökyüzü, 9 süs modeli, gerçek kaynaklar, dünya sınaması), `0e05a5a` (yer imleri, görüntü ve ölçüm araçları), `369d041` (rapor düzeltmeleri, ölçüm uyarısı), `f1db37a` (ana oturum kararları: Sulama deposu, Biçme verimi, altın kaya dağılımı, Blender kil yatağı). Push yok, main'e birleştirme yok.
 
-**Doğrulama:** `tools/test.ps1 -BotTimeout 900` **PASS** (build 0 uyarı, Sim 21/21, bot `RESULT ok ... harvests=4`, buildtest 60/0, world ok), günlük `progress/m1/dunya/test.log`.
+**Doğrulama:** `tools/test.ps1 -BotTimeout 900` **PASS** (build 0 uyarı, Sim 25/25 (depo testleri dahil), bot `RESULT ok ... harvests=4`, buildtest 60/0, world ok), günlük `progress/m1/dunya/test.log`.
 
 **Teslim:** "Arazi, gökyüzü, sis, su; 8 bitki, 4 kaya" + "16 ekran görüntüsü (4 yer imi × 4 gün saati)" + "RTX 2070S'te 1080p yüksek ayarda ≥ 90 FPS" (URETIM §6 M1, M1 kararı 7; SANAT-SES §2, §6, §9; TEKNIK §10).
 
