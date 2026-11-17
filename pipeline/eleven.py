@@ -49,7 +49,7 @@ OUTPUT_FORMAT = "mp3_44100_128"
 # ---------- Sabit model kimlikleri ----------
 SFX_MODEL = "eleven_text_to_sound_v3"     # belge: URETIM §2.1 "sabitlenecek"
 MUSIC_MODEL = "music_v2_5"                # belge: URETIM §2.1 "sabitlenecek"
-TTS_MODEL = "eleven_v3"                   # belge: URETIM §2.1 "eleven_v4 ve eleven_v3"; v3 secildi (ses etiketli, Turkce)
+TTS_MODEL = "eleven_v4"                   # sahibin karari (18 Kasim 2026): v4; ses kutuphaneden dogal bir kadin sesi (SANAT-SES §10.3)
 VOICE_DESIGN_MODEL = "eleven_ttv_v3"      # belge susuyor: ElevenLabs API'nin v3 ses tasarim modeli
 STT_MODEL = "scribe_v3"                   # belge susuyor: geri cevirme icin guncel yaziya cevirme modeli
 

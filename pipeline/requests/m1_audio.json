@@ -112,13 +112,13 @@
   },
   "voice": {
     "lines": "game/data/scenario.json",
-    "voiceId": null,
+    "voiceId": "PHNT5rJxxIZ4i7JkGLjC",
     "design": {
       "name": "Suna (Kabarma)",
       "description": "Middle-aged woman, a calm and dry cooperative switchboard operator. Deadpan, never shouts, never laughs; reads even disasters like an official report. Mid-low pitch, precise diction, slight nasal tone, unhurried. Clean studio recording.",
       "previewText": "Kooperatife hoş geldin, üye 4417. Tarla senin, borç bizim. Gökyüzü dalgalanıyor. Bu normal. Yani, bu ay için normal. Kooperatif bunu not etti."
     },
-    "settings": { "stability": 0.5, "similarity_boost": 0.75, "style": 0.0, "speed": 0.95 },
+    "settings": { "stability": 0.5, "similarity_boost": 0.75, "style": 0.3, "speed": 0.95 },
     "backTranscription": true,
     "minMatch": 0.9,
     "maxRetriesPerLine": 1

@@ -19,6 +19,7 @@
   "m0Path": "res://assets/audio/sfx/{m0}.mp3",
   "radio": {
     "bus": "Voice",
+    "filter": false,
     "highPassHz": 320,
     "lowPassHz": 3400,
     "drive": 0.15,

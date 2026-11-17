@@ -1,0 +1,152 @@
+[
+ {
+  "id": "giris_1",
+  "status": "gecti",
+  "ratio": 1.0
+ },
+ {
+  "id": "giris_2",
+  "status": "gecti",
+  "ratio": 0.994
+ },
+ {
+  "id": "tas_bitti",
+  "status": "gecti",
+  "ratio": 1.0
+ },
+ {
+  "id": "odun_basla",
+  "status": "gecti",
+  "ratio": 1.0
+ },
+ {
+  "id": "ocak_basla",
+  "status": "gecti",
+  "ratio": 0.972
+ },
+ {
+  "id": "ocak_bitti",
+  "status": "gecti",
+  "ratio": 1.0
+ },
+ {
+  "id": "tezgah_basla",
+  "status": "gecti",
+  "ratio": 1.0
+ },
+ {
+  "id": "tarla_basla",
+  "status": "gecti",
+  "ratio": 1.0
+ },
+ {
+  "id": "tarla_bitti",
+  "status": "gecti",
+  "ratio": 1.0
+ },
+ {
+  "id": "agil_basla",
+  "status": "gecti",
+  "ratio": 1.0
+ },
+ {
+  "id": "agil_bitti",
+  "status": "gecti",
+  "ratio": 0.981
+ },
+ {
+  "id": "gidak_basla",
+  "status": "gecti",
+  "ratio": 1.0
+ },
+ {
+  "id": "gidak_bitti",
+  "status": "gecti",
+  "ratio": 1.0
+ },
+ {
+  "id": "kabarma_basla",
+  "status": "gecti",
+  "ratio": 1.0
+ },
+ {
+  "id": "kargo_basla",
+  "status": "gecti",
+  "ratio": 1.0
+ },
+ {
+  "id": "kargo_bitti",
+  "status": "gecti",
+  "ratio": 1.0
+ },
+ {
+  "id": "gece_alarm",
+  "status": "gecti",
+  "ratio": 1.0
+ },
+ {
+  "id": "gece_kabarma",
+  "status": "gecti",
+  "ratio": 1.0
+ },
+ {
+  "id": "gece_dalga",
+  "status": "gecti",
+  "ratio": 1.0
+ },
+ {
+  "id": "gece_kart",
+  "status": "gecti",
+  "ratio": 0.968
+ },
+ {
+  "id": "gece_gidak",
+  "status": "gecti",
+  "ratio": 0.954
+ },
+ {
+  "id": "safak",
+  "status": "gecti",
+  "ratio": 1.0
+ },
+ {
+  "id": "hasat_basla",
+  "status": "gecti",
+  "ratio": 0.99
+ },
+ {
+  "id": "yemek_basla",
+  "status": "gecti",
+  "ratio": 1.0
+ },
+ {
+  "id": "bakir_kil_basla",
+  "status": "gecti",
+  "ratio": 1.0
+ },
+ {
+  "id": "firin_basla",
+  "status": "gecti",
+  "ratio": 1.0
+ },
+ {
+  "id": "civi_basla",
+  "status": "gecti",
+  "ratio": 0.985
+ },
+ {
+  "id": "kasa_basla",
+  "status": "gecti",
+  "ratio": 0.994
+ },
+ {
+  "id": "barinak_basla",
+  "status": "gecti",
+  "ratio": 1.0
+ },
+ {
+  "id": "siradaki_is",
+  "status": "gecti",
+  "ratio": 0.924
+ }
+]

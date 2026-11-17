@@ -1,0 +1,152 @@
+[
+ {
+  "id": "giris_1",
+  "status": "gecti",
+  "ratio": 1.0
+ },
+ {
+  "id": "giris_2",
+  "status": "gecti",
+  "ratio": 0.961
+ },
+ {
+  "id": "tas_bitti",
+  "status": "gecti",
+  "ratio": 1.0
+ },
+ {
+  "id": "odun_basla",
+  "status": "gecti",
+  "ratio": 1.0
+ },
+ {
+  "id": "ocak_basla",
+  "status": "gecti",
+  "ratio": 1.0
+ },
+ {
+  "id": "ocak_bitti",
+  "status": "gecti",
+  "ratio": 1.0
+ },
+ {
+  "id": "tezgah_basla",
+  "status": "gecti",
+  "ratio": 1.0
+ },
+ {
+  "id": "tarla_basla",
+  "status": "gecti",
+  "ratio": 1.0
+ },
+ {
+  "id": "tarla_bitti",
+  "status": "gecti",
+  "ratio": 1.0
+ },
+ {
+  "id": "agil_basla",
+  "status": "gecti",
+  "ratio": 1.0
+ },
+ {
+  "id": "agil_bitti",
+  "status": "gecti",
+  "ratio": 1.0
+ },
+ {
+  "id": "gidak_basla",
+  "status": "gecti",
+  "ratio": 0.991
+ },
+ {
+  "id": "gidak_bitti",
+  "status": "gecti",
+  "ratio": 1.0
+ },
+ {
+  "id": "kabarma_basla",
+  "status": "gecti",
+  "ratio": 1.0
+ },
+ {
+  "id": "kargo_basla",
+  "status": "gecti",
+  "ratio": 1.0
+ },
+ {
+  "id": "kargo_bitti",
+  "status": "gecti",
+  "ratio": 1.0
+ },
+ {
+  "id": "gece_alarm",
+  "status": "gecti",
+  "ratio": 1.0
+ },
+ {
+  "id": "gece_kabarma",
+  "status": "gecti",
+  "ratio": 1.0
+ },
+ {
+  "id": "gece_dalga",
+  "status": "gecti",
+  "ratio": 0.964
+ },
+ {
+  "id": "gece_kart",
+  "status": "gecti",
+  "ratio": 0.98
+ },
+ {
+  "id": "gece_gidak",
+  "status": "gecti",
+  "ratio": 0.966
+ },
+ {
+  "id": "safak",
+  "status": "gecti",
+  "ratio": 1.0
+ },
+ {
+  "id": "hasat_basla",
+  "status": "gecti",
+  "ratio": 1.0
+ },
+ {
+  "id": "yemek_basla",
+  "status": "gecti",
+  "ratio": 1.0
+ },
+ {
+  "id": "bakir_kil_basla",
+  "status": "gecti",
+  "ratio": 0.993
+ },
+ {
+  "id": "firin_basla",
+  "status": "gecti",
+  "ratio": 1.0
+ },
+ {
+  "id": "civi_basla",
+  "status": "gecti",
+  "ratio": 1.0
+ },
+ {
+  "id": "kasa_basla",
+  "status": "gecti",
+  "ratio": 1.0
+ },
+ {
+  "id": "barinak_basla",
+  "status": "gecti",
+  "ratio": 1.0
+ },
+ {
+  "id": "siradaki_is",
+  "status": "KALDI geri cevirme",
+  "heard": "Your ledger is open. 240 work orders. Next, grow five swollen crops. The cooperative isn't impatient, slightly."
+ }
+]

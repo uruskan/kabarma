@@ -30,10 +30,12 @@ public sealed class AudioSpatialDef
     public float LowPassDb { get; set; }
 }
 
-/// <summary>Suna telsizi (SANAT-SES §10.3): bant geciren suzgec, hafif doyum, basta ve sonda mandal.</summary>
+/// <summary>Suna telsizi (SANAT-SES §10.3): basta ve sonda mandal. Bant geciren suzgec ve doyum yalniz Filter acikken.</summary>
 public sealed class RadioDef
 {
     public string Bus { get; set; } = "";
+    /// <summary>Bant geciren suzgec ve doyum. Sahibin karari (18 Kasim 2026): kapali, ses dogal duyulur.</summary>
+    public bool Filter { get; set; }
     public float HighPassHz { get; set; }
     public float LowPassHz { get; set; }
     public float Drive { get; set; }
