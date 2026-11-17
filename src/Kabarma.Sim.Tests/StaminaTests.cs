@@ -22,6 +22,7 @@ public class StaminaTests
         Assert.Equal(15f, d.Regen);      // 1 sn sonra saniyede 15
         Assert.Equal(1f, d.RegenDelay);
         Assert.Equal(20f, d.UnlockAt);   // sifirda depar 20'ye kadar kapali
+        Assert.InRange(d.MinSpeed, 0.01f, 2f); // GDD'de yok: durdugu halde depar harcamasin
     }
 
     [Fact]

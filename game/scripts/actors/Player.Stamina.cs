@@ -16,9 +16,9 @@ public partial class Player
     /// <summary>Depar istegi -> bu karede depar atiliyor mu (dayaniklilik yetiyorsa).</summary>
     bool SprintGate(bool want, float dt)
     {
-        // Duvara dayanip depar tusuna basmak dayaniklilik yemez: yalniz gercekten kosarken (onceki karenin hizi).
-        if (want && new Godot.Vector2(_prevVel.X, _prevVel.Z).Length() < 0.5f) want = false;
         var s = Stamina;
+        // Duvara dayanip depar tusuna basmak dayaniklilik yemez: yalniz gercekten kosarken (onceki karenin hizi).
+        if (want && s != null && new Godot.Vector2(_prevVel.X, _prevVel.Z).Length() < s.Def.MinSpeed) want = false;
         _sprinting = s == null ? want : s.Tick(dt, want);
         return _sprinting;
     }

@@ -13,6 +13,8 @@ public sealed class StaminaDef
     public float RegenDelay { get; set; } = 1f;
     /// <summary>Sifira inince depar bu degere cikana kadar kapali kalir (GDD §3.2: 20).</summary>
     public float UnlockAt { get; set; } = 20f;
+    /// <summary>Depar bu yatay hizin (m/sn) altindayken harcamaz: duvara dayanip tusa basmak yemez. GDD'de yok; oyuncu akisinin karari.</summary>
+    public float MinSpeed { get; set; } = 0.5f;
 }
 
 /// <summary>
