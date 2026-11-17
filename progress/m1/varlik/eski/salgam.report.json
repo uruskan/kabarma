@@ -1,0 +1,47 @@
+{
+  "name": "salgam",
+  "input": ".tools/tripo/salgam/tripo-out/salgam-15b23276/model.glb",
+  "checks": {
+    "1_palette": {
+      "pass": true,
+      "note": "dokulu mod: palet oturtma yapilmadi"
+    },
+    "2_polygon": {
+      "pass": true,
+      "value": 3878,
+      "budget": 4000
+    },
+    "3_thickness": {
+      "pass": true,
+      "min_ratio": 0.556,
+      "note": "parca basina en dar boyut / en uzun kenar"
+    },
+    "4_integrity": {
+      "pass": false,
+      "non_manifold_edges": 8,
+      "boundary_edges": 4,
+      "inward_faces": 1112,
+      "loose_parts": 1
+    },
+    "5_scale_axis": {
+      "pass": true,
+      "height": 0.6,
+      "target": 0.6
+    }
+  },
+  "tris_in": 3880,
+  "welded_verts": 896,
+  "tex_size": 1024,
+  "source_mean_dE": null,
+  "source_within_dE8": null,
+  "palette_use": "textured (palette snap skipped)",
+  "tris": 3878,
+  "size_m": [
+    0.333,
+    0.454,
+    0.6
+  ],
+  "parts": 1,
+  "out": "game/assets/models/salgam/salgam.glb",
+  "pass_scripted": false
+}

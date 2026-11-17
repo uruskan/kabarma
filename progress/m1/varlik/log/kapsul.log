@@ -1,0 +1,48 @@
+00:17:49 | INFO: Data are loaded, start creating Blender stuff
+00:17:49 | INFO: Blender create Mesh node tripo_mesh_0
+00:17:49 | INFO: Blender create Mesh node tripo_mesh_1
+00:17:49 | INFO: Blender create Mesh node tripo_mesh_2
+00:17:49 | INFO: glTF import finished in 0.03s
+C:\Users\uruskan\Documents\GitHub\kabarma\.claude\worktrees\m1-varlik-72a21b\pipeline\clean_asset.py:760: DeprecationWarning: 'Material.use_nodes' is expected to be removed in Blender 6.0
+  if m and m.use_nodes:
+C:\Users\uruskan\Documents\GitHub\kabarma\.claude\worktrees\m1-varlik-72a21b\pipeline\clean_asset.py:145: DeprecationWarning: 'Material.use_nodes' is expected to be removed in Blender 6.0
+  if not mat or not mat.use_nodes:
+00:05.938  render           | Saved: 'C:\Users\uruskan\Documents\GitHub\kabarma\.claude\worktrees\m1-varlik-72a21b\progress\m1\varlik\render\kapsul\kapsul_0.png'
+00:06.000  render           | Saved: 'C:\Users\uruskan\Documents\GitHub\kabarma\.claude\worktrees\m1-varlik-72a21b\progress\m1\varlik\render\kapsul\kapsul_1.png'
+00:06.063  render           | Saved: 'C:\Users\uruskan\Documents\GitHub\kabarma\.claude\worktrees\m1-varlik-72a21b\progress\m1\varlik\render\kapsul\kapsul_2.png'
+00:06.125  render           | Saved: 'C:\Users\uruskan\Documents\GitHub\kabarma\.claude\worktrees\m1-varlik-72a21b\progress\m1\varlik\render\kapsul\kapsul_3.png'
+00:06.188  render           | Saved: 'C:\Users\uruskan\Documents\GitHub\kabarma\.claude\worktrees\m1-varlik-72a21b\progress\m1\varlik\render\kapsul\kapsul_kalinlik_0.png'
+00:06.250  render           | Saved: 'C:\Users\uruskan\Documents\GitHub\kabarma\.claude\worktrees\m1-varlik-72a21b\progress\m1\varlik\render\kapsul\kapsul_kalinlik_1.png'
+00:06.266  render           | Saved: 'C:\Users\uruskan\Documents\GitHub\kabarma\.claude\worktrees\m1-varlik-72a21b\progress\m1\varlik\render\kapsul\kapsul_silhouette64.png'
+00:06.282  render           | Saved: 'C:\Users\uruskan\Documents\GitHub\kabarma\.claude\worktrees\m1-varlik-72a21b\game\assets\models\kapsul\kapsul_icon.png'
+INFO Draco is available, use library at C:\Program Files\Blender Foundation\Blender 5.3\blender.shared\bf_intern_draco_bridge.dll
+INFO MeshOptimizer is available, use library at C:\Program Files\Blender Foundation\Blender 5.3\blender.shared\bf_intern_meshopt_bridge.dll
+00:17:53 | INFO: Starting glTF 2.0 export
+00:17:53 | INFO: Extracting primitive: base
+00:17:53 | INFO: Primitives created: 1
+00:17:53 | INFO: Extracting primitive: body
+00:17:53 | INFO: Primitives created: 1
+00:17:53 | INFO: Extracting primitive: hatch
+00:17:53 | INFO: Primitives created: 1
+00:17:53 | INFO: Finished glTF 2.0 export in 0.0845632553100586 s
+
+00:17:53 | INFO: Starting glTF 2.0 export
+00:17:53 | INFO: Extracting primitive: kapsul_lod1
+00:17:53 | INFO: Primitives created: 3
+00:17:53 | INFO: Finished glTF 2.0 export in 0.018059968948364258 s
+
+00:17:53 | INFO: Starting glTF 2.0 export
+00:17:53 | INFO: Extracting primitive: kapsul_lod2
+00:17:53 | INFO: Primitives created: 3
+00:17:53 | INFO: Finished glTF 2.0 export in 0.012799501419067383 s
+00:07.219  render           | Saved: 'C:\Users\uruskan\Documents\GitHub\kabarma\.claude\worktrees\m1-varlik-72a21b\progress\m1\varlik\kart\kapsul.png.text.png'
+
+PIPELINE_REPORT {"name": "kapsul", "tris_in": 9377, "tris": 9546, "size_m": [2.387, 2.443, 2.8], "parts": 3, "pass_scripted": true}
+CHECK 1_texture PASS {"base_color_maps": 3, "max_tex": 2048}
+CHECK 2_polygon PASS {"value": 9546, "budget": 15000, "class": "makine", "below_min": false}
+CHECK 3_thickness PASS {"thin_share": 0.012, "allowed_share": 0.02, "limit_m": 0.168, "stick_min_t_m": 0.001, "plate_share": 0.1503, "faces_measured": 9539, "old_bbox_min_ratio": 0.123, "note": "cubuk/diken alani (iki yonde ince) / yuzey; levha payi (tek yonde ince: yaprak, kapak) bilgi; eski olcu: parca kutusunun en dar boyutu / en uzun kenar"}
+CHECK 4_integrity PASS {"non_manifold_edges": 0, "boundary_edges": 0, "inverted_faces": 0, "inverted_note": "ters sarimli kenar sayisi", "negative_volume_parts": 0, "floating_parts": [], "loose_parts": 3}
+CHECK 5_scale_axis PASS {"height": 2.8, "target": 2.8, "base_z": 0.0, "center_xy": [0.0, 0.0], "forward": "+X", "note": "on yon betikle olculemez; bildirilen eksen yazilir"}
+Blender 5.3.0 (hash 02f0899d78e3 built 2026-11-10 01:33:43)
+
+Blender quit

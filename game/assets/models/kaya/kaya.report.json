@@ -1,47 +1,213 @@
 {
   "name": "kaya",
-  "input": ".tools/tripo_web/kabarma_kaya.glb",
+  "label": "Cevherli kaya",
+  "input": "C:/Users/uruskan/Documents/GitHub/kabarma\\.tools/tripo_web/kabarma_kaya.glb",
+  "class": "esya_kaya",
+  "forward": "+X",
   "checks": {
-    "1_palette": {
+    "1_texture": {
       "pass": true,
-      "note": "dokulu mod: palet oturtma yapilmadi"
+      "textures": {
+        "kabarma_kaya_basecolor.jpg": [
+          1024,
+          1024
+        ],
+        "kabarma_kaya_rm.jpg": [
+          1024,
+          1024
+        ],
+        "kabarma_kaya_normal.png": [
+          1024,
+          1024
+        ]
+      },
+      "base_color_maps": 1,
+      "max_tex": 1024
     },
     "2_polygon": {
       "pass": true,
-      "value": 3879,
-      "budget": 4000
+      "value": 3858,
+      "budget": 6000,
+      "class": "esya_kaya",
+      "below_min": false
     },
     "3_thickness": {
       "pass": true,
-      "min_ratio": 0.88,
-      "note": "parca basina en dar boyut / en uzun kenar"
+      "thin_share": 0.0008,
+      "allowed_share": 0.02,
+      "limit_m": 0.0796,
+      "stick_min_t_m": 0.0001,
+      "plate_share": 0.0013,
+      "faces_measured": 3848,
+      "old_bbox_min_ratio": 0.88,
+      "note": "cubuk/diken alani (iki yonde ince) / yuzey; levha payi (tek yonde ince: yaprak, kapak) bilgi; eski olcu: parca kutusunun en dar boyutu / en uzun kenar"
     },
     "4_integrity": {
-      "pass": false,
-      "non_manifold_edges": 13,
-      "boundary_edges": 3,
-      "inward_faces": 351,
+      "pass": true,
+      "non_manifold_edges": 0,
+      "boundary_edges": 0,
+      "inverted_faces": 0,
+      "inverted_note": "ters sarimli kenar sayisi",
+      "negative_volume_parts": 0,
+      "floating_parts": [],
       "loose_parts": 1
     },
     "5_scale_axis": {
       "pass": true,
       "height": 1.3,
-      "target": 1.3
+      "target": 1.3,
+      "base_z": 0.0,
+      "center_xy": [
+        0.0,
+        0.0
+      ],
+      "forward": "+X",
+      "note": "on yon betikle olculemez; bildirilen eksen yazilir"
     }
   },
+  "source_parts": [
+    "tripo_node_966d957e-96e8-403f-96ca-c84ae6bf7111"
+  ],
+  "dropped": [],
+  "merged": {},
   "tris_in": 1994710,
-  "welded_verts": 20784,
+  "welded_verts": 20701,
+  "repair_before": {
+    "fan": 4,
+    "boundary": 0,
+    "wire": 0
+  },
+  "repair_log": [
+    {
+      "pass": 1,
+      "deleted_slivers": 8,
+      "filled_faces": 8,
+      "fan": 4,
+      "boundary": 0,
+      "wire": 0,
+      "nonmanifold_verts": 10
+    },
+    {
+      "pass": 2,
+      "deleted_slivers": 8,
+      "filled_faces": 6,
+      "fan": 3,
+      "boundary": 0,
+      "wire": 0,
+      "nonmanifold_verts": 7
+    },
+    {
+      "pass": 3,
+      "deleted_slivers": 29,
+      "filled_faces": 2,
+      "fan": 0,
+      "boundary": 7,
+      "wire": 0,
+      "nonmanifold_verts": 0
+    },
+    {
+      "pass": 4,
+      "deleted_slivers": 0,
+      "filled_faces": 7,
+      "fan": 0,
+      "boundary": 0,
+      "wire": 0,
+      "nonmanifold_verts": 0
+    }
+  ],
+  "dropped_floating": [],
+  "snapped_floating": [],
+  "dark_fill": {
+    "patches": 0,
+    "faces": 0,
+    "area_share": 0.0
+  },
   "tex_size": 1024,
-  "source_mean_dE": null,
-  "source_within_dE8": null,
-  "palette_use": "textured (palette snap skipped)",
-  "tris": 3879,
+  "tris": 3858,
   "size_m": [
     1.327,
     1.168,
     1.3
   ],
   "parts": 1,
-  "out": "game/assets/models/kaya/kaya.glb",
-  "pass_scripted": false
+  "palette_direction": {
+    "samples": 1500,
+    "mean_dE": 8.2,
+    "share": [
+      {
+        "color": "altin_cayir.shadow",
+        "hex": "5A4A6B",
+        "share": 0.65
+      },
+      {
+        "color": "tones.soil_wet",
+        "hex": "6D5564",
+        "share": 0.219
+      },
+      {
+        "color": "neutral.warning",
+        "hex": "F2B632",
+        "share": 0.127
+      },
+      {
+        "color": "tones.soil",
+        "hex": "81605C",
+        "share": 0.002
+      },
+      {
+        "color": "tones.rock_dark",
+        "hex": "827488",
+        "share": 0.001
+      },
+      {
+        "color": "neutral.wood",
+        "hex": "B07A4A",
+        "share": 0.001
+      }
+    ]
+  },
+  "sockets": [],
+  "icon": "C:\\Users\\uruskan\\Documents\\GitHub\\kabarma\\.claude\\worktrees\\m1-varlik-72a21b\\game/assets/models\\kaya\\kaya_icon.png",
+  "out": "C:\\Users\\uruskan\\Documents\\GitHub\\kabarma\\.claude\\worktrees\\m1-varlik-72a21b\\game/assets/models\\kaya\\kaya.glb",
+  "lods": [
+    {
+      "level": 0,
+      "tris": 3858,
+      "file": "C:\\Users\\uruskan\\Documents\\GitHub\\kabarma\\.claude\\worktrees\\m1-varlik-72a21b\\game/assets/models\\kaya\\kaya.glb",
+      "tex": 1024
+    },
+    {
+      "level": 1,
+      "ratio": 0.5,
+      "tris": 1870,
+      "file": "C:\\Users\\uruskan\\Documents\\GitHub\\kabarma\\.claude\\worktrees\\m1-varlik-72a21b\\game/assets/models\\kaya\\kaya_lod1.glb",
+      "tex": 512,
+      "census": {
+        "fan": 0,
+        "boundary": 0,
+        "wire": 0
+      }
+    },
+    {
+      "level": 2,
+      "ratio": 0.2,
+      "tris": 746,
+      "file": "C:\\Users\\uruskan\\Documents\\GitHub\\kabarma\\.claude\\worktrees\\m1-varlik-72a21b\\game/assets/models\\kaya\\kaya_lod2.glb",
+      "tex": 256,
+      "census": {
+        "fan": 0,
+        "boundary": 0,
+        "wire": 0
+      }
+    }
+  ],
+  "hull": {
+    "file": "C:\\Users\\uruskan\\Documents\\GitHub\\kabarma\\.claude\\worktrees\\m1-varlik-72a21b\\game/assets/models\\kaya\\kaya_hull.tres",
+    "points": 64,
+    "volume_m3": 0.9286,
+    "mesh_volume_m3": 0.8439,
+    "note": "Godot ekseninde (Y yukari), model orijinine gore"
+  },
+  "pass_scripted": true,
+  "card": "C:\\Users\\uruskan\\Documents\\GitHub\\kabarma\\.claude\\worktrees\\m1-varlik-72a21b\\progress/m1/varlik/kart\\kaya.png"
 }

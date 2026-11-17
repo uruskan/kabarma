@@ -1,0 +1,47 @@
+{
+  "name": "tezgah",
+  "input": ".tools/tripo/tezgah/tripo-out/tezgah-a08e6543/model.glb",
+  "checks": {
+    "1_palette": {
+      "pass": true,
+      "note": "dokulu mod: palet oturtma yapilmadi"
+    },
+    "2_polygon": {
+      "pass": true,
+      "value": 7428,
+      "budget": 8000
+    },
+    "3_thickness": {
+      "pass": true,
+      "min_ratio": 0.082,
+      "note": "parca basina en dar boyut / en uzun kenar"
+    },
+    "4_integrity": {
+      "pass": false,
+      "non_manifold_edges": 12,
+      "boundary_edges": 8,
+      "inward_faces": 2932,
+      "loose_parts": 2
+    },
+    "5_scale_axis": {
+      "pass": true,
+      "height": 1.5,
+      "target": 1.5
+    }
+  },
+  "tris_in": 7428,
+  "welded_verts": 1841,
+  "tex_size": 1024,
+  "source_mean_dE": null,
+  "source_within_dE8": null,
+  "palette_use": "textured (palette snap skipped)",
+  "tris": 7428,
+  "size_m": [
+    1.068,
+    1.354,
+    1.5
+  ],
+  "parts": 2,
+  "out": "game/assets/models/tezgah/tezgah.glb",
+  "pass_scripted": false
+}

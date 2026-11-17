@@ -1,0 +1,47 @@
+{
+  "name": "agac",
+  "input": ".tools/tripo_web/kabarma_agac.glb",
+  "checks": {
+    "1_palette": {
+      "pass": true,
+      "note": "dokulu mod: palet oturtma yapilmadi"
+    },
+    "2_polygon": {
+      "pass": true,
+      "value": 6788,
+      "budget": 7000
+    },
+    "3_thickness": {
+      "pass": true,
+      "min_ratio": 0.835,
+      "note": "parca basina en dar boyut / en uzun kenar"
+    },
+    "4_integrity": {
+      "pass": true,
+      "non_manifold_edges": 0,
+      "boundary_edges": 0,
+      "inward_faces": 1348,
+      "loose_parts": 1
+    },
+    "5_scale_axis": {
+      "pass": true,
+      "height": 4.2,
+      "target": 4.2
+    }
+  },
+  "tris_in": 1892134,
+  "welded_verts": 38433,
+  "tex_size": 1024,
+  "source_mean_dE": null,
+  "source_within_dE8": null,
+  "palette_use": "textured (palette snap skipped)",
+  "tris": 6788,
+  "size_m": [
+    4.542,
+    3.793,
+    4.2
+  ],
+  "parts": 1,
+  "out": "game/assets/models/agac/agac.glb",
+  "pass_scripted": true
+}
