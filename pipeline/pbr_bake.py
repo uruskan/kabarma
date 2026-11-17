@@ -397,9 +397,13 @@ def bake_asset(cfg, opts):
         maps = process(cfg, img, ao[m.name], edge[m.name], hgt[m.name], cover[m.name], seed=hash(part) & 0xFFFF)
         rel = os.path.dirname(cfg["glb"]).replace("\\", "/")
         res = "res://" + rel[len("game/"):] + "/pbr/"
+        keep = cfg.get("keepMaps", False)  # kendi normal+rm'si olan model (Tripo web): yalniz albedo derecelendirilir
         for k, (arr, srgb) in maps.items():
+            if keep and k != "albedo":
+                continue
             save_png(arr, os.path.join(out_dir, f"{part}_{k}.png"), srgb)
-        entries[m.name] = {"albedo": res + f"{part}_albedo.png", "normal": res + f"{part}_normal.png", "orm": res + f"{part}_orm.png"}
+        entries[m.name] = {"albedo": res + f"{part}_albedo.png"} if keep else \
+            {"albedo": res + f"{part}_albedo.png", "normal": res + f"{part}_normal.png", "orm": res + f"{part}_orm.png"}
         if opts["preview"]:
             prev = np.concatenate([maps["albedo"][0], maps["normal"][0], maps["orm"][0]], axis=1)
             save_png(prev, os.path.join(ROOT, opts["preview"], f"{part}.png"), True)

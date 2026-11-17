@@ -54,11 +54,15 @@ public partial class Pod
             Fit(legProto, k.LegLength);
             foreach (var l in k.Legs.Where(l => l.Pos.Length == 3))
             {
+                // Ayak modeli dik uretilir (taban y=0, baglanti pimi ustte): ust ucu baglantiya gelecek sekilde asagi sarkar,
+                // baglanti etrafinda disa (+X yerel, yaw ile disari cevrilir) egilir.
                 var leg = (Node3D)legProto.Duplicate();
                 var mount = new Node3D { Name = "leg", Position = new Vector3(l.Pos[0], l.Pos[1], l.Pos[2]) };
                 mount.RotationDegrees = new Vector3(0, l.Yaw, 0);
-                leg.RotationDegrees = new Vector3(0, 0, -l.Tilt);
-                mount.AddChild(leg);
+                var tilt = new Node3D { RotationDegrees = new Vector3(0, 0, l.Tilt) };
+                leg.Position = new Vector3(0, -Bounds(legProto).End.Y, 0);
+                tilt.AddChild(leg);
+                mount.AddChild(tilt);
                 AddChild(mount);
             }
             legProto.Free();

@@ -187,6 +187,33 @@
         }
       }
     },
+    "res://assets/models/kaya/kaya.glb": {
+      "id": "kaya",
+      "normalScale": 1.0,
+      "surfaces": {
+        "tripo_material_966d957e-96e8-403f-96ca-c84ae6bf7111": {
+          "albedo": "res://assets/models/kaya/pbr/kaya_albedo.png"
+        }
+      }
+    },
+    "res://assets/models/agac/agac.glb": {
+      "id": "agac",
+      "normalScale": 1.0,
+      "surfaces": {
+        "tripo_material_ab01422b-b3b0-4c29-afd4-0106c4f4f4ca": {
+          "albedo": "res://assets/models/agac/pbr/agac_albedo.png"
+        }
+      }
+    },
+    "res://assets/models/kova/kova.glb": {
+      "id": "kova",
+      "normalScale": 1.0,
+      "surfaces": {
+        "tripo_material_8389ff81-30ac-4398-8d3b-9db77a31ffd1": {
+          "albedo": "res://assets/models/kova/pbr/kova_albedo.png"
+        }
+      }
+    },
     "res://assets/models/salgam/salgam.glb": {
       "id": "salgam",
       "normalScale": 1.0,

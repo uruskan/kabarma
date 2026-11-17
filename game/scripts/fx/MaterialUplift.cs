@@ -40,10 +40,12 @@ public static class MaterialUplift
             {
                 if (mi.Mesh.SurfaceGetMaterial(i) is not BaseMaterial3D m) continue;
                 if (!_done.Add(m.GetInstanceId())) continue;
+                // Yalniz tam ad: Tripo malzeme adi gorev kimligini tasir (tripo_material_<uuid>). Model yeniden uretilince ad
+                // degisir ve eski haritalar yeni modele giydirilmez; pbr_bake.py yeniden calistirilmali (ya da kayit silinmeli).
                 if (!def.Surfaces.TryGetValue(m.ResourceName ?? "", out var maps))
                 {
-                    if (def.Surfaces.Count != 1) { GD.PushWarning($"UPLIFT {def.Id}: '{m.ResourceName}' yuzeyi materials.json'da yok"); continue; }
-                    maps = def.Surfaces.Values.First();
+                    GD.PushWarning($"UPLIFT {def.Id}: '{m.ResourceName}' yuzeyi materials.json'da yok (model degismis olabilir: pipeline/pbr_bake.py --only {def.Id})");
+                    continue;
                 }
                 Set(m, maps, def.NormalScale);
                 Applied++;
