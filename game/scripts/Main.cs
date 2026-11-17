@@ -33,6 +33,7 @@ public partial class Main : Node3D
         ["build"] = m => { m.AddChild(new BuildTest()); return true; },
         ["netsync"] = m => { if (!Args.ContainsKey("netsync")) Args["netsync"] = Args.TryGetValue("role", out var r) ? r : "host"; m.AddChild(new NetSyncTest()); return true; },
         ["swarm"] = m => { m.AddChild(new SwarmTest()); return true; },
+        ["audio"] = m => { m.AddChild(new AudioTest()); return true; }, // ses akisi: kanallar, 60 ses, muzik durumlari
     };
 
     public override void _Ready()
