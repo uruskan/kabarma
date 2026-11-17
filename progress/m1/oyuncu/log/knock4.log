@@ -1,0 +1,38 @@
+Godot Engine v4.7.2.stable.mono.official.ed1daf0bf - https://godotengine.org
+Vulkan 1.4.357 - Forward+ - Using Device #0: NVIDIA - NVIDIA GeForce RTX 2070 SUPER
+
+PLAYER model anims: carry,cheer,crouch_walk,eat,getup_back_pose,getup_front_pose,hurt,idle,jump,jump_air,jump_land,jump_start,kneel,knockdown,plant,push,run,shock_fall,sleep,sprint,walk,walk_casual,wave
+AUDIO ok 13/13
+POFUDUK anims: preset_quadruped_walk
+BUILD kit pieces=28
+BOOT Kabarma MVP
+RIG t=12.1 clip=idle->idle mode=Move sp=0.0 sprint=False stam=100 ex=False bag=(0.07366913, 0.15786472) capaFromHand=0.12 handY=0.76 capaY=0.76 down=False visor=notr
+PLAYER at (7.5, 0.0003124997, -5.5) visualYaw=0.00 bag=True
+RIG t=12.6 clip=idle->idle mode=Move sp=0.0 sprint=False stam=100 ex=False bag=(-0.013529466, -0.026047392) capaFromHand=0.12 handY=0.74 capaY=0.74 down=False visor=notr
+RIG t=13.1 clip=idle->idle mode=Move sp=0.0 sprint=False stam=100 ex=False bag=(0.002057598, 0.0033796213) capaFromHand=0.12 handY=0.73 capaY=0.73 down=False visor=notr
+RIG t=13.6 clip=idle->idle mode=Move sp=0.0 sprint=False stam=100 ex=False bag=(0.00065299694, 0.0005442995) capaFromHand=0.04 handY=0.26 capaY=0.27 down=True visor=bayilma
+RIG t=14.1 clip=idle->idle mode=Move sp=0.0 sprint=False stam=100 ex=False bag=(-0.000467883, -0.00048269224) capaFromHand=0.04 handY=0.07 capaY=0.04 down=True visor=bayilma
+RIG t=14.6 clip=idle->idle mode=Move sp=0.0 sprint=False stam=100 ex=False bag=(-0.00044434684, -0.00013879384) capaFromHand=0.04 handY=0.05 capaY=0.02 down=True visor=bayilma
+RIG t=15.1 clip=idle->idle mode=Move sp=0.0 sprint=False stam=100 ex=False bag=(0.0016095822, -0.0020796328) capaFromHand=0.04 handY=0.05 capaY=0.02 down=True visor=bayilma
+SCREENSHOT C:/Users/uruskan/Documents/GitHub/kabarma/.claude/worktrees/m1-oyuncu-7059e8/game/../progress/shots/oy_knock4_004.00.png
+RIG t=15.7 clip=idle->idle mode=Move sp=0.0 sprint=False stam=100 ex=False bag=(-0.0014881901, 0.00029455824) capaFromHand=0.04 handY=0.07 capaY=0.06 down=True visor=bayilma
+RIG t=16.1 clip=idle->idle mode=Move sp=0.0 sprint=False stam=100 ex=False bag=(0.00016542239, -3.2776534E-05) capaFromHand=0.04 handY=0.08 capaY=0.08 down=True visor=bayilma
+RIG t=16.6 clip=idle->idle mode=Move sp=0.0 sprint=False stam=100 ex=False bag=(-0.0007449587, -0.0013491173) capaFromHand=0.04 handY=0.07 capaY=0.08 down=True visor=bayilma
+RIG t=17.1 clip=idle->idle mode=Move sp=0.0 sprint=False stam=100 ex=False bag=(0.001495446, 4.424303E-05) capaFromHand=0.04 handY=0.07 capaY=0.09 down=True visor=bayilma
+RIG t=17.6 clip=idle->idle mode=Move sp=0.0 sprint=False stam=100 ex=False bag=(-0.0025481014, 0.0018852011) capaFromHand=0.04 handY=0.07 capaY=0.10 down=True visor=bayilma
+SCREENSHOT C:/Users/uruskan/Documents/GitHub/kabarma/.claude/worktrees/m1-oyuncu-7059e8/game/../progress/shots/oy_knock4_006.40.png
+GETUP front=(-0.16926453, 0.97799546, 0.12196159) head=(0.17778428, 0.009482161, -0.9840238) faceDown=False
+RIG t=18.1 clip=getup_back->getup_back_pose mode=Getup sp=0.0 sprint=False stam=100 ex=False bag=(0, 0) capaFromHand=0.04 handY=0.07 capaY=0.09 down=False visor=yorgun
+SCREENSHOT C:/Users/uruskan/Documents/GitHub/kabarma/.claude/worktrees/m1-oyuncu-7059e8/game/../progress/shots/oy_knock4_006.80.png
+RIG t=18.6 clip=getup_back->getup_back_pose mode=Getup sp=0.0 sprint=False stam=100 ex=False bag=(0.08592051, -0.035009347) capaFromHand=0.04 handY=0.00 capaY=0.01 down=False visor=yorgun
+SCREENSHOT C:/Users/uruskan/Documents/GitHub/kabarma/.claude/worktrees/m1-oyuncu-7059e8/game/../progress/shots/oy_knock4_007.30.png
+RIG t=19.2 clip=getup_back->getup_back_pose mode=Getup sp=0.0 sprint=False stam=100 ex=False bag=(-0.023697196, 0.007155379) capaFromHand=0.04 handY=0.15 capaY=0.13 down=False visor=yorgun
+SCREENSHOT C:/Users/uruskan/Documents/GitHub/kabarma/.claude/worktrees/m1-oyuncu-7059e8/game/../progress/shots/oy_knock4_007.90.png
+RIG t=19.8 clip=getup_back->getup_back_pose mode=Getup sp=0.0 sprint=False stam=100 ex=False bag=(0.019123131, -0.0015145685) capaFromHand=0.04 handY=0.49 capaY=0.46 down=False visor=saskin
+SCREENSHOT C:/Users/uruskan/Documents/GitHub/kabarma/.claude/worktrees/m1-oyuncu-7059e8/game/../progress/shots/oy_knock4_008.50.png
+RIG t=20.4 clip=getup_back->getup_back_pose mode=Getup sp=0.0 sprint=False stam=100 ex=False bag=(-0.036717255, 0.0003131365) capaFromHand=0.04 handY=0.53 capaY=0.53 down=False visor=notr
+RIG t=20.8 clip=getup_back->getup_back_pose mode=Getup sp=0.0 sprint=False stam=100 ex=False bag=(0.011768958, -0.002194912) capaFromHand=0.04 handY=0.73 capaY=0.74 down=False visor=notr
+SCREENSHOT C:/Users/uruskan/Documents/GitHub/kabarma/.claude/worktrees/m1-oyuncu-7059e8/game/../progress/shots/oy_knock4_009.50.png
+RIG t=21.4 clip=idle->idle mode=Move sp=0.0 sprint=False stam=100 ex=False bag=(0.0024575999, 0.0028055483) capaFromHand=0.12 handY=0.75 capaY=0.75 down=False visor=notr
+QUIT t=10.0
+RIG t=21.8 clip=idle->idle mode=Move sp=0.0 sprint=False stam=100 ex=False bag=(-0.0011626396, 0.00056357234) capaFromHand=0.12 handY=0.74 capaY=0.74 down=False visor=notr

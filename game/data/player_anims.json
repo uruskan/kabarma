@@ -1,0 +1,64 @@
+{
+  "_not": "Oyuncu klipleri (SANAT-SES §3.1, URETIM §6 M1 karari 10). m1=true olan 30 satir M1 alt kumesidir: 25 kutuphane/duz yazi + 5 kodla poz. source: library (Meshy katalog, character animate --action), locomotion (character animate --locomotion), cut (eldeki klipten zaman araligi), code (Godot'ta kodla poz, PlayerPoses.cs). placeholder=true: klip henuz uretilmedi; oyun fallback klibini (fallbackSpeed ile) oynar. action: teslim edilen GLB'deki animasyon adi; pipeline/merge_player.py bu adi id'ye cevirir. request: uretim istegi notu (progress/m1/oyuncu/URETIM-ISTEGI.md).",
+  "model": "res://assets/models/player/player.glb",
+  "rig": {
+    "_not": "Kodla katmanlar (PlayerBody.cs, PlayerRig.cs). Acilar derece, sureler sn, uzunluklar m.",
+    "footRayUp": 0.5, "footRayDown": 0.6, "footMaxDrop": 0.3, "footMaxRise": 0.3, "footBlend": 10,
+    "twistMaxDeg": 55, "twistShare": [0.2, 0.25, 0.25], "pitchShare": 0.3,
+    "leanRunDeg": 6, "leanSprintDeg": 12, "leanAccelDeg": 1.2, "bankMaxDeg": 8, "bankGain": 1.5, "recoilSpineDeg": 7,
+    "bagStiffness": 60, "bagDamping": 6, "bagGain": 0.02, "bagMaxPitch": 0.35, "bagMaxRoll": 0.25,
+    "downSeconds": 3, "knockdownSeconds": 5, "getupBlend": 0.4,
+    "pushWeight": 1.0, "wadeWeight": 0.85, "fallAfter": 0.7
+  },
+  "clips": [
+    { "id": "idle", "m1": true, "group": "bekleme", "source": "library", "action": "Idle_3", "loop": true },
+    { "id": "idle_2", "m1": true, "group": "bekleme", "source": "library", "action": "Short_Breathe_and_Look_Around", "loop": true, "placeholder": true, "fallback": "idle", "request": "kutuphane 338 Short_Breathe_and_Look_Around (yedek 336 Long_Breathe_and_Look_Around)" },
+
+    { "id": "walk", "m1": true, "group": "yurume", "dir": "f", "source": "library", "action": "walking_man", "loop": true, "refSpeed": 3.2 },
+    { "id": "walk_b", "m1": true, "group": "yurume", "dir": "b", "source": "locomotion", "loop": true, "refSpeed": 3.2, "placeholder": true, "fallback": "walk", "fallbackSpeed": -1, "request": "--locomotion (walk.backward); kutuphanede 679 Walk_Backward_inplace da var" },
+    { "id": "walk_l", "m1": true, "group": "yurume", "dir": "l", "source": "locomotion", "loop": true, "refSpeed": 3.2, "placeholder": true, "fallback": "walk", "request": "--locomotion (walk.left)" },
+    { "id": "walk_r", "m1": true, "group": "yurume", "dir": "r", "source": "locomotion", "loop": true, "refSpeed": 3.2, "placeholder": true, "fallback": "walk", "request": "--locomotion (walk.right)" },
+    { "id": "walk_fl", "m1": true, "group": "yurume", "dir": "fl", "source": "locomotion", "loop": true, "refSpeed": 3.2, "placeholder": true, "fallback": "walk", "request": "--locomotion (walk.forward-left)" },
+    { "id": "walk_fr", "m1": true, "group": "yurume", "dir": "fr", "source": "locomotion", "loop": true, "refSpeed": 3.2, "placeholder": true, "fallback": "walk", "request": "--locomotion (walk.forward-right)" },
+    { "id": "walk_bl", "m1": true, "group": "yurume", "dir": "bl", "source": "locomotion", "loop": true, "refSpeed": 3.2, "placeholder": true, "fallback": "walk", "fallbackSpeed": -1, "request": "--locomotion (walk.back-left)" },
+    { "id": "walk_br", "m1": true, "group": "yurume", "dir": "br", "source": "locomotion", "loop": true, "refSpeed": 3.2, "placeholder": true, "fallback": "walk", "fallbackSpeed": -1, "request": "--locomotion (walk.back-right)" },
+
+    { "id": "run", "m1": true, "group": "kosu", "dir": "f", "source": "library", "action": "running", "loop": true, "refSpeed": 5.0 },
+    { "id": "run_b", "m1": true, "group": "kosu", "dir": "b", "source": "locomotion", "loop": true, "refSpeed": 5.0, "placeholder": true, "fallback": "run", "fallbackSpeed": -1, "request": "--locomotion (run.backward)" },
+    { "id": "run_l", "m1": true, "group": "kosu", "dir": "l", "source": "locomotion", "loop": true, "refSpeed": 5.0, "placeholder": true, "fallback": "run", "request": "--locomotion (run.left)" },
+    { "id": "run_r", "m1": true, "group": "kosu", "dir": "r", "source": "locomotion", "loop": true, "refSpeed": 5.0, "placeholder": true, "fallback": "run", "request": "--locomotion (run.right)" },
+    { "id": "run_fl", "m1": true, "group": "kosu", "dir": "fl", "source": "locomotion", "loop": true, "refSpeed": 5.0, "placeholder": true, "fallback": "run", "request": "--locomotion (run.forward-left)" },
+    { "id": "run_fr", "m1": true, "group": "kosu", "dir": "fr", "source": "locomotion", "loop": true, "refSpeed": 5.0, "placeholder": true, "fallback": "run", "request": "--locomotion (run.forward-right)" },
+    { "id": "run_bl", "m1": true, "group": "kosu", "dir": "bl", "source": "locomotion", "loop": true, "refSpeed": 5.0, "placeholder": true, "fallback": "run", "fallbackSpeed": -1, "request": "--locomotion (run.back-left)" },
+    { "id": "run_br", "m1": true, "group": "kosu", "dir": "br", "source": "locomotion", "loop": true, "refSpeed": 5.0, "placeholder": true, "fallback": "run", "fallbackSpeed": -1, "request": "--locomotion (run.back-right); kutuphanede 607 BackRight_Run_inplace da var" },
+
+    { "id": "sprint", "m1": true, "group": "depar", "dir": "f", "source": "library", "action": "run_fast_10_inplace", "loop": true, "refSpeed": 7.5 },
+
+    { "id": "jump_start", "m1": true, "group": "zipla", "source": "cut", "from": "jump", "start": 0.0, "end": 0.55, "speed": 2.6 },
+    { "id": "jump_air", "m1": true, "group": "zipla", "source": "cut", "from": "jump", "start": 0.62, "end": 1.04, "loop": true, "flattenHips": true },
+    { "id": "jump_land", "m1": true, "group": "zipla", "source": "cut", "from": "jump", "start": 1.1, "end": 1.87, "speed": 1.6 },
+    { "id": "fall", "m1": true, "group": "dusme", "source": "library", "action": "Fall1", "loop": true, "placeholder": true, "fallback": "jump_air", "request": "kutuphane 502 Fall1 (onizlemeyle 502-505 Fall1..Fall4 arasindan dongulu dusus)" },
+    { "id": "getup_front", "m1": true, "group": "kalkis", "source": "library", "action": "Stand_Up1", "placeholder": true, "fallback": "getup_front_pose", "request": "kutuphane 344-353 Stand_Up1..Stand_Up10 arasindan yuzustu kalkan (onizlemeyle)" },
+    { "id": "getup_back", "m1": true, "group": "kalkis", "source": "library", "action": "Wake_Up_and_Look_Up", "placeholder": true, "fallback": "getup_back_pose", "request": "kutuphane 271 Wake_Up_and_Look_Up ya da Stand_Up serisinden sirtustu kalkan (onizlemeyle)" },
+
+    { "id": "plant", "m1": true, "group": "ekme", "source": "code", "loop": true },
+    { "id": "eat", "m1": true, "group": "yeme", "source": "code" },
+    { "id": "sleep", "m1": true, "group": "uyuma", "source": "code", "loop": true },
+    { "id": "push_cart", "m1": true, "group": "itme", "source": "code", "layer": true },
+    { "id": "wade", "m1": true, "group": "suda", "source": "code", "layer": true },
+
+    { "id": "jump", "group": "zipla", "source": "library", "action": "Regular_Jump", "note": "jump_start/air/land bundan kesilir" },
+    { "id": "walk_casual", "group": "yurume", "source": "library", "action": "Casual_Walk_inplace", "loop": true },
+    { "id": "crouch_walk", "group": "yurume", "source": "library", "action": "Cautious_Crouch_Walk_Forward_inplace", "loop": true },
+    { "id": "hurt", "group": "tepki", "source": "library", "action": "Hit_Reaction", "inPlace": true },
+    { "id": "knockdown", "group": "tepki", "source": "library", "action": "Knock_Down", "inPlace": true },
+    { "id": "shock_fall", "group": "tepki", "source": "library", "action": "Electrocuted_Fall", "inPlace": true },
+    { "id": "carry", "group": "tasima", "source": "library", "action": "Carry_Heavy_Object_Walk_inplace", "loop": true, "note": "agir yuk tasima M2; Cekim ile tasirken oynar" },
+    { "id": "push", "group": "itme", "source": "library", "action": "Push_and_Walk_Forward", "inPlace": true, "loop": true, "note": "odenmis kutuphane klibi; M1'de el arabasi itme kodla (push_cart)" },
+    { "id": "kneel", "group": "ekme", "source": "library", "action": "Female_Crouch_Pick_Up_Place_Side", "inPlace": true, "note": "odenmis kutuphane klibi; M1'de ekme kodla (plant)" },
+    { "id": "cheer", "group": "jest", "source": "library", "action": "Victory_Cheer", "inPlace": true, "note": "12 jest M4" },
+    { "id": "wave", "group": "jest", "source": "library", "action": "Big_Wave_Hello", "inPlace": true, "note": "12 jest M4" },
+    { "id": "getup_front_pose", "group": "kalkis", "source": "code", "note": "getup_front gelene kadar yer tutucu" },
+    { "id": "getup_back_pose", "group": "kalkis", "source": "code", "note": "getup_back gelene kadar yer tutucu" }
+  ]
+}

@@ -1,33 +1,74 @@
 using System.Collections.Generic;
 using Godot;
+using Kabarma.Sim;
 
 namespace Kabarma.Game;
 
 /// <summary>
-/// Oyuncunun kodla animasyon katmanlari (SANAT-SES §3.1):
-///  - Kol IK'si: sag kol Capa'yi nisan noktasina dogru tutar (TwoBoneIK3D).
-///  - Bakis: bas nisan yonune doner, acisi sinirli (LookAtModifier3D).
-///  - Ragdoll: bayilinca govde fizikle serilir, kalkinca klibe doner (PhysicalBoneSimulator3D).
+/// Oyuncunun kodla ve fizikle animasyon katmanlari (SANAT-SES §3.1). Iskeletin degistirici sirasi:
+///  1. PlayerBody: egilme, govde donusu, geri tepme, itme ve suda yurume katmanlari, canta yayi, ayak IK hedefleri.
+///  2. LegIK (TwoBoneIK3D, iki ayak): ayaklar zemine oturur.
+///  3. ArmIK (TwoBoneIK3D): sag kol Capa'yi nisan noktasina tutar.
+///  4. HeadLook (LookAtModifier3D): bas nisan yonune doner, acisi sinirli.
+///  5. Ragdoll (PhysicalBoneSimulator3D): yere serilme; kalkista PlayerBody ragdoll pozundan kalkis klibine harmanlar.
+/// Godot degistirilmis pozu her karede geri yukler; son poz yalnizca SkeletonUpdated sinyalinde okunur.
+/// Capa ve vizor bu yuzden orada yerlestirilir (PoseReady).
 /// </summary>
 public sealed class PlayerRig
 {
     readonly Skeleton3D _skel;
-    readonly TwoBoneIK3D _arm;
+    readonly TwoBoneIK3D _arm, _legs;
     readonly LookAtModifier3D _look;
     readonly PhysicalBoneSimulator3D _rag;
+    public readonly PlayerBody Body;
     public readonly Node3D HandTarget, ElbowPole, LookTarget;
+    readonly Node3D[] _footTargets = new Node3D[2], _kneePoles = new Node3D[2];
     readonly Dictionary<string, PhysicalBone3D> _bones = new();
+    readonly int _hips, _hand;
     float _armW, _lookW;
     public bool Ragdolling { get; private set; }
 
-    public PlayerRig(Node3D owner, Skeleton3D skel)
+    /// <summary>Iskeletin son pozu hazir (degistiriciler uygulandi): Capa ve vizor burada yerlesir.</summary>
+    public event System.Action PoseReady;
+
+    // Ragdoll'un son pozu (kalkis harmani icin), dunya uzayinda yakalanir.
+    Quaternion[] _lastRots;
+    Transform3D _lastHipsWorld, _lastTorsoWorld;
+    Vector3 _lastHeadPos;
+    readonly int _torso, _head;
+
+    public PlayerRig(Node3D owner, Skeleton3D skel, PlayerRigDef def)
     {
         _skel = skel;
-        HandTarget = new Node3D { Name = "HandTarget", TopLevel = true };
-        ElbowPole = new Node3D { Name = "ElbowPole", TopLevel = true };
-        LookTarget = new Node3D { Name = "LookTarget", TopLevel = true };
-        owner.AddChild(HandTarget); owner.AddChild(ElbowPole); owner.AddChild(LookTarget);
+        _hips = skel.FindBone("Hips");
+        _hand = skel.FindBone("RightHand");
+        _torso = skel.FindBone("Spine01");
+        _head = skel.FindBone("Head");
+        HandTarget = Marker(owner, "HandTarget");
+        ElbowPole = Marker(owner, "ElbowPole");
+        LookTarget = Marker(owner, "LookTarget");
+        for (int i = 0; i < 2; i++) { _footTargets[i] = Marker(owner, $"FootTarget{i}"); _kneePoles[i] = Marker(owner, $"KneePole{i}"); }
 
+        // 1. Kodla katman
+        Body = new PlayerBody { Name = "Body", Def = def, FootTargets = _footTargets, KneePoles = _kneePoles };
+        skel.AddChild(Body);
+
+        // 2. Bacak IK'si
+        _legs = new TwoBoneIK3D { Name = "LegIK", Influence = 0f };
+        skel.AddChild(_legs);
+        _legs.SettingCount = 2;
+        string[] side = { "Left", "Right" };
+        for (int i = 0; i < 2; i++)
+        {
+            _legs.SetRootBoneName(i, side[i] + "UpLeg");
+            _legs.SetMiddleBoneName(i, side[i] + "Leg");
+            _legs.SetEndBoneName(i, side[i] + "Foot");
+            _legs.SetTargetNode(i, _legs.GetPathTo(_footTargets[i]));
+            _legs.SetPoleNode(i, _legs.GetPathTo(_kneePoles[i]));
+        }
+        Body.LegIk = _legs;
+
+        // 3. Kol IK'si
         _arm = new TwoBoneIK3D { Name = "ArmIK", Influence = 0f };
         skel.AddChild(_arm);
         _arm.SettingCount = 1;
@@ -37,6 +78,7 @@ public sealed class PlayerRig
         _arm.SetTargetNode(0, _arm.GetPathTo(HandTarget));
         _arm.SetPoleNode(0, _arm.GetPathTo(ElbowPole));
 
+        // 4. Bakis
         _look = new LookAtModifier3D
         {
             Name = "HeadLook", Influence = 0f, BoneName = "Head",
@@ -48,9 +90,10 @@ public sealed class PlayerRig
         skel.AddChild(_look);
         _look.TargetNode = _look.GetPathTo(LookTarget);
 
+        // 5. Ragdoll
         _rag = new PhysicalBoneSimulator3D { Name = "Ragdoll" };
         skel.AddChild(_rag);
-        // Iskelet 0,01 olcekli ama fizik govdeleri olcegi atar: sekil boyutlari metre (asagida /100).
+        // Iskelet metre biriminde (merge_player.py olcegi uygular); sekil boyutlari cm, asagida /100.
         AddBone("Hips", 14f, 18f);
         AddBone("Spine01", 14f, 22f);
         AddBone("Head", 15f, 10f);
@@ -59,6 +102,15 @@ public sealed class PlayerRig
         AddBone("LeftArm", 5f, 18f); AddBone("LeftForeArm", 5f, 18f);
         AddBone("RightArm", 5f, 18f); AddBone("RightForeArm", 5f, 18f);
         _rag.Active = false;
+
+        skel.SkeletonUpdated += OnSkeletonUpdated;
+    }
+
+    static Node3D Marker(Node3D owner, string name)
+    {
+        var n = new Node3D { Name = name, TopLevel = true };
+        owner.AddChild(n);
+        return n;
     }
 
     void AddBone(string name, float radius, float length)
@@ -74,6 +126,9 @@ public sealed class PlayerRig
         pb.CollisionLayer = 1u << 2;
         pb.CollisionMask = 1u;
         pb.Set("bone_name", name); // C# baglayicisinda ozellik yok; motor ozelligi adiyla ayarlanir
+        // Varsayilan burulma 180 derece: govde belden ters donebiliyordu (kalca sirtustu, gogus yuzustu).
+        pb.Set("joint_constraints/swing_span", 50f);
+        pb.Set("joint_constraints/twist_span", 25f);
         float r = radius / 100f, l = length / 100f;
         pb.AddChild(new CollisionShape3D
         {
@@ -84,14 +139,44 @@ public sealed class PlayerRig
         _bones[name] = pb;
     }
 
-    public void Exclude(Rid body) => _rag.PhysicalBonesAddCollisionException(body);
+    public void Exclude(Rid body) { _rag.PhysicalBonesAddCollisionException(body); Body.Exclude = body; }
 
-    /// <summary>Kol, bas ve parmak ucu hedeflerini gunceller. aiming: Capa kullaniliyor ya da silah takili gece.</summary>
-    public void Update(float dt, bool aiming, Vector3 aimPoint, Node3D body)
+    void OnSkeletonUpdated()
     {
-        if (Ragdolling) { _arm.Influence = 0; _look.Influence = 0; return; }
-        _armW = Mathf.MoveToward(_armW, aiming ? 1f : 0f, dt * 6f);
-        _lookW = Mathf.MoveToward(_lookW, 1f, dt * 3f);
+        if (Ragdolling)
+        {
+            int n = _skel.GetBoneCount();
+            if (_lastRots == null || _lastRots.Length != n) _lastRots = new Quaternion[n];
+            for (int b = 0; b < n; b++) _lastRots[b] = _skel.GetBonePoseRotation(b);
+            if (_hips >= 0) _lastHipsWorld = _skel.GlobalTransform * _skel.GetBoneGlobalPose(_hips);
+            if (_torso >= 0) _lastTorsoWorld = _skel.GlobalTransform * _skel.GetBoneGlobalPose(_torso);
+            if (_head >= 0) _lastHeadPos = _skel.GlobalTransform * _skel.GetBoneGlobalPose(_head).Origin;
+        }
+        PoseReady?.Invoke();
+    }
+
+    /// <summary>Elin son (IK ve ragdoll sonrasi) dunya donusumu.</summary>
+    public Transform3D HandWorld => _hand >= 0 ? _skel.GlobalTransform * _skel.GetBoneGlobalPose(_hand) : _skel.GlobalTransform;
+
+    /// <summary>Kemigin son dunya donusumu (yalnizca PoseReady icinde gecerli son poz).</summary>
+    public Transform3D BoneWorld(string bone)
+    {
+        int b = _skel.FindBone(bone);
+        return b >= 0 ? _skel.GlobalTransform * _skel.GetBoneGlobalPose(b) : _skel.GlobalTransform;
+    }
+
+    /// <summary>Fizik karesinde katman girdileri. aiming: Capa kullaniliyor ya da silah takili gece.</summary>
+    public void Update(float dt, bool aiming, Vector3 aimPoint, Node3D visual, in BodyState st)
+    {
+        if (Ragdolling)
+        {
+            _arm.Influence = 0; _look.Influence = 0;
+            Body.FootIkWanted = false; Body.Speed = 0; Body.PushTarget = 0; Body.WadeTarget = 0;
+            return;
+        }
+        bool posed = st.Posed;
+        _armW = Mathf.MoveToward(_armW, aiming && !posed ? 1f : 0f, dt * 6f);
+        _lookW = Mathf.MoveToward(_lookW, posed ? 0f : 1f, dt * 3f);
         _arm.Influence = _armW;
         _look.Influence = _lookW * 0.9f;
         var shoulder = _skel.GlobalTransform * _skel.GetBoneGlobalPose(_skel.FindBone("RightArm")).Origin;
@@ -99,8 +184,28 @@ public sealed class PlayerRig
         // El omzun 0,45 m onunde, nisan yonunde; dirsek asagi ve disari.
         HandTarget.GlobalPosition = shoulder + dir * 0.45f + Vector3.Down * 0.05f;
         HandTarget.GlobalBasis = Basis.LookingAt(dir, Vector3.Up);
-        ElbowPole.GlobalPosition = shoulder + body.GlobalBasis.X * -0.35f + Vector3.Down * 0.5f;
+        ElbowPole.GlobalPosition = shoulder + visual.GlobalBasis.X * -0.35f + Vector3.Down * 0.5f;
         LookTarget.GlobalPosition = aimPoint;
+
+        // Govde katmani girdileri, model uzayinda.
+        var inv = visual.GlobalBasis.Orthonormalized().Inverse();
+        var look = inv * (aimPoint - (visual.GlobalPosition + Vector3.Up * 1.4f));
+        Body.LookYaw = posed || aiming ? 0f : Mathf.Atan2(look.X, look.Z);
+        Body.LookPitch = posed ? 0f : Mathf.Atan2(look.Y, new Vector2(look.X, look.Z).Length());
+        Body.Speed = st.Speed; Body.Sprint = st.Sprint; Body.OnFloor = st.OnFloor; Body.YawRate = st.YawRate;
+        Body.AccelModel = inv * st.Accel;
+        Body.Recoil = st.Recoil;
+        Body.FootIkWanted = st.FootIk && !posed;
+        Body.FloorY = st.FloorY;
+        Body.PushTarget = st.Push; Body.WadeTarget = st.Wade;
+    }
+
+    /// <summary>Govdenin bu karedeki durumu (Player doldurur).</summary>
+    public struct BodyState
+    {
+        public float Speed, YawRate, Recoil, FloorY, Push, Wade;
+        public Vector3 Accel;
+        public bool Sprint, OnFloor, FootIk, Posed;
     }
 
     public void StartRagdoll(Vector3 impulse)
@@ -112,13 +217,46 @@ public sealed class PlayerRig
         if (_bones.TryGetValue("Hips", out var hips)) hips.ApplyCentralImpulse(impulse * 0.6f);
     }
 
-    public void StopRagdoll()
+    /// <summary>Kalkis bilgisi: kalcanin yerdeki noktasi, yuzustu mu, govdenin bakacagi yatay yon.</summary>
+    public readonly struct Lying
+    {
+        public readonly Vector3 Hips; public readonly bool FaceDown; public readonly Vector3 Forward;
+        public Lying(Vector3 hips, bool faceDown, Vector3 forward) { Hips = hips; FaceDown = faceDown; Forward = forward; }
+    }
+
+    /// <summary>
+    /// Ragdoll'u bitirir ve yatis bilgisini verir. Gogus (Spine01) yere bakiyorsa yuzustu: bas yonune bakarak kalkar;
+    /// sirtustuyse ayak yonune (kalkis kliplerinde yuzustu bas +Z'de, sirtustu bas -Z'de yatar; PlayerPoses).
+    /// </summary>
+    public Lying StopRagdoll()
     {
         _rag.PhysicalBonesStopSimulation();
         _rag.Active = false;
         Ragdolling = false;
+        int seg = _torso >= 0 ? _torso : _hips;
+        var segWorld = _torso >= 0 ? _lastTorsoWorld : _lastHipsWorld;
+        var hw = segWorld.Basis.Orthonormalized() * _skel.GetBoneGlobalRest(seg).Basis.Orthonormalized().Inverse();
+        var front = hw * new Vector3(0, 0, 1);
+        var head = _head >= 0 ? (_lastHeadPos - _lastHipsWorld.Origin).Normalized() : hw * Vector3.Up;
+        bool down = front.Y < 0f;
+        if (Main.Args.ContainsKey("rigtest")) GD.Print($"GETUP front={front} head={head} faceDown={down}");
+        var fwd = down ? head : -head;
+        fwd.Y = 0;
+        if (fwd.LengthSquared() < 1e-4f) fwd = _skel.GlobalBasis * new Vector3(0, 0, 1);
+        return new Lying(_lastHipsWorld.Origin, down, fwd.Normalized());
     }
 
-    /// <summary>Ragdoll sirasinda kalcanin dunya konumu (kalkinca govde oraya tasinir).</summary>
+    /// <summary>Govde yeni yere ve yone tasindiktan sonra: ragdoll pozundan kalkis klibine harmanlar.</summary>
+    public void BlendFromRagdoll(float seconds)
+    {
+        if (_lastRots == null || _hips < 0) return;
+        var rots = (Quaternion[])_lastRots.Clone();
+        // Kok kemik (kalca) iskelet uzayinda: yeni govde donusumune gore yeniden hesapla.
+        var hipsLocal = _skel.GlobalTransform.AffineInverse() * _lastHipsWorld;
+        rots[_hips] = hipsLocal.Basis.GetRotationQuaternion();
+        Body.BlendFrom(rots, hipsLocal.Origin, seconds);
+    }
+
+    /// <summary>Ragdoll sirasinda kalcanin dunya konumu.</summary>
     public Vector3 HipsPosition => _bones.TryGetValue("Hips", out var h) ? h.GlobalPosition : _skel.GlobalPosition;
 }

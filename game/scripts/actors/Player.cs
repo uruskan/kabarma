@@ -5,7 +5,9 @@ namespace Kabarma.Game;
 
 /// <summary>
 /// Omuz ustu ucuncu sahis oyuncu (PLAN §4). Govde: uretilen kemikli model, yoksa koddan tulumlu govde.
-/// Parca: Player.Anim.cs (model yukleme, rig, animasyon secimi). Burada: hareket, kamera, nisan, hasar.
+/// Parcalar: Player.Anim.cs (model, klip secimi), Player.Grip.cs (Capa'nin elde durusu), Player.Stamina.cs
+/// (depar ve dayaniklilik), Player.Hooks.cs (olaylar -> vizor ve pozlar), PlayerRig/PlayerBody/PlayerPoses (kodla
+/// katmanlar), Visor.cs. Burada: hareket, kamera, nisan, hasar, yere serilme.
 /// </summary>
 public partial class Player : CharacterBody3D
 {
@@ -23,6 +25,9 @@ public partial class Player : CharacterBody3D
     public float Hp;
     public bool Down { get; private set; }
     float _downT;
+    bool _dead;
+    Vector3 _prevVel;
+    float _prevYaw;
     public Vector3 RespawnPoint;
     float _shake;
     float _recoil, _recoilVel;
@@ -66,6 +71,7 @@ public partial class Player : CharacterBody3D
         Pitch.Rotation = new Vector3(-0.22f, 0, 0);
         // Oyun acilinca fare dogrudan kilitlenir; Esc birakir, tiklama geri kilitler.
         if (!Main.Args.ContainsKey("bot")) Input.MouseMode = Input.MouseModeEnum.Captured;
+        HookEvents(); // Player.Hooks.cs
     }
 
     public override void _Notification(int what)
@@ -124,7 +130,8 @@ public partial class Player : CharacterBody3D
     public override void _Input(InputEvent e)
     {
         if (e is InputEventMouseMotion wm && LookLocked) { Wheel?.Invoke(wm.Relative); return; }
-        if (e is InputEventMouseMotion mm && Input.MouseMode == Input.MouseModeEnum.Captured)
+        // Basliksiz kipte imlec yok, kilitlenemez: fare hareketi yine bakistir (--test=input).
+        if (e is InputEventMouseMotion mm && (Input.MouseMode == Input.MouseModeEnum.Captured || DisplayServer.GetName() == "headless"))
         {
             Yaw.RotateY(-mm.Relative.X * MouseSens);
             var r = Pitch.Rotation;
@@ -134,7 +141,7 @@ public partial class Player : CharacterBody3D
         // Pencereye tiklayinca fare oyuna kilitlenir (pano tiklanabilir bir sey tasimaz).
         if (e is InputEventMouseButton mb && mb.Pressed && Input.MouseMode != Input.MouseModeEnum.Captured)
             Input.MouseMode = Input.MouseModeEnum.Captured;
-        if (e.IsActionPressed("ui_cancel")) Input.MouseMode = Input.MouseModeEnum.Visible;
+        if (e is InputEventKey && e.IsActionPressed("ui_cancel")) Input.MouseMode = Input.MouseModeEnum.Visible; // kolun Ⓑ'si fareyi birakmaz
     }
 
     /// <summary>Ekranin ortasindan nisan alinan dunya noktasi.</summary>
@@ -170,18 +177,82 @@ public partial class Player : CharacterBody3D
         if (Hp <= 0)
         {
             Hp = 0;
-            Down = true;
-            _downT = 3f;
-            if (Rig != null) Rig.StartRagdoll(k.Normalized() * 2.5f + Vector3.Up * 1.5f);
-            else Visual.Rotation = new Vector3(-1.4f, Visual.Rotation.Y, 0);
+            _dead = true;
+            StartDown(k.Normalized() * 2.5f + Vector3.Up * 1.5f, RigDef.DownSeconds);
         }
-        else if (_animHurt != null && _actionT <= 0) { _anim.Play(_animHurt, 0.08); _actionT = 0.45f; }
+        else
+        {
+            if (_mode != AnimMode.Action) PlayAction("hurt", 0.45f);
+            Visor?.Event("hasar");
+        }
+    }
+
+    /// <summary>
+    /// Hasarsiz yere serilme (GDD §3.2: arac ya da 150 kg'dan agir nesne carpinca 5 sn ragdoll). Sure dolunca
+    /// oyuncu bulundugu yerde, yuzustu ya da sirtustu yatisina gore kalkar.
+    /// </summary>
+    public void Knockdown(Vector3 impulse)
+    {
+        if (Down) return;
+        _dead = false;
+        StartDown(impulse, RigDef.KnockdownSeconds);
+    }
+
+    void StartDown(Vector3 impulse, float seconds)
+    {
+        Down = true;
+        _downT = seconds;
+        _mode = AnimMode.Move;
+        CaptureCapaGrip(); // Capa ele bagli serilir
+        _capaOnBack = false;
+        if (Rig != null) Rig.StartRagdoll(impulse);
+        else Visual.Rotation = new Vector3(-1.4f, Visual.Rotation.Y, 0);
+        Visor?.SetDown(true);
+    }
+
+    /// <summary>
+    /// Yere serilme bitti. Can sifirlanmissa (olum) eski kural: tam canla dogma noktasinda kalkar.
+    /// Hasarsiz serilmede bulundugu yerde, ragdoll pozundan kalkis klibine harmanlanarak kalkar.
+    /// </summary>
+    void EndDown()
+    {
+        Down = false;
+        Visor?.SetDown(false);
+        if (Rig == null)
+        {
+            Visual.Rotation = new Vector3(0, Visual.Rotation.Y, 0);
+            if (_dead) { Hp = MaxHp; GlobalPosition = RespawnPoint; }
+            return;
+        }
+        var lying = Rig.StopRagdoll();
+        if (_dead)
+        {
+            Hp = MaxHp;
+            GlobalPosition = RespawnPoint;
+            BeginGetup(false, false);
+        }
+        else
+        {
+            GlobalPosition = GroundBelow(lying.Hips);
+            Visual.Rotation = new Vector3(0, Mathf.Atan2(lying.Forward.X, lying.Forward.Z), 0);
+            BeginGetup(lying.FaceDown, true);
+        }
+        _dead = false;
+        Velocity = Vector3.Zero;
+    }
+
+    Vector3 GroundBelow(Vector3 p)
+    {
+        var q = PhysicsRayQueryParameters3D.Create(p + Vector3.Up * 1.0f, p + Vector3.Down * 3f, 1u);
+        q.Exclude = new Godot.Collections.Array<Rid> { GetRid() };
+        var hit = GetWorld3D().DirectSpaceState.IntersectRay(q);
+        return hit.Count > 0 ? (Vector3)hit["position"] + Vector3.Up * 0.02f : p + Vector3.Down * 0.13f;
     }
 
     public void Shake(float amount) => _shake = Mathf.Max(_shake, amount);
 
     /// <summary>Geri tepme yayi (GDD 4): Capa geriye ve yukari teper, yayla yerine doner.</summary>
-    public void Recoil(float amount) => _recoilVel += amount * 9f;
+    public void Recoil(float amount) => _recoilVel += amount * RecoilImpulse; // Player.Feel.cs
 
     public bool Facing; // arac kullanilirken govde kameraya doner
     public bool Carrying; // Cekim ile yuk tasirken agir yuk yurumesi
@@ -192,22 +263,12 @@ public partial class Player : CharacterBody3D
         Yaw.GlobalPosition = GlobalPosition;
         if (Down)
         {
-            if (Rig != null && Main.Args.ContainsKey("ragtest") && Engine.GetPhysicsFrames() % 20 == 0) GD.Print($"RAG hips={Rig.HipsPosition} body={GlobalPosition}");
-            // Bayginken Capa elde kalir (ragdoll ile birlikte serilir).
-            if (_skel != null && _handBone >= 0)
-            {
-                var handDown = _skel.GlobalTransform * _skel.GetBoneGlobalPose(_handBone);
-                _capa.GlobalTransform = new Transform3D(handDown.Basis.Orthonormalized(), handDown.Origin);
-            }
+            if (Rig != null && Main.Args.ContainsKey("ragtest") && Engine.GetPhysicsFrames() % 20 == 0) GD.Print($"RAG hips={Rig.HipsPosition} body={GlobalPosition} capa={_capa.GlobalPosition}");
+            // Bayginken Capa elde kalir: Player.Grip.cs, iskeletin son pozunda (ragdoll ile birlikte serilir).
+            SprintGate(false, dt);
+            Visor?.Tick(dt, this);
             _downT -= dt;
-            if (_downT <= 0)
-            {
-                Down = false;
-                Hp = MaxHp;
-                Rig?.StopRagdoll();
-                GlobalPosition = RespawnPoint;
-                Visual.Rotation = new Vector3(0, Visual.Rotation.Y, 0);
-            }
+            if (_downT <= 0) EndDown();
             Velocity = new Vector3(0, Velocity.Y - _gravity * dt, 0);
             MoveAndSlide();
             return;
@@ -224,6 +285,8 @@ public partial class Player : CharacterBody3D
             wish.Y = 0;
             wish = wish.LimitLength(1f);
         }
+        if (MovementLocked) wish = Vector3.Zero; // kalkis bitene kadar
+        sprint = SprintGate(sprint && wish.LengthSquared() > 0.01f, dt); // Player.Stamina.cs: GDD §3.2
         float speed = (sprint ? SprintSpeed : WalkSpeed) * SpeedMult;
         var v = Velocity;
         var target = wish * speed;
@@ -231,18 +294,20 @@ public partial class Player : CharacterBody3D
         v.X = Mathf.MoveToward(v.X, target.X, accel * speed * dt);
         v.Z = Mathf.MoveToward(v.Z, target.Z, accel * speed * dt);
         if (!IsOnFloor()) v.Y -= _gravity * dt;
-        else if (Input.IsActionJustPressed("jump") && MoveOverride == null) { v.Y = JumpVelocity; if (_animJump != null) _anim.Play(_animJump, 0.1); }
+        else if (Input.IsActionJustPressed("jump") && MoveOverride == null && !MovementLocked) { v.Y = JumpVelocity; OnJump(); }
         v += _knock;
         _knock = _knock.Lerp(Vector3.Zero, Mathf.Min(1f, dt * 8f));
         Velocity = v;
         MoveAndSlide();
 
-        // Govde yonu: alet kullanirken nisan yonune, yururken hareket yonune.
+        // Govde yonu: alet kullanirken nisan yonune, yururken hareket yonune; poz ve kalkista donmez.
         var flat = new Vector3(Velocity.X, 0, Velocity.Z);
+        _aimCache = AimPoint(out _);
         float targetYaw = Visual.Rotation.Y;
-        if (Facing || AimOverride != null)
+        if (Posed) { }
+        else if (Facing || AimOverride != null)
         {
-            var d = AimPoint(out _) - GlobalPosition; d.Y = 0;
+            var d = _aimCache - GlobalPosition; d.Y = 0;
             if (d.LengthSquared() > 0.01f) targetYaw = Mathf.Atan2(d.X, d.Z);
         }
         else if (flat.LengthSquared() > 0.3f) targetYaw = Mathf.Atan2(flat.X, flat.Z);
@@ -250,29 +315,29 @@ public partial class Player : CharacterBody3D
 
         UpdateAnim(dt, flat); // Player.Anim.cs
 
-        Rig?.Update(dt, Facing || AimOverride != null, AimPoint(out _), Visual);
+        // Capa geri tepme yayi: x'' = -k x - c x' (Capa'nin yeri Player.Grip.cs'te, iskeletin son pozunda).
+        _recoilVel += (-RecoilStiffness * _recoil - RecoilDamping * _recoilVel) * dt; // feel.json recoil (Player.Feel.cs)
+        _recoil += _recoilVel * dt;
 
-        // Capa sag elde: konum elden (kol IK'si eli nisana goturur), yon nisandan.
-        if (_skel != null && _handBone >= 0)
+        float yawRate = Mathf.AngleDifference(_prevYaw, Visual.Rotation.Y) / dt;
+        _prevYaw = Visual.Rotation.Y;
+        var accelW = (Velocity - _prevVel) / dt; accelW.Y = 0;
+        _prevVel = Velocity;
+        Rig?.Update(dt, Facing || AimOverride != null, _aimCache, Visual, new PlayerRig.BodyState
         {
-            var hand = _skel.GlobalTransform * _skel.GetBoneGlobalPose(_handBone).Origin;
-            var fwd = Facing || AimOverride != null ? (AimPoint(out _) - hand).Normalized() : Visual.GlobalBasis.Z;
-            if (fwd.LengthSquared() < 0.01f) fwd = Visual.GlobalBasis.Z;
-            // yay: x'' = -k x - c x'
-            float dtp = (float)GetPhysicsProcessDeltaTime();
-            _recoilVel += (-180f * _recoil - 18f * _recoilVel) * dtp;
-            _recoil += _recoilVel * dtp;
-            _capa.GlobalPosition = hand + fwd * (0.12f - _recoil * 0.18f) + Vector3.Up * _recoil * 0.05f;
-            _capa.GlobalBasis = Basis.LookingAt(-fwd, Vector3.Up).Rotated(Basis.LookingAt(-fwd, Vector3.Up).X, _recoil * 0.6f);
-        }
+            Speed = flat.Length(), Sprint = _sprinting, OnFloor = IsOnFloor(), YawRate = yawRate, Accel = accelW,
+            Recoil = _recoil, FloorY = GlobalPosition.Y, Push = PushingCart ? 1f : 0f, Wade = Mathf.Clamp(WadeDepth, 0f, 1f),
+            FootIk = _mode is AnimMode.Move or AnimMode.Land or AnimMode.Action, Posed = Posed,
+        });
+        Visor?.Tick(dt, this);
 
         // Kamera sarsintisi
         if (_shake > 0)
         {
-            _shake = Mathf.Max(0, _shake - dt * 2.5f);
+            _shake = Mathf.Max(0, _shake - dt * ShakeDecay);
             float s = _shake * _shake;
-            Cam.HOffset = (float)GD.RandRange(-1, 1) * s * 0.4f;
-            Cam.VOffset = (float)GD.RandRange(-1, 1) * s * 0.4f;
+            Cam.HOffset = (float)GD.RandRange(-1, 1) * s * ShakeOffset;
+            Cam.VOffset = (float)GD.RandRange(-1, 1) * s * ShakeOffset;
         }
         else { Cam.HOffset = 0; Cam.VOffset = 0; }
 

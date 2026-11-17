@@ -1,0 +1,102 @@
+﻿Godot Engine v4.7.2.stable.mono.official.ed1daf0bf - https://godotengine.org
+
+SCENE res://assets/models/agac/agac.glb
+  agac [Node3D] pos=(0.000, 0.000, 0.000)
+    tripo_node_ab01422b-b3b0-4c29-afd4-0106c4f4f4ca [MeshInstance3D] lods=1 pos=(0.000, 0.000, 0.000)
+  res://assets/models/agac/agac_lod1.glb ok=true
+  res://assets/models/agac/agac_lod2.glb ok=true
+  hull points=64
+  icon=(256.0, 256.0)
+SCENE res://assets/models/kaya/kaya.glb
+  kaya [Node3D] pos=(0.000, 0.000, 0.000)
+    tripo_node_966d957e-96e8-403f-96ca-c84ae6bf7111 [MeshInstance3D] lods=1 pos=(0.000, 0.000, 0.000)
+  res://assets/models/kaya/kaya_lod1.glb ok=true
+  res://assets/models/kaya/kaya_lod2.glb ok=true
+  hull points=64
+  icon=(256.0, 256.0)
+SCENE res://assets/models/kova/kova.glb
+  kova [Node3D] pos=(0.000, 0.000, 0.000)
+    tripo_node_8389ff81-30ac-4398-8d3b-9db77a31ffd1 [MeshInstance3D] lods=1 pos=(0.000, 0.000, 0.000)
+  res://assets/models/kova/kova_lod1.glb ok=true
+  res://assets/models/kova/kova_lod2.glb ok=true
+  hull points=64
+  icon=(256.0, 256.0)
+SCENE res://assets/models/salgam/salgam.glb
+  salgam [Node3D] pos=(0.000, 0.000, 0.000)
+    tripo_node_15b23276-81d0-4cf9-97cf-53aeb12b7c82 [MeshInstance3D] lods=1 pos=(0.000, 0.000, 0.000)
+  res://assets/models/salgam/salgam_lod1.glb ok=true
+  res://assets/models/salgam/salgam_lod2.glb ok=true
+  hull points=64
+  icon=(256.0, 256.0)
+SCENE res://assets/models/tezgah/tezgah.glb
+  tezgah [Node3D] pos=(0.000, 0.000, 0.000)
+    tripo_node_a08e6543-d32b-4cba-818a-f1ef68cd26e6 [MeshInstance3D] lods=1 pos=(0.000, 0.000, 0.000)
+  res://assets/models/tezgah/tezgah_lod1.glb ok=true
+  res://assets/models/tezgah/tezgah_lod2.glb ok=true
+  hull points=64
+  icon=(256.0, 256.0)
+SCENE res://assets/models/tas_firin/tas_firin.glb
+  tas_firin [Node3D] pos=(0.000, 0.000, 0.000)
+    base [MeshInstance3D] lods=1 pos=(0.000, 0.000, 0.000)
+    body [MeshInstance3D] lods=1 pos=(0.000, 0.000, 0.000)
+    chimney [MeshInstance3D] lods=1 pos=(-0.007, 1.132, -0.070)
+    door [MeshInstance3D] lods=1 pos=(0.000, 0.000, 0.000)
+    door_handle [MeshInstance3D] lods=1 pos=(0.000, 0.000, 0.000)
+    panel [MeshInstance3D] lods=1 pos=(0.000, 0.000, 0.000)
+  res://assets/models/tas_firin/tas_firin_lod1.glb ok=true
+  res://assets/models/tas_firin/tas_firin_lod2.glb ok=true
+  hull points=63
+  icon=(256.0, 256.0)
+SCENE res://assets/models/el_arabasi/el_arabasi.glb
+  el_arabasi [Node3D] pos=(0.000, 0.000, 0.000)
+    body [MeshInstance3D] lods=1 pos=(0.000, 0.000, 0.000)
+    fork [MeshInstance3D] lods=1 pos=(0.000, 0.000, 0.000)
+    frame_l [MeshInstance3D] lods=1 pos=(0.000, 0.000, 0.000)
+    frame_r [MeshInstance3D] lods=1 pos=(0.000, 0.000, 0.000)
+    grip_l [MeshInstance3D] lods=1 pos=(0.000, 0.000, 0.000)
+    grip_r [MeshInstance3D] lods=1 pos=(0.000, 0.000, 0.000)
+    handle [Node3D] pos=(-0.754, 0.730, -0.003)
+    handle_l [Node3D] pos=(-0.742, 0.729, -0.357)
+    handle_r [Node3D] pos=(-0.766, 0.730, 0.351)
+    load_slot [Node3D] pos=(0.144, 0.616, 0.000)
+    wheel_pivot [Node3D] pos=(0.592, 0.296, -0.004)
+      wheel [MeshInstance3D] lods=1 pos=(0.000, 0.000, 0.000)
+  res://assets/models/el_arabasi/el_arabasi_lod1.glb ok=true
+  res://assets/models/el_arabasi/el_arabasi_lod2.glb ok=true
+  hull points=64
+  icon=(256.0, 256.0)
+SCENE res://assets/models/ocak/ocak.glb
+  ocak [Node3D] pos=(0.000, 0.000, 0.000)
+    tripo_node_90eeaf7c-ce83-4762-accc-73691b10f5bc [MeshInstance3D] lods=1 pos=(0.000, 0.000, 0.000)
+  res://assets/models/ocak/ocak_lod1.glb ok=true
+  res://assets/models/ocak/ocak_lod2.glb ok=true
+  hull points=64
+  icon=(256.0, 256.0)
+SCENE res://assets/models/kapsul/kapsul.glb
+  kapsul [Node3D] pos=(0.000, 0.000, 0.000)
+    base [MeshInstance3D] lods=1 pos=(0.000, 0.000, 0.000)
+    body [MeshInstance3D] lods=1 pos=(0.000, 0.000, 0.000)
+    hatch [MeshInstance3D] lods=1 pos=(0.000, 0.000, 0.000)
+  res://assets/models/kapsul/kapsul_lod1.glb ok=true
+  res://assets/models/kapsul/kapsul_lod2.glb ok=true
+  hull points=64
+  icon=(256.0, 256.0)
+SCENE res://assets/models/paketleme/paketleme.glb
+  paketleme [Node3D] pos=(0.000, 0.000, 0.000)
+    tripo_node_0a704422-9eb9-4cb4-99b3-6a9072c3b134 [MeshInstance3D] lods=1 pos=(0.000, 0.000, 0.000)
+  res://assets/models/paketleme/paketleme_lod1.glb ok=true
+  res://assets/models/paketleme/paketleme_lod2.glb ok=true
+  hull points=64
+  icon=(256.0, 256.0)
+SCENE res://assets/models/capa/capa.glb
+  capa [Node3D] pos=(0.000, 0.000, 0.000)
+    tripo_node_89398fe7-dfbc-4aa5-b502-65e7ef121d0e [MeshInstance3D] lods=1 pos=(0.000, 0.000, 0.000)
+  res://assets/models/capa/capa_lod1.glb ok=true
+  res://assets/models/capa/capa_lod2.glb ok=true
+  hull points=64
+  icon=(256.0, 256.0)
+ERROR: 24 RID allocations of type 'N13RendererDummy15MaterialStorage13DummyMaterialE' were leaked at exit.
+ERROR: 3 RID allocations of type 'N13RendererDummy15MaterialStorage11DummyShaderE' were leaked at exit.
+ERROR: 48 RID allocations of type 'N13RendererDummy9DummyMeshE' were leaked at exit.
+ERROR: 30 RID allocations of type 'PN13RendererDummy14TextureStorage12DummyTextureE' were leaked at exit.
+ERROR: 24 RID allocations of type 'N17RendererSceneCull8InstanceE' were leaked at exit.

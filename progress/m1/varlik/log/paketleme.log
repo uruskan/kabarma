@@ -1,0 +1,43 @@
+00:17:56 | INFO: Data are loaded, start creating Blender stuff
+00:17:56 | INFO: Blender create Mesh node tripo_mesh_0a704422-9eb9-4cb4-99b3-6a9072c3b134
+00:17:56 | INFO: glTF import finished in 0.02s
+C:\Users\uruskan\Documents\GitHub\kabarma\.claude\worktrees\m1-varlik-72a21b\pipeline\clean_asset.py:760: DeprecationWarning: 'Material.use_nodes' is expected to be removed in Blender 6.0
+  if m and m.use_nodes:
+C:\Users\uruskan\Documents\GitHub\kabarma\.claude\worktrees\m1-varlik-72a21b\pipeline\clean_asset.py:145: DeprecationWarning: 'Material.use_nodes' is expected to be removed in Blender 6.0
+  if not mat or not mat.use_nodes:
+00:06.296  render           | Saved: 'C:\Users\uruskan\Documents\GitHub\kabarma\.claude\worktrees\m1-varlik-72a21b\progress\m1\varlik\render\paketleme\paketleme_0.png'
+00:06.343  render           | Saved: 'C:\Users\uruskan\Documents\GitHub\kabarma\.claude\worktrees\m1-varlik-72a21b\progress\m1\varlik\render\paketleme\paketleme_1.png'
+00:06.406  render           | Saved: 'C:\Users\uruskan\Documents\GitHub\kabarma\.claude\worktrees\m1-varlik-72a21b\progress\m1\varlik\render\paketleme\paketleme_2.png'
+00:06.468  render           | Saved: 'C:\Users\uruskan\Documents\GitHub\kabarma\.claude\worktrees\m1-varlik-72a21b\progress\m1\varlik\render\paketleme\paketleme_3.png'
+00:06.546  render           | Saved: 'C:\Users\uruskan\Documents\GitHub\kabarma\.claude\worktrees\m1-varlik-72a21b\progress\m1\varlik\render\paketleme\paketleme_kalinlik_0.png'
+00:06.593  render           | Saved: 'C:\Users\uruskan\Documents\GitHub\kabarma\.claude\worktrees\m1-varlik-72a21b\progress\m1\varlik\render\paketleme\paketleme_kalinlik_1.png'
+00:06.609  render           | Saved: 'C:\Users\uruskan\Documents\GitHub\kabarma\.claude\worktrees\m1-varlik-72a21b\progress\m1\varlik\render\paketleme\paketleme_silhouette64.png'
+00:06.640  render           | Saved: 'C:\Users\uruskan\Documents\GitHub\kabarma\.claude\worktrees\m1-varlik-72a21b\game\assets\models\paketleme\paketleme_icon.png'
+INFO Draco is available, use library at C:\Program Files\Blender Foundation\Blender 5.3\blender.shared\bf_intern_draco_bridge.dll
+INFO MeshOptimizer is available, use library at C:\Program Files\Blender Foundation\Blender 5.3\blender.shared\bf_intern_meshopt_bridge.dll
+00:18:01 | INFO: Starting glTF 2.0 export
+00:18:01 | WARNING: Mesh tripo_mesh_0a704422-9eb9-4cb4-99b3-6a9072c3b134 is not valid, and may be exported wrongly
+00:18:01 | INFO: Extracting primitive: tripo_mesh_0a704422-9eb9-4cb4-99b3-6a9072c3b134
+00:18:01 | INFO: Primitives created: 1
+00:18:01 | INFO: Finished glTF 2.0 export in 0.07425856590270996 s
+
+00:18:01 | INFO: Starting glTF 2.0 export
+00:18:01 | INFO: Extracting primitive: paketleme_lod1
+00:18:01 | INFO: Primitives created: 1
+00:18:01 | INFO: Finished glTF 2.0 export in 0.010590791702270508 s
+
+00:18:01 | INFO: Starting glTF 2.0 export
+00:18:01 | INFO: Extracting primitive: paketleme_lod2
+00:18:01 | INFO: Primitives created: 1
+00:18:01 | INFO: Finished glTF 2.0 export in 0.00696253776550293 s
+00:07.484  render           | Saved: 'C:\Users\uruskan\Documents\GitHub\kabarma\.claude\worktrees\m1-varlik-72a21b\progress\m1\varlik\kart\paketleme.png.text.png'
+
+PIPELINE_REPORT {"name": "paketleme", "tris_in": 7434, "tris": 7432, "size_m": [0.817, 1.398, 1.3], "parts": 1, "pass_scripted": true}
+CHECK 1_texture PASS {"base_color_maps": 1, "max_tex": 2048}
+CHECK 2_polygon PASS {"value": 7432, "budget": 15000, "class": "makine", "below_min": true}
+CHECK 3_thickness PASS {"thin_share": 0.0118, "allowed_share": 0.02, "limit_m": 0.0839, "stick_min_t_m": 0.0074, "plate_share": 0.2916, "faces_measured": 7432, "old_bbox_min_ratio": 0.584, "note": "cubuk/diken alani (iki yonde ince) / yuzey; levha payi (tek yonde ince: yaprak, kapak) bilgi; eski olcu: parca kutusunun en dar boyutu / en uzun kenar"}
+CHECK 4_integrity PASS {"non_manifold_edges": 0, "boundary_edges": 0, "inverted_faces": 0, "inverted_note": "ters sarimli kenar sayisi", "negative_volume_parts": 0, "floating_parts": [], "loose_parts": 1}
+CHECK 5_scale_axis PASS {"height": 1.3, "target": 1.3, "base_z": 0.0, "center_xy": [0.0, 0.0], "forward": "+X", "note": "on yon betikle olculemez; bildirilen eksen yazilir"}
+Blender 5.3.0 (hash 02f0899d78e3 built 2026-11-10 01:33:43)
+
+Blender quit

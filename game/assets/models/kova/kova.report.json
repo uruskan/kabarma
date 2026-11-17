@@ -1,47 +1,213 @@
 {
   "name": "kova",
-  "input": ".tools/tripo_web/kabarma_kova.glb",
+  "label": "Sulama kovası",
+  "input": "C:/Users/uruskan/Documents/GitHub/kabarma\\.tools/tripo_web/kabarma_kova.glb",
+  "class": "esya_kaya",
+  "forward": "+X",
   "checks": {
-    "1_palette": {
+    "1_texture": {
       "pass": true,
-      "note": "dokulu mod: palet oturtma yapilmadi"
+      "textures": {
+        "kabarma_kova_basecolor.jpg": [
+          1024,
+          1024
+        ],
+        "kabarma_kova_rm.jpg": [
+          1024,
+          1024
+        ],
+        "kabarma_kova_normal.png": [
+          1024,
+          1024
+        ]
+      },
+      "base_color_maps": 1,
+      "max_tex": 1024
     },
     "2_polygon": {
       "pass": true,
-      "value": 2908,
-      "budget": 3000
+      "value": 2846,
+      "budget": 6000,
+      "class": "esya_kaya",
+      "below_min": false
     },
     "3_thickness": {
       "pass": true,
-      "min_ratio": 0.496,
-      "note": "parca basina en dar boyut / en uzun kenar"
+      "thin_share": 0.0038,
+      "allowed_share": 0.02,
+      "limit_m": 0.0474,
+      "stick_min_t_m": 0.0001,
+      "plate_share": 0.0528,
+      "faces_measured": 2842,
+      "old_bbox_min_ratio": 0.496,
+      "note": "cubuk/diken alani (iki yonde ince) / yuzey; levha payi (tek yonde ince: yaprak, kapak) bilgi; eski olcu: parca kutusunun en dar boyutu / en uzun kenar"
     },
     "4_integrity": {
-      "pass": false,
-      "non_manifold_edges": 83,
-      "boundary_edges": 34,
-      "inward_faces": 823,
+      "pass": true,
+      "non_manifold_edges": 0,
+      "boundary_edges": 0,
+      "inverted_faces": 0,
+      "inverted_note": "ters sarimli kenar sayisi",
+      "negative_volume_parts": 0,
+      "floating_parts": [],
       "loose_parts": 1
     },
     "5_scale_axis": {
       "pass": true,
       "height": 0.55,
-      "target": 0.55
+      "target": 0.55,
+      "base_z": 0.0,
+      "center_xy": [
+        0.0,
+        0.0
+      ],
+      "forward": "+X",
+      "note": "on yon betikle olculemez; bildirilen eksen yazilir"
     }
   },
+  "source_parts": [
+    "tripo_node_8389ff81-30ac-4398-8d3b-9db77a31ffd1"
+  ],
+  "dropped": [],
+  "merged": {},
   "tris_in": 1941800,
-  "welded_verts": 32367,
+  "welded_verts": 31564,
+  "repair_before": {
+    "fan": 18,
+    "boundary": 18,
+    "wire": 5
+  },
+  "repair_log": [
+    {
+      "pass": 1,
+      "deleted_slivers": 34,
+      "filled_faces": 30,
+      "fan": 10,
+      "boundary": 22,
+      "wire": 0,
+      "nonmanifold_verts": 30
+    },
+    {
+      "pass": 2,
+      "deleted_slivers": 20,
+      "filled_faces": 20,
+      "fan": 10,
+      "boundary": 22,
+      "wire": 0,
+      "nonmanifold_verts": 30
+    },
+    {
+      "pass": 3,
+      "deleted_slivers": 108,
+      "filled_faces": 26,
+      "fan": 0,
+      "boundary": 22,
+      "wire": 0,
+      "nonmanifold_verts": 11
+    },
+    {
+      "pass": 4,
+      "deleted_slivers": 0,
+      "filled_faces": 22,
+      "fan": 0,
+      "boundary": 0,
+      "wire": 0,
+      "nonmanifold_verts": 10
+    }
+  ],
+  "dropped_floating": [],
+  "snapped_floating": [],
+  "dark_fill": {
+    "patches": 0,
+    "faces": 0,
+    "area_share": 0.0
+  },
   "tex_size": 1024,
-  "source_mean_dE": null,
-  "source_within_dE8": null,
-  "palette_use": "textured (palette snap skipped)",
-  "tris": 2908,
+  "tris": 2846,
   "size_m": [
     0.79,
     0.392,
     0.55
   ],
   "parts": 1,
-  "out": "game/assets/models/kova/kova.glb",
-  "pass_scripted": false
+  "palette_direction": {
+    "samples": 1500,
+    "mean_dE": 23.8,
+    "share": [
+      {
+        "color": "tones.turnip_top",
+        "hex": "9158B7",
+        "share": 0.553
+      },
+      {
+        "color": "neutral.warning",
+        "hex": "F2B632",
+        "share": 0.224
+      },
+      {
+        "color": "tones.turnip_body",
+        "hex": "E1DACD",
+        "share": 0.105
+      },
+      {
+        "color": "neutral.off_white",
+        "hex": "EDE6D6",
+        "share": 0.084
+      },
+      {
+        "color": "tones.rock",
+        "hex": "9C909B",
+        "share": 0.015
+      },
+      {
+        "color": "altin_cayir.fog",
+        "hex": "F3D9A4",
+        "share": 0.008
+      }
+    ]
+  },
+  "sockets": [],
+  "icon": "C:\\Users\\uruskan\\Documents\\GitHub\\kabarma\\.claude\\worktrees\\m1-varlik-72a21b\\game/assets/models\\kova\\kova_icon.png",
+  "out": "C:\\Users\\uruskan\\Documents\\GitHub\\kabarma\\.claude\\worktrees\\m1-varlik-72a21b\\game/assets/models\\kova\\kova.glb",
+  "lods": [
+    {
+      "level": 0,
+      "tris": 2846,
+      "file": "C:\\Users\\uruskan\\Documents\\GitHub\\kabarma\\.claude\\worktrees\\m1-varlik-72a21b\\game/assets/models\\kova\\kova.glb",
+      "tex": 1024
+    },
+    {
+      "level": 1,
+      "ratio": 0.5,
+      "tris": 1380,
+      "file": "C:\\Users\\uruskan\\Documents\\GitHub\\kabarma\\.claude\\worktrees\\m1-varlik-72a21b\\game/assets/models\\kova\\kova_lod1.glb",
+      "tex": 512,
+      "census": {
+        "fan": 0,
+        "boundary": 0,
+        "wire": 0
+      }
+    },
+    {
+      "level": 2,
+      "ratio": 0.2,
+      "tris": 550,
+      "file": "C:\\Users\\uruskan\\Documents\\GitHub\\kabarma\\.claude\\worktrees\\m1-varlik-72a21b\\game/assets/models\\kova\\kova_lod2.glb",
+      "tex": 256,
+      "census": {
+        "fan": 0,
+        "boundary": 0,
+        "wire": 0
+      }
+    }
+  ],
+  "hull": {
+    "file": "C:\\Users\\uruskan\\Documents\\GitHub\\kabarma\\.claude\\worktrees\\m1-varlik-72a21b\\game/assets/models\\kova\\kova_hull.tres",
+    "points": 64,
+    "volume_m3": 0.083,
+    "mesh_volume_m3": 0.0612,
+    "note": "Godot ekseninde (Y yukari), model orijinine gore"
+  },
+  "pass_scripted": true,
+  "card": "C:\\Users\\uruskan\\Documents\\GitHub\\kabarma\\.claude\\worktrees\\m1-varlik-72a21b\\progress/m1/varlik/kart\\kova.png"
 }

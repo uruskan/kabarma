@@ -38,6 +38,23 @@ public static class Events
     public static event Action Dawn;
     /// <summary>Oyuncu Uyku Tulumu'nda uyudu (normal gece atlanir, GDD 2; ICERIK 10.2). Yayan: ekonomi, dinleyen: gun dongusu.</summary>
     public static event Action Slept;
+    /// <summary>Kargo odemesi hesaba gecti (Kredi, ne satildi): ilk satista hemen, sonra firlatmadan 60 sn sonra (GDD 13).</summary>
+    public static event Action<int, string> Paid;
+    /// <summary>Insa'nin Sok kipiyle bir parca ya da yerlestirilebilir sokuldu (kimlik).</summary>
+    public static event Action<string> Deconstructed;
+    /// <summary>Agil degisti: kapisi olan en buyuk agilin hucre sayisi (0 = agil yok). Yayan: PenSystem.</summary>
+    public static event Action<int> PenChanged;
+    /// <summary>Evcil hayvan agila girip kayit oldu (tur kimligi: "gidak"). Yayan: Gidak.Pen.cs.</summary>
+    public static event Action<string> AnimalPenned;
+    /// <summary>Agildaki hayvan urun verdi (urun kimligi "egg", yer "nest" ya da "ground"). Yayan: PenSystem.</summary>
+    public static event Action<string, string> Laid;
+    /// <summary>Suna bir repligi soyledi (scenario.json "lines" kimligi). Seslendirme buna baglanir.</summary>
+    public static event Action<string> SunaSaid;
+
+    public static void RaisePenChanged(int cells) => PenChanged?.Invoke(cells);
+    public static void RaiseAnimalPenned(string species) => AnimalPenned?.Invoke(species);
+    public static void RaiseLaid(string product, string where) => Laid?.Invoke(product, where);
+    public static void RaiseSunaSaid(string lineId) => SunaSaid?.Invoke(lineId);
 
     public static void RaiseStationPlaced(string id) => StationPlaced?.Invoke(id);
     public static void RaisePiecePlaced(string id) => PiecePlaced?.Invoke(id);
@@ -53,6 +70,8 @@ public static class Events
     public static void RaiseNightStarted() => NightStarted?.Invoke();
     public static void RaiseDawn() => Dawn?.Invoke();
     public static void RaiseSlept() => Slept?.Invoke();
+    public static void RaisePaid(int credits, string what) => Paid?.Invoke(credits, what);
+    public static void RaiseDeconstructed(string id) => Deconstructed?.Invoke(id);
 
     /// <summary>Butun aboneleri birakir.</summary>
     public static void Clear()
@@ -61,5 +80,8 @@ public static class Events
         Harvested = null; Gathered = null; Ate = null; CreatureKilled = null; CardPicked = null;
         StepChanged = null; NightStarted = null; Dawn = null;
         Slept = null;
+        Paid = null;
+        Deconstructed = null;
+        PenChanged = null; AnimalPenned = null; Laid = null; SunaSaid = null;
     }
 }

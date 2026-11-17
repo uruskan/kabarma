@@ -1,0 +1,114 @@
+{
+  "_not": "Vurus hissi (GDD 4 'Vurus hissi olcutleri'; SANAT-SES 7 Vurus, 8.3 surguler). F1 paneli bu dosyanin butun sayilarini gosterir ve degistirir; Kaydet user://feel_tuning.json'a yazar, bu dosya oyundan degismez. Sinamalar (--test, --bot) oyuncu ayarini okumaz ve yazmaz.",
+  "_not_katmanlar": "Katmanlar: vurus duraklamasi (hitStopMs, 30-80 ms), kamera sarsintisi (shake), hasar sayilari (damageNumbers), geri tepme yayi (recoil), hedefte ezilip esneme (squash), uc katmanli ses (fireSfx atis, hitSfx/critSfx/weakSfx isabet, debrisSfx parca), parca sacilmasi (debris), namlu efekti ve iz (muzzle, trail), kritikte ekran parlamasi (screenFlash). master: erisilebilirlik surguleri ve katman basina carpan (0 kapatir).",
+  "_not_kaynaklar": "sources: kaynak basina sayilar. Silahlar: tirpan, civi (civi_zemin: zemine saplanma). Is basliklari: kazma, toplama (parca cantaya emilir), bicme (supurme) ve hedefleri bicme_agac, bicme_odun, bicme_tutam, bicme_ekin; toprak, toprak_ekim; sulama (islanan kare; puskurtme sesi Capa.Sulama.cs'de, dunya akisi), sulama_itme; cekim_tut, cekim_birak, cekim_firlat, cekim_dus, cekim_agir; kabarik_sonme (GDD 8.4). Is basliklarinda duraklama bilerek 0 (surekli is takilmasin); F1'den acilabilir.",
+  "criteria": {
+    "maxLatencyMs": 50,
+    "hitStopMinMs": 30,
+    "hitStopMaxMs": 80,
+    "targetFps": 60,
+    "presentFrames": 1
+  },
+  "master": {
+    "hitStop": 1,
+    "shake": 1,
+    "recoil": 1,
+    "damageNumbers": 1,
+    "squash": 1,
+    "debris": 1,
+    "screenFlash": 1,
+    "sound": 1
+  },
+  "hitStop": { "timeScale": 0.08 },
+  "shake": { "decayPerSecond": 2.5, "offset": 0.4 },
+  "recoil": { "impulse": 9, "stiffness": 180, "damping": 18, "pushBack": 0.18, "lift": 0.05, "tilt": 0.6 },
+  "damageNumbers": {
+    "size": 64, "critSize": 96, "outline": 16, "critOutline": 22, "pixelSize": 0.006,
+    "jitter": 0.4, "lift": 0.4, "rise": 1.4, "riseSeconds": 0.8,
+    "popFrom": 0.4, "popSeconds": 0.12, "critScale": 1.3, "fadeDelay": 0.5, "fadeSeconds": 0.35
+  },
+  "squash": { "amount": 0.18, "seconds": 0.28, "wobbles": 1.5 },
+  "screenFlash": { "alpha": 0.12, "seconds": 0.09 },
+  "sources": {
+    "tirpan": {
+      "fireShake": 0.12, "fireRecoil": 0.45,
+      "muzzle": 6, "muzzleSpeed": 4, "muzzleSize": 0.06, "muzzleLife": 0.18,
+      "fireSfx": "nailgun", "fireDb": -5,
+      "hitStopMs": 40, "critHitStopMs": 60, "hitShake": 0, "critHitShake": 0.1, "critFlash": 1,
+      "hitSfx": "hit", "hitDb": -3, "critSfx": "hit", "critDb": 0, "weakSfx": "hit", "weakDb": 0,
+      "debris": 8, "critDebris": 14, "debrisSpeed": 5, "debrisSize": 0.08, "debrisLife": 0.35, "debrisGravity": 0,
+      "debrisSfx": "pop", "debrisDb": -16
+    },
+    "civi": {
+      "fireShake": 0.08, "fireRecoil": 0.7,
+      "muzzle": 5, "muzzleSpeed": 3, "muzzleSize": 0.04, "muzzleLife": 0.15, "trail": 1,
+      "fireSfx": "nailgun", "fireDb": -2,
+      "hitStopMs": 30, "critHitStopMs": 60, "hitShake": 0, "critHitShake": 0.08, "critFlash": 1,
+      "hitSfx": "hit", "hitDb": -1, "critSfx": "hit", "critDb": 2, "weakSfx": "hit", "weakDb": 2,
+      "debris": 6, "critDebris": 12, "debrisSpeed": 4, "debrisSize": 0.06, "debrisLife": 0.3, "debrisGravity": 0,
+      "debrisSfx": "pop", "debrisDb": -18,
+      "emptySfx": "place", "emptyDb": -12
+    },
+    "civi_zemin": { "debris": 4, "debrisSpeed": 2, "debrisSize": 0.05, "debrisLife": 0.3, "debrisGravity": 9 },
+    "kazma": {
+      "hitShake": 0.02, "hitRecoil": 0.08, "squash": 0.5,
+      "debris": 3, "debrisSpeed": 3, "debrisSize": 0.06, "debrisLife": 0.3, "debrisGravity": 9, "debrisInterval": 0.1
+    },
+    "toplama": { "hitSfx": "pickup", "hitDb": -6 },
+    "bicme": { "fireShake": 0.03, "fireRecoil": 0.25 },
+    "bicme_agac": {
+      "squash": 1, "hitSfx": "hit", "hitDb": -4,
+      "debris": 14, "debrisSpeed": 4, "debrisSize": 0.07, "debrisLife": 0.6, "debrisGravity": 9
+    },
+    "bicme_odun": { "debris": 6, "debrisSpeed": 3, "debrisSize": 0.06, "debrisLife": 0.4, "debrisGravity": 9 },
+    "bicme_tutam": {
+      "squash": 1, "hitSfx": "till", "hitDb": -4,
+      "debris": 14, "debrisSpeed": 4, "debrisSize": 0.07, "debrisLife": 0.6, "debrisGravity": 9
+    },
+    "bicme_ekin": {
+      "squash": 1, "hitSfx": "till", "hitDb": 0,
+      "debris": 18, "debrisSpeed": 4, "debrisSize": 0.08, "debrisLife": 0.5, "debrisGravity": 9
+    },
+    "toprak": {
+      "fireShake": 0.02, "fireRecoil": 0.2, "squash": 1, "hitSfx": "till", "hitDb": -2,
+      "debris": 12, "debrisSpeed": 3.5, "debrisSize": 0.09, "debrisLife": 0.5, "debrisGravity": 9
+    },
+    "toprak_ekim": {
+      "squash": 0.6, "hitSfx": "place", "hitDb": -10,
+      "debris": 8, "debrisSpeed": 2.5, "debrisSize": 0.06, "debrisLife": 0.4, "debrisGravity": 9
+    },
+    "sulama": { "squash": 0.3, "debris": 10, "debrisSpeed": 2.5, "debrisSize": 0.06, "debrisLife": 0.5, "debrisGravity": 9 },
+    "sulama_itme": { "debris": 6, "debrisSpeed": 3, "debrisSize": 0.06, "debrisLife": 0.4, "debrisGravity": 9 },
+    "cekim_tut": {
+      "fireRecoil": 0.15, "fireSfx": "place", "fireDb": -6, "squash": 1,
+      "debris": 18, "debrisSpeed": 4, "debrisSize": 0.1, "debrisLife": 0.6, "debrisGravity": 9
+    },
+    "cekim_birak": { "squash": 0.6, "hitSfx": "place", "hitDb": -4 },
+    "cekim_firlat": { "fireShake": 0.05, "fireRecoil": 0.6, "fireSfx": "place", "fireDb": -2 },
+    "cekim_dus": {
+      "squash": 1, "hitShake": 0.04, "hitSfx": "place", "hitDb": 0,
+      "debris": 10, "debrisSpeed": 3, "debrisSize": 0.1, "debrisLife": 0.5, "debrisGravity": 9
+    },
+    "cekim_agir": { "fireRecoil": 0.1, "emptySfx": "hit", "emptyDb": -10 },
+    "kabarik_sonme": {
+      "squash": 1, "hitSfx": "pop", "hitDb": -8,
+      "debris": 16, "debrisSpeed": 3, "debrisSize": 0.1, "debrisLife": 0.7, "debrisGravity": -2
+    }
+  },
+  "placeholders": [
+    "ses sources.tirpan.fireSfx=nailgun: SANAT-SES 10.1 'atis: Tirpan Isini' uretilince",
+    "ses sources.civi.hitSfx=hit: 'isabet: civi saplanmasi'",
+    "ses sources.*.critSfx=hit: 'isabet: kritik'",
+    "ses sources.*.weakSfx=hit: 'isabet: zayif nokta'",
+    "ses sources.*.debrisSfx=pop: 'parca: kaucuk ve Maya kirintisi sacilmasi'",
+    "ses sources.civi.emptySfx=place: 'cephane bitti tiki'",
+    "ses sources.bicme.fireSfx bos: 'bicme supurmesi'",
+    "ses sources.bicme_agac.hitSfx=hit, bicme_tutam.hitSfx=till: 'bitki darbesi (agac, cali, ot)'",
+    "ses sources.bicme_ekin.hitSfx=till: 'hasat cekme'",
+    "ses sources.toprak_ekim.hitSfx=place: 'tohum ekme'",
+    "ses sources.cekim_firlat.fireSfx=place: 'firlatma'",
+    "ses sources.cekim_dus.hitSfx=place: 'kabarik urun gumlemesi'",
+    "ses sources.cekim_agir.emptySfx=hit: arayuz 'hata'",
+    "ses sources.kabarik_sonme.hitSfx=pop: Kabarma 'safakta sonme'"
+  ]
+}

@@ -51,6 +51,7 @@ public partial class BuildTest : Node3D
             await BuildGarden();
             await Shots();
             await SpanDemo();
+            await AllShapes();
         }
         catch (Exception e)
         {
@@ -129,6 +130,7 @@ public partial class BuildTest : Node3D
         else
         {
             _ok++;
+            _placedIds.Add(id);
             Log($"PLACE {id,-16} {cur.Mode,-6} at {Fmt(piece.GlobalPosition)} yaw={Mathf.RoundToInt(Mathf.RadToDeg(piece.GlobalRotation.Y))} span={piece.Span}");
         }
         await Physics();
@@ -332,6 +334,74 @@ public partial class BuildTest : Node3D
         for (int i = 0; i < 24; i++) await Physics();
         await Frames(2);
         SaveShot("build_fall.png");
+    }
+
+    // ---------------------------------------------------------------- 26 seklin hepsi (ICERIK §10.1)
+
+    readonly HashSet<string> _placedIds = new();
+
+    /// <summary>Aday nisanlardan gecerli hayalet veren ilkinde yerlestirir (hicbiri gecerli degilse sonuncuyu dener: basarisizlik yazilir).</summary>
+    async Task<BuildPiece> PlaceFirstValid(string id, (Vector3 target, Vector3 from)[] tries)
+    {
+        foreach (var (target, from) in tries)
+        {
+            _bs.Select(id);
+            for (int i = 0; i < 8; i++)
+            {
+                _bs.UpdateAim(from, target - from);
+                if (_bs.Current != null && _bs.Current.Valid) return await Place(id, target, from);
+                _bs.Rotate();
+            }
+            Log($"TRY {id} @{target}: {_bs.Current?.Reason}");
+        }
+        var last = tries[^1];
+        return await Place(id, last.target, last.from);
+    }
+
+    /// <summary>
+    /// Evde ve citte kullanilmayan 13 parca (11 sekil; Makine Platformu 3 boy): her biri oyuncu gibi nisanla oturtulur.
+    /// Sonunda kitteki 28 parcanin her biri en az bir kez kurulmus olmali (URETIM §6 M1: 26 sekil kitte ve kurulabilir).
+    /// </summary>
+    async Task AllShapes()
+    {
+        _bs.SetActive(true);
+        float x0 = -16f, z0 = -2f;
+        // Temel: yarim duvar, alcak duvar, rampa, ucgen zemin ve cati kosesi buna oturur.
+        var f = await Place("kare_temel", new Vector3(x0, H(x0, z0), z0), new Vector3(x0, 9, z0 + 5));
+        if (f != null)
+        {
+            float y = f.GlobalPosition.Y;
+            var c = new Vector3(x0, 0, z0);
+            await Wall("yarim_duvar", c + new Vector3(0, 0, -1.5f), Vector3.Forward, y);
+            await Wall("alcak_duvar", c + new Vector3(1.5f, 0, 0), Vector3.Right, y);
+            var wall = await Wall("duvar", c + new Vector3(0, 0, 1.5f), Vector3.Back, y);
+            if (wall != null) await OnWallTop("cati_kosesi", c + new Vector3(0, 0, 1.5f), Vector3.Back, y + 3f);
+            var cell = new Vector3(x0, y, z0);
+            await PlaceFirstValid("rampa", new[] { (cell, cell + new Vector3(-3, 6, 0)), (cell, cell + new Vector3(3, 6, 0)), (cell, cell + new Vector3(0, 6, -3)) });
+            // ucgen zemin: temelin bati kenarina, kenar kenara
+            var e = new Vector3(x0 - 1.5f - 0.6f, y, z0);
+            await Place("ucgen_zemin", e, e + new Vector3(-3, 3, 0.5f));
+        }
+        // Araziye serbest oturanlar
+        await Place("ucgen_temel", new Vector3(x0 - 7f, H(x0 - 7f, z0), z0), new Vector3(x0 - 7f, 9, z0 + 5));
+        await Place("kazik_temel", new Vector3(x0, H(x0, z0 - 8f), z0 - 8f), new Vector3(x0, 9, z0 - 3f));
+        float sx = x0 - 7f, sz = z0 - 9f;
+        var sur = await Place("sur_duvari", new Vector3(sx, H(sx, sz), sz), new Vector3(sx, 8, sz + 4));
+        if (sur != null) await Place("sur_kapisi", new Vector3(sx + 3f, H(sx + 3f, sz), sz), new Vector3(sx + 3f, 8, sz + 4));
+        // Kule tabani genis ve duz yer ister: birkac aday noktadan ilk uygununa (arazi sinanmiyor, oturma sinaniyor).
+        var spots = new[] { new Vector2(x0 - 10f, z0 + 4f), new Vector2(x0 - 14f, z0), new Vector2(x0 + 2f, z0 + 9f), new Vector2(x0 - 8f, z0 - 16f), new Vector2(x0 - 22f, z0 + 4f) };
+        await PlaceFirstValid("kule_tabani", spots.Select(s => (new Vector3(s.X, H(s.X, s.Y), s.Y), new Vector3(s.X, 10, s.Y + 6))).ToArray());
+        await Place("makine_platformu_kucuk", new Vector3(x0 - 14f, H(x0 - 14f, z0 - 8f), z0 - 8f), new Vector3(x0 - 14f, 10, z0 - 2f));
+        await Place("makine_platformu_orta", new Vector3(x0 - 4f, H(x0 - 4f, z0 + 10f), z0 + 10f), new Vector3(x0 - 4f, 12, z0 + 17f));
+        await Place("makine_platformu_buyuk", new Vector3(x0 - 16f, H(x0 - 16f, z0 + 14f), z0 + 14f), new Vector3(x0 - 16f, 14, z0 + 23f));
+        _bs.SetActive(false);
+        _cam.GlobalPosition = new Vector3(x0 + 10, 14, z0 + 22);
+        _cam.LookAt(new Vector3(x0 - 8, 1, z0));
+        await Frames(6);
+        SaveShot("build_all_shapes.png");
+        var missing = _bs.Kit.Pieces.Select(p => p.Id).Where(id => !_placedIds.Contains(id)).ToList();
+        Log($"SHAPES placed={_placedIds.Count}/{_bs.Kit.Pieces.Count}{(missing.Count > 0 ? " missing=" + string.Join(",", missing) : "")}");
+        if (missing.Count > 0) _fail++;
     }
 
     async Task ShotGhost(string file, Vector3 camPos, Vector3 lookAt)

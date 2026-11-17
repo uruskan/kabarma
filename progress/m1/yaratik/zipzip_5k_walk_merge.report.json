@@ -1,0 +1,27 @@
+{
+  "base": "game/assets/models/zipzip/zipzip_5k.glb",
+  "clips": "C:\\Users\\uruskan\\Documents\\GitHub\\kabarma\\.tools\\tripo\\zipzip\\anim-walk\\tripo-out\\zipzip-walk-retarget-446094f2\\model.glb",
+  "out": "C:\\Users\\uruskan\\AppData\\Local\\Temp\\claude\\551ea285f27604f1\\aadb4a78-7046-45cd-a7a5-f87f5fa75072\\scratchpad\\walk\\zipzip_5k.glb",
+  "base_clips": [
+    "hurt",
+    "idle",
+    "jump",
+    "run"
+  ],
+  "source_clips": [
+    "walk"
+  ],
+  "added": [
+    "walk"
+  ],
+  "replaced": [],
+  "missing_bones": {},
+  "out_clips": [
+    "hurt",
+    "idle",
+    "jump",
+    "run",
+    "walk"
+  ],
+  "pass": true
+}

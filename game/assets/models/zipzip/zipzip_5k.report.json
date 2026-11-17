@@ -1,0 +1,47 @@
+{
+  "name": "zipzip_5k",
+  "input": "C:\\Users\\uruskan\\Documents\\GitHub\\kabarma\\.tools\\tripo\\zipzip\\anim\\tripo-out\\retarget-4b2662d5\\model.glb",
+  "checks": {
+    "1_palette": {
+      "pass": true,
+      "note": "dokulu mod: palet oturtma yapilmadi"
+    },
+    "2_polygon": {
+      "pass": true,
+      "value": 4830,
+      "budget": 5000
+    },
+    "3_thickness": {
+      "pass": true,
+      "min_ratio": 0.824,
+      "note": "parca basina en dar boyut / en uzun kenar"
+    },
+    "4_integrity": {
+      "pass": false,
+      "non_manifold_edges": 44,
+      "boundary_edges": 22,
+      "inward_faces": 768,
+      "loose_parts": 1
+    },
+    "5_scale_axis": {
+      "pass": true,
+      "height": 0.75,
+      "target": 0.75
+    }
+  },
+  "tris_in": 5786,
+  "welded_verts": 904,
+  "tex_size": 1024,
+  "source_mean_dE": null,
+  "source_within_dE8": null,
+  "palette_use": "textured (palette snap skipped)",
+  "tris": 4830,
+  "size_m": [
+    0.422,
+    0.64,
+    0.75
+  ],
+  "parts": 1,
+  "out": "game/assets/models/zipzip/zipzip_5k.glb",
+  "pass_scripted": false
+}

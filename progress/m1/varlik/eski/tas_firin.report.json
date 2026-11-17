@@ -1,0 +1,127 @@
+{
+  "name": "tas_firin",
+  "input": ".tools/tripo/tas_firin/tripo-out/tas-firin-segment-31c8589b/model.glb",
+  "checks": {
+    "1_palette": {
+      "pass": true,
+      "note": "dokulu mod: palet oturtma yapilmadi"
+    },
+    "2_polygon": {
+      "pass": true,
+      "value": 4773,
+      "budget": 10000
+    },
+    "3_thickness": {
+      "pass": true,
+      "min_ratio": 0.062,
+      "note": "parca basina en dar boyut / en uzun kenar"
+    },
+    "4_integrity": {
+      "pass": false,
+      "non_manifold_edges": 15,
+      "boundary_edges": 7,
+      "inward_faces": 1279,
+      "loose_parts": 3
+    },
+    "5_scale_axis": {
+      "pass": true,
+      "height": 1.4,
+      "target": 1.4
+    }
+  },
+  "tris_in": 4779,
+  "welded_verts": 1520,
+  "tex_size": 1024,
+  "source_mean_dE": null,
+  "source_within_dE8": null,
+  "palette_use": "textured (palette snap skipped)",
+  "tris": 4773,
+  "size_m": [
+    1.477,
+    1.468,
+    1.4
+  ],
+  "parts": 3,
+  "parts_named": [
+    {
+      "name": "body",
+      "center": [
+        0.0,
+        0.0,
+        0.7
+      ],
+      "size": [
+        1.477,
+        1.468,
+        1.4
+      ]
+    },
+    {
+      "name": "base",
+      "center": [
+        0.0,
+        0.0,
+        0.7
+      ],
+      "size": [
+        1.477,
+        1.468,
+        1.4
+      ]
+    },
+    {
+      "name": "door",
+      "center": [
+        0.0,
+        0.0,
+        0.7
+      ],
+      "size": [
+        1.477,
+        1.468,
+        1.4
+      ]
+    },
+    {
+      "name": "door_handle",
+      "center": [
+        0.0,
+        0.0,
+        0.7
+      ],
+      "size": [
+        1.477,
+        1.468,
+        1.4
+      ]
+    },
+    {
+      "name": "part_4",
+      "center": [
+        0.0,
+        0.0,
+        0.7
+      ],
+      "size": [
+        1.477,
+        1.468,
+        1.4
+      ]
+    },
+    {
+      "name": "part_5",
+      "center": [
+        0.0,
+        0.0,
+        0.7
+      ],
+      "size": [
+        1.477,
+        1.468,
+        1.4
+      ]
+    }
+  ],
+  "out": "game/assets/models/tas_firin/tas_firin.glb",
+  "pass_scripted": false
+}

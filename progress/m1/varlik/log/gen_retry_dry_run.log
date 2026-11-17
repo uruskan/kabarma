@@ -1,0 +1,4 @@
+﻿el_arabasi: gecerli=True tahmin=30 kredi + sonraki adim 40 = 70; uyari=['v2-only parameters set — using segment model v2.0-20260430']; hata=[]; neden: olcut 3 (kalinlik): ince boru cerceve, tutamak kollari ve bacaklar
+agac: gecerli=True tahmin=30 kredi + sonraki adim 0 = 30; uyari=[]; hata=[]; neden: olcut 3 (kalinlik): sivri kok uclari, tacta ince yaprak pullari
+capa: gecerli=True tahmin=30 kredi + sonraki adim 0 = 30; uyari=[]; hata=[]; neden: olcut 3 (kalinlik, sinirda): nozul halkasinin ince kenari, ustte ince gosterge cubugu
+TOPLAM tahmin (birer deneme): 130 kredi; SANAT-SES §9 en fazla 4 deneme -> en kotu 520

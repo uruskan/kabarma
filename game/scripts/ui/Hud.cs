@@ -210,8 +210,12 @@ public partial class Hud : CanvasLayer
         _report.AddThemeStyleboxOverride("panel", Box(new Color(Palette.OffWhite, 0.96f), 22, Palette.CoopBlue, 5));
         _report.SetAnchorsPreset(Control.LayoutPreset.Center);
         root.AddChild(_report);
+        BuildGeceHud(root); // Hud.Compass.cs: pusula, adim satiri, Kabarma panosu, envanter ve Defter
         OnHead(0);
+        BuildStamina(); // Hud.Stamina.cs
         IgnoreMouse(root);
+        InitVoice(); // Hud.Voice.cs: Suna'nin sesi (ses akisi)
+        SetupControls(); // Hud.Controls.cs: tus glifleri, aygit degisimi
     }
 
     /// <summary>Panoda tiklanacak bir sey yok: hicbir oge fareyi oyundan almasin (nisangah dahil).</summary>
@@ -248,14 +252,16 @@ public partial class Hud : CanvasLayer
         }
         if (_full.Length == 0 && _lines.Count > 0)
         {
-            _full = _lines.Dequeue();
+            _full = G(_lines.Dequeue()); // {act:x} → glif (Hud.Controls.cs)
             _typeT = 0;
             _lineT = Mathf.Clamp(_full.Length * 0.055f, 2.8f, 6f) * (_lines.Count > 1 ? 0.6f : 1f);
             _suna.Visible = true;
             Sfx.Play("place", null, -22f); // telsiz mandali
+            VoiceLineStarted(_full); // Hud.Voice.cs: mandal, Suna'nin sesi, altyazi suresi (ses akisi)
         }
 
         UpdateDayPanels(); // Hud.Day.cs
+        UpdateStamina(dt); // Hud.Stamina.cs
 
         _hintT -= dt;
         if (_hintT <= 0) _hint.Text = "";
@@ -268,12 +274,13 @@ public partial class Hud : CanvasLayer
         UpdateNightBox(); // Hud.Night.cs
         _crosshair.Visible = !_report.Visible && !_menu.Visible && !_wheel.Visible;
         _headTag.Visible = _crosshair.Visible;
+        UpdateGeceHud(dt); // Hud.Compass.cs
     }
 
     public void Say(string line) { if (!string.IsNullOrEmpty(line)) _lines.Enqueue(line); }
     public bool Talking => _full.Length > 0 || _lines.Count > 0;
 
-    public void Hint(string text, float seconds = 0.25f) { _hint.Text = text; _hintT = seconds; }
+    public void Hint(string text, float seconds = 0.25f) { _hint.Text = G(text); _hintT = seconds; }
 
     public void Big(string text, Color color, float seconds = 2.5f)
     {

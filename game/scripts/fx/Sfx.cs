@@ -1,92 +1,355 @@
 using System.Collections.Generic;
+using System.Linq;
 using Godot;
+using Kabarma.Sim;
 
 namespace Kabarma.Game;
 
-/// <summary>Ses efektleri ve muzik. Her calista perde +-%8, duzey +-2 dB oynar (SANAT-SES §10.1).</summary>
-public static class Sfx
+/// <summary>
+/// Ses efektleri (SANAT-SES §10.1). Sesler data/audio.json'da: kimlik, kanal, duzey, varyasyon sayisi, M0 yedegi.
+/// Her calista varyasyonlardan biri secilir (ayni varyasyon art arda calmaz); perde ±%8, duzey ±2 dB oynar.
+/// Varyasyon dosyasi yoksa M0 sesi, o da yoksa sessiz gecer: oyun cokmez.
+/// Eski cagri adlari ("place", "hit"...) M0 adi olarak gecerlidir; yeni cagrilar ses kimligini kullanir.
+/// Parcalar: Sfx.Buses.cs (kanallar, ayarlar, kisma), Sfx.Events.cs (olaylara bagli sesler), MusicDirector.cs (muzik
+/// ve ortam), Foley.cs (adim, inis, Gidak, ates), Hud.Voice.cs (Suna), ui/AudioPanel.cs (F2 ses ayarlari).
+/// Kurulum: Director._Ready "Sfx.Root = this" atar; Root bir Director ise kanallar ve ses dugumleri kurulur.
+/// </summary>
+public static partial class Sfx
 {
-    static readonly Dictionary<string, AudioStream> Cache = new();
-    public static Node Root;
-    static AudioStreamPlayer _music;
+    static Node _root;
+    static Director _d;
+    static AudioFile _a;
+    static readonly Dictionary<string, AudioStream> Streams = new();
+    static readonly Dictionary<string, List<string>> VariantFiles = new();
+    static readonly Dictionary<string, int> LastVariant = new();
+    static readonly Dictionary<string, int> Live = new();
+    static readonly HashSet<string> Warned = new();
     static AudioStreamPlayer _beam;
+    static string _beamId;
+    static MusicDirector _music;
+
+    /// <summary>--mute: ana kanal sessiz, tek seferlik sesler hic kurulmaz (sinamalar).</summary>
     public static bool Muted;
 
-    static AudioStream Get(string name)
+    /// <summary>Seslerin eklendigi dugum. Director atanirsa kanallar, muzik, ortam ve ayar paneli kurulur.</summary>
+    public static Node Root
     {
-        if (Cache.TryGetValue(name, out var s)) return s;
-        string path = name == "kabarma_night" ? "res://assets/audio/music/kabarma_night.mp3" : $"res://assets/audio/sfx/{name}.mp3";
+        get => _root;
+        set { _root = value; if (value is Director d) Init(d); }
+    }
+
+    /// <summary>Yuklu ses verisi (audio.json); Director yokken null.</summary>
+    public static AudioFile Data => _a;
+    public static MusicDirector MusicDir => _music;
+
+    static void Init(Director d)
+    {
+        _d = d;
+        Setup(d.Data.Audio, d);
+        WireEvents(d); // Sfx.Events.cs
+        _music = MusicDirector.For(d);
+        d.AddChild(_music);
+        d.AddChild(new Foley(d) { Name = "Foley" });
+        d.AddChild(new AudioPanel { Name = "AudioPanel" });
+    }
+
+    /// <summary>Director olmadan kurulum (ses sinamasi): veri, kanallar, onbellek.</summary>
+    public static void Setup(AudioFile data, Node root)
+    {
+        _root = root;
+        _a = data;
+        Streams.Clear(); VariantFiles.Clear(); LastVariant.Clear(); Live.Clear(); Warned.Clear(); Held.Clear();
+        _beam = null; _beamId = null; _music = null;
+        SetupBuses(); // Sfx.Buses.cs
+    }
+
+    // ---------- Dosya cozumleme ----------
+
+    /// <summary>Sesin diskte bulunan varyasyon dosyalari (onbellekli).</summary>
+    public static IReadOnlyList<string> Variants(SoundDef s)
+    {
+        if (VariantFiles.TryGetValue(s.Id, out var list)) return list;
+        list = new List<string>();
+        for (int n = 1; n <= s.Variants; n++)
+        {
+            var p = _a.VariantPath(s, n);
+            if (ResourceLoader.Exists(p)) list.Add(p);
+        }
+        VariantFiles[s.Id] = list;
+        return list;
+    }
+
+    /// <summary>Calinacak dosya: rastgele varyasyon (art arda ayni degil), yoksa M0, yoksa null.</summary>
+    static string PickPath(SoundDef s)
+    {
+        var files = Variants(s);
+        if (files.Count > 0)
+        {
+            int last = LastVariant.TryGetValue(s.Id, out var l) ? l : -1;
+            int roll = files.Count > 1 ? (int)(GD.Randi() % (uint)(files.Count - 1)) : 0;
+            int i = AudioMix.PickVariant(files.Count, last, roll);
+            LastVariant[s.Id] = i;
+            return files[i];
+        }
+        var m0 = _a.M0File(s);
+        return m0 != "" && ResourceLoader.Exists(m0) ? m0 : null;
+    }
+
+    /// <summary>Dosyayi yukler; dongu ayari paylasilan kaynagi bozmasin diye gerekirse kopyalanir.</summary>
+    public static AudioStream Load(string path, bool loop)
+    {
+        if (string.IsNullOrEmpty(path)) return null;
+        string key = loop ? path + "|loop" : path;
+        if (Streams.TryGetValue(key, out var s)) return s;
         s = ResourceLoader.Exists(path) ? GD.Load<AudioStream>(path) : null;
-        if (s is AudioStreamMP3 mp3 && (name == "kabarma_night" || name == "beam_loop")) mp3.Loop = true;
-        Cache[name] = s;
+        switch (s)
+        {
+            case AudioStreamMP3 mp3 when mp3.Loop != loop:
+                var m = (AudioStreamMP3)mp3.Duplicate(); m.Loop = loop; s = m; break;
+            case AudioStreamOggVorbis ogg when ogg.Loop != loop:
+                var o = (AudioStreamOggVorbis)ogg.Duplicate(); o.Loop = loop; s = o; break;
+        }
+        Streams[key] = s;
         return s;
     }
 
-    public static readonly string[] Names = { "beam_loop", "pickup", "place", "till", "water", "swell", "pop", "nailgun", "hit", "levelup", "siren", "rocket", "kabarma_night" };
-
-    /// <summary>Butun ses dosyalari yukleniyor mu: acilista bir kez denetlenir.</summary>
-    public static int CheckAll()
+    /// <summary>Eski MVP davranisi: veri yoksa ya da ad veride yoksa sfx/{ad}.mp3.</summary>
+    static AudioStream Legacy(string name)
     {
-        int ok = 0;
-        foreach (var n in Names) { var s = Get(n); if (s != null && s.GetLength() > 0.05) ok++; else GD.PrintErr($"AUDIO missing {n}"); }
-        return ok;
+        var p = $"res://assets/audio/sfx/{name}.mp3";
+        if (!ResourceLoader.Exists(p))
+        {
+            if (Warned.Add(name)) GD.PrintErr($"AUDIO unknown sound '{name}'");
+            return null;
+        }
+        return Load(p, false);
     }
 
-    public static void Play(string name, Vector3? at = null, float db = 0f)
+    /// <summary>Kimlik ya da eski ad; bilinmiyorsa null.</summary>
+    public static SoundDef Find(string name) => _a?.Find(name);
+
+    /// <summary>Bir sesi calmaya hazir akis (varyasyon secilir). Dongu sesleri icin loop=true.</summary>
+    public static AudioStream Stream(string name, bool loop)
     {
-        if (Root == null || Muted) return;
-        var stream = Get(name);
+        var s = Find(name);
+        if (s == null) return _a == null ? Legacy(name) : null;
+        return Load(PickPath(s), loop);
+    }
+
+    // ---------- Calma ----------
+
+    /// <summary>
+    /// Tek seferlik ses. <paramref name="at"/> verilirse konumlu (uzaklikla zayiflar ve bogulur).
+    /// <paramref name="db"/> verideki duzeyin ustune eklenir; <paramref name="pitch"/> carpani (ornegin boya gore sisme).
+    /// </summary>
+    public static void Play(string name, Vector3? at = null, float db = 0f, float pitch = 1f)
+    {
+        if (_root == null || Muted || !_root.IsInsideTree()) return;
+        var s = Find(name);
+        // Dongu sesi tek seferlik cagrildi (ornegin Sulama her karede "water"): tek dongu calar, cagri kesilince soner.
+        if (s != null && s.Loop && Variants(s).Count > 0)
+        {
+            var hs = Load(PickHeld(s), true);
+            HoldStream(s.Id, hs, at, s.VolumeDb + db, s.Bus, pitch);
+            return;
+        }
+        AudioStream stream;
+        if (s != null) stream = Load(PickPath(s), false);
+        else
+        {
+            if (_a != null && Warned.Add(name)) GD.PrintErr($"AUDIO unknown sound '{name}' (audio.json'da yok)");
+            stream = _a == null ? Legacy(name) : null;
+        }
         if (stream == null) return;
-        float pitch = 1f + (float)GD.RandRange(-0.08, 0.08);
-        float vol = db + (float)GD.RandRange(-2.0, 2.0);
+
+        string liveKey = s?.Id ?? name;
+        int cap = s != null && s.MaxVoices > 0 ? s.MaxVoices : (_a?.MaxVoices ?? 8);
+        Live.TryGetValue(liveKey, out int live);
+        if (cap > 0 && live >= cap) return;
+
+        float jp = 1f, jdb = 0f;
+        if (_a != null) (jp, jdb) = AudioMix.Jitter(_a.Variation, GD.Randf(), GD.Randf());
+        float vol = (s?.VolumeDb ?? 0f) + db + jdb;
+        string bus = BusOr(s?.Bus ?? "Sfx");
         if (at is Vector3 p)
         {
-            var pl = new AudioStreamPlayer3D { Stream = stream, PitchScale = pitch, VolumeDb = vol, UnitSize = 8f, MaxDistance = 70f };
-            Root.AddChild(pl);
+            var sp = _a?.Spatial;
+            var pl = new AudioStreamPlayer3D { Stream = stream, PitchScale = pitch * jp, VolumeDb = vol, Bus = bus };
+            if (sp != null) { pl.UnitSize = sp.UnitSize; pl.MaxDistance = sp.MaxDistance; pl.AttenuationFilterCutoffHz = sp.LowPassHz; pl.AttenuationFilterDb = sp.LowPassDb; }
+            _root.AddChild(pl);
             pl.GlobalPosition = p;
-            pl.Finished += pl.QueueFree;
+            pl.Finished += () => Done(liveKey, pl);
             pl.Play();
         }
         else
         {
-            var pl = new AudioStreamPlayer { Stream = stream, PitchScale = pitch, VolumeDb = vol };
-            Root.AddChild(pl);
-            pl.Finished += pl.QueueFree;
+            var pl = new AudioStreamPlayer { Stream = stream, PitchScale = pitch * jp, VolumeDb = vol, Bus = bus };
+            _root.AddChild(pl);
+            pl.Finished += () => Done(liveKey, pl);
             pl.Play();
         }
+        Live[liveKey] = live + 1;
     }
 
+    static readonly Dictionary<string, Node> Held = new();
+
+    /// <summary>Tutulan dongunun dosyasi: dongu suruyorsa ayni dosya (her cagrida varyasyon degismesin).</summary>
+    static string PickHeld(SoundDef s) => Held.TryGetValue(s.Id, out var n) && GodotObject.IsInstanceValid(n) ? null : PickPath(s);
+
+    /// <summary>
+    /// Tutulan dongu: <paramref name="key"/> icin tek oynatici; her cagri konumu gunceller ve sonme sayacini yeniler
+    /// (audio.json holdSeconds). Cagri kesilince kisa bir sonmeyle durur. Akis null ise var olan dongu surer.
+    /// </summary>
+    public static void HoldStream(string key, AudioStream stream, Vector3? at, float volumeDb, string bus, float pitch = 1f)
+    {
+        if (_root == null || !_root.IsInsideTree()) return;
+        if (!Held.TryGetValue(key, out var node) || !GodotObject.IsInstanceValid(node))
+        {
+            if (stream == null) return;
+            if (at is Vector3)
+            {
+                var sp = _a?.Spatial;
+                var p3 = new AudioStreamPlayer3D { Stream = stream, VolumeDb = volumeDb, Bus = BusOr(bus), PitchScale = pitch };
+                if (sp != null) { p3.UnitSize = sp.UnitSize; p3.MaxDistance = sp.MaxDistance; p3.AttenuationFilterCutoffHz = sp.LowPassHz; p3.AttenuationFilterDb = sp.LowPassDb; }
+                node = p3;
+            }
+            else node = new AudioStreamPlayer { Stream = stream, VolumeDb = volumeDb, Bus = BusOr(bus), PitchScale = pitch };
+            node.Name = $"Hold_{key}";
+            var timer = new Timer { Name = "Off", OneShot = true, WaitTime = Mathf.Max(0.05f, _a?.HoldSeconds ?? 0.3f), IgnoreTimeScale = true };
+            node.AddChild(timer);
+            var held = node;
+            timer.Timeout += () =>
+            {
+                if (Held.TryGetValue(key, out var cur) && cur == held) Held.Remove(key);
+                var tw = held.CreateTween();
+                tw.SetIgnoreTimeScale(true);
+                tw.TweenProperty(held, "volume_db", -40f, 0.12f);
+                tw.TweenCallback(Callable.From(held.QueueFree));
+            };
+            _root.AddChild(node);
+            if (node is AudioStreamPlayer3D a3) { if (at is Vector3 p0) a3.GlobalPosition = p0; a3.Play(); }
+            else ((AudioStreamPlayer)node).Play();
+            Held[key] = node;
+        }
+        if (at is Vector3 p && node is AudioStreamPlayer3D n3) n3.GlobalPosition = p;
+        node.GetNode<Timer>("Off").Start();
+    }
+
+    /// <summary>Su an tutulan dongu sayisi (sinama icin).</summary>
+    public static int HeldCount => Held.Values.Count(GodotObject.IsInstanceValid);
+
+    static void Done(string key, Node pl)
+    {
+        if (Live.TryGetValue(key, out int n)) Live[key] = Mathf.Max(0, n - 1);
+        pl.QueueFree();
+    }
+
+    /// <summary>
+    /// Konumlu dongu: <paramref name="parent"/> dugumune baglanir ve calar (ates, gol kiyisi, makine). Ses dosyasi
+    /// yoksa null. Cagiran durdurmak icin dugumu siler.
+    /// </summary>
+    public static AudioStreamPlayer3D Emitter(string id, Node3D parent, float maxDistance = 0f, float db = 0f)
+    {
+        if (_a == null || parent == null) return null;
+        var s = Find(id);
+        var stream = s == null ? null : Load(PickPath(s), true);
+        if (stream == null) return null;
+        var sp = _a.Spatial;
+        var pl = new AudioStreamPlayer3D
+        {
+            Name = $"Loop_{s.Id}", Stream = stream, VolumeDb = s.VolumeDb + db, Bus = BusOr(s.Bus), Autoplay = !Muted,
+            UnitSize = sp.UnitSize, MaxDistance = maxDistance > 0 ? maxDistance : sp.MaxDistance,
+            AttenuationFilterCutoffHz = sp.LowPassHz, AttenuationFilterDb = sp.LowPassDb,
+        };
+        parent.AddChild(pl);
+        return pl;
+    }
+
+    /// <summary>Konumsuz dongu oynatici (ortam, isin); calmaz, cagiran oynatir. Ses dosyasi yoksa akissiz oynatici.</summary>
+    public static AudioStreamPlayer LoopPlayer(string id, Node parent)
+    {
+        var s = Find(id);
+        var pl = new AudioStreamPlayer
+        {
+            Name = $"Loop_{id}", Stream = s == null ? null : Load(PickPath(s), true),
+            VolumeDb = s?.VolumeDb ?? 0f, Bus = BusOr(s?.Bus ?? "Sfx"),
+        };
+        parent.AddChild(pl);
+        return pl;
+    }
+
+    /// <summary>Capa isini dongusu: takili baslik Cekim ise cekim isini, degilse kazma isini.</summary>
     public static void Beam(bool on)
     {
-        if (Root == null) return;
-        if (_beam == null)
+        if (_root == null) return;
+        string id = _d?.Capa?.Current == Capa.Head.Cekim ? "cekim_isini" : "kazma_isini";
+        if (_beam == null || !IsInstanceValid(_beam))
         {
-            _beam = new AudioStreamPlayer { Stream = Get("beam_loop"), VolumeDb = -8f };
-            Root.AddChild(_beam);
+            _beam = new AudioStreamPlayer { Name = "Beam" };
+            _root.AddChild(_beam);
+            _beamId = null;
         }
-        if (on && !_beam.Playing && !Muted) _beam.Play();
+        if (on && _beamId != id)
+        {
+            var s = Find(id);
+            _beam.Stream = Stream(id, true) ?? (_a == null ? Load("res://assets/audio/sfx/beam_loop.mp3", true) : null);
+            _beam.VolumeDb = s?.VolumeDb ?? -8f;
+            _beam.Bus = BusOr(s?.Bus ?? "Sfx");
+            _beamId = id;
+            if (_beam.Playing) _beam.Stop();
+        }
+        if (on && !_beam.Playing && !Muted && _beam.Stream != null) _beam.Play();
         if (!on && _beam.Playing) _beam.Stop();
     }
 
-    public static void Music(bool on)
+    static bool IsInstanceValid(GodotObject o) => GodotObject.IsInstanceValid(o);
+
+    /// <summary>
+    /// Butun ses oynaticilarini durdurur. Calarken kapanan oyun "ObjectDB instances were leaked at exit" uyarisi yazar
+    /// (oynatici serbest kalir ama ses dongusu AudioStreamPlayback'i birakmaya yetismez; --verbose: AudioStreamMP3 ve
+    /// AudioStreamPlaybackMP3). GetTree().Quit() oncesi bunu cagirip bir kare (~0,1 sn) beklemek uyariyi kaldirir.
+    /// </summary>
+    public static void StopAll(Node from = null)
     {
-        if (Root == null) return;
-        if (_music == null)
+        var root = from ?? (_root != null && _root.IsInsideTree() ? _root.GetTree().Root : null);
+        if (root == null) return;
+        foreach (var n in root.FindChildren("*", "AudioStreamPlayer", true, false)) ((AudioStreamPlayer)n).Stop();
+        foreach (var n in root.FindChildren("*", "AudioStreamPlayer3D", true, false)) ((AudioStreamPlayer3D)n).Stop();
+    }
+
+    /// <summary>
+    /// Kabarma muzigi istegi (eski arayuz: Director.Night alarmda true, safakta false). Muzik durum makinesi
+    /// (MusicDirector) gece evresini kendisi de izler; bu cagri yalnizca istegi iletir.
+    /// </summary>
+    public static void Music(bool on) => _music?.Request(on);
+
+    // ---------- Denetim ----------
+
+    /// <summary>Verideki butun ses kimlikleri (veri yoksa MVP adlari).</summary>
+    public static string[] Names => _a != null
+        ? _a.Sounds.Select(s => s.Id).ToArray()
+        : new[] { "beam_loop", "pickup", "place", "till", "water", "swell", "pop", "nailgun", "hit", "levelup", "siren", "rocket" };
+
+    /// <summary>
+    /// Acilista bir kez: kac ses calinabilir (varyasyon ya da M0). M0 yedegi kayipsa hata yazar; yer tutucu ve
+    /// dosyasiz sesleri tek satirda sayar.
+    /// </summary>
+    public static int CheckAll()
+    {
+        if (_a == null) return Names.Count(n => Legacy(n) != null);
+        int ok = 0, variants = 0, onlyM0 = 0, none = 0, placeholder = 0;
+        foreach (var s in _a.Sounds)
         {
-            _music = new AudioStreamPlayer { Stream = Get("kabarma_night"), VolumeDb = -6f };
-            Root.AddChild(_music);
+            if (s.Placeholder) placeholder++;
+            var v = Variants(s);
+            variants += v.Count;
+            if (v.Count > 0) { ok++; continue; }
+            var m0 = _a.M0File(s);
+            if (m0 != "" && ResourceLoader.Exists(m0)) { ok++; onlyM0++; continue; }
+            if (s.M0 != null) GD.PrintErr($"AUDIO missing M0 file {m0} ({s.Id})");
+            none++;
         }
-        if (on && !Muted)
-        {
-            _music.VolumeDb = -40f;
-            _music.Play();
-            _music.CreateTween().TweenProperty(_music, "volume_db", -6f, 2.5f);
-        }
-        else if (!on && _music.Playing)
-        {
-            var tw = _music.CreateTween();
-            tw.TweenProperty(_music, "volume_db", -40f, 3f);
-            tw.TweenCallback(Callable.From(_music.Stop));
-        }
+        GD.Print($"AUDIO sounds={_a.Sounds.Count} playable={ok} variant_files={variants} m0_only={onlyM0} silent={none} placeholder={placeholder}");
+        return ok;
     }
 }

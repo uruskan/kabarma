@@ -37,6 +37,10 @@ public sealed class NightDef
     public List<WaveDef> Waves { get; set; } = new();
     public int MaxCardLevels { get; set; }
     public string Enemy { get; set; } = "";
+    /// <summary>GDD 24: ilk gecenin ilk teklifinde her zaman bulunan kart (bos: kural yok).</summary>
+    public string? FirstOfferCard { get; set; }
+    /// <summary>GDD 23-24: uye tipinin baslangic karti bu gece verilir mi (ilk gecede verilmez).</summary>
+    public bool MemberStartCard { get; set; } = true;
 }
 
 public sealed class GosteriDef
@@ -56,6 +60,8 @@ public sealed class KabarmaFile
     public float LevelExponent { get; set; }
     public GosteriDef Gosteri { get; set; } = new();
     public float OzPerWeight { get; set; } = 1f;
+    /// <summary>Yerdeki Oz'un toplanma yaricapi, metre (URETIM 6 M1 karari 19); Miknatis karti carpar.</summary>
+    public float OzPickupRadius { get; set; } = 4f;
     public float MayaPerWeight { get; set; }
     public float MayaKsFactor { get; set; }
     public float HpGrowth { get; set; }

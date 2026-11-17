@@ -4,15 +4,23 @@ using Godot;
 
 namespace Kabarma.Game;
 
-/// <summary>Capa, Bicme basligi: olgun ekin hasadi ve agactan odun (GDD 8, 8.2).</summary>
+/// <summary>
+/// Capa, Bicme basligi (URETIM 6 M1, ICERIK 6.1): alan etkili. Nisan noktasinin cevresindeki her hedef ayni vurusta:
+/// olgun ekin hasat (GDD 8.2), agac her vurusta Odun (devrilmez; devrilme M2), ot ve cali Lif, yabani bugday Bugday
+/// (geri gelmez). Ot/cali/bugday verimi dunya akisinin (World.Resources.cs, biomes.json "perHit").
+/// </summary>
 public partial class Capa
 {
     // ---------- Bicme ----------
 
-    /// <summary>Bicme: nisan noktasi cevresindeki olgun ekinleri biçer; urun ve tohum cantaya ucar (GDD 8.2).</summary>
+    /// <summary>Bicme vurusu. Hasat edilen kare sayisini verir.</summary>
     public int Mow(Vector3 aim)
     {
-        if (_d.Player.Muzzle.GlobalPosition.DistanceTo(aim) > _t.MowRange) return 0;
+        var muzzle = _d.Player.Muzzle.GlobalPosition;
+        if (muzzle.DistanceTo(aim) > _t.MowRange) return 0;
+        FeelFire("bicme", muzzle, HeadColors[1]); // supurme: geri tepme, sarsinti
+
+        // Olgun ekin
         int n = 0;
         foreach (var plot in _d.State.Farm.Plots.ToList())
         {
@@ -22,39 +30,43 @@ public partial class Capa
             if (h == null) continue;
             n++;
             var (yield, stars, seeds) = h.Value;
-            Fx.Burst(c + Vector3.Up * 0.4f, Palette.Plant, 18, 4f, 0.08f, 0.5f);
+            FeelHit("bicme_ekin", c + Vector3.Up * 0.4f, Palette.Plant);
             Fx.Text3D(c + Vector3.Up * 1.0f, $"+{yield} Şalgam {new string('★', stars)}", Palette.Warning, 48, 1.2f, 1.3f);
             for (int i = 0; i < Math.Min(yield, 4); i++)
                 Fx.FlyTo(c + Vector3.Up * 0.3f, () => _d.Player.BackpackPoint.GlobalPosition, Palette.TurnipBody, 0.12f);
-            _d.State.Backpack.Add("turnip", yield);
+            _d.State.Backpack.Add("turnip", yield, stars); // kalite cantada tasinir (GDD 13: fiyat = taban × kalite)
             _d.State.Backpack.Add("turnip_seed", seeds);
-            Sfx.Play("till", c, 0f);
         }
         if (n > 0) _d.OnHarvest(n);
-        // Agac biçilirse odun verir (GDD 8: Biçme agac, cali ve ekin biçer). Agac yerinde kalir.
-        if (n == 0)
+
+        // Agaclar: her vurusta Odun, agac yerinde kalir (devrilme, kutuk, yenilenme M2).
+        // Agaclar dunya akisinda parca parca MultiMesh (World.Decor.cs); esneme agacin kendi parcasinda.
+        var trees = _d.World.TreePositions.Where(t => new Vector2(t.X - aim.X, t.Z - aim.Z).Length() < _t.TreeRadius).ToList();
+        foreach (var tp in trees)
         {
-            var tree = _d.World.TreePositions.Where(t => new Vector2(t.X - aim.X, t.Z - aim.Z).Length() < 1.8f).OrderBy(t => t.DistanceTo(aim)).Cast<Vector3?>().FirstOrDefault();
-            if (tree is Vector3 tp)
-            {
-                int w = _d.Data.Tool.WoodPerChop;
-                _d.State.Backpack.Add("wood", w);
-                Fx.Burst(aim, Palette.Plant, 14, 4f, 0.07f, 0.6f);
-                Fx.Burst(aim, Palette.Wood, 6, 3f, 0.06f, 0.4f);
-                Fx.FlyTo(aim, () => _d.Player.BackpackPoint.GlobalPosition, Palette.Wood, 0.12f);
-                Sfx.Play("hit", aim, -4f);
-                Events.RaiseGathered("wood", w);
-            }
-            // Ot, cali ve yabani bugday (YER TUTUCU tutamlar, World.Placeholders.cs): Lif ya da Bugday, geri gelmez.
-            else if (_d.World.NearestTuft(aim, _t.MowRadius) is World.Tuft tuft)
-            {
-                int got = _d.World.TakeTuft(tuft, _d.Data.Tool.WoodPerChop);
-                _d.State.Backpack.Add(tuft.Item, got);
-                Fx.Burst(aim, tuft.Item == "wheat" ? Palette.Warning : Palette.Plant, 14, 4f, 0.07f, 0.6f);
-                Fx.FlyTo(aim, () => _d.Player.BackpackPoint.GlobalPosition, Palette.Plant, 0.12f);
-                Sfx.Play("till", aim, -4f);
-                Events.RaiseGathered(tuft.Item, got);
-            }
+            int w = _d.Data.Tool.WoodPerChop;
+            _d.State.Backpack.Add("wood", w);
+            var at = new Vector3(tp.X, aim.Y, tp.Z);
+            FeelHit("bicme_agac", at, Palette.Plant);
+            FeelDebris("bicme_odun", at, Palette.Wood);
+            float a = F.Source("bicme_agac").Squash * F.Squash.Amount * F.Master.Squash;
+            foreach (var treeMesh in _d.World.TreeChunksAt(tp)) // ornek bulunamayan parca sessizce gecer
+                Squash.KickInstance(treeMesh, treeMesh.ToLocal(tp), a, F.Squash.Seconds, F.Squash.Wobbles);
+            Fx.FlyTo(at, () => _d.Player.BackpackPoint.GlobalPosition, Palette.Wood, 0.12f);
+            Events.RaiseGathered("wood", w);
+        }
+
+        // Ot, cali ve yabani bugday (World.Resources.cs, dunya akisi): Lif ya da Bugday, geri gelmez; vurus basina biomes.json "perHit".
+        foreach (var tuft in _d.World.Tufts.Where(t => t.Left > 0 && new Vector2(t.Position.X - aim.X, t.Position.Z - aim.Z).Length() < _t.MowRadius).ToList())
+        {
+            var visual = IsInstanceValid(tuft.Visual) ? tuft.Visual : null;
+            int got = _d.World.TakeTuft(tuft, tuft.PerHit);
+            if (got <= 0) continue;
+            _d.State.Backpack.Add(tuft.Item, got);
+            var color = tuft.Item == "wheat" ? Palette.Warning : Palette.Plant;
+            FeelHit("bicme_tutam", tuft.Position + Vector3.Up * 0.4f, color, squash: tuft.Left > 0 ? visual : null);
+            Fx.FlyTo(tuft.Position + Vector3.Up * 0.4f, () => _d.Player.BackpackPoint.GlobalPosition, color, 0.12f);
+            Events.RaiseGathered(tuft.Item, got);
         }
         return n;
     }

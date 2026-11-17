@@ -34,7 +34,6 @@ public partial class Director : Node3D
     public enum Act { Day, Dusk, Night, Dawn, Report, Free }
     public Act Phase { get; private set; } = Act.Day;
     float _actT;
-    float _hitStop;
     float _slowMo = 1f;
     public float SpeedScale = 1f; // --fast
     bool _introDone;
@@ -80,6 +79,7 @@ public partial class Director : Node3D
         Player.Wheel = rel => Hud?.WheelMotion(rel);
         FeelPanel = new FeelPanel { Name = "FeelPanel" };
         AddChild(FeelPanel);
+        WireFeel(); // Director.Feel.cs: his ayarlari oyuncuya (geri tepme yayi, sarsinti)
         Hud = new Hud { Name = "Hud" };
         Hud.Init(this);
         AddChild(Hud);
@@ -97,13 +97,17 @@ public partial class Director : Node3D
         // M0 hat denemeleri: Pofuduk (dort ayak, iskelet + yurume) ve Tas Firin (adli parcalar).
         Pofuduk = new Pofuduk(this, new Vector3(-12, 0, 10)) { Name = "Pofuduk" };
         AddChild(Pofuduk);
+        InitCreatures(); // Director.Creatures.cs: Zipzip suruleri, poz kutuphanesi, gorunus sinamasi
         // Tas Firin artik Insa basligiyla kurulan bir istasyon (M1).
         Build = BuildBridge.TryCreate(this);
+        SetupPens(); // Director.Pen.cs: agil, kapilar, Yemlik, Folluk (yapi setinden sonra)
 
         State.Scenario.StepChanged += OnStepChanged;
         WireScenario(); // Director.Scenario.cs: olay -> adim sayaci
+        InitEconomy();  // Director.Economy.cs: odeme, kargo, yerlestirilebilirler
+        WireNightAndDay(); // Director.Calendar.cs: takvim, uyku, Defter olaylari
         State.Farm.Eaten += p => { GD.Print($"EATEN plot {p.X},{p.Y}"); Sfx.Play("pop", FarmView.CellCenter(p.X, p.Y), -2f); };
-        foreach (var l in Data.Scenario.Intro) Hud.Say(l);
+        Pod.BeginHatchIntro(this); // Pod.Hatch.cs: kapak acilir, Suna giris repliklerini soyler (PLAN 1.4, 0:00)
 
         if (Main.Args.ContainsKey("bot")) { Bot = new Bot(this); AddChild(Bot); }
         // Sinama: --look=x,y,z:tx,ty,tz sabit bir kameradan bakar (varlik denetimi goruntuleri icin).
@@ -140,8 +144,6 @@ public partial class Director : Node3D
     /// <summary>Girise gorsel tepki verildi (gecikme olcumu, F1 paneli).</summary>
     public void MarkReaction() => FeelPanel?.MarkReaction();
 
-    public void HitStop(float seconds) => _hitStop = Mathf.Max(_hitStop, seconds);
-
     public Vector3 FarmCenter()
     {
         var plots = State.Farm.Plots.ToList();
@@ -156,7 +158,7 @@ public partial class Director : Node3D
     public override void _Process(double delta)
     {
         float realDt = (float)delta;
-        if (_hitStop > 0) { _hitStop -= realDt; Engine.TimeScale = 0.08f * SpeedScale; }
+        if (HitStopActive()) Engine.TimeScale = Feel.Data.HitStop.TimeScale * SpeedScale; // Director.Feel.cs: gercek saatle
         else Engine.TimeScale = _slowMo * SpeedScale;
         float dt = realDt; // delta zaten TimeScale ile olcekli
         _actT += dt;
@@ -167,17 +169,19 @@ public partial class Director : Node3D
         Player.MaxHp = Data.Tool.Player.MaxHp + State.Food.BonusMaxHp;
         if (!Player.Down && Player.Hp < Player.MaxHp) Player.Hp = Mathf.Min(Player.MaxHp, Player.Hp + State.Food.Regen * dt);
         if (Input.IsActionJustPressed("ui_accept") && Hud.ReportOpen) CloseReport();
+        TickEconomy(dt); // Director.Economy.cs: gecikmeli odeme, kasa izleme
 
         Capa.Process(dt, fire && !Hud.ReportOpen, firePressed && !Hud.ReportOpen);
 
         // Ekin: gunduz isik var; gece ve aksamda buyume durur (GDD 8.2 Isik).
         bool light = Phase is Act.Day or Act.Dawn or Act.Report or Act.Free;
+        light = light && ClockDaylight; // Director.Calendar.cs: takvimin normal gecesinde de buyume durur
         State.Farm.Tick(dt, light);
         State.Scenario.SetProgress("grow", State.Farm.MatureCount);
 
         // Gidak yakinsa ipucu
         if (Gidak.Visible && !Gidak.Swollen && Gidak.Fed == 0 && Gidak.GlobalPosition.DistanceTo(Player.GlobalPosition) < 3f && State.Backpack.Count("wheat") > 0)
-            Hud.Hint("E: Gıdak'a buğday ver");
+            Hud.Hint("{act:interact}: Gıdak'a buğday ver");
 
         TickPhase(dt); // Director.Night.cs
     }

@@ -1515,6 +1515,8 @@ RULES = [
     {"attach": "wall_bottom", "target": "edge", "align": "either"},
     {"attach": "wall_bottom", "target": "wall_top", "align": "either"},
     {"attach": "wall_end", "target": "wall_end", "align": "opposite", "kinds": ["fence"]},
+    # Cit kosesi (GDD 9.1 agil kapali halkadir): uc uca dik ekleme; ayni yone dusen aday parcanin kendi yuvasidir ("dolu").
+    {"attach": "wall_end", "target": "wall_end", "align": "any4", "kinds": ["fence"]},
     {"attach": "pillar_bottom", "target": "corner", "align": "any4"},
     {"attach": "pillar_bottom", "target": "pillar_top", "align": "any4"},
     {"attach": "beam_end", "target": "pillar_top", "align": "any4"},

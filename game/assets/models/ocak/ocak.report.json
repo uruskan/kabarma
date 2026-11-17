@@ -1,47 +1,194 @@
 {
   "name": "ocak",
-  "input": ".tools/tripo/ocak/tripo-out/ocak-90eeaf7c/model.glb",
+  "label": "Ocak",
+  "input": "C:/Users/uruskan/Documents/GitHub/kabarma\\.tools/tripo/ocak/tripo-out/ocak-90eeaf7c/model.glb",
+  "class": "makine",
+  "forward": "+X",
   "checks": {
-    "1_palette": {
+    "1_texture": {
       "pass": true,
-      "note": "dokulu mod: palet oturtma yapilmadi"
+      "textures": {
+        "Color_90eeaf7c-ce83-4762-accc-73691b10f5bc": [
+          1024,
+          1024
+        ]
+      },
+      "base_color_maps": 1,
+      "max_tex": 2048
     },
     "2_polygon": {
       "pass": true,
-      "value": 7720,
-      "budget": 8000
+      "value": 7714,
+      "budget": 15000,
+      "class": "makine",
+      "below_min": true
     },
     "3_thickness": {
       "pass": true,
-      "min_ratio": 0.89,
-      "note": "parca basina en dar boyut / en uzun kenar"
+      "thin_share": 0.0181,
+      "allowed_share": 0.02,
+      "limit_m": 0.12,
+      "stick_min_t_m": 0.0004,
+      "plate_share": 0.3816,
+      "faces_measured": 7714,
+      "old_bbox_min_ratio": 0.89,
+      "note": "cubuk/diken alani (iki yonde ince) / yuzey; levha payi (tek yonde ince: yaprak, kapak) bilgi; eski olcu: parca kutusunun en dar boyutu / en uzun kenar"
     },
     "4_integrity": {
-      "pass": false,
-      "non_manifold_edges": 16,
-      "boundary_edges": 6,
-      "inward_faces": 2033,
+      "pass": true,
+      "non_manifold_edges": 0,
+      "boundary_edges": 0,
+      "inverted_faces": 0,
+      "inverted_note": "ters sarimli kenar sayisi",
+      "negative_volume_parts": 0,
+      "floating_parts": [],
       "loose_parts": 1
     },
     "5_scale_axis": {
       "pass": true,
       "height": 2.0,
-      "target": 2.0
+      "target": 2.0,
+      "base_z": 0.0,
+      "center_xy": [
+        0.0,
+        0.0
+      ],
+      "forward": "+X",
+      "note": "on yon betikle olculemez; bildirilen eksen yazilir"
     }
   },
+  "source_parts": [
+    "tripo_node_90eeaf7c-ce83-4762-accc-73691b10f5bc"
+  ],
+  "dropped": [],
+  "merged": {},
   "tris_in": 7728,
-  "welded_verts": 1287,
+  "welded_verts": 1286,
+  "repair_before": {
+    "fan": 12,
+    "boundary": 8,
+    "wire": 0
+  },
+  "repair_log": [
+    {
+      "pass": 1,
+      "deleted_slivers": 14,
+      "filled_faces": 4,
+      "fan": 0,
+      "boundary": 4,
+      "wire": 0,
+      "nonmanifold_verts": 2
+    },
+    {
+      "pass": 2,
+      "deleted_slivers": 0,
+      "filled_faces": 4,
+      "fan": 0,
+      "boundary": 0,
+      "wire": 0,
+      "nonmanifold_verts": 2
+    },
+    {
+      "pass": "sarim1",
+      "deleted_faces": 6,
+      "fan": 0,
+      "boundary": 0,
+      "wire": 0
+    }
+  ],
+  "dropped_floating": [],
+  "snapped_floating": [],
+  "dark_fill": {
+    "patches": 0,
+    "faces": 0,
+    "area_share": 0.0
+  },
   "tex_size": 1024,
-  "source_mean_dE": null,
-  "source_within_dE8": null,
-  "palette_use": "textured (palette snap skipped)",
-  "tris": 7720,
+  "tris": 7714,
   "size_m": [
     1.78,
     1.951,
     2.0
   ],
   "parts": 1,
-  "out": "game/assets/models/ocak/ocak.glb",
-  "pass_scripted": false
+  "palette_direction": {
+    "samples": 1500,
+    "mean_dE": 11.6,
+    "share": [
+      {
+        "color": "neutral.dark_grey",
+        "hex": "3B3F4A",
+        "share": 0.481
+      },
+      {
+        "color": "altin_cayir.shadow",
+        "hex": "5A4A6B",
+        "share": 0.343
+      },
+      {
+        "color": "tones.turnip_top",
+        "hex": "9158B7",
+        "share": 0.083
+      },
+      {
+        "color": "tones.blue_dark",
+        "hex": "2E5580",
+        "share": 0.024
+      },
+      {
+        "color": "tones.rock_dark",
+        "hex": "827488",
+        "share": 0.02
+      },
+      {
+        "color": "altin_cayir.accent",
+        "hex": "F26B3A",
+        "share": 0.017
+      }
+    ]
+  },
+  "sockets": [],
+  "icon": "C:\\Users\\uruskan\\Documents\\GitHub\\kabarma\\.claude\\worktrees\\m1-varlik-72a21b\\game/assets/models\\ocak\\ocak_icon.png",
+  "out": "C:\\Users\\uruskan\\Documents\\GitHub\\kabarma\\.claude\\worktrees\\m1-varlik-72a21b\\game/assets/models\\ocak\\ocak.glb",
+  "lods": [
+    {
+      "level": 0,
+      "tris": 7714,
+      "file": "C:\\Users\\uruskan\\Documents\\GitHub\\kabarma\\.claude\\worktrees\\m1-varlik-72a21b\\game/assets/models\\ocak\\ocak.glb",
+      "tex": 1024
+    },
+    {
+      "level": 1,
+      "ratio": 0.5,
+      "tris": 3740,
+      "file": "C:\\Users\\uruskan\\Documents\\GitHub\\kabarma\\.claude\\worktrees\\m1-varlik-72a21b\\game/assets/models\\ocak\\ocak_lod1.glb",
+      "tex": 512,
+      "census": {
+        "fan": 0,
+        "boundary": 0,
+        "wire": 0
+      }
+    },
+    {
+      "level": 2,
+      "ratio": 0.2,
+      "tris": 1494,
+      "file": "C:\\Users\\uruskan\\Documents\\GitHub\\kabarma\\.claude\\worktrees\\m1-varlik-72a21b\\game/assets/models\\ocak\\ocak_lod2.glb",
+      "tex": 256,
+      "census": {
+        "fan": 0,
+        "boundary": 0,
+        "wire": 0
+      }
+    }
+  ],
+  "hull": {
+    "file": "C:\\Users\\uruskan\\Documents\\GitHub\\kabarma\\.claude\\worktrees\\m1-varlik-72a21b\\game/assets/models\\ocak\\ocak_hull.tres",
+    "points": 64,
+    "volume_m3": 2.7553,
+    "mesh_volume_m3": 1.3123,
+    "note": "Godot ekseninde (Y yukari), model orijinine gore"
+  },
+  "pass_scripted": true,
+  "card": "C:\\Users\\uruskan\\Documents\\GitHub\\kabarma\\.claude\\worktrees\\m1-varlik-72a21b\\progress/m1/varlik/kart\\ocak.png"
 }

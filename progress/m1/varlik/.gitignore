@@ -1,0 +1,3 @@
+# 4 acili tam boy goruntuler (~34 MB) git'e girmez: kart/<ad>.png bunlarin kucultulmus hali + kalinlik haritasi + siluet.
+# Yeniden uretmek icin: python pipeline/run_golden.py
+render/

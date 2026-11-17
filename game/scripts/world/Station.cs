@@ -5,8 +5,9 @@ using Kabarma.Sim;
 namespace Kabarma.Game;
 
 /// <summary>
-/// Uretim istasyonu (GDD 11): Tezgah, Tas Firin, Paketleme Tezgahi. Malzeme cantadan alinir,
+/// Uretim istasyonu (GDD 11, ICERIK §11): Tezgah, Ocakbasi, Tas Firin, Paketleme Tezgahi. Malzeme ve yakit cantadan alinir,
 /// sira oyuncu uzaktayken de islenir; durum istasyonun ustunde yazar (menu yerine dunya, SANAT-SES §8.1).
+/// Yuk urunu (El Arabasi, kargo kasasi) cantaya degil istasyonun onune cikar.
 /// </summary>
 public partial class Station : Node3D
 {
@@ -15,6 +16,7 @@ public partial class Station : Node3D
     readonly Director _d;
     Label3D _label;
     TasFirin _oven;
+    OcakbasiVisual _grill;
     float _bounce;
 
     public Station(Director d, PlaceableDef def)
@@ -24,32 +26,21 @@ public partial class Station : Node3D
         Name = def.Id;
     }
 
-    /// <summary>Gorunus: Tas Firin kendi sinifini kullanir (kapak ve duman kodla hareket eder), digerleri modeli yukler.</summary>
-    public static Node3D MakeVisual(PlaceableDef def)
-    {
-        if (def.Id == "ocak") return new Ocak();
-        if (def.Id == "tas_firin") return new TasFirin();
-        var m = def.Model != null ? Assets.Load(def.Model) : null;
-        if (m != null) return m;
-        // Yedek: koddan kutu
-        var kit = new MeshKit();
-        kit.Pillow(new Vector3(1.4f, 0.9f, 0.8f), MeshKit.At(0, 0.45f, 0), Palette.Wood, 0.3f);
-        return kit.Instance();
-    }
+    /// <summary>Gorunus: Tas Firin ve Ocakbasi kendi siniflari (kodla hareket eden parcalar), digerleri model (PlaceableVisuals).</summary>
+    public static Node3D MakeVisual(PlaceableDef def) => PlaceableVisuals.Make(def);
+
+    /// <summary>Yuk urununun cikacagi nokta: istasyonun onu (+Z), yere oturmus.</summary>
+    public Vector3 OutputPoint => _d.World.Ground(GlobalPosition + GlobalBasis.Z * 1.9f);
 
     public override void _Ready()
     {
         var vis = MakeVisual(Def);
         AddChild(vis);
         _oven = vis as TasFirin;
+        _grill = vis as OcakbasiVisual;
         // Carpisma: modelin kapsayan kutusu
-        var aabb = new Aabb(); bool first = true;
-        foreach (var mi in vis.FindChildren("*", "MeshInstance3D", true, false).OfType<MeshInstance3D>())
-        {
-            var b = RelTransform(vis, mi) * mi.GetAabb();
-            aabb = first ? b : aabb.Merge(b); first = false;
-        }
-        if (!first)
+        bool any = PlaceableVisuals.Bounds(vis, out var aabb);
+        if (any)
         {
             var body = new StaticBody3D();
             body.AddChild(new CollisionShape3D { Shape = new BoxShape3D { Size = aabb.Size * new Vector3(0.9f, 1f, 0.9f) }, Position = aabb.GetCenter() });
@@ -59,26 +50,23 @@ public partial class Station : Node3D
         {
             Billboard = BaseMaterial3D.BillboardModeEnum.Enabled, FontSize = 40, OutlineSize = 12, PixelSize = 0.006f,
             Modulate = Palette.OffWhite, OutlineModulate = Palette.NightDeep, NoDepthTest = true,
-            Position = new Vector3(0, (first ? 1.2f : aabb.End.Y) + 0.45f, 0),
+            Position = new Vector3(0, (any ? aabb.End.Y : 1.2f) + 0.45f, 0),
         };
         AddChild(_label);
-        Queue.Produced += (r, n) =>
-        {
-            if (!IsInsideTree()) return;
-            _bounce = 1f;
-            Fx.FlyTo(GlobalPosition + Vector3.Up * 1.2f, () => _d.Player.BackpackPoint.GlobalPosition, Palette.Warning, 0.14f);
-            Fx.Text3D(GlobalPosition + Vector3.Up * 1.6f, $"+{n} {r.Name}", Palette.Warning, 48, 1.2f, 1.4f);
-            Sfx.Play("pickup", GlobalPosition, 0f);
-            _d.OnProduced(r);
-        };
+        Queue.Produced += OnProduced;
     }
 
-    static Transform3D RelTransform(Node3D root, Node3D n)
+    public override void _ExitTree() => Queue.Produced -= OnProduced;
+
+    void OnProduced(RecipeDef r, int n)
     {
-        var xf = Transform3D.Identity;
-        Node cur = n;
-        while (cur != null && cur != root) { if (cur is Node3D n3) xf = n3.Transform * xf; cur = cur.GetParent(); }
-        return xf;
+        if (!IsInsideTree() || _d.Stations.FirstOrDefault(s => s.Queue == Queue) != this) return; // ayni turden ikinci istasyon: ilki gosterir
+        _bounce = 1f;
+        if (r.Load) _d.SpawnLoad(r, this);
+        else Fx.FlyTo(GlobalPosition + Vector3.Up * 1.2f, () => _d.Player.BackpackPoint.GlobalPosition, Palette.Warning, 0.14f);
+        Fx.Text3D(GlobalPosition + Vector3.Up * 1.6f, $"+{n} {r.Name}", Palette.Warning, 48, 1.2f, 1.4f);
+        Sfx.Play("pickup", GlobalPosition, 0f);
+        _d.OnProduced(r);
     }
 
     public bool InReach(Vector3 p) => new Vector2(p.X - GlobalPosition.X, p.Z - GlobalPosition.Z).Length() < 3.2f;
@@ -86,12 +74,16 @@ public partial class Station : Node3D
     public override void _Process(double delta)
     {
         float dt = (float)delta;
-        Queue.Tick(dt, _d.State.Backpack);
-        if (_oven != null) _oven.Working = Queue.Active != null;
+        if (_d.Stations.FirstOrDefault(s => s.Queue == Queue) == this) Queue.Tick(dt, _d.State.Backpack);
+        bool working = Queue.Active != null;
+        if (_oven != null) _oven.Working = working;
+        if (_grill != null) _grill.Working = working;
         bool near = InReach(_d.Player.GlobalPosition);
-        _label.Text = Queue.Active != null
+        string fuel = Def.FuelPerJob > 0 && Def.Fuel.Count > 0 ? $"  ·  yakıt: {ItemNames.Of(Def.Fuel[0])} {_d.State.Backpack.Count(Def.Fuel[0])}" : "";
+        string packing = Def.Station == "paketleme" && _d.State.Cargo.Open != null ? $"\nkasa: {_d.State.Cargo.Open.Items.UsedSlots}/{_d.State.Cargo.Open.Items.Slots} yığın · {_d.State.Cargo.Value(_d.State.Cargo.Open)} Kredi" : "";
+        _label.Text = working
             ? $"{Def.Name}\n{Queue.Active.Name} {(int)(Queue.Progress * 100)}%  ·  sırada {Queue.Queued}"
-            : near ? $"{Def.Name}\nE: üret" : Def.Name;
+            : near ? $"{Def.Name}{fuel}\nE: üret{packing}" : Def.Name + packing;
         _label.Modulate = near ? Palette.Warning : Palette.OffWhite;
         if (_bounce > 0)
         {

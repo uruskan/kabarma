@@ -24,7 +24,7 @@ public partial class Hud
         var step = s.Scenario.Current;
         if (step != null)
         {
-            _goal.Text = step.Goal;
+            _goal.Text = G(step.Goal); // {act:eylem} -> glif (Hud.Controls.cs, girdi akisi)
             _goalProgress.Text = step.Target > 1 ? $"{s.Scenario.Progress} / {step.Target}" : "";
         }
         else
@@ -34,7 +34,7 @@ public partial class Hud
         }
 
         _hp.Value = _d.Player.Hp / _d.Player.MaxHp * 100f;
-        _bag.Text = $"{s.Credits} Kredi   ·   Yumurta {s.Eggs}   ·   Çanta {s.Backpack.UsedSlots}/{s.Backpack.Slots} (Tab)";
+        _bag.Text = $"{s.Credits} Kredi   ·   Yumurta {s.Eggs}   ·   Çanta {s.Backpack.UsedSlots}/{s.Backpack.Slots} ({G("{act:bag}")})";
     }
 
     public void OnHead(int h)
@@ -51,6 +51,7 @@ public partial class Hud
             var id = s.Belt.At(i);
             int n = id == null ? 0 : s.Backpack.Count(id);
             _beltName[i].Text = id == null ? "" : ItemNames.Of(id);
+            _beltName[i].AddThemeFontSizeOverride("font_size", _beltName[i].Text.Length > 10 ? 12 : 15); // uzun ad kirpilmasin
             _beltCount[i].Text = id == null ? "" : n.ToString();
             _beltName[i].Modulate = n > 0 || id == null ? Colors.White : new Color(1, 1, 1, 0.4f);
         }
