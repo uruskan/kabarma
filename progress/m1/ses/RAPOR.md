@@ -2,9 +2,23 @@
 
 **(a) Dal:** `claude/m1-ses-3ca715`, `af67734` (local main) üstüne. Worktree açılışta `0c22fab`'deydi (main'in 24 commit gerisi, CLAUDE.md ve `tools/test.ps1` yoktu); değişiklik yokken `af67734`'e ileri sarıldı. Aynı anda diğer dokuz worktree de `0c22fab`'de görünüyordu.
 
-**Testler:** `tools/test.ps1` yeşil: derleme 0 uyarı, Sim 26/26 (10'u yeni ses testi), bot `RESULT ok credits=210 eggs=1 kills=21 cards=3 maya=48 stations=3 harvests=4` (önceki ile aynı), inşa 60/0, yeni `audio` sınaması. Günlük: `progress/m1/ses/test.log`.
+**Testler (18 Kasım):** `tools/test.ps1` yeşil.
+- Derleme: 0 uyarı.
+- Sim: 28/28 (12'si ses testi).
+- Bot: `RESULT ok credits=210 eggs=1 kills=21 cards=3 maya=48 stations=3 harvests=4` (önceki ile aynı).
+- İnşa: 60/0.
+- `audio`: `ok sounds=60 playable=60 variant_files=180 buses=6 layers_loaded=3/3 day_music=yes`. Ana oturumun commit edilmemiş üretimi içe aktarılmış hâldeyken koştu; commit'li dal tek başına `playable=17 variant_files=15 layers_loaded=1/3 day_music=no` verir.
 
-Kanıt: `test.log` · `bot_audio_lines.log` (müzik durumları ve Suna satırları botta) · `bot_unmuted.log` (bot `--mute` olmadan: oyun içi ses yolu çalıştı, sonuç aynı, 0 hata satırı) · `audio_qc.md` / `audio_qc.json` (28 dosya) · `eleven_dry_run.txt`. `audio_qc --fix-dir` ve `eleven.post_process` M0 dosyalarının kopyalarında denendi: `hit`, `pickup`, `pop` düzeltmeden sonra geçti; geçen dosyaya dokunulmadı.
+Günlük: `progress/m1/ses/test.log`.
+
+Kanıt:
+- `test.log`
+- `bot_audio_lines.log`: müzik durumları ve Suna satırları botta.
+- `bot_unmuted.log`: bot `--mute` olmadan; oyun içi ses yolu çalıştı, sonuç aynı, 0 hata satırı.
+- `audio_qc.md` / `audio_qc.json`: 28 dosya, 17 Kasım.
+- `eleven_dry_run.txt`: bu dalın metni.
+- `eleven_dry_run_ilkgun.txt`: ilkgun'un metni.
+- `merge_ilkgun_bot.log`: ses + ilkgun birleşik ağacında her Suna satırı ilkgun kimliğine çözülüyor. `audio_qc --fix-dir` ve `eleven.post_process` M0 dosyalarının kopyalarında denendi: `hit`, `pickup`, `pop` düzeltmeden sonra geçti; geçen dosyaya dokunulmadı.
 
 ## Ne yapıldı
 
@@ -13,9 +27,9 @@ Kanıt: `test.log` · `bot_audio_lines.log` (müzik durumları ve Suna satırlar
 | Ses kanalları ve sürgüler | `fx/Sfx.Buses.cs`, `ui/AudioPanel.cs` | 6 kanal çalışma anında veriden kurulur: Ana (tepe sınırı −1 dB), Müzik (Suna'da −4 dB kısma), Efekt, Suna/telsiz (yüksek ve alçak geçiren süzgeç + hafif doyum), Ortam, Arayüz. F2 (oyun kolunda Geri) paneli, kanal başına sürgü, `user://audio_settings.cfg`. Sınamalarda ayar okunmaz ve yazılmaz. |
 | `data/audio.json` ve `Sfx` | `game/data/audio.json`, `src/Kabarma.Sim/GameData.Audio.cs`, `fx/Sfx.cs`, `fx/Sfx.Events.cs`, `fx/Foley.cs` | 60 ses: grup, kanal, düzey, 3 varyasyon, döngü, çalma noktası (`play`), bağlı mı (`wired`), M0 yedeği, `placeholder`. Rastgele varyasyon (aynısı art arda çalmaz), perde ±%8, düzey ±2 dB, ses başına eşzamanlı kopya sınırı. Eksik dosyada M0 sesi, yoksa sessiz. Eski adlar (`place`, `hit`...) çalışıyor; başka akışın çağrısı değişmedi. Döngü sesi `Play` ile tekrar tekrar çağrılırsa (Sulama her karede `"water"`) tek döngü çalar, çağrı kesilince 0,3 sn'de söner; yalnız M0 yedeği varken eski tek seferlik davranış. |
 | Müzik durum makinesi | `fx/MusicDirector.cs`, `src/Kabarma.Sim/AudioMix.cs` | Durumlar: Gündüz (parça biter, parça boyu kadar susar: §10.2), Sessizlik (akşam), Kabarma (3 katman aynı karede başlar; dalga numarası ve Gösteri'ye göre ölçü sınırında açılır, 4 ölçü beklemeden kapanmaz). Geçişler 2,5 sn, gerçek zaman (vuruş duraklaması müziği etkilemez). Ortam: gündüz çayır döngüsü, gece gökyüzü döngüsü. Director evresini okur; gecehud dosyalarına dokunmaz. |
-| Suna oynatıcısı | `ui/Hud.Voice.cs` | Satır başında telsiz mandalı, 0,12 sn sonra replik telsiz kanalında, sonda mandal; konuşurken müzik −4 dB. Altyazı Suna kutusu: ses bitene dek ekranda. Kimlik metinden (`VoiceLines`), dosya `voice/{dil}/{kimlik}.mp3`; yoksa altyazıyla sessiz. |
+| Suna oynatıcısı | `ui/Hud.Voice.cs` | Satır başında telsiz mandalı, 0,12 sn sonra replik telsiz kanalında, sonda mandal; konuşurken müzik −4 dB. Altyazı Suna kutusu: ses bitene dek ekranda. Kimlik ekrandaki metinden (`VoiceLines.FromJson`): `scenario.json`'da `lines` varsa ilkgun'un açık kimlikleri, yoksa eski yapıdan türetme. Dosya `voice/{dil}/{kimlik}.mp3`; yoksa altyazıyla sessiz. |
 | `pipeline/audio_qc.py` | | LUFS, gerçek tepe, kırpılma, süre, baş/son sessizlik, döngü dikişi, grup içi spektrum, müzikte tempo ve katman hizası. `--fix-dir` ile kırpma ve tepe düzeltme. Python + ffmpeg (numpy yok). |
-| `pipeline/eleven.py` | `pipeline/requests/m1_audio.json` | Anahtar yalnız `ELEVENLABS_API_KEY`; `.env` açılmaz, anahtar yazılmaz. Sahibin sınırları sert sınır + harcama defteri (yeniden denemeler dahil). Modeller sabit. **Çalıştırılmadı; yalnız `--dry-run`.** |
+| `pipeline/eleven.py` | `pipeline/requests/m1_audio.json` | Anahtar yalnız `ELEVENLABS_API_KEY`; `.env` açılmaz, anahtar yazılmaz. Sahibin sınırları sert sınır + harcama defteri (yeniden denemeler dahil). Modeller sabit. Ben yalnız `--dry-run` çalıştırdım; ana oturum 18 Kasım'da `sfx`, `music`, `stems`, `design` adımlarını koştu (e). |
 | `pipeline/licenses.md` | | Kaynak, plan, yükümlülük, üretim kayıtları. |
 | Ek: arayüz sesleri | `pipeline/synth_ui.py`, `sfx/ui_*_{1,2,3}.mp3`, `sfx/telsiz_mandali_{1,2,3}.mp3` | SANAT-SES §10.1 "Arayüz grubu sentez betikleriyle de yapılabilir": 5 ses × 3 sürüm koddan, kredisiz. 15'i de betikli denetimden geçti. Dinleme sahipte. |
 
@@ -24,11 +38,11 @@ Kanıt: `test.log` · `bot_audio_lines.log` (müzik durumları ve Suna satırlar
 | Teslim | 1 Belge + veri | 2 Otomatik test | 3 Ses/efekt/arayüz | 4 KM + kol (ortak oyun) | 5 Kayıt | 6 Görüntü |
 |---|---|---|---|---|---|---|
 | Ses kanalları ve sürgüler | geçti | geçti (`audio`: kanallar, etkiler, ikinci kurulum, düzey) | kısmen (sürgü hemen duyulur; sürgüde arayüz sesi yok) | kısmen: F2 ve kol Geri, yön pedi sürgüde; gerçek kolla denenmedi · ortak oyun M2'de | M2'de | yok (F2 paneli görüntüsü alınmadı) |
-| 60 ses (`audio.json`, `Sfx`) | geçti | geçti (Sim: 60 ses, gruplar, 12 M0, döngüler, varyasyon; `audio`: 60'ı da çöker mi, tutulan döngü; bot `--mute` olmadan da yeşil) | kısmen: 17/60 çalınabilir (12 M0 tek sürüm + 5 sentez × 3); 43 ses dosyasız; 33'ünün çalma noktası sahibi akışta bağlanmalı | M2'de (ortak oyun); girdi yok | M2'de | yok |
-| Müzik (2 parça, 3 katman) | geçti (eşikler belgenin sustuğu yer, aşağıda) | geçti (Sim: yoğunluk, katman, bekleme; `audio`: durumlar ve katmanlar; bot günlüğünde Gündüz → Sessizlik → Kabarma → 2 → 3 katman → Gündüz) | kısmen: yalnız M0 Kabarma parçası 1. katmanda; gündüz parçası ve 2–3. katman yok (üretim isteği) | M2'de | M2'de | yok |
-| Suna (30 replik, telsiz, altyazı) | kısmen: kod hazır; bugünkü metin 41 replik, 12'sinde tuş adı, İngilizcesi yok (ilkgun) | kısmen (Sim: kimlikler; bot: her satır kimliğe çözülüyor; sesli yol dosya olmadığı için koşmadı) | kısmen: mandal ve altyazı var; seslendirme yok | M2'de | M2'de | yok |
+| 60 ses (`audio.json`, `Sfx`) | geçti | geçti (Sim: 60 ses, gruplar, 12 M0, döngüler, varyasyon; `audio`: 60'ı da çöker mi, tutulan döngü; bot `--mute` olmadan da yeşil) | kısmen. Commit'li dalda 17/60 çalınabilir (12 M0 tek sürüm + 5 sentez × 3). Bu worktree'de ana oturumun commit edilmemiş üretimiyle 60/60 ve 180 dosya; `audio` sınaması bunlarla geçti, 10 dosya denetimde KALDI. 33 sesin çalma noktası sahibi akışta bağlanmalı. Dinleme: sahibin onayını bekliyor | M2'de (ortak oyun); girdi yok | M2'de | yok |
+| Müzik (2 parça, 3 katman) | geçti (eşikler belgenin sustuğu yer, aşağıda) | geçti (Sim: yoğunluk, katman, bekleme; `audio`: durumlar ve katmanlar; bot günlüğünde Gündüz → Sessizlik → Kabarma → 2 → 3 katman → Gündüz) | kısmen. Commit'li dalda yalnız M0 Kabarma parçası (1. katman). Ana oturumun ürettiği gündüz parçası ve 3 katman bu worktree'de yüklendi (`layers_loaded=3/3 day_music=yes`), commit'te yok. Dinleme: sahibin onayını bekliyor | M2'de | M2'de | yok |
+| Suna (30 replik, telsiz, altyazı) | kısmen: kod iki metin yapısını da okur. Bu daldaki metin eski (41 replik, 12'sinde tuş adı, İngilizcesi yok); ilkgun dalında 30 TR + 30 EN hazır | kısmen. Sim: iki yapı ve bugünkü dosya. Birleşik ağaçta bot: 24 Suna satırının hepsi ilkgun kimliğine çözüldü (`merge_ilkgun_bot.log`). Sesli yol, replik dosyası olmadığı için koşmadı | kısmen: mandal ve altyazı var; seslendirme yok (3 aday üretildi, sahip seçecek) | M2'de | M2'de | yok |
 | `audio_qc.py` | kısmen: −1 dBTP ve Suna +3 dB belgeden; LUFS aralıkları seçilmiş (UYARI) | kısmen: 28 dosyada koştu, birim testi yok | — | — | — | — |
-| `eleven.py` + istek | geçti (sınırlar M1 kararlarından) | kısmen: kuru koşu koştu; ağ yolu hiç koşmadı (kredi) | — | — | — | — |
+| `eleven.py` + istek | geçti (sınırlar M1 kararlarından) | kısmen: kuru koşu iki metin yapısıyla koştu; ağ yolu ana oturumda `sfx`, `music`, `stems`, `design` için koştu (defter); `save-voice` ve `voice` koşmadı | — | — | — | — |
 | `licenses.md` | geçti | — | — | — | — | — |
 
 His ve dinleme: **sahibin onayını bekliyor** (12 M0 sesi, 15 sentez arayüz sesi, M0 Kabarma parçası; ElevenLabs üretimleri gelince onlar).
@@ -36,7 +50,7 @@ His ve dinleme: **sahibin onayını bekliyor** (12 M0 sesi, 15 sentez arayüz se
 **M0 denemeleri (URETIM §2.3):**
 - 5 (10 ses + 1 döngü): ⚠️ Betikli denetim artık var. 12 M0 sesinin 8'i geçti. `hit` ve `pop` gerçek tepe −1 dBTP üstünde; `pickup` 40 ms baş sessizliği; `water` döngü olarak kullanılamıyor (0,5 sn, dikiş 26 dB). Dinleme turu 👤.
 - 6 (1 müzik, 3 katman): ⚠️ Kod hazır (katmanlı oynatıcı, `eleven.py --only stems`). M0 parçası tek katman; tempo 119,9 BPM ölçüldü (veride 120). Döngü dikişi kaldı: baş ve son arası 5,3 dB. Üretim isteği aşağıda. 👤
-- 7 (Suna: 3 aday, 10 replik): ❌ Betik hazır (tasarım → sahip seçer → kayıt → replik + geri çevirme). Üretim isteği; replik metni ilkgun'dan bekleniyor. 👤
+- 7 (Suna: 3 aday, 10 replik): ❌ Betik hazır (tasarım → sahip seçer → kayıt → replik + geri çevirme). Üretim isteği. Replik metni (30 TR + 30 EN) ilkgun dalında hazır; dallar birleşince başlanabilir. 👤
 
 ## (c) Dokunduğum başka akış dosyaları
 
@@ -62,9 +76,20 @@ Kuru koşu: `progress/m1/ses/eleven_dry_run.txt`. Komutlar depo kökünden; her 
 | 2 | Müzik, `music_v2_5` | 2 parça: `cayir_gunduz` 180 sn, `kabarma` 120 sn (120 BPM, 60 ölçü) | 300 sn ≈ 0,75 $ | 12,5 dk (denemeler dahil) | `game/assets/audio/music/cayir_gunduz.mp3`, `kabarma_full.mp3` | `--only music` |
 | 3 | Kabarma katman ayrıştırma | 1 | 120 sn (fiyatı yazmıyor; müzik dakikasına sayıldı) | aynı 12,5 dk | `music/kabarma_{1,2,3}.mp3` | `--only stems` |
 | 4 | Suna ses tasarımı, `eleven_ttv_v3` | 1 çağrı, 3 aday | 142 karakter (fiyatı yazmıyor; karaktere sayıldı) | 3 aday | `progress/m1/ses/suna_adaylari/aday_{1,2,3}.mp3` | `--only design`, sahip seçer, `--only save-voice --generated-id …` |
-| 5 | Suna replikleri, `eleven_v3` + geri çevirme `scribe_v3` | 30 TR + 30 EN | ~2.400–3.600 karakter + yeniden deneme, ≤ 7.200 · geri çevirme ~4 dk ≈ 0,01 $ | 7.200 karakter | `game/assets/audio/voice/{tr,en}/{kimlik}.mp3` | `--only voice --lang tr` / `en` · **ENGEL:** ilkgun'un 30 replikli TR ve EN metni gelmeden başlamaz |
+| 5 | Suna replikleri, `eleven_v3` + geri çevirme `scribe_v3` | 30 TR + 30 EN | ilkgun metniyle: 2.099 TR + 2.481 EN = 4.580 karakter (+142 tasarım = 4.722); yeniden deneme payı 2.478 karakter · geri çevirme ~327 sn ≈ 0,02 $ (`eleven_dry_run_ilkgun.txt`) | 7.200 karakter | `game/assets/audio/voice/{tr,en}/{kimlik}.mp3` | `--only voice --lang tr` / `en` · **ENGEL bu dalda:** eski metin (41 replik, tuş adı, EN yok). ilkgun dalı birleşince kalkar; betik o metni engelsiz okuyor |
 
 Toplam tahmin ~1,9 $ (liste fiyatı) + ses tasarımı ve katman ayrıştırma (fiyatı yazmıyor). Her üretimden sonra: Godot `--import`, `python pipeline/audio_qc.py`, sahibin dinlemesi, `audio.json`'da `placeholder: false`, `licenses.md`'ye satır.
+
+**Ana oturumun üretimi (18 Kasım 00:28–00:34, bu worktree'de; ben çalıştırmadım).** Defterde (`eleven_ledger.json`): 1–4 yapıldı.
+- Ses efekti: 165 üretim, 329,7 sn.
+- Müzik: `cayir_gunduz` 180 sn, `kabarma_full` 120 sn ve katman ayrıştırma 120 sn; toplam 420 sn / 750.
+- Suna ses tasarımı: 1 çağrı, 142 karakter, 3 aday (`suna_adaylari/aday_{1,2,3}.mp3`).
+
+Indirmeden sonra `post_process` denetiminde 10 dosya KALDI:
+- 8'i döngü dikişi: `kaya_kemirme_1,2`, `ates_citirti_1,2`, `tezgah_calisma_1,2,3`, `el_arabasi_teker_2`.
+- 2'si tepe: `sokum_1`, `kargo_roketi_1`.
+
+Bu dosyalar, defter ve `.import` dosyaları commit'imde **yok**: üretim ana oturumun, ne yapılacağına o karar verir. 5. madde (Suna replikleri) duruyor: bu dalda metin engelli, ayrıca sahip adaylardan birini seçmeli.
 
 ## (f) Belgeyle çelişen ya da belgenin sustuğu yerler
 
@@ -75,7 +100,7 @@ Toplam tahmin ~1,9 $ (liste fiyatı) + ses tasarımı ve katman ayrıştırma (f
 5. **Kabarma katman sayıları** belgede yok: eşikler 0,25 / 0,6, dalga ağırlığı 0,7, Gösteri ağırlığı 0,3, 4 ölçü bekleme, 120 BPM 4/4. Veride duruyor. M0 parçasının ölçülen temposu 119,9.
 6. **LUFS hedefleri** belgede yok; yalnız −1 dBTP ve "Suna efektlerin ortalamasının 3 dB üstünde" var. Seçilen aralıklar `audio_qc.py`'de UYARI.
 7. **Katman ayrıştırma:** ElevenLabs belgesi fiyatı ve kök adlarını vermiyor. Fiyat müzik dakikasına sayıldı; kökler anahtar sözcükle katmana eşleniyor, eşleşmezse betik durur.
-8. **Suna metni:** `scenario.json` bugün 41 replik (belge 30), 12'sinde tuş adı var (§10.3 yasaklıyor), İngilizcesi yok. Kimlikler bugünkü yapıdan türetildi. ilkgun'a not ve mesaj bırakıldı.
+8. **Suna metni (18 Kasım'da güncellendi):** bu daldaki `scenario.json` hâlâ eski yapıda: 41 replik (belge 30), 12'sinde tuş adı (§10.3 yasaklıyor), İngilizcesi yok. ilkgun kendi dalında (`claude/m1-ilkgun-3d5928`, `f472a1a`) bunu çözdü: `lines` {kimlik: {tr, en}}, 30 TR + 30 EN, tuş adı yok, `Events.SunaSaid(kimlik)`. Ses tarafı (`VoiceLines.FromJson`, `Hud.Voice`, `eleven.py load_lines`) iki yapıyı da okur ve `ScenarioFile` alanlarına dayanmaz. Bu dal kendi başına yeşil; dallar birleşince kimlikler kendiliğinden ilkgun'unkiler olur. Kimlik ekrandaki metinden bulunur: ilkgun'un `SayLine`'ı (kimlikle) ve gecehud'un gece satırları (`Hud.Say(NightLines[...])`, metinle) ikisi de çözülür. `SunaSaid` olayına bağlanmadım: bu dalda yok, metin yolu zaten kapsıyor.
 9. **Çift mandal:** `Hud.cs`'teki eski `Sfx.Play("place", null, -22f); // telsiz mandali` satırı (gecehud) duruyor; yeni mandalla birlikte çalıyor. Silinmesi önerilir.
 10. **33 sesin çalma noktası** başka akışların kodunda (`wired: false`, yer `play` alanında). Ben yalnız kendi dosyalarımdan ve olaylardan bağladım. Çift çalmasın diye kod yerinde zaten ses çalan olaylara bağlamadım.
 11. **Foley.cs** adımları, inişi, Gıdak'ın bekleme gıdaklamasını ve Ocak ateşini durumu okuyarak çalıyor. oyuncu ya da yaratık kendi bağlarsa buradaki kaldırılmalı.
@@ -85,3 +110,7 @@ Toplam tahmin ~1,9 $ (liste fiyatı) + ses tasarımı ve katman ayrıştırma (f
 15. **Süreç:** görev, belgeyle çelişen ya da belgenin sustuğu yerde koda geçmeden durup bildirmemi istiyordu. Durmadım. 1–13'ü kendim karara bağladım: belge konuştuysa belgeye uydum, sustuysa değeri veriye yazdım. Hepsi veri değeri ya da küçük bir kod anahtarı; inceleme için burada.
 16. **Harcama defteri checkout'a bağlı:** `progress/m1/ses/eleven_ledger.json`. `eleven.py` yalnızca tek bir checkout'tan (ana çalışma kopyası) çalıştırılmalı ve her koşudan sonra defter commit edilmeli. Yoksa sert sınırlar sessizce sıfırlanır.
 17. **ElevenLabs API sözleşmeleri** 17 Kasım'da resmi API sayfalarından okundu (uç noktalar, alanlar, modeller), ama hiçbir gerçek çağrı yapılmadı. İlk gerçek çağrıda uyumsuzluk çıkarsa betik ilk HTTP hatasında durur; o çağrı deftere "faturalanmadı" diye yazılır.
+18. **Birleşme denemesi (18 Kasım):** geçici, dala bağlı olmayan bir worktree'de ses (`6ec5e6a`) ile ilkgun (`f472a1a`) birleştirildi ve deneme bitince silindi; hiçbir dal değişmedi.
+    - Çakışma yok. Sim 45/45, derleme 0 uyarı, bot `RESULT ok`. Her Suna satırı (gecehud'un metinle söylediği gece satırları dahil) ilkgun kimliğine çözüldü.
+    - Aynı koşuda ilkgun'un `ActText.Label`'ı (`ActText.cs:26`, `DisplayServer.KeyboardGetKeycodeFromPhysical`) `--headless` altında 12.937 `Not supported by this display server` hatası yazdı. Bu ses akışından değil; ilkgun'a bildirildi.
+19. **`eleven.py` kuru koşusu tüm planı sayar:** yapılmış adımları düşmez. Ana oturumun üretiminden sonra müzik satırı "ASIYOR" gösteriyor (defter 420 + plan 420 > 750); tasarımın 142 karakteri de yeniden sayılıyor. Gerçek koşuda sert sınır ve `designCalls` durumu tekrarı zaten engeller. Kalan iş yalnız Suna replikleri: 4.580 karakter + defterdeki 142 = 4.722 / 7.200.

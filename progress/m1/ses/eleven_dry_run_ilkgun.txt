@@ -1,0 +1,31 @@
+ElevenLabs M1 ses paketi: KURU KOSU (ag yok, anahtar okunmadi)
+
+Modeller: ses efekti eleven_text_to_sound_v3 · muzik music_v2_5 · konusma eleven_v3 · ses tasarimi eleven_ttv_v3 · geri cevirme scribe_v3
+Defter: progress\m1\ses\eleven_ledger.json · onceki harcama: tts_chars 142/7200, sfx_seconds 330/1140, music_seconds 420/750, stt_seconds 0/900
+
+[ses efekti] 55 ses, 165 uretim, 329.7 sn (5.50 dk) / sinir 19 dk
+  kapali (sentezle uretildi, pipeline/synth_ui.py): ui_odak, ui_onay, ui_hata, ui_baslik_carki, telsiz_mandali
+  cikti: game/assets/audio/sfx/{id}_{n}.mp3
+
+[muzik] 2 parca, 300 sn + katman ayristirma 120 sn = 7.00 dk / sinir 12.5 dk
+  cayir_gunduz: 180 sn -> game\assets\audio\music\cayir_gunduz.mp3
+  kabarma: 120 sn -> game\assets\audio\music\kabarma_full.mp3 -> katmanlar kabarma_1.mp3, kabarma_2.mp3, kabarma_3.mp3
+  ! katman ayristirmanin fiyati fiyat sayfasinda yok: tutumlu olsun diye muzik dakikasina sayildi
+
+[Suna ses tasarimi] 1 cagri, 3 aday, onizleme metni 142 karakter (karaktere sayildi)
+  cikti: progress/m1/ses/suna_adaylari/aday_{n}.mp3
+
+[Suna tr] 30 replik, seslendirilebilir 30, 2099 karakter; geri cevirme ~150 sn
+  cikti: game/assets/audio/voice/tr/{line}.mp3
+
+[Suna en] 30 replik, seslendirilebilir 30, 2481 karakter; geri cevirme ~177 sn
+  cikti: game/assets/audio/voice/en/{line}.mp3
+
+  yeniden deneme payi: replik basina en fazla 1 (geri cevirme tutmazsa); karakter sinirina sayilir
+
+TOPLAM (bu plan):
+  tts_chars         4722.0 karakter (defterde 142.0) / sinir 7200  ~0.38 $
+  sfx_seconds        329.7 sn       (defterde 329.7) / sinir 1140  ~0.66 $
+  music_seconds      420.0 sn       (defterde 420.0) / sinir 750  ASIYOR  ~1.05 $
+  stt_seconds        327.1 sn       (defterde 0.0) / sinir 900  ~0.02 $
+  tahmini tutar ~2.11 $ (liste fiyati; ses tasarimi ve katman ayristirma fiyati yazmiyor)
