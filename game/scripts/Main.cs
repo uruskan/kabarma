@@ -73,13 +73,21 @@ public partial class Main : Node3D
         Key("jump", Godot.Key.Space);
         Key("sprint", Godot.Key.Shift);
         Key("interact", Godot.Key.E);
+        Key("bag", Godot.Key.Tab, Godot.Key.I);
+        Key("head_wheel", Godot.Key.Q);
+        Key("build_rotate", Godot.Key.R);
+        if (!InputMap.HasAction("build_next")) InputMap.AddAction("build_next");
+        InputMap.ActionAddEvent("build_next", new InputEventMouseButton { ButtonIndex = MouseButton.WheelDown });
+        InputMap.ActionAddEvent("build_next", new InputEventKey { PhysicalKeycode = Godot.Key.Period });
+        if (!InputMap.HasAction("build_prev")) InputMap.AddAction("build_prev");
+        InputMap.ActionAddEvent("build_prev", new InputEventMouseButton { ButtonIndex = MouseButton.WheelUp });
+        InputMap.ActionAddEvent("build_prev", new InputEventKey { PhysicalKeycode = Godot.Key.Comma });
         Key("card_1", Godot.Key.Z);
         Key("card_2", Godot.Key.X);
         Key("card_3", Godot.Key.C);
-        for (int i = 1; i <= 6; i++) Key($"head_{i}", Godot.Key.Key0 + i);
+        for (int i = 1; i <= 9; i++) Key($"head_{i}", Godot.Key.Key0 + i);
         if (!InputMap.HasAction("fire")) InputMap.AddAction("fire");
         InputMap.ActionAddEvent("fire", new InputEventMouseButton { ButtonIndex = MouseButton.Left });
-        InputMap.ActionAddEvent("fire", new InputEventKey { PhysicalKeycode = Godot.Key.F });
         // Oyun kolu: sol cubuk hareket, sag tetik kullan, A zipla
         InputMap.ActionAddEvent("fire", new InputEventJoypadMotion { Axis = JoyAxis.TriggerRight, AxisValue = 1 });
         InputMap.ActionAddEvent("jump", new InputEventJoypadButton { ButtonIndex = JoyButton.A });

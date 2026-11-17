@@ -20,6 +20,14 @@ public partial class Hud : CanvasLayer
     PanelContainer _goalPanel;
     HBoxContainer _belt;
     readonly List<PanelContainer> _beltSlots = new();
+    readonly List<Label> _beltName = new(), _beltCount = new();
+    PanelContainer _headTag;
+    Label _headName, _headHint;
+    Control _wheel;
+    readonly List<PanelContainer> _wheelSlots = new();
+    Vector2 _wheelDir;
+    int _wheelSel = -1;
+    public bool WheelOpen => _wheel != null && _wheel.Visible;
     Label _bag;
     ProgressBar _hp;
     Label _hint;
@@ -36,6 +44,53 @@ public partial class Hud : CanvasLayer
     VBoxContainer _bottomLeft;
 
     public bool ReportOpen => _report != null && _report.Visible;
+
+    // ---------- Menu: istasyon, canta, satis (ortak sablon, SANAT-SES §8.2) ----------
+    public sealed record MenuItem(string Label, System.Func<bool> Enabled, System.Action Act);
+    PanelContainer _menu;
+    VBoxContainer _menuList;
+    Label _menuTitle, _menuFoot;
+    readonly List<MenuItem> _menuItems = new();
+    public bool MenuOpen => _menu != null && _menu.Visible;
+
+    public void ShowMenu(string title, List<MenuItem> items, string footer)
+    {
+        _menuItems.Clear();
+        _menuItems.AddRange(items);
+        _menuTitle.Text = title;
+        _menuFoot.Text = footer;
+        foreach (var c in _menuList.GetChildren()) c.QueueFree();
+        for (int i = 0; i < items.Count; i++)
+        {
+            var l = L($"{i + 1}   {items[i].Label}", 21, Palette.OffWhite, true);
+            l.SetMeta("i", i);
+            _menuList.AddChild(l);
+        }
+        if (items.Count == 0) _menuList.AddChild(L("Burada yapılacak bir şey yok.", 20, Palette.Fog));
+        _menu.Visible = true;
+        RefreshMenu();
+    }
+
+    public void HideMenu() { if (_menu != null) _menu.Visible = false; }
+
+    public void ActivateMenu(int i)
+    {
+        if (!MenuOpen || i < 0 || i >= _menuItems.Count) return;
+        var it = _menuItems[i];
+        if (!it.Enabled()) { Sfx.Play("hit", null, -12f); return; }
+        it.Act();
+        RefreshMenu();
+    }
+
+    void RefreshMenu()
+    {
+        foreach (var n in _menuList.GetChildren())
+            if (n is Label l && l.HasMeta("i"))
+            {
+                int i = (int)l.GetMeta("i");
+                if (i < _menuItems.Count) l.AddThemeColorOverride("font_color", _menuItems[i].Enabled() ? Palette.OffWhite : new Color(Palette.OffWhite, 0.35f));
+            }
+    }
 
     public void Init(Director d) { _d = d; }
 
@@ -99,27 +154,52 @@ public partial class Hud : CanvasLayer
         root.AddChild(_goalPanel);
         _goalPanel.Resized += () => _goalPanel.Position = new Vector2(GetViewport().GetVisibleRect().Size.X - _goalPanel.Size.X - 24, 24);
 
-        // Kemer: alt orta
+        // Kemer: alt orta, 8 yuva (GDD 5). Cantadaki esyalara kisayol; Alt+1..8 ile kullanilir.
         _belt = new HBoxContainer { Alignment = BoxContainer.AlignmentMode.Center };
-        _belt.AddThemeConstantOverride("separation", 8);
+        _belt.AddThemeConstantOverride("separation", 6);
         _belt.SetAnchorsPreset(Control.LayoutPreset.CenterBottom);
-        for (int i = 0; i < Capa.HeadNames.Length; i++)
+        for (int i = 0; i < Kabarma.Sim.Belt.Slots; i++)
         {
-            var p = new PanelContainer { CustomMinimumSize = new Vector2(118, 64) };
+            var p = new PanelContainer { CustomMinimumSize = new Vector2(104, 66) };
+            p.AddThemeStyleboxOverride("panel", Box(new Color(Palette.NightDeep, 0.7f), 12, new Color(Palette.OffWhite, 0.22f), 2));
             var v = new VBoxContainer { Alignment = BoxContainer.AlignmentMode.Center };
-            var k = L($"{i + 1}", 15, Palette.Warning, true); k.HorizontalAlignment = HorizontalAlignment.Center;
-            var n = L(Capa.HeadNames[i], 17, Palette.OffWhite, true); n.HorizontalAlignment = HorizontalAlignment.Center;
-            v.AddChild(k); v.AddChild(n);
+            var k = L($"Alt+{i + 1}", 12, Palette.Warning, true); k.HorizontalAlignment = HorizontalAlignment.Left;
+            var n = L("", 15, Palette.OffWhite, true); n.HorizontalAlignment = HorizontalAlignment.Center; n.ClipText = true; n.CustomMinimumSize = new Vector2(92, 0);
+            var c = L("", 18, Palette.Warning, true); c.HorizontalAlignment = HorizontalAlignment.Right;
+            v.AddChild(k); v.AddChild(n); v.AddChild(c);
             p.AddChild(v);
             _belt.AddChild(p);
             _beltSlots.Add(p);
+            _beltName.Add(n); _beltCount.Add(c);
         }
         root.AddChild(_belt);
+
+        // Capa'nin takili basligi: nisangahin sag altinda (dunyaya yakin, gozun oldugu yerde)
+        _headTag = new PanelContainer();
+        var hv = new VBoxContainer();
+        _headName = L("", 22, Palette.OffWhite, true);
+        _headHint = L("Q: çark  ·  1–8  ·  tekerlek", 13, Palette.Fog, true);
+        hv.AddChild(_headName); hv.AddChild(_headHint);
+        _headTag.AddChild(hv);
+        root.AddChild(_headTag);
+
+        // Baslik carki (GDD 4: "sayi tuslari ya da cark"): Q basili tutulur, fareyle secilir, birakinca takilir.
+        _wheel = new Control { Visible = false, MouseFilter = Control.MouseFilterEnum.Ignore };
+        root.AddChild(_wheel);
+        for (int i = 0; i < Capa.HeadNames.Length; i++)
+        {
+            var wp = new PanelContainer { CustomMinimumSize = new Vector2(150, 54) };
+            var wl = L($"{i + 1}  {Capa.HeadNames[i]}", 19, Palette.OffWhite, true);
+            wl.HorizontalAlignment = HorizontalAlignment.Center;
+            wp.AddChild(wl);
+            _wheel.AddChild(wp);
+            _wheelSlots.Add(wp);
+        }
 
         // Can ve canta: sol alt
         var bl = new VBoxContainer();
         _bottomLeft = bl;
-        _hp = new ProgressBar { CustomMinimumSize = new Vector2(280, 22), MaxValue = 100, Value = 100, ShowPercentage = false };
+        _hp = new ProgressBar { CustomMinimumSize = new Vector2(280, 22), MaxValue = 100, Value = 100, ShowPercentage = false, SizeFlagsHorizontal = Control.SizeFlags.ShrinkBegin };
         var hpFill = Box(Palette.Accent, 10); hpFill.ContentMarginTop = hpFill.ContentMarginBottom = 0;
         _hp.AddThemeStyleboxOverride("fill", hpFill);
         _hp.AddThemeStyleboxOverride("background", Box(new Color(Palette.NightDeep, 0.7f), 10));
@@ -181,6 +261,19 @@ public partial class Hud : CanvasLayer
         _bigText.Position = new Vector2(-450, -170);
         root.AddChild(_bigText);
 
+        _menu = new PanelContainer { Visible = false };
+        _menu.AddThemeStyleboxOverride("panel", Box(new Color(Palette.NightDeep, 0.92f), 18, Palette.Warning, 3));
+        var mv = new VBoxContainer { CustomMinimumSize = new Vector2(720, 0) };
+        mv.AddThemeConstantOverride("separation", 8);
+        _menuTitle = L("", 30, Palette.Warning, true);
+        _menuList = new VBoxContainer();
+        _menuList.AddThemeConstantOverride("separation", 6);
+        _menuFoot = L("", 17, Palette.Fog);
+        _menuFoot.AutowrapMode = TextServer.AutowrapMode.WordSmart;
+        _menuFoot.CustomMinimumSize = new Vector2(700, 0);
+        mv.AddChild(_menuTitle); mv.AddChild(new HSeparator()); mv.AddChild(_menuList); mv.AddChild(new HSeparator()); mv.AddChild(_menuFoot);
+        _menu.AddChild(mv);
+        root.AddChild(_menu);
         _report = new PanelContainer { Visible = false };
         _report.AddThemeStyleboxOverride("panel", Box(new Color(Palette.OffWhite, 0.96f), 22, Palette.CoopBlue, 5));
         _report.SetAnchorsPreset(Control.LayoutPreset.Center);
@@ -201,12 +294,16 @@ public partial class Hud : CanvasLayer
         float dt = (float)delta;
         var vp = GetViewport().GetVisibleRect().Size;
         _belt.Position = new Vector2((vp.X - _belt.Size.X) / 2f, vp.Y - _belt.Size.Y - 18);
+        _headTag.Position = new Vector2(vp.X / 2f + 40, vp.Y / 2f + 34);
+        if (_wheel.Visible) LayoutWheel(vp);
+        if (Engine.GetProcessFrames() % 6 == 0) RefreshBelt();
         // Can ve canta kemerin ustunde, sol altta; dar ekranda kemerle cakismaz.
         _bottomLeft.Position = new Vector2(24, vp.Y - _bottomLeft.Size.Y - (_belt.Size.Y + 30));
         _cards.Position = new Vector2((vp.X - _cards.Size.X) / 2f, vp.Y - _belt.Size.Y - _cards.Size.Y - 40);
         _nightBox.Position = new Vector2((vp.X - _nightBox.Size.X) / 2f, 18);
         _goalPanel.Position = new Vector2(vp.X - _goalPanel.Size.X - 24, 24);
         if (_report.Visible) _report.Position = (vp - _report.Size) / 2f;
+        if (_menu.Visible) { _menu.Position = new Vector2((vp.X - _menu.Size.X) / 2f, vp.Y * 0.18f); if (Engine.GetProcessFrames() % 10 == 0) RefreshMenu(); }
 
         // Suna satirlari: daktilo
         if (_full.Length > 0)
@@ -240,7 +337,7 @@ public partial class Hud : CanvasLayer
         }
 
         _hp.Value = _d.Player.Hp / _d.Player.MaxHp * 100f;
-        _bag.Text = $"Taş {s.Backpack.Count("stone")}   Tohum {s.Backpack.Count("turnip_seed")}   Buğday {s.Backpack.Count("wheat")}   Yumurta {s.Eggs}   ·   {s.Credits} Kredi";
+        _bag.Text = $"{s.Credits} Kredi   ·   Yumurta {s.Eggs}   ·   Çanta {s.Backpack.UsedSlots}/{s.Backpack.Slots} (Tab)";
 
         _hintT -= dt;
         if (_hintT <= 0) _hint.Text = "";
@@ -263,7 +360,8 @@ public partial class Hud : CanvasLayer
             _oz.Value = capped ? 100 : Mathf.Clamp((night.Oz - lo) / (hi - lo) * 100f, 0, 100);
             _level.Text = capped ? $"Seviye {lv} · Öz dolu · {night.Kills} kabarık söndü" : $"Seviye {lv} · Öz {(int)night.Oz}/{(int)hi} · {night.Kills} kabarık söndü";
         }
-        _crosshair.Visible = !_report.Visible;
+        _crosshair.Visible = !_report.Visible && !_menu.Visible && !_wheel.Visible;
+        _headTag.Visible = _crosshair.Visible;
     }
 
     public void Say(string line) { if (!string.IsNullOrEmpty(line)) _lines.Enqueue(line); }
@@ -280,12 +378,78 @@ public partial class Hud : CanvasLayer
 
     public void OnHead(int h)
     {
-        for (int i = 0; i < _beltSlots.Count; i++)
+        _headName.Text = "▸ " + Capa.HeadNames[h];
+        _headTag.AddThemeStyleboxOverride("panel", Box(new Color(Capa.HeadColors[h].Darkened(0.45f), 0.85f), 12, Capa.HeadColors[h], 2));
+    }
+
+    // ---------- Baslik carki ----------
+
+    public void OpenWheel(int current)
+    {
+        _wheel.Visible = true;
+        _wheelDir = Vector2.Zero;
+        _wheelSel = current;
+        PaintWheel();
+    }
+
+    /// <summary>Fare hareketi carkta yon secer (fare kilitli oldugu icin goreli hareket birikir).</summary>
+    public void WheelMotion(Vector2 rel)
+    {
+        _wheelDir = (_wheelDir + rel * 0.02f).LimitLength(1f);
+        if (_wheelDir.Length() > 0.35f)
         {
-            bool on = i == h;
-            _beltSlots[i].AddThemeStyleboxOverride("panel", Box(on ? new Color(Capa.HeadColors[i].Darkened(0.35f), 0.95f) : new Color(Palette.NightDeep, 0.7f), 12, on ? Palette.Warning : new Color(Palette.OffWhite, 0.25f), on ? 3 : 2));
+            int n = _wheelSlots.Count;
+            float a = Mathf.PosMod(Mathf.Atan2(_wheelDir.X, -_wheelDir.Y), Mathf.Tau);
+            _wheelSel = Mathf.PosMod((int)Mathf.Round(a / (Mathf.Tau / n)), n);
+            PaintWheel();
         }
     }
+
+    public int CloseWheel() { _wheel.Visible = false; return _wheelSel; }
+
+    void PaintWheel()
+    {
+        for (int i = 0; i < _wheelSlots.Count; i++)
+        {
+            bool on = i == _wheelSel;
+            _wheelSlots[i].AddThemeStyleboxOverride("panel", Box(on ? new Color(Capa.HeadColors[i].Darkened(0.3f), 0.95f) : new Color(Palette.NightDeep, 0.8f), 14, on ? Palette.Warning : new Color(Palette.OffWhite, 0.3f), on ? 3 : 2));
+        }
+    }
+
+    void LayoutWheel(Vector2 vp)
+    {
+        int n = _wheelSlots.Count;
+        var c = vp / 2f;
+        float r = Mathf.Min(vp.X, vp.Y) * 0.24f;
+        for (int i = 0; i < n; i++)
+        {
+            float a = i * Mathf.Tau / n;
+            var p = c + new Vector2(Mathf.Sin(a), -Mathf.Cos(a)) * r;
+            _wheelSlots[i].Position = p - _wheelSlots[i].Size / 2f;
+        }
+    }
+
+    void RefreshBelt()
+    {
+        var s = _d.State;
+        for (int i = 0; i < _beltSlots.Count; i++)
+        {
+            var id = s.Belt.At(i);
+            int n = id == null ? 0 : s.Backpack.Count(id);
+            _beltName[i].Text = id == null ? "" : ItemNames.Of(id);
+            _beltCount[i].Text = id == null ? "" : n.ToString();
+            _beltName[i].Modulate = n > 0 || id == null ? Colors.White : new Color(1, 1, 1, 0.4f);
+        }
+    }
+
+    public void FlashBelt(int i)
+    {
+        if (i < 0 || i >= _beltSlots.Count) return;
+        var p = _beltSlots[i];
+        p.PivotOffset = p.Size / 2f;
+        p.CreateTween().TweenProperty(p, "scale", Vector2.One, 0.2f).From(new Vector2(1.15f, 1.15f));
+    }
+
 
     /// <summary>Kart secimi: oyun durmaz, kartlar altta belirir, tek tusla secilir (GDD 15).</summary>
     public void ShowOffer(CardOffer offer, KabarmaNight night)

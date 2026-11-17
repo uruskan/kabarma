@@ -396,10 +396,16 @@ if args.parts and "part" in obj.data.attributes:
         bm.to_mesh(o.data); bm.free()
         pieces.append(o)
     bpy.data.objects.remove(obj, do_unlink=True)
+    pieces = [o for o in pieces if len(o.data.polygons) > 0]
     obj = pieces[0]
     info = []
+    def mesh_bbox(o):
+        # bound_box yeni mesh'te guncel degil: kose konumlarindan hesapla
+        pts = [o.matrix_world @ v.co for v in o.data.vertices]
+        return (Vector((min(p.x for p in pts), min(p.y for p in pts), min(p.z for p in pts))),
+                Vector((max(p.x for p in pts), max(p.y for p in pts), max(p.z for p in pts))))
     for o in pieces:
-        pmn, pmx = world_bbox(o)
+        pmn, pmx = mesh_bbox(o)
         c = (pmn + pmx) / 2; sz = pmx - pmn
         info.append({"obj": o, "center": c, "size": sz, "vol": sz.x * sz.y * sz.z, "top": pmx.z})
     names = {}

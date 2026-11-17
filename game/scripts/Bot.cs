@@ -148,15 +148,128 @@ public partial class Bot : Node
                 }
                 break;
             }
+            case "tezgah_kur":
+            case "civi":
+            case "hasat":
+            case "firin_kur":
+            case "corba":
+            case "paketle":
+            case "kasa_sat":
+                if (_d.Hud.ReportOpen) { if (_stepT > 1.5f) { _d.CloseReport(); _stepT = 0; } P.MoveOverride = Vector3.Zero; break; }
+                MachineChain(step);
+                break;
             case "end":
             {
                 P.MoveOverride = Vector3.Zero;
                 Aim(_d.Pod.PadCenter + Vector3.Up * 12f);
-                if (!_done && _d.Hud.ReportOpen)
+                if (!_done)
                 {
                     _done = true;
                     var s = _d.State;
-                    GD.Print($"RESULT ok credits={s.Credits} eggs={s.Eggs} kills={_d.Night?.Kills} cards={_d.Night?.CardsCount} maya={_d.Night?.Maya:0} t={_t:0.0}");
+                    GD.Print($"RESULT ok credits={s.Credits} eggs={s.Eggs} kills={_d.Night?.Kills} cards={_d.Night?.CardsCount} maya={_d.Night?.Maya:0} stations={_d.Stations.Count} harvests={_d.Harvests} t={_t:0.0}");
+                }
+                break;
+            }
+        }
+        }
+
+    // ---------- M1 makine zinciri: oyuncunun yaptigini yapar (hareket, nisan, tetik, E, menu tuslari) ----------
+
+    float _menuT;
+
+    /// <summary>Yeterli tas yoksa en yakin kayayi kazar. Yeterliyse true.</summary>
+    bool EnsureStone(int need)
+    {
+        if (_d.State.Backpack.Count("stone") >= need) return true;
+        _d.Capa.Select(Capa.Head.Kazma);
+        var rock = _d.World.Rocks.Where(r => IsInstanceValid(r) && r.Stones > 0).OrderBy(r => r.GlobalPosition.DistanceTo(P.GlobalPosition)).FirstOrDefault();
+        if (rock == null) { GD.Print("BOT no rocks left"); return true; }
+        Aim(rock.Center);
+        if (MoveTo(rock.GlobalPosition, 4.5f)) Fire = true;
+        return false;
+    }
+
+    /// <summary>Insa basliginda istenen yerlestirilebiliri secip verilen noktaya koyar.</summary>
+    void PlaceAt(string id, Vector3 at)
+    {
+        _d.Capa.Select(Capa.Head.Insa);
+        if (_d.Capa.CurrentPlaceable != id) { if (_stepT > 0.15f) { _d.Capa.CyclePlaceable(1); _stepT = 0; } return; }
+        var standAt = at + new Vector3(0, 0, -4.5f);
+        Aim(_d.World.Ground(at));
+        if (MoveTo(standAt, 0.6f, false) && _stepT > 1.0f) { FirePressed = true; _stepT = 0; }
+    }
+
+    Station StationOf(string id) => _d.Stations.FirstOrDefault(s => s.Def.Id == id);
+
+    /// <summary>Istasyona yurur, E ile menuyu acar, ilk tarifi siraya ekler.</summary>
+    void UseStation(Station st, int item)
+    {
+        Aim(st.GlobalPosition + Vector3.Up);
+        if (!MoveTo(st.GlobalPosition + (P.GlobalPosition - st.GlobalPosition).Normalized() * 2.2f, 0.5f, false)) return;
+        if (!_d.Hud.MenuOpen && st.Queue.Active == null && _menuT <= 0) { _d.Interact(); _menuT = 0.6f; }
+        else if (_d.Hud.MenuOpen && _menuT <= 0) { _d.Hud.ActivateMenu(item); _d.Hud.HideMenu(); _menuT = 1.0f; }
+    }
+
+    void MachineChain(string step)
+    {
+        _menuT -= (float)GetProcessDeltaTime();
+        var o = _d.OcakPos;
+        switch (step)
+        {
+            case "tezgah_kur":
+                if (EnsureStone(6)) PlaceAt("tezgah", o + new Vector3(-5f, 0, 1.5f));
+                break;
+            case "civi":
+            {
+                var st = StationOf("tezgah");
+                if (st != null && EnsureStone(2)) UseStation(st, 0);
+                break;
+            }
+            case "hasat":
+            {
+                _d.Capa.Select(Capa.Head.Bicme);
+                var v = _d.FarmView.Views.Where(x => x.Plot.Planted && x.Plot.Stage == Kabarma.Sim.CropStage.Mature)
+                    .OrderBy(x => x.GlobalPosition.DistanceTo(P.GlobalPosition)).FirstOrDefault();
+                if (v == null) { GD.Print("BOT nothing to harvest"); break; }
+                Aim(v.GlobalPosition + Vector3.Up * 0.3f);
+                if (MoveTo(v.GlobalPosition, 3.2f, false)) Fire = true;
+                break;
+            }
+            case "firin_kur":
+                if (EnsureStone(10)) PlaceAt("tas_firin", o + new Vector3(-5f, 0, -3.5f));
+                break;
+            case "corba":
+            {
+                var st = StationOf("tas_firin");
+                if (st == null) break;
+                if (_d.State.Backpack.Count("salgam_corbasi") > 0)
+                {
+                    P.MoveOverride = Vector3.Zero;
+                    if (!_d.Hud.MenuOpen && _menuT <= 0) { _d.OpenBagMenu(); _menuT = 0.5f; }
+                    else if (_d.Hud.MenuOpen && _menuT <= 0) { _d.Hud.ActivateMenu(0); _d.Hud.HideMenu(); _menuT = 1f; }
+                }
+                else if (st.Queue.Active == null) UseStation(st, 0);
+                else { P.MoveOverride = Vector3.Zero; Aim(st.GlobalPosition + Vector3.Up); }
+                break;
+            }
+            case "paketle":
+            {
+                var st = StationOf("paketleme");
+                if (st == null) { if (EnsureStone(8)) PlaceAt("paketleme", o + new Vector3(-1f, 0, 5.5f)); break; }
+                if (st.Queue.Active == null && _d.State.Backpack.Count("salgam_kasasi") == 0) UseStation(st, 0);
+                else { P.MoveOverride = Vector3.Zero; Aim(st.GlobalPosition + Vector3.Up); }
+                break;
+            }
+            case "kasa_sat":
+            {
+                var pad = _d.Pod.PadCenter;
+                Aim(pad + Vector3.Up);
+                if (!MoveTo(pad + (P.GlobalPosition - pad).Normalized() * 3.2f, 0.6f, false)) break;
+                if (!_d.Hud.MenuOpen && _menuT <= 0) { _d.Interact(); _menuT = 0.6f; }
+                else if (_d.Hud.MenuOpen && _menuT <= 0)
+                {
+                    int idx = _d.Data.Tool.Prices.Keys.ToList().IndexOf("salgam_kasasi");
+                    _d.Hud.ActivateMenu(idx); _d.Hud.HideMenu(); _menuT = 1f;
                 }
                 break;
             }

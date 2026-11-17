@@ -1,0 +1,47 @@
+{
+  "name": "ocak",
+  "input": ".tools/tripo/ocak/tripo-out/ocak-90eeaf7c/model.glb",
+  "checks": {
+    "1_palette": {
+      "pass": true,
+      "note": "dokulu mod: palet oturtma yapilmadi"
+    },
+    "2_polygon": {
+      "pass": true,
+      "value": 7720,
+      "budget": 8000
+    },
+    "3_thickness": {
+      "pass": true,
+      "min_ratio": 0.89,
+      "note": "parca basina en dar boyut / en uzun kenar"
+    },
+    "4_integrity": {
+      "pass": false,
+      "non_manifold_edges": 16,
+      "boundary_edges": 6,
+      "inward_faces": 2033,
+      "loose_parts": 1
+    },
+    "5_scale_axis": {
+      "pass": true,
+      "height": 2.0,
+      "target": 2.0
+    }
+  },
+  "tris_in": 7728,
+  "welded_verts": 1287,
+  "tex_size": 1024,
+  "source_mean_dE": null,
+  "source_within_dE8": null,
+  "palette_use": "textured (palette snap skipped)",
+  "tris": 7720,
+  "size_m": [
+    1.78,
+    1.951,
+    2.0
+  ],
+  "parts": 1,
+  "out": "game/assets/models/ocak/ocak.glb",
+  "pass_scripted": false
+}

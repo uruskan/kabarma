@@ -20,6 +20,8 @@ public sealed class CropDef
     public string Family { get; set; } = "";
     public float GrowSeconds { get; set; }
     public int BasePrice { get; set; }
+    public int BaseYield { get; set; } = 1;
+    public int SeedReturn { get; set; }
     public Genes SeedGenes { get; set; } = new();
     public float MoistureDrainPerSecond { get; set; }
     public float WaterPerShot { get; set; }
@@ -47,6 +49,8 @@ public sealed class CropsFile
     public List<CropDef> Crops { get; set; } = new();
     public MoistureRules Moisture { get; set; } = new();
     public float StartFertility { get; set; }
+    public List<float> QualityMult { get; set; } = new() { 1f, 1f, 1f };
+    public float HarvestFertilityLoss { get; set; } = 10f;
     public List<SizeClassDef> SizeClasses { get; set; } = new();
 }
 
@@ -149,6 +153,38 @@ public sealed class WeaponDef
     public float BurnSeconds { get; set; }
     public float FreezeSlow { get; set; }
     public float FreezeSeconds { get; set; }
+    public string? Ammo { get; set; }
+    public int AmmoPerShot { get; set; }
+}
+
+public sealed class RecipeDef
+{
+    public string Id { get; set; } = "";
+    public string Name { get; set; } = "";
+    public string Station { get; set; } = "";
+    public Dictionary<string, int> In { get; set; } = new();
+    public int Out { get; set; } = 1;
+    public float Seconds { get; set; }
+}
+
+public sealed class PlaceableDef
+{
+    public string Id { get; set; } = "";
+    public string Name { get; set; } = "";
+    public Dictionary<string, int> Cost { get; set; } = new();
+    public string? Station { get; set; }
+    public string? Model { get; set; }
+    public bool Once { get; set; }
+    public float Radius { get; set; } = 1f;
+}
+
+public sealed class FoodDef
+{
+    public string Id { get; set; } = "";
+    public string Name { get; set; } = "";
+    public float MaxHp { get; set; }
+    public float Regen { get; set; }
+    public float Seconds { get; set; }
 }
 
 public sealed class PlayerDef
@@ -170,6 +206,13 @@ public sealed class ToolFile
     public float BuildRange { get; set; }
     public PlayerDef Player { get; set; } = new();
     public WeaponDef Weapon { get; set; } = new();
+    public WeaponDef Nailgun { get; set; } = new();
+    public float MowRadius { get; set; } = 1.5f;
+    public float MowRange { get; set; } = 5f;
+    public List<RecipeDef> Recipes { get; set; } = new();
+    public List<FoodDef> Foods { get; set; } = new();
+    public List<PlaceableDef> Placeables { get; set; } = new();
+    public Dictionary<string, int> Prices { get; set; } = new();
     public int BackpackSlots { get; set; }
     public int StackResource { get; set; }
     public Dictionary<string, int> StartItems { get; set; } = new();

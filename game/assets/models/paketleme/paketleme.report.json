@@ -1,0 +1,47 @@
+{
+  "name": "paketleme",
+  "input": ".tools/tripo/paketleme/tripo-out/paketleme-0a704422/model.glb",
+  "checks": {
+    "1_palette": {
+      "pass": true,
+      "note": "dokulu mod: palet oturtma yapilmadi"
+    },
+    "2_polygon": {
+      "pass": true,
+      "value": 7430,
+      "budget": 8000
+    },
+    "3_thickness": {
+      "pass": true,
+      "min_ratio": 0.584,
+      "note": "parca basina en dar boyut / en uzun kenar"
+    },
+    "4_integrity": {
+      "pass": false,
+      "non_manifold_edges": 14,
+      "boundary_edges": 8,
+      "inward_faces": 2835,
+      "loose_parts": 1
+    },
+    "5_scale_axis": {
+      "pass": true,
+      "height": 1.3,
+      "target": 1.3
+    }
+  },
+  "tris_in": 7434,
+  "welded_verts": 2386,
+  "tex_size": 1024,
+  "source_mean_dE": null,
+  "source_within_dE8": null,
+  "palette_use": "textured (palette snap skipped)",
+  "tris": 7430,
+  "size_m": [
+    0.817,
+    1.398,
+    1.3
+  ],
+  "parts": 1,
+  "out": "game/assets/models/paketleme/paketleme.glb",
+  "pass_scripted": false
+}

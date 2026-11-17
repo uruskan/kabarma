@@ -5,14 +5,110 @@
     "Çapa'nın Kazma başlığı takılı. Kayaya tut, tetiğe bas. Taşlar çantana kendisi gelir."
   ],
   "steps": [
-    { "id": "mine", "target": 10, "goal": "Kazma ile taş topla", "done": "Güzel. Taş, kooperatifin en sadık üyesidir. Şikâyet etmez." },
-    { "id": "ocak", "target": 1, "goal": "İnşa başlığıyla Ocak'ı kur", "start": "İnşa başlığına geç (5). Ocak'ı düz bir yere koy. Etrafındaki ışık tapundur.", "done": "Ocak yandı. Tapu senin. Kira yok, sadece borç." },
-    { "id": "till", "target": 9, "goal": "Toprak başlığıyla 3×3 tarla sür", "start": "Toprak başlığı (2). Ocak'ın yanında dokuz kare aç.", "done": "Toprak hazır." },
-    { "id": "plant", "target": 9, "goal": "Sürülmüş karelere şalgam ek", "start": "Aynı başlıkla sürülmüş kareye bir daha bas: tohum düşer.", "done": "Dokuz şalgam. Kooperatif adına gurur duyuyorum. Bir miktar." },
-    { "id": "water", "target": 9, "goal": "Sulama başlığıyla şalgamları sula", "start": "Sulama başlığı (3). Kuru toprak büyümez. Bu bilimsel bir gerçektir.", "done": "Filizler çıktı. Hızlı büyürler, bu ayda her şey hızlı büyür. Fazla hızlı." },
-    { "id": "grow", "target": 9, "goal": "Şalgamlar olgunlaşsın (Gıdak'a buğday verebilirsin: E)", "start": "Bir Gıdak geçiyor. Önüne buğday atarsan yumurtlar. Bekle, şalgamlar olgunlaşsın.", "done": "Hepsi olgun. Küçük bir ayrıntı kaldı. Bu ayın bir huyu var." },
-    { "id": "night", "target": 1, "goal": "Kabarma'yı atlat: tarlanı koru", "start": "Gökyüzüne bakma. Tarlana bak. Çapa'n artık ateş ediyor, tetiğe bas.", "done": "Şafak. Kabarma bitti. Ayakta kalanı satabiliriz." },
-    { "id": "sell", "target": 1, "goal": "Kabarık şalgamı Çekim başlığıyla Kargo Rampası'na taşı", "start": "Çekim başlığı (4). Kabarık şalgamı ışınla tut, kapsülden bozma rampaya bırak.", "done": "Roket kalktı. Hesabına yazdım." }
+    {
+      "id": "mine",
+      "target": 10,
+      "goal": "Kazma ile taş topla",
+      "done": "Güzel. Taş, kooperatifin en sadık üyesidir. Şikâyet etmez."
+    },
+    {
+      "id": "ocak",
+      "target": 1,
+      "goal": "İnşa başlığıyla Ocak'ı kur",
+      "start": "İnşa başlığına geç (6). Ocak'ı düz bir yere koy. Etrafındaki ışık tapundur.",
+      "done": "Ocak yandı. Tapu senin. Kira yok, sadece borç."
+    },
+    {
+      "id": "till",
+      "target": 9,
+      "goal": "Toprak başlığıyla 3×3 tarla sür",
+      "start": "Toprak başlığı (3). Ocak'ın yanında dokuz kare aç.",
+      "done": "Toprak hazır."
+    },
+    {
+      "id": "plant",
+      "target": 9,
+      "goal": "Sürülmüş karelere şalgam ek",
+      "start": "Aynı başlıkla sürülmüş kareye bir daha bas: tohum düşer.",
+      "done": "Dokuz şalgam. Kooperatif adına gurur duyuyorum. Bir miktar."
+    },
+    {
+      "id": "water",
+      "target": 9,
+      "goal": "Sulama başlığıyla şalgamları sula",
+      "start": "Sulama başlığı (4). Kuru toprak büyümez. Bu bilimsel bir gerçektir.",
+      "done": "Filizler çıktı. Hızlı büyürler, bu ayda her şey hızlı büyür. Fazla hızlı."
+    },
+    {
+      "id": "grow",
+      "target": 9,
+      "goal": "Şalgamlar olgunlaşsın (Gıdak'a buğday verebilirsin: E)",
+      "start": "Bir Gıdak geçiyor. Önüne buğday atarsan yumurtlar. Bekle, şalgamlar olgunlaşsın.",
+      "done": "Hepsi olgun. Küçük bir ayrıntı kaldı. Bu ayın bir huyu var."
+    },
+    {
+      "id": "night",
+      "target": 1,
+      "goal": "Kabarma'yı atlat: tarlanı koru",
+      "start": "Gökyüzüne bakma. Tarlana bak. Çapa'n artık ateş ediyor, tetiğe bas.",
+      "done": "Şafak. Kabarma bitti. Ayakta kalanı satabiliriz."
+    },
+    {
+      "id": "sell",
+      "target": 1,
+      "goal": "Kabarık şalgamı Çekim başlığıyla Kargo Rampası'na taşı",
+      "start": "Çekim başlığı (5). Kabarık şalgamı ışınla tut, kapsülden bozma rampaya bırak.",
+      "done": "Roket kalktı. Hesabına yazdım."
+    },
+    {
+      "id": "tezgah_kur",
+      "target": 1,
+      "goal": "İnşa başlığıyla bir Tezgâh kur (6 Taş)",
+      "start": "Rapor bitti. Şimdi iş. İnşa başlığına geç (6), tekerlekle Tezgâh'ı seç. Taş yetmezse kazmaya devam.",
+      "done": "Tezgâh kuruldu. Kooperatif bu yatırımı not etti."
+    },
+    {
+      "id": "civi",
+      "target": 1,
+      "goal": "Tezgâh'ta çivi yap (E)",
+      "start": "Tezgâh'ın yanında E'ye bas. Taştan çivi çıkar. Bunun nasıl olduğunu sorma.",
+      "done": "Çiviler hazır. Çivi Tabancası (8) artık dolu."
+    },
+    {
+      "id": "hasat",
+      "target": 5,
+      "goal": "Biçme başlığıyla 5 şalgam hasat et",
+      "start": "Biçme başlığı (2). Kabarık şalgamlar da biçilir; sönünce iki kat ürün verirler. Kimse nedenini bilmiyor.",
+      "done": "Hasat tamam. Ambar dolu, yürek dolu."
+    },
+    {
+      "id": "firin_kur",
+      "target": 1,
+      "goal": "Bir Taş Fırın kur (10 Taş)",
+      "start": "Şimdi bir Taş Fırın. Yemek güç verir, açlık yok. Kooperatif açlığı yasakladı.",
+      "done": "Fırın yandı. Bacası tütüyor. Bu iyiye işaret."
+    },
+    {
+      "id": "corba",
+      "target": 1,
+      "goal": "Şalgam çorbası pişir ve ye (Tab: çanta)",
+      "start": "Fırında çorba pişir. Sonra Tab ile çantayı aç ve ye. Çorba canını artırır.",
+      "done": "Afiyet olsun. Yazılı olarak."
+    },
+    {
+      "id": "paketle",
+      "target": 1,
+      "goal": "Paketleme Tezgâhı kur ve bir şalgam kasası hazırla",
+      "start": "Kasalı mal daha iyi satılır. Paketleme Tezgâhı kur, beş şalgamı kasaya koy.",
+      "done": "Kasa hazır. Etiketi ben yazdım."
+    },
+    {
+      "id": "kasa_sat",
+      "target": 1,
+      "goal": "Kasayı Kargo Rampası'nda sat (E)",
+      "start": "Kasayı rampaya götür, E'ye bas. Roket gerisini halleder.",
+      "done": "Satış tamam. Bu ilk iş emrinin sonu. Sıradaki: beş kabarık ürün. Kooperatif sabırsız değil. Biraz."
+    }
   ],
   "nightLines": {
     "alarm": "Gökyüzü dalgalanıyor. Bu normal. Yani, bu ay için normal.",

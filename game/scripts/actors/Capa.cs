@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using Godot;
@@ -11,9 +12,11 @@ namespace Kabarma.Game;
 /// </summary>
 public partial class Capa : Node3D
 {
-    public enum Head { Kazma, Toprak, Sulama, Cekim, Insa, Tirpan }
-    public static readonly string[] HeadNames = { "Kazma", "Toprak", "Sulama", "Çekim", "İnşa", "Tırpan Işını" };
-    public static readonly Color[] HeadColors = { Palette.Warning, Palette.Wood.Lerp(Palette.Warning, 0.4f), new("8CC8E8"), Palette.MayaViolet, Palette.CoopBlue.Lerp(Palette.OffWhite, 0.4f), Palette.MayaTeal };
+    // GDD 4: alti is basligi + silah yuvalari (Mk.I: 2). 1-6 is, 7-8 silah.
+    public enum Head { Kazma, Bicme, Toprak, Sulama, Cekim, Insa, Tirpan, Civi }
+    public static readonly string[] HeadNames = { "Kazma", "Biçme", "Toprak", "Sulama", "Çekim", "İnşa", "Tırpan Işını", "Çivi Tab." };
+    public static readonly Color[] HeadColors = { Palette.Warning, Palette.Plant.Lerp(Palette.Warning, 0.3f), Palette.Wood.Lerp(Palette.Warning, 0.4f), new("8CC8E8"), Palette.MayaViolet, Palette.CoopBlue.Lerp(Palette.OffWhite, 0.4f), Palette.MayaTeal, Palette.OffWhite };
+    public static bool IsWeapon(Head h) => h is Head.Tirpan or Head.Civi;
 
     public Head Current { get; private set; } = Head.Kazma;
     Director _d;
@@ -82,7 +85,7 @@ public partial class Capa : Node3D
         bool spraying = false;
         bool beaming = false;
         UsingNow = fire || Held != null;
-        p.Facing = UsingNow || Current == Head.Tirpan && _d.NightActive;
+        p.Facing = UsingNow || IsWeapon(Current) && _d.NightActive;
 
         var aim = p.AimPoint(out var hitNode, 60f);
         UpdateGhost(aim);
@@ -104,6 +107,10 @@ public partial class Capa : Node3D
                     }
                     else if (dist <= _t.MineRange) { ShowBeam(muzzle, aim, HeadColors[0], 0.25f); beaming = true; }
                 }
+                break;
+            case Head.Bicme:
+                if (fire && _actCd <= 0) { _actCd = 0.35f; Mow(aim); }
+                if (fire && muzzle.DistanceTo(aim) <= _t.MowRange) { ShowBeam(muzzle, aim, HeadColors[1], 0.5f); beaming = true; }
                 break;
             case Head.Toprak:
                 if (fire && _actCd <= 0) { _actCd = 0.16f; TillOrPlant(aim); }
@@ -138,11 +145,16 @@ public partial class Capa : Node3D
                 }
                 break;
             case Head.Insa:
-                if (firePressed && _ghost != null && _ghost.Visible && _d.Ocak == null) PlaceOcak(_ghost.GlobalPosition);
+                if (_d.Build != null && _d.Build.Handles(CurrentPlaceable)) { _d.Build.Tick(p, aim, firePressed); break; }
+                if (firePressed && _ghost != null && _ghost.Visible) TryPlace();
                 break;
             case Head.Tirpan:
                 float interval = _d.Data.Tool.Weapon.FireInterval / (_d.Night?.Stats.FireRateMult ?? 1f);
                 if (fire && _fireCd <= 0) { _fireCd = interval; FireTirpan(aim); }
+                break;
+            case Head.Civi:
+                float ni = _d.Data.Tool.Nailgun.FireInterval / (_d.Night?.Stats.FireRateMult ?? 1f);
+                if ((firePressed || fire) && _fireCd <= 0) { _fireCd = ni; FireNail(aim); }
                 break;
         }
         _spray.Emitting = spraying;
@@ -187,6 +199,33 @@ public partial class Capa : Node3D
             });
         }
         if (rock.Stones <= 0) _d.World.RemoveRock(rock);
+    }
+
+    // ---------- Bicme ----------
+
+    /// <summary>Bicme: nisan noktasi cevresindeki olgun ekinleri biçer; urun ve tohum cantaya ucar (GDD 8.2).</summary>
+    public int Mow(Vector3 aim)
+    {
+        if (_d.Player.Muzzle.GlobalPosition.DistanceTo(aim) > _t.MowRange) return 0;
+        int n = 0;
+        foreach (var plot in _d.State.Farm.Plots.ToList())
+        {
+            var c = _d.FarmView.CellCenter(plot.X, plot.Y);
+            if (new Vector2(c.X - aim.X, c.Z - aim.Z).Length() > _t.MowRadius) continue;
+            var h = _d.State.Farm.Harvest(plot.X, plot.Y, _d.State.Rng);
+            if (h == null) continue;
+            n++;
+            var (yield, stars, seeds) = h.Value;
+            Fx.Burst(c + Vector3.Up * 0.4f, Palette.Plant, 18, 4f, 0.08f, 0.5f);
+            Fx.Text3D(c + Vector3.Up * 1.0f, $"+{yield} Şalgam {new string('★', stars)}", Palette.Warning, 48, 1.2f, 1.3f);
+            for (int i = 0; i < Math.Min(yield, 4); i++)
+                Fx.FlyTo(c + Vector3.Up * 0.3f, () => _d.Player.BackpackPoint.GlobalPosition, Palette.TurnipBody, 0.12f);
+            _d.State.Backpack.Add("turnip", yield);
+            _d.State.Backpack.Add("turnip_seed", seeds);
+            Sfx.Play("till", c, 0f);
+        }
+        if (n > 0) _d.OnHarvest(n);
+        return n;
     }
 
     // ---------- Toprak ----------
@@ -289,13 +328,59 @@ public partial class Capa : Node3D
 
     // ---------- Insa ----------
 
+    // ---------- Insa: yerlestirilebilirler ----------
+
+    int _placeIndex;
+    StandardMaterial3D _okOverlay, _badOverlay;
+    string _ghostId;
+    float _ghostYaw;
+    bool _ghostOk;
+
+    /// <summary>Su an secilebilen yerlestirilebilirler: Ocak kurulmadan once yalnizca Ocak (tapu yoksa yapi yok).</summary>
+    public System.Collections.Generic.List<string> Placeables
+    {
+        get
+        {
+            if (_d.Ocak == null) return new() { "ocak" };
+            var l = _d.Data.Tool.Placeables.Where(p => !p.Once).Select(p => p.Id).ToList();
+            if (_d.Build != null) l.AddRange(_d.Build.PieceIds);
+            return l;
+        }
+    }
+
+    public string CurrentPlaceable { get { var l = Placeables; return l[Mathf.PosMod(_placeIndex, l.Count)]; } }
+
+    public void CyclePlaceable(int dir) { _placeIndex += dir; Sfx.Play("place", null, -16f); if (_d.Build != null) _d.Build.Select(CurrentPlaceable); }
+    public void RotateGhost() { _ghostYaw += Mathf.Pi / 12f; if (_d.Build != null && _d.Build.Handles(CurrentPlaceable)) _d.Build.Rotate(); }
+
+    PlaceableDef DefOf(string id) => _d.Data.Tool.Placeables.FirstOrDefault(p => p.Id == id);
+
+    string CostText(PlaceableDef def) => def.Cost.Count == 0 ? "bedava" : string.Join(", ", def.Cost.Select(kv => $"{kv.Value} {ItemNames.Of(kv.Key)}"));
+
+    void TryPlace()
+    {
+        var def = DefOf(_ghostId);
+        if (def == null) return;
+        if (!_ghostOk) { _d.Hud.Hint("Buraya konmaz", 1f); Sfx.Play("hit", null, -10f); return; }
+        if (def.Cost.Any(kv => _d.State.Backpack.Count(kv.Key) < kv.Value)) { _d.Hud.Hint($"Yetmiyor: {CostText(def)}", 1.5f); Sfx.Play("hit", null, -10f); return; }
+        foreach (var kv in def.Cost) _d.State.Backpack.Remove(kv.Key, kv.Value);
+        var at = _ghost.GlobalPosition; float yaw = _ghostYaw;
+        _ghost.QueueFree(); _ghost = null; _ghostId = null;
+        if (def.Id == "ocak") _d.PlaceOcak(at);
+        else _d.PlaceStation(def, at, yaw);
+    }
+
     void UpdateGhost(Vector3 aim)
     {
-        bool show = Current == Head.Insa && _d.Ocak == null;
+        bool show = Current == Head.Insa && !(_d.Build != null && _d.Build.Handles(CurrentPlaceable));
+        if (_d.Build != null && (Current != Head.Insa || !_d.Build.Handles(CurrentPlaceable))) _d.Build.Hide();
         if (!show) { if (_ghost != null) _ghost.Visible = false; return; }
+        var id = CurrentPlaceable;
+        if (_ghost != null && _ghostId != id) { _ghost.QueueFree(); _ghost = null; }
         if (_ghost == null)
         {
-            _ghost = new Ocak();
+            _ghostId = id;
+            _ghost = Station.MakeVisual(DefOf(id));
             foreach (var mi in _ghost.FindChildren("*", "MeshInstance3D", true, false).OfType<MeshInstance3D>())
                 mi.Transparency = 0.55f;
             foreach (var c in _ghost.FindChildren("*", "CollisionShape3D", true, false).OfType<CollisionShape3D>()) c.Disabled = true;
@@ -307,8 +392,23 @@ public partial class Capa : Node3D
         var flat = aim - p; flat.Y = 0;
         if (flat.Length() > _t.BuildRange) flat = flat.Normalized() * _t.BuildRange;
         if (flat.Length() < 2f) flat = flat.Normalized() * 2f;
-        _ghost.GlobalPosition = _d.World.Ground(p + flat);
+        var at = _d.World.Ground(p + flat);
+        _ghost.GlobalPosition = at;
+        _ghost.Rotation = new Vector3(0, _ghostYaw, 0);
         _ghost.Visible = true;
+        // Gecerlilik: tapu icinde, tarla karelerinin, istasyonlarin ve kapsulun uzerinde degil.
+        _ghostOk = id == "ocak" || (_d.Ocak != null && at.DistanceTo(_d.OcakPos) <= Ocak.ClaimRadius && at.DistanceTo(_d.OcakPos) > 2.2f);
+        if (_ghostOk && id != "ocak")
+        {
+            if (_d.Stations.Any(st => st.GlobalPosition.DistanceTo(at) < 2.2f)) _ghostOk = false;
+            if (_d.State.Farm.Plots.Any(pl => _d.FarmView.CellCenter(pl.X, pl.Y).DistanceTo(at) < 1.6f)) _ghostOk = false;
+            if (at.DistanceTo(_d.Pod.GlobalPosition) < 3.5f) _ghostOk = false;
+        }
+        var def = DefOf(id);
+        _okOverlay ??= new StandardMaterial3D { ShadingMode = BaseMaterial3D.ShadingModeEnum.Unshaded, Transparency = BaseMaterial3D.TransparencyEnum.Alpha, AlbedoColor = new Color(0.4f, 1f, 0.55f, 0.35f) };
+        _badOverlay ??= new StandardMaterial3D { ShadingMode = BaseMaterial3D.ShadingModeEnum.Unshaded, Transparency = BaseMaterial3D.TransparencyEnum.Alpha, AlbedoColor = new Color(1f, 0.3f, 0.25f, 0.4f) };
+        foreach (var mi in _ghost.FindChildren("*", "MeshInstance3D", true, false).OfType<MeshInstance3D>()) { mi.Transparency = 0.4f; mi.MaterialOverlay = _ghostOk ? _okOverlay : _badOverlay; mi.CastShadow = GeometryInstance3D.ShadowCastingSetting.Off; }
+        _d.Hud.Hint($"İnşa: {def?.Name} ({(def != null ? CostText(def) : "")})  ·  tekerlek: değiştir  ·  R: döndür", 0.2f);
     }
 
     public void PlaceOcak(Vector3 at)
@@ -319,6 +419,36 @@ public partial class Capa : Node3D
     }
 
     // ---------- Tirpan Isini ----------
+
+    /// <summary>Civi Tabancasi: tek hedefli, isabetli (ICERIK §6.2 #2). Gunduz cephane harcar; Kabarma gecesi sinirsiz (GDD 4).</summary>
+    public void FireNail(Vector3 aim)
+    {
+        var w = _d.Data.Tool.Nailgun;
+        bool free = _d.NightActive;
+        if (!free && !string.IsNullOrEmpty(w.Ammo) && !_d.State.Backpack.Remove(w.Ammo, w.AmmoPerShot))
+        {
+            _d.Hud.Hint("Çivi yok: Tezgâhta taştan çivi yap", 1.2f);
+            Sfx.Play("place", null, -12f);
+            return;
+        }
+        var stats = _d.Night?.Stats ?? new CombatStats();
+        var muzzle = _d.Player.Muzzle.GlobalPosition;
+        var dir = (aim - muzzle).Normalized();
+        int n = stats.Projectiles;
+        float spread = Mathf.DegToRad(w.SpreadDegrees);
+        for (int i = 0; i < n; i++)
+        {
+            float off = n == 1 ? 0 : Mathf.Lerp(-spread * (n - 1), spread * (n - 1), i / (float)(n - 1));
+            var nail = new Nail(_d, dir.Rotated(Vector3.Up, off), w, stats);
+            _d.AddChild(nail);
+            nail.GlobalPosition = muzzle;
+        }
+        Sfx.Play("nailgun", muzzle, -2f);
+        Fx.Burst(muzzle, Palette.Warning, 5, 3f, 0.04f, 0.15f, true, 0f);
+        _d.Player.Recoil(0.7f * Feel.Recoil);
+        _d.Player.Shake(0.08f * Feel.Shake);
+        _d.MarkReaction();
+    }
 
     public void FireTirpan(Vector3 aim)
     {
@@ -338,7 +468,9 @@ public partial class Capa : Node3D
             proj.GlobalPosition = muzzle;
         }
         Sfx.Play("nailgun", muzzle, -5f);
-        _d.Player.Shake(0.12f);
+        _d.Player.Shake(0.12f * Feel.Shake);
+        _d.Player.Recoil(0.45f * Feel.Recoil);
+        _d.MarkReaction();
     }
 }
 
@@ -414,7 +546,7 @@ public partial class Crescent : Node3D
             if (night != null && night.RollFreeze()) z.FreezeT = _w.FreezeSeconds;
             Sfx.Play("hit", z.Center, -3f);
             Fx.Burst(z.Center, crit ? Palette.Warning : Palette.MayaTeal, crit ? 14 : 8, 5f, 0.08f, 0.35f, true, 0f);
-            _d.HitStop(crit ? 0.07f : 0.04f);
+            _d.HitStop((crit ? 0.07f : 0.04f) * Feel.HitStop);
             if (_bounces > 0)
             {
                 _bounces--;
@@ -427,6 +559,74 @@ public partial class Crescent : Node3D
                 }
             }
         }
+        if (_traveled > _w.Range * _s.SizeMult) QueueFree();
+    }
+}
+
+/// <summary>Civi: ince, hizli, tek hedef. Seken karti ile bir sonrakine seker.</summary>
+public partial class Nail : Node3D
+{
+    readonly Director _d;
+    Vector3 _dir;
+    readonly WeaponDef _w;
+    readonly CombatStats _s;
+    float _traveled;
+    int _bounces;
+    Zipzip _last;
+
+    public Nail(Director d, Vector3 dir, WeaponDef w, CombatStats s)
+    {
+        _d = d; _dir = dir; _w = w; _s = s; _bounces = s.Bounces;
+        var mat = new StandardMaterial3D { ShadingMode = BaseMaterial3D.ShadingModeEnum.Unshaded, AlbedoColor = Palette.OffWhite, EmissionEnabled = true, Emission = Palette.Warning, EmissionEnergyMultiplier = 1.5f };
+        AddChild(new MeshInstance3D { Mesh = new CapsuleMesh { Radius = 0.035f * s.SizeMult, Height = 0.5f, RadialSegments = 6, Rings = 1 }, MaterialOverride = mat, RotationDegrees = new Vector3(90, 0, 0), CastShadow = GeometryInstance3D.ShadowCastingSetting.Off });
+    }
+
+    public override void _Ready() { if (_dir.LengthSquared() > 0.001f) GlobalBasis = Basis.LookingAt(_dir, Vector3.Up); }
+
+    public override void _Process(double delta)
+    {
+        float dt = (float)delta;
+        float step = _w.Speed * dt;
+        var from = GlobalPosition;
+        GlobalPosition += _dir * step;
+        _traveled += step;
+        // Sureklilik: bu kare boyunca gecilen dogru parcasina degen dusman
+        foreach (var z in Zipzip.All.ToArray())
+        {
+            if (z.Dead || z == _last) continue;
+            var c = z.Center;
+            var seg = GlobalPosition - from;
+            float t = Mathf.Clamp((c - from).Dot(seg) / Mathf.Max(0.0001f, seg.LengthSquared()), 0, 1);
+            var hp = from + seg * t;
+            if (hp.DistanceTo(c) > z.Radius + 0.1f * _s.SizeMult) continue;
+            bool weak = z.HasSac && z.SacPos.DistanceTo(hp) < z.Radius * 0.7f;
+            var night = _d.Night;
+            float dmg; bool crit;
+            if (night != null) (dmg, crit) = night.RollHit(_w, weak, z.Def.WeakPointMult);
+            else { dmg = _w.Damage; crit = false; }
+            z.Hit(dmg, crit, _dir with { Y = 0 }, _w.Knockback * _s.KnockbackMult, weak);
+            if (night != null && night.RollBurn()) z.BurnT = _w.BurnSeconds;
+            if (night != null && night.RollFreeze()) z.FreezeT = _w.FreezeSeconds;
+            Sfx.Play("hit", c, -1f);
+            Fx.Burst(c, crit ? Palette.Warning : Palette.OffWhite, crit ? 12 : 6, 4f, 0.06f, 0.3f, true, 0f);
+            _d.HitStop((crit ? 0.06f : 0.03f) * Feel.HitStop);
+            _last = z;
+            if (_bounces-- > 0)
+            {
+                var next = Zipzip.All.Where(e => !e.Dead && e != z).OrderBy(e => e.Center.DistanceTo(c)).FirstOrDefault();
+                if (next != null && next.Center.DistanceTo(c) < 14f)
+                {
+                    _dir = (next.Center - c).Normalized();
+                    GlobalPosition = c;
+                    GlobalBasis = Basis.LookingAt(_dir, Vector3.Up);
+                    _traveled = Mathf.Max(0, _traveled - 6f);
+                    return;
+                }
+            }
+            QueueFree();
+            return;
+        }
+        if (GlobalPosition.Y < _d.World.HeightAt(GlobalPosition.X, GlobalPosition.Z)) { Fx.Burst(GlobalPosition, Palette.Soil, 4, 2f, 0.05f, 0.3f); QueueFree(); return; }
         if (_traveled > _w.Range * _s.SizeMult) QueueFree();
     }
 }

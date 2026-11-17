@@ -103,6 +103,8 @@ public partial class TasFirin : Node3D
     GpuParticles3D _smoke;
     float _t;
     public bool Loaded { get; private set; }
+    /// <summary>Pisiriyor mu: kapak acilip kapanir, baca tuter. Bos firin sessiz durur.</summary>
+    public bool Working = true;
     public bool HasDoor => _doorPivot != null;
 
     public override void _Ready()
@@ -171,6 +173,8 @@ public partial class TasFirin : Node3D
     {
         if (!Loaded) return;
         _t += (float)delta;
+        if (_smoke != null) _smoke.Emitting = Working;
+        if (!Working) { if (_doorPivot != null) _doorPivot.Rotation = _doorPivot.Rotation.Lerp(Vector3.Zero, 0.1f); return; }
         // Kapak 6 sn'de bir acilip kapanir (pisiriyor gibi): 0..1.6 rad.
         if (_doorPivot != null)
         {

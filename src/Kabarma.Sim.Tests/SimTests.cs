@@ -161,8 +161,78 @@ public class SimTests
         var size = s.Farm.Uproot(1, 1)!;
         s.Sell("turnip", size);
         sc.Report("sell");
+        // M1 makine zinciri (kurallar duzeyinde): Tezgah, civi, hasat, firin, corba, paketleme, kasa satisi.
+        Assert.True(sc.Is("tezgah_kur"));
+        s.Backpack.Add("stone", 30);
+        sc.Report("tezgah_kur");
+        var tez = s.Stations["tezgah"];
+        Assert.True(tez.Enqueue(tez.Recipes.First(), s.Backpack));
+        tez.Produced += (r, n) => sc.Report("civi");
+        for (int i = 0; i < 30; i++) tez.Tick(0.1f, s.Backpack);
+        Assert.True(sc.Is("hasat"));
+        int got = 0;
+        foreach (var p in s.Farm.Plots.ToList()) { var h = s.Farm.Harvest(p.X, p.Y, s.Rng); if (h != null) { s.Backpack.Add("turnip", h.Value.yield); got += h.Value.yield; } }
+        Assert.True(got >= 8 * 6, $"kabarik salgamlar iki kat verir, alinan {got}");
+        sc.SetProgress("hasat", s.Backpack.Count("turnip"));
+        sc.Report("firin_kur");
+        var firin = s.Stations["tas_firin"];
+        firin.Enqueue(firin.Recipes.First(), s.Backpack);
+        for (int i = 0; i < 50; i++) firin.Tick(0.1f, s.Backpack);
+        Assert.True(s.Food.Eat(d.Tool.Foods.First()) && s.Backpack.Remove("salgam_corbasi", 1));
+        sc.Report("corba");
+        var pak = s.Stations["paketleme"];
+        pak.Enqueue(pak.Recipes.First(), s.Backpack);
+        for (int i = 0; i < 40; i++) pak.Tick(0.1f, s.Backpack);
+        sc.Report("paketle");
+        Assert.Equal(90, s.SellItem("salgam_kasasi", 1));
+        sc.Report("kasa_sat");
         Assert.True(sc.Finished);
-        Assert.Equal(120, s.Credits);
+        Assert.Equal(120 + 90, s.Credits); // kabarik salgam + kasa
         Assert.Equal(3, s.Backpack.Count("turnip_seed"));
+    }
+
+    [Fact]
+    public void Mature_turnip_harvests_with_quality_and_seeds_and_replants()
+    {
+        var d = Data();
+        var s = new GameState(d);
+        s.Farm.Till(0, 0);
+        s.Farm.Plant(0, 0, "turnip", s.Backpack);
+        s.Farm.Water(0, 0);
+        while (s.Farm.Get(0, 0)!.Stage != CropStage.Mature) { s.Farm.Tick(0.5f, true); s.Farm.Water(0, 0); }
+        var h = s.Farm.Harvest(0, 0, s.Rng);
+        Assert.NotNull(h);
+        Assert.Equal(2, h!.Value.stars); // nem hic dusmedi, bereket 60 < 70
+        Assert.InRange(h.Value.yield, 3, 5);
+        Assert.Null(s.Farm.Harvest(0, 0, s.Rng));
+        Assert.True(s.Farm.Plant(0, 0, "turnip", s.Backpack)); // ayni kareye yeniden ekilir
+    }
+
+    [Fact]
+    public void Stations_craft_nails_cook_soup_and_pack_crates()
+    {
+        var d = Data();
+        var s = new GameState(d);
+        s.Backpack.Add("stone", 4);
+        s.Backpack.Add("turnip", 7);
+        var tez = s.Stations["tezgah"];
+        Assert.True(tez.Enqueue(tez.Recipes.First(), s.Backpack));
+        Assert.True(tez.Enqueue(tez.Recipes.First(), s.Backpack));
+        Assert.False(tez.Enqueue(tez.Recipes.First(), s.Backpack)); // tas bitti
+        for (int i = 0; i < 50; i++) tez.Tick(0.1f, s.Backpack);
+        Assert.Equal(40 + 20, s.Backpack.Count("civi"));
+        var firin = s.Stations["tas_firin"];
+        firin.Enqueue(firin.Recipes.First(), s.Backpack);
+        var pak = s.Stations["paketleme"];
+        pak.Enqueue(pak.Recipes.First(), s.Backpack);
+        for (int i = 0; i < 50; i++) { firin.Tick(0.1f, s.Backpack); pak.Tick(0.1f, s.Backpack); }
+        Assert.Equal(1, s.Backpack.Count("salgam_corbasi"));
+        Assert.Equal(1, s.Backpack.Count("salgam_kasasi"));
+        Assert.Equal(0, s.Backpack.Count("turnip"));
+        Assert.Equal(90, s.SellItem("salgam_kasasi", 1));
+        Assert.True(s.Food.Eat(d.Tool.Foods.First()));
+        Assert.Equal(25f, s.Food.BonusMaxHp);
+        s.Food.Tick(301f);
+        Assert.Equal(0f, s.Food.BonusMaxHp);
     }
 }

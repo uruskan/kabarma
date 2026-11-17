@@ -141,6 +141,8 @@ M1'in ilk işi **12 altın varlık** üretmektir: bir karakter, iki yaratık, ik
 
 Stil föyü `docs/stil/` altında durur: paletler, altın varlıkların döner tabla görüntüleri, doğru ve yanlış örnekler.
 
+**Durum (17 Kasım 2026):** 11 altın varlık + 5 ek varlık üretildi ve oyunda ([stil/README.md](stil/README.md)); yapı köşesi Blender betiğiyle üretiliyor. Tripo API harcaması bu turda 385 kredi (8 model, 2 iskelet, 4 klip, 2 parçalama), deneme çarpanı 1,0: hiçbiri yeniden üretilmedi.
+
 ## 5. Kredi bütçesi
 
 Birim fiyatlar `npx genex --help` çıktısından (16 Kasım 2026). Yeniden deneme çarpanları varsayımdır; M0 ölçümüyle düzeltilir.

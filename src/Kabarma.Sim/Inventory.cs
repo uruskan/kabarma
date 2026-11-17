@@ -66,3 +66,42 @@ public sealed class Inventory
         return true;
     }
 }
+
+/// <summary>
+/// Kemer (GDD 5): 8 yuva, cantadaki esyalara kisayol. Yeni bir esya turu cantaya girince bos yuva varsa kendiliginden eklenir.
+/// Sayilar cantadan okunur; kemer kendi basina esya tutmaz.
+/// </summary>
+public sealed class Belt
+{
+    public const int Slots = 8;
+    readonly string?[] _ids = new string?[Slots];
+    public IReadOnlyList<string?> Ids => _ids;
+
+    public Belt(Inventory inv)
+    {
+        foreach (var (id, _) in inv.Contents) AutoAssign(id);
+        inv.Changed += (id, count) => { if (count > 0) AutoAssign(id); };
+    }
+
+    public bool Contains(string id) => Array.IndexOf(_ids, id) >= 0;
+
+    public void AutoAssign(string id)
+    {
+        if (Contains(id)) return;
+        int free = Array.IndexOf(_ids, null);
+        if (free >= 0) _ids[free] = id;
+    }
+
+    /// <summary>Kemerdeyse cikarir, degilse ilk bos yuvaya koyar.</summary>
+    public bool Toggle(string id)
+    {
+        int i = Array.IndexOf(_ids, id);
+        if (i >= 0) { _ids[i] = null; return false; }
+        int free = Array.IndexOf(_ids, null);
+        if (free < 0) return false;
+        _ids[free] = id;
+        return true;
+    }
+
+    public string? At(int slot) => slot >= 0 && slot < Slots ? _ids[slot] : null;
+}

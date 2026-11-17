@@ -32,7 +32,7 @@ public sealed class Farm
     public IEnumerable<Plot> Plots => _plots.Values;
     public Plot? Get(int x, int y) => _plots.TryGetValue((x, y), out var p) ? p : null;
 
-    public event Action<Plot>? Tilled, Planted, Watered, Matured, Swelled, Eaten;
+    public event Action<Plot>? Tilled, Planted, Watered, Matured, Swelled, Eaten, Harvested, Cleared;
 
     public bool Till(int x, int y)
     {
@@ -46,7 +46,9 @@ public sealed class Farm
     public bool Plant(int x, int y, string cropId, Inventory inv)
     {
         var p = Get(x, y);
-        if (p == null || p.Crop != null) return false;
+        if (p == null) return false;
+        if (p.Crop != null && (p.Planted)) return false;
+        if (p.Crop != null) Clear(x, y); // hasat edilmis kare yeniden ekilir
         if (!inv.Remove(cropId + "_seed", 1)) return false;
         var def = _data.Crop(cropId);
         p.Crop = cropId;
@@ -130,6 +132,36 @@ public sealed class Farm
         p.Eaten = true;
         Eaten?.Invoke(p);
         return true;
+    }
+
+    /// <summary>
+    /// Bicme ile normal hasat (GDD 8.2): verim = taban x (1 + 0,08 x V) x kalite.
+    /// Kalite: Bereket 70+ ve nem hic 20'nin altina dusmediyse 3 yildiz; yalnizca nem kosulu 2; aksi 1.
+    /// </summary>
+    public (int yield, int stars, int seeds)? Harvest(int x, int y, Rng rng)
+    {
+        var p = Get(x, y);
+        if (p == null || !p.Planted || p.Stage != CropStage.Mature) return null;
+        var def = _data.Crop(p.Crop!);
+        int stars = p.NeverDry && p.Fertility >= 70 ? 3 : p.NeverDry ? 2 : 1;
+        float q = _data.Crops.QualityMult[Math.Clamp(stars - 1, 0, _data.Crops.QualityMult.Count - 1)];
+        // Kabarik urun bicilirse soner: iki kat normal urun (GDD 8.4).
+        float raw = def.BaseYield * (1f + 0.08f * p.Genes.V) * q * (p.Swollen != null ? 2f : 1f);
+        int yield = (int)MathF.Floor(raw) + (rng.Chance(raw - MathF.Floor(raw)) ? 1 : 0);
+        int seeds = def.SeedReturn;
+        p.Harvested = true;
+        p.Fertility = Math.Max(0f, p.Fertility - _data.Crops.HarvestFertilityLoss);
+        Harvested?.Invoke(p);
+        return (Math.Max(1, yield), stars, seeds);
+    }
+
+    /// <summary>Hasat edilmis ya da yenmis kareyi yeniden ekime acar (surulmus kalir).</summary>
+    public void Clear(int x, int y)
+    {
+        var p = Get(x, y);
+        if (p == null || p.Planted) return;
+        p.Crop = null; p.Growth = 0; p.Swollen = null; p.Eaten = false; p.Harvested = false; p.NeverDry = true;
+        Cleared?.Invoke(p);
     }
 
     /// <summary>Kabarik urun tarladan sokulur (yuk nesnesi olur). Kare bos kalir, bereket duser.</summary>

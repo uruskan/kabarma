@@ -79,7 +79,9 @@ public partial class Ocak : Node3D
 
     public Ocak()
     {
-        // Tiknaz bir ocak: koyu taban, yuvarlak govde, isiyan agiz, kooperatif mavisi kubbe, kisa baca.
+        // M1 altin varlik: Tripo'dan dokulu Ocak (2 m). Yoksa koddan kit.
+        var golden = Assets.Load("res://assets/models/ocak/ocak.glb");
+        if (golden != null) AddChild(golden);
         var kit = new MeshKit();
         kit.Pillow(new Vector3(1.9f, 0.4f, 1.9f), MeshKit.At(0, 0.2f, 0), Palette.DarkGrey, 0.4f);
         kit.Pillow(new Vector3(1.55f, 1.0f, 1.55f), MeshKit.At(0, 0.85f, 0), Palette.OffWhite, 0.6f, 18, 10);
@@ -91,7 +93,7 @@ public partial class Ocak : Node3D
         kit.Pillow(new Vector3(0.48f, 0.12f, 0.48f), MeshKit.At(0.38f, 2.05f, -0.25f), Palette.DarkGrey.Lerp(Palette.Shadow, 0.3f), 0.5f);
         kit.Sphere(0.1f, MeshKit.At(-0.5f, 1.05f, 0.62f), Palette.Warning, 8, 4);
         kit.Sphere(0.1f, MeshKit.At(0.5f, 1.05f, 0.62f), Palette.MayaTeal, 8, 4);
-        AddChild(kit.Instance());
+        if (golden == null) AddChild(kit.Instance());
         var body = new StaticBody3D();
         body.AddChild(new CollisionShape3D { Shape = new CylinderShape3D { Radius = 0.8f, Height = 2f }, Position = new Vector3(0, 1f, 0) });
         AddChild(body);
@@ -134,8 +136,33 @@ public partial class Pod : Node3D
     GpuParticles3D _flame;
     public Vector3 PadCenter => GlobalTransform * new Vector3(0, 0.3f, 3.2f); // rampa kapsulle birlikte doner
 
+    Node3D _golden;
+
+    public override void _Ready()
+    {
+        if (_golden == null) return;
+        // Kapak parcasi (Tripo parcalama): alt kenarindan menteseli; acilinca rampa olur.
+        var hatch = _golden.FindChild("hatch", true, false) as MeshInstance3D;
+        if (hatch == null) return;
+        var box = hatch.GlobalTransform * hatch.GetAabb();
+        var local = GlobalTransform.AffineInverse();
+        var lo = local * box.Position; var hi = local * box.End;
+        var pivot = new Node3D { Name = "HatchHinge" };
+        AddChild(pivot);
+        pivot.Position = new Vector3((lo.X + hi.X) / 2f, Mathf.Min(lo.Y, hi.Y), Mathf.Max(lo.Z, hi.Z));
+        hatch.Reparent(pivot, true);
+        _hatch.QueueFree();
+        _hatch = pivot;
+    }
+
     public Pod()
     {
+        _golden = Assets.Load("res://assets/models/kapsul/kapsul.glb");
+        if (_golden != null)
+        {
+            _golden.RotationDegrees = new Vector3(0, -90, 0); // Tripo +X'e bakar; kapak +Z'ye (rampa yonu)
+            AddChild(_golden);
+        }
         var kit = new MeshKit();
         kit.Pillow(new Vector3(2.6f, 2.2f, 2.6f), MeshKit.At(0, 1.3f, 0), Palette.OffWhite, 0.55f, 18, 10);
         kit.Pillow(new Vector3(2.75f, 0.35f, 2.75f), MeshKit.At(0, 0.55f, 0), Palette.CoopBlue, 0.4f);
@@ -149,13 +176,13 @@ public partial class Pod : Node3D
         // Kooperatif logosu: mavi daire
         kit.Cylinder(0.45f, 0.45f, 0.06f, MeshKit.At(new Vector3(0, 1.25f, 1.28f), new Vector3(Mathf.Pi / 2f, 0, 0)), Palette.CoopBlue, 16);
         kit.Cylinder(0.28f, 0.28f, 0.07f, MeshKit.At(new Vector3(0, 1.25f, 1.3f), new Vector3(Mathf.Pi / 2f, 0, 0)), Palette.Warning, 12);
-        AddChild(kit.Instance());
+        if (_golden == null) AddChild(kit.Instance());
 
         _hatch = new Node3D { Position = new Vector3(0, 0.5f, 1.25f) };
         var hk = new MeshKit();
         hk.Pillow(new Vector3(1.6f, 1.6f, 0.2f), MeshKit.At(0, 0.8f, 0), Palette.OffWhite.Lerp(Palette.Shadow, 0.08f), 0.4f);
         hk.Pillow(new Vector3(1.3f, 0.12f, 0.24f), MeshKit.At(0, 1.35f, 0), Palette.Warning, 0.4f);
-        _hatch.AddChild(hk.Instance());
+        if (_golden == null) _hatch.AddChild(hk.Instance());
         AddChild(_hatch);
 
         var body = new StaticBody3D();

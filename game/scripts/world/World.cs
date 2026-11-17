@@ -289,7 +289,7 @@ public partial class World : Node3D
     void BuildRocks()
     {
         // Kazilacak kayalar ussun cevresinde, ilk dakikada bulunacak kadar yakin.
-        var spots = new[] { new Vector3(-7, 0, 6), new Vector3(-10, 0, 1), new Vector3(5, 0, 11), new Vector3(12, 0, 6), new Vector3(-4, 0, 14), new Vector3(16, 0, -4), new Vector3(-15, 0, -8), new Vector3(2, 0, -16) };
+        var spots = new[] { new Vector3(-7, 0, 6), new Vector3(-10, 0, 1), new Vector3(5, 0, 11), new Vector3(12, 0, 6), new Vector3(-4, 0, 14), new Vector3(16, 0, -4), new Vector3(-15, 0, -8), new Vector3(2, 0, -16), new Vector3(-13, 0, 10), new Vector3(9, 0, 15), new Vector3(-18, 0, 2), new Vector3(18, 0, 9) };
         int i = 0;
         foreach (var s in spots)
         {

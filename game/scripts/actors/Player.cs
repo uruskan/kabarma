@@ -26,6 +26,7 @@ public partial class Player : CharacterBody3D
     float _downT;
     public Vector3 RespawnPoint;
     float _shake;
+    float _recoil, _recoilVel;
     Vector3 _knock;
     float _bob;
     float _gravity = 18f;
@@ -34,6 +35,8 @@ public partial class Player : CharacterBody3D
     public Vector3? MoveOverride;
     public Vector3? AimOverride;
     public bool MouseCaptured;
+    public bool LookLocked;                       // baslik carki acikken kamera donmez
+    public System.Action<Vector2> Wheel;          // carka fare hareketi
 
     const float MouseSens = 0.0025f;
 
@@ -190,14 +193,23 @@ public partial class Player : CharacterBody3D
         kit.Pillow(new Vector3(0.24f, 0.12f, 0.3f), MeshKit.At(0, 0.15f, 0.05f), Palette.CoopBlue, 0.4f);
         kit.Cylinder(0.11f, 0.13f, 0.18f, MeshKit.At(new Vector3(0, 0, 0.55f), new Vector3(Mathf.Pi / 2, 0, 0)), Palette.Warning, 10);
         kit.Pillow(new Vector3(0.1f, 0.24f, 0.12f), MeshKit.At(new Vector3(0, -0.18f, -0.02f), new Vector3(0.3f, 0, 0)), Palette.DarkGrey, 0.4f);
-        _capa.AddChild(kit.Instance());
-        Muzzle = new Node3D { Position = new Vector3(0, 0, 0.68f) };
+        var golden = Assets.Load("res://assets/models/capa/capa.glb");
+        if (golden != null)
+        {
+            // Tripo modeli +X'e bakar; Capa dugumunde namlu +Z. Model 0,56 m.
+            golden.RotationDegrees = new Vector3(0, -90, 0);
+            golden.Position = new Vector3(0, -0.08f, 0.12f);
+            _capa.AddChild(golden);
+        }
+        else _capa.AddChild(kit.Instance());
+        Muzzle = new Node3D { Position = new Vector3(0, 0, golden != null ? 0.42f : 0.68f) };
         _capa.AddChild(Muzzle);
         Visual.AddChild(_capa);
     }
 
     public override void _Input(InputEvent e)
     {
+        if (e is InputEventMouseMotion wm && LookLocked) { Wheel?.Invoke(wm.Relative); return; }
         if (e is InputEventMouseMotion mm && Input.MouseMode == Input.MouseModeEnum.Captured)
         {
             Yaw.RotateY(-mm.Relative.X * MouseSens);
@@ -251,6 +263,9 @@ public partial class Player : CharacterBody3D
     }
 
     public void Shake(float amount) => _shake = Mathf.Max(_shake, amount);
+
+    /// <summary>Geri tepme yayi (GDD 4): Capa geriye ve yukari teper, yayla yerine doner.</summary>
+    public void Recoil(float amount) => _recoilVel += amount * 9f;
 
     public bool Facing; // arac kullanilirken govde kameraya doner
 
@@ -330,8 +345,12 @@ public partial class Player : CharacterBody3D
             var hand = _skel.GlobalTransform * _skel.GetBoneGlobalPose(_handBone).Origin;
             var fwd = Facing || AimOverride != null ? (AimPoint(out _) - hand).Normalized() : Visual.GlobalBasis.Z;
             if (fwd.LengthSquared() < 0.01f) fwd = Visual.GlobalBasis.Z;
-            _capa.GlobalPosition = hand + fwd * 0.12f;
-            _capa.GlobalBasis = Basis.LookingAt(-fwd, Vector3.Up);
+            // yay: x'' = -k x - c x'
+            float dtp = (float)GetPhysicsProcessDeltaTime();
+            _recoilVel += (-180f * _recoil - 18f * _recoilVel) * dtp;
+            _recoil += _recoilVel * dtp;
+            _capa.GlobalPosition = hand + fwd * (0.12f - _recoil * 0.18f) + Vector3.Up * _recoil * 0.05f;
+            _capa.GlobalBasis = Basis.LookingAt(-fwd, Vector3.Up).Rotated(Basis.LookingAt(-fwd, Vector3.Up).X, _recoil * 0.6f);
         }
 
         // Kamera sarsintisi

@@ -93,7 +93,7 @@ public static class Fx
             Text = ((int)dmg).ToString(),
             Billboard = BaseMaterial3D.BillboardModeEnum.Enabled,
             NoDepthTest = true,
-            FontSize = crit ? 96 : 64,
+            FontSize = (int)((crit ? 96 : 64) * Mathf.Clamp(Feel.DamageNumbers, 0.3f, 2f)),
             OutlineSize = crit ? 22 : 16,
             Modulate = crit ? Palette.Warning : Palette.OffWhite,
             OutlineModulate = Palette.NightDeep,

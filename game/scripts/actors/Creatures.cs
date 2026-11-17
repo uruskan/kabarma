@@ -16,9 +16,14 @@ public partial class Zipzip : Node3D
     public float Hp, MaxHp;
     public bool Dead;
     public float Scale0 = 1f;
+    public bool Display; // sinama: yerinde durur, klipler oynar
     Node3D _body;
     MeshInstance3D _sac;
     ShaderMaterial _mat;
+    Swellable _sw;
+    AnimationPlayer _anim;
+    string _aRun, _aJump, _aHurt, _aIdle;
+    float _hurtT;
     Director _dir;
     float _hopT, _hopDur = 0.55f;
     Vector3 _hopFrom, _hopTo;
@@ -38,26 +43,38 @@ public partial class Zipzip : Node3D
         MaxHp = Hp = def.Hp * hpMult;
         _body = new Node3D();
         AddChild(_body);
-        var kit = new MeshKit();
-        var fur = Palette.Ground.Lerp(Palette.Accent, 0.35f);
-        var belly = Palette.OffWhite;
-        kit.Sphere(0.36f, MeshKit.At(new Vector3(0, 0.36f, 0), Vector3.Zero, new Vector3(1f, 0.92f, 1.05f)), fur, 14, 8);
-        kit.Sphere(0.24f, MeshKit.At(new Vector3(0, 0.3f, 0.16f), Vector3.Zero, new Vector3(1f, 1f, 0.7f)), belly, 10, 6);
-        kit.Pillow(new Vector3(0.13f, 0.42f, 0.08f), MeshKit.At(new Vector3(-0.13f, 0.8f, -0.02f), new Vector3(-0.2f, 0, -0.25f)), fur, 0.5f, 10, 6);
-        kit.Pillow(new Vector3(0.13f, 0.42f, 0.08f), MeshKit.At(new Vector3(0.13f, 0.8f, -0.02f), new Vector3(-0.2f, 0, 0.25f)), fur, 0.5f, 10, 6);
-        kit.Pillow(new Vector3(0.08f, 0.28f, 0.04f), MeshKit.At(new Vector3(-0.13f, 0.8f, 0.01f), new Vector3(-0.2f, 0, -0.25f)), Palette.Accent.Lerp(Palette.OffWhite, 0.4f), 0.5f, 8, 4);
-        kit.Pillow(new Vector3(0.08f, 0.28f, 0.04f), MeshKit.At(new Vector3(0.13f, 0.8f, 0.01f), new Vector3(-0.2f, 0, 0.25f)), Palette.Accent.Lerp(Palette.OffWhite, 0.4f), 0.5f, 8, 4);
-        kit.Sphere(0.1f, MeshKit.At(-0.13f, 0.47f, 0.27f), Palette.OffWhite, 8, 6);
-        kit.Sphere(0.1f, MeshKit.At(0.13f, 0.47f, 0.27f), Palette.OffWhite, 8, 6);
-        kit.Sphere(0.06f, MeshKit.At(-0.13f, 0.47f, 0.35f), Palette.NightDeep, 6, 4);
-        kit.Sphere(0.06f, MeshKit.At(0.13f, 0.47f, 0.35f), Palette.NightDeep, 6, 4);
-        kit.Sphere(0.045f, MeshKit.At(0, 0.39f, 0.36f), Palette.Accent, 6, 4);
-        kit.Pillow(new Vector3(0.16f, 0.1f, 0.24f), MeshKit.At(-0.15f, 0.04f, 0.08f), fur.Lerp(Palette.Shadow, 0.2f), 0.5f, 8, 4);
-        kit.Pillow(new Vector3(0.16f, 0.1f, 0.24f), MeshKit.At(0.15f, 0.04f, 0.08f), fur.Lerp(Palette.Shadow, 0.2f), 0.5f, 8, 4);
-        kit.Sphere(0.11f, MeshKit.At(0, 0.3f, -0.36f), belly, 8, 5);
-        _mat = MeshKit.NewLiveMaterial();
-        _mat.SetShaderParameter("wobble_amp", 0.025f);
-        _body.AddChild(kit.Instance(_mat));
+        // M1 altin varlik: Tripo'dan iskeletli, dokulu Zipzip (idle, run, jump, hurt). Yoksa koddan govde.
+        var model = Assets.Load("res://assets/models/zipzip/zipzip.glb");
+        if (model != null)
+        {
+            _body.AddChild(model);
+            _sw = new Swellable(model, 4f);
+            _anim = model.FindChildren("*", "AnimationPlayer", true, false).OfType<AnimationPlayer>().FirstOrDefault();
+            if (_anim != null)
+            {
+                foreach (var n in _anim.GetAnimationList())
+                {
+                    var l = n.ToLower();
+                    if (l.Contains("run")) _aRun = n; else if (l.Contains("jump")) _aJump = n; else if (l.Contains("hurt")) _aHurt = n; else if (l.Contains("idle")) _aIdle = n;
+                }
+                foreach (var n in new[] { _aRun, _aIdle }) if (n != null) _anim.GetAnimation(n).LoopMode = Animation.LoopModeEnum.Linear;
+                _anim.Play(_aIdle ?? _aRun);
+                _anim.Seek((float)GD.RandRange(0.0, 0.8), true);
+            }
+        }
+        else
+        {
+            var kit = new MeshKit();
+            var fur = Palette.Ground.Lerp(Palette.Accent, 0.35f);
+            kit.Sphere(0.36f, MeshKit.At(new Vector3(0, 0.36f, 0), Vector3.Zero, new Vector3(1f, 0.92f, 1.05f)), fur, 14, 8);
+            kit.Pillow(new Vector3(0.13f, 0.42f, 0.08f), MeshKit.At(new Vector3(-0.13f, 0.8f, -0.02f), new Vector3(-0.2f, 0, -0.25f)), fur, 0.5f, 10, 6);
+            kit.Pillow(new Vector3(0.13f, 0.42f, 0.08f), MeshKit.At(new Vector3(0.13f, 0.8f, -0.02f), new Vector3(-0.2f, 0, 0.25f)), fur, 0.5f, 10, 6);
+            kit.Sphere(0.1f, MeshKit.At(-0.13f, 0.47f, 0.27f), Palette.OffWhite, 8, 6);
+            kit.Sphere(0.1f, MeshKit.At(0.13f, 0.47f, 0.27f), Palette.OffWhite, 8, 6);
+            _mat = MeshKit.NewLiveMaterial();
+            _mat.SetShaderParameter("wobble_amp", 0.025f);
+            _body.AddChild(kit.Instance(_mat));
+        }
 
         // Zayif nokta: parlayan maya kesesi (sirtta)
         _sac = new MeshInstance3D
@@ -71,8 +88,9 @@ public partial class Zipzip : Node3D
         if (swollen)
         {
             Scale0 = def.SwollenScale;
-            _mat.SetShaderParameter("swell", 1f);
-            _mat.SetShaderParameter("glow", 0.9f);
+            _mat?.SetShaderParameter("swell", 1f);
+            _mat?.SetShaderParameter("glow", 0.9f);
+            _sw?.Set(swell: 1f, glow: 0.9f, push: 0.04f, wobble: 0.02f);
         }
         _body.Scale = Vector3.One * 0.05f;
         All.Add(this);
@@ -91,6 +109,7 @@ public partial class Zipzip : Node3D
         Hp -= dmg;
         _flash = 1f;
         _squash = 1f;
+        if (_anim != null && _aHurt != null && _hurtT <= 0) { _anim.Play(_aHurt, 0.05); _hurtT = 0.35f; }
         _knock += knockDir.Normalized() * knock / Mathf.Max(1f, Scale0 * 0.6f);
         Fx.DamageNumber(Center + Vector3.Up * Radius, dmg, crit || weak);
         if (Hp <= 0) Die();
@@ -128,6 +147,14 @@ public partial class Zipzip : Node3D
         float grow = Mathf.Min(1f, _spawnT / 0.5f);
         float baseScale = Scale0 * (1f - Mathf.Pow(1f - grow, 3f));
 
+        if (Display)
+        {
+            float g0 = Mathf.Min(1f, _spawnT / 0.5f);
+            _body.Scale = Vector3.One * Scale0 * g0;
+            if (_anim != null && _aRun != null && _anim.CurrentAnimation != _aRun) _anim.Play(_aRun);
+            _sw?.Set(flash: 0f);
+            return;
+        }
         var player = _dir.Player;
         var pos = GlobalPosition;
         // Hedef secimi: kendi ailesinin ekini -> saldirani (GDD 14.3). Oyuncu yakinsa ona dalar.
@@ -195,9 +222,21 @@ public partial class Zipzip : Node3D
         float sq = Mathf.Sin(_squash * Mathf.Pi) * 0.25f;
         _body.Scale = new Vector3(baseScale * (1 + sq), baseScale * (1 - sq), baseScale * (1 + sq));
         _flash = Mathf.Max(0, _flash - dt * 6f);
-        _mat.SetShaderParameter("flash", _flash * 0.8f);
-        if (FreezeT > 0) _mat.SetShaderParameter("tint", new Color(0.7f, 0.85f, 1f));
-        else _mat.SetShaderParameter("tint", Colors.White);
+        _mat?.SetShaderParameter("flash", _flash * 0.8f);
+        _mat?.SetShaderParameter("tint", FreezeT > 0 ? new Color(0.7f, 0.85f, 1f) : Colors.White);
+        _sw?.Set(flash: _flash * 0.6f);
+        _sw?.Tint(FreezeT > 0 ? new Color(0.7f, 0.85f, 1f) : Colors.White);
+        // Klip secimi: vurulunca acı, hareket halinde kosu, yerken bekleme.
+        if (_anim != null)
+        {
+            _hurtT -= dt;
+            if (_hurtT <= 0)
+            {
+                string want = _hopT > 0 || _knock.LengthSquared() > 0.5f ? (_aRun ?? _aIdle) : (_aIdle ?? _aRun);
+                if (want != null && _anim.CurrentAnimation != want) _anim.Play(want, 0.15);
+                _anim.SpeedScale = (FreezeT > 0 ? 0.6f : 1f) * (want == _aRun ? 1.3f : 1f);
+            }
+        }
     }
 }
 

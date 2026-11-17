@@ -7,6 +7,8 @@
       "family": "root",
       "growSeconds": 75,
       "basePrice": 15,
+      "baseYield": 3,
+      "seedReturn": 2,
       "seedGenes": { "V": 2, "H": 2, "D": 2, "M": 2 },
       "moistureDrainPerSecond": 0.35,
       "waterPerShot": 100
@@ -14,6 +16,8 @@
   ],
   "moisture": { "stopBelow": 20, "halfBelow": 40, "wetAbove": 80, "wetFactor": 0.8 },
   "startFertility": 60,
+  "qualityMult": [1.0, 1.25, 1.5],
+  "harvestFertilityLoss": 10,
   "sizeClasses": [
     { "id": "S", "minScore": 0, "kg": 40, "priceMult": 8, "scale": 2.6 },
     { "id": "M", "minScore": 6, "kg": 150, "priceMult": 12, "scale": 3.6 },

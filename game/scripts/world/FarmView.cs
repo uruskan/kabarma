@@ -21,6 +21,7 @@ public partial class FarmView : Node3D
         farm.Watered += p => View(p)?.OnWatered();
         farm.Swelled += p => View(p)?.OnSwelled();
         farm.Eaten += p => View(p)?.OnEaten();
+        farm.Harvested += p => View(p)?.OnEaten(); // bicilen ekin tarladan kalkar (parca efekti ayni)
     }
 
     PlotView View(Plot p) => _views.GetValueOrDefault((p.X, p.Y));
@@ -49,8 +50,18 @@ public partial class PlotView : Node3D
     readonly FarmView _owner;
     MeshInstance3D _soil;
     Node3D _crop;
-    MeshInstance3D _cropMesh;
-    ShaderMaterial _cropMat;
+    Node3D _cropMesh;
+    ShaderMaterial _cropMat;   // koddan kurulan yedek salgam
+    Swellable _cropSw;         // dokulu salgam modeli (M1 altin varlik)
+
+    void SetCrop(float swell = -1, float glow = -1, float flash = -1)
+    {
+        if (_cropSw != null) { _cropSw.Set(swell: swell, glow: glow, flash: flash, push: swell >= 0 ? 0.03f : -1f, wobble: 0.025f); return; }
+        if (_cropMat == null) return;
+        if (swell >= 0) _cropMat.SetShaderParameter("swell", swell);
+        if (glow >= 0) _cropMat.SetShaderParameter("glow", glow);
+        if (flash >= 0) _cropMat.SetShaderParameter("flash", flash);
+    }
     ShaderMaterial _soilMat;
     float _swellT = -1;
     float _targetScale = 1f;
@@ -78,19 +89,23 @@ public partial class PlotView : Node3D
     {
         _crop = new Node3D();
         AddChild(_crop);
-        var kit = new MeshKit();
-        // Salgam: beyaz govde, mor omuz, tiknaz yapraklar.
-        kit.Sphere(0.3f, MeshKit.At(new Vector3(0, 0.18f, 0), Vector3.Zero, new Vector3(1f, 0.95f, 1f)), Palette.TurnipBody, 12, 8);
-        kit.Sphere(0.27f, MeshKit.At(new Vector3(0, 0.3f, 0), Vector3.Zero, new Vector3(1f, 0.55f, 1f)), Palette.TurnipTop, 12, 6);
-        kit.Cylinder(0.0f, 0.06f, 0.16f, MeshKit.At(new Vector3(0, -0.06f, 0), new Vector3(Mathf.Pi, 0, 0)), Palette.TurnipBody, 6);
-        for (int i = 0; i < 4; i++)
+        var model = Assets.Load("res://assets/models/salgam/salgam.glb");
+        if (model != null)
         {
-            float a = i * Mathf.Tau / 4f + 0.4f;
-            var basis = new Vector3(Mathf.Cos(a) * 0.45f, 0, Mathf.Sin(a) * 0.45f);
-            kit.Pillow(new Vector3(0.14f, 0.5f, 0.07f), MeshKit.At(new Vector3(Mathf.Sin(a) * 0.1f, 0.62f, Mathf.Cos(a) * 0.1f), new Vector3(Mathf.Cos(a) * 0.4f, a, -Mathf.Sin(a) * 0.4f)), Palette.Plant.Lerp(Palette.Shadow, i % 2 * 0.12f), 0.5f, 8, 4);
+            // Yumru yarisi toprakta; her salgam biraz farkli doner.
+            model.Position = new Vector3(0, -0.1f, 0);
+            model.Rotation = new Vector3(0, (float)GD.RandRange(0, Mathf.Tau), 0);
+            _cropMesh = model;
+            _cropSw = new Swellable(model, 6f);
         }
-        _cropMat = MeshKit.NewLiveMaterial();
-        _cropMesh = kit.Instance(_cropMat);
+        else
+        {
+            var kit = new MeshKit();
+            kit.Sphere(0.3f, MeshKit.At(new Vector3(0, 0.18f, 0), Vector3.Zero, new Vector3(1f, 0.95f, 1f)), Palette.TurnipBody, 12, 8);
+            kit.Sphere(0.27f, MeshKit.At(new Vector3(0, 0.3f, 0), Vector3.Zero, new Vector3(1f, 0.55f, 1f)), Palette.TurnipTop, 12, 6);
+            _cropMat = MeshKit.NewLiveMaterial();
+            _cropMesh = kit.Instance(_cropMat);
+        }
         _crop.AddChild(_cropMesh);
         _crop.Scale = Vector3.One * 0.15f;
         Fx.Burst(GlobalPosition + Vector3.Up * 0.2f, Palette.Plant, 8, 2.5f, 0.06f, 0.4f);
@@ -127,7 +142,8 @@ public partial class PlotView : Node3D
         if (size == null) return null;
         var mesh = _cropMesh;
         _crop.RemoveChild(mesh);
-        var sc = new SwollenCrop(Plot.Crop!, size, mesh, _cropMat, _crop.Scale.X);
+        var sw = _cropSw; var cm = _cropMat;
+        var sc = new SwollenCrop(Plot.Crop!, size, mesh, g => { if (sw != null) sw.Set(glow: g); else cm?.SetShaderParameter("glow", g); }, _crop.Scale.X);
         GetParent().GetParent().AddChild(sc);
         sc.GlobalPosition = _crop.GlobalPosition;
         _crop.QueueFree();
@@ -157,8 +173,7 @@ public partial class PlotView : Node3D
             float e = k >= 1 ? 1 : 1 - Mathf.Pow(2, -10 * k) * Mathf.Cos(k * 10.5f);
             float s = Mathf.Lerp(1f, _targetScale, e);
             _crop.Scale = new Vector3(s, s * (1f + Mathf.Sin(_swellT * 3f) * 0.02f), s);
-            _cropMat.SetShaderParameter("swell", Mathf.Min(1f, k * 1.5f));
-            _cropMat.SetShaderParameter("glow", 0.25f + k * 0.85f);
+            SetCrop(swell: Mathf.Min(1f, k * 1.5f), glow: 0.25f + k * 0.85f);
             return;
         }
         float g = Plot.Growth;
@@ -173,7 +188,7 @@ public partial class PlotView : Node3D
         float ns = Mathf.Lerp(cur, scale, Mathf.Min(1f, dt * 4f));
         _crop.Scale = new Vector3(ns, ns, ns);
         // Olgunluk paltisi
-        _cropMat.SetShaderParameter("flash", Plot.Stage == CropStage.Mature ? 0.05f + 0.05f * Mathf.Sin(Time.GetTicksMsec() * 0.004f) : 0f);
+        SetCrop(flash: Plot.Stage == CropStage.Mature ? 0.05f + 0.05f * Mathf.Sin(Time.GetTicksMsec() * 0.004f) : 0f);
     }
 
     bool _soundDone;
@@ -194,26 +209,26 @@ public partial class SwollenCrop : Node3D
     public SizeClassDef Size { get; }
     public bool Held;
     public bool Sold;
-    readonly ShaderMaterial _mat;
+    readonly System.Action<float> _glow;
     readonly Node3D _pivot;
     float _t;
     public float Radius { get; }
 
-    public SwollenCrop(string crop, SizeClassDef size, MeshInstance3D mesh, ShaderMaterial mat, float scale)
+    public SwollenCrop(string crop, SizeClassDef size, Node3D mesh, System.Action<float> glow, float scale)
     {
-        CropId = crop; Size = size; _mat = mat;
+        CropId = crop; Size = size; _glow = glow;
         _pivot = new Node3D();
         AddChild(_pivot);
         _pivot.AddChild(mesh);
         _pivot.Scale = Vector3.One * scale;
-        Radius = 0.35f * scale;
+        Radius = 0.3f * scale;
         AddToGroup("swollen");
     }
 
     public override void _Process(double delta)
     {
         _t += (float)delta;
-        _mat.SetShaderParameter("glow", Held ? 1.1f : 0.8f);
+        _glow?.Invoke(Held ? 1.1f : 0.8f);
         _pivot.Rotation = Held ? new Vector3(Mathf.Sin(_t * 2f) * 0.12f, _t * 0.6f, Mathf.Cos(_t * 1.7f) * 0.1f) : Vector3.Zero;
     }
 }

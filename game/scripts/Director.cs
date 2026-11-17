@@ -26,6 +26,8 @@ public partial class Director : Node3D
     public Bot Bot { get; private set; }
     public Pofuduk Pofuduk { get; private set; }
     public TasFirin Firin { get; private set; }
+    public readonly System.Collections.Generic.List<Station> Stations = new();
+    public BuildBridge Build { get; private set; }
 
     public enum Act { Day, Dusk, Night, Dawn, Report, Free }
     public Act Phase { get; private set; } = Act.Day;
@@ -73,6 +75,9 @@ public partial class Director : Node3D
         Player.RespawnPoint = spawn;
         Player.Yaw.Rotation = new Vector3(0, Mathf.DegToRad(150), 0); // inis kapsulunden cayira ve krater sutununa bakis
 
+        Player.Wheel = rel => Hud?.WheelMotion(rel);
+        FeelPanel = new FeelPanel { Name = "FeelPanel" };
+        AddChild(FeelPanel);
         Hud = new Hud { Name = "Hud" };
         Hud.Init(this);
         AddChild(Hud);
@@ -90,12 +95,8 @@ public partial class Director : Node3D
         // M0 hat denemeleri: Pofuduk (dort ayak, iskelet + yurume) ve Tas Firin (adli parcalar).
         Pofuduk = new Pofuduk(this, new Vector3(-12, 0, 10)) { Name = "Pofuduk" };
         AddChild(Pofuduk);
-        Firin = new TasFirin { Name = "TasFirin" };
-        AddChild(Firin);
-        var firinAt = World.Ground(new Vector3(-7, 0, -7));
-        Firin.GlobalPosition = firinAt;
-        var toBase = (Vector3.Zero - firinAt) with { Y = 0 };
-        Firin.Rotation = new Vector3(0, Mathf.Atan2(-toBase.Z, toBase.X), 0); // kapak (+X) usse baksin
+        // Tas Firin artik Insa basligiyla kurulan bir istasyon (M1).
+        Build = BuildBridge.TryCreate(this);
 
         State.Scenario.StepChanged += OnStepChanged;
         State.Farm.Eaten += p => { GD.Print($"EATEN plot {p.X},{p.Y}"); Sfx.Play("pop", FarmView.CellCenter(p.X, p.Y), -2f); };
@@ -114,12 +115,14 @@ public partial class Director : Node3D
             cam.MakeCurrent();
         }
         if (Main.Args.TryGetValue("skip", out var skip) && skip == "night") CallDeferred(nameof(SkipToNight));
+        if (Main.Args.ContainsKey("zipview")) CallDeferred(nameof(ZipView));
+        if (Main.Args.ContainsKey("showwheel")) GetTree().CreateTimer(1.0).Timeout += () => { Hud.OpenWheel(0); Hud.WheelMotion(new Vector2(30, 10)); };
     }
 
     void OnStepChanged(StepDef done, StepDef next)
     {
         Hud.Say(done.Done);
-        if (next?.Start != null) Hud.Say(next.Start);
+        if (next?.Start != null && done.Id != "sell") Hud.Say(next.Start); // rapor kapaninca okunur
         GD.Print($"STEP {done.Id} -> {next?.Id ?? "end"} t={Time.GetTicksMsec() / 1000f:0.0}");
         switch (next?.Id)
         {
@@ -133,7 +136,8 @@ public partial class Director : Node3D
             case "night": BeginDusk(); break;
             case "sell": Capa.Select(Capa.Head.Cekim); break;
         }
-        if (next == null) { Phase = Act.Report; _actT = 0; }
+        if (done.Id == "sell") { Phase = Act.Report; _actT = 0; }
+        if (next == null) GD.Print("CHAIN done");
         CallDeferred(nameof(CatchUp));
     }
 
@@ -143,6 +147,15 @@ public partial class Director : Node3D
         var f = State.Farm;
         State.Scenario.SetProgress("till", f.Plots.Count());
         State.Scenario.SetProgress("plant", f.Plots.Count(p => p.Crop != null));
+    }
+
+    /// <summary>Sinama: bir normal ve bir kabarmis Zipzip'i kameranin onune koyar (varlik denetimi).</summary>
+    void ZipView()
+    {
+        var def = Data.Creature("zipzip");
+        var basePos = new Vector3(1.5f, 0, 4.5f);
+        var a = new Zipzip(def, this, 1f, 1f, swollen: false) { Display = true }; AddChild(a); a.GlobalPosition = World.Ground(basePos);
+        var b = new Zipzip(def, this, 1f, 1f, swollen: true) { Display = true }; AddChild(b); b.RotationDegrees = new Vector3(0, 200, 0); b.GlobalPosition = World.Ground(basePos + new Vector3(-2.5f, 0, 1.5f));
     }
 
     /// <summary>Sinama kisayolu: gunduz adimlarini kurallar uzerinden hizla yapar, gece basinda birakir.</summary>
@@ -157,6 +170,107 @@ public partial class Director : Node3D
         while (f.MatureCount < 9) f.Tick(1f, true);
         Player.GlobalPosition = World.Ground(new Vector3(1, 0, -5)) + Vector3.Up * 0.3f;
         Player.Yaw.Rotation = new Vector3(0, Mathf.DegToRad(200), 0);
+    }
+
+    public Station PlaceStation(PlaceableDef def, Vector3 at, float yaw)
+    {
+        var st = new Station(this, def);
+        AddChild(st);
+        st.GlobalPosition = at;
+        st.Rotation = new Vector3(0, yaw, 0);
+        Stations.Add(st);
+        Sfx.Play("place", at, 2f);
+        Fx.Burst(at + Vector3.Up * 0.3f, Palette.Ground, 26, 5f, 0.12f, 0.8f);
+        GD.Print($"PLACED {def.Id} at {at}");
+        if (def.Id == "tezgah") State.Scenario.Report("tezgah_kur");
+        if (def.Id == "tas_firin") State.Scenario.Report("firin_kur");
+        return st;
+    }
+
+    public void OnProduced(RecipeDef r)
+    {
+        if (r.Id == "civi") State.Scenario.Report("civi");
+        if (r.Id == "salgam_kasasi") State.Scenario.Report("paketle");
+        GD.Print($"PRODUCED {r.Id} civi={State.Backpack.Count("civi")} soup={State.Backpack.Count("salgam_corbasi")} crates={State.Backpack.Count("salgam_kasasi")}");
+    }
+
+    // ---------- Menuler (istasyon, canta, satis) ----------
+
+    public bool MenuOpen => Hud.MenuOpen;
+
+    public void OpenStationMenu(Station st)
+    {
+        var items = new System.Collections.Generic.List<Hud.MenuItem>();
+        foreach (var r in st.Queue.Recipes)
+        {
+            var rr = r;
+            string cost = string.Join(" + ", r.In.Select(kv => $"{kv.Value} {ItemNames.Of(kv.Key)}"));
+            items.Add(new Hud.MenuItem($"{r.Name} ×{r.Out}   ←   {cost}   ({r.Seconds:0.#} sn)", () => StationQueue.CanAfford(rr, State.Backpack), () =>
+            {
+                if (st.Queue.Enqueue(rr, State.Backpack)) { Sfx.Play("place", st.GlobalPosition, -4f); GD.Print($"QUEUED {rr.Id}"); }
+                else Hud.Hint("Malzeme yetmiyor ya da istasyon başka bir şey üretiyor", 1.5f);
+            }));
+        }
+        Hud.ShowMenu(st.Def.Name, items, "1–9: sıraya ekle  ·  E / Esc: kapat");
+    }
+
+    /// <summary>Kemer yuvasini kullanir: yemekse yer, degilse ne oldugunu soyler.</summary>
+    public void UseBelt(int slot)
+    {
+        var id = State.Belt.At(slot);
+        if (id == null) return;
+        Hud.FlashBelt(slot);
+        var food = Data.Tool.Foods.FirstOrDefault(f => f.Id == id);
+        if (food != null) { EatFood(food); return; }
+        if (id == "turnip_seed") { Capa.Select(Capa.Head.Toprak); Hud.Hint("Toprak başlığı: sürülmüş kareye ek", 1.2f); return; }
+        if (id == "civi") { Capa.Select(Capa.Head.Civi); return; }
+        Hud.Hint($"{ItemNames.Of(id)} ×{State.Backpack.Count(id)}", 1f);
+    }
+
+    public bool EatFood(FoodDef ff)
+    {
+        if (State.Backpack.Count(ff.Id) <= 0) { Hud.Hint($"{ff.Name} yok", 1f); return false; }
+        if (!State.Food.Eat(ff)) { Hud.Hint("Üç yemek yuvası dolu", 1.2f); return false; }
+        State.Backpack.Remove(ff.Id, 1);
+        Sfx.Play("pickup", null, -2f);
+        Hud.Hint($"{ff.Name}: doydun, güçlendin", 1.5f);
+        GD.Print($"ATE {ff.Id}");
+        State.Scenario.Report("corba");
+        return true;
+    }
+
+    public void OpenBagMenu()
+    {
+        var items = new System.Collections.Generic.List<Hud.MenuItem>();
+        foreach (var f in Data.Tool.Foods)
+        {
+            var ff = f;
+            items.Add(new Hud.MenuItem($"Ye: {f.Name}  (+{f.MaxHp:0} can, +{f.Regen:0.#}/sn, {f.Seconds / 60f:0} dk)  ·  elde {State.Backpack.Count(f.Id)}", () => State.Backpack.Count(ff.Id) > 0, () => EatFood(ff)));
+        }
+        foreach (var g in State.Backpack.Contents.Select(c => c.id).Distinct().Take(8 - items.Count))
+        {
+            var id = g;
+            items.Add(new Hud.MenuItem($"{ItemNames.Of(id)} ×{State.Backpack.Count(id)}   ·   {(State.Belt.Contains(id) ? "kemerde (çıkar)" : "kemere tak")}", () => true, () => { State.Belt.Toggle(id); OpenBagMenu(); }));
+        }
+        var lines = State.Backpack.Contents.GroupBy(c => c.id).Select(g => $"{ItemNames.Of(g.Key)} {g.Sum(c => c.count)}");
+        Hud.ShowMenu($"Sırt Çantası · {State.Backpack.UsedSlots}/{State.Backpack.Slots} yuva", items, string.Join("   ·   ", lines) + $"\nYemek yuvaları: {string.Join(", ", State.Food.Active.Select(a => $"{a.food.Name} {a.left / 60f:0.0} dk"))}");
+    }
+
+    public void OpenSellMenu()
+    {
+        var items = new System.Collections.Generic.List<Hud.MenuItem>();
+        foreach (var kv in Data.Tool.Prices)
+        {
+            var id = kv.Key;
+            int have = id == "egg" ? State.Eggs : State.Backpack.Count(id);
+            items.Add(new Hud.MenuItem($"Sat: {ItemNames.Of(id)} ×{have}   ({kv.Value} Kredi/adet)", () => (id == "egg" ? State.Eggs : State.Backpack.Count(id)) > 0, () =>
+            {
+                int n = id == "egg" ? State.Eggs : State.Backpack.Count(id);
+                int v = State.SellItem(id, n);
+                if (v > 0) { if (id == "salgam_kasasi") State.Scenario.Report("kasa_sat"); Pod.Launch(); Sfx.Play("rocket", Pod.PadCenter, 0f); Hud.Big($"+{v} Kredi", Palette.Warning, 2.5f); GD.Print($"SOLD {id} x{n} +{v}"); OpenSellMenu(); }
+            }));
+        }
+        Hud.ShowMenu("Kargo Rampası · Kooperatif alım fiyatları", items, "Kabarık ürünleri Çekim başlığıyla rampaya taşı.  ·  E / Esc: kapat");
     }
 
     public void PlaceOcak(Vector3 at)
@@ -249,6 +363,18 @@ public partial class Director : Node3D
     }
 
     public void OnAnimalHit() { }
+    public FeelPanel FeelPanel { get; private set; }
+
+    /// <summary>Girise gorsel tepki verildi (gecikme olcumu, F1 paneli).</summary>
+    public void MarkReaction() => FeelPanel?.MarkReaction();
+
+    public int Harvests { get; private set; }
+    public void OnHarvest(int n)
+    {
+        Harvests += n;
+        State.Scenario.SetProgress("hasat", State.Backpack.Count("turnip"));
+        GD.Print($"HARVEST {n} total={Harvests} turnips={State.Backpack.Count("turnip")}");
+    }
 
     CardOffer _shownOffer;
     void RefreshOffer()
@@ -327,12 +453,44 @@ public partial class Director : Node3D
         bool fire = Input.IsActionPressed("fire");
         bool firePressed = Input.IsActionJustPressed("fire");
         if (Bot != null) { fire = Bot.Fire; firePressed = Bot.FirePressed; Bot.FirePressed = false; }
-        for (int i = 0; i < 6; i++) if (Input.IsActionJustPressed($"head_{i + 1}")) Capa.Select((Capa.Head)i);
+        if (Hud.MenuOpen)
+        {
+            for (int i = 0; i < 9; i++) if (Input.IsActionJustPressed($"head_{i + 1}")) Hud.ActivateMenu(i);
+            if (Input.IsActionJustPressed("interact") || Input.IsActionJustPressed("ui_cancel") || Input.IsActionJustPressed("bag")) { Hud.HideMenu(); _menuClosedThisFrame = true; }
+            fire = false; firePressed = false;
+        }
+        else
+        {
+            bool alt = Input.IsKeyPressed(Key.Alt);
+            for (int i = 0; i < 8; i++)
+                if (Input.IsActionJustPressed($"head_{i + 1}")) { if (alt) UseBelt(i); else Capa.Select((Capa.Head)i); }
+            if (Input.IsActionJustPressed("bag")) OpenBagMenu();
+            // Baslik carki: Q basili tut, fareyle sec, birak
+            if (Input.IsActionJustPressed("head_wheel")) { Hud.OpenWheel((int)Capa.Current); Player.LookLocked = true; }
+            if (Hud.WheelOpen && Input.IsActionJustReleased("head_wheel")) { int sel = Hud.CloseWheel(); Player.LookLocked = false; if (sel >= 0) Capa.Select((Capa.Head)sel); }
+            if (Capa.Current == Capa.Head.Insa)
+            {
+                if (Input.IsActionJustPressed("build_next")) Capa.CyclePlaceable(1);
+                if (Input.IsActionJustPressed("build_prev")) Capa.CyclePlaceable(-1);
+                if (Input.IsActionJustPressed("build_rotate")) Capa.RotateGhost();
+            }
+            else if (!Hud.WheelOpen)
+            {
+                int n = Capa.HeadNames.Length;
+                if (Input.IsActionJustPressed("build_next")) Capa.Select((Capa.Head)(((int)Capa.Current + 1) % n));
+                if (Input.IsActionJustPressed("build_prev")) Capa.Select((Capa.Head)(((int)Capa.Current + n - 1) % n));
+            }
+        }
         if (Input.IsActionJustPressed("card_1")) ChooseCard(0);
         if (Input.IsActionJustPressed("card_2")) ChooseCard(1);
         if (Input.IsActionJustPressed("card_3")) ChooseCard(2);
-        if (Input.IsActionJustPressed("interact")) Interact();
-        if (Input.IsActionJustPressed("ui_accept") && Hud.ReportOpen) { Hud.HideReport(); Phase = Act.Free; }
+        if (Input.IsActionJustPressed("interact") && !Hud.MenuOpen && !_menuClosedThisFrame) Interact();
+        _menuClosedThisFrame = false;
+        // Yemek guclendirmesi: ek can ve yenilenme (GDD 3.3)
+        State.Food.Tick(dt);
+        Player.MaxHp = Data.Tool.Player.MaxHp + State.Food.BonusMaxHp;
+        if (!Player.Down && Player.Hp < Player.MaxHp) Player.Hp = Mathf.Min(Player.MaxHp, Player.Hp + State.Food.Regen * dt);
+        if (Input.IsActionJustPressed("ui_accept") && Hud.ReportOpen) CloseReport();
 
         Capa.Process(dt, fire && !Hud.ReportOpen, firePressed && !Hud.ReportOpen);
 
@@ -377,8 +535,23 @@ public partial class Director : Node3D
     bool _reportShown;
     float _sinceDawn;
 
+    bool _menuClosedThisFrame;
+
+    public void CloseReport()
+    {
+        if (!Hud.ReportOpen) return;
+        Hud.HideReport();
+        Phase = Act.Free;
+        var cur = State.Scenario.Current;
+        if (cur?.Start != null) Hud.Say(cur.Start);
+        if (cur?.Id == "tezgah_kur") Capa.Select(Capa.Head.Insa);
+    }
+
     public void Interact()
     {
+        var st = Stations.Where(s => s.InReach(Player.GlobalPosition)).OrderBy(s => s.GlobalPosition.DistanceTo(Player.GlobalPosition)).FirstOrDefault();
+        if (st != null) { OpenStationMenu(st); return; }
+        if (Pod.IsRamp && new Vector2(Player.GlobalPosition.X - Pod.PadCenter.X, Player.GlobalPosition.Z - Pod.PadCenter.Z).Length() < 4.5f) { OpenSellMenu(); return; }
         if (Gidak.Visible && !Gidak.Swollen && Gidak.GlobalPosition.DistanceTo(Player.GlobalPosition) < 3f && State.Backpack.Remove("wheat", 1))
             Gidak.Feed();
     }
