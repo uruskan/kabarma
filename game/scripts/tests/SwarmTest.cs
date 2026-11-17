@@ -111,7 +111,7 @@ public partial class SwarmTest : Node3D
             double on = Median(_on), off = Median(_off);
             GD.Print($"SWARM gpu_ms_on={on:0.000} gpu_ms_off={off:0.000} swarm_cost_ms={on - off:0.000} fps_on~{1000.0 / Math.Max(0.01, on):0}");
             GD.Print($"RESULT swarm {(on - off < 2.0 ? "PASS" : "FAIL")} cost_ms={on - off:0.000} (limit 2.0)");
-            GetTree().Quit();
+            GetTree().Quit(on - off < 2.0 ? 0 : 1);
         }
     }
 

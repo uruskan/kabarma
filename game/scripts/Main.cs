@@ -10,8 +10,11 @@ namespace Kabarma.Game;
 ///   --fast=N         zamani N kat hizlandirir
 ///   --shots=a,b,c    bu oyun saniyelerinde ekran goruntusu alir (progress/shots/)
 ///   --shot_prefix=x  goruntu adlarinin oneki
-///   --quit_after=N   N oyun saniyesi sonra kapanir
+///   --quit_after=N   N oyun saniyesi sonra kapanir (bot bu sure icinde zincirin sonuna varmadiysa cikis kodu 1)
 ///   --mute           ses yok
+///   --test=AD        basliksiz sinama (TEKNIK §11): bot, build, netsync (--role=host|client), swarm.
+///                    Sifir olmayan cikis kodu = hata. Eski bayraklar (--bot, --netsync=..., --swarm) de calisir.
+/// Yeni sinama: Tests sozlugune bir satir; sinama dugumu bitince GetTree().Quit(kod) cagirir.
 /// </summary>
 public partial class Main : Node3D
 {
@@ -21,6 +24,16 @@ public partial class Main : Node3D
     readonly List<float> _shots = new();
     string _prefix = "shot";
     float _quitAfter = -1;
+    bool _quitting;
+
+    /// <summary>--test=AD: sinama adi -> calistir. true donerse oyun (Director) kurulmaz.</summary>
+    static readonly Dictionary<string, System.Func<Main, bool>> Tests = new()
+    {
+        ["bot"] = m => { Args["bot"] = "1"; if (m._quitAfter <= 0) m._quitAfter = 400; return false; },
+        ["build"] = m => { m.AddChild(new BuildTest()); return true; },
+        ["netsync"] = m => { if (!Args.ContainsKey("netsync")) Args["netsync"] = Args.TryGetValue("role", out var r) ? r : "host"; m.AddChild(new NetSyncTest()); return true; },
+        ["swarm"] = m => { m.AddChild(new SwarmTest()); return true; },
+    };
 
     public override void _Ready()
     {
@@ -37,6 +50,17 @@ public partial class Main : Node3D
         if (Args.TryGetValue("quit_after", out var q)) _quitAfter = float.Parse(q, System.Globalization.CultureInfo.InvariantCulture);
 
         if (Args.TryGetValue("checkcolors", out var cc)) { CheckColors(cc); GetTree().Quit(); return; }
+        if (Args.TryGetValue("test", out var test))
+        {
+            if (!Tests.TryGetValue(test, out var run))
+            {
+                GD.Print($"RESULT fail unknown test '{test}' (bilinen: {string.Join(", ", Tests.Keys)})");
+                GetTree().Quit(2);
+                return;
+            }
+            GD.Print($"TEST {test}");
+            if (run(this)) return;
+        }
         if (Args.ContainsKey("netsync")) { AddChild(new NetSyncTest()); return; }
         if (Args.ContainsKey("swarm")) { AddChild(new SwarmTest()); return; }
         _dir = new Director { Name = "Director" };
@@ -112,6 +136,15 @@ public partial class Main : Node3D
             img.SavePng(path);
             GD.Print($"SCREENSHOT {path}");
         }
-        if (_quitAfter > 0 && _t >= _quitAfter) { GD.Print($"QUIT t={_t:0.0}"); GetTree().Quit(); }
+        if (_quitAfter > 0 && _t >= _quitAfter && !_quitting)
+        {
+            _quitting = true;
+            int code = 0;
+            // Bot sure dolmadan zincirin sonuna ("end") varmadiysa sinama basarisiz.
+            var bot = _dir?.Bot;
+            if (bot != null && !bot.Done) { code = 1; GD.Print($"RESULT fail bot did not reach end step={bot.CurrentStep} t={_t:0.0}"); }
+            GD.Print($"QUIT t={_t:0.0}");
+            GetTree().Quit(code);
+        }
     }
 }

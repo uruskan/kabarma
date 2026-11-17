@@ -12,6 +12,7 @@ namespace Kabarma.Game;
 /// (temeller, kapi kasasi, pencereli duvarlar, zemin, merdiven, besik cati, sundurma), cit, aciklik (span) denemesi
 /// ve desteksiz kalan parcalarin dusmesi. Ekran goruntuleri progress/m1/'e yazilir, sonra cikar.
 /// Calistir: Godot --path game --resolution 1600x900 res://scenes/build_test.tscn
+/// Sinama olarak: Godot --headless --path game -- --test=build [--test_out=KLASOR] (basliksizda goruntu atlanir; tools/test.ps1).
 /// </summary>
 public partial class BuildTest : Node3D
 {
@@ -25,7 +26,8 @@ public partial class BuildTest : Node3D
 
     public override async void _Ready()
     {
-        _outDir = ProjectSettings.GlobalizePath("res://").TrimEnd('/', '\\') + "/../progress/m1/";
+        // --test_out=KLASOR: sinama kosulari kanit klasorunu (progress/m1) degistirmesin diye baska yere yazar.
+        _outDir = Main.Args.TryGetValue("test_out", out var outArg) ? outArg.TrimEnd('/', '\\') + "/" : ProjectSettings.GlobalizePath("res://").TrimEnd('/', '\\') + "/../progress/m1/";
         DirAccess.MakeDirRecursiveAbsolute(_outDir);
         _world = new World { Name = "World" };
         AddChild(_world);
@@ -253,10 +255,16 @@ public partial class BuildTest : Node3D
         _cam.GlobalPosition = camPos;
         _cam.LookAt(lookAt);
         await Frames(6);
-        var img = GetViewport().GetTexture().GetImage();
-        img.SavePng(_outDir + file);
-        Log($"SHOT {file}");
+        SaveShot(file);
         _bs.SetActive(true);
+    }
+
+    /// <summary>Ekran goruntusunu yazar. Basliksiz kosuda goruntu yoktur: not dusulur, sinama ayni adimlarla surer.</summary>
+    void SaveShot(string file)
+    {
+        if (DisplayServer.GetName() == "headless") { Log($"SHOT {file} (basliksiz: atlandi)"); return; }
+        GetViewport().GetTexture().GetImage().SavePng(_outDir + file);
+        Log($"SHOT {file}");
     }
 
     async Task Shots()
@@ -323,8 +331,7 @@ public partial class BuildTest : Node3D
         _cam.LookAt(new Vector3(x0 + 5, y + 1.5f, 0));
         for (int i = 0; i < 24; i++) await Physics();
         await Frames(2);
-        GetViewport().GetTexture().GetImage().SavePng(_outDir + "build_fall.png");
-        Log("SHOT build_fall.png");
+        SaveShot("build_fall.png");
     }
 
     async Task ShotGhost(string file, Vector3 camPos, Vector3 lookAt)
@@ -332,7 +339,6 @@ public partial class BuildTest : Node3D
         _cam.GlobalPosition = camPos;
         _cam.LookAt(lookAt);
         await Frames(6);
-        GetViewport().GetTexture().GetImage().SavePng(_outDir + file);
-        Log($"SHOT {file}");
+        SaveShot(file);
     }
 }

@@ -25,6 +25,7 @@ public partial class NetSyncTest : Node3D
     readonly Dictionary<int, Vector3[]> _hostHistory = new();
     double _maxLive, _sumLive; int _nLive;
     float _quitT = -1;
+    int _exitCode;                  // istemci: FAIL ise 1 (sifir olmayan cikis = hata)
     readonly RandomNumberGenerator _rng = new() { Seed = 4417 };
     float _waitT;
 
@@ -65,7 +66,7 @@ public partial class NetSyncTest : Node3D
 
     public override void _PhysicsProcess(double delta)
     {
-        if (_quitT > 0) { _quitT -= (float)delta; if (_quitT <= 0) GetTree().Quit(); return; }
+        if (_quitT > 0) { _quitT -= (float)delta; if (_quitT <= 0) GetTree().Quit(_exitCode); return; }
         if (!_host)
         {
             _waitT += (float)delta;
@@ -127,6 +128,7 @@ public partial class NetSyncTest : Node3D
         }
         GD.Print($"NETSYNC client final tick={tick} snapshots={_nLive} gaps={_gaps} final_max_diff_mm={maxErr * 1000:0.000}");
         GD.Print($"RESULT netsync {(maxErr < 0.01 ? "PASS" : "FAIL")} final_max_diff_mm={maxErr * 1000:0.000}");
+        _exitCode = maxErr < 0.01 ? 0 : 1;
         _quitT = 0.5f;
     }
 
