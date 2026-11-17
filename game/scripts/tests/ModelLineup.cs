@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using Godot;
@@ -8,7 +8,7 @@ namespace Kabarma.Game;
 
 /// <summary>
 /// Model vitrini (gorsel-model akisi): oyundaki her modeli oyunun kurdugu yolla (sinifiyla ya da Assets.Load ile) ayni
-/// isikta, yaninda 1,8 m'lik oyuncu olcegiyle tek tek cizer. Once/sonra karsilastirmasi icin.
+/// isikta, yaninda oyuncu modeliyle (SANAT-SES §3: 1,6 m) tek tek cizer. Once/sonra karsilastirmasi icin.
 ///   --test=lineup [--lineup_tag=once] [--lineup_only=kapsul,ocak] [--lineup_size=1280x720]
 /// Cikti: progress/gorsel/model/&lt;tag&gt;/&lt;id&gt;.png ve sheet.png (6 sutunluk temas foyu); "LINEUP RESULT ok n=..".
 /// Pencereli calisir (basliksiz cizim yok).
@@ -56,6 +56,14 @@ public partial class ModelLineup : Node3D
         yield return new("kapsul", () => new Pod(), PZ);
         yield return new("kapsul_rampa", () => new Pod(), PZ, 90, n => ((Pod)n).BecomeRamp());
         yield return new("ocak", () => new Ocak(), PX, 30);
+        yield return new("rampa_pisti", G("props/rampa_pisti.glb"), PZ);
+        yield return new("kargo_roketi", G("props/kargo_roketi.glb"), PZ);
+        if (Main.Args.ContainsKey("lineup_deneme"))
+        {
+            // Ayri kapak dali (Pod.Model.cs) icin: govdenin kendi 'hatch' parcasi cikarilir; kapsul.json hatch gecici dosyayi gosterir.
+            yield return new("kapak_deneme_kapali", PodWithoutHatch, PZ, 20);
+            yield return new("kapak_deneme_acik", PodWithoutHatch, PZ, 90, n => ((Pod)n).BecomeRamp());
+        }
         // Istasyonlar ve yerlestirilebilirler
         yield return new("tezgah", () => PlaceableVisuals.Make(P("tezgah")), PX);
         yield return new("tas_firin", () => new TasFirin { Working = false }, PX);
@@ -91,6 +99,13 @@ public partial class ModelLineup : Node3D
         // Yapi kiti (temsilci parcalar)
         foreach (var id in new[] { "duvar", "pencereli_duvar", "kapi_kasasi", "kare_temel", "egimli_cati", "merdiven", "cit", "sur_duvari", "kule_tabani", "makine_platformu_kucuk" })
             yield return new("kit_" + id, G($"build/wood/{id}.glb"), PZ);
+    }
+
+    static Node3D PodWithoutHatch()
+    {
+        var p = new Pod();
+        if (p.FindChild("hatch", true, false) is Node h) { h.GetParent().RemoveChild(h); h.Free(); }
+        return p;
     }
 
     static Node3D Sized(Node3D n, float height)

@@ -1,1 +1,4 @@
-1.1 kapsul
+1.1 rampa_pisti
+1.2 kargo_roketi
+1.3 kapak_deneme_kapali
+1.4 kapak_deneme_acik
