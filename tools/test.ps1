@@ -8,6 +8,8 @@
 # Adimlar (-Only): build, sim, bot, buildtest. Godot: $env:KABARMA_GODOT, yoksa .tools/ altinda, yoksa ana calisma
 # kopyasinin .tools/ klasoru (worktree'ler icin, CLAUDE.md). Kosu gunlukleri .tools/run/test/ altinda.
 # Yeni bir Godot sinamasi: game/scripts/Main.cs Tests sozlugune bir satir, buraya bir Invoke-GodotTest cagrisi.
+# creatures (yaratik akisi): --test=creatures; her yaratigin modeli, iskeleti, 8 klibi, ucgen butcesi ve sisme
+# shader'i. -Only verilmezse varsayilan adimlara eklenir.
 param(
     [string[]]$Only = @('build', 'sim', 'bot', 'buildtest'),
     [int]$BotTimeout = 600,
@@ -20,6 +22,7 @@ $ErrorActionPreference = 'Continue'
 if (-not $PSBoundParameters.ContainsKey('Only')) { $Only += 'world' } # dunya sinamasi (--test=world), varsayilan listede
 $Only = @($Only | ForEach-Object { $_ -split ',' } | ForEach-Object { $_.Trim() } | Where-Object { $_ })
 if (-not $PSBoundParameters.ContainsKey('Only')) { $Only += 'audio' } # ses akisi: --test=audio varsayilan adimlarda
+if (-not $PSBoundParameters.ContainsKey('Only')) { $Only += 'creatures' }
 $Root = Split-Path -Parent $PSScriptRoot
 Set-Location $Root
 $GamePath = Join-Path $Root 'game'
@@ -100,6 +103,7 @@ if (($Only -contains 'bot') -or ($Only -contains 'buildtest')) {
     if (-not $G) { Say 'Godot bulunamadi: KABARMA_GODOT ortam degiskenini ver.' }
 }
 if (($Only -contains 'world') -and -not $G) { $G = Find-Godot }
+if (($Only -contains 'creatures') -and -not $G) { $G = Find-Godot }
 
 function Invoke-GodotTest([string]$name, [string]$userArgs, [int]$timeoutSec, [scriptblock]$judge) {
     $sw2 = [Diagnostics.Stopwatch]::StartNew()
@@ -155,6 +159,15 @@ if ($Only -contains 'world') {
         $res = ($r.Text -split "`r?`n" | Where-Object { $_ -match '^WORLD RESULT ' } | Select-Object -Last 1)
         if (-not $res) { $res = 'WORLD RESULT satiri yok' }
         [pscustomobject]@{ Ok = ($res -match '^WORLD RESULT ok'); Detail = $res }
+    }
+}
+
+if ($Only -contains 'creatures') {
+    Invoke-GodotTest 'creatures' '--test=creatures' 300 {
+        param($r)
+        $res = ($r.Text -split "`r?`n" | Where-Object { $_ -match '^RESULT ' } | Select-Object -Last 1)
+        if (-not $res) { $res = 'RESULT satiri yok' }
+        [pscustomobject]@{ Ok = ($res -match '^RESULT ok'); Detail = $res }
     }
 }
 
