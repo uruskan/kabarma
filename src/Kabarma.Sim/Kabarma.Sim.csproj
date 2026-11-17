@@ -1,0 +1,10 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <!-- Oyunun kurallari. Godot bagimliligi yok (TEKNIK.md §2). -->
+  <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <RootNamespace>Kabarma.Sim</RootNamespace>
+    <LangVersion>12</LangVersion>
+  </PropertyGroup>
+</Project>

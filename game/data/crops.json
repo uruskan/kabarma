@@ -1,0 +1,23 @@
+{
+  "_not": "MVP ekin verisi. Olgunlasma suresi MVP icin saniyeye sikistirildi (GDD 8.2: tasarim 2 oyun gunu).",
+  "crops": [
+    {
+      "id": "turnip",
+      "name": "Şalgam",
+      "family": "root",
+      "growSeconds": 75,
+      "basePrice": 15,
+      "seedGenes": { "V": 2, "H": 2, "D": 2, "M": 2 },
+      "moistureDrainPerSecond": 0.35,
+      "waterPerShot": 100
+    }
+  ],
+  "moisture": { "stopBelow": 20, "halfBelow": 40, "wetAbove": 80, "wetFactor": 0.8 },
+  "startFertility": 60,
+  "sizeClasses": [
+    { "id": "S", "minScore": 0, "kg": 40, "priceMult": 8, "scale": 2.6 },
+    { "id": "M", "minScore": 6, "kg": 150, "priceMult": 12, "scale": 3.6 },
+    { "id": "L", "minScore": 10, "kg": 600, "priceMult": 16, "scale": 5.0 },
+    { "id": "XL", "minScore": 14, "kg": 2500, "priceMult": 24, "scale": 7.0 }
+  ]
+}

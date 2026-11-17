@@ -1,0 +1,20 @@
+{
+  "_not": "GDD 15 ve ICERIK 8.1. MVP havuzu: bastan acik 20 kartin 10'u.",
+  "rarityWeights": { "S": 60, "N": 28, "D": 10, "E": 2 },
+  "maxRank": 5,
+  "offerSize": 3,
+  "autoPickSeconds": 20,
+  "slowMoScale": 0.3,
+  "cards": [
+    { "id": "catal", "name": "Çatal", "rarity": "S", "text": "+1 ışın kolu", "stat": "projectiles", "perRank": 1 },
+    { "id": "seken", "name": "Seken", "rarity": "S", "text": "Işın 1 kez seker", "stat": "bounces", "perRank": 1 },
+    { "id": "tez_el", "name": "Tez El", "rarity": "S", "text": "Ateş hızı +%12", "stat": "fireRate", "perRank": 0.12 },
+    { "id": "iri_tane", "name": "İri Tane", "rarity": "S", "text": "Boy ve hasar +%15", "stat": "size", "perRank": 0.15 },
+    { "id": "kivilcim", "name": "Kıvılcım", "rarity": "S", "text": "%15 Yanık", "stat": "burnChance", "perRank": 0.15 },
+    { "id": "kiragi", "name": "Kırağı", "rarity": "S", "text": "%15 Donma", "stat": "freezeChance", "perRank": 0.15 },
+    { "id": "keskin_goz", "name": "Keskin Göz", "rarity": "S", "text": "Kritik şansı +%8", "stat": "critChance", "perRank": 0.08 },
+    { "id": "tokmak", "name": "Tokmak", "rarity": "S", "text": "İtme +%30", "stat": "knockback", "perRank": 0.30 },
+    { "id": "miknatis", "name": "Mıknatıs", "rarity": "S", "text": "Toplama menzili +%40", "stat": "pickupRange", "perRank": 0.40 },
+    { "id": "cevik", "name": "Çevik", "rarity": "S", "text": "Hız +%8", "stat": "moveSpeed", "perRank": 0.08 }
+  ]
+}

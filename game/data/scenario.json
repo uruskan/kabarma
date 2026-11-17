@@ -1,0 +1,26 @@
+{
+  "_not": "PLAN 1.4 ilk 10 dakika, MVP icin kucultuldu. Suna replikleri metin olarak.",
+  "intro": [
+    "Kooperatife hoş geldin, üye 4417. Tarla senin, borç bizim.",
+    "Çapa'nın Kazma başlığı takılı. Kayaya tut, tetiğe bas. Taşlar çantana kendisi gelir."
+  ],
+  "steps": [
+    { "id": "mine", "target": 10, "goal": "Kazma ile taş topla", "done": "Güzel. Taş, kooperatifin en sadık üyesidir. Şikâyet etmez." },
+    { "id": "ocak", "target": 1, "goal": "İnşa başlığıyla Ocak'ı kur", "start": "İnşa başlığına geç (5). Ocak'ı düz bir yere koy. Etrafındaki ışık tapundur.", "done": "Ocak yandı. Tapu senin. Kira yok, sadece borç." },
+    { "id": "till", "target": 9, "goal": "Toprak başlığıyla 3×3 tarla sür", "start": "Toprak başlığı (2). Ocak'ın yanında dokuz kare aç.", "done": "Toprak hazır." },
+    { "id": "plant", "target": 9, "goal": "Sürülmüş karelere şalgam ek", "start": "Aynı başlıkla sürülmüş kareye bir daha bas: tohum düşer.", "done": "Dokuz şalgam. Kooperatif adına gurur duyuyorum. Bir miktar." },
+    { "id": "water", "target": 9, "goal": "Sulama başlığıyla şalgamları sula", "start": "Sulama başlığı (3). Kuru toprak büyümez. Bu bilimsel bir gerçektir.", "done": "Filizler çıktı. Hızlı büyürler, bu ayda her şey hızlı büyür. Fazla hızlı." },
+    { "id": "grow", "target": 9, "goal": "Şalgamlar olgunlaşsın (Gıdak'a buğday verebilirsin: E)", "start": "Bir Gıdak geçiyor. Önüne buğday atarsan yumurtlar. Bekle, şalgamlar olgunlaşsın.", "done": "Hepsi olgun. Küçük bir ayrıntı kaldı. Bu ayın bir huyu var." },
+    { "id": "night", "target": 1, "goal": "Kabarma'yı atlat: tarlanı koru", "start": "Gökyüzüne bakma. Tarlana bak. Çapa'n artık ateş ediyor, tetiğe bas.", "done": "Şafak. Kabarma bitti. Ayakta kalanı satabiliriz." },
+    { "id": "sell", "target": 1, "goal": "Kabarık şalgamı Çekim başlığıyla Kargo Rampası'na taşı", "start": "Çekim başlığı (4). Kabarık şalgamı ışınla tut, kapsülden bozma rampaya bırak.", "done": "Roket kalktı. Hesabına yazdım." }
+  ],
+  "nightLines": {
+    "alarm": "Gökyüzü dalgalanıyor. Bu normal. Yani, bu ay için normal.",
+    "swell": "Şalgamların fıçı boyuna geliyor. Broşürde yazmıyordu, biliyorum.",
+    "wave": "Zıpzıplar geliyor. Kabarmışlar. Plaj topu gibi. Tarlana dikkat.",
+    "level": "Çapa'n çatırdıyor. Kart seç. Hepsi iyi kart. Bazıları daha iyi.",
+    "gidak": "Gıdak'ın midilli boyuna geldi. Tarafını seçmiş görünüyor."
+  },
+  "nextOrder": "Sıradaki iş emri: 5 kabarık ürün yetiştir.",
+  "ordersTotal": 240
+}

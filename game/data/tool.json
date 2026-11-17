@@ -1,0 +1,20 @@
+{
+  "_not": "GDD 4 Capa Mk.I. Is basliklari ve baslangic silahi Tirpan Isini (ICERIK 6.2 #1).",
+  "heads": ["kazma", "toprak", "sulama", "cekim", "insa"],
+  "mineRate": 2.5,
+  "mineRange": 9,
+  "tillRange": 7,
+  "waterRange": 9,
+  "carryRange": 10,
+  "buildRange": 8,
+  "player": { "maxHp": 100, "walkSpeed": 5.0, "sprintSpeed": 8.0, "jump": 6.5 },
+  "weapon": {
+    "id": "tirpan_isini", "name": "Tırpan Işını", "damage": 14, "fireInterval": 0.42,
+    "range": 11, "speed": 22, "width": 2.2, "spreadDegrees": 14,
+    "critChance": 0.05, "critMult": 2.0, "knockback": 4.0,
+    "burnDps": 0.2, "burnSeconds": 3, "freezeSlow": 0.4, "freezeSeconds": 2
+  },
+  "backpackSlots": 20,
+  "stackResource": 50,
+  "startItems": { "turnip_seed": 12, "wheat": 10 }
+}
