@@ -15,12 +15,13 @@ namespace Kabarma.Game;
 /// </summary>
 public partial class Bot
 {
+    // Entegrasyon (main): Bot.Zincir.cs ayni adimlari RegisterIlkgun'dan sonra kaydeder ve gecerli olan odur; burada carpisan adlar Ik onekiyle ayrildi.
     // Ilk gunun yerlesimi (Ocak'a gore): Tezgah (-2,5; 4,5), tarla x 3..6 z -1..2, agil x -6..-3 z -9..-3 (kapisi doguda),
     // kapsul (9; -9). Istasyonlar birbirinden 2,2 m, tarladan 1,6 m, kapsulden 3,5 m uzakta (Capa.Insa hayalet kurali).
     static readonly Vector3 OcakbasiAt = new(1.0f, 0, 6.5f), OcakbasiStand = new(1.0f, 0, 3.5f);
-    static readonly Vector3 FirinAt = new(2.5f, 0, -5.5f), FirinStand = new(0.5f, 0, -3.0f);
+    static readonly Vector3 IkFirinAt = new(2.5f, 0, -5.5f), FirinStand = new(0.5f, 0, -3.0f);
     // Paketleme Tas Firin'dan uzak: E en yakin istasyonun menusunu acar, yaklasirken firin daha yakin kalmasin.
-    static readonly Vector3 PaketlemeAt = new(1.0f, 0, -11.0f), PaketlemeStand = new(1.0f, 0, -8.0f);
+    static readonly Vector3 IkPaketlemeAt = new(1.0f, 0, -11.0f), PaketlemeStand = new(1.0f, 0, -8.0f);
     static readonly Vector3 BarinakAt = new(8.5f, 0, 6.5f); // tarlanin kuzeydogusu, tarladan ~4 m (temel 3 x 3 m)
     int _tryIdx;
     string _tryFor;
@@ -29,10 +30,10 @@ public partial class Bot
     void RegisterIlkgunSonra()
     {
         _steps["yemek"] = Machine(StepYemek);
-        _steps["firin"] = Machine(StepFirin);
+        _steps["firin"] = Machine(IkStepFirin);
         _steps["civi"] = Machine(StepCiviVeTabanca); // eski zincirin "civi" isleyicisini (yalniz Civi) gecer
-        _steps["kasa"] = Machine(StepKasa);
-        _steps["barinak"] = Machine(StepBarinak);
+        _steps["kasa"] = Machine(IkStepKasa);
+        _steps["barinak"] = Machine(IkStepBarinak);
         Events.StationPlaced += id => { if (id == "uyku_tulumu") _tulumPlaced = true; };
     }
 
@@ -74,9 +75,9 @@ public partial class Bot
 
     // ---------- 13 Firin: Tas Firin kur (Kil kil yatagindan), Bakir Kulce erit (Events.Produced copper_ingot) ----------
 
-    void StepFirin(Vector3 o)
+    void IkStepFirin(Vector3 o)
     {
-        if (HaveStation("tas_firin", o, FirinAt, FirinStand)) Craft(StationOf("tas_firin"), "copper_ingot");
+        if (HaveStation("tas_firin", o, IkFirinAt, FirinStand)) Craft(StationOf("tas_firin"), "copper_ingot");
     }
 
     // ---------- 14 Civi: Tezgah'ta Civi Tabancasi, sonra Civi; kulceyi Tas Firin'da eritir ----------
@@ -95,16 +96,16 @@ public partial class Bot
 
     // ---------- 15 Kasa: Paketleme kur, kasaya Salgam koy ve kapat, kasayi rampaya tasi, gonder (Events.Sold) ----------
 
-    void StepKasa(Vector3 o)
+    void IkStepKasa(Vector3 o)
     {
-        if (!HaveStation("paketleme", o, PaketlemeAt, PaketlemeStand)) return;
+        if (!HaveStation("paketleme", o, IkPaketlemeAt, PaketlemeStand)) return;
         if (_d.GetTree().GetNodesInGroup("cargo_crates").Count > 0) StepKasaSat(o);
         else StepPaketle(o);
     }
 
     // ---------- 16 Barinak: temel, Uyku Tulumu, duvar, kapi kasasi, Ahsap Kapi, cati ----------
 
-    void StepBarinak(Vector3 o)
+    void IkStepBarinak(Vector3 o)
     {
         var b = _d.Build;
         if (b == null) { GD.Print("BOT no build kit"); return; }
