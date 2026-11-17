@@ -38,6 +38,10 @@ public sealed class RecipeDef
     public Dictionary<string, int> In { get; set; } = new();
     public int Out { get; set; } = 1;
     public float Seconds { get; set; }
+    /// <summary>Urun cantaya degil, dunyaya yuk nesnesi olarak cikar (kargo kasasi, El Arabasi; GDD §5).</summary>
+    public bool Load { get; set; }
+    /// <summary>Tarif bu esya ilk kez alininca acilir (GDD §12 Kesif); null: bastan acik.</summary>
+    public string? UnlockOn { get; set; }
 }
 
 public sealed class PlaceableDef
@@ -49,6 +53,15 @@ public sealed class PlaceableDef
     public string? Model { get; set; }
     public bool Once { get; set; }
     public float Radius { get; set; } = 1f;
+    /// <summary>Is basina yakan yakit turleri (ilk bulunan harcanir) ve adedi (ICERIK §20: iş başına 1).</summary>
+    public List<string> Fuel { get; set; } = new();
+    public int FuelPerJob { get; set; }
+    /// <summary>Depo yuvasi (Sandik 20).</summary>
+    public int Slots { get; set; }
+    /// <summary>Gece isigi yaricapi, m (Mesale 6).</summary>
+    public float LightRange { get; set; }
+    /// <summary>Dogma noktasi ve uyku yeri (Uyku Tulumu).</summary>
+    public bool Spawn { get; set; }
 }
 
 public sealed class FoodDef
@@ -56,6 +69,8 @@ public sealed class FoodDef
     public string Id { get; set; } = "";
     public string Name { get; set; } = "";
     public float MaxHp { get; set; }
+    /// <summary>Suresince azami Dayaniklilik'a eklenir (ICERIK §15 "Day.").</summary>
+    public float Stamina { get; set; }
     public float Regen { get; set; }
     public float Seconds { get; set; }
 }
@@ -93,6 +108,22 @@ public sealed partial class ToolFile
     public int BackpackSlots { get; set; }
     public int StackResource { get; set; }
     public Dictionary<string, int> StartItems { get; set; } = new();
+    // Ekonomi: yigin boylari (GDD §5), yemek yuvalari (GDD §3.3), fiyat kurallari (GDD §13, ICERIK §18).
+    public int StackIntermediate { get; set; }
+    public int StackFood { get; set; }
+    public List<string> Intermediates { get; set; } = new();
+    public int FoodSlots { get; set; } = 3;
+    public List<string> Processed { get; set; } = new();
+    public float ProcessedMult { get; set; } = 1f;
+    public List<float> Quality { get; set; } = new() { 1f };
+
+    /// <summary>Esya basina yigin boyu: yemek 10, ara urun 20, kalan her sey (kaynak) 50 (GDD §5).</summary>
+    public int StackOf(string id)
+    {
+        if (StackFood > 0 && Foods.Any(f => f.Id == id)) return StackFood;
+        if (StackIntermediate > 0 && Intermediates.Contains(id)) return StackIntermediate;
+        return StackResource;
+    }
 }
 
 public sealed partial class GameData

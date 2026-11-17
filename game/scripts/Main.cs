@@ -39,6 +39,7 @@ public partial class Main : Node3D
         ["perf"] = m => { Args.TryAdd("preset", "yuksek"); if (Args.GetValueOrDefault("perf") == "night") Args["bot"] = "1"; m.AddChild(new PerfProbe()); return false; },
         ["creatures"] = m => { m.AddChild(new CreatureTest()); return true; },
         ["latency"] = m => { m.AddChild(new LatencyTest()); return false; }, // his olcutleri: girdi->tepki, vurus duraklamasi
+        ["ekonomi"] = m => { Args["ekonomi"] = "1"; Args["mute"] = "1"; Sfx.Muted = true; return false; }, // Director + EconomyTest (Director.Economy.cs)
     };
 
     public override void _Ready()

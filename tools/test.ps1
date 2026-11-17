@@ -24,6 +24,7 @@ if (-not $PSBoundParameters.ContainsKey('Only')) { $Only += 'world' } # dunya si
 $Only = @($Only | ForEach-Object { $_ -split ',' } | ForEach-Object { $_.Trim() } | Where-Object { $_ })
 if (-not $PSBoundParameters.ContainsKey('Only')) { $Only += 'audio' } # ses akisi: --test=audio varsayilan adimlarda
 if (-not $PSBoundParameters.ContainsKey('Only')) { $Only += 'creatures' }
+if (-not $PSBoundParameters.ContainsKey('Only')) { $Only += 'ekonomi' }  # ekonomi sinamasi (--test=ekonomi) varsayilan kosuda
 $Root = Split-Path -Parent $PSScriptRoot
 Set-Location $Root
 $GamePath = Join-Path $Root 'game'
@@ -105,6 +106,7 @@ if (($Only -contains 'bot') -or ($Only -contains 'buildtest') -or ($Only -contai
 }
 if (($Only -contains 'world') -and -not $G) { $G = Find-Godot }
 if (($Only -contains 'creatures') -and -not $G) { $G = Find-Godot }
+if ((-not $G) -and ($Only -contains 'ekonomi')) { $G = Find-Godot }
 
 function Invoke-GodotTest([string]$name, [string]$userArgs, [int]$timeoutSec, [scriptblock]$judge) {
     $sw2 = [Diagnostics.Stopwatch]::StartNew()
@@ -181,6 +183,20 @@ if ($Only -contains 'latency') {
         $res = ($r.Text -split "`r?`n" | Where-Object { $_ -match '^RESULT ' } | Select-Object -Last 1)
         if (-not $res) { $res = 'RESULT satiri yok' }
         [pscustomobject]@{ Ok = ($res -match '^RESULT ok'); Detail = $res }
+    }
+}
+
+if ($Only -contains 'ekonomi') {
+    $out = Join-Path $RunDir 'ekonomi'
+    New-Item -ItemType Directory -Force $out | Out-Null
+    Invoke-GodotTest 'ekonomi' "--test=ekonomi --test_out=`"$out`"" 300 {
+        param($r)
+        $ok = $false; $detail = 'ECONOMY RESULT satiri yok'
+        if ($r.Text -match 'ECONOMY RESULT ok=(\d+) fail=(\d+)') {
+            $ok = [int]$Matches[2] -eq 0
+            $detail = "ok=$($Matches[1]) fail=$($Matches[2])"
+        }
+        [pscustomobject]@{ Ok = $ok; Detail = $detail }
     }
 }
 

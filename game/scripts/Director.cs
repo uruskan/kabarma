@@ -103,6 +103,7 @@ public partial class Director : Node3D
 
         State.Scenario.StepChanged += OnStepChanged;
         WireScenario(); // Director.Scenario.cs: olay -> adim sayaci
+        InitEconomy();  // Director.Economy.cs: odeme, kargo, yerlestirilebilirler
         State.Farm.Eaten += p => { GD.Print($"EATEN plot {p.X},{p.Y}"); Sfx.Play("pop", FarmView.CellCenter(p.X, p.Y), -2f); };
         foreach (var l in Data.Scenario.Intro) Hud.Say(l);
 
@@ -166,6 +167,7 @@ public partial class Director : Node3D
         Player.MaxHp = Data.Tool.Player.MaxHp + State.Food.BonusMaxHp;
         if (!Player.Down && Player.Hp < Player.MaxHp) Player.Hp = Mathf.Min(Player.MaxHp, Player.Hp + State.Food.Regen * dt);
         if (Input.IsActionJustPressed("ui_accept") && Hud.ReportOpen) CloseReport();
+        TickEconomy(dt); // Director.Economy.cs: gecikmeli odeme, kasa izleme
 
         Capa.Process(dt, fire && !Hud.ReportOpen, firePressed && !Hud.ReportOpen);
 

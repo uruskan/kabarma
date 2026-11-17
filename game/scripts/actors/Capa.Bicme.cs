@@ -34,7 +34,7 @@ public partial class Capa
             Fx.Text3D(c + Vector3.Up * 1.0f, $"+{yield} Şalgam {new string('★', stars)}", Palette.Warning, 48, 1.2f, 1.3f);
             for (int i = 0; i < Math.Min(yield, 4); i++)
                 Fx.FlyTo(c + Vector3.Up * 0.3f, () => _d.Player.BackpackPoint.GlobalPosition, Palette.TurnipBody, 0.12f);
-            _d.State.Backpack.Add("turnip", yield);
+            _d.State.Backpack.Add("turnip", yield, stars); // kalite cantada tasinir (GDD 13: fiyat = taban × kalite)
             _d.State.Backpack.Add("turnip_seed", seeds);
         }
         if (n > 0) _d.OnHarvest(n);

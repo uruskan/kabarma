@@ -63,16 +63,9 @@
     {
       "id": "tezgah_kur",
       "target": 1,
-      "goal": "İnşa başlığıyla bir Tezgâh kur (6 Taş)",
+      "goal": "İnşa başlığıyla bir Tezgâh kur (10 Odun + 5 Taş)",
       "start": "Rapor bitti. Şimdi iş. İnşa başlığına geç (6), tekerlekle Tezgâh'ı seç. Taş yetmezse kazmaya devam.",
       "done": "Tezgâh kuruldu. Kooperatif bu yatırımı not etti."
-    },
-    {
-      "id": "civi",
-      "target": 1,
-      "goal": "Tezgâh'ta çivi yap (E)",
-      "start": "Tezgâh'ın yanında E'ye bas. Taştan çivi çıkar. Bunun nasıl olduğunu sorma.",
-      "done": "Çiviler hazır. Çivi Tabancası (8) artık dolu."
     },
     {
       "id": "hasat",
@@ -84,15 +77,22 @@
     {
       "id": "firin_kur",
       "target": 1,
-      "goal": "Bir Taş Fırın kur (10 Taş)",
+      "goal": "Bir Taş Fırın kur (15 Taş + 5 Kil)",
       "start": "Şimdi bir Taş Fırın. Yemek güç verir, açlık yok. Kooperatif açlığı yasakladı.",
       "done": "Fırın yandı. Bacası tütüyor. Bu iyiye işaret."
     },
     {
+      "id": "civi",
+      "target": 1,
+      "goal": "Tezgâh'ta çivi yap (E)",
+      "start": "Fırında Bakır Cevheri'nden külçe erit, Tezgâh'ın yanında E'ye bas. Külçeden çivi çıkar. Bunun nasıl olduğunu sorma.",
+      "done": "Çiviler hazır. Çivi Tabancası (8) artık dolu."
+    },
+    {
       "id": "corba",
       "target": 1,
-      "goal": "Sebze çorbası pişir ve ye (Tab: çanta)",
-      "start": "Fırında çorba pişir. Sonra Tab ile çantayı aç ve ye. Çorba canını artırır.",
+      "goal": "Ocakbaşı kur, sebze çorbası pişir ve ye (Tab: çanta)",
+      "start": "Ocakbaşı kur, çorba pişir. Sonra Tab ile çantayı aç ve ye. Çorba canını artırır.",
       "done": "Afiyet olsun. Yazılı olarak."
     },
     {

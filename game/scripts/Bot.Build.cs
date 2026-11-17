@@ -26,6 +26,8 @@ public partial class Bot
     {
         var b = _d.Build;
         if (b == null) { GD.Print("BOT no build kit"); return; }
+        // Barinagin dogma noktasi: once tutamlardan Lif biç, Uyku Tulumu'nu Ocak'in yanina ser (Bot.Machines.EnsureCost).
+        if (!_d.Furniture.Any(x => x.Def.Id == "uyku_tulumu")) { if (EnsureCost("uyku_tulumu")) PlaceAt("uyku_tulumu", o + new Vector3(-1.5f, 0, -3.2f)); return; }
         // Temel ussun yanina; duvarlar temelin uc kenarina: temelin ust yuzune, kenarin 0,45 m icine nisan.
         var f = o + new Vector3(7f, 0, 4f);
         string want = _built == 0 ? "kare_temel" : "duvar";

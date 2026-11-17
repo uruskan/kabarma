@@ -1,0 +1,7 @@
+{
+  "_not": "Kargo (GDD §13), El Arabasi (ICERIK §14), insa kurallari (GDD §7, URETIM §6 M1 'Yapi'). Ekonomi akisi.",
+  "crate": { "slots": 20, "kg": 25 },
+  "ramp": { "maxCrates": 6, "payoutSeconds": 60, "firstSaleInstant": true },
+  "cart": { "pushSpeedMult": 0.8, "maxLoadKg": 200, "slots": 6, "tipDegrees": 55, "maxSlopeDegrees": 32 },
+  "build": { "refundInClaim": 1.0, "repairFraction": 0.25, "hpFloor": 0.1 }
+}

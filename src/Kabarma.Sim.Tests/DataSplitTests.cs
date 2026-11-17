@@ -32,21 +32,24 @@ public class DataSplitTests
         Assert.Equal("civi", t.Nailgun.Ammo);
         Assert.Equal(1, t.Nailgun.AmmoPerShot);
         // recipes.json
-        Assert.Equal(new[] { "civi", "sebze_corbasi", "kargo_kasasi" }, t.Recipes.Select(r => r.Id));
-        Assert.Equal(10, t.Recipes[0].Out);
-        Assert.Equal(5, t.Recipes[2].In["turnip"]);
+        // (ekonomi M1: tarifler, bedeller, yemekler ve fiyatlar ICERIK §15, §18, §20'ye uyduruldu; ayrintisi CraftingTests, EconomyTests)
+        Assert.Equal(new[] { "civi", "civi_tabancasi", "el_arabasi", "copper_ingot", "kozde_salgam", "haslanmis_yumurta", "sebze_corbasi", "kargo_kasasi" }, t.Recipes.Select(r => r.Id));
+        Assert.Equal(20, t.Recipes[0].Out);
+        Assert.Equal(2, t.Recipes[6].In["turnip"]);
         // placeables.json
-        Assert.Equal(new[] { "ocak", "tezgah", "tas_firin", "paketleme" }, t.Placeables.Select(p => p.Id));
+        Assert.Equal(new[] { "ocak", "tezgah", "tas_firin", "ocakbasi", "paketleme", "sandik", "uyku_tulumu", "mesale" }, t.Placeables.Select(p => p.Id));
         Assert.True(t.Placeables[0].Once);
-        Assert.Equal(10, t.Placeables[2].Cost["stone"]);
-        Assert.Equal(9, t.BuildCosts.Count);
-        Assert.Equal(6, t.BuildCosts["foundation"]);
+        Assert.Equal(15, t.Placeables[2].Cost["stone"]);
+        Assert.Equal(28, t.BuildCosts.Count);
+        Assert.Equal(6, t.BuildCosts["kare_temel"]);
         // foods.json
-        Assert.Equal(25f, t.Foods.Single().MaxHp);
-        Assert.Equal(300f, t.Foods.Single().Seconds);
-        // prices.json: sira onemli (satis menusu ve bot bu siradan secer)
-        Assert.Equal(new[] { "turnip", "kargo_kasasi", "egg" }, t.Prices.Keys);
-        Assert.Equal(90, t.Prices["kargo_kasasi"]);
+        Assert.Equal(25f, t.Foods.Single(f => f.Id == "sebze_corbasi").MaxHp);
+        Assert.Equal(1200f, t.Foods.Single(f => f.Id == "sebze_corbasi").Seconds);
+        Assert.Equal(3, t.FoodSlots);
+        // prices.json
+        Assert.Equal(new[] { "turnip", "wheat", "egg", "copper_ore" }, t.Prices.Keys);
+        Assert.Equal(15, t.Prices["turnip"]);
+        Assert.Equal(1.5f, t.ProcessedMult);
         // tool.json
         Assert.Equal(100f, t.Player.MaxHp);
         Assert.Equal(6.5f, t.Player.Jump);
