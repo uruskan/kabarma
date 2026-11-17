@@ -1,16 +1,16 @@
-tools/test.ps1  2026-11-18 00:00  git 5b1a4a3
+tools/test.ps1  2026-11-18 00:14  git c7e0ec9
 
 [PASS] build  exit=0 warnings=0 errors=0
-[PASS] sim  exit=0 Passed!  - Failed:     0, Passed:    27, Skipped:     0, Total:    27, Duration: 303 ms - Kabarma.Sim.Tests.dll (net8.0)
+[PASS] sim  exit=0 Passed!  - Failed:     0, Passed:    30, Skipped:     0, Total:    30, Duration: 145 ms - Kabarma.Sim.Tests.dll (net8.0)
 [PASS] bot  exit=0 RESULT ok credits=120 eggs=1 kills=21 cards=3 maya=48 stations=4 harvests=4
 [PASS] buildtest  exit=0 placed=75 failed=0 pieces=71
-[PASS] ekonomi  exit=0 ok=77 fail=0
+[PASS] ekonomi  exit=0 ok=82 fail=0
 
 sinama     sonuc  sure(sn)  ayrinti
 ------     -----  --------  -------
-build      PASS        9.8  exit=0 warnings=0 errors=0
-sim        PASS        9.8  exit=0 Passed!  - Failed:     0, Passed:    27, Skipped:     0, Total:    27, Duration: 303 ms - Kabarma.Sim.Tests.dll (net8.0)
-bot        PASS      107.5  exit=0 RESULT ok credits=120 eggs=1 kills=21 cards=3 maya=48 stations=4 harvests=4
-buildtest  PASS        4.3  exit=0 placed=75 failed=0 pieces=71
-ekonomi    PASS       63.8  exit=0 ok=77 fail=0
+build      PASS        2.4  exit=0 warnings=0 errors=0
+sim        PASS        2.5  exit=0 Passed!  - Failed:     0, Passed:    30, Skipped:     0, Total:    30, Duration: 145 ms - Kabarma.Sim.Tests.dll (net8.0)
+bot        PASS        105  exit=0 RESULT ok credits=120 eggs=1 kills=21 cards=3 maya=48 stations=4 harvests=4
+buildtest  PASS        3.4  exit=0 placed=75 failed=0 pieces=71
+ekonomi    PASS       62.2  exit=0 ok=82 fail=0
 TEST PASS

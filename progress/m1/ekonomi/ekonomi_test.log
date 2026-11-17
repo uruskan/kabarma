@@ -23,7 +23,7 @@ OK   El Arabasi bedeli dustu
 OK   El Arabasi dunyaya cikti (cantaya girmedi)
 OK   tutamakta E: dogrudan tutamaga gecildi (menu yok)
 OK   itme: yurume hizinin %80'i, depar yok
-OK   itme hizi 4.02 m/sn (beklenen ~4.0)
+OK   itme hizi 4.01 m/sn (beklenen ~4.0)
 OK   araba oyuncunun onunde (1.71 m)
 OK   E ile birakildi, hiz geri geldi
 OK   arabanin yaninda E: yuva menusu
@@ -75,4 +75,9 @@ OK   yendi: sebze_corbasi
 OK   uc yemek: azami can +50 (150)
 OK   uc yemek: azami dayaniklilik +40 (Sim)
 OK   uc yemek yuvasi dolu
-ECONOMY RESULT ok=77 fail=0
+OK   kalite: kare surulup ekildi
+OK   kalite: nem hic dusmedi (en az ★2, GDD 8.2)
+OK   Biçme hasadi yildizla cantada (★2 +5, ★3 +0)
+OK   kalite kasaya gecti
+OK   kasa degeri taban × kalite (98 = 98)
+ECONOMY RESULT ok=82 fail=0
