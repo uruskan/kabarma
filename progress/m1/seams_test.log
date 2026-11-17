@@ -1,0 +1,25 @@
+tools/test.ps1  2026-11-17 22:38  git 3a17eea
+
+[PASS] build  exit=0 warnings=0 errors=0
+[PASS] sim  exit=0 Passed!  - Failed:     0, Passed:    16, Skipped:     0, Total:    16, Duration: 203 ms - Kabarma.Sim.Tests.dll (net8.0)
+[PASS] bot  exit=0 RESULT ok credits=210 eggs=1 kills=21 cards=3 maya=48 stations=3 harvests=4
+[PASS] buildtest  exit=0 placed=60 failed=0 pieces=56
+
+sinama     sonuc  sure(sn)  ayrinti
+------     -----  --------  -------
+build      PASS       12.8  exit=0 warnings=0 errors=0
+sim        PASS        8.7  exit=0 Passed!  - Failed:     0, Passed:    16, Skipped:     0, Total:    16, Duration: 203 ms - Kabarma.Sim.Tests.dll (net8.0)
+bot        PASS      111.6  exit=0 RESULT ok credits=210 eggs=1 kills=21 cards=3 maya=48 stations=3 harvests=4
+buildtest  PASS        6.3  exit=0 placed=60 failed=0 pieces=56
+TEST PASS
+
+Kirmizi yol kaniti (ayni kod, elle kosuldu):
+  --test=bot --fast=4 --quit_after=20 --mute  -> exit=1
+    RESULT fail bot did not reach end step=grow t=20.0
+  scenario.json basina gecici "zzz_deneme" adimi, --test=bot  -> exit=1 (dosya geri alindi)
+    BOT unknown step zzz_deneme
+    RESULT fail bot unknown_step=zzz_deneme t=1.1
+  --test=nope  -> exit=2
+    RESULT fail unknown test 'nope' (bilinen: bot, build, netsync, swarm)
+  --test=build penceresiz (basliksiz) build_test.log, progress/m1/build_test.log ile SHOT disi satirlarda birebir ayni.
+  --test=build pencereli (--resolution 1600x900, --test_out gecici klasor) -> exit=0, 9 ekran goruntusu, placed=60 failed=0.
