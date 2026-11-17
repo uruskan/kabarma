@@ -1,0 +1,17 @@
+; Engine configuration file.
+; Godot 4.7.2 .NET (C#) project for Kabarma. See docs/TEKNIK.md.
+
+config_version=5
+
+[application]
+
+config/name="Kabarma"
+config/features=PackedStringArray("4.7", "C#", "Forward Plus")
+
+[dotnet]
+
+project/assembly_name="Kabarma.Game"
+
+[physics]
+
+3d/physics_engine="Jolt Physics"
