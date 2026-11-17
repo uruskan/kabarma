@@ -26,7 +26,9 @@ L = ["# Esya ikonlari: kaynaklar ve istemler", "",
      "## Ikonlar", "", "| Kimlik | Yol | Kaynak / istem |", "|---|---|---|"]
 for i in icons:
     r = routes.get(i) or ("agy" if i in agy_items and i not in models else "model")
-    if r == "agy" and i in agy_items:
+    if r == "megascans":
+        L.append(f"| `{i}` | model (Megascans) | `F:/Assets/small_stones_pack_vbuxda0iw_high.glb` (Quixel Megascans, sahibin Fab kitapligi; Fab Standart Lisansi, oyunda kullanim serbest; model repoya kopyalanmadi, yalniz render) |")
+    elif r == "agy" and i in agy_items:
         L.append(f"| `{i}` | agy | {agy_items[i]['subject']} |")
     elif i in models:
         m = models[i]
