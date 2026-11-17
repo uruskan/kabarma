@@ -44,9 +44,9 @@ public partial class Player
         // Nisan: konum elden (kol IK'si eli nisana goturur), yon nisandan; geri tepme yayi.
         var fwd = Facing || AimOverride != null ? (_aimCache - hand.Origin).Normalized() : Visual.GlobalBasis.Z;
         if (fwd.LengthSquared() < 0.01f) fwd = Visual.GlobalBasis.Z;
-        _capa.GlobalPosition = hand.Origin + fwd * (0.12f - _recoil * 0.18f) + Vector3.Up * _recoil * 0.05f;
+        _capa.GlobalPosition = hand.Origin + fwd * (0.12f - _recoil * RecoilPushBack) + Vector3.Up * _recoil * RecoilLift; // feel.json (Player.Feel.cs)
         var look = Basis.LookingAt(-fwd, Vector3.Up);
-        _capa.GlobalBasis = look.Rotated(look.X, _recoil * 0.6f);
+        _capa.GlobalBasis = look.Rotated(look.X, _recoil * RecoilTilt);
         _capaFromHand = _capa.GlobalPosition.DistanceTo(hand.Origin);
     }
 }

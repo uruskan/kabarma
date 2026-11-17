@@ -251,7 +251,7 @@ public partial class Player : CharacterBody3D
     public void Shake(float amount) => _shake = Mathf.Max(_shake, amount);
 
     /// <summary>Geri tepme yayi (GDD 4): Capa geriye ve yukari teper, yayla yerine doner.</summary>
-    public void Recoil(float amount) => _recoilVel += amount * 9f;
+    public void Recoil(float amount) => _recoilVel += amount * RecoilImpulse; // Player.Feel.cs
 
     public bool Facing; // arac kullanilirken govde kameraya doner
     public bool Carrying; // Cekim ile yuk tasirken agir yuk yurumesi
@@ -315,7 +315,7 @@ public partial class Player : CharacterBody3D
         UpdateAnim(dt, flat); // Player.Anim.cs
 
         // Capa geri tepme yayi: x'' = -k x - c x' (Capa'nin yeri Player.Grip.cs'te, iskeletin son pozunda).
-        _recoilVel += (-180f * _recoil - 18f * _recoilVel) * dt;
+        _recoilVel += (-RecoilStiffness * _recoil - RecoilDamping * _recoilVel) * dt; // feel.json recoil (Player.Feel.cs)
         _recoil += _recoilVel * dt;
 
         float yawRate = Mathf.AngleDifference(_prevYaw, Visual.Rotation.Y) / dt;
@@ -333,10 +333,10 @@ public partial class Player : CharacterBody3D
         // Kamera sarsintisi
         if (_shake > 0)
         {
-            _shake = Mathf.Max(0, _shake - dt * 2.5f);
+            _shake = Mathf.Max(0, _shake - dt * ShakeDecay);
             float s = _shake * _shake;
-            Cam.HOffset = (float)GD.RandRange(-1, 1) * s * 0.4f;
-            Cam.VOffset = (float)GD.RandRange(-1, 1) * s * 0.4f;
+            Cam.HOffset = (float)GD.RandRange(-1, 1) * s * ShakeOffset;
+            Cam.VOffset = (float)GD.RandRange(-1, 1) * s * ShakeOffset;
         }
         else { Cam.HOffset = 0; Cam.VOffset = 0; }
 

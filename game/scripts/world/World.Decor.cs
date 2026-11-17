@@ -70,6 +70,11 @@ public partial class World
 
     int PatchCount(string id) => Biome.Patches.Where(p => p.Decor == id).Sum(p => p.Count);
 
+    /// <summary>Bu noktadaki agac turlerinin MultiMesh parcalari (Capa.Bicme agac esnemesi, capa akisi; entegrasyon).</summary>
+    public IEnumerable<MultiMeshInstance3D> TreeChunksAt(Vector3 p) => Biome.Decor.Where(d => d.Tree)
+        .Select(d => GetNodeOrNull<MultiMeshInstance3D>($"{d.Id}_{Mathf.FloorToInt(p.X / DecorChunk)}_{Mathf.FloorToInt(p.Z / DecorChunk)}"))
+        .Where(m => m != null);
+
     public bool InClearing(Vector3 p) =>
         Biomes.World.Clearings.Any(c => c.Count >= 3 && new Vector2(p.X - c[0], p.Z - c[1]).Length() < c[2]);
 

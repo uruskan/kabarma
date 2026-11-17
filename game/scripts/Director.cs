@@ -34,7 +34,6 @@ public partial class Director : Node3D
     public enum Act { Day, Dusk, Night, Dawn, Report, Free }
     public Act Phase { get; private set; } = Act.Day;
     float _actT;
-    float _hitStop;
     float _slowMo = 1f;
     public float SpeedScale = 1f; // --fast
     bool _introDone;
@@ -80,6 +79,7 @@ public partial class Director : Node3D
         Player.Wheel = rel => Hud?.WheelMotion(rel);
         FeelPanel = new FeelPanel { Name = "FeelPanel" };
         AddChild(FeelPanel);
+        WireFeel(); // Director.Feel.cs: his ayarlari oyuncuya (geri tepme yayi, sarsinti)
         Hud = new Hud { Name = "Hud" };
         Hud.Init(this);
         AddChild(Hud);
@@ -141,8 +141,6 @@ public partial class Director : Node3D
     /// <summary>Girise gorsel tepki verildi (gecikme olcumu, F1 paneli).</summary>
     public void MarkReaction() => FeelPanel?.MarkReaction();
 
-    public void HitStop(float seconds) => _hitStop = Mathf.Max(_hitStop, seconds);
-
     public Vector3 FarmCenter()
     {
         var plots = State.Farm.Plots.ToList();
@@ -157,7 +155,7 @@ public partial class Director : Node3D
     public override void _Process(double delta)
     {
         float realDt = (float)delta;
-        if (_hitStop > 0) { _hitStop -= realDt; Engine.TimeScale = 0.08f * SpeedScale; }
+        if (HitStopActive()) Engine.TimeScale = Feel.Data.HitStop.TimeScale * SpeedScale; // Director.Feel.cs: gercek saatle
         else Engine.TimeScale = _slowMo * SpeedScale;
         float dt = realDt; // delta zaten TimeScale ile olcekli
         _actT += dt;
