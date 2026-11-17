@@ -2,7 +2,14 @@
 
 Alt oturum kredi harcamaz (CLAUDE.md). Asagidaki is ana oturumun onayiyla, onun calistirmasi icindir.
 
-## 1. Zipzip yurume klibi (tek istek)
+## 1. Zipzip yurume klibi (tek istek): TAMAMLANDI, 10 kredi
+
+**Durum (2026-11-18):** ana oturum uretti: gorev `446094f2-9317-4d25-ac9b-4f1f2d25ac89`, 10 kredi (Tripo API,
+bakiye 310), `animate_in_place=true`. Ham cikti
+`.tools/tripo/zipzip/anim-walk/tripo-out/zipzip-walk-retarget-446094f2/model.glb`. `pipeline/merge_clips.py --only walk`
+ile `zipzip_5k.glb`'ye eklendi (cikti klipleri hurt, idle, jump, run, walk; eslesmeyen kemik yok:
+`zipzip_5k_walk_merge.report.json`). Veride `clips.walk: "glb:walk"`, `placeholder: []`. Zipzip'in 8 yuvasindan 5'i
+artik Tripo klibi (idle, walk, run, attack1=jump, hit=hurt), 3'u poz (attack2, eat, rest). Asagisi istegin ilk hali.
 
 | Alan | Deger |
 |---|---|

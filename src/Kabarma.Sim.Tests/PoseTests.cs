@@ -110,12 +110,22 @@ public class PoseTests
     }
 
     [Fact]
-    public void Zipzip_is_a_small_creature_and_its_walk_is_marked_placeholder()
+    public void Zipzip_is_a_small_creature_and_walks_with_its_tripo_clip()
     {
-        // SANAT-SES §4: Zipzip kucuk sinif, en cok 5.000 ucgen; yuruyus hazir klipten gelmeli, poz yuruyusu yer tutucu.
+        // SANAT-SES §4: Zipzip kucuk sinif, en cok 5.000 ucgen; yuruyus hazir klipten (uretim istegi 2026-11-18,
+        // zipzip_5k.glb'ye merge_clips.py ile eklendi), artik yer tutucu yok.
         var z = D.Creature("zipzip").Rig!;
         Assert.Equal(5000, z.TriBudget);
-        Assert.Equal("pose", z.ClipSource("walk"));
-        Assert.Contains("walk", z.Placeholder);
+        Assert.Equal("glb:walk", z.ClipSource("walk"));
+        Assert.DoesNotContain("walk", z.Placeholder);
+    }
+
+    [Fact]
+    public void Placeholder_slots_are_pose_stand_ins()
+    {
+        // URETIM §3: yer tutucu veride isaretli. Isaretli bir yuva, hazir klip gelene kadar pozdan oynar.
+        foreach (var c in D.Creatures.Creatures.Where(c => c.Rig != null))
+            foreach (var slot in c.Rig!.Placeholder)
+                Assert.Equal("pose", c.Rig.ClipSource(slot));
     }
 }
