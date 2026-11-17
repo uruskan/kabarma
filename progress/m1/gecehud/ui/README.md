@@ -33,8 +33,9 @@ Görüntü komutu (her boy için ayrı koşu):
 --test=bot --fast=3 --quit_after --mute --bot_card_delay=3 --gecehud_shots=ui/sonra_<boy> --hudopen=wheel:150,bag:292,station:297
 ```
 
-2560×1440 tam ekran koşusunda bot 306 sn sınırına dek son adıma varamadı (`RESULT fail ... step=yapi`): görüntü koşusu
-`--quit_after` ile kesilir ve bu boyda kare süresi uzun; bütün görüntüler ondan önce alındı. Oyunun doğruluğu `test.log`'daki
+2560×1440 tam ekran koşusunda bot 306 sn sınırına dek son adıma varamadı (`RESULT fail ... step=yapi`). Görüntü koşusu
+`--quit_after` ile kesilir. Olası neden (doğrulanmadı): `--hudopen` envanter ve istasyon görüntüsü için botu `yapi`
+adımındayken bekletti, ya da bu boyda kare süresi uzun. Bütün görüntüler ondan önce alındı. Oyunun doğruluğu `test.log`'daki
 tam koşuda (`tools/test.ps1`) sınanır.
 
 Görsel yargı (Rust'a benzerlik, okunurluk, his) **sahibin onayını bekliyor**.
