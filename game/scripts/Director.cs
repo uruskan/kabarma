@@ -55,6 +55,14 @@ public partial class Director : Node3D
         AddChild(Pod);
         Pod.GlobalPosition = World.Ground(PodPos) + Vector3.Down * 0.1f;
         Pod.RotationDegrees = new Vector3(0, 200, 0);
+        // M0 denemesi #1: sulama kovasi (Tripo web, 2.908 ucgen) kapsulun yaninda duruyor: Sulama basliginin dunyadaki isareti.
+        var kova = Assets.Load("res://assets/models/kova/kova.glb");
+        if (kova != null)
+        {
+            AddChild(kova);
+            kova.GlobalPosition = World.Ground(PodPos + new Vector3(-2.2f, 0, 1.2f));
+            kova.RotationDegrees = new Vector3(0, 35, 0);
+        }
 
         Player = new Player { Name = "Player" };
         var pd = Data.Tool.Player;

@@ -214,6 +214,11 @@ public partial class World : Node3D
         // Agaclar: tiknaz govde + yuvarlak tac kumeleri. Ussun 22 m icine konmaz.
         var trees = new MeshKit();
         var bushes = new MeshKit();
+        // M0 denemesi #1: Tripo'dan dokulu cayir agaci (6.788 ucgen, 1K doku). Varsa butun agaclar ondan, tek MultiMesh.
+        var treeNode = Assets.Load("res://assets/models/agac/agac.glb");
+        var treeMesh = Assets.FirstMesh(treeNode);
+        treeNode?.Free(); // yalnizca mesh'i lazim; sahneye girmeyen dugum serbest birakilir
+        var treeXf = new System.Collections.Generic.List<Transform3D>();
         for (int i = 0; i < 70; i++)
         {
             var p = new Vector3(_rng.RandfRange(-75, 75), 0, _rng.RandfRange(-75, 75));
@@ -222,6 +227,12 @@ public partial class World : Node3D
             if (_rng.Randf() < 0.45f)
             {
                 float s = _rng.RandfRange(0.8f, 1.5f);
+                if (treeMesh != null)
+                {
+                    // Model 4,2 m; cesitlilik icin boy ve yon rastgele.
+                    treeXf.Add(new Transform3D(Basis.FromEuler(new Vector3(0, _rng.Randf() * Mathf.Tau, 0)).Scaled(Vector3.One * s * 0.95f), p + Vector3.Down * 0.1f));
+                    continue;
+                }
                 trees.Cylinder(0.28f * s, 0.42f * s, 2.4f * s, MeshKit.At(p + new Vector3(0, 1.1f * s, 0)), Palette.Wood.Lerp(Palette.Shadow, 0.25f), 8);
                 var leaf = Palette.Plant.Lerp(Palette.Accent, _rng.Randf() < 0.25f ? 0.45f : 0f);
                 trees.Sphere(1.6f * s, MeshKit.At(p + new Vector3(0, 3.2f * s, 0), Vector3.Zero, new Vector3(1, 0.85f, 1)), leaf, 10, 6);
@@ -237,7 +248,20 @@ public partial class World : Node3D
                     bushes.Sphere(0.22f * s, MeshKit.At(p + new Vector3(0.3f, 1.0f * s, 0.2f)), Palette.Accent, 6, 4);
             }
         }
-        AddChild(trees.Instance());
+        if (treeMesh != null && treeXf.Count > 0)
+        {
+            var mm = new MultiMesh { TransformFormat = MultiMesh.TransformFormatEnum.Transform3D, Mesh = treeMesh, InstanceCount = treeXf.Count };
+            for (int i = 0; i < treeXf.Count; i++) mm.SetInstanceTransform(i, treeXf[i]);
+            AddChild(new MultiMeshInstance3D { Multimesh = mm, Name = "Trees" });
+            foreach (var xf in treeXf)
+            {
+                var body = new StaticBody3D();
+                body.AddChild(new CollisionShape3D { Shape = new CylinderShape3D { Radius = 0.45f * xf.Basis.Scale.X, Height = 3f * xf.Basis.Scale.Y }, Position = new Vector3(0, 1.5f * xf.Basis.Scale.Y, 0) });
+                AddChild(body);
+                body.GlobalPosition = xf.Origin;
+            }
+        }
+        else AddChild(trees.Instance());
         var b = bushes.Instance();
         b.CastShadow = GeometryInstance3D.ShadowCastingSetting.Off;
         AddChild(b);
