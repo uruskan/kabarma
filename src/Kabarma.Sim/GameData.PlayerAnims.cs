@@ -60,12 +60,7 @@ public sealed class PlayerRigDef
     public float BankMaxDeg { get; set; } = 8f;
     public float BankGain { get; set; } = 1.5f;
     public float RecoilSpineDeg { get; set; } = 7f;
-    // Canta yayi: x'' = -k (x - hedef) - c x'; hedef = ivme x kazanc.
-    public float BagStiffness { get; set; } = 60f;
-    public float BagDamping { get; set; } = 6f;
-    public float BagGain { get; set; } = 0.02f;
-    public float BagMaxPitch { get; set; } = 0.35f;
-    public float BagMaxRoll { get; set; } = 0.25f;
+    // Canta yayi yok: canta sirta kati bagli (sahip, 18 Kasim).
     // Ragdoll ve kalkis.
     public float DownSeconds { get; set; } = 3f;
     public float KnockdownSeconds { get; set; } = 5f;
