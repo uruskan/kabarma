@@ -66,7 +66,7 @@ public partial class Capa
             if (holdAt.Y < floor) holdAt.Y = floor;
             Held.Body.GlobalPosition = Held.Body.GlobalPosition.Lerp(holdAt, Mathf.Min(1f, dt * c.Follow));
             ShowBeam(muzzle, Held.Body.GlobalPosition, HeadColors[(int)Head.Cekim], 0.5f + k);
-            _d.Hud.Hint(AtRamp(Held.Body.GlobalPosition) ? "Bırak: kargoya yükle (tıkla) · basılı tut: fırlat" : "Kargo Rampası'na taşı · basılı tut, bırak: fırlat");
+            _d.Hud.Hint(AtRamp(Held.Body.GlobalPosition) ? "Bırak: kargoya yükle ({act:fire}) · basılı tut: fırlat" : "Kargo Rampası'na taşı · {act:fire} basılı tut, bırak: fırlat");
             return true;
         }
         if (_missBeamT > 0f)

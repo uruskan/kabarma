@@ -33,6 +33,8 @@ public partial class Hud
     public int InventoryPage => _invPage;
     /// <summary>Secili canta yuvasi.</summary>
     public int InventorySelected => _invSel;
+    /// <summary>Izgaranin sutun sayisi (bot girdi kipinde yon tuslariyla gezer; entegrasyon).</summary>
+    public int InventoryColumns => _invGrid?.Columns ?? 1;
 
     const int CellW = 92, CellH = 78;
 

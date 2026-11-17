@@ -161,7 +161,7 @@ public partial class Director
         chest.Opened = true;
         var items = new List<Hud.MenuItem>();
         TransferItems(items, chest.Storage, () => true, () => OpenChestMenu(chest));
-        Hud.ShowMenu($"{chest.Def.Name} · {chest.Storage.UsedSlots}/{chest.Storage.Slots} yuva", items, Stack(chest.Storage) + "\nE / Esc: kapat");
+        Hud.ShowMenu($"{chest.Def.Name} · {chest.Storage.UsedSlots}/{chest.Storage.Slots} yuva", items, Stack(chest.Storage) + "\n{act:interact} / {act:ui_cancel}: kapat");
     }
 
     public void OpenCartMenu(ElArabasi cart)
@@ -174,7 +174,7 @@ public partial class Director
         TransferItems(items, cart.Slots, () => cart.CanUseSlots, () => OpenCartMenu(cart));
         string what = cart.Load != null ? $"Yük: {(cart.Load is CargoCrateNode cc ? $"Kargo Kasası ({State.Cargo.Value(cc.Crate)} Kredi)" : ItemNames.Of(cart.Load.CropId))}, {cart.Load.Size.Kg} kg (yuvalar kapalı)" : Stack(cart.Slots);
         Hud.ShowMenu($"El Arabası · {cart.Slots.UsedSlots}/{cart.Slots.Slots} yuva", items,
-            what + $"\nTek yük nesnesi (en fazla {Data.Economy.Cart.MaxLoadKg:0} kg) ya da {Data.Economy.Cart.Slots} yuva; ikisi birden değil.  ·  Kasayı Çekim ile arabaya bırak.  ·  E / Esc: kapat");
+            what + $"\nTek yük nesnesi (en fazla {Data.Economy.Cart.MaxLoadKg:0} kg) ya da {Data.Economy.Cart.Slots} yuva; ikisi birden değil.  ·  Kasayı Çekim ile arabaya bırak.  ·  {{act:interact}} / {{act:ui_cancel}}: kapat");
     }
 
     /// <summary>Paketleme Tezgahi: cantadan acik kasaya mal koy, kasayi kapat (kasa yuk nesnesi olarak cikar).</summary>
@@ -196,7 +196,7 @@ public partial class Director
         }
         var open = cargo.Open;
         string foot = open == null ? "Kasa boş." : $"Kasa: {open.Items.UsedSlots}/{open.Items.Slots} yığın · değeri {cargo.Value(open)} Kredi · {open.Kg:0} kg\n{Stack(open.Items)}";
-        Hud.ShowMenu(st.Def.Name, items, foot + "\nSatılan mal kasayla gider: kasayı Çekim ile Kargo Rampası'na taşı.  ·  E / Esc: kapat");
+        Hud.ShowMenu(st.Def.Name, items, foot + "\nSatılan mal kasayla gider: kasayı Çekim ile Kargo Rampası'na taşı.  ·  {act:interact} / {act:ui_cancel}: kapat");
     }
 
     /// <summary>Kargo Rampasi menusu (Director.Input: rampanin dibinde E): rampadaki kasalari gonder.</summary>
@@ -217,7 +217,7 @@ public partial class Director
             OpenRampMenu();
         }));
         string pending = cargo.Pending.Count > 0 ? $"\nYolda: {string.Join(", ", cargo.Pending.Select(x => $"{x.Credits} Kredi ({x.Left:0} sn)"))}" : "";
-        Hud.ShowMenu("Kargo Rampası", items, $"Rampada {n}/{Data.Economy.Ramp.MaxCrates} kasa. Rampa 1–{Data.Economy.Ramp.MaxCrates} kasa ya da tek bir kabarık ürün alır.{pending}\nKasaları ve kabarık ürünü Çekim başlığıyla rampaya taşı.  ·  E / Esc: kapat");
+        Hud.ShowMenu("Kargo Rampası", items, $"Rampada {n}/{Data.Economy.Ramp.MaxCrates} kasa. Rampa 1–{Data.Economy.Ramp.MaxCrates} kasa ya da tek bir kabarık ürün alır.{pending}\nKasaları ve kabarık ürünü Çekim başlığıyla rampaya taşı.  ·  {{act:interact}} / {{act:ui_cancel}}: kapat");
     }
 
     // ---------- rampa ----------

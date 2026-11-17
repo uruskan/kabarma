@@ -61,7 +61,7 @@ public partial class Bot
     {
         if (item is "wood")
         {
-            _d.Capa.Select(Capa.Head.Bicme);
+            Head(Capa.Head.Bicme);
             var t = _d.World.TreePositions.OrderBy(x => x.DistanceTo(P.GlobalPosition)).First();
             Aim(t + Vector3.Up * 1.4f);
             if (MoveTo(t, 3.0f)) Fire = true;
@@ -69,14 +69,14 @@ public partial class Bot
         }
         if (item is "fiber" or "wheat")
         {
-            _d.Capa.Select(Capa.Head.Bicme);
+            Head(Capa.Head.Bicme);
             var tuft = _d.World.Tufts.Where(x => x.Left > 0 && x.Item == item).OrderBy(x => x.Position.DistanceTo(P.GlobalPosition)).FirstOrDefault();
             if (tuft == null) { GD.Print($"BOT no {item} tufts left"); return; }
             Aim(tuft.Position + Vector3.Up * 0.3f);
             if (MoveTo(tuft.Position, 3.0f)) Fire = true;
             return;
         }
-        _d.Capa.Select(Capa.Head.Kazma);
+        Head(Capa.Head.Kazma);
         var rock = _d.World.Rocks.Where(r => IsInstanceValid(r) && r.Stones > 0 && r.Item == item).OrderBy(r => r.GlobalPosition.DistanceTo(P.GlobalPosition)).FirstOrDefault();
         if (rock == null) { GD.Print($"BOT no {item} rocks left"); return; }
         Aim(rock.Center);
@@ -143,8 +143,8 @@ public partial class Bot
     void PlacePiece(string want, Vector3 target, Vector3 stand, bool free)
     {
         var b = _d.Build;
-        _d.Capa.Select(Capa.Head.Insa);
-        if (_d.Capa.CurrentPlaceable != want) { if (_stepT > 0.12f) { _d.Capa.CyclePlaceable(1); _stepT = 0; } return; }
+        Head(Capa.Head.Insa);
+        if (_d.Capa.CurrentPlaceable != want) { if (_stepT > 0.12f) { NextPlaceable(); _stepT = 0; } return; }
         Aim(target + _aimFix + Vector3.Up * 0.3f);
         if (!MoveTo(stand, 0.6f, false)) { _stepT = 0; return; }
         var cur = b.System.Current;
@@ -213,15 +213,15 @@ public partial class Bot
         if (y.Feeder.Amount > 0) return true;
         if (!EnsureItem("wheat", 1)) return false;
         Aim(y.GlobalPosition + Vector3.Up * 0.4f);
-        if (MoveRouted(yemlikStand, 0.5f) && _menuT <= 0) { _d.Interact(); _menuT = 0.8f; }
+        if (MoveRouted(yemlikStand, 0.5f) && _menuT <= 0) { Use(); _menuT = 0.8f; }
         return false;
     }
 
     /// <summary>Istasyon olmayan yerlestirilebiliri (Yemlik, Folluk) koyar: Insa, tekerlek, durulacak yer, nisan, sol tik.</summary>
     void PlacePropAt(string id, Vector3 at, Vector3 stand)
     {
-        _d.Capa.Select(Capa.Head.Insa);
-        if (_d.Capa.CurrentPlaceable != id) { if (_stepT > 0.15f) { _d.Capa.CyclePlaceable(1); _stepT = 0; } return; }
+        Head(Capa.Head.Insa);
+        if (_d.Capa.CurrentPlaceable != id) { if (_stepT > 0.15f) { NextPlaceable(); _stepT = 0; } return; }
         Aim(at);
         if (!MoveRouted(stand, 0.5f)) { _stepT = 0; return; }
         if (_stepT > 1.0f) { FirePressed = true; _stepT = 0; GD.Print($"BOT place {id} at {at}"); }
@@ -238,14 +238,14 @@ public partial class Bot
             // Bugday: oyuncunun yolu (E), Gidak'in yanina git.
             if (!EnsureItem("wheat", 1)) return;
             Aim(g.GlobalPosition + Vector3.Up * 0.4f);
-            if (MoveTo(g.GlobalPosition, 1.8f, false) && _menuT <= 0) { _d.Interact(); _menuT = 0.8f; }
+            if (MoveTo(g.GlobalPosition, 1.8f, false) && _menuT <= 0) { Use(); _menuT = 0.8f; }
             return;
         }
         var (outside, inside) = GatePoints(gate);
         if (!gate.Open)
         {
             Aim(gate.Piece.GlobalPosition + Vector3.Up);
-            if (MoveRouted(outside, 0.5f) && _menuT <= 0) { _d.Interact(); _menuT = 0.8f; }
+            if (MoveRouted(outside, 0.5f) && _menuT <= 0) { Use(); _menuT = 0.8f; }
             return;
         }
         // Kapidan iceri: once kapinin disina, sonra icine; Gidak izler.
@@ -275,14 +275,14 @@ public partial class Bot
                 var pc = _d.Pens.Pens[0].Centroid;
                 var toC = new Vector3(pc.X - nest.GlobalPosition.X, 0, pc.Z - nest.GlobalPosition.Z).Normalized();
                 Aim(nest.GlobalPosition + Vector3.Up * 0.6f);
-                if (MoveTo(nest.GlobalPosition + toC * 1.2f, 0.4f, false) && _menuT <= 0) { _d.Interact(); _menuT = 0.6f; }
+                if (MoveTo(nest.GlobalPosition + toC * 1.2f, 0.4f, false) && _menuT <= 0) { Use(); _menuT = 0.6f; }
                 return;
             }
             var egg = _d.Pens.GroundEggs.FirstOrDefault(e => IsInstanceValid(e));
             if (egg != null)
             {
                 Aim(egg.GlobalPosition);
-                if (MoveTo(egg.GlobalPosition, 0.8f, false) && _menuT <= 0) { _d.Interact(); _menuT = 0.6f; }
+                if (MoveTo(egg.GlobalPosition, 0.8f, false) && _menuT <= 0) { Use(); _menuT = 0.6f; }
                 return;
             }
             var (outside, inside) = GatePoints(gate);
@@ -295,7 +295,7 @@ public partial class Bot
             if (gate.Open)
             {
                 Aim(gate.Piece.GlobalPosition + Vector3.Up);
-                if (MoveRouted(outside, 0.6f) && _menuT <= 0) { _d.Interact(); _menuT = 0.8f; }
+                if (MoveRouted(outside, 0.6f) && _menuT <= 0) { Use(); _menuT = 0.8f; }
                 return;
             }
         }
@@ -336,7 +336,7 @@ public partial class Bot
         int i = 0;
         if (Main.Args.TryGetValue("botcard", out var want))
             for (int k = 0; k < o.Cards.Count; k++) if (o.Cards[k].Id == want) { i = k; break; }
-        _d.ChooseCard(i);
+        Card(i);
     }
 
     bool HoldBehindFence()

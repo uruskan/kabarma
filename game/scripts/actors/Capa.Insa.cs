@@ -98,7 +98,7 @@ public partial class Capa
         _okOverlay ??= new StandardMaterial3D { ShadingMode = BaseMaterial3D.ShadingModeEnum.Unshaded, Transparency = BaseMaterial3D.TransparencyEnum.Alpha, AlbedoColor = new Color(0.4f, 1f, 0.55f, 0.35f) };
         _badOverlay ??= new StandardMaterial3D { ShadingMode = BaseMaterial3D.ShadingModeEnum.Unshaded, Transparency = BaseMaterial3D.TransparencyEnum.Alpha, AlbedoColor = new Color(1f, 0.3f, 0.25f, 0.4f) };
         foreach (var mi in _ghost.FindChildren("*", "MeshInstance3D", true, false).OfType<MeshInstance3D>()) { mi.Transparency = 0.4f; mi.MaterialOverlay = _ghostOk ? _okOverlay : _badOverlay; mi.CastShadow = GeometryInstance3D.ShadowCastingSetting.Off; }
-        _d.Hud.Hint($"İnşa: {def?.Name} ({(def != null ? CostText(def) : "")})  ·  tekerlek: değiştir  ·  R: döndür", 0.2f);
+        _d.Hud.Hint($"İnşa: {def?.Name} ({(def != null ? CostText(def) : "")})  ·  {{act:build_next}}: değiştir  ·  {{act:build_rotate}}: döndür", 0.2f);
     }
 
     public void PlaceOcak(Vector3 at)

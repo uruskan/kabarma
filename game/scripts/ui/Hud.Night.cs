@@ -183,7 +183,7 @@ public partial class Hud
             var v = new VBoxContainer();
             v.AddThemeConstantOverride("separation", 2);
             var top = new HBoxContainer();
-            var key = L($"[{OfferKeys[i]}]", 18, Palette.Warning, true);
+            var key = L(G($"{{act:card_{i + 1}}}"), 18, Palette.Warning, true); // girdi akisi: aygitin glifi
             var rar = L(RarityName(card.Rarity), 14, rc, true);
             rar.SizeFlagsHorizontal = Control.SizeFlags.ExpandFill;
             rar.HorizontalAlignment = HorizontalAlignment.Right;

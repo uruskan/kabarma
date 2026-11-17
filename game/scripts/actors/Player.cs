@@ -130,7 +130,8 @@ public partial class Player : CharacterBody3D
     public override void _Input(InputEvent e)
     {
         if (e is InputEventMouseMotion wm && LookLocked) { Wheel?.Invoke(wm.Relative); return; }
-        if (e is InputEventMouseMotion mm && Input.MouseMode == Input.MouseModeEnum.Captured)
+        // Basliksiz kipte imlec yok, kilitlenemez: fare hareketi yine bakistir (--test=input).
+        if (e is InputEventMouseMotion mm && (Input.MouseMode == Input.MouseModeEnum.Captured || DisplayServer.GetName() == "headless"))
         {
             Yaw.RotateY(-mm.Relative.X * MouseSens);
             var r = Pitch.Rotation;
@@ -140,7 +141,7 @@ public partial class Player : CharacterBody3D
         // Pencereye tiklayinca fare oyuna kilitlenir (pano tiklanabilir bir sey tasimaz).
         if (e is InputEventMouseButton mb && mb.Pressed && Input.MouseMode != Input.MouseModeEnum.Captured)
             Input.MouseMode = Input.MouseModeEnum.Captured;
-        if (e.IsActionPressed("ui_cancel")) Input.MouseMode = Input.MouseModeEnum.Visible;
+        if (e is InputEventKey && e.IsActionPressed("ui_cancel")) Input.MouseMode = Input.MouseModeEnum.Visible; // kolun Ⓑ'si fareyi birakmaz
     }
 
     /// <summary>Ekranin ortasindan nisan alinan dunya noktasi.</summary>

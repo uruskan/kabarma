@@ -1,0 +1,20 @@
+tools/test.ps1  2026-11-18 00:51  git af67734
+
+[PASS] build  exit=0 warnings=0 errors=0
+[PASS] sim  exit=0 Passed!  - Failed:     0, Passed:    22, Skipped:     0, Total:    22, Duration: 101 ms - Kabarma.Sim.Tests.dll (net8.0)
+[PASS] bench  exit=0 1000 gun 1.759 sn, ayrilan 3448.0 MB, tepe 73.6 MB (Release, 3x3)
+[PASS] bot  exit=0 RESULT ok credits=210 eggs=1 kills=21 cards=3 maya=48 stations=3 harvests=4
+[PASS] buildtest  exit=0 placed=60 failed=0 pieces=56
+[PASS] input_kbm  exit=0 RESULT ok credits=210 eggs=1 kills=21 cards=3 maya=48 stations=3 harvests=5 olay=5303 basis=53 cark=8 menu=0 fare=4422 yanadim=1
+[PASS] input_pad  exit=0 RESULT ok credits=210 eggs=1 kills=21 cards=3 maya=48 stations=3 harvests=4 olay=10475 basis=36 cark=17 menu=5 fare=0 yanadim=1
+
+sinama     sonuc  sure(sn)  ayrinti
+------     -----  --------  -------
+build      PASS        1.6  exit=0 warnings=0 errors=0
+sim        PASS        1.9  exit=0 Passed!  - Failed:     0, Passed:    22, Skipped:     0, Total:    22, Duration: 101 ms - Kabarma.Sim.Tests.dll (net8.0)
+bench      PASS        3.7  exit=0 1000 gun 1.759 sn, ayrilan 3448.0 MB, tepe 73.6 MB (Release, 3x3)
+bot        PASS      105.5  exit=0 RESULT ok credits=210 eggs=1 kills=21 cards=3 maya=48 stations=3 harvests=4
+buildtest  PASS          3  exit=0 placed=60 failed=0 pieces=56
+input_kbm  PASS       80.9  exit=0 RESULT ok credits=210 eggs=1 kills=21 cards=3 maya=48 stations=3 harvests=5 olay=5303 basis=53 cark=8 menu=0 fare=4422 yanadim=1
+input_pad  PASS       83.9  exit=0 RESULT ok credits=210 eggs=1 kills=21 cards=3 maya=48 stations=3 harvests=4 olay=10475 basis=36 cark=17 menu=5 fare=0 yanadim=1
+TEST PASS

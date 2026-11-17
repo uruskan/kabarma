@@ -51,7 +51,7 @@ public partial class Director
                 else Hud.Hint(!st.Queue.IsUnlocked(rr) ? "Tarif kilitli" : !st.Queue.HasFuel(rr, State.Backpack) ? "Yakıt yok: Odun" : "Malzeme yetmiyor ya da istasyon başka bir şey üretiyor", 1.5f);
             }));
         }
-        Hud.ShowMenu(st.Def.Name, items, "1–9: sıraya ekle  ·  E / Esc: kapat");
+        Hud.ShowMenu(st.Def.Name, items, "{act:menu_pick}: sıraya ekle  ·  {act:interact} / {act:ui_cancel}: kapat");
     }
 
     /// <summary>Kemer yuvasini kullanir: yemekse yer, degilse ne oldugunu soyler.</summary>

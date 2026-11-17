@@ -28,7 +28,7 @@ public partial class Bot
     /// <summary>Makine zinciri adimi: Hasat Raporu aciksa once kapatir; degilse menu zamanlayicisini isletip adimi Ocak konumuyla cagirir.</summary>
     Action Machine(Action<Vector3> step) => () =>
     {
-        if (_d.Hud.ReportOpen) { if (_stepT > 1.5f) { _d.CloseReport(); _stepT = 0; } P.MoveOverride = Vector3.Zero; return; }
+        if (_d.Hud.ReportOpen) { if (_stepT > 1.5f) { CloseReport(); _stepT = 0; } P.MoveOverride = Vector3.Zero; return; }
         _menuT -= (float)GetProcessDeltaTime();
         var o = _d.OcakPos;
         step(o);
@@ -36,7 +36,7 @@ public partial class Bot
 
     void StepSell()
     {
-        _d.Capa.Select(Capa.Head.Cekim);
+        Head(Capa.Head.Cekim);
         var held = _d.Capa.Held;
         var pad = _d.Pod.PadCenter;
         if (held == null)
@@ -45,7 +45,9 @@ public partial class Bot
             var loose = _d.GetTree().GetNodesInGroup("swollen").OfType<SwollenCrop>().FirstOrDefault(s => !s.Sold);
             Vector3? target = loose?.GlobalPosition ?? view?.CropTop;
             if (target == null) return;
-            Aim(target.Value);
+            // Kabarik urunun carpisma sekli yok: nisangah dibine (yere) tutulur, insan da oyle yapar; ust noktaya
+            // tutulan kamera isini urunun icinden gecip arkadaki yere carpar ve TryGrab menzil disinda kalir.
+            Aim(_d.World.Ground(target.Value));
             if (MoveTo(target.Value, 4.5f, false) && _stepT > 0.6f) { FirePressed = true; _stepT = 0; }
         }
         else
@@ -70,7 +72,7 @@ public partial class Bot
         var p = P.GlobalPosition;
         if (item == "wood")
         {
-            _d.Capa.Select(Capa.Head.Bicme);
+            Head(Capa.Head.Bicme);
             var tr = _d.World.TreePositions.OrderBy(x => x.DistanceTo(p)).First();
             Aim(tr + Vector3.Up * 1.4f);
             if (MoveTo(tr, 3.0f)) Fire = true;
@@ -82,12 +84,12 @@ public partial class Bot
             var t = _d.World.Tufts.Where(x => x.Left > 0 && x.Item == item && !_d.World.TreePositions.Any(tp => new Vector2(tp.X - x.Position.X, tp.Z - x.Position.Z).Length() < 2.2f))
                 .OrderBy(x => x.Position.DistanceTo(p)).FirstOrDefault();
             if (t == null) { GD.Print($"BOT no {item} tufts left"); return true; }
-            _d.Capa.Select(Capa.Head.Bicme);
+            Head(Capa.Head.Bicme);
             Aim(t.Position + Vector3.Up * 0.3f);
             if (MoveTo(t.Position, 3.0f)) Fire = true;
             return false;
         }
-        _d.Capa.Select(Capa.Head.Kazma);
+        Head(Capa.Head.Kazma);
         var rock = _d.World.Rocks.Where(r => IsInstanceValid(r) && r.Stones > 0 && r.Item == item).OrderBy(r => r.GlobalPosition.DistanceTo(p)).FirstOrDefault();
         if (rock == null) { GD.Print($"BOT no {item} rocks left"); return true; }
         Aim(rock.Center);
@@ -104,8 +106,8 @@ public partial class Bot
     /// <summary>Insa basliginda istenen yerlestirilebiliri secip verilen noktaya koyar.</summary>
     void PlaceAt(string id, Vector3 at)
     {
-        _d.Capa.Select(Capa.Head.Insa);
-        if (_d.Capa.CurrentPlaceable != id) { if (_stepT > 0.15f) { _d.Capa.CyclePlaceable(1); _stepT = 0; } return; }
+        Head(Capa.Head.Insa);
+        if (_d.Capa.CurrentPlaceable != id) { if (_stepT > 0.15f) { NextPlaceable(); _stepT = 0; } return; }
         var standAt = at + new Vector3(0, 0, -4.5f);
         Aim(_d.World.Ground(at));
         if (MoveTo(standAt, 0.6f, false) && _stepT > 1.0f) { FirePressed = true; _stepT = 0; }
@@ -118,8 +120,8 @@ public partial class Bot
     {
         Aim(st.GlobalPosition + Vector3.Up);
         if (!MoveTo(st.GlobalPosition + (P.GlobalPosition - st.GlobalPosition).Normalized() * 2.2f, 0.5f, false)) return;
-        if (!_d.Hud.MenuOpen && st.Queue.Active == null && _menuT <= 0) { _d.Interact(); _menuT = 0.6f; }
-        else if (_d.Hud.MenuOpen && _menuT <= 0) { _d.Hud.ActivateMenu(item); _d.Hud.HideMenu(); _menuT = 1.0f; }
+        if (!_d.Hud.MenuOpen && st.Queue.Active == null && _menuT <= 0) { Use(); _menuT = 0.6f; }
+        else if (_d.Hud.MenuOpen && _menuT <= 0) { MenuPick(item); MenuClose(); _menuT = 1.0f; }
     }
 
     /// <summary>Yerlestirilebilirin bedeli (placeables.json): once hepsini topla, sonra kur.</summary>
@@ -150,7 +152,7 @@ public partial class Bot
 
     void StepHasat(Vector3 o)
     {
-        _d.Capa.Select(Capa.Head.Bicme);
+        Head(Capa.Head.Bicme);
         var v = _d.FarmView.Views.Where(x => x.Plot.Planted && x.Plot.Stage == Kabarma.Sim.CropStage.Mature)
             .OrderBy(x => x.GlobalPosition.DistanceTo(P.GlobalPosition)).FirstOrDefault();
         if (v == null) { GD.Print("BOT nothing to harvest"); return; }
@@ -171,8 +173,8 @@ public partial class Bot
         if (_d.State.Backpack.Count("sebze_corbasi") > 0)
         {
             P.MoveOverride = Vector3.Zero;
-            if (!_d.Hud.MenuOpen && _menuT <= 0) { _d.OpenBagMenu(); _menuT = 0.5f; }
-            else if (_d.Hud.MenuOpen && _menuT <= 0) { _d.Hud.InventorySelect("sebze_corbasi"); _d.Hud.InventoryAccept(); _d.Hud.HideMenu(); _menuT = 1f; } // envanter izgarasi: corbayi sec, Enter
+            if (!_d.Hud.MenuOpen && _menuT <= 0) { Bag(); _menuT = 0.5f; }
+            else if (_d.Hud.InventoryOpen && _menuT <= 0 && BagUse("sebze_corbasi")) { MenuClose(); _menuT = 1f; } // envanter izgarasi: corbaya git, Enter (Bot.Hands.cs)
         }
         else if (st.Queue.Active != null) WaitAt(st);
         else if (EnsureItem("wood", 1)) UseStation(st, RecipeIndex(st, "sebze_corbasi"));
@@ -207,11 +209,11 @@ public partial class Bot
         {
             Aim(pad + Vector3.Up);
             if (!MoveTo(pad + (P.GlobalPosition - pad).Normalized() * 3.2f, 0.6f, false)) return;
-            if (!_d.Hud.MenuOpen && _menuT <= 0) { _d.Interact(); _menuT = 0.6f; }
-            else if (_d.Hud.MenuOpen && _menuT <= 0) { _d.Hud.ActivateMenu(0); _d.Hud.HideMenu(); _menuT = 1f; }
+            if (!_d.Hud.MenuOpen && _menuT <= 0) { Use(); _menuT = 0.6f; }
+            else if (_d.Hud.MenuOpen && _menuT <= 0) { MenuPick(0); MenuClose(); _menuT = 1f; }
             return;
         }
-        _d.Capa.Select(Capa.Head.Cekim);
+        Head(Capa.Head.Cekim);
         if (_d.Capa.Held == null)
         {
             Aim(crate.GlobalPosition);

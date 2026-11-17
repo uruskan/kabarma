@@ -70,7 +70,7 @@ public partial class Hud
             var next = o.Tracked?.Current;
             if (next != null) v.AddChild(L($"Sıradaki iş emri: {next.Goal}.", 21, Palette.DarkGrey, true));
         }
-        v.AddChild(L("Enter / A: rapor kapanır. Defter: Tab, sonra Q.", 16, Palette.Shadow));
+        v.AddChild(L(G("{act:ui_accept}: rapor kapanır. Defter: {act:bag}, sonra Q."), 16, Palette.Shadow));
         _report.AddChild(v);
         IgnoreMouse(_report);
         _report.Visible = true;

@@ -1,0 +1,53 @@
+﻿TEST input
+INPUT driver device=Kbm problems=0 user=.tools\run\test\input_user_kbm.json
+BOT step mine t=1.0
+INPUT rebind interact Kbm -> F
+INPUT probe ok device=Kbm interact: E->F->E glyph [F]->[E] last=Kbm user=.tools\run\test\input_user_kbm.json
+INPUT heads ok device=Kbm n=8 via=keys+wheel
+STEP mine -> ocak t=4.5
+BOT step ocak t=11.9
+STEP ocak -> till t=5.1
+BOT step till t=14.2
+STEP till -> plant t=5.6
+BOT step plant t=16.4
+STEP plant -> water t=6.2
+BOT step water t=18.8
+STEP water -> grow t=6.8
+BOT step grow t=20.8
+STEP grow -> night t=31.3
+BOT step night t=119.0
+STEP night -> sell t=63.4
+BOT step sell t=236.8
+SOLD turnip S +120 credits=120
+STEP sell -> tezgah_kur t=64.4
+BOT step tezgah_kur t=240.8
+PLACED tezgah at (-5.2129583, 0, 1.6513722)
+STEP tezgah_kur -> civi t=65.1
+BOT step civi t=243.6
+QUEUED civi
+STEP civi -> hasat t=66.1
+PRODUCED civi civi=49 soup=0 crates=0
+BOT step hasat t=247.5
+STEP hasat -> firin_kur t=66.6
+BOT step firin_kur t=249.7
+PLACED tas_firin at (-5.7407403, 0, -5.567536)
+STEP firin_kur -> corba t=68.6
+BOT step corba t=257.7
+QUEUED sebze_corbasi
+PRODUCED sebze_corbasi civi=49 soup=1 crates=0
+STEP corba -> paketle t=69.9
+BOT step paketle t=262.9
+PLACED paketleme at (-1.026814, 0, 5.539089)
+QUEUED kargo_kasasi
+STEP paketle -> kasa_sat t=73.1
+PRODUCED kargo_kasasi civi=49 soup=0 crates=1
+BOT step kasa_sat t=275.7
+STEP kasa_sat -> odun t=74.4
+SOLD kargo_kasasi x1 +90
+BOT step odun t=280.9
+STEP odun -> yapi t=76.2
+BOT step yapi t=287.9
+STEP yapi -> end t=80.7
+BOT step end t=306.0
+RESULT ok credits=210 eggs=1 kills=21 cards=3 maya=48 stations=3 harvests=5 t=306.0
+INPUT summary device=Kbm events=5303 taps=53 wheels=8 menuNavs=0 mouseMoves=4422 sidesteps=1 last=Kbm actions=bag,build_next,card_1,fire,head_1,head_2,head_3,head_4,head_5,head_6,head_7,head_8,head_wheel,interact,move_back,move_forward,move_left,move_right,sprint,ui_accept,ui_cancel

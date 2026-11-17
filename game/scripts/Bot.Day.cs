@@ -20,7 +20,7 @@ public partial class Bot
 
     void StepMine()
     {
-        _d.Capa.Select(Capa.Head.Kazma);
+        Head(Capa.Head.Kazma);
         var rock = _d.World.Rocks.Where(r => IsInstanceValid(r) && r.Stones > 0 && r.Item == "stone").OrderBy(r => r.GlobalPosition.DistanceTo(P.GlobalPosition)).FirstOrDefault();
         if (rock == null) return;
         Aim(rock.Center);
@@ -29,7 +29,7 @@ public partial class Bot
 
     void StepOcak()
     {
-        _d.Capa.Select(Capa.Head.Insa);
+        Head(Capa.Head.Insa);
         var spot = _d.World.Ground(new Vector3(0, 0, 0));
         Aim(spot);
         if (MoveTo(spot + new Vector3(3, 0, -3), 0.8f) && _stepT > 1.5f) { FirePressed = true; _stepT = 0; }
@@ -37,7 +37,7 @@ public partial class Bot
 
     void StepTillPlant()
     {
-        _d.Capa.Select(Capa.Head.Toprak);
+        Head(Capa.Head.Toprak);
         if (_cells.Count == 0)
         {
             var o = _d.OcakPos;
@@ -45,16 +45,26 @@ public partial class Bot
         }
         var c = _cells[_cell % 9];
         Aim(c);
+        if (_cellIdx != _cell) { _cellIdx = _cell; _cellT = 0; }
         if (MoveTo(c + new Vector3(0, 0, -3.5f), 1.0f, false))
         {
             Fire = true;
-            if (_stepT > 0.2f) { _stepT = 0; _cell++; }
+            // Kare islenince (surulunce / ekilince) sonrakine gecilir; islenmezse karede 3 sn ates sonra (egim, tohum yok).
+            // Eskiden sabit 0,2 sn'lik pencere vardi: nisanin aninda oturdugu dogrudan kipte yetiyordu, kolla nisan alan
+            // oyuncuya (--test=input --device=pad) yetmiyordu.
+            _cellT += (float)GetProcessDeltaTime();
+            var plot = _d.State.Farm.Get(Mathf.FloorToInt(c.X), Mathf.FloorToInt(c.Z));
+            bool worked = _lastStep == "plant" ? plot?.Planted == true : plot != null;
+            if (worked || _cellT > 3f) { _stepT = 0; _cell++; }
         }
     }
 
+    int _cellIdx = -1;
+    float _cellT;
+
     void StepWater()
     {
-        _d.Capa.Select(Capa.Head.Sulama);
+        Head(Capa.Head.Sulama);
         var c = _cells[_cell % 9];
         Aim(c);
         if (MoveTo(c + new Vector3(0, 0, -4f), 1.0f, false))
@@ -70,7 +80,7 @@ public partial class Bot
         {
             Aim(_d.Gidak.GlobalPosition + Vector3.Up * 0.5f);
             MoveTo(_d.Gidak.GlobalPosition, 2.0f);
-            if (_d.Gidak.GlobalPosition.DistanceTo(P.GlobalPosition) < 2.8f) { _d.Interact(); _fed = true; }
+            if (_d.Gidak.GlobalPosition.DistanceTo(P.GlobalPosition) < 2.8f) { Use(); _fed = true; }
         }
         else { Aim(_d.FarmCenter() + Vector3.Up * 0.5f); MoveTo(_d.FarmCenter() + new Vector3(-6, 0, -2), 1f, false); }
     }

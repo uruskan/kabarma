@@ -1,0 +1,7 @@
+# Sim kiyaslamasi (TEKNIK §1.2 adim 2) 2026-11-18 00:32
+config=Release runtime=.NET 8.0.34 os=Microsoft Windows 10.0.26300 cpus=12
+gun=30 dk (22 gunduz + 8 gece, GDD §2); hizli tik 20 Hz (yemek, Kabarma gecesi), yavas tik 2 Hz (tarla, 3 istasyon); her gun bic-ek-sula x2, 3 tarif, 1 yemek; her gece tam Kucuk Kabarma (3 dalga, butun Zipzip'ler olur, kartlar secilir), safakta kabarik ve normal urun satisi.
+Sim'de olmayan (sayilmadi): takvim ve gun dongusu, hayvan ihtiyaclari, guc agi, ekonomi borsasi, yol bulma (M2+).
+M1 days=1000 plots=9 seconds=1.825 ms_per_day=1.825 allocated_mb=3448.0 retained_kb=2407 peak_ws_mb=73.7 gc0=432 gc1=3 gc2=0 fast_ticks=36000000 slow_ticks=3600000 nights=1000 kills=21000 harvests=4500 produced=10000 credits=552315
+10x10 days=1000 plots=100 seconds=11.988 ms_per_day=11.988 allocated_mb=38219.0 retained_kb=3767 peak_ws_mb=79.1 gc0=4791 gc1=22 gc2=0 fast_ticks=36000000 slow_ticks=3600000 nights=1000 kills=21000 harvests=50000 produced=10000 credits=6020790
+olcut: 1000 gun < 10 sn -> M1 GECTI, 10x10 KALDI

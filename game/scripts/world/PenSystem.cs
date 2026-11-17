@@ -356,7 +356,7 @@ public partial class PenSystem : Node
         if (_hintT <= 0 && !_d.Hud.MenuOpen && _d.Capa.Current != Capa.Head.Insa)
         {
             _hintT = 0.2f;
-            if (Nearest(_d.Player.GlobalPosition, out var label) != null) _d.Hud.Hint(ActText.Plain("{act:interact}: " + label), 0.3f);
+            if (Nearest(_d.Player.GlobalPosition, out var label) != null) _d.Hud.Hint("{act:interact}: " + label, 0.3f); // Hint glifi genisletir (girdi akisi)
         }
     }
 }

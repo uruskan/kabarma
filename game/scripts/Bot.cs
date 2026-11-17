@@ -74,7 +74,7 @@ public partial class Bot : Node
         _dbg -= dt;
         if (_dbg <= 0 && Main.Args.ContainsKey("botdebug")) { _dbg = 2f; GD.Print($"BOTDBG {step} pos={P.GlobalPosition} aim={P.AimOverride} cell={_cell} prog={sc.Progress} ocak={_d.OcakPos} head={_d.Capa.Current} vel={P.Velocity} floor={P.IsOnFloor()} down={P.Down} move={P.MoveOverride} held={_d.Capa.Held != null}"); }
 
-        if (_steps.TryGetValue(step, out var run)) run();
+        if (_steps.TryGetValue(step, out var run)) RunStep(step, run); // Bot.Hands.cs: girdi kipinde sentetik olay
         else UnknownStep(step);
     }
 
