@@ -1,0 +1,56 @@
+{
+  "schema": 1,
+  "kind": "locomotion-pose",
+  "actionId": 657,
+  "passed": true,
+  "samples": 13,
+  "thresholds": {
+    "persistentRatio": 0.65,
+    "raisedWristMarginScale": 0.01,
+    "minimumElbowDegrees": 110,
+    "minimumKneeDegrees": 20,
+    "maximumLegLengthChangeRatio": 1.2,
+    "maximumFootPathAsymmetryRatio": 2.85,
+    "maximumLoopSeamScale": 0.18,
+    "maximumLegCrossingRatio": 0.3,
+    "maximumBackwardBendRatio": 0.2
+  },
+  "checks": {
+    "neutralUpperBody": true,
+    "loopSeam": true
+  },
+  "arms": {
+    "left": {
+      "raisedWristRatio": 0,
+      "overBentElbowRatio": 0.3076923,
+      "minimumElbowDegrees": 94.5930395,
+      "meanElbowDegrees": 127.5082068
+    },
+    "right": {
+      "raisedWristRatio": 0,
+      "overBentElbowRatio": 0.2307692,
+      "minimumElbowDegrees": 100.771031,
+      "meanElbowDegrees": 124.930282
+    }
+  },
+  "legs": {
+    "left": {
+      "minimumKneeDegrees": 104.1941815,
+      "maximumKneeDegrees": 150.4070675,
+      "maximumLengthChangeRatio": 1.0000025,
+      "footPath": 1.1388941,
+      "backwardBendRatio": 0
+    },
+    "right": {
+      "minimumKneeDegrees": 100.3236956,
+      "maximumKneeDegrees": 163.3012355,
+      "maximumLengthChangeRatio": 1.0000001,
+      "footPath": 1.1460218,
+      "backwardBendRatio": 0
+    },
+    "footPathAsymmetryRatio": 1.0062584,
+    "loopSeamScale": 0.0110203,
+    "crossingRatio": 0
+  },
+  "failures": []
+}
