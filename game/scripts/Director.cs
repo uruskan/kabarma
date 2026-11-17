@@ -43,6 +43,7 @@ public partial class Director : Node3D
 
     public override void _Ready()
     {
+        Events.Clear();
         Data = GameData.Load(f => FileAccess.GetFileAsString("res://data/" + f));
         State = new GameState(Data);
         Fx.Root = this;
@@ -100,6 +101,7 @@ public partial class Director : Node3D
         Build = BuildBridge.TryCreate(this);
 
         State.Scenario.StepChanged += OnStepChanged;
+        WireScenario(); // Director.Scenario.cs: olay -> adim sayaci
         State.Farm.Eaten += p => { GD.Print($"EATEN plot {p.X},{p.Y}"); Sfx.Play("pop", FarmView.CellCenter(p.X, p.Y), -2f); };
         foreach (var l in Data.Scenario.Intro) Hud.Say(l);
 
@@ -120,6 +122,8 @@ public partial class Director : Node3D
         if (Main.Args.ContainsKey("ragtest")) GetTree().CreateTimer(1.5).Timeout += () => Player.Hurt(999, Player.GlobalPosition + Player.Visual.GlobalBasis.Z * 2f);
         if (Main.Args.ContainsKey("showwheel")) GetTree().CreateTimer(1.0).Timeout += () => { Hud.OpenWheel(0); Hud.WheelMotion(new Vector2(30, 10)); };
     }
+
+    public override void _ExitTree() => Events.Clear();
 
     /// <summary>Sinama: bir normal ve bir kabarmis Zipzip'i kameranin onune koyar (varlik denetimi).</summary>
     void ZipView()

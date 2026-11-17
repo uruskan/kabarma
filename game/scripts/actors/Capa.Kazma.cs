@@ -23,7 +23,7 @@ public partial class Capa
             {
                 _d.State.Backpack.Add("stone", 1);
                 Sfx.Play("pickup", null, -6f);
-                _d.State.Scenario.Report("mine");
+                Events.RaiseGathered("stone", 1);
             });
         }
         if (rock.Stones <= 0) _d.World.RemoveRock(rock);

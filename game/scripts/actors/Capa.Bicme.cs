@@ -43,7 +43,7 @@ public partial class Capa
                 Fx.Burst(aim, Palette.Wood, 6, 3f, 0.06f, 0.4f);
                 Fx.FlyTo(aim, () => _d.Player.BackpackPoint.GlobalPosition, Palette.Wood, 0.12f);
                 Sfx.Play("hit", aim, -4f);
-                _d.State.Scenario.SetProgress("odun", _d.State.Backpack.Count("wood"));
+                Events.RaiseGathered("wood", w);
             }
         }
         return n;

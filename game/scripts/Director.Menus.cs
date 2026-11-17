@@ -17,15 +17,13 @@ public partial class Director
         Sfx.Play("place", at, 2f);
         Fx.Burst(at + Vector3.Up * 0.3f, Palette.Ground, 26, 5f, 0.12f, 0.8f);
         GD.Print($"PLACED {def.Id} at {at}");
-        if (def.Id == "tezgah") State.Scenario.Report("tezgah_kur");
-        if (def.Id == "tas_firin") State.Scenario.Report("firin_kur");
+        Events.RaiseStationPlaced(def.Id);
         return st;
     }
 
     public void OnProduced(RecipeDef r)
     {
-        if (r.Id == "civi") State.Scenario.Report("civi");
-        if (r.Id == "salgam_kasasi") State.Scenario.Report("paketle");
+        Events.RaiseProduced(r.Id, r.Out);
         GD.Print($"PRODUCED {r.Id} civi={State.Backpack.Count("civi")} soup={State.Backpack.Count("salgam_corbasi")} crates={State.Backpack.Count("salgam_kasasi")}");
     }
 
@@ -70,7 +68,7 @@ public partial class Director
         Sfx.Play("pickup", null, -2f);
         Hud.Hint($"{ff.Name}: doydun, güçlendin", 1.5f);
         GD.Print($"ATE {ff.Id}");
-        State.Scenario.Report("corba");
+        Events.RaiseAte(ff.Id);
         return true;
     }
 
@@ -102,7 +100,7 @@ public partial class Director
             {
                 int n = id == "egg" ? State.Eggs : State.Backpack.Count(id);
                 int v = State.SellItem(id, n);
-                if (v > 0) { if (id == "salgam_kasasi") State.Scenario.Report("kasa_sat"); Pod.Launch(); Sfx.Play("rocket", Pod.PadCenter, 0f); Hud.Big($"+{v} Kredi", Palette.Warning, 2.5f); GD.Print($"SOLD {id} x{n} +{v}"); OpenSellMenu(); }
+                if (v > 0) { Events.RaiseSold(id, n, v); Pod.Launch(); Sfx.Play("rocket", Pod.PadCenter, 0f); Hud.Big($"+{v} Kredi", Palette.Warning, 2.5f); GD.Print($"SOLD {id} x{n} +{v}"); OpenSellMenu(); }
             }));
         }
         Hud.ShowMenu("Kargo Rampası · Kooperatif alım fiyatları", items, "Kabarık ürünleri Çekim başlığıyla rampaya taşı.  ·  E / Esc: kapat");
@@ -117,7 +115,7 @@ public partial class Director
         Sfx.Play("place", at, 2f);
         Fx.Burst(at + Vector3.Up * 0.3f, Palette.Ground, 30, 5f, 0.12f, 0.8f);
         Fx.Burst(at + Vector3.Up * 1f, Palette.Warning, 16, 3f, 0.1f, 1f, true, -1f);
-        State.Scenario.Report("ocak");
+        Events.RaiseStationPlaced("ocak");
     }
 
     // ---------- Satis ----------
@@ -136,6 +134,6 @@ public partial class Director
         Hud.Big($"+{v} Kredi", Palette.Warning, 3.5f);
         Fx.Burst(Pod.PadCenter + Vector3.Up, Palette.Warning, 40, 8f, 0.12f, 1.2f, true, 6f);
         GD.Print($"SOLD {s.CropId} {s.Size.Id} +{v} credits={State.Credits}");
-        State.Scenario.Report("sell");
+        Events.RaiseCropShipped(s.CropId, s.Size.Id, v);
     }
 }

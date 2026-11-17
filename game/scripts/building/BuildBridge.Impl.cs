@@ -53,6 +53,6 @@ public partial class BuildBridge
         _d.State.Backpack.Remove("wood", cost);
         Sfx.Play("place", piece.GlobalPosition, 0f);
         Fx.Burst(piece.GlobalPosition + Vector3.Up * 0.3f, Palette.Wood, 18, 4f, 0.08f, 0.6f);
-        _d.State.Scenario.Report("yapi");
+        Events.RaisePiecePlaced(piece.Def.Id);
     }
 }

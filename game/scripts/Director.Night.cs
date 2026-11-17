@@ -45,7 +45,7 @@ public partial class Director
             Fx.Burst(Player.GlobalPosition + Vector3.Up * 0.6f, Palette.MayaViolet, 24, 3.5f, 0.07f, 0.7f, true, -1f);
             if (lv == 1) Hud.Say(Data.Scenario.NightLines["level"]);
         };
-        n.CardTaken += (c, r) => { Hud.Big($"{c.Name} {(r > 1 ? "· Rütbe " + r : "")}", Palette.MayaViolet, 1.6f); GD.Print($"NIGHT card {c.Id} rank={r}"); };
+        n.CardTaken += (c, r) => { Hud.Big($"{c.Name} {(r > 1 ? "· Rütbe " + r : "")}", Palette.MayaViolet, 1.6f); GD.Print($"NIGHT card {c.Id} rank={r}"); Events.RaiseCardPicked(c.Id); };
         n.DawnNow += BeginDawn;
         Capa.Select(Capa.Head.Tirpan);
         Sfx.Play("siren", null, -2f);
@@ -53,6 +53,7 @@ public partial class Director
         Hud.Say(Data.Scenario.NightLines["alarm"]);
         Hud.Big("KABARMA", Palette.MayaViolet, 3f);
         GD.Print("NIGHT start");
+        Events.RaiseNightStarted();
     }
 
     void BeginDawn()
@@ -71,7 +72,7 @@ public partial class Director
         _swollenAtDawn = State.Farm.Plots.Count(p => p.Swollen != null && p.Planted);
         Hud.Big("ŞAFAK", Palette.Warning, 3f);
         GD.Print($"NIGHT dawn kills={Night.Kills} level={Night.Level} maya={Night.Maya:0} swollenLeft={_swollenAtDawn}");
-        State.Scenario.Report("night");
+        Events.RaiseDawn(); // senaryo: "night" adimi biter
         if (_swollenAtDawn == 0)
         {
             // Satacak kabarik urun kalmadi: satis adimi bos gecer, rapor yine gelir.
@@ -82,6 +83,7 @@ public partial class Director
 
     public void OnZipzipKilled(Zipzip z)
     {
+        Events.RaiseCreatureKilled(z.Def.Id, z.HasSac);
         if (Night == null || Night.Phase == NightPhase.Dawn) return;
         Night.OnKill(z.Def);
         Fx.FlyTo(z.Center, () => Player.BackpackPoint.GlobalPosition, Palette.MayaViolet, 0.1f);
