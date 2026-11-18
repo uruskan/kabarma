@@ -50,6 +50,15 @@ public static class Events
     public static event Action<string, string> Laid;
     /// <summary>Suna bir repligi soyledi (scenario.json "lines" kimligi). Seslendirme buna baglanir.</summary>
     public static event Action<string> SunaSaid;
+    /// <summary>Katalogdan satin alindi (kalem, Kredi). Yayan: Director.EconomyMarket.cs (ekonomi2).</summary>
+    public static event Action<string, int> CatalogBought;
+    /// <summary>Katalog ya da cark teslimati acildi, icindekiler alindi (kaynak, adet). Yayan: Director.EconomyMarket.cs.</summary>
+    public static event Action<string, int> Delivered;
+    /// <summary>Tohum Carki cevrildi (odul kimligi, Kredi odulu). Yayan: Director.EconomyMarket.cs.</summary>
+    public static event Action<string, int> WheelSpun;
+    public static void RaiseCatalogBought(string entry, int credits) => CatalogBought?.Invoke(entry, credits);
+    public static void RaiseDelivered(string source, int n) => Delivered?.Invoke(source, n);
+    public static void RaiseWheelSpun(string reward, int credits) => WheelSpun?.Invoke(reward, credits);
     /// <summary>Ata yenildi (atalar.json kimligi). Yayan: AtaSystem (boss akisi).</summary>
     public static event Action<string> AtaDefeated;
     /// <summary>Ata'nin asamasi degisti (kimlik, 0'dan asama). Yayan: AtaSystem.</summary>
@@ -93,6 +102,7 @@ public static class Events
         Paid = null;
         Deconstructed = null;
         PenChanged = null; AnimalPenned = null; Laid = null; SunaSaid = null;
+        CatalogBought = null; Delivered = null; WheelSpun = null; // ekonomi2
         AtaDefeated = null; AtaPhase = null;
     }
 }
