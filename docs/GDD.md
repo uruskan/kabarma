@@ -435,6 +435,31 @@ Dokuz arketip: Koşucu, Tank, Sıçrayan, Menzilli, Uçan, Sürü, Kazıcı, Hı
 
 Yabani yaratıklar, açık arazideki Holding ekipleri ve kervanları, Oyuk koruyucuları ve Atalar. Kart yoktur; güç kalıcı donanımdan gelir: Çapa basamağı, başlıklar, çipler, zırh, güçler, yemek, hayvan.
 
+**M3 uygulaması:**
+- Yabani yaratıklar ortak hasar sisteminden geçer (§16.1).
+- Çapa başlığının türü ve yaratığın zayıflığı ya da direnci hasarı değiştirir.
+- Durumlar gündüz de işler; yanık ya da zehirle ölen yaratık da düşer.
+- Gündüz kart yoktur. Bu yüzden durumlar şimdilik gece kartlarından, alan etkilerinden ve Azmanların saldırılarından gelir.
+
+### 16.3.1 Azmanlar (M3: Azman Homur ve Azman Bozuk)
+
+Sayılar `data/azman.json`'da; kural `src/Kabarma.Sim/Azman*.cs`, Godot katmanı `game/scripts/combat/Azman*.cs` ([ICERIK.md](ICERIK.md) §4.2).
+
+- **Gelişi:** Her 5. KS'nin Doruk aşamasında üssün biyomunun Azman'ı gelir. Gece akışı Doruk'a girerken `AzmanSystem.OnPeak(KS, biyom, geliş noktası)` çağırır.
+- **Can:** Taban can `1 + 0,15 × (KS − 5)` ile, sonra Atalardaki gibi ekip boyuyla çarpılır.
+- **İniş ve çekilme:** İnişte 2 saniye hasar almaz; inince hemen ilk saldırısını yapar. Şafakta hâlâ ayaktaysa çekilir ve ödül vermez.
+- **Azman Homur:**
+  - Sezdirip uzun hücum eder. Yoldaki yapı parçalarına ağır hasar verir.
+  - İlk parçaya toslayınca durur ve 1,5 saniye sersemler. Sur onu durdurur ama hasar alır.
+  - Sırtında altı küçük Homur taşır. Canı %75, %50 ve %25'e indikçe ikişer tanesi düşer ve oyuncuya saldırır.
+- **Azman Bozuk:**
+  - Yakındaki bir ağaca yürür, kütük söküp oyuncuya fırlatır; yakında ağaç yoksa yerden kaya koparır.
+  - Kütük düştüğü yerde oyuncuya ve yapılara hasar verir, sonra yerde kalır.
+  - Kütük Çekim'le alınıp Bozuk'a fırlatılabilir; zırhı delen büyük Darbe hasarı verir.
+  - Ağaç yerinde kalır (yer tutucu).
+- **Ödül:** Ganimet çantaya girer. Öz, `Events.AzmanDefeated` olayıyla gece akışına bırakılır.
+- **Kural:** Her Azman yalnız Tırpan Işını ile de yenilebilir. Sur ve kütük dövüşü hızlandırır ama şart değildir.
+
 ### 16.4 Savunma yapıları
 
 8 kule ve 8 tuzak ([ICERIK.md](ICERIK.md) §13). Kuleler güç ya da cephane ister; sinyalle açılıp kapanır ve hedef önceliği seçilir (en yakın, en güçlü, uçan, hırsız).

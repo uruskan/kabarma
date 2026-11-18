@@ -11,12 +11,12 @@ namespace Kabarma.Game;
 public partial class Wildlife
 {
     /// <summary>Mermi bu karede from->to dogrusunda bir yabaniye degdi mi; degdiyse hasar verir (ilk degen).</summary>
-    public bool ProjectileHit(Vector3 from, Vector3 to, float radius, float damage, ISet<Node3D> already = null) =>
+    public bool ProjectileHit(Vector3 from, Vector3 to, float radius, float damage, ISet<Node3D> already = null, Kabarma.Sim.DamageType type = Kabarma.Sim.DamageType.Darbe) =>
         _d.Net?.ForwardWildHit(from, to, radius, damage, already) // ortak: istemcide vurus host'ta (NetSync.Spawns.cs)
-        ?? Strike(Creatures, Swarms, from, to, radius, damage, already) != null;
+        ?? Strike(Creatures, Swarms, from, to, radius, damage, already, type) != null;
 
     /// <summary>Dunya dugumunden bagimsiz vurus: verilen listelerde ilk degeni bulur, vurur, cevresini urkutur.</summary>
-    public static Node3D Strike(IList<WildCreature> creatures, IList<WildSwarm> swarms, Vector3 from, Vector3 to, float radius, float damage, ISet<Node3D> already = null)
+    public static Node3D Strike(IList<WildCreature> creatures, IList<WildSwarm> swarms, Vector3 from, Vector3 to, float radius, float damage, ISet<Node3D> already = null, Kabarma.Sim.DamageType type = Kabarma.Sim.DamageType.Darbe)
     {
         var seg = to - from;
         float len2 = Mathf.Max(0.0001f, seg.LengthSquared());
@@ -28,7 +28,7 @@ public partial class Wildlife
             float t = Mathf.Clamp((center - from).Dot(seg) / len2, 0, 1);
             if ((from + seg * t).DistanceTo(center) > radius + h * 0.45f) continue;
             already?.Add(c);
-            c.Hit(damage);
+            c.TakeHit(new Kabarma.Sim.CombatHit(damage, type, Kabarma.Sim.CombatTeam.Player), from); // savas: tur profili ve durumlar (combat/WildCreature.Combat.cs)
             if (c.IsInsideTree()) Fx.Burst(center, Palette.OffWhite, 6, 2f, 0.06f, 0.4f, true, -4f);
             Startle(creatures, center, 12f);
             if (c.Dead) { GD.Print($"WILD {c.Def.Id}#{c.State.Id} down"); Events.RaiseWildActed(c.Def.Id, "Down", center.X, center.Z); c.QueueFree(); }

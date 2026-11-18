@@ -203,7 +203,7 @@ public partial class Crescent : Node3D
                 }
             }
         }
-        _d.Wildlife?.ProjectileHit(GlobalPosition - _dir * step, GlobalPosition, _width * 0.5f + _w.HitRadius, _w.Damage * _s.SizeMult, _hitWild); // yaratik2: gunduz yabanileri (Wildlife.Hits.cs)
+        _d.Wildlife?.ProjectileHit(GlobalPosition - _dir * step, GlobalPosition, _width * 0.5f + _w.HitRadius, _w.Damage * _s.SizeMult, _hitWild, _d.Data.Combat.WeaponType(_w.Id)); // yaratik2: gunduz yabanileri (Wildlife.Hits.cs)
         foreach (var t in _d.AtaTargetsNear(GlobalPosition, _width * 0.5f + _w.HitRadius)) if (_hitAta.Add(t)) _d.Capa.AtaWeaponHit("tirpan", _w, _s, t, t.Center, _dir, Palette.MayaTeal); // boss akisi
         if (_traveled > _w.Range * _s.SizeMult) QueueFree();
     }
@@ -278,7 +278,7 @@ public partial class Nail : Node3D
             QueueFree();
             return;
         }
-        if (_d.Wildlife != null && _d.Wildlife.ProjectileHit(from, GlobalPosition, _w.HitRadius * _s.SizeMult, _w.Damage * _s.SizeMult)) { QueueFree(); return; } // yaratik2: gunduz yabanileri
+        if (_d.Wildlife != null && _d.Wildlife.ProjectileHit(from, GlobalPosition, _w.HitRadius * _s.SizeMult, _w.Damage * _s.SizeMult, type: _d.Data.Combat.WeaponType(_w.Id))) { QueueFree(); return; } // yaratik2: gunduz yabanileri
         if (_d.AtaSegmentHit(from, GlobalPosition, _w.HitRadius * _s.SizeMult) is IAtaTarget ata) { _d.Capa.AtaWeaponHit("civi", _w, _s, ata, ata.Center, _dir, Palette.OffWhite); QueueFree(); return; } // boss akisi
         if (GlobalPosition.Y < _d.World.HeightAt(GlobalPosition.X, GlobalPosition.Z) + _w.GroundOffset)
         {

@@ -12,5 +12,6 @@ public partial class Director
     {
         Savas = new CombatSystem(this) { Name = "Savas" };
         AddChild(Savas);
+        InitAzman(); // combat/Director.Azman.cs
     }
 }

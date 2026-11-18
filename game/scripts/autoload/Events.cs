@@ -69,6 +69,9 @@ public static class Events
     public static event Action<string, int> AtaPhase;
     public static void RaiseAtaDefeated(string id) => AtaDefeated?.Invoke(id);
     public static void RaiseAtaPhase(string id, int phase) => AtaPhase?.Invoke(id, phase);
+    /// <summary>Azman yenildi (azman.json kimligi, Oz degeri, x, z). Yayan: AzmanSystem (savas). Oz'u gece akisi birakir.</summary>
+    public static event Action<string, float, float, float> AzmanDefeated;
+    public static void RaiseAzmanDefeated(string id, float oz, float x, float z) => AzmanDefeated?.Invoke(id, oz, x, z);
     /// <summary>Yabani yaratik davranisi (tur, olay: Alerted/Fled/Warned/Struck/Took/Slept/Woke, x, z). Yayan: Wildlife (yaratik2). Etkiyi sahibi uygular: ekin tarim, yumurta hayvan (ICERIK §3.8).</summary>
     public static event Action<string, string, float, float> WildActed;
     public static void RaiseWildActed(string species, string what, float x, float z) => WildActed?.Invoke(species, what, x, z);
@@ -124,5 +127,6 @@ public static class Events
         PieceUpgraded = null; PlanCompleted = null;
         CatalogBought = null; Delivered = null; WheelSpun = null; // ekonomi2
         AtaDefeated = null; AtaPhase = null;
+        AzmanDefeated = null; // savas
     }
 }

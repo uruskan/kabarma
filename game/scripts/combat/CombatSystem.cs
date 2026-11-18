@@ -34,6 +34,7 @@ public partial class CombatSystem : Node
         _targets.RemoveAll(t => t is Node n && !IsInstanceValid(n));
         foreach (var t in _targets) if (t.Alive) yield return t;
         if (_d.Atalar != null) foreach (var t in _d.Atalar.Targets) if (t.Alive) yield return t;
+        if (_d.Wildlife != null) foreach (ICombatTarget t in _d.Wildlife.Creatures) if (t is Node n && IsInstanceValid(n) && t.Alive) yield return t;
     }
 
     /// <summary>Isabet: hedefe iletir, alan etkilerini hedefin konumunda cozer.</summary>
@@ -104,6 +105,22 @@ public partial class CombatSystem : Node
         float dealt = Combat.Tick(Data, t.Body, dt, list);
         Areas(t, list);
         return dealt;
+    }
+
+    /// <summary>Gunduz savasi: yabani yaratiklarin durum zamani (yanik, zehir); can biterse yaratik duser.</summary>
+    public override void _Process(double delta)
+    {
+        var wl = _d.Wildlife;
+        if (wl == null || _d.NetClient) return;
+        float dt = (float)delta;
+        foreach (var c in wl.Creatures.ToList())
+        {
+            if (!IsInstanceValid(c) || c.Dead) continue;
+            if (c.TickCombat(Data, dt) <= 0 || !c.Dead) continue;
+            GD.Print($"WILD {c.Def.Id}#{c.State.Id} down (status)");
+            Events.RaiseWildActed(c.Def.Id, "Down", c.GlobalPosition.X, c.GlobalPosition.Z);
+            c.QueueFree();
+        }
     }
 
     /// <summary>Durumun gorunus rengi (govde rengine carpilir): donma mavi, yanik turuncu, zehir yesil, sok sari.</summary>
