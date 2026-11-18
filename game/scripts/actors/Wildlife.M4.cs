@@ -19,8 +19,50 @@ public partial class Wildlife
     bool _m4Done;
     float _m4T;
 
+    // --yaratik4_sira=homur (+ --yaratik4_dir=progress/m4/yaratik4/homur): turu oyuncunun onunde 3/4 acidan, yerinde, her klip 2.4 sn;
+    // klip ortasinda ekran goruntusu (yurume, kosu, bekleme, saldiri, darbe), sonra cikis.
+    static readonly string[] SiraSlots = { "walk", "run", "idle", "attack1", "hit" };
+    WildCreature _siraC;
+    int _siraI = -1;
+    float _siraT;
+
+    void TickSira(float dt, string speciesId)
+    {
+        _m4T += dt;
+        var p = _d.Player;
+        if (_siraC == null && _m4T > 1.5f)
+        {
+            var def = _d.Data.Creatures.Creatures.First(c => c.Id == speciesId);
+            var fwd = -p.GlobalTransform.Basis.Z; fwd.Y = 0; fwd = fwd.Normalized();
+            var at = p.GlobalPosition + fwd * 3.6f + fwd.Cross(Vector3.Up) * 0.6f;
+            _siraC = Spawn(def, at, display: true)[0] as WildCreature;
+            _siraC.Rotation = new Vector3(0, Mathf.Atan2(fwd.X, fwd.Z) + Mathf.DegToRad(215f), 0); // yan-onden gorunum
+            _siraC.DisplaySlot = SiraSlots[0];
+            _siraI = 0; _siraT = 0;
+            GD.Print($"YARATIK4 sira basladi {speciesId} dogus_y={_siraC.GlobalPosition.Y:0.00} zemin_y={_d.World.Ground(_siraC.GlobalPosition).Y:0.00}");
+            return;
+        }
+        if (_siraC == null) return;
+        _siraT += dt;
+        if (_siraT > 1.6f && _siraT - dt <= 1.6f)
+        {
+            var dir = Main.Args.TryGetValue("yaratik4_dir", out var d) ? d : "progress/m4/yaratik4/sira";
+            var path = ProjectSettings.GlobalizePath("res://").TrimEnd('/') + "/../" + dir.Trim('/') + $"/{speciesId}_{SiraSlots[_siraI]}.png";
+            DirAccess.MakeDirRecursiveAbsolute(path.GetBaseDir());
+            GetViewport().GetTexture().GetImage().SavePng(path);
+            GD.Print($"YARATIK4 sira {speciesId} {SiraSlots[_siraI]} y={_siraC.GlobalPosition.Y:0.00} {path}");
+        }
+        if (_siraT > 2.4f)
+        {
+            _siraT = 0;
+            if (++_siraI >= SiraSlots.Length) { GetTree().Quit(0); return; }
+            _siraC.DisplaySlot = SiraSlots[_siraI];
+        }
+    }
+
     void TickM4Temp(float dt)
     {
+        if (Main.Args.TryGetValue("yaratik4_sira", out var sira)) { TickSira(dt, sira); return; }
         if (!Main.Args.TryGetValue("yaratik4", out var arg)) return;
         _m4T += dt;
         if (!_m4Done && _m4T > 1.5f)
