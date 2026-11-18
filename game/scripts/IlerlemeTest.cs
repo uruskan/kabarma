@@ -111,7 +111,7 @@ public partial class IlerlemeTest : Node
                 if (_stageT < 0.3f) break;
                 Check(hud.DefterTab == 2 && hud.DefterText().Contains("İlk Gece"), "Basarimlar sekmesi");
                 Shot("defter_basarimlar");
-                Tap(Godot.Key.Right);          // Is emirlerine don
+                Tap(Godot.Key.Right); Tap(Godot.Key.Right); // Cipler sekmesi uzerinden Is emirlerine don
                 Tap(Godot.Key.Down); Tap(Godot.Key.Down); // ciraklik, salgam_baronu, yesil_parmak
                 Tap(Godot.Key.Enter);
                 Next();
