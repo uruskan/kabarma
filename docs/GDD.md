@@ -380,6 +380,15 @@ Maya Feneri (T2, günde bir kez kullanılır) 40 m yarıçapta 4 dakikalık bir 
 
 Ocak'tan başlatılır. Seçilen KS'nin dalgaları hayalet olarak gelir; hasar gerçektir ama onarım bedavadır ve ödül yoktur. Savunma düzenini sınamak için.
 
+**M3 kuralı (Fener ve Tatbikat):**
+
+- **Maya Feneri** kurulan bir yerleştirilebilirdir. Her fener oyun gününde bir kez yakılır. KS, açılmış en yüksek KS'nin yarısıdır (aşağı yuvarlanır, en az 1).
+- **Tatbikat** Ocak'ın E menüsünden, açılmış bir KS seçilerek başlar.
+  - Tatbikat gece sayacını, iş emirlerini, Öz'ü, kartları, Maya'yı ve ganimeti ilerletmez.
+  - Ekinler kabarmaz.
+  - Bittiğinde Tatbikat süresince hasar alan yapılar başlangıçtaki canlarına bedavaya döner.
+- **Gece akışı:** İkisi de Kabarma'yı `kabarma3` akışının dalga arayüzüyle başlatır. Gece akışı o akışındır; burada yalnız başlatma kuralı ve sınırlar vardır.
+
 ### 14.8 Tüzük maddeleri (KS 26 ve üstü)
 
 26'dan sonra her seviye 12 maddelik havuzdan birini kalıcı olarak ekler ([ICERIK.md](ICERIK.md) §8.4). 37'den sonra maddeler ikinci kez eklenip şiddetlenir.
@@ -437,6 +446,18 @@ Yabani yaratıklar, açık arazideki Holding ekipleri ve kervanları, Oyuk koruy
 - Etkin güçler Şarj harcar (25–50) ve 8–30 saniye bekleme süresi vardır.
 - **Ulti** Maya ölçeriyle çalışır. Ölçer yalnızca Kabarma'da ve Ata dövüşünde dolar.
 - 12 etkin güç Kadim Taş denemelerinden, 4 ulti Atalardan gelir ([ICERIK.md](ICERIK.md) §7).
+
+### 17.1 M3 uygulaması (ilk beş güç, iki ulti)
+
+Sayılar `data/abilities.json`'da; kural `src/Kabarma.Sim/Ability*.cs`, `KadimTas*.cs`; Godot katmanı `game/scripts/abilities/`.
+
+- **Yuvalar:** M3'te bir etkin yuva açıktır; ikincisi Kurbağa Ağa ile (M4) açılır. İkinci yuvanın tuşu bağlıdır ama kilitlidir. Ulti yuvası birdir.
+- **Takma:** Kazanılan güç boş yuvaya kendiliğinden girer. Değiştirmek için tamamlanmış bir Kadim Taş'ta E'ye basılır; menüde açık güçler ve açık ultiler listelenir.
+- **Kime açılır:** Kadim Taş denemesi ve Ata'dan gelen ulti dünyaya yazılır; ekipteki herkes kullanır. Yuva, Şarj, bekleme ve ulti ölçeri oyuncu başınadır.
+- **Şarj:** 100 puandır. Son harcamadan 1,5 saniye sonra saniyede 5 dolar; boştan dolması 20 saniye sürer.
+- **Ulti ölçeri:** 100 puandır. Kabarma'da her öldürme 2, elit 6 puan verir. Ata dövüşünde Ata'nın canının her %1'i 2 puan verir. Ölçer başka zaman dolmaz ve boşalmaz. Dolunca ulti kullanılır, ölçer sıfırlanır.
+- **Kadim Taş denemesi:** Taşta E'ye basılınca deneme başlar. Başarısız olursa 10 saniye sonra yeniden denenir. Deneme düşmanları hayalettir: ganimet, Öz ya da Maya vermezler. M3'te beş taş vardır: Çayır'da Atılma ve Kalkan Balonu, Koru'da Şok Dalgası, Yem Hologramı ve Şifa Sisi. Taşların yeri `abilities.json`'dadır.
+- **Atılma'nın hasarsız anı:** Atılma'nın ilk 0,35 saniyesinde oyuncu hasar almaz.
 
 ## 18. Atalar
 
