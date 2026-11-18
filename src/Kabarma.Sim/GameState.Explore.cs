@@ -21,4 +21,15 @@ public sealed partial class GameState
     }
 
     public Poi? PoiById(string id) => Pois.FirstOrDefault(p => p.Id == id);
+
+    /// <summary>
+    /// Kayit (TEKNIK 9.1): acilan harita bitleri, bulunan noktalar, tirmanilan kuleler, isaretler, tuketilen noktalar,
+    /// ucus sayaci. BiomeMap, Pois ve Spawns tohumdan yeniden uretilir (kayda yer yazilmaz); bu bolum onlari da kapsar.
+    /// </summary>
+    [SaveSection("explore", 1, Order = SaveOrder.Progress, Covers = new[] { nameof(Explore), nameof(BiomeMap), nameof(Pois), nameof(Spawns) })]
+    Exploration ExploreSection
+    {
+        get => Explore;
+        set => _explore = value ?? new Exploration(Data);
+    }
 }
