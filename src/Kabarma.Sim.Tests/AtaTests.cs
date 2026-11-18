@@ -51,11 +51,11 @@ public class AtaTests
     {
         var p = new AtaProgress();
         var bag = new Inventory(30, 100);
-        bag.Add("wool", 10); bag.Add("copper_ingot", 25);
+        bag.Add("yun", 10); bag.Add("copper_ingot", 25);
         Assert.Null(AtaRules.Summon(p, D, Pofuduk, 1));
         Assert.Equal(30, AtaRules.OfferFromBag(p, Pofuduk, bag));
         Assert.Equal(5, bag.Count("copper_ingot")); // yalniz eksik kadar
-        Assert.Equal(0, bag.Count("wool"));
+        Assert.Equal(0, bag.Count("yun"));
         Assert.False(AtaRules.OfferingComplete(p, Pofuduk));
         for (int i = 0; i < 5; i++) Assert.True(AtaRules.OfferSwollen(p, Pofuduk, "turnip"));
         Assert.False(AtaRules.OfferSwollen(p, Pofuduk, "turnip")); // fazlasi kabul edilmez
@@ -186,12 +186,24 @@ public class AtaTests
         Assert.Equal(1, f.Phase);
         Assert.Equal(2, f.WeakPoints.Count);
         var ph = Dede.Phases[1];
+        // Kovanlar yalniz kok dalgasindan sonra isir (weakWindow): kapaliyken vurulmaz.
+        Assert.False(AtaRules.WeakOpen(f, Dede));
+        Assert.False(AtaRules.HitWeakPoint(f, D, Dede, 0, ph.WeakPointHp * 2f, cmds));
+        Assert.Equal(ph.WeakPointHp, f.WeakPoints[0], 3);
+        var seen = new List<AtaCommand>();
+        for (int i = 0; i < 400 && !seen.Any(c => c.Cue == AtaCue.Attack); i++) seen.AddRange(AtaRules.Tick(f, Dede, 0.05f));
+        Assert.Contains(seen, c => c.Cue == AtaCue.Attack && c.Attack == "rootwave");
+        Assert.True(AtaRules.WeakOpen(f, Dede));
+        Assert.Equal(ph.WeakWindow, f.WeakOpenT, 1);
         Assert.False(AtaRules.HitWeakPoint(f, D, Dede, 0, ph.WeakPointHp * 0.5f, cmds));
         Assert.Equal(0f, f.StunT);
         Assert.True(AtaRules.HitWeakPoint(f, D, Dede, 0, ph.WeakPointHp, cmds));
         Assert.Equal(ph.StunSeconds, f.StunT, 3);
         Assert.Contains(cmds, c => c.Cue == AtaCue.WeakPointBroken && c.Count == 0);
         Assert.False(AtaRules.HitWeakPoint(f, D, Dede, 0, 10, cmds)); // kirik kovan
+        AtaRules.Tick(f, Dede, ph.WeakWindow + 0.1f); // pencere sersemken de kapanir
+        Assert.False(AtaRules.WeakOpen(f, Dede));
+        Assert.False(AtaRules.HitWeakPoint(f, D, Dede, 1, 10, cmds));
         // Asama 3: silah yari, parca tam
         f.StunT = 0;
         AtaRules.Damage(f, D, Dede, f.Hp - f.MaxHp * 0.3f, AtaHitKind.Thrown, cmds);
@@ -244,9 +256,42 @@ public class AtaTests
         Start(Dede, p);
         AtaRules.Reward(p, Dede, bag);
         Assert.Equal(1.2f, p.SealMult(D, "yapi_cani"), 3);
-        AtaRules.Reward(p, Dede, bag); // ikinci yenilgi muhuru ikilemez
+        AtaRules.Reward(p, Dede, bag); // ikinci yenilgi (M4 Kabarik Ata) muhuru ikilemez
         Assert.Equal(1.2f, p.SealMult(D, "yapi_cani"), 3);
         Assert.Equal(2, p.Record("boynuzlu_dede").Defeats);
+    }
+
+    [Fact]
+    public void Arena_follows_dunya2_ata_tasi_when_on_map_else_fallback()
+    {
+        var s = new GameState(TestData.Load());
+        foreach (var def in new[] { Pofuduk, Dede })
+        {
+            var spot = AtaArena.Resolve(s, def);
+            Assert.True(AtaArena.OnMap(s.Data.Biomes, spot.X, spot.Z, spot.Radius), $"{def.Id} arenasi arazinin disinda ({spot.X:0},{spot.Z:0})");
+            var site = s.Spawns.AtaSite(def.Id, s.Pois);
+            if (spot.FromSite) Assert.Equal(site!.Value.site.X, spot.X, 2);
+            else Assert.Equal(def.Arena.Center[0], spot.X, 2);
+        }
+        // Koca Pofuduk'un Ata Tasi dunya2'de elle bu arenaya konmus (biomes.json pois fixed)
+        var koca = AtaArena.Resolve(s, Pofuduk);
+        Assert.True(koca.FromSite);
+        Assert.Equal(Pofuduk.Arena.Center[0], koca.X, 2);
+        Assert.Equal(Pofuduk.Arena.Center[1], koca.Z, 2);
+    }
+
+    [Fact]
+    public void Defeated_ata_cannot_be_summoned_or_offered_again_in_m2()
+    {
+        var p = new AtaProgress();
+        var bag = new Inventory(20, 50);
+        Start(Pofuduk, p);
+        AtaRules.Reward(p, Pofuduk, bag);
+        Assert.Null(AtaRules.Summon(p, D, Pofuduk, 1, force: true)); // Kabarik Ata M4
+        Assert.False(AtaRules.OfferSwollen(p, Pofuduk, "turnip"));
+        bag.Add("yun", 10);
+        Assert.Equal(0, AtaRules.OfferFromBag(p, Pofuduk, bag));
+        Assert.Equal(10, bag.Count("yun"));
     }
 
     [Fact]
@@ -254,14 +299,14 @@ public class AtaTests
     {
         var p = new AtaProgress();
         var bag = new Inventory(20, 50);
-        bag.Add("wool", 4);
+        bag.Add("yun", 4);
         AtaRules.OfferFromBag(p, Pofuduk, bag);
         var f = Start(Dede, p);
         AtaRules.Damage(f, D, Dede, f.MaxHp * 0.4f, AtaHitKind.Weapon);
         var json = JsonSerializer.Serialize(p);
         var back = JsonSerializer.Deserialize<AtaProgress>(json)!;
         Assert.Equal(json, JsonSerializer.Serialize(back));
-        Assert.Equal(4, back.Record("koca_pofuduk").Offered["wool"]);
+        Assert.Equal(4, back.Record("koca_pofuduk").Offered["yun"]);
         Assert.Equal(f.Hp, back.Active!.Hp, 3);
         Assert.Equal(1, back.Active.Phase);
         Assert.Equal(2, back.Active.WeakPoints.Count);

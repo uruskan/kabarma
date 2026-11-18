@@ -28,7 +28,7 @@ public partial class Wildlife : Node3D
     int _nextId = 1;
     float _leaveT = -1, _scanT;
     /// <summary>Kendi dogma dongusu. dunya2'nin Godot dogurucusu gelince false yapilip Spawn fabrika olarak kullanilir.</summary>
-    public bool OwnSpawning = true;
+    public bool OwnSpawning = !Main.Args.ContainsKey("nowild"); // --nowild: yabani dogma kapali (karsilastirma)
 
     public Wildlife(Director d)
     {

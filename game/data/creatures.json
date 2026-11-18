@@ -1,11 +1,11 @@
 {
-  "_rig": "Gorunus ve animasyon (SANAT-SES Â§4, URETIM Â§2.2 E). plan: poses.json'daki govde plani. bones: rol -> iskeletteki kemik adi. clips: 8 klip yuvasi -> 'glb:<ad parcasi>' (modelin kendi klibi) ya da 'pose' (PoseLibrary). placeholder: yer tutucu klipler (URETIM Â§3: veride isaretli). yaw: modelin ileri yonunu +Z'ye ceviren donus (derece). restFix: rol -> dinlenme duzeltmesi (karakter ekseninde derece; her poz klibine eklenir). triBudget: SANAT-SES Â§4 sinif butcesi.",
-  "_swell": "Kabarma gorunusu (SANAT-SES Â§4): push normal yonunde ek sisme (model birimi), wobble yay titremesi, glow damar isimasi, veinScale damar sikligi, seconds sisme suresi, stepJiggle/hitJiggle adim ve darbe esnemesi.",
-  "_day": "Zipzip gunduz surusu (URETIM Â§6 M1, GDD Â§8.1): groups grup sayisi, groupMin/groupMax grup boyu, spawnMin/spawnMax Ocak'a uzaklik (m), wanderRadius, walkSpeedMult, fleeRadius (oyuncu bu kadar yaklasinca kacar), fleeSpeedMult, fleeSeconds, cropSense (olgun ekini bu uzakliktan sezer), cropStop (ekinin bu kadar yaninda durur), dayEats (gunduz ekini yer mi; M1 karari 17: hayir, ekin kaybi ve onlemleri M2), respawnSeconds (gece sonrasi ve yok olan grup icin), ragdollSeconds (gunduz avlanan Zipzip'in serili kalma suresi), retargetMin/retargetMax (surunun yeni dolasma noktasi araligi, sn), pauseMin/pauseMax ve idleShare/grazeShare (uyenin dururken bekleme/otlanma/dinlenme secimi; kalan pay dinlenme), leaveSeconds (aksam ayrilan surunun sahneden kalkmasi, sn), senseSeconds (ekin tarama araligi, sn).",
-  "_kick": "Koc Gidak tekmesi (PLAN Â§1.4: 'citin ustunden'): kickApex yayin tepe yuksekligi (m), kickDistance yatay menzil (m), kickFlightSeconds ucus suresi, kickClearAt / kickClearHeight: firlatma noktasindan bu uzaklikta en az bu yukseklik (cit 1,3 m, build_kit.py p_cit). kickLandStun inince sersemleme (sn), kickSpinTurns ucarken takla sayisi.",
+  "_rig": "Gorunus ve animasyon (SANAT-SES §4, URETIM §2.2 E). plan: poses.json'daki govde plani. bones: rol -> iskeletteki kemik adi. clips: 8 klip yuvasi -> 'glb:<ad parcasi>' (modelin kendi klibi) ya da 'pose' (PoseLibrary). placeholder: yer tutucu klipler (URETIM §3: veride isaretli). yaw: modelin ileri yonunu +Z'ye ceviren donus (derece). restFix: rol -> dinlenme duzeltmesi (karakter ekseninde derece; her poz klibine eklenir). triBudget: SANAT-SES §4 sinif butcesi.",
+  "_swell": "Kabarma gorunusu (SANAT-SES §4): push normal yonunde ek sisme (model birimi), wobble yay titremesi, glow damar isimasi, veinScale damar sikligi, seconds sisme suresi, stepJiggle/hitJiggle adim ve darbe esnemesi.",
+  "_day": "Zipzip gunduz surusu (URETIM §6 M1, GDD §8.1): groups grup sayisi, groupMin/groupMax grup boyu, spawnMin/spawnMax Ocak'a uzaklik (m), wanderRadius, walkSpeedMult, fleeRadius (oyuncu bu kadar yaklasinca kacar), fleeSpeedMult, fleeSeconds, cropSense (olgun ekini bu uzakliktan sezer), cropStop (ekinin bu kadar yaninda durur), dayEats (gunduz ekini yer mi; M1 karari 17: hayir, ekin kaybi ve onlemleri M2), respawnSeconds (gece sonrasi ve yok olan grup icin), ragdollSeconds (gunduz avlanan Zipzip'in serili kalma suresi), retargetMin/retargetMax (surunun yeni dolasma noktasi araligi, sn), pauseMin/pauseMax ve idleShare/grazeShare (uyenin dururken bekleme/otlanma/dinlenme secimi; kalan pay dinlenme), leaveSeconds (aksam ayrilan surunun sahneden kalkmasi, sn), senseSeconds (ekin tarama araligi, sn).",
+  "_kick": "Koc Gidak tekmesi (PLAN §1.4: 'citin ustunden'): kickApex yayin tepe yuksekligi (m), kickDistance yatay menzil (m), kickFlightSeconds ucus suresi, kickClearAt / kickClearHeight: firlatma noktasindan bu uzaklikta en az bu yukseklik (cit 1,3 m, build_kit.py p_cit). kickLandStun inince sersemleme (sn), kickSpinTurns ucarken takla sayisi.",
   "creatures": [
     {
-      "id": "zipzip", "name": "ZÄ±pzÄ±p", "archetype": "jumper", "weight": 1, "hp": 30, "damage": 6, "speed": 4.2, "swollenScale": 2.6, "weakPointMult": 2.0, "eatSeconds": 2.5,
+      "id": "zipzip", "name": "Zıpzıp", "archetype": "jumper", "weight": 1, "hp": 30, "damage": 6, "speed": 4.2, "swollenScale": 2.6, "weakPointMult": 2.0, "eatSeconds": 2.5,
       "rig": {
         "plan": "biped", "model": "res://assets/models/zipzip/zipzip_5k.glb", "height": 0.75, "yaw": -90, "triBudget": 5000,
         "bones": {
@@ -22,7 +22,7 @@
       "day": { "groups": 3, "groupMin": 2, "groupMax": 3, "spawnMin": 24, "spawnMax": 42, "wanderRadius": 5, "walkSpeedMult": 0.3, "fleeRadius": 7, "fleeSpeedMult": 1.0, "fleeSeconds": 2.5, "cropSense": 40, "cropStop": 1.4, "dayEats": true, "respawnSeconds": 45, "ragdollSeconds": 6, "retargetMin": 5, "retargetMax": 10, "pauseMin": 2.5, "pauseMax": 6, "idleShare": 0.45, "grazeShare": 0.35, "leaveSeconds": 3, "senseSeconds": 1 }
     },
     {
-      "id": "gidak", "name": "GÄ±dak", "archetype": "runner", "weight": 1, "hp": 60, "damage": 8, "speed": 2.2, "swollenScale": 2.8, "kickInterval": 2.4, "kickRange": 3.0, "swollenSpeedMult": 1.5,
+      "id": "gidak", "name": "Gıdak", "archetype": "runner", "weight": 1, "hp": 60, "damage": 8, "speed": 2.2, "swollenScale": 2.8, "kickInterval": 2.4, "kickRange": 3.0, "swollenSpeedMult": 1.5,
       "kickApex": 3.5, "kickDistance": 9.0, "kickFlightSeconds": 1.1, "kickClearAt": 1.5, "kickClearHeight": 1.5, "kickLandStun": 0.6, "kickSpinTurns": 1.0, "kickClipSeconds": 0.6,
       "rig": {
         "plan": "bird", "model": "res://assets/models/gidak/gidak_rig.glb", "height": 0.75, "yaw": 0, "triBudget": 5000,
@@ -60,7 +60,7 @@
       "wild": { "stance": "raider", "active": "day", "wanderRadius": 8, "walkSpeedMult": 0.35, "runSpeedMult": 1.0, "alertRadius": 11, "fleeRadius": 4.5, "fleeSeconds": 3, "target": "crop", "targetSense": 32, "targetStop": 1.4, "targetSeconds": 8, "pauseMin": 2.5, "pauseMax": 6, "idleShare": 0.35, "grazeShare": 0.5, "retargetMin": 5, "retargetMax": 10 }
     },
     {
-      "id": "cekirge", "name": "Ã‡ekirge SÃ¼rÃ¼sÃ¼", "archetype": "swarm", "weight": 4, "hp": 80, "damage": 4, "speed": 2.6, "swollenScale": 1.7, "biome": "altin_cayir",
+      "id": "cekirge", "name": "Çekirge Sürüsü", "archetype": "swarm", "weight": 4, "hp": 80, "damage": 4, "speed": 2.6, "swollenScale": 1.7, "biome": "altin_cayir",
       "swell": { "push": 0.004, "wobble": 0.004, "glow": 1.2, "veinScale": 30.0, "seconds": 1.0, "stepJiggle": 0.0, "hitJiggle": 0.01 },
       "wild": { "stance": "swarm", "active": "day", "wanderRadius": 14, "walkSpeedMult": 0.6, "runSpeedMult": 1.5, "target": "grain", "targetSense": 40, "targetSeconds": 10, "retargetMin": 4, "retargetMax": 8 },
       "swarm": { "members": 36, "radius": 1.8, "memberSize": 0.2, "height": 0.5, "orbit": 0.35, "bob": 0.2, "hpPool": 80, "scatterSeconds": 3, "scatterMult": 2.5, "swollenMembers": 3, "swollenRadius": 2.5 }
@@ -74,7 +74,7 @@
       "wild": { "stance": "nocturnal", "active": "night", "wanderRadius": 10, "walkSpeedMult": 0.35, "runSpeedMult": 1.0, "fleeRadius": 7, "fleeSeconds": 3, "target": "coop", "targetSense": 40, "targetStop": 1.2, "targetSeconds": 5, "roost": "bush", "pauseMin": 2, "pauseMax": 5 }
     },
     {
-      "id": "dalli", "name": "DallÄ±", "archetype": "runner", "weight": 2, "hp": 70, "damage": 6, "speed": 5.5, "swollenScale": 2.4, "weakPointMult": 2.0, "biome": "sis_korusu",
+      "id": "dalli", "name": "Dallı", "archetype": "runner", "weight": 2, "hp": 70, "damage": 6, "speed": 5.5, "swollenScale": 2.4, "weakPointMult": 2.0, "biome": "sis_korusu",
       "rig": { "plan": "quadruped", "model": "code:dalli", "height": 2.1, "yaw": 0, "triBudget": 8000,
         "bones": { "root": "root", "spine": "spine", "head": "head", "top": "top", "ear_l": "ear_l", "ear_r": "ear_r", "tail": "tail", "front_l": "front_l", "frontlow_l": "frontlow_l", "front_r": "front_r", "frontlow_r": "frontlow_r", "back_l": "back_l", "backlow_l": "backlow_l", "back_r": "back_r", "backlow_r": "backlow_r" },
         "placeholder": ["walk"] },
@@ -90,7 +90,7 @@
       "wild": { "stance": "nocturnal", "active": "night", "wanderRadius": 14, "walkSpeedMult": 0.4, "runSpeedMult": 1.0, "fleeRadius": 5, "fleeSeconds": 3, "roost": "tree", "flyHeight": 2.2, "pauseMin": 2, "pauseMax": 4, "idleShare": 0.7, "grazeShare": 0.1 }
     },
     {
-      "id": "vicik", "name": "VÄ±cÄ±k", "archetype": "tank", "weight": 2, "hp": 90, "damage": 5, "speed": 1.2, "swollenScale": 2.6, "weakPointMult": 2.0, "biome": "sis_korusu",
+      "id": "vicik", "name": "Vıcık", "archetype": "tank", "weight": 2, "hp": 90, "damage": 5, "speed": 1.2, "swollenScale": 2.6, "weakPointMult": 2.0, "biome": "sis_korusu",
       "rig": { "plan": "reptile", "model": "code:vicik", "height": 0.4, "yaw": 0, "triBudget": 8000,
         "bones": { "root": "root", "spine": "spine", "head": "head", "tail": "tail", "tail2": "tail2", "front_l": "front_l", "frontlow_l": "frontlow_l", "front_r": "front_r", "frontlow_r": "frontlow_r", "back_l": "back_l", "backlow_l": "backlow_l", "back_r": "back_r", "backlow_r": "backlow_r" },
         "placeholder": ["walk"] },
@@ -106,13 +106,13 @@
       "wild": { "stance": "predator", "active": "always", "wanderRadius": 14, "walkSpeedMult": 0.25, "runSpeedMult": 1.0, "alertRadius": 14, "chargeRadius": 8, "attackRange": 2.2, "attackInterval": 1.8, "attackDamage": 8, "warnSeconds": 1.5, "giveUpRadius": 24, "pauseMin": 3, "pauseMax": 7 }
     },
     {
-      "id": "vizviz", "name": "VÄ±zvÄ±z", "archetype": "swarm", "weight": 3, "hp": 60, "damage": 3, "speed": 2.0, "swollenScale": 1.7, "biome": "sis_korusu",
+      "id": "vizviz", "name": "Vızvız", "archetype": "swarm", "weight": 3, "hp": 60, "damage": 3, "speed": 2.0, "swollenScale": 1.7, "biome": "sis_korusu",
       "swell": { "push": 0.004, "wobble": 0.004, "glow": 1.2, "veinScale": 30.0, "seconds": 1.2, "stepJiggle": 0.0, "hitJiggle": 0.01 },
       "wild": { "stance": "swarm", "active": "day", "wanderRadius": 10, "walkSpeedMult": 0.8, "runSpeedMult": 2.0, "target": "flower", "targetSense": 14, "targetSeconds": 6, "retargetMin": 3, "retargetMax": 7 },
       "swarm": { "members": 18, "radius": 1.0, "memberSize": 0.15, "height": 1.0, "orbit": 0.5, "bob": 0.25, "hpPool": 60, "scatterSeconds": 3, "scatterMult": 2.0, "swollenMembers": 3, "swollenRadius": 2.0, "hive": true, "hiveRange": 12, "guardRadius": 4, "stingDamage": 3, "stingInterval": 1.5 }
     },
     {
-      "id": "findikci", "name": "FÄ±ndÄ±kÃ§Ä±", "archetype": "thief", "weight": 1, "hp": 25, "damage": 3, "speed": 4.2, "swollenScale": 2.8, "weakPointMult": 2.0, "biome": "sis_korusu",
+      "id": "findikci", "name": "Fındıkçı", "archetype": "thief", "weight": 1, "hp": 25, "damage": 3, "speed": 4.2, "swollenScale": 2.8, "weakPointMult": 2.0, "biome": "sis_korusu",
       "rig": { "plan": "biped", "model": "code:findikci", "height": 0.7, "yaw": 0, "triBudget": 5000,
         "bones": { "hips": "hips", "spine": "spine", "chest": "chest", "neck": "neck", "head": "head", "upperarm_l": "upperarm_l", "forearm_l": "forearm_l", "upperarm_r": "upperarm_r", "forearm_r": "forearm_r", "thigh_l": "thigh_l", "calf_l": "calf_l", "foot_l": "foot_l", "thigh_r": "thigh_r", "calf_r": "calf_r", "foot_r": "foot_r" },
         "placeholder": ["walk"] },

@@ -45,6 +45,8 @@ public sealed class AtaPhaseDef
     public float ChargeSeconds { get; set; } = 1.4f;
     /// <summary>Yumak / mermi: adet, hiz (m/s), oyuncuyu itme (m/s).</summary>
     public int VolleyCount { get; set; }
+    /// <summary>Tek yumagin hasari (hucumun AttackDamage'indan ayri).</summary>
+    public float VolleyDamage { get; set; }
     public float VolleySpeed { get; set; }
     public float Knockback { get; set; }
     /// <summary>Kok halkasi: yayilma hizi (m/s), en buyuk yaricap, kalinlik (m).</summary>
@@ -64,6 +66,8 @@ public sealed class AtaPhaseDef
     /// <summary>Zayif nokta (kovan) sayisi ve cani; kirilan kovan StunSeconds sersemletir.</summary>
     public int WeakPoints { get; set; }
     public float WeakPointHp { get; set; }
+    /// <summary>Zayif noktalar her saldiridan sonra bu kadar sn acik (isir); 0 = asama boyunca acik.</summary>
+    public float WeakWindow { get; set; }
     /// <summary>Sutuna toslayinca ya da kovan kirilinca sersemleme suresi ve o surede alinan hasar carpani.</summary>
     public float StunSeconds { get; set; }
     public float StunMult { get; set; } = 1f;
@@ -141,6 +145,8 @@ public sealed class AtalarFile
     public float PhaseShiftSeconds { get; set; } = 1.5f;
     /// <summary>Ata'nin inisi (sn): bu surede hasar almaz, saldirmaz.</summary>
     public float ArriveSeconds { get; set; } = 2.5f;
+    /// <summary>Oyuncu arenanin leash yaricapindan bu kadar sn uzak kalirsa Ata cekilir (dovus biter, adak geri gelmez).</summary>
+    public float AbandonSeconds { get; set; } = 20f;
     public List<AtaDef> Atalar { get; set; } = new();
     public List<AtaAddDef> Adds { get; set; } = new();
     public List<SealDef> Seals { get; set; } = new();
