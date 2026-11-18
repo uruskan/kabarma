@@ -37,6 +37,8 @@ public partial class Player : CharacterBody3D
 
     // Bot ve sinamalar icin: girisi gecersiz kilar.
     public Vector3? MoveOverride;
+    /// <summary>Panel acik (Director.ReadInput her kare yazar): hareket ve ziplama girdisi panele gider (kolda Ⓐ = ziplama ve onay).</summary>
+    public bool UiCapture;
     public Vector3? AimOverride;
     public bool MouseCaptured;
     public bool LookLocked;                       // baslik carki acikken kamera donmez
@@ -197,6 +199,7 @@ public partial class Player : CharacterBody3D
             Hp = 0;
             _dead = true;
             StartDown(k.Normalized() * 2.5f + Vector3.Up * 1.5f, RigDef.DownSeconds);
+            NetDowned(); // Player.Net.cs (ortak): ortak oyunda 30 sn baygin, sok tokadiyla kalkar
         }
         else
         {
@@ -304,6 +307,7 @@ public partial class Player : CharacterBody3D
             wish = wish.LimitLength(1f);
         }
         if (MovementLocked) wish = Vector3.Zero; // kalkis bitene kadar
+        if (UiCapture && MoveOverride == null) wish = Vector3.Zero; // panel acik: yon tuslari / sol cubuk paneli gezer (girdi)
         sprint = SprintGate(sprint && wish.LengthSquared() > 0.01f, dt); // Player.Stamina.cs: GDD §3.2
         float speed = (sprint ? SprintSpeed : WalkSpeed) * SpeedMult;
         var v = Velocity;
@@ -312,7 +316,7 @@ public partial class Player : CharacterBody3D
         v.X = Mathf.MoveToward(v.X, target.X, accel * speed * dt);
         v.Z = Mathf.MoveToward(v.Z, target.Z, accel * speed * dt);
         if (!IsOnFloor()) v.Y -= _gravity * dt;
-        else if (Input.IsActionJustPressed("jump") && MoveOverride == null && !MovementLocked) { v.Y = JumpVelocity; OnJump(); }
+        else if (Input.IsActionJustPressed("jump") && MoveOverride == null && !MovementLocked && !UiCapture) { v.Y = JumpVelocity; OnJump(); }
         v += _knock;
         _knock = _knock.Lerp(Vector3.Zero, Mathf.Min(1f, dt * 8f));
         Velocity = v;

@@ -14,9 +14,10 @@ public partial class BuildBridge
     {
         string onar = OnarPreview(t, out bool okOnar);
         string sok = SokPreview(t, out bool okSok);
+        string yuk = UpgradePreview(t, out bool okYuk); // BuildBridge.Yapi.cs (M2)
         return new[]
         {
-            ("Yükselt", "M1'de tek malzeme Ahşap: Kerpiç-Taş M2'de.", false),
+            ("Yükselt", yuk, okYuk),
             ("Onar", onar, okOnar),
             ("Sök", sok, okSok),
         };
@@ -26,7 +27,7 @@ public partial class BuildBridge
     public bool RunPlanAction(Node3D t, int action)
     {
         if (t == null || !IsInstanceValid(t)) return false;
-        bool done = action switch { 1 => Repair(t), 2 => Deconstruct(t), _ => false };
+        bool done = action switch { 0 => Upgrade(t), 1 => Repair(t), 2 => Deconstruct(t), _ => false };
         if (!done) Sfx.Play("hit", null, -10f);
         Highlight(null, false);
         return done;

@@ -14,8 +14,14 @@ $ErrorActionPreference = 'Stop'
 
 $branch = (& git rev-parse --abbrev-ref HEAD).Trim()
 if ($branch -eq 'main') { throw "main uzerinde calistirma: kendi dalinda (ya da ana oturumda detached HEAD'de) kos" }
-$dirty = & git status --porcelain --untracked-files=no
-if ($dirty) { $dirty | Select-Object -First 10 | ForEach-Object { Write-Host "  $_" }; throw "commit edilmemis degisiklik var; once commit et" }
+$top = (& git rev-parse --show-toplevel).Trim()
+# Godot ice aktarmasi .import/.uid dosyalarini satir sonu farkiyla yeniden yazar: git status "M" der ama icerik ayni.
+# Icerikce degismeyenlerin durum bilgisini tazele (git add icerik ayni oldugu icin hicbir sey sahnelemez).
+$realGen = @(& git -c core.safecrlf=false diff --name-only -- '*.import' '*.uid' 2>$null)
+if ($realGen.Count -eq 0) { & git -c core.safecrlf=false add -u -- '*.import' '*.uid' 2>$null | Out-Null }
+# Kirli denetimi icerige gore (satir sonu gurultusu sayilmaz).
+$dirty = @(& git -c core.safecrlf=false diff --name-only HEAD 2>$null)
+if ($dirty.Count -gt 0) { $dirty | Select-Object -First 10 | ForEach-Object { Write-Host "  $_" }; throw "commit edilmemis degisiklik var; once commit et" }
 
 for ($i = 1; $i -le $Retries; $i++) {
     $old = (& git rev-parse refs/heads/main).Trim()
@@ -27,7 +33,7 @@ for ($i = 1; $i -le $Retries; $i++) {
     }
     if (-not $SkipTests) {
         Write-Host "[$i] derleme ve Sim testleri"
-        & powershell -NoProfile -ExecutionPolicy Bypass -File (Join-Path $PSScriptRoot 'test.ps1') -Only build,sim
+        & powershell -NoProfile -ExecutionPolicy Bypass -File (Join-Path $top 'tools/test.ps1') -Only build,sim
         if ($LASTEXITCODE -ne 0) { throw "derleme ya da Sim testleri kirmizi; duzelt, commit et, yeniden kos" }
     }
     $new = (& git rev-parse HEAD).Trim()

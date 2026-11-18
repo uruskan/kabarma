@@ -88,8 +88,9 @@ public partial class EconomyTest : Node
         cargo.Pack(tmp, "turnip", got);
         var crate = cargo.Open;
         Check(crate != null && crate.Items.Count("turnip", stars) == got, "kalite kasaya gecti");
-        int expect = (int)Math.Round(got * cargo.Pricing.Base("turnip") * _d.Data.Tool.Quality[stars - 1], MidpointRounding.AwayFromZero);
-        Check(crate != null && cargo.Value(crate) == expect, $"kasa degeri taban × kalite ({(crate != null ? cargo.Value(crate) : 0)} = {expect})");
+        // M2 (ekonomi2): fiyat Borsa × doygunluk da icerir; onceki satislar Kok'u doyurmus olabilir.
+        int expect = (int)Math.Round(got * cargo.Pricing.Base("turnip") * _d.Data.Tool.Quality[stars - 1] * _d.State.Market.FactorOf("turnip"), MidpointRounding.AwayFromZero);
+        Check(crate != null && cargo.Value(crate) == expect, $"kasa degeri taban × kalite × Borsa ({(crate != null ? cargo.Value(crate) : 0)} = {expect})");
     }
 
     bool _finished;
