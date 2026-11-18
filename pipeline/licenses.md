@@ -111,6 +111,10 @@ Araştırma Masası, Kömür Ocağı, Demirci Ocağı, Bıçkı, Değirmen, Doku
 
 Rüzgâr Gülü, Hayvan Çarkı, Direk, Şalter, Elektrik Lambası, Düğme, Basınç Plakası ve kablolar koddan kurulur (`game/scripts/power/PowerVisuals.cs`, MeshKit; **yer tutucu**). Dış kaynak, kredi ve lisans yok. Altın varlık gelince `placeables.json` satırına `model` yazılır ve `PlaceableVisuals.Make` içindeki guc satırı kaldırılır. Akü Mk1'in görünüşü de koddan.
 
+## Savunma yapıları (M3, yer tutucu)
+
+Çivi Kulesi, Sapan Kulesi, Saçma Kulesi, Diken Tarlası, Yapışkan Zemin, Fırlatma Pedi ve Çukur Kapağı (`game/assets/models/defense/*.glb`) **koddan** üretildi: `pipeline/build_defense.py` (Blender, yapı kitinin `build_kit.py` kalas dili ve projenin kendi ortak ahşap atlası). Üçüncü taraf içerik yok, `F:\Assets` dokusu kullanılmadı, kredi harcanmadı. **Yer tutucu**; `defense.json` içinde `placeholder: true`.
+
 ## Kabarma kartları (kartlar akışı, M3, yer tutucu)
 
 72 kartın (60 kart, 12 aşı) ikonu yok.

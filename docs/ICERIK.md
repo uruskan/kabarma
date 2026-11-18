@@ -342,6 +342,14 @@ Nadirlik etkiyi belirler: Sıradan +%8, Nadir +%15, Destansı +%25, Efsane +%40 
 | Silah (12) | Çift Namlu · Kritik · Delici · Seken · Yakıcı · Ayaz · Akım · Zehirli · Vampir · Otomatik Nişan · İtici · Patlayıcı Uç |
 | İş (4) | Damar Gören (Kazma) · Nazik El (Biçme, tohum şansı) · Uzun Hortum (Sulama) · Usta Eli (İnşa, uzaktan ve hızlı kurma) |
 
+#### 6.3.1 Çip kuralları (M3; ``chips.json``)
+
+- **Yuva:** başlık başına yuva sayısı GDD §4 tablosundadır (Mk.I–II 1, Mk.III–IV 2, Mk.V 3, Mk.VI 4); Çapa Mk'si Ocak basamağıdır. Yuvalar başlığa özgüdür; Çapa yükselince yeni yuvalar açılır, takılı çipler kalır.
+- **Uyum:** Genel çipler her başlığa, Silah çipleri yalnız silah başlıklarına, İş çipleri yalnız kendi başlığına takılır (Damar Gören Kazma, Nazik El Biçme, Uzun Hortum Sulama, Usta Eli İnşa Planı). Aynı çip türü bir başlığa bir kez takılır (nadirliği farklı olsa bile).
+- **Etki:** nadirlik çarpanı (Sıradan 0,08 · Nadir 0,15 · Destansı 0,25 · Efsane 0,40) × çipin ``scale`` değeri, çipin ``stat`` kimliğine eklenir. Aynı ``stat``'ı veren çipler toplanır. Efsane, çipe özgü ek etkiyi (``legendary``) de verir. Stat kimlikleri çarpan ya da olasılıktır (0,08 = +%8); sistemler ``ChipBook.Stat(başlık, stat)`` ile sorar.
+- **Değiştirme:** takma ve çıkarma gündüz ve Alet Askısı'nda; Kabarma gecesi kilitlidir. Çıkarılan çip Çip Deposu'na döner (M3'te sınır 200).
+- **Düşme kaynakları:** Atalar (Koca Pofuduk Sıradan/Nadir, Boynuzlu Dede Nadir/Destansı; Kabarık Ata üst nadirlik), Köstebek Bey ve Yarasa Yumağı (Nadir), Kabarma ödülü (KS'ye göre Sıradan'dan Destansı'ya), Holding kampı ve Genel Merkez (Nadir–Destansı), Tohum Çarkı (Sıradan/Nadir ve Destansı). Efsane düşmez, yalnız üretilir. Tablolar ``chips.json`` ``sources``; yeni kaynak = bir satır.
+- **Üretim:** her çip Maya Kesesi ile üretilir; Efsane ayrıca Holding Parçası ister (bedeller ``chips.json`` ``craft``). Üretimde tür seçilir, nadirlik bedele göre belirlenir.
 ## 7. Güçler (12) ve ultiler (4)
 
 Her etkin güç bir Kadim Taş denemesinin ödülüdür.
@@ -367,6 +375,23 @@ Her etkin güç bir Kadim Taş denemesinin ödülüdür.
 | Dev Mod | 20 sn boyunca kabarırsın: dev boy, ezerek hasar | Boynuzlu Dede |
 | Yörünge Sulaması | Kooperatif uydusundan işaretli alana ışın ve su: hasar verir, yangını söndürür, tarlayı sular | Çıyan Paşa |
 | Zaman Durdu | Bütün düşmanlar 5 sn donar | Buz Tosunu |
+
+**M3 sayıları (ilk beş güç, iki ulti; ayrıntı `data/abilities.json`, kural GDD §17.1):**
+
+| Güç | Sayılar | Kadim Taş denemesi |
+|---|---|---|
+| Atılma | 7 m, 0,25 sn; ilk 0,35 sn hasar yok | 6 halkalı parkur, 45 sn |
+| Kalkan Balonu | 3 m yarıçap, 4 sn; düşman mermisi geçmez | Taşın Gıdak'ı (200 can) 120 sn korunur; 10 saniyede bir 3 hayalet |
+| Şok Dalgası | 6 m, 25 Şok hasarı, itme 12 | 4 dalga (6, 8, 10, 12 hayalet) temizlenir |
+| Yem Hologramı | 8 sn, 15 m'deki düşmanı çeker, 60 can | 4 gözcünün (10 m, 70°) arasından 90 sn içinde hedefe; görülmek 0,5 sn'yi geçerse kayıp |
+| Şifa Sisi | 5 m, 6 sn, saniyede 8 can (oyuncu ve evcil hayvan) | 3 dalga, kimse yere düşmeden |
+
+| Ulti | Sayılar |
+|---|---|
+| Sürü Çağrısı | 60 m içindeki evcil hayvanların nişan yönünde 25 m koşar. Her biri yolundaki düşmana 40 Darbe hasarı ve itme verir. Hayvan yoksa 4 hayalet hayvan koşar (yer tutucu). |
+| Dev Mod | 20 sn boyunca boy ×2,5, hız ×1,3 ve alınan hasar −%50. Değdiğin düşmana saniyede 30 Darbe hasarı verir. |
+
+**Maya Feneri:** Bedeli 3 Maya Kesesi, 5 Bakır Tel ve 2 Reçine. M3'te ilk Maya Kesesi alınınca açılır; ileride Çıraklık zinciri bu planı verecek (§18).
 
 ## 8. Kabarma kartları (72)
 
@@ -712,6 +737,8 @@ Soket: üretici, akü ve şalter 2, tüketici 1, Direk 4; sinyal teli soket saym
 | Mayın | 3 | Alan patlaması |
 | Yağ Hendeği | 3 | Tutuşturulunca alev duvarı |
 | Dondurucu Püskürtücü | 5 | Alan Donma; güç ister |
+
+M3'te gelenler: Çivi, Sapan ve Saçma Kulesi; Diken Tarlası, Yapışkan Zemin, Fırlatma Pedi ve Çukur Kapağı. Bedelleri `recipes.json`'da (Tezgâh), menzil, hasar, cephane, aşınma ve tuzak sayıları `data/defense.json`'da (GDD §16.4 M3 kuralları). Saçma Kulesi'nin cephanesi Demirci Ocağı'nın Saçma'sı (`sacma`). Kalan dört kule ve dört tuzak M4'te.
 
 ## 14. Araçlar (7) ve eklentiler (10)
 

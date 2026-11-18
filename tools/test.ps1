@@ -27,6 +27,8 @@ param(
 
 if (-not $PSBoundParameters.ContainsKey('Only')) { $Only += 'gece' } # gecehud: --test=gece varsayilan adimlara eklenir
 if (-not $PSBoundParameters.ContainsKey('Only')) { $Only += 'ilerleme' } # ilerleme: --test=ilerleme varsayilan adimlara eklenir
+if (-not $PSBoundParameters.ContainsKey('Only')) { $Only += 'savunma' } # savunma M3: --test=savunma
+if (-not $PSBoundParameters.ContainsKey('Only')) { $Only += 'cip' } # cip: --test=cip varsayilan adimlara eklenir
 $ErrorActionPreference = 'Continue'
 if (-not $PSBoundParameters.ContainsKey('Only')) { $Only += 'world' } # dunya sinamasi (--test=world), varsayilan listede
 if (-not $PSBoundParameters.ContainsKey('Only')) { $Only += 'explore' } # dunya2: kesif sinamasi (--test=explore), varsayilan listede
@@ -246,6 +248,7 @@ if ($Only -contains 'latency') {
 }
 
 if ($Only -contains 'power') { if (-not $G) { $G = Find-Godot }; Invoke-GodotTest 'power' "--test=power $BotArgs --quit_after=1500" $BotTimeout { param($r) $res = ($r.Text -split "`r?`n" | Where-Object { $_ -match '^POWER RESULT ' } | Select-Object -Last 1); if (-not $res) { $res = 'POWER RESULT satiri yok' }; [pscustomobject]@{ Ok = ($res -match '^POWER RESULT ok'); Detail = ($res -replace ' t=[0-9.]+$', '') } } } # guc akisi (-Only power): ilk gun zinciri + uretec, lamba, dugme; varsayilan listede yok (uzun)
+if ($Only -contains 'gucler') { if (-not $G) { $G = Find-Godot }; Invoke-GodotTest 'gucler' "--test=gucler --quit_after=700" $BotTimeout { param($r) $res = ($r.Text -split "`r?`n" | Where-Object { $_ -match '^GUCLER RESULT ' } | Select-Object -Last 1); if (-not $res) { $res = 'GUCLER RESULT satiri yok' }; [pscustomobject]@{ Ok = ($res -match '^GUCLER RESULT ok'); Detail = ($res -replace ' t=[0-9.]+$', '') } } } # gucler akisi (-Only gucler): Kadim Tas parkuru, Atilma, Tatbikat, Fener
 
 if ($Only -contains 'ekonomi') {
     $out = Join-Path $RunDir 'ekonomi'
@@ -286,8 +289,20 @@ if ($Only -contains 'ilerleme') {
         [pscustomobject]@{ Ok = ($res -match '^ILERLEME RESULT ok'); Detail = ($res -replace ' t=[0-9.]+$', '') }
     }
 }
+if ($Only -contains 'savunma') { if (-not $G) { $G = Find-Godot }; Invoke-GodotTest 'savunma' '--test=savunma --mute' $BotTimeout { param($r) $res = ($r.Text -split "`r?`n" | Where-Object { $_ -match '^DEFENSE RESULT ' } | Select-Object -Last 1); if (-not $res) { $res = 'DEFENSE RESULT satiri yok' }; [pscustomobject]@{ Ok = ($res -match '^DEFENSE RESULT ok=\d+ fail=0'); Detail = ($res -replace '^DEFENSE RESULT ', '') } } } # savunma M3: kuleler ve tuzaklar (defense/DefenseTest.cs)
 if ($Only -contains 'coop') { if (-not $G) { $G = Find-Godot }; Invoke-GodotTest 'coop' '--test=coop' ([math]::Max($BotTimeout, 600)) { param($r) $res = ($r.Text -split "`r?`n" | Where-Object { $_ -match '^COOP RESULT ' } | Select-Object -Last 1); if (-not $res) { $res = 'COOP RESULT satiri yok' }; [pscustomobject]@{ Ok = ($res -match '^COOP RESULT ok'); Detail = ($res -replace '^COOP RESULT ', '' -replace ' t=[0-9.]+', '') } } } # ortak: host 3 istemciyi kendisi baslatir (net/CoopTest.cs); istemci gunlukleri .tools/run/test/coop_client_N.log
 if ($Only -contains 'steam') { if (-not $G) { $G = Find-Godot }; Invoke-GodotTest 'steam' '--test=steam' 120 { param($r) $res = ($r.Text -split "`r?`n" | Where-Object { $_ -match '^STEAM RESULT ' } | Select-Object -Last 1); if (-not $res) { $res = 'STEAM RESULT satiri yok' }; [pscustomobject]@{ Ok = ($res -match '^STEAM RESULT ok'); Detail = ($res -replace '^STEAM RESULT ', '') } } } # ortak: tek surec Steam baslatma ve lobi (Steam acik olmali); varsayilan listede yok
+
+if ($Only -contains 'cip') {
+    # cip: Defter Cipler sekmesi, takma, yuva siniri, Kabarma kilidi, Ata dususu (game/scripts/CipTest.cs)
+    if (-not $G) { $G = Find-Godot }
+    Invoke-GodotTest 'cip' "--test=cip --mute" $BotTimeout {
+        param($r)
+        $res = ($r.Text -split "`r?`n" | Where-Object { $_ -match '^CIP RESULT ' } | Select-Object -Last 1)
+        if (-not $res) { $res = 'CIP RESULT satiri yok' }
+        [pscustomobject]@{ Ok = ($res -match '^CIP RESULT ok'); Detail = ($res -replace ' t=[0-9.]+$', '') }
+    }
+}
 
 if ($Only -contains 'input') {
     foreach ($dev in @('kbm', 'pad')) {

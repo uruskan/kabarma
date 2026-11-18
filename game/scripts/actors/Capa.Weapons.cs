@@ -25,7 +25,7 @@ public partial class Capa
         bool trigger = w.SemiAuto ? pressed : fire;
         if (trigger && _fireCd <= 0f)
         {
-            _fireCd = w.FireInterval / (_d.Night?.Stats.FireRateMult ?? 1f);
+            _fireCd = w.FireInterval / ((_d.Night?.Stats.FireRateMult ?? 1f) * ChipFireRate(w.Id)); // Capa.Chips.cs
             _shotBuffer = 0f;
             shoot();
             ShotsFired++;
@@ -51,7 +51,7 @@ public partial class Capa
             FeelEmpty("civi", muzzle);
             return;
         }
-        var stats = _d.Night?.Stats ?? new CombatStats();
+        var stats = StatsFor(w.Id); // kart + cip (Capa.Chips.cs)
         var dir = (aim - muzzle).Normalized();
         int n = stats.Projectiles;
         float spread = Mathf.DegToRad(w.SpreadDegrees);
@@ -70,7 +70,7 @@ public partial class Capa
     public void FireTirpan(Vector3 aim)
     {
         var w = _d.Data.Tool.Weapon;
-        var stats = _d.Night?.Stats ?? new CombatStats();
+        var stats = StatsFor(w.Id); // kart + cip (Capa.Chips.cs)
         var muzzle = _d.Player.Muzzle.GlobalPosition;
         var dir = (aim - muzzle);
         if (w.MaxPitch > 0) dir.Y = Mathf.Clamp(dir.Y, -w.MaxPitch * dir.Length(), w.MaxPitch * dir.Length());
@@ -119,11 +119,14 @@ public partial class Capa
         float dmg; bool crit;
         if (night != null) (dmg, crit) = night.RollHit(w, weak, z.Def.WeakPointMult);
         else { dmg = w.Damage; crit = false; }
+        dmg = ChipCombat.AdjustHit(_d.State.Chips, w.Id, dmg, ref crit, w.CritMult, _d.State.ChipRng); // Capa.Chips.cs: cip hasari ve kritigi
         if (_d.Net?.ForwardHit(z, dmg, crit, dir with { Y = 0 }, w.Knockback * s.KnockbackMult, weak, night != null && night.RollBurn() ? w.BurnSeconds : 0, night != null && night.RollFreeze() ? w.FreezeSeconds : 0) == true) { FeelHit(feel, at, crit ? Palette.Warning : color, crit, weak); return; } // ortak: istemcinin vurusu host'ta
         z.Hit(dmg, crit, dir with { Y = 0 }, w.Knockback * s.KnockbackMult, weak);
         _d.OnCardHit(z); // kartlar: can emme, Sok, Zehir (Director.Cards.cs)
         if (night != null && night.RollBurn()) z.BurnT = w.BurnSeconds;
         if (night != null && night.RollFreeze()) z.FreezeT = w.FreezeSeconds;
+        if (ChipCombat.RollBurn(_d.State.Chips, w.Id, _d.State.ChipRng)) z.BurnT = w.BurnSeconds;     // cip: Yakici
+        if (ChipCombat.RollFreeze(_d.State.Chips, w.Id, _d.State.ChipRng)) z.FreezeT = w.FreezeSeconds; // cip: Ayaz
         FeelHit(feel, at, crit ? Palette.Warning : color, crit, weak);
     }
 }
@@ -139,6 +142,7 @@ public partial class Crescent : Node3D
     int _bounces;
     readonly HashSet<Zipzip> _hit = new();
     readonly HashSet<Node3D> _hitWild = new(); // yaratik2
+    readonly HashSet<Node3D> _hitGhost = new(); // gucler: deneme ve Tatbikat hayaletleri
     readonly HashSet<IAtaTarget> _hitAta = new(); // boss akisi: Ata hedefleri (boss/Capa.Ata.cs)
     readonly MeshInstance3D _mesh;
     readonly float _width;
@@ -209,6 +213,7 @@ public partial class Crescent : Node3D
         _d.Wildlife?.ProjectileHit(GlobalPosition - _dir * step, GlobalPosition, _width * 0.5f + _w.HitRadius, _w.Damage * _s.SizeMult, _hitWild); // yaratik2: gunduz yabanileri (Wildlife.Hits.cs)
         _d.HoldingProjectileHit(GlobalPosition - _dir * step, GlobalPosition, _width * 0.5f + _w.HitRadius, _w.Damage * _s.SizeMult, _hitWild); // holding: kamp, birim, kervan (HoldingWorld.cs)
         foreach (var t in _d.AtaTargetsNear(GlobalPosition, _width * 0.5f + _w.HitRadius)) if (_hitAta.Add(t)) _d.Capa.AtaWeaponHit("tirpan", _w, _s, t, t.Center, _dir, Palette.MayaTeal); // boss akisi
+        while (_d.Abilities?.GhostHitSegment(GlobalPosition - _dir * step, GlobalPosition, _width * 0.5f + _w.HitRadius, _w.Damage * _s.SizeMult, _hitGhost) == true) { } // gucler: hayaletler (abilities/AbilitySystem.cs)
         if (_traveled > _w.Range * _s.SizeMult) QueueFree();
     }
 }
@@ -285,6 +290,7 @@ public partial class Nail : Node3D
         if (_d.Wildlife != null && _d.Wildlife.ProjectileHit(from, GlobalPosition, _w.HitRadius * _s.SizeMult, _w.Damage * _s.SizeMult)) { QueueFree(); return; } // yaratik2: gunduz yabanileri
         if (_d.HoldingProjectileHit(from, GlobalPosition, _w.HitRadius * _s.SizeMult, _w.Damage * _s.SizeMult)) { QueueFree(); return; } // holding: kamp, birim, kervan
         if (_d.AtaSegmentHit(from, GlobalPosition, _w.HitRadius * _s.SizeMult) is IAtaTarget ata) { _d.Capa.AtaWeaponHit("civi", _w, _s, ata, ata.Center, _dir, Palette.OffWhite); QueueFree(); return; } // boss akisi
+        if (_d.Abilities?.GhostHitSegment(from, GlobalPosition, _w.HitRadius * _s.SizeMult, _w.Damage * _s.SizeMult) == true) { QueueFree(); return; } // gucler: hayaletler
         if (GlobalPosition.Y < _d.World.HeightAt(GlobalPosition.X, GlobalPosition.Z) + _w.GroundOffset)
         {
             _d.Capa.FeelDebris("civi_zemin", GlobalPosition, Palette.Soil);
