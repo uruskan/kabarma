@@ -51,3 +51,7 @@ Sahibin varlık kitaplığından (`F:\Assets`, yalnız okundu) kopyalanıp `pipe
 | `toprak` (2K), `tarla` (1K, üstüne koddan eğatlar) | `F:\Assets\forest_floor_wgyhdgy_4k` (Megascans) | Fab Standart Lisans (Megascans) | Klasörde lisans alanı yok; ana oturumun bildirdiği lisans. Sahip doğrulamalı |
 | `kaya` (2K) | `F:\Assets\cracked_nordic_coastal_rock_ukohaj0mw_4k` (Megascans) | Fab Standart Lisans (Megascans) | Aynı not |
 | `kum` (1K) | `F:\Assets\beach_sand_uinladeo_4k` (Megascans) | Fab Standart Lisans (Megascans) | Aynı not |
+
+## Güç ve sinyal parçaları (guc akışı, M2)
+
+Rüzgâr Gülü, Hayvan Çarkı, Direk, Şalter, Elektrik Lambası, Düğme, Basınç Plakası ve kablolar koddan kurulur (`game/scripts/power/PowerVisuals.cs`, MeshKit; **yer tutucu**). Dış kaynak, kredi ve lisans yok. Altın varlık gelince `placeables.json` satırına `model` yazılır ve `PlaceableVisuals.Make` içindeki guc satırı kaldırılır. Akü Mk1'in tarifi yok (Demir Külçe ve Ekşilik oyuna girince); görünüşü yine koddan.
