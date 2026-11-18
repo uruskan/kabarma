@@ -18,7 +18,7 @@ Bu bölüm sahibin kurallarıdır ve yukarıdaki Genex sözleşmesiyle çelişti
 
 ## Para ve dış dünya
 
-- **Kredi harcayan hiçbir üretimi sahibin o tutara açık onayı olmadan başlatma** (Genex, Tripo API, Tripo web, ElevenLabs). Önce ne, kaç adet, hangi havuz, kaç kredi; sonra onay. Alt oturumlar ve alt ajanlar **hiç kredi harcamaz**; ihtiyacı listeleyip ana oturuma bildirir.
+- **Kredi harcayan hiçbir üretimi sahibin o tutara açık onayı olmadan başlatma** (Genex, Tripo API, Tripo web, ElevenLabs). Önce ne, kaç adet, hangi havuz, kaç kredi; sonra onay. Alt oturumlar ve alt ajanlar **hiç kredi harcamaz**; ihtiyacı listeleyip ana oturuma bildirir. **İstisna (sahibin kararı, 19 Kasım 2026):** onaylı Tripo web bakiyesi içindeki tarayıcı üretimini ana oturumun başlattığı bir Sonnet alt ajanı yapar; ana oturum adedi ve tavanı verir, harcamayı izler.
 - `.env` içindeki ElevenLabs anahtarı her kullanımda ayrı onay ister. Alt oturumlar `.env`'i okumaz. Anahtar hiçbir çıktıya yazılmaz.
 - `git push`, yayınlama, mağaza işlemleri yalnızca sahibin açık onayıyla.
 - Sahibin kaydına dokunma; testler ayrı kayıt yuvasında koşar.
