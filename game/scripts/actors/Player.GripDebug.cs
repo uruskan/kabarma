@@ -1,3 +1,4 @@
+using System.Linq;
 using Godot;
 
 namespace Kabarma.Game;
@@ -6,6 +7,9 @@ namespace Kabarma.Game;
 /// Tutulan nesne sinamalari (goruntu ve gunluk kaniti icin; oyunda kapali). Kapsul acilisi bittikten sonra baslar:
 ///   --aim            govde onundeki bir noktaya surekli nisan (AimOverride): kol IK'si ve el hizalama
 ///   --closeup=ACI    oyuncunun yakinindan bakan kamera; ACI govdeye gore (0 on, 90 sag, 180 arka, -90 sol)
+///   --closeup_h=M --closeup_d=M  yakin kameranin yuksekligi ve uzakligi (varsayilan 0,3 ve 1,7; ustten: 2,4 ve 0,6)
+///   --firehold       tetigi basili tutar (Capa isini acik; --aim ile govde onundeki noktaya)
+///   --aimdist=M --aimh=M  --aim noktasinin uzakligi ve yuksekligi (varsayilan 12 ve 1,3; isin menzil icinde gorunur)
 ///   --headcycle      1,5 sn'de bir sonraki Capa basligi (baslik degisiminde Capa elde kalir mi)
 ///   --head=AD        baslangicta bu basligi tak (Kazma, Bicme, Toprak, Sulama, Cekim, Insa, Tirpan, Civi)
 ///   --cartpush       onune bir El Arabasi koyup tutar (iki el tutamaklara, Capa sirta)
@@ -30,7 +34,7 @@ public partial class Player
     void TickGripDebug()
     {
         var a = Main.Args;
-        if (!(a.ContainsKey("aim") || a.ContainsKey("closeup") || a.ContainsKey("headcycle") || a.ContainsKey("cartpush") || a.ContainsKey("griptest") || a.ContainsKey("gripmarkers") || a.ContainsKey("head"))) return;
+        if (!(a.ContainsKey("aim") || a.ContainsKey("closeup") || a.ContainsKey("headcycle") || a.ContainsKey("cartpush") || a.ContainsKey("griptest") || a.ContainsKey("gripmarkers") || a.ContainsKey("head") || a.ContainsKey("firehold"))) return;
         var d = GetParent() as Director;
         if (d == null || !(d.Pod?.IntroDone ?? true)) return;
         if (!_gripDbgStarted)
@@ -38,8 +42,10 @@ public partial class Player
             _gripDbgStarted = true;
             var f = Visual.GlobalBasis.Z with { Y = 0 };
             f = f.LengthSquared() > 1e-4f ? f.Normalized() : Vector3.Forward;
-            if (a.ContainsKey("aim")) AimOverride = GlobalPosition + f * 12f + Vector3.Up * 1.3f;
+            float Num(string k, float def) => a.TryGetValue(k, out var s) && float.TryParse(s, System.Globalization.NumberStyles.Float, System.Globalization.CultureInfo.InvariantCulture, out var v) ? v : def;
+            if (a.ContainsKey("aim")) AimOverride = GlobalPosition + f * Num("aimdist", 12f) + Vector3.Up * Num("aimh", 1.3f);
             if (a.TryGetValue("head", out var hn) && System.Enum.TryParse<Capa.Head>(hn, true, out var head)) d.Capa.Select(head);
+            if (a.ContainsKey("firehold")) Input.ActionPress("fire");
             if (a.ContainsKey("cartpush"))
             {
                 var cart = new ElArabasi(d);
@@ -66,6 +72,28 @@ public partial class Player
                 var tm = new Timer { WaitTime = 0.5, Autostart = true };
                 AddChild(tm);
                 tm.Timeout += () => GD.Print($"GRIP t={Time.GetTicksMsec() / 1000f:0.0} clip={_cur} sp={new Vector3(Velocity.X, 0, Velocity.Z).Length():0.0} down={Down} {GripReport()}");
+                // Sirt kemigi govde uzayinda (+Z on, +Y yukari, +X modelin solu): grips.json "back" ayari icin.
+                tm.Timeout += () =>
+                {
+                    if (Rig == null) return;
+                    var b = Visual.GlobalTransform.AffineInverse() * Rig.BoneWorld(_backBone);
+                    var bb = b.Basis.Orthonormalized();
+                    GD.Print($"BACKBONE {_backBone} origin={b.Origin} x={bb.X} y={bb.Y} z={bb.Z} capa_origin={Visual.GlobalTransform.AffineInverse() * _capa.GlobalPosition}");
+                    // Canta (derisiz mesh) kemigin uzayinda kutu
+                    var inv = Rig.BoneWorld(_backBone).AffineInverse();
+                    foreach (var mi in Visual.FindChildren("*", "MeshInstance3D", true, false))
+                        if (mi is MeshInstance3D m && m.Skin == null && m.Mesh != null && m.Name.ToString().Contains("Backpack"))
+                        {
+                            Vector3 lo = Vector3.One * 99, hi = -Vector3.One * 99;
+                            var t = inv * m.GlobalTransform;
+                            var vs = (Vector3[])m.Mesh.SurfaceGetArrays(0)[(int)Mesh.ArrayType.Vertex];
+                            foreach (var v in vs) { var p = t * v; lo = lo.Min(p); hi = hi.Max(p); }
+                            // Arka yuzun ortasi: dis yuzdeki (z > max-3 cm) koselerin ortasi
+                            var outer = vs.Select(v => t * v).Where(p => p.Z > hi.Z - 0.03f).ToList();
+                            var oc = outer.Aggregate(Vector3.Zero, (a2, p) => a2 + p) / Mathf.Max(1, outer.Count);
+                            GD.Print($"BACKBONE canta {m.Name} kemik uzayinda min={lo} max={hi} dis_yuz_ortasi={oc} ({outer.Count} kose)");
+                        }
+                };
             }
         }
         if (a.ContainsKey("gripmarkers") && Rig != null)
@@ -107,7 +135,9 @@ public partial class Player
             // Yerdeyken (ragdoll) govde kapsulu yerinde kalir, beden savrulur: kamera kalcaya bakar, biraz yukaridan.
             bool down = Down && Rig != null;
             var look = down ? Rig.HipsPosition + Vector3.Up * 0.1f : GlobalPosition + Vector3.Up * 1.0f + right * 0.18f;
-            _closeCam.GlobalPosition = look + (fwd * Mathf.Cos(r) + right * Mathf.Sin(r)) * (down ? 2.0f : 1.7f) + Vector3.Up * (down ? 1.1f : 0.3f);
+            float ch = a.TryGetValue("closeup_h", out var hs) && float.TryParse(hs, System.Globalization.NumberStyles.Float, System.Globalization.CultureInfo.InvariantCulture, out var hv) ? hv : 0.3f;
+            float cd = a.TryGetValue("closeup_d", out var ds) && float.TryParse(ds, System.Globalization.NumberStyles.Float, System.Globalization.CultureInfo.InvariantCulture, out var dv) ? dv : 1.7f;
+            _closeCam.GlobalPosition = look + (fwd * Mathf.Cos(r) + right * Mathf.Sin(r)) * (down ? 2.0f : cd) + Vector3.Up * (down ? 1.1f : ch);
             _closeCam.LookAt(look, Vector3.Up);
         }
     }

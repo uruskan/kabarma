@@ -1,0 +1,31 @@
+Godot Engine v4.7.2.stable.mono.official.ed1daf0bf - https://godotengine.org
+
+TEST grip
+MUSIC ready day=yes layers=3/3 bar=2.00s
+PLAYER model anims: carry,cheer,crouch_walk,eat,getup_back_pose,getup_front_pose,hurt,idle,jump,jump_air,jump_land,jump_start,kneel,knockdown,plant,push,run,shock_fall,sleep,sprint,walk,walk_casual,wave
+AUDIO sounds=60 playable=60 variant_files=180 m0_only=0 silent=0 placeholder=0
+AUDIO ok 60/60
+POFUDUK anims: pose/attack1,pose/attack2,pose/eat,pose/hit,pose/idle,pose/rest,pose/run,pose/walk,preset_quadruped_walk
+BUILD kit pieces=28
+BOOT Kabarma MVP
+MUSIC Silence -> Day
+ZIPZIP herd size=2 at=35,2 herds=1
+ZIPZIP herd size=2 at=19,30 herds=2
+ZIPZIP herd size=2 at=19,17 herds=3
+SUNA line=giris_1 voice=yes
+HATCH intro done
+GRIP model namlu_ucu z=0.000 kesit=(0.000,-0.000) uzunluk=0.344 genislik=0.123 yukseklik=0.350 tutamak=(0.005284223, -0.09994, -0.26058722) kesit 0.063x0.093 m (123 kose) egim=22d
+GRIP bekleme gap=0.0cm bar=0.0d parmak=0.0d namlu-nisan=- yon=0d tutamak_yuksekligi>=0.64m clip=idle
+SUNA line=giris_2 voice=yes
+GRIP yurume gap=0.0cm bar=0.0d parmak=0.0d namlu-nisan=- yon=0d tutamak_yuksekligi>=0.68m clip=run
+GRIP kosu gap=0.0cm bar=0.0d parmak=0.0d namlu-nisan=- yon=0d tutamak_yuksekligi>=0.58m clip=sprint
+GRIP comelme gap=0.0cm bar=0.0d parmak=0.0d namlu-nisan=- yon=0d tutamak_yuksekligi>=0.62m clip=crouch_walk
+GRIP bekleme+nisan gap=0.0cm bar=0.0d parmak=0.0d namlu-nisan=0.5d yon=1d tutamak_yuksekligi>=1.09m clip=idle
+GRIP yurume+nisan gap=0.0cm bar=0.0d parmak=0.0d namlu-nisan=0.5d yon=1d tutamak_yuksekligi>=1.04m clip=run
+GRIP kosu+nisan gap=0.0cm bar=0.0d parmak=0.0d namlu-nisan=0.5d yon=1d tutamak_yuksekligi>=1.00m clip=sprint
+GRIP comelme+nisan gap=0.0cm bar=0.0d parmak=0.0d namlu-nisan=0.5d yon=1d tutamak_yuksekligi>=0.89m clip=crouch_walk
+GRIP ates/Kazma gap=0.0cm namlu-nisan=0.6d
+GRIP ates/Bicme gap=0.0cm namlu-nisan=0.6d
+CART grab speed=4.00
+GRIP cart=yok: El Arabasi modelinde handle_r/handle_l dugumu yok (arkada simetrik sap cifti yok; pipeline/grip_markers.py). Olcum yapilmadi.
+RESULT ok grip checks=53 cart=yok

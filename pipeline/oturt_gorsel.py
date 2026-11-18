@@ -178,6 +178,8 @@ def main():
     fix_foreign_paths()
     gone = drop_material_records(keys)
     print(f"eski pisirilmis malzeme kayitlari silindi: {gone}")
+    hold = [k for k in keys if k in ("capa", "el_arabasi")]  # oyuncu akisi: tutamak ve namlu isaretleri (grips.json bunlari kullanir)
+    if hold: subprocess.run([MAN["blender"], "-b", "--factory-startup", "-P", os.path.join(ROOT, "pipeline", "grip_markers.py"), "--", *hold], cwd=ROOT)
     g = MAN["godot"]
     subprocess.run([g, "--headless", "--path", "game", "--import"], cwd=ROOT, capture_output=True)
     only = ",".join(keys + (["kapsul_rampa"] if "kapsul" in keys else []))

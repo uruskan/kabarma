@@ -105,19 +105,42 @@ public partial class Player : CharacterBody3D
         kit.Pillow(new Vector3(0.24f, 0.12f, 0.3f), MeshKit.At(0, 0.15f, 0.05f), Palette.CoopBlue, 0.4f);
         kit.Cylinder(0.11f, 0.13f, 0.18f, MeshKit.At(new Vector3(0, 0, 0.55f), new Vector3(Mathf.Pi / 2, 0, 0)), Palette.Warning, 10);
         kit.Pillow(new Vector3(0.1f, 0.24f, 0.12f), MeshKit.At(new Vector3(0, -0.18f, -0.02f), new Vector3(0.3f, 0, 0)), Palette.DarkGrey, 0.4f);
-        // Model, yeri ve namlu grips.json "capa"da (Capa dugumunde namlu +Z, ust +Y; Tripo modeli +X'e bakar).
+        // Model grips.json "capa"da; tutamak ve namlu modelin icindeki adli dugumler (pipeline/grip_markers.py olcer).
+        // Capa dugumunun cercevesi namlu dugumudur: koku namlu ucu, +Z namlu ekseni, +Y ust. Tutamak bu cercevede.
         var def = _capaDef;
         var golden = def != null && !string.IsNullOrEmpty(def.Model) ? Assets.Load(def.Model) : null;
+        var muzzle = golden?.FindChild(def.MuzzleNode, true, false) as Node3D;
+        var grip = def?.Right != null && !string.IsNullOrEmpty(def.Right.Node) ? golden?.FindChild(def.Right.Node, true, false) as Node3D : null;
+        if (golden != null && (muzzle == null || grip == null))
+        {
+            GD.PushError($"Capa modelinde '{def.MuzzleNode}' ya da '{def.Right?.Node}' dugumu yok ({def.Model}): pipeline/grip_markers.py kosun. Yedek model kullaniliyor.");
+            golden.QueueFree();
+            golden = null;
+        }
         if (golden != null)
         {
-            golden.RotationDegrees = V(def.ModelRotDeg);
-            golden.Position = V(def.ModelPos);
+            golden.Transform = Rel(golden, muzzle).AffineInverse();
             _capa.AddChild(golden);
+            Muzzle = muzzle;
+            _capaGripNode = grip;
+            _capaGripR = golden.Transform * Rel(golden, grip) * Frame(def.Right);
         }
-        else _capa.AddChild(kit.Instance());
-        Muzzle = new Node3D { Position = golden != null ? V(def.Muzzle) : new Vector3(0, 0, 0.68f) }; // 0,68: yedek modelin namlusu
-        _capa.AddChild(Muzzle);
+        else
+        {
+            _capa.AddChild(kit.Instance());
+            Muzzle = new Node3D { Position = new Vector3(0, 0, 0.68f) }; // yedek modelin namlusu ve tutamagi (yukaridaki kit)
+            _capa.AddChild(Muzzle);
+            _capaGripR = Frame(new[] { 0f, -0.18f, -0.02f }, new[] { 0f, 0.955f, 0.296f }, new[] { 0f, -0.296f, 0.955f });
+        }
         Visual.AddChild(_capa);
+    }
+
+    /// <summary>Alt dugumun kok dugume gore donusumu (agaca eklenmeden once de calisir).</summary>
+    static Transform3D Rel(Node3D root, Node3D n)
+    {
+        var t = Transform3D.Identity;
+        for (var c = n; c != null && c != root; c = c.GetParent() as Node3D) t = c.Transform * t;
+        return t;
     }
 
     public override void _Input(InputEvent e)
@@ -299,7 +322,7 @@ public partial class Player : CharacterBody3D
         var flat = new Vector3(Velocity.X, 0, Velocity.Z);
         _aimCache = AimPoint(out _);
         float targetYaw = Visual.Rotation.Y;
-        if (Posed) { }
+        if (ArmsPosed) { } // Player.Anim.cs: hareket grubundan bir pozda (comelme) govde nisana doner
         else if (Facing || AimOverride != null)
         {
             var d = _aimCache - GlobalPosition; d.Y = 0;
@@ -324,7 +347,7 @@ public partial class Player : CharacterBody3D
         {
             Speed = flat.Length(), Sprint = _sprinting, OnFloor = IsOnFloor(), YawRate = yawRate, Accel = accelW,
             Recoil = _recoil, FloorY = GlobalPosition.Y, Push = PushingCart || _cart != null ? 1f : 0f, Wade = Mathf.Clamp(WadeDepth, 0f, 1f),
-            FootIk = _mode is AnimMode.Move or AnimMode.Land or AnimMode.Action, Posed = Posed,
+            FootIk = _mode is AnimMode.Move or AnimMode.Land or AnimMode.Action, Posed = ArmsPosed,
         });
         Visor?.Tick(dt, this);
 

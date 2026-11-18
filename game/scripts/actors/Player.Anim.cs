@@ -34,6 +34,10 @@ public partial class Player
     public float WadeDepth;
     /// <summary>Kodla poz ya da kalkis oynuyor (govde yonu ve nisan donmaz).</summary>
     public bool Posed => _mode is AnimMode.Pose or AnimMode.Getup;
+    /// <summary>Poz kollari da animasyona birakiyor mu (IK ve alcak hazir tutus kapali). Hareket gruplarindan bir poz
+    /// (ornegin comelerek yurume) elleri kullanmaz: Capa orada da elde nisanlanir ve onde tutulur.</summary>
+    bool ArmsPosed => Posed && !(_mode == AnimMode.Pose && _poseArmsFree);
+    bool _poseArmsFree;
     /// <summary>Kalkis bitene kadar yurume yok.</summary>
     public bool MovementLocked => _mode == AnimMode.Getup || (_mode == AnimMode.Pose && _poseLocks);
     /// <summary>Su an oynayan klibin kimligi (yer tutucu cozulmeden once).</summary>
@@ -184,6 +188,7 @@ public partial class Player
         if (_anim == null || Down || _mode == AnimMode.Getup) return;
         Play(id, 0.3, 1f, true);
         _mode = AnimMode.Pose; _modeT = 0f; _poseLocks = lockMove;
+        _poseArmsFree = _clips.Clip(id)?.Group is "bekleme" or "yurume" or "kosu" or "depar"; // player_anims.json hareket gruplari
         bool loop = _clips.Clip(id)?.Loop ?? false;
         _modeLen = seconds > 0 ? seconds : loop ? 0f : ClipSeconds(id);
         if (id == "sleep") _capaOnBack = true; // pozlarda Capa elde kalir (Player.Grip.cs), uykuda sirta gecer

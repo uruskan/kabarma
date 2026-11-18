@@ -35,7 +35,10 @@ public class GripsTests
         Assert.NotNull(c.Right);
         AssertFrame("capa sag", c.Right.Pos, c.Right.Bar, c.Right.Fingers);
         Assert.StartsWith("res://", c.Model);
-        Assert.True(c.Muzzle[2] > c.Right.Pos[2], "namlu tutamagin onunde olmali");
+        // Tutamak ve namlu modelin dugumleri (pipeline/grip_markers.py); elle konum yok.
+        Assert.Equal("grip", c.Right.Node);
+        Assert.Equal("muzzle", c.MuzzleNode);
+        Assert.All(c.Right.Pos, p => Assert.Equal(0f, p));
         Assert.InRange(c.AimReach, 0.2f, 0.7f);
         Assert.NotNull(c.Back);
     }

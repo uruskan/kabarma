@@ -1,0 +1,28 @@
+﻿# Tam test (ilk kosu; ElArabasi boslugu 0,1 iken)
+build      PASS        1.2  exit=0 warnings=0 errors=0
+sim        PASS        2.4  exit=0 Passed!  - Failed:     0, Passed:   184, Skipped:     0, Total:   184, Duration: 672 ms - Kabarma.Sim.Tests.dll (net8.0)
+bench      PASS        4.4  exit=0 1000 gun 2.030 sn, ayrilan 3462.7 MB, tepe 80.3 MB (Release, 3x3)
+bot        PASS      232.6  exit=0 RESULT ok credits=120 eggs=1 kills=21 cards=2 maya=48 stations=4 harvests=5 skipped=-
+buildtest  PASS        7.3  exit=0 placed=75 failed=0 pieces=71
+audio      PASS        6.4  exit=0 ok sounds=60 playable=60 variant_files=180 buses=6 layers_loaded=3/3 day_music=yes
+world      PASS        4.9  exit=0 WORLD RESULT ok checks passed (4108 ms)
+camera     PASS       27.5  exit=0 RESULT ok camera checks=70
+grip       PASS       29.3  exit=0 RESULT ok grip checks=45 cart=yok
+creatures  PASS        0.9  exit=0 RESULT ok creatures=3 clips=24 posed=18
+latency    PASS       44.3  exit=0 RESULT ok heads=8/8 budget_max_ms=33.3 wall_med_ms=34.0 wall_max_ms=49.9 hitstop=ok
+ekonomi    FAIL       66.7  exit=1 ok=81 fail=1
+gece       PASS       50.4  exit=0 GECE RESULT ok checks=2264 nights=2 day=3
+input_kbm  FAIL      150.7  exit=1 RESULT fail input stuck step=firin age=240 device=Kbm op=- queue=0 aimErr=0.1deg miss=0.06m aim=(-5.5355067, 1, 6.2127438) hit=(-4.8708935, 1.1726644, 6.0819607) node=@StaticBody3D@1920 muzzle->hit=1.5 pos=(-3.1542363, 0.00094662607, 6.4582496) move=(0, 0, 0) fire=False/False pressed=False head=Bicme menu=False wheel=False lock=False look=(0, 0) sent= bag=10/20 events=5865
+input_pad  PASS      155.1  exit=0 RESULT ok credits=840 eggs=1 kills=21 cards=2 maya=48 stations=4 harvests=7 skipped=- olay=19394 basis=337 cark=42 menu=9 fare=0 yanadim=2
+TEST FAIL (2)
+
+# Yeniden kosu (ElArabasi boslugu 0,3; ates durumlari eklendi): build,sim,bot,ekonomi,grip,camera,input
+build      PASS        1.2  exit=0 warnings=0 errors=0
+sim        PASS        2.5  exit=0 Passed!  - Failed:     0, Passed:   184, Skipped:     0, Total:   184, Duration: 435 ms - Kabarma.Sim.Tests.dll (net8.0)
+bot        PASS      232.9  exit=0 RESULT ok credits=120 eggs=1 kills=21 cards=2 maya=48 stations=4 harvests=5 skipped=-
+camera     PASS       27.7  exit=0 RESULT ok camera checks=70
+grip       PASS       33.7  exit=0 RESULT ok grip checks=53 cart=yok
+ekonomi    PASS         67  exit=0 ok=82 fail=0
+input_kbm  FAIL      151.1  exit=1 RESULT fail input stuck step=firin age=240 device=Kbm op=TapOp queue=1 aimErr=0.1deg miss=0.00m aim=(-5.541977, 1, 6.236874) hit=(-4.8773637, 1.1431174, 6.0329447) node=@StaticBody3D@1875 muzzle->hit=2.4 pos=(-2.9002898, 0.0010346824, 5.6957545) move=(0, 0, 0) fire=False/False pressed=False head=Bicme menu=True wheel=False lock=True look=(0, 0) sent= bag=10/20 events=5894
+input_pad  FAIL      168.5  exit=1 RESULT fail input stuck step=civi age=240 device=Pad op=TapOp queue=1 aimErr=0.5deg miss=0.14m aim=(-5.7397475, 1, 6.705219) hit=(-5.4877586, 1.2668977, 6.044683) node=@StaticBody3D@2040 muzzle->hit=1.4 pos=(-4.288213, 0.7878231, 4.8631573) move=(0, 0, 0) fire=False/False pressed=False head=Kazma menu=True wheel=False lock=True look=(0, -0.13333333) sent=axis:RightY=-0.35 bag=12/20 events=19361
+TEST FAIL (2)

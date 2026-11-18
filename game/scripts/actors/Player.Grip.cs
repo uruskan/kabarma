@@ -28,6 +28,22 @@ public partial class Player
     // Sinama olcumleri (son pozda): elin govde tabanina yuksekligi, namlu ile nisan arasi aci, bilegin hedefe uzakligi,
     // sol elin hedefe uzakligi.
     float _handHeight, _aimErrDeg, _wristErr, _leftErr;
+    Node3D _capaGripNode;       // modelin "grip" dugumu (BuildCapa)
+
+    // Sinama (GripTest) icin son pozdaki olcumler: sag el soketinin Capa'nin "grip" dugumune uzakligi ve eksen acilari,
+    // namlu dugumunun +Z'si ile nisan yonu arasi; araba itilirken iki el soketinin iki sap dugumune uzakligi.
+    public float GripGapR { get; private set; }
+    public float GripBarDeg { get; private set; }
+    public float GripFingersDeg { get; private set; }
+    public float MuzzleAimDeg { get; private set; }
+    public float CartGapR { get; private set; } = -1f;
+    public float CartGapL { get; private set; } = -1f;
+    public bool CapaInHand => _capa != null && !(_capaOnBack || _cart != null);
+    /// <summary>Capa dugumu (cercevesi namlu: koku namlu ucu, +Z namlu ekseni) ve tutamagi bu cercevede.</summary>
+    public Node3D CapaNode => _capa;
+    public Transform3D CapaGrip => _capaGripR;
+    public Node3D CapaGripNode => _capaGripNode;
+    public Vector3 AimTarget => _aimCache;
 
     static Vector3 V(float[] a) => a != null && a.Length >= 3 ? new Vector3(a[0], a[1], a[2]) : Vector3.Zero;
 
@@ -48,8 +64,7 @@ public partial class Player
         _grips = (GetParent() as Director)?.Data?.Grips ?? new GripsFile();
         if (_grips.Hands.TryGetValue("right", out var r)) _sockR = Frame(r.Pos, r.Bar, r.Fingers);
         if (_grips.Hands.TryGetValue("left", out var l)) _sockL = Frame(l.Pos, l.Bar, l.Fingers);
-        _grips.Items.TryGetValue("capa", out _capaDef);
-        if (_capaDef?.Right != null) _capaGripR = Frame(_capaDef.Right);
+        _grips.Items.TryGetValue("capa", out _capaDef); // tutamak cercevesi BuildCapa'da modelin "grip" dugumunden
         if (_capaDef?.Back is { } b)
         {
             _backBone = b.Bone;
@@ -149,15 +164,30 @@ public partial class Player
         _handHeight = hand.Origin.Y - GlobalPosition.Y;
         _wristErr = Rig.RightGoal is Transform3D g && Rig.RightWeight > 0.99f ? g.Origin.DistanceTo(hand.Origin) : 0f;
         _leftErr = Rig.LeftGoal is Transform3D lg && Rig.LeftWeight > 0.99f ? Rig.BoneOrigin("LeftHand").DistanceTo(lg.Origin) : 0f;
+        var sockR = SocketWorld(hand, _sockR);
+        if (_cart != null)
+        {
+            CartGapR = _cartR != null ? sockR.Origin.DistanceTo(_cartR.GlobalPosition) : -1f;
+            CartGapL = _cartL != null ? SocketWorld(Rig.BoneWorld("LeftHand"), _sockL).Origin.DistanceTo(_cartL.GlobalPosition) : -1f;
+        }
         if ((_capaOnBack || _cart != null) && Rig.Body.HasBag)
         {
             _capa.GlobalTransform = Rig.BoneWorld(_backBone) * _capaBack;
             return;
         }
-        _capa.GlobalTransform = SocketWorld(hand, _sockR) * _capaGripR.AffineInverse();
+        _capa.GlobalTransform = sockR * _capaGripR.AffineInverse();
+        if (_capaGripNode != null)
+        {
+            // Olcum modelin dugumunden (agactaki gercek donusum), _capaGripR'den degil.
+            var gn = _capaGripNode.GlobalTransform;
+            GripGapR = sockR.Origin.DistanceTo(gn.Origin);
+            GripBarDeg = Mathf.RadToDeg(sockR.Basis.Y.AngleTo(gn.Basis.Y));
+            GripFingersDeg = Mathf.RadToDeg(sockR.Basis.Z.AngleTo(gn.Basis.Z));
+        }
         _aimErrDeg = Facing || AimOverride != null
             ? Mathf.RadToDeg(_capa.GlobalBasis.Z.Normalized().AngleTo((_aimCache - Muzzle.GlobalPosition).Normalized()))
             : 0f;
+        MuzzleAimDeg = Mathf.RadToDeg(Muzzle.GlobalBasis.Z.Normalized().AngleTo((_aimCache - Muzzle.GlobalPosition).Normalized()));
     }
 
     /// <summary>Sinama satiri (--rigtest, --griptest).</summary>
