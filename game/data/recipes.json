@@ -52,6 +52,7 @@
     { "id": "dugme", "name": "Düğme", "station": "tezgah", "category": "guc", "in": { "wood": 1, "copper_wire": 1 }, "out": 1, "seconds": 2.0 },
     { "id": "basinc_plakasi", "name": "Basınç Plakası", "station": "tezgah", "category": "guc", "in": { "stone": 2, "copper_wire": 1 }, "out": 1, "seconds": 2.0 },
     { "id": "aku_mk1", "name": "Akü Mk1", "station": "tezgah", "category": "guc", "in": { "copper_ingot": 5, "iron_ingot": 5, "sourberry": 3 }, "out": 1, "seconds": 8.0 },
-    { "id": "mancinik", "name": "Mancınık", "station": "", "category": "yapi", "in": { "wood": 24, "fiber": 10, "copper_ingot": 2 }, "out": 1, "seconds": 4.0 }
+    { "id": "mancinik", "name": "Mancınık", "station": "", "category": "yapi", "in": { "wood": 24, "fiber": 10, "copper_ingot": 2 }, "out": 1, "seconds": 4.0 },
+    { "_not": "gucler M3 (GDD 14.6, ICERIK 7 M3): ilk Maya Kesesi alininca acilir; ileride Ciraklik zinciri plani verir.", "id": "maya_feneri", "name": "Maya Feneri", "station": "tezgah", "category": "yapi", "in": { "maya_kesesi": 3, "copper_wire": 5, "resin": 2 }, "out": 1, "seconds": 6.0, "unlockOn": "maya_kesesi" }
   ]
 }

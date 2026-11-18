@@ -100,6 +100,8 @@ public static class ItemNames
         ["saltpeter"] = "Güherçile",
         ["scrap"] = "Hurda",
         ["mancinik"] = "Mancınık",
+        ["maya_feneri"] = "Maya Feneri", // gucler M3
+        ["maya_kesesi"] = "Maya Kesesi", // gucler M3 (ICERIK 2 #36)
         // tarim (M2): Cayir ve Koru'nun ekinleri, tohumlari, Alaca urunleri (GDD 8.3), Korkuluk
         ["pumpkin"] = "Kabak",
         ["sunflower"] = "Ayçiçeği",

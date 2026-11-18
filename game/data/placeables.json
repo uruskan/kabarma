@@ -34,7 +34,8 @@
     { "id": "dugme", "name": "Düğme", "radius": 0.35 },
     { "id": "basinc_plakasi", "name": "Basınç Plakası", "radius": 0.6 },
     { "id": "aku_mk1", "name": "Akü Mk1", "radius": 0.6 },
-    { "id": "mancinik", "name": "Mancınık", "model": "res://assets/models/placeables/mancinik.glb", "radius": 1.6, "_not": "GDD 21 hizli seyahat (dunya2): acik duraktan acik duraga firlatir (Explorer.cs). Model pipeline/gen_kesif.py yer tutucu." }
+    { "id": "mancinik", "name": "Mancınık", "model": "res://assets/models/placeables/mancinik.glb", "radius": 1.6, "_not": "GDD 21 hizli seyahat (dunya2): acik duraktan acik duraga firlatir (Explorer.cs). Model pipeline/gen_kesif.py yer tutucu." },
+    { "id": "maya_feneri", "name": "Maya Feneri", "radius": 0.5, "_not": "gucler M3 (GDD 14.6): gunde bir kez 40 m / 4 dk yerel Kabarma. Gorunus koddan (TatbikatSystem.Look, YER TUTUCU)." }
   ],
   "planWheel": ["kare_temel", "ucgen_temel", "duvar", "yarim_duvar", "pencereli_duvar", "kapi_kasasi", "kare_zemin", "duz_cati", "egimli_cati", "merdiven", "cit", "bahce_kapisi"],
   "buildCosts": {

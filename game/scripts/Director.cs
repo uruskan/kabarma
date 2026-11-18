@@ -108,6 +108,7 @@ public partial class Director : Node3D
         WireScenario(); // Director.Scenario.cs: olay -> adim sayaci
         InitEconomy();  // Director.Economy.cs: odeme, kargo, yerlestirilebilirler
         InitPower();    // power/Director.Power.cs: guc agi, Kablo, sinyal (guc akisi)
+        InitAbilities(); // abilities/Director.Abilities.cs: oyuncu gucleri, Kadim Tas, Maya Feneri, Tatbikat (gucler akisi)
         WireNightAndDay(); // Director.Calendar.cs: takvim, uyku, Defter olaylari
         InitExplore();     // Director.Explore.cs: harita, kesif noktalari, Seyir Kulesi, mancinik (dunya2)
         WireProgress();    // Director.Progress.cs: Ustalik XP'si, is emri olculeri, basarim ve odul bildirimleri

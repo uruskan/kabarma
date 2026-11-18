@@ -116,6 +116,11 @@ public sealed class TatbikatDef
 {
     public bool RepairFree { get; set; } = true;
     public bool Rewards { get; set; }
+    /// <summary>GECICI (kabarma3 dalga arayuzu gelene kadar): hayalet dalga sayisi, GDD 14.3 sayisinin carpani, dogma halkasi.</summary>
+    public int Waves { get; set; } = 3;
+    public float CountScale { get; set; } = 0.25f;
+    public float SpawnMin { get; set; } = 22f;
+    public float SpawnMax { get; set; } = 28f;
 }
 
 public sealed class AbilitiesFile

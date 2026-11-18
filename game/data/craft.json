@@ -35,6 +35,8 @@
     "iron_ingot": { "text": "Demirci Ocağı'nda Demir Cevheri'nden eritilir", "target": "station:demirci_ocagi" },
     "sourberry": { "text": "Ekşilik: Koru ekini, tarlada yetiştir ve Biçme ile hasat et", "target": "farm" },
     "plank": { "text": "Bıçkı'da Odun'dan biçilir", "target": "station:bicki" },
-    "cloth": { "text": "Dokuma Tezgâhı'nda Lif'ten dokunur", "target": "station:dokuma_tezgahi" }
+    "cloth": { "text": "Dokuma Tezgâhı'nda Lif'ten dokunur", "target": "station:dokuma_tezgahi" },
+    "maya_kesesi": { "text": "Kabarma gecesi kabarmış yaratıktan düşer", "target": "farm" },
+    "resin": { "text": "Sis Korusu ağaçlarındaki reçine yumruları, Kazma", "target": "rock:resin" }
   }
 }

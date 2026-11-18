@@ -188,6 +188,7 @@ public partial class Player : CharacterBody3D
     public void Hurt(float dmg, Vector3 from)
     {
         if (Down) return;
+        dmg = AbilitySystem.HurtFilter?.Invoke(this, dmg, from) ?? dmg; if (dmg <= 0) return; // gucler: Atilma, Kalkan Balonu, Dev Mod
         Hp -= dmg;
         _shake = Mathf.Max(_shake, 0.35f);
         var k = (GlobalPosition - from); k.Y = 0;

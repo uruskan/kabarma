@@ -221,6 +221,7 @@ public partial class Director
         if (InteractVehicle()) return; // Director.Vehicles.cs: Cekirge ATV'ye bin / in (yaratik2)
         if (InteractEconomy()) return; // Director.Economy.cs: El Arabasi, Sandik, Uyku Tulumu
         if (InteractPower()) return; // power/Director.Power.cs: guc parcasi ayari, Dugme
+        if (InteractAbilities()) return; // abilities/Director.Abilities.cs: Kadim Tas, Maya Feneri, Ocak'ta Tatbikat
         var st = StationInFocus();
         // Gidak istasyondan yakinsa E Gidak'a gider (istasyonun dibinde dolasan Gidak beslenebilsin).
         bool gidakFirst = st != null && Gidak.Visible && !Gidak.Tame

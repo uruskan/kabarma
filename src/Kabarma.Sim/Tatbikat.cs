@@ -39,9 +39,29 @@ public interface IKabarmaStarter
     string? Start(LocalKabarmaRequest r);
 }
 
-/// <summary>Maya Feneri durumu: hangi fener hangi oyun gununde yakildi (fener kimligi -> gun).</summary>
+/// <summary>Kurulu Maya Feneri.</summary>
+public sealed class FenerSite
+{
+    public string Id { get; set; } = "";
+    public float X { get; set; }
+    public float Y { get; set; }
+    public float Z { get; set; }
+    public float Yaw { get; set; }
+}
+
+/// <summary>Maya Feneri durumu: kurulu fenerler ve hangi fener hangi oyun gununde yakildi (fener kimligi -> gun).</summary>
 public sealed class FenerProgress
 {
+    public List<FenerSite> Sites { get; set; } = new();
+    public int NextId { get; set; } = 1;
+
+    public FenerSite Add(float x, float y, float z, float yaw)
+    {
+        var s = new FenerSite { Id = $"fener_{NextId++}", X = x, Y = y, Z = z, Yaw = yaw };
+        Sites.Add(s);
+        return s;
+    }
+
     public Dictionary<string, int> LitDay { get; set; } = new();
     public Dictionary<string, int> LitCount { get; set; } = new();
 }

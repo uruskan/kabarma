@@ -240,6 +240,7 @@ if ($Only -contains 'latency') {
 }
 
 if ($Only -contains 'power') { if (-not $G) { $G = Find-Godot }; Invoke-GodotTest 'power' "--test=power $BotArgs --quit_after=1500" $BotTimeout { param($r) $res = ($r.Text -split "`r?`n" | Where-Object { $_ -match '^POWER RESULT ' } | Select-Object -Last 1); if (-not $res) { $res = 'POWER RESULT satiri yok' }; [pscustomobject]@{ Ok = ($res -match '^POWER RESULT ok'); Detail = ($res -replace ' t=[0-9.]+$', '') } } } # guc akisi (-Only power): ilk gun zinciri + uretec, lamba, dugme; varsayilan listede yok (uzun)
+if ($Only -contains 'gucler') { if (-not $G) { $G = Find-Godot }; Invoke-GodotTest 'gucler' "--test=gucler --quit_after=700" $BotTimeout { param($r) $res = ($r.Text -split "`r?`n" | Where-Object { $_ -match '^GUCLER RESULT ' } | Select-Object -Last 1); if (-not $res) { $res = 'GUCLER RESULT satiri yok' }; [pscustomobject]@{ Ok = ($res -match '^GUCLER RESULT ok'); Detail = ($res -replace ' t=[0-9.]+$', '') } } } # gucler akisi (-Only gucler): Kadim Tas parkuru, Atilma, Tatbikat, Fener
 
 if ($Only -contains 'ekonomi') {
     $out = Join-Path $RunDir 'ekonomi'

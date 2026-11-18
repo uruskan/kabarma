@@ -14,7 +14,7 @@
     { "id": "dev_mod", "name": "Dev Mod", "kind": "ulti", "duration": 20, "scale": 2.5, "speed": 1.3, "damageTaken": 0.5, "damage": 30, "radius": 2.2, "damageType": "darbe" }
   ],
   "stones": [
-    { "id": "kadim_atilma", "name": "Kadim Taş: Atılma", "biome": "altin_cayir", "ability": "atilma", "trial": "parkur", "x": -38, "z": 52, "seconds": 45, "rings": [[0, 9, 1.2], [6, 16, 1.6], [-3, 24, 2.4], [5, 31, 1.4], [-4, 38, 2.0], [0, 45, 1.2]], "ringRadius": 2.2 },
+    { "id": "kadim_atilma", "name": "Kadim Taş: Atılma", "biome": "altin_cayir", "ability": "atilma", "trial": "parkur", "x": -10, "z": 40, "seconds": 45, "rings": [[0, 9, 1.2], [6, 16, 1.6], [-3, 24, 2.4], [5, 31, 1.4], [-4, 38, 2.0], [0, 45, 1.2]], "ringRadius": 2.2 },
     { "id": "kadim_kalkan", "name": "Kadim Taş: Kalkan Balonu", "biome": "altin_cayir", "ability": "kalkan_balonu", "trial": "koru", "x": 48, "z": -62, "seconds": 120, "guardHp": 200, "every": 10, "perWave": 3 },
     { "id": "kadim_sok", "name": "Kadim Taş: Şok Dalgası", "biome": "sis_korusu", "ability": "sok_dalgasi", "trial": "dalga", "x": -150, "z": 170, "waves": [6, 8, 10, 12] },
     { "id": "kadim_yem", "name": "Kadim Taş: Yem Hologramı", "biome": "sis_korusu", "ability": "yem_hologrami", "trial": "gizlen", "x": -175, "z": 140, "seconds": 90, "goal": [0, 40], "watchers": [[-6, 12, 90], [6, 20, 270], [-5, 28, 45], [5, 34, 225]], "sight": 10, "fov": 70, "seenLimit": 0.5, "goalRadius": 2.5 },
@@ -22,5 +22,5 @@
   ],
   "trial": { "retrySeconds": 10, "spawnRadius": 14, "leaveRadius": 60, "ghost": { "hp": 30, "damage": 6, "speed": 3.6, "attackSeconds": 1.3, "reach": 1.1 } },
   "fener": { "id": "maya_feneri", "radius": 40, "seconds": 240, "ksFactor": 0.5, "maxCardLevels": 3, "usesPerDay": 1 },
-  "tatbikat": { "repairFree": true, "rewards": false }
+  "tatbikat": { "repairFree": true, "rewards": false, "waves": 3, "countScale": 0.25, "spawnMin": 22, "spawnMax": 28, "_gecici": "waves/countScale/spawn: kabarma3 dalga arayuzu main'e girene kadar gucler akisinin hayalet dalgalari (GDD 14.3 sayisi x countScale)" }
 }
