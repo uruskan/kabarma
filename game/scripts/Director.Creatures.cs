@@ -24,9 +24,10 @@ public partial class Director
     {
         Meadow = new ZipzipMeadow(this) { Name = "ZipzipMeadow" };
         AddChild(Meadow);
+        InitWildlife(); // Director.Wildlife.cs: yabani yaratiklar (yaratik2)
         if (Main.Args.TryGetValue("creatureview", out var view))
         {
-            if (view is "normal" or "swollen" or "both" or "kick") Meadow.ProcessMode = ProcessModeEnum.Disabled;
+            if (view is "normal" or "swollen" or "both" or "kick" or "wild" or "wildday") Meadow.ProcessMode = ProcessModeEnum.Disabled;
             GetTree().CreateTimer(view == "herd" ? 3.0 : 0.3).Timeout += () => CreatureView(view);
         }
     }
@@ -80,6 +81,8 @@ public partial class Director
             cam.MakeCurrent();
             return;
         }
+        if (view == "wild") { WildLineup(cam, clip); return; }
+        if (view == "wildday") { WildDay(cam); return; }
         if (view == "both") { CreaturePairs(cam, clip); return; }
         if (view == "kick") { KickDemo(cam); return; }
         if (view == "crop") { CropDemo(cam); return; }

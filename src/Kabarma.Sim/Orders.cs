@@ -1,7 +1,7 @@
 namespace Kabarma.Sim;
 
 /// <summary>Bir is emri zincirinin ilerlemesi (ICERIK 18: 5 adim). Sayaclar zincir acildiktan sonra sayar.</summary>
-public sealed class ChainState
+public sealed partial class ChainState
 {
     public OrderChainDef Def { get; }
     public bool Opened { get; internal set; }
@@ -37,7 +37,7 @@ public sealed class ChainState
 /// "Ilk X" adimlari sirasindan bagimsiz isaretlenir (ilk gecede Kabarma kargodan once gelir); siradaki adim ilk bitmemis olandir.
 /// M1: odul odenmez (is emri altyapisi M2); Defter'in ilk sayfasi ve takip satiri.
 /// </summary>
-public sealed class OrderBook
+public sealed partial class OrderBook
 {
     readonly OrdersFile _def;
     readonly List<ChainState> _chains;

@@ -1,0 +1,3 @@
+# Godot iceri aktarma dosyalarini LF yazar; checkout da LF olsun ki git status gurultu gostermesin.
+*.import text eol=lf
+*.uid text eol=lf
