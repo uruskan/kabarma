@@ -23,10 +23,11 @@ public partial class Capa
 
         // Olgun ekin
         int n = 0;
-        foreach (var plot in _d.State.Farm.Plots.ToList())
+        foreach (var plot in _d.State.Farm.AllPlots.ToList()) // tarim: yabani bitkiler dahil
         {
             var c = _d.FarmView.CellCenter(plot.X, plot.Y);
             if (new Vector2(c.X - aim.X, c.Z - aim.Z).Length() > _t.MowRadius) continue;
+            if (plot.Wild && new Vector2(c.X - aim.X, c.Z - aim.Z).Length() > _d.Data.Crops.Genetics.Wild.MowRadius) continue; // tarim: yabani bitki yalniz nisanla
             // tarim (M2): urun ekine gore, tohumlar soyuyla Tohum Kaydi'na (FarmView.Harvest.cs: yazi, renk, olay)
             var h = _d.State.Farm.HarvestFull(plot.X, plot.Y, _d.State.Rng);
             if (h == null) continue;

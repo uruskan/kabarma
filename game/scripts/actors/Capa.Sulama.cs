@@ -23,6 +23,7 @@ public partial class Capa
         // Gol: nisan noktasi gol tabanina duser (su yuzeyi carpismasiz), World.IsWater onu taniyor.
         if (_d.World.IsWater(aim)) { FillTank(tank, aim, dt); return; }
         if (!tank.CanWater) { _d.Hud.Hint("Su deposu boş: göle nişan al, dolsun", 0.5f); return; }
+        _d.Net?.ForwardWater(aim); // ortak: istemcide host'un tarlasi da islanir (depo kisisel)
         var farm = _d.State.Farm;
         bool any = false;
         foreach (var plot in farm.Plots)

@@ -175,6 +175,8 @@ public class FarmM2Tests
         Assert.True(w.Wild && w.Planted && w.Stage == CropStage.Mature);
         for (int g = 0; g < Genes.Count; g++) Assert.InRange(w.Genes[g], 1, 3);
         Assert.False(f.Till(40, 40));
+        Assert.DoesNotContain(w, f.Plots);   // tarla sayaclari (senaryo, pusula) yabaniyi saymaz
+        Assert.Contains(w, f.AllPlots);
         Assert.Empty(f.SwellMature(10, 0));
         Assert.Equal(0, f.MatureCount);
         Assert.False(Herds.Attracts(w));

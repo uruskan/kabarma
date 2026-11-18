@@ -1,0 +1,74 @@
+﻿Godot Engine v4.7.2.stable.mono.official.ed1daf0bf - https://godotengine.org
+
+TEST coop
+COOP host port=28215 bot=0
+MUSIC ready day=yes layers=3/3 bar=2.00s
+PLAYER model anims: carry,cheer,crouch_walk,eat,getup_back_pose,getup_front_pose,hurt,idle,jump,jump_air,jump_land,jump_start,kneel,knockdown,plant,push,run,shock_fall,sleep,sprint,walk,walk_casual,wave
+AUDIO sounds=60 playable=60 variant_files=180 m0_only=0 silent=0 placeholder=0
+AUDIO ok 60/60
+POFUDUK anims: pose/attack1,pose/attack2,pose/eat,pose/hit,pose/idle,pose/rest,pose/run,pose/walk,preset_quadruped_walk
+BUILD kit pieces=28
+ATALAR arenas=koca_pofuduk@64,36/r18:ata_tasi_altin_cayir_0,boynuzlu_dede@-58,-72/r18:yedek
+NET host enet 0.0.0.0:28215 name=Host
+BOOT Kabarma MVP
+COOP spawn client 1 pid=20140
+COOP spawn client 2 pid=21960
+TARIM wild=22
+POWER net bound host=True
+NET save bridge: save:calendar,save:cargo,save:farm,save:market,save:pen.animals,save:power,save:stations,save:farm.genetics,save:atalar,save:core,save:explore,save:orders,save:progress,save:ranch,save:research,save:scenario
+HELD capa
+MUSIC Silence -> Day
+ZIPZIP herd size=3 at=30,-37 herds=1
+ZIPZIP herd size=3 at=43,-13 herds=2
+ZIPZIP herd size=3 at=-22,-29 herds=3
+WILDLIFE spawn gidak herd=4 at=16,-117
+BOT step mine t=1.0
+WILDLIFE spawn cekirge swarm at=-132,-27
+SUNA line=giris_1 voice=yes
+HELD ocak
+WILDLIFE spawn sinsi herd=1 at=66,114
+BOT coop phase 0 ok (ocak var) t=4.3
+HELD -
+HELD capa
+HATCH intro done
+WILDLIFE spawn homur herd=1 at=-1,-70
+NET join peer=1 name=Bot 1 players=2
+NET join peer=2 name=Bot 2 players=3
+NET peer 1 ready (Bot 1)
+NET peer 2 ready (Bot 2)
+WILDLIFE spawn pofuduk herd=3 at=102,26
+SUNA line=giris_2 voice=yes
+BOT coop phase 1 ok (tas 4) t=9.2
+WILDLIFE spawn homur herd=2 at=-122,-78
+WILDLIFE spawn gidak herd=2 at=-126,-8
+BOT coop phase 2 ok (odun 6) t=13.1
+HELD insa_plani
+WILDLIFE spawn pofuduk herd=3 at=-66,-119
+BUILT kare_temel pieces=1
+BOT coop phase 3 ok (temel (7.368488, 0, 3.1153467)) t=14.8
+HELD capa
+BOT coop phase 4 ok (tarla (4.5, 0, 1.5)) t=19.1
+QUEUED mesale x1
+PRODUCED mesale civi=40 ingot=0 soup=0
+BOT coop phase 5 ok (uretim mesale 1) t=23.7
+BUILT kare_temel pieces=2
+BOT coop done id=0 stone=5 wood=0 built=1 t=27.4
+BUILT kare_temel pieces=3
+COOP spawn client 3 pid=18080
+COOP peer 1 done t=40.4
+COOP peer 2 done t=46.2
+NET join peer=3 name=Bot 3 players=4
+NET peer 3 ready (Bot 3)
+BUILT kare_temel pieces=4
+COOP peer 3 done t=81.7
+COOP all done t=81.7; tatbikat: host bayildi=True, tokat ve ses
+NET revive peer=0
+COOP tatbikat bitti revives=1 down=False voice_from2=25 t=1.7; durulma 2.5 sn
+COOP collect
+COOP report peer=1 stone=4 built=1 pieces=4 applied=306 mismatches=0 save_sections=16/16 voice_heard=25 voice_sent=0 creatures_spawned=26 plots=26
+COOP report peer=3 stone=4 built=1 pieces=4 applied=162 mismatches=2 save_sections=16/16 voice_heard=25 voice_sent=0 creatures_spawned=26 plots=26
+COOP report peer=2 stone=4 built=1 pieces=4 applied=301 mismatches=1 save_sections=16/16 voice_heard=0 voice_sent=25 creatures_spawned=26 plots=26
+COOP RESULT ok players=4 max_diff_mm=2.289 pieces=4 foundations=4 late_join=1 plots=26 tilled=4 crafted=4 revives=1 voice_frames=25 creatures_spawned=26 rejected=0 corrections=0 t=86.0
+NET leave peer=1 ayrıldı
+NET leave peer=2 ayrıldı
+NET leave peer=3 ayrıldı

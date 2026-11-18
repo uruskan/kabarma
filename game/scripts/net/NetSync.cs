@@ -84,6 +84,9 @@ public partial class NetSync : Node
         RegisterDowned();   // NetSync.Downed.cs
         RegisterCreatures(); // NetSync.Creatures.cs
         RegisterVoice();    // NetSync.Voice.cs
+        RegisterFarm();     // NetSync.Farm.cs
+        RegisterStations(); // NetSync.Stations.cs
+        RegisterSpawns();   // NetSync.Spawns.cs
         CallDeferred(nameof(RegisterSaveBridge)); // NetSync.Save.cs: butun _Ready'lerden sonra (kayit bolumleri eklenmis olsun)
         if (_tx == null) { Fail(err ?? "taşıma kurulamadı"); return; }
         Status = host ? $"host · {_tx.Address}" : $"bağlanıyor · {_tx.Address}";
@@ -173,6 +176,8 @@ public partial class NetSync : Node
             if (IsHost) TickCreatures(now);  // NetSync.Creatures.cs
         }
         TickWorld(dt);                       // NetSync.World.cs: istemci kazma birikimi
+        TickFarm(dt);                        // NetSync.Farm.cs
+        TickStations(dt);                    // NetSync.Stations.cs
         TickDowned(dt, now);                 // NetSync.Downed.cs
         TickVoice(dt);                       // NetSync.Voice.cs
         TickSaveBridge(dt);                  // NetSync.Save.cs: kayit bolumleri saniyede bir
