@@ -1,0 +1,39 @@
+{
+  "name": "kutuk",
+  "label": "Kutuk (Poly Haven Tree Stump 02; Sis Korusu ve kesim artigi icin)",
+  "kind": "plant",
+  "source": {
+    "zip": "F:/Assets/tree_stump_02_4k.blend.zip",
+    "cache": "tree_stump_02",
+    "file": "tree_stump_02_4k.blend"
+  },
+  "license": "Poly Haven CC0 (tree_stump_02, Rob Tuytel)",
+  "height_target": 0.6,
+  "lods": [
+    {
+      "path": "res://assets/models/kutuk/kutuk.glb",
+      "tris": 2399,
+      "tex": 1024,
+      "surfaces": 1
+    },
+    {
+      "path": "res://assets/models/kutuk/kutuk_lod1.glb",
+      "tris": 900,
+      "tex": 512,
+      "surfaces": 1
+    },
+    {
+      "path": "res://assets/models/kutuk/kutuk_lod2.glb",
+      "tris": 299,
+      "tex": 256,
+      "surfaces": 1
+    }
+  ],
+  "size_m": [
+    1.75,
+    1.601,
+    0.597
+  ],
+  "hull_points": 64,
+  "tris": 2399
+}

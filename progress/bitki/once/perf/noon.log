@@ -1,0 +1,36 @@
+Godot Engine v4.7.2.stable.mono.official.ed1daf0bf - https://godotengine.org
+Vulkan 1.4.357 - Forward+ - Using Device #0: NVIDIA - NVIDIA GeForce RTX 2070 SUPER
+
+TEST perf
+MUSIC ready day=yes layers=3/3 bar=2.00s
+PLAYER model anims: carry,cheer,crouch_walk,eat,getup_back_pose,getup_front_pose,hurt,idle,jump,jump_air,jump_land,jump_start,kneel,knockdown,plant,push,run,shock_fall,sleep,sprint,walk,walk_casual,wave
+AUDIO sounds=60 playable=60 variant_files=180 m0_only=0 silent=0 placeholder=0
+AUDIO ok 60/60
+POFUDUK anims: pose/attack1,pose/attack2,pose/eat,pose/hit,pose/idle,pose/rest,pose/run,pose/walk,preset_quadruped_walk
+BUILD kit pieces=28
+ATALAR arenas=koca_pofuduk@64,36,boynuzlu_dede@-58,-72
+BOOT Kabarma MVP
+TARIM wild=22
+HELD capa
+MUSIC Silence -> Day
+ZIPZIP herd size=3 at=27,28 herds=1
+ZIPZIP herd size=3 at=-22,-22 herds=2
+ZIPZIP herd size=2 at=11,24 herds=3
+WILDLIFE spawn gidak herd=3 at=11,-135
+WILDLIFE spawn sinsi herd=1 at=-35,83
+SUNA line=giris_1 voice=yes
+WILDLIFE spawn homur herd=1 at=-20,-125
+HATCH intro done
+WILDLIFE spawn gidak herd=4 at=-33,-68
+WILDLIFE spawn cekirge swarm at=78,-71
+SUNA line=giris_2 voice=yes
+WILDLIFE spawn homur herd=2 at=-93,-10
+WILDLIFE spawn pofuduk herd=2 at=50,-110
+WILDLIFE spawn pofuduk herd=2 at=-49,-67
+PERF kapsul ogle mean=6.29ms fps=158.9 p99=9.499ms draws=319 prims=3419449 frames=9537
+PERF us ogle mean=6.96ms fps=143.8 p99=13.575ms draws=359 prims=3650849 frames=8626
+MUSIC day silence 177s
+PERF gol ogle mean=6.88ms fps=145.3 p99=12.72ms draws=177 prims=2807166 frames=8716
+PERF tepe ogle mean=8.02ms fps=124.6 p99=14.438ms draws=358 prims=3221285 frames=7479
+PERF file C:/Users/uruskan/Documents/GitHub/kabarma/.claude/worktrees/m1-varlik-72a21b/game/../progress/m1/dunya/perf/perf_noon.json gpu=NVIDIA GeForce RTX 2070 SUPER res=1920x1080 vsync=Disabled siblings=10
+PERF RESULT ok budget=11.1ms

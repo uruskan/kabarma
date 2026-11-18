@@ -24,13 +24,6 @@
     "forward": "+X"
   },
   "assets": {
-    "agac": {
-      "label": "Çayır ağacı",
-      "in": ".tools/tripo_web/kabarma_agac.glb",
-      "height": 4.2,
-      "tris": 7000,
-      "class": "agac"
-    },
     "kaya": {
       "label": "Cevherli kaya",
       "in": ".tools/tripo_web/kabarma_kaya.glb",

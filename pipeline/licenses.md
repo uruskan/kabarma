@@ -74,3 +74,19 @@ Araştırma Masası, Kömür Ocağı, Demirci Ocağı, Bıçkı, Değirmen, Doku
 | Cayir ve Koru'nun 10 ekini (Bugday, Kabak, Aycicegi, Lifotu, Domates, Sapkali Mantar, Bogurtlen, Eksilik, Findik, Sarimsak) | Koddan: `game/scripts/world/FarmView.Meshes.cs` (`CropVisuals`, MeshKit ilkelleri) | Projenin kendi kodu | YER TUTUCU; uretim istegi: ekin basina 1 Tripo modeli |
 | Korkuluk | Koddan: `KorkulukVisual` (ayni dosya) | Projenin kendi kodu | YER TUTUCU |
 | Alaca gorunusu | Toon golgelendiricinin `tint` degeri | Projenin kendi kodu | Benekli, Altin, Aurora |
+
+## Bitkiler (bitki-pbr, 18 Kasım 2026)
+
+Ağaçlar ve süs bitkileri, çizgi film Tripo modellerinin yerine dokulu (PBR) kütüphane modelleri. `F:\Assets` yalnız okundu; zip'ler ana kopyanın `.tools/bitki_src/` klasörüne (git dışı) açıldı. Dönüşüm `pipeline/build_bitki.py` (Blender 5.3, ayarlar `pipeline/bitki_manifest.json`), kayıt `pipeline/bitki_sync.py`. Kredi harcanmadı. Poly Haven lisansları 18 Kasım'da varlık sayfalarından doğrulandı (hepsi CC0; polyhaven.com/license).
+
+| Oyundaki dosya | Kaynak (F:\Assets) | Lisans | Yükümlülük | Not |
+|---|---|---|---|---|
+| `game/assets/models/agac/agac*.glb` (çayır ağacı) | `verdant_trail.zip` → `jacaranda_tree_trunk`, `_branches` ve yaprak kümeleri (Poly Haven "Jacaranda Tree", Rico Cilliers, Rob Tuytel) | CC0 1.0 | Yok | Yaprak kümeleri karta pişirildi; 8.000 / 3.800 / 1.400 üçgen. Arşivde lisans dosyası yok; model Poly Haven kataloğunda |
+| `game/assets/models/turuncu_agac/turuncu_agac*.glb` | `verdant_trail.zip` → `island_tree_01_a` (Poly Haven "Island Tree 01", Rico Cilliers, Rob Tuytel) | CC0 1.0 | Yok | Yaprak tonu sonbahar turuncusuna kaydırıldı |
+| `game/assets/models/cicek/cicek*.glb` | `dandelion_01_4k.blend.zip` (Poly Haven "Dandelion 01") | CC0 1.0 | Yok | Üç bitkilik öbek |
+| `game/assets/models/kutuk/kutuk*.glb` (oyunda değil; Sis Korusu için hazır) | `tree_stump_02_4k.blend.zip` (Poly Haven "Tree Stump 02", Rob Tuytel) | CC0 1.0 | Yok | |
+| `game/assets/models/cali/cali*.glb` | `Fab\Quixel-Megascans\Plants\Downy-Willow-…\downy_willow_wknlfiuqx_high.zip` → VarF LOD2 (Megascans "Downy Willow") | Fab Standart Lisans (Megascans) | Ham kaynak dağıtılamaz; türev oyunda kullanılabilir | ⚠️ Sahip doğrulamalı (PROVENANCE: "owned_in_local_fab_catalog") |
+| `game/assets/models/egrelti/egrelti*.glb` | `SourceWorld\vegetation\fern_a.glb` (Megascans "Beech Fern" VarA LOD2) | Fab Standart Lisans (Megascans) | Aynı | ⚠️ Sahip doğrulamalı |
+| `game/assets/models/ot/ot*.glb` (Lif tutamı) | `cotton_grass_wlykecdia_ue_high` → VarA + VarF LOD1 (Megascans "Cotton Grass") | Fab Standart Lisans (Megascans) | Aynı | ⚠️ Sahip doğrulamalı |
+| `game/assets/models/bugday/bugday*.glb` (yabani buğday) | `dry_grass_tbbqejqr_ue_high` → VarA + VarB LOD1 (Megascans "Dry Grass") | Fab Standart Lisans (Megascans) | Aynı | ⚠️ Sahip doğrulamalı; altın tona çekildi |
+| `game/assets/models/koknar/koknar*.glb`, `koknar_genc/koknar_genc*.glb` (oyunda değil; Sis Korusu için hazır) | `SourceWorld\vegetation\fir_01.glb`, `fir_04.glb` (Fab "Fir trees pack (9 models + LODs and billboards)", `christmass_trees_pack.blend`) | Fab Standart Lisans (Megascans değil) | Aynı | ⚠️ Sahip doğrulamalı (PROVENANCE: Fab sahiplik denetimi geçti) |
