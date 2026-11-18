@@ -45,6 +45,8 @@ public enum NetMsg : byte
     Bye,
     /// <summary>host→herkes: anlik olay (efekt, ses) — yalniz gorunus, durum degil.</summary>
     Fx,
+    /// <summary>host→istemci: anlik goruntuye sigmayan yaratik kareleri (paket MTU altinda kalsin; TEKNIK 5.3).</summary>
+    Creatures,
 }
 
 /// <summary>Istemci istekleri (TEKNIK 5.5: mesafe, bekleme suresi ve envanter host'ta dogrulanir).</summary>

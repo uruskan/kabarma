@@ -95,7 +95,12 @@ public sealed class EnetTransport : ITransport
             }
         }
         _c.Flush();
+        BytesSent += (long)_c.PopStatistic(ENetConnection.HostStatistic.SentData);
+        BytesReceived += (long)_c.PopStatistic(ENetConnection.HostStatistic.ReceivedData);
     }
+
+    public long BytesSent { get; private set; }
+    public long BytesReceived { get; private set; }
 
     public void Kick(int peer)
     {

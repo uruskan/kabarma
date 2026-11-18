@@ -1,0 +1,88 @@
+tools/test.ps1  2026-11-18 21:17  git 7bb07d6
+
+[PASS] build  exit=0 warnings=0 errors=0
+[PASS] sim  exit=0 Passed!  - Failed:     0, Passed:   584, Skipped:     0, Total:   584, Duration: 29 s - Kabarma.Sim.Tests.dll (net8.0)
+[PASS] bench  exit=0 1000 gun 6.500 sn, ayrilan 106.5 MB, tepe 88.8 MB (Release, 3x3)
+[PASS] bot  exit=0 RESULT ok ciraklik=4/5 veri=140 credits=8096 eggs=1 kills=21 cards=2 maya=48 stations=4 harvests=5 skipped=-
+[PASS] hayvan  exit=0 HAYVAN ok species=pofuduk sut=1 yun=0 happiness=48 genes=B3 U3 V1 K3 | RESULT ok ciraklik=4/5 veri=140 credits=8096 eggs=3 kills=21 cards=2 maya=48 stations=4 harvests=7 skipped=-
+[PASS] buildtest  exit=0 placed=95 failed=0 pieces=88
+[PASS] audio  exit=0 ok sounds=60 playable=60 variant_files=180 buses=6 layers_loaded=3/3 day_music=yes
+[PASS] world  exit=0 WORLD RESULT ok checks passed (6382 ms)
+[PASS] explore  exit=0 EXPLORE RESULT ok
+[PASS] boss  exit=0 RESULT ok boss defeated=koca_pofuduk,boynuzlu_dede fights=koca_pofuduk:50,boynuzlu_dede:61 player_hp=43 shears=4 pillar_stuns=1 shard_hits=3 wave_jumps=1 seals=bereketli_toprak,derin_kok
+[PASS] camera  exit=0 RESULT ok camera checks=73
+[PASS] grip  exit=0 RESULT ok grip checks=67 cart=sag 1.0cm sol 0.1cm
+[FAIL] save  exit=1 RESULT fail 'ranch' farkli; 'ranch' farkli
+      --- son satirlar: C:\Users\uruskan\Documents\GitHub\kabarma\.claude\worktrees\m1-ses-3ca715\.tools\run\test\save.log
+      WILDLIFE spawn homur herd=1 at=-15,9
+      WILDLIFE spawn homur herd=1 at=-19,13
+      WILDLIFE spawn dalli herd=1 at=35,15
+      WILDLIFE spawn dalli herd=1 at=39,10
+      WILDLIFE spawn vicik herd=1 at=-11,-35
+      WILDLIFE spawn vicik herd=1 at=-8,-39
+      WILDLIFE spawn bozuk herd=1 at=45,-39
+      WILDLIFE spawn vizviz swarm at=27,21
+      WILDLIFE spawn hu herd=1 at=-25,-17
+      RANCH start animals=11 agents=11
+      SAVETEST fresh stations=0 furniture=0 ocak=0 pieces=0 props=0 pens=0 rocks=84 tufts=7472 carts=0 crates=0 swollen=0 eggs=0 plots=0 planted=0 bag=63 credits=0 step=mine day=1
+      RESULT fail 'ranch' farkli; 'ranch' farkli
+[PASS] menu  exit=0 RESULT ok menu new->esc->menu->devam->close
+[PASS] tarim  exit=0 RESULT ok tarim crop=wheat item=21 alaca=5 seeds=7 ledger=7 best=V2 H1 D3 M2 korkuluk=1 protected=2
+[PASS] creatures  exit=0 RESULT ok creatures=10 wild=11 clips=80 posed=74
+[PASS] latency  exit=0 RESULT ok heads=7/7 budget_max_ms=33.3 wall_med_ms=35.7 wall_max_ms=70.1 hitstop=ok
+[PASS] ekonomi  exit=0 ok=82 fail=0
+[PASS] borsa  exit=0 ok=25 fail=0
+[PASS] zincir  exit=0 ok=8 fail=0 veri=2 t=210
+[PASS] kartlar  exit=0 ok=13 fail=0
+[PASS] gece  exit=0 GECE RESULT ok checks=1611 nights=2 day=3
+[PASS] ilerleme  exit=0 ILERLEME RESULT ok checks=15 credits=6100 veri=80
+[PASS] savunma  exit=0 ok=23 fail=0 shots=18 kills=4 trapHits=135
+[PASS] coop  exit=0 ok players=4 max_diff_mm=1.635 pieces=4 foundations=4 late_join=1 plots=4 tilled=4 crafted=4 revives=1 voice_frames=25 creatures_spawned=30 rejected=6 corrections=58
+[PASS] cip  exit=0 CIP RESULT ok checks=11 chips=6
+[FAIL] input_kbm  exit=1 RESULT fail input stuck step=yukselt age=240 device=Kbm op=- queue=0 aimErr=40.6deg miss=3.90m aim=(-51.32541, -0.3327574, 17.806168) hit=(-51.599297, -0.49060655, 19.172857) node=TerrainBody muzzle->hit=1.5 pos=(-51.44568, -0.5510757, 18.269686) move=(0, 0, 0) fire=True/False pressed=False head=Bicme menu=False wheel=False lock=False look=(0, 0) sent= bag=11/20 events=9047
+      --- son satirlar: C:\Users\uruskan\Documents\GitHub\kabarma\.claude\worktrees\m1-ses-3ca715\.tools\run\test\input_kbm.log
+      BOT step katalog t=518.8
+      BOT katalog: tohum_salgam (300 Kredi, cuzdan 8702)
+      BOT katalog: tohum_salgam (300 Kredi, cuzdan 8702)
+      CATALOG buy tohum_salgam -300 credits=8402 via=kapsul id=1
+      DELIVERY 1 tohum_salgam landing at (-2.6316814, 0, -1.931221)
+      DELIVERED 1 tohum_salgam +10 left=0
+      STEP katalog -> yukselt t=150.4
+      BOT step yukselt t=548.1
+      HELD capa
+      EGG laid nest egg
+      EGG laid nest egg
+      RESULT fail input stuck step=yukselt age=240 device=Kbm op=- queue=0 aimErr=40.6deg miss=3.90m aim=(-51.32541, -0.3327574, 17.806168) hit=(-51.599297, -0.49060655, 19.172857) node=TerrainBody muzzle->hit=1.5 pos=(-51.44568, -0.5510757, 18.269686) move=(0, 0, 0) fire=True/False pressed=False head=Bicme menu=False wheel=False lock=False look=(0, 0) sent= bag=11/20 events=9047
+[PASS] input_pad  exit=0 RESULT ok ciraklik=4/5 veri=140 credits=8717 eggs=1 kills=21 cards=2 maya=48 stations=4 harvests=8 skipped=- olay=21561 basis=241 cark=30 menu=21 fare=0 yanadim=2
+
+sinama     sonuc  sure(sn)  ayrinti
+------     -----  --------  -------
+build      PASS        3.3  exit=0 warnings=0 errors=0
+sim        PASS       39.1  exit=0 Passed!  - Failed:     0, Passed:   584, Skipped:     0, Total:   584, Duration: 29 s - Kabarma.Sim.Tests.dll (net8.0)
+bench      PASS       18.4  exit=0 1000 gun 6.500 sn, ayrilan 106.5 MB, tepe 88.8 MB (Release, 3x3)
+bot        PASS      247.2  exit=0 RESULT ok ciraklik=4/5 veri=140 credits=8096 eggs=1 kills=21 cards=2 maya=48 stations=4 harvests=5 skipped=-
+hayvan     PASS      199.3  exit=0 HAYVAN ok species=pofuduk sut=1 yun=0 happiness=48 genes=B3 U3 V1 K3 | RESULT ok ciraklik=4/5 veri=140 credits=8096 eggs=3 kills=21 cards=2 maya=48 stations=4 harvests=7 skipped=-
+buildtest  PASS       12.1  exit=0 placed=95 failed=0 pieces=88
+audio      PASS        6.5  exit=0 ok sounds=60 playable=60 variant_files=180 buses=6 layers_loaded=3/3 day_music=yes
+world      PASS        7.5  exit=0 WORLD RESULT ok checks passed (6382 ms)
+explore    PASS       34.2  exit=0 EXPLORE RESULT ok
+boss       PASS       80.3  exit=0 RESULT ok boss defeated=koca_pofuduk,boynuzlu_dede fights=koca_pofuduk:50,boynuzlu_dede:61 player_hp=43 shears=4 pillar_stuns=1 shard_hits=3 wave_jumps=1 seals=bereketli_toprak,derin_kok
+camera     PASS       31.6  exit=0 RESULT ok camera checks=73
+grip       PASS       39.3  exit=0 RESULT ok grip checks=67 cart=sag 1.0cm sol 0.1cm
+save       FAIL      170.7  exit=1 RESULT fail 'ranch' farkli; 'ranch' farkli
+menu       PASS       24.6  exit=0 RESULT ok menu new->esc->menu->devam->close
+tarim      PASS       46.7  exit=0 RESULT ok tarim crop=wheat item=21 alaca=5 seeds=7 ledger=7 best=V2 H1 D3 M2 korkuluk=1 protected=2
+creatures  PASS        2.5  exit=0 RESULT ok creatures=10 wild=11 clips=80 posed=74
+latency    PASS       47.8  exit=0 RESULT ok heads=7/7 budget_max_ms=33.3 wall_med_ms=35.7 wall_max_ms=70.1 hitstop=ok
+ekonomi    PASS       74.2  exit=0 ok=82 fail=0
+borsa      PASS       54.1  exit=0 ok=25 fail=0
+zincir     PASS       75.1  exit=0 ok=8 fail=0 veri=2 t=210
+kartlar    PASS       30.4  exit=0 ok=13 fail=0
+gece       PASS       56.3  exit=0 GECE RESULT ok checks=1611 nights=2 day=3
+ilerleme   PASS       18.2  exit=0 ILERLEME RESULT ok checks=15 credits=6100 veri=80
+savunma    PASS       34.9  exit=0 ok=23 fail=0 shots=18 kills=4 trapHits=135
+coop       PASS       95.4  exit=0 ok players=4 max_diff_mm=1.635 pieces=4 foundations=4 late_join=1 plots=4 tilled=4 crafted=4 revives=1 voice_frames=25 creatures_spawned=30 rejected=6 corrections=58
+cip        PASS       17.1  exit=0 CIP RESULT ok checks=11 chips=6
+input_kbm  FAIL      212.1  exit=1 RESULT fail input stuck step=yukselt age=240 device=Kbm op=- queue=0 aimErr=40.6deg miss=3.90m aim=(-51.32541, -0.3327574, 17.806168) hit=(-51.599297, -0.49060655, 19.172857) node=TerrainBody muzzle->hit=1.5 pos=(-51.44568, -0.5510757, 18.269686) move=(0, 0, 0) fire=True/False pressed=False head=Bicme menu=False wheel=False lock=False look=(0, 0) sent= bag=11/20 events=9047
+input_pad  PASS      175.7  exit=0 RESULT ok ciraklik=4/5 veri=140 credits=8717 eggs=1 kills=21 cards=2 maya=48 stations=4 harvests=8 skipped=- olay=21561 basis=241 cark=30 menu=21 fare=0 yanadim=2
+TEST FAIL (2)

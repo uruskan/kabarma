@@ -240,6 +240,7 @@ public partial class Zipzip : Node3D
             _hopT = _hopDur / slow;
             _hopFrom = pos;
             var dir = new Vector3(goal.X - pos.X, 0, goal.Z - pos.Z).Normalized();
+            if (!chasePlayer && dist > 3f && _dir.Flow?.Steer(pos, _target != null ? "crop" : "kazan") is { } flow) dir = flow; // yolbulma: akis alani (TEKNIK 8.1); yakinda dogrudan
             float step = Mathf.Min(dist - Radius * 0.5f, MoveSpeed * _hopDur * (0.8f + Scale0 * 0.1f));
             _hopTo = _dir.World.Ground(pos + dir * Mathf.Max(0.2f, step));
             bool blocked = false;

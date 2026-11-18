@@ -1,0 +1,73 @@
+﻿Godot Engine v4.7.2.stable.mono.official.ed1daf0bf - https://godotengine.org
+
+TEST stress
+STRESS host port=30649 bot=0
+MUSIC ready day=yes layers=3/3 bar=2.00s
+WORLD decor agac box=98 outside=285
+WORLD decor turuncu_agac box=28 outside=84
+WORLD decor cali box=153 outside=450
+WORLD decor ot box=226 outside=660
+WORLD decor bugday box=74 outside=210
+WORLD decor cicek box=240 outside=720
+WORLD decor egrelti box=156 outside=450
+WORLD decor kaya_duz box=36 outside=108
+WORLD decor kaya_dik box=17 outside=42
+WORLD pois 16: seyir_kulesi_altin_cayir_0@105,40 ata_tasi_altin_cayir_0@64,36 yabani_bahce_altin_cayir_0@-145,2 yuva_altin_cayir_0@143,192 yuva_altin_cayir_1@-231,-56 enkaz_altin_cayir_0@-69,179 enkaz_altin_cayir_1@84,195 enkaz_altin_cayir_2@-139,-84 seyir_kulesi_sis_korusu_0@-46,287 ata_tasi_sis_korusu_0@-212,219 yabani_bahce_sis_korusu_0@-53,256 yuva_sis_korusu_0@-200,189 yuva_sis_korusu_1@-88,230 enkaz_sis_korusu_0@-257,293 enkaz_sis_korusu_1@-151,238 enkaz_sis_korusu_2@-235,110
+PLAYER model anims: carry,cheer,crouch_walk,eat,getup_back_pose,getup_front_pose,hurt,idle,jump,jump_air,jump_land,jump_start,kneel,knockdown,plant,push,run,shock_fall,sleep,sprint,walk,walk_casual,wave
+AUDIO sounds=60 playable=60 variant_files=180 m0_only=0 silent=0 placeholder=0
+AUDIO ok 60/60
+POFUDUK anims: pose/attack1,pose/attack2,pose/eat,pose/hit,pose/idle,pose/rest,pose/run,pose/walk,preset_quadruped_walk
+BUILD kit pieces=28
+ATALAR arenas=koca_pofuduk@64,36/r18:ata_tasi_altin_cayir_0,boynuzlu_dede@-212,219/r20:ata_tasi_sis_korusu_0
+NET host enet 0.0.0.0:30649 name=Host
+BOOT Kabarma MVP
+TARIM wild=22
+POWER net bound host=True
+NET save bridge: save:calendar,save:cargo,save:farm,save:market,save:pen.animals,save:power,save:stations,save:farm.genetics,save:player,save:creatures,save:atalar,save:core,save:explore,save:orders,save:progress,save:ranch,save:research,save:scenario,save:director
+HELD capa
+MUSIC Silence -> Day
+ZIPZIP herd size=2 at=-30,-12 herds=1
+ZIPZIP herd size=3 at=-7,16 herds=2
+ZIPZIP herd size=2 at=-14,15 herds=3
+WILDLIFE spawn homur herd=1 at=-15,9
+WILDLIFE spawn homur herd=1 at=-19,13
+WILDLIFE spawn dalli herd=1 at=35,15
+WILDLIFE spawn dalli herd=1 at=39,10
+WILDLIFE spawn vicik herd=1 at=-11,-35
+WILDLIFE spawn vicik herd=1 at=-8,-39
+WILDLIFE spawn bozuk herd=1 at=45,-39
+WILDLIFE spawn vizviz swarm at=27,21
+WILDLIFE spawn hu herd=1 at=-25,-17
+RANCH start animals=11 agents=11
+BOT step mine t=1.0
+WILDLIFE spawn homur herd=1 at=84,106
+SUNA line=giris_1 voice=yes
+HELD ocak
+FLOW window center=0,0 size=160
+BOT coop phase 0 ok (ocak var) t=4.3
+STRESS start players=1 ks=30 target=0 t=4.3
+HELD -
+HELD capa
+HATCH intro done
+WILDLIFE spawn gidak herd=2 at=-102,-121
+STRESS measure begin active=0 t=8.8
+SUNA line=giris_2 voice=yes
+BOT coop phase 1 ok (tas 4) t=9.2
+WILDLIFE spawn homur herd=1 at=-34,-77
+WILDLIFE spawn sinsi herd=1 at=85,91
+BOT coop phase 2 ok (odun 6) t=13.1
+HELD insa_plani
+WILDLIFE spawn gidak herd=4 at=-102,-95
+BUILT kare_temel pieces=1
+BOT coop phase 3 ok (temel (7.368488, 0, 3.1153467)) t=14.8
+HELD capa
+WILDLIFE spawn pofuduk herd=3 at=174,13
+WILDLIFE spawn pofuduk herd=2 at=-132,-63
+BOT coop phase 4 ok (tarla (4.5, 0, 1.5)) t=19.0
+QUEUED mesale x1
+WILDLIFE spawn cekirge swarm at=11,91
+PRODUCED mesale civi=40 ingot=0 soup=0
+BOT coop phase 5 ok (uretim mesale 1) t=24.7
+BOT coop done id=0 stone=5 wood=0 built=1 t=28.6
+STRESS measure end t=53.8
+STRESS RESULT fail players=1 ks=30 enemies_min=0 host_up_kbps=0 (hedef 1500, sinir 2000) client_down_kBps_max=0.0 (sinir 35) flow_tick_ms work_ticks=0 p95=0.00 max=0.00 (sinir 4) flow_scan_p95=0.04 repairs=0 recomputes=0 creature_packets=0 frame=ok host_frame_ms med=6.90 p95=7.52 (sinir 11, basliksiz CPU) frames=6407 over16ms=1% client_frame_p95_max=0.00 window=45s :: artimli onarim 0

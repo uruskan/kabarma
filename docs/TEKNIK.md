@@ -226,6 +226,7 @@ Host ya da sunucu yetkilidir. İstemci istekleri mesafe, bekleme süresi ve enva
 - **Holding** aynı maliyet ızgarasında noktadan noktaya kırma maliyetli A* (`FindPath`) kullanır; sürüler ve Kabaranlar akış alanını.
 - **Durum:** alan türetilmiş veridir (arazi + izler + hedefler): kayda yazılmaz, yüklemeden ve sonradan katılmadan sonra yeniden kurulur; yalnız host'ta tutulur (istemcide yaratık kukladır, §5.2). `GameState`'e ve statiklere girmez.
 - **Güncelleme:** iz eklenince ya da hedef kalkınca etkilenen alt ağaç (bu hücreden geçen en kısa yollar) sıfırlanıp sınırından yeniden yayılır; iz kalkınca ya da hedef eklenince değişen hücrelerden iyileşme yayılır. Sonuç tam yeniden hesapla aynıdır (birim testi).
+- **Kare bütçesi:** 160 m pencerede tek bir duvar 3 700–10 000 hücreye dokunabilir (tam hesap 25 600 hücre). Bu yüzden hesap arka tamponda yapılır ve onarımın üç aşaması (etkilenen alt ağaç, sınır tohumları, yayılım) dahil tikte en çok `maxCellsPerTick` hücre işlenir (bütün alanların toplamı); iş bitince ön tamponla takas edilir, o zamana dek sorgular eski alanı okur. İş sürerken gelen değişim sonraki işe kalır; sonuç yine tam hesapla aynıdır (birim testi). Anahtarın ilk sorgusu bir kez hemen ve sonuna kadar hesaplanır.
 
 ## 9. Kayıt
 

@@ -74,9 +74,27 @@ public partial class NetSync
             list.Add(new CreatureFrame { Id = (ushort)i, X = p.X, Y = p.Y, Z = p.Z, Yaw = n.GlobalRotation.Y, State = (byte)(n.Visible ? 1 : 0) });
         }
         WriteDynamicFrames(list, to, now); // NetSync.Spawns.cs
-        w.U16((ushort)list.Count);
-        foreach (var f in list) f.Write(w, Cfg.PosPerMetre);
+        // Paket MTU altinda kalir: sigmayan kareler ayri "Creatures" paketleriyle gider (ENet buyuk guvenilmez paketi
+        // guvenilir parcalara boler; sira tikanmasin).
+        int first = Mathf.Clamp((MaxPacket - w.Length - 2) / CreatureFrame.Size, 0, list.Count);
+        w.U16((ushort)first);
+        for (int i = 0; i < first; i++) list[i].Write(w, Cfg.PosPerMetre);
+        int per = (MaxPacket - 3) / CreatureFrame.Size;
+        for (int i = first; i < list.Count; i += per)
+        {
+            int n = System.Math.Min(per, list.Count - i);
+            var c = NetPackets.Begin(NetMsg.Creatures, 3 + n * CreatureFrame.Size);
+            c.U16((ushort)n);
+            for (int k = 0; k < n; k++) list[i + k].Write(c, Cfg.PosPerMetre);
+            SendTo(to.Peer, c.ToArray(), NetChannel.State);
+            CreaturePackets++;
+        }
     }
+
+    /// <summary>Tek paketin en buyuk boyu (bayt): ENet MTU'su 1400, baslik payi.</summary>
+    const int MaxPacket = 1200;
+    /// <summary>Ek yaratik paketi sayisi (olcum).</summary>
+    public int CreaturePackets { get; private set; }
 
     void ReadCreatures(NetReader r, double now)
     {
