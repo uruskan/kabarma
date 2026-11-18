@@ -26,6 +26,7 @@ param(
 )
 
 if (-not $PSBoundParameters.ContainsKey('Only')) { $Only += 'gece' } # gecehud: --test=gece varsayilan adimlara eklenir
+if (-not $PSBoundParameters.ContainsKey('Only')) { $Only += 'ilerleme' } # ilerleme: --test=ilerleme varsayilan adimlara eklenir
 $ErrorActionPreference = 'Continue'
 if (-not $PSBoundParameters.ContainsKey('Only')) { $Only += 'world' } # dunya sinamasi (--test=world), varsayilan listede
 $Only = @($Only | ForEach-Object { $_ -split ',' } | ForEach-Object { $_.Trim() } | Where-Object { $_ })
@@ -245,6 +246,16 @@ if ($Only -contains 'gece') {
     }
 }
 
+if ($Only -contains 'ilerleme') {
+    # ilerleme: is emri odemesi, Defter alt sekmeleri, Ustalik secimi, basarim (game/scripts/IlerlemeTest.cs)
+    if (-not $G) { $G = Find-Godot }
+    Invoke-GodotTest 'ilerleme' "--test=ilerleme --mute" $BotTimeout {
+        param($r)
+        $res = ($r.Text -split "`r?`n" | Where-Object { $_ -match '^ILERLEME RESULT ' } | Select-Object -Last 1)
+        if (-not $res) { $res = 'ILERLEME RESULT satiri yok' }
+        [pscustomobject]@{ Ok = ($res -match '^ILERLEME RESULT ok'); Detail = ($res -replace ' t=[0-9.]+$', '') }
+    }
+}
 if ($Only -contains 'coop') { if (-not $G) { $G = Find-Godot }; Invoke-GodotTest 'coop' '--test=coop' ([math]::Max($BotTimeout, 600)) { param($r) $res = ($r.Text -split "`r?`n" | Where-Object { $_ -match '^COOP RESULT ' } | Select-Object -Last 1); if (-not $res) { $res = 'COOP RESULT satiri yok' }; [pscustomobject]@{ Ok = ($res -match '^COOP RESULT ok'); Detail = ($res -replace '^COOP RESULT ', '' -replace ' t=[0-9.]+', '') } } } # ortak: host 3 istemciyi kendisi baslatir (net/CoopTest.cs); istemci gunlukleri .tools/run/test/coop_client_N.log
 if ($Only -contains 'steam') { if (-not $G) { $G = Find-Godot }; Invoke-GodotTest 'steam' '--test=steam' 120 { param($r) $res = ($r.Text -split "`r?`n" | Where-Object { $_ -match '^STEAM RESULT ' } | Select-Object -Last 1); if (-not $res) { $res = 'STEAM RESULT satiri yok' }; [pscustomobject]@{ Ok = ($res -match '^STEAM RESULT ok'); Detail = ($res -replace '^STEAM RESULT ', '') } } } # ortak: tek surec Steam baslatma ve lobi (Steam acik olmali); varsayilan listede yok
 

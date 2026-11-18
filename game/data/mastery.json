@@ -1,0 +1,1137 @@
+{
+ "_not": "Ustalik: GDD 10, ICERIK 19 (80 ozellik). n. seviye esigi = thresholdBase x n^thresholdExponent (toplam XP). Her seviye levelStat etkisine +%1. 10/20/30/40/50. seviyede A/B secilir. live=true: 10. ve 20. seviye (T1-T2) ozelliklerinin sayisal etkisi M2'de; effects stat kimlikleri docs/ICERIK.md 19 \"Ustalik etki kimlikleri\". xp: kaynak kimligi -> dal ve XP (denge M7 ayari). Ozellik listesi tools/gen_mastery.py ile ICERIK 19 tablosundan uretildi.",
+ "maxLevel": 50,
+ "thresholdBase": 100,
+ "thresholdExponent": 1.6,
+ "perLevel": 0.01,
+ "perkLevels": [
+  10,
+  20,
+  30,
+  40,
+  50
+ ],
+ "respecCreditsPer10Levels": 1000,
+ "branches": [
+  {
+   "id": "kazi",
+   "name": "Kazı",
+   "levelStat": "dig_speed"
+  },
+  {
+   "id": "hasat",
+   "name": "Hasat",
+   "levelStat": "gather_yield"
+  },
+  {
+   "id": "ciftcilik",
+   "name": "Çiftçilik",
+   "levelStat": "crop_yield"
+  },
+  {
+   "id": "hayvancilik",
+   "name": "Hayvancılık",
+   "levelStat": "tame_rate"
+  },
+  {
+   "id": "muhendislik",
+   "name": "Mühendislik",
+   "levelStat": "craft_speed"
+  },
+  {
+   "id": "ascilik",
+   "name": "Aşçılık",
+   "levelStat": "food_duration"
+  },
+  {
+   "id": "savas",
+   "name": "Savaş",
+   "levelStat": "damage"
+  },
+  {
+   "id": "surus",
+   "name": "Sürüş",
+   "levelStat": "vehicle_speed"
+  }
+ ],
+ "xp": {
+  "gather:stone": {
+   "branch": "kazi",
+   "xp": 2
+  },
+  "gather:clay": {
+   "branch": "kazi",
+   "xp": 2
+  },
+  "gather:copper_ore": {
+   "branch": "kazi",
+   "xp": 4
+  },
+  "gather:wood": {
+   "branch": "hasat",
+   "xp": 2
+  },
+  "gather:fiber": {
+   "branch": "hasat",
+   "xp": 2
+  },
+  "gather:wheat": {
+   "branch": "hasat",
+   "xp": 2
+  },
+  "plant": {
+   "branch": "ciftcilik",
+   "xp": 2
+  },
+  "harvest": {
+   "branch": "ciftcilik",
+   "xp": 3
+  },
+  "swell": {
+   "branch": "ciftcilik",
+   "xp": 6
+  },
+  "pen": {
+   "branch": "hayvancilik",
+   "xp": 25
+  },
+  "lay": {
+   "branch": "hayvancilik",
+   "xp": 4
+  },
+  "tame": {
+   "branch": "hayvancilik",
+   "xp": 40
+  },
+  "produce": {
+   "branch": "muhendislik",
+   "xp": 4
+  },
+  "station": {
+   "branch": "muhendislik",
+   "xp": 10
+  },
+  "build": {
+   "branch": "muhendislik",
+   "xp": 2
+  },
+  "cook": {
+   "branch": "ascilik",
+   "xp": 6
+  },
+  "ate": {
+   "branch": "ascilik",
+   "xp": 1
+  },
+  "kill": {
+   "branch": "savas",
+   "xp": 2
+  },
+  "kill_swollen": {
+   "branch": "savas",
+   "xp": 6
+  },
+  "drive_100m": {
+   "branch": "surus",
+   "xp": 2
+  },
+  "ride_100m": {
+   "branch": "surus",
+   "xp": 2
+  }
+ },
+ "perks": [
+  {
+   "id": "kazi_10a_cift_damla",
+   "branch": "kazi",
+   "tier": 10,
+   "slot": "A",
+   "name": "Çift Damla",
+   "text": "cevher +%15",
+   "live": true,
+   "effects": [
+    {
+     "stat": "ore_yield",
+     "op": "add",
+     "value": 0.15
+    }
+   ]
+  },
+  {
+   "id": "kazi_10b_hizli_matkap",
+   "branch": "kazi",
+   "tier": 10,
+   "slot": "B",
+   "name": "Hızlı Matkap",
+   "text": "kazı hızı +%20",
+   "live": true,
+   "effects": [
+    {
+     "stat": "dig_speed",
+     "op": "add",
+     "value": 0.2
+    }
+   ]
+  },
+  {
+   "id": "kazi_20a_damar_kokusu",
+   "branch": "kazi",
+   "tier": 20,
+   "slot": "A",
+   "name": "Damar Kokusu",
+   "text": "yakın cevher pusulada",
+   "live": true,
+   "effects": [
+    {
+     "stat": "ore_compass",
+     "op": "add",
+     "value": 1
+    }
+   ]
+  },
+  {
+   "id": "kazi_20b_saglam_sirt",
+   "branch": "kazi",
+   "tier": 20,
+   "slot": "B",
+   "name": "Sağlam Sırt",
+   "text": "cevher yığını 100",
+   "live": true,
+   "effects": [
+    {
+     "stat": "ore_stack",
+     "op": "set",
+     "value": 100
+    }
+   ]
+  },
+  {
+   "id": "kazi_30a_kristal_goz",
+   "branch": "kazi",
+   "tier": 30,
+   "slot": "A",
+   "name": "Kristal Göz",
+   "text": "nadir damla ×2",
+   "live": false,
+   "effects": []
+  },
+  {
+   "id": "kazi_30b_patlatmaci",
+   "branch": "kazi",
+   "tier": 30,
+   "slot": "B",
+   "name": "Patlatmacı",
+   "text": "kazıda alan etkisi",
+   "live": false,
+   "effects": []
+  },
+  {
+   "id": "kazi_40a_derin_cep",
+   "branch": "kazi",
+   "tier": 40,
+   "slot": "A",
+   "name": "Derin Cep",
+   "text": "maden için +4 yuva",
+   "live": false,
+   "effects": []
+  },
+  {
+   "id": "kazi_40b_ucuz_sondaj",
+   "branch": "kazi",
+   "tier": 40,
+   "slot": "B",
+   "name": "Ucuz Sondaj",
+   "text": "Sondaj Kulesi gücü −%40",
+   "live": false,
+   "effects": []
+  },
+  {
+   "id": "kazi_50a_usta_madenci",
+   "branch": "kazi",
+   "tier": 50,
+   "slot": "A",
+   "name": "Usta Madenci",
+   "text": "Zengin Yatak elle de kazılır",
+   "live": false,
+   "effects": []
+  },
+  {
+   "id": "kazi_50b_altin_damar",
+   "branch": "kazi",
+   "tier": 50,
+   "slot": "B",
+   "name": "Altın Damar",
+   "text": "her 50. damla altın külçe",
+   "live": false,
+   "effects": []
+  },
+  {
+   "id": "hasat_10a_oduncu",
+   "branch": "hasat",
+   "tier": 10,
+   "slot": "A",
+   "name": "Oduncu",
+   "text": "odun +%20",
+   "live": true,
+   "effects": [
+    {
+     "stat": "wood_yield",
+     "op": "add",
+     "value": 0.2
+    }
+   ]
+  },
+  {
+   "id": "hasat_10b_toplayici",
+   "branch": "hasat",
+   "tier": 10,
+   "slot": "B",
+   "name": "Toplayıcı",
+   "text": "yabani bitki ×2",
+   "live": true,
+   "effects": [
+    {
+     "stat": "wild_plant_yield",
+     "op": "add",
+     "value": 1.0
+    }
+   ]
+  },
+  {
+   "id": "hasat_20a_tohum_avcisi",
+   "branch": "hasat",
+   "tier": 20,
+   "slot": "A",
+   "name": "Tohum Avcısı",
+   "text": "yabani tohum genleri +1",
+   "live": true,
+   "effects": [
+    {
+     "stat": "wild_seed_gene",
+     "op": "add",
+     "value": 1
+    }
+   ]
+  },
+  {
+   "id": "hasat_20b_genis_bicim",
+   "branch": "hasat",
+   "tier": 20,
+   "slot": "B",
+   "name": "Geniş Biçim",
+   "text": "Biçme alanı +%30",
+   "live": true,
+   "effects": [
+    {
+     "stat": "scythe_area",
+     "op": "add",
+     "value": 0.3
+    }
+   ]
+  },
+  {
+   "id": "hasat_30a_fidan_eli",
+   "branch": "hasat",
+   "tier": 30,
+   "slot": "A",
+   "name": "Fidan Eli",
+   "text": "ağaç yarı sürede yenilenir",
+   "live": false,
+   "effects": []
+  },
+  {
+   "id": "hasat_30b_recine_ustasi",
+   "branch": "hasat",
+   "tier": 30,
+   "slot": "B",
+   "name": "Reçine Ustası",
+   "text": "reçine ve kauçuk ×2",
+   "live": false,
+   "effects": []
+  },
+  {
+   "id": "hasat_40a_doga_dostu",
+   "branch": "hasat",
+   "tier": 40,
+   "slot": "A",
+   "name": "Doğa Dostu",
+   "text": "yabaniler geç ürker",
+   "live": false,
+   "effects": []
+  },
+  {
+   "id": "hasat_40b_balta_girmemis",
+   "branch": "hasat",
+   "tier": 40,
+   "slot": "B",
+   "name": "Balta Girmemiş",
+   "text": "sert odun ×2",
+   "live": false,
+   "effects": []
+  },
+  {
+   "id": "hasat_50a_orman_bekcisi",
+   "branch": "hasat",
+   "tier": 50,
+   "slot": "A",
+   "name": "Orman Bekçisi",
+   "text": "tapudaki ağaçlar meyve verir",
+   "live": false,
+   "effects": []
+  },
+  {
+   "id": "hasat_50b_kokunden",
+   "branch": "hasat",
+   "tier": 50,
+   "slot": "B",
+   "name": "Kökünden",
+   "text": "tek vuruşta devirme şansı %25",
+   "live": false,
+   "effects": []
+  },
+  {
+   "id": "ciftcilik_10a_bol_hasat",
+   "branch": "ciftcilik",
+   "tier": 10,
+   "slot": "A",
+   "name": "Bol Hasat",
+   "text": "verim +%10",
+   "live": true,
+   "effects": [
+    {
+     "stat": "crop_yield",
+     "op": "add",
+     "value": 0.1
+    }
+   ]
+  },
+  {
+   "id": "ciftcilik_10b_cabuk_filiz",
+   "branch": "ciftcilik",
+   "tier": 10,
+   "slot": "B",
+   "name": "Çabuk Filiz",
+   "text": "büyüme +%10",
+   "live": true,
+   "effects": [
+    {
+     "stat": "crop_growth",
+     "op": "add",
+     "value": 0.1
+    }
+   ]
+  },
+  {
+   "id": "ciftcilik_20a_su_bilgisi",
+   "branch": "ciftcilik",
+   "tier": 20,
+   "slot": "A",
+   "name": "Su Bilgisi",
+   "text": "nem tüketimi −%30",
+   "live": true,
+   "effects": [
+    {
+     "stat": "moisture_use",
+     "op": "add",
+     "value": -0.3
+    }
+   ]
+  },
+  {
+   "id": "ciftcilik_20b_gubreci",
+   "branch": "ciftcilik",
+   "tier": 20,
+   "slot": "B",
+   "name": "Gübreci",
+   "text": "kompost etkisi ×1,5",
+   "live": true,
+   "effects": [
+    {
+     "stat": "compost_effect",
+     "op": "add",
+     "value": 0.5
+    }
+   ]
+  },
+  {
+   "id": "ciftcilik_30a_mutasyon_eli",
+   "branch": "ciftcilik",
+   "tier": 30,
+   "slot": "A",
+   "name": "Mutasyon Eli",
+   "text": "mutasyon şansı ×1,3",
+   "live": false,
+   "effects": []
+  },
+  {
+   "id": "ciftcilik_30b_munavebe_ustasi",
+   "branch": "ciftcilik",
+   "tier": 30,
+   "slot": "B",
+   "name": "Münavebe Ustası",
+   "text": "münavebe primi %20",
+   "live": false,
+   "effects": []
+  },
+  {
+   "id": "ciftcilik_40a_alaca_goz",
+   "branch": "ciftcilik",
+   "tier": 40,
+   "slot": "A",
+   "name": "Alaca Göz",
+   "text": "Alaca şansı ×1,5",
+   "live": false,
+   "effects": []
+  },
+  {
+   "id": "ciftcilik_40b_dev_yetistirici",
+   "branch": "ciftcilik",
+   "tier": 40,
+   "slot": "B",
+   "name": "Dev Yetiştirici",
+   "text": "boy puanı +1",
+   "live": false,
+   "effects": []
+  },
+  {
+   "id": "ciftcilik_50a_cifte_kabarma",
+   "branch": "ciftcilik",
+   "tier": 50,
+   "slot": "A",
+   "name": "Çifte Kabarma",
+   "text": "kabaran ekinin %10'u iki ürün verir",
+   "live": false,
+   "effects": []
+  },
+  {
+   "id": "ciftcilik_50b_sonmez",
+   "branch": "ciftcilik",
+   "tier": 50,
+   "slot": "B",
+   "name": "Sönmez",
+   "text": "kabarık ürün 3 gün sönmez",
+   "live": false,
+   "effects": []
+  },
+  {
+   "id": "hayvancilik_10a_tatli_dil",
+   "branch": "hayvancilik",
+   "tier": 10,
+   "slot": "A",
+   "name": "Tatlı Dil",
+   "text": "evcilleştirme ×1,5",
+   "live": true,
+   "effects": [
+    {
+     "stat": "tame_rate",
+     "op": "add",
+     "value": 0.5
+    }
+   ]
+  },
+  {
+   "id": "hayvancilik_10b_bol_yem",
+   "branch": "hayvancilik",
+   "tier": 10,
+   "slot": "B",
+   "name": "Bol Yem",
+   "text": "yem tüketimi −%25",
+   "live": true,
+   "effects": [
+    {
+     "stat": "feed_use",
+     "op": "add",
+     "value": -0.25
+    }
+   ]
+  },
+  {
+   "id": "hayvancilik_20a_saglam_eyer",
+   "branch": "hayvancilik",
+   "tier": 20,
+   "slot": "A",
+   "name": "Sağlam Eyer",
+   "text": "binek hızı +%15",
+   "live": true,
+   "effects": [
+    {
+     "stat": "mount_speed",
+     "op": "add",
+     "value": 0.15
+    }
+   ]
+  },
+  {
+   "id": "hayvancilik_20b_dolu_heybe",
+   "branch": "hayvancilik",
+   "tier": 20,
+   "slot": "B",
+   "name": "Dolu Heybe",
+   "text": "yük +%50",
+   "live": true,
+   "effects": [
+    {
+     "stat": "mount_carry",
+     "op": "add",
+     "value": 0.5
+    }
+   ]
+  },
+  {
+   "id": "hayvancilik_30a_cins_bilgisi",
+   "branch": "hayvancilik",
+   "tier": 30,
+   "slot": "A",
+   "name": "Cins Bilgisi",
+   "text": "yavrunun genleri doğmadan görünür",
+   "live": false,
+   "effects": []
+  },
+  {
+   "id": "hayvancilik_30b_ikiz",
+   "branch": "hayvancilik",
+   "tier": 30,
+   "slot": "B",
+   "name": "İkiz",
+   "text": "ikiz şansı %20",
+   "live": false,
+   "effects": []
+  },
+  {
+   "id": "hayvancilik_40a_sadik_suru",
+   "branch": "hayvancilik",
+   "tier": 40,
+   "slot": "A",
+   "name": "Sadık Sürü",
+   "text": "komut hep dinlenir",
+   "live": false,
+   "effects": []
+  },
+  {
+   "id": "hayvancilik_40b_bereketli_ahir",
+   "branch": "hayvancilik",
+   "tier": 40,
+   "slot": "B",
+   "name": "Bereketli Ahır",
+   "text": "ürün +%25",
+   "live": false,
+   "effects": []
+  },
+  {
+   "id": "hayvancilik_50a_suru_lideri",
+   "branch": "hayvancilik",
+   "tier": 50,
+   "slot": "A",
+   "name": "Sürü Lideri",
+   "text": "hayvan sınırı +8",
+   "live": false,
+   "effects": []
+  },
+  {
+   "id": "hayvancilik_50b_savas_cigligi",
+   "branch": "hayvancilik",
+   "tier": 50,
+   "slot": "B",
+   "name": "Savaş Çığlığı",
+   "text": "kabarık hayvan hasarı +%25",
+   "live": false,
+   "effects": []
+  },
+  {
+   "id": "muhendislik_10a_cabuk_el",
+   "branch": "muhendislik",
+   "tier": 10,
+   "slot": "A",
+   "name": "Çabuk El",
+   "text": "üretim +%15",
+   "live": true,
+   "effects": [
+    {
+     "stat": "craft_speed",
+     "op": "add",
+     "value": 0.15
+    }
+   ]
+  },
+  {
+   "id": "muhendislik_10b_tutumlu",
+   "branch": "muhendislik",
+   "tier": 10,
+   "slot": "B",
+   "name": "Tutumlu",
+   "text": "malzemenin %10'u iade",
+   "live": true,
+   "effects": [
+    {
+     "stat": "craft_refund",
+     "op": "add",
+     "value": 0.1
+    }
+   ]
+  },
+  {
+   "id": "muhendislik_20a_uzun_kablo",
+   "branch": "muhendislik",
+   "tier": 20,
+   "slot": "A",
+   "name": "Uzun Kablo",
+   "text": "16 m",
+   "live": true,
+   "effects": [
+    {
+     "stat": "cable_len",
+     "op": "set",
+     "value": 16
+    }
+   ]
+  },
+  {
+   "id": "muhendislik_20b_yalitim",
+   "branch": "muhendislik",
+   "tier": 20,
+   "slot": "B",
+   "name": "Yalıtım",
+   "text": "akü kapasitesi +%20",
+   "live": true,
+   "effects": [
+    {
+     "stat": "battery_cap",
+     "op": "add",
+     "value": 0.2
+    }
+   ]
+  },
+  {
+   "id": "muhendislik_30a_asiri_devir",
+   "branch": "muhendislik",
+   "tier": 30,
+   "slot": "A",
+   "name": "Aşırı Devir",
+   "text": "makine hızı ve gücü +%25",
+   "live": false,
+   "effects": []
+  },
+  {
+   "id": "muhendislik_30b_verimli_devir",
+   "branch": "muhendislik",
+   "tier": 30,
+   "slot": "B",
+   "name": "Verimli Devir",
+   "text": "güç −%25",
+   "live": false,
+   "effects": []
+  },
+  {
+   "id": "muhendislik_40a_usta_tamirci",
+   "branch": "muhendislik",
+   "tier": 40,
+   "slot": "A",
+   "name": "Usta Tamirci",
+   "text": "onarım bedava",
+   "live": false,
+   "effects": []
+  },
+  {
+   "id": "muhendislik_40b_seri_uretim",
+   "branch": "muhendislik",
+   "tier": 40,
+   "slot": "B",
+   "name": "Seri Üretim",
+   "text": "Montaj Makinesi %10 çift çıktı",
+   "live": false,
+   "effects": []
+  },
+  {
+   "id": "muhendislik_50a_drone_filosu",
+   "branch": "muhendislik",
+   "tier": 50,
+   "slot": "A",
+   "name": "Drone Filosu",
+   "text": "istasyon başına +4 drone",
+   "live": false,
+   "effects": []
+  },
+  {
+   "id": "muhendislik_50b_kule_ustasi",
+   "branch": "muhendislik",
+   "tier": 50,
+   "slot": "B",
+   "name": "Kule Ustası",
+   "text": "kule hasarı +%20",
+   "live": false,
+   "effects": []
+  },
+  {
+   "id": "ascilik_10a_lezzet",
+   "branch": "ascilik",
+   "tier": 10,
+   "slot": "A",
+   "name": "Lezzet",
+   "text": "yemek süresi +%20",
+   "live": true,
+   "effects": [
+    {
+     "stat": "food_duration",
+     "op": "add",
+     "value": 0.2
+    }
+   ]
+  },
+  {
+   "id": "ascilik_10b_bol_porsiyon",
+   "branch": "ascilik",
+   "tier": 10,
+   "slot": "B",
+   "name": "Bol Porsiyon",
+   "text": "%20 çift çıktı",
+   "live": true,
+   "effects": [
+    {
+     "stat": "food_double",
+     "op": "add",
+     "value": 0.2
+    }
+   ]
+  },
+  {
+   "id": "ascilik_20a_baharatci",
+   "branch": "ascilik",
+   "tier": 20,
+   "slot": "A",
+   "name": "Baharatçı",
+   "text": "özel etkiler +%25",
+   "live": true,
+   "effects": [
+    {
+     "stat": "food_special",
+     "op": "add",
+     "value": 0.25
+    }
+   ]
+  },
+  {
+   "id": "ascilik_20b_erzakci",
+   "branch": "ascilik",
+   "tier": 20,
+   "slot": "B",
+   "name": "Erzakçı",
+   "text": "yemek yığını 20",
+   "live": true,
+   "effects": [
+    {
+     "stat": "food_stack",
+     "op": "set",
+     "value": 20
+    }
+   ]
+  },
+  {
+   "id": "ascilik_30a_dorduncu_tabak",
+   "branch": "ascilik",
+   "tier": 30,
+   "slot": "A",
+   "name": "Dördüncü Tabak",
+   "text": "4. yemek yuvası",
+   "live": false,
+   "effects": []
+  },
+  {
+   "id": "ascilik_30b_hizli_lokma",
+   "branch": "ascilik",
+   "tier": 30,
+   "slot": "B",
+   "name": "Hızlı Lokma",
+   "text": "yemek anında yenir",
+   "live": false,
+   "effects": []
+  },
+  {
+   "id": "ascilik_40a_sef",
+   "branch": "ascilik",
+   "tier": 40,
+   "slot": "A",
+   "name": "Şef",
+   "text": "★3 malzeme özel etkiyi ikiye katlar",
+   "live": false,
+   "effects": []
+  },
+  {
+   "id": "ascilik_40b_sofra",
+   "branch": "ascilik",
+   "tier": 40,
+   "slot": "B",
+   "name": "Sofra",
+   "text": "yakındaki arkadaşlara etkinin yarısı",
+   "live": false,
+   "effects": []
+  },
+  {
+   "id": "ascilik_50a_ziyafet_ustasi",
+   "branch": "ascilik",
+   "tier": 50,
+   "slot": "A",
+   "name": "Ziyafet Ustası",
+   "text": "masa etkisi 45 dk",
+   "live": false,
+   "effects": []
+  },
+  {
+   "id": "ascilik_50b_kendi_tarifi",
+   "branch": "ascilik",
+   "tier": 50,
+   "slot": "B",
+   "name": "Kendi Tarifi",
+   "text": "iki yemeğin özel etkisi tek yuvada",
+   "live": false,
+   "effects": []
+  },
+  {
+   "id": "savas_10a_keskin_nisan",
+   "branch": "savas",
+   "tier": 10,
+   "slot": "A",
+   "name": "Keskin Nişan",
+   "text": "kritik +%5",
+   "live": true,
+   "effects": [
+    {
+     "stat": "crit",
+     "op": "add",
+     "value": 0.05
+    }
+   ]
+  },
+  {
+   "id": "savas_10b_kalin_deri",
+   "branch": "savas",
+   "tier": 10,
+   "slot": "B",
+   "name": "Kalın Deri",
+   "text": "can +15",
+   "live": true,
+   "effects": [
+    {
+     "stat": "max_hp",
+     "op": "add",
+     "value": 15
+    }
+   ]
+  },
+  {
+   "id": "savas_20a_hizli_dolum",
+   "branch": "savas",
+   "tier": 20,
+   "slot": "A",
+   "name": "Hızlı Dolum",
+   "text": "başlık anında değişir",
+   "live": true,
+   "effects": [
+    {
+     "stat": "head_swap_instant",
+     "op": "set",
+     "value": 1
+    }
+   ]
+  },
+  {
+   "id": "savas_20b_sogukkanli",
+   "branch": "savas",
+   "tier": 20,
+   "slot": "B",
+   "name": "Soğukkanlı",
+   "text": "hasar alınca Gösteri düşmez",
+   "live": true,
+   "effects": [
+    {
+     "stat": "gosteri_hold",
+     "op": "set",
+     "value": 1
+    }
+   ]
+  },
+  {
+   "id": "savas_30a_zayif_nokta",
+   "branch": "savas",
+   "tier": 30,
+   "slot": "A",
+   "name": "Zayıf Nokta",
+   "text": "kese hasarı ×2,5",
+   "live": false,
+   "effects": []
+  },
+  {
+   "id": "savas_30b_inatci",
+   "branch": "savas",
+   "tier": 30,
+   "slot": "B",
+   "name": "İnatçı",
+   "text": "baygınlık süresi 45 sn",
+   "live": false,
+   "effects": []
+  },
+  {
+   "id": "savas_40a_yenileme_1",
+   "branch": "savas",
+   "tier": 40,
+   "slot": "A",
+   "name": "Yenileme +1",
+   "text": "",
+   "live": false,
+   "effects": []
+  },
+  {
+   "id": "savas_40b_surgun_1",
+   "branch": "savas",
+   "tier": 40,
+   "slot": "B",
+   "name": "Sürgün +1",
+   "text": "",
+   "live": false,
+   "effects": []
+  },
+  {
+   "id": "savas_50a_cephanelik",
+   "branch": "savas",
+   "tier": 50,
+   "slot": "A",
+   "name": "Cephanelik",
+   "text": "gündüz cephane harcanmaz",
+   "live": false,
+   "effects": []
+  },
+  {
+   "id": "savas_50b_ilk_kart",
+   "branch": "savas",
+   "tier": 50,
+   "slot": "B",
+   "name": "İlk Kart",
+   "text": "gecenin ilk kartı 2. rütbeden başlar",
+   "live": false,
+   "effects": []
+  },
+  {
+   "id": "surus_10a_hafif_ayak",
+   "branch": "surus",
+   "tier": 10,
+   "slot": "A",
+   "name": "Hafif Ayak",
+   "text": "yakıt −%20",
+   "live": true,
+   "effects": [
+    {
+     "stat": "fuel_use",
+     "op": "add",
+     "value": -0.2
+    }
+   ]
+  },
+  {
+   "id": "surus_10b_saglam_kasa",
+   "branch": "surus",
+   "tier": 10,
+   "slot": "B",
+   "name": "Sağlam Kasa",
+   "text": "araç canı +%25",
+   "live": true,
+   "effects": [
+    {
+     "stat": "vehicle_hp",
+     "op": "add",
+     "value": 0.25
+    }
+   ]
+  },
+  {
+   "id": "surus_20a_yol_tutus",
+   "branch": "surus",
+   "tier": 20,
+   "slot": "A",
+   "name": "Yol Tutuş",
+   "text": "araç zor devrilir",
+   "live": true,
+   "effects": [
+    {
+     "stat": "vehicle_stable",
+     "op": "set",
+     "value": 1
+    }
+   ]
+  },
+  {
+   "id": "surus_20b_cekici",
+   "branch": "surus",
+   "tier": 20,
+   "slot": "B",
+   "name": "Çekici",
+   "text": "römork kapasitesi +%50",
+   "live": true,
+   "effects": [
+    {
+     "stat": "trailer_cap",
+     "op": "add",
+     "value": 0.5
+    }
+   ]
+  },
+  {
+   "id": "surus_30a_gazci",
+   "branch": "surus",
+   "tier": 30,
+   "slot": "A",
+   "name": "Gazcı",
+   "text": "araç hızı +%10",
+   "live": false,
+   "effects": []
+  },
+  {
+   "id": "surus_30b_ezici",
+   "branch": "surus",
+   "tier": 30,
+   "slot": "B",
+   "name": "Ezici",
+   "text": "ezme hasarı ×2",
+   "live": false,
+   "effects": []
+  },
+  {
+   "id": "surus_40a_tamir_cantasi",
+   "branch": "surus",
+   "tier": 40,
+   "slot": "A",
+   "name": "Tamir Çantası",
+   "text": "sürerken araç onarılır",
+   "live": false,
+   "effects": []
+  },
+  {
+   "id": "surus_40b_vinc_ustasi",
+   "branch": "surus",
+   "tier": 40,
+   "slot": "B",
+   "name": "Vinç Ustası",
+   "text": "vinç iki kat hızlı, XL kaldırır",
+   "live": false,
+   "effects": []
+  },
+  {
+   "id": "surus_50a_kaskador",
+   "branch": "surus",
+   "tier": 50,
+   "slot": "A",
+   "name": "Kaskadör",
+   "text": "araç havadayken Gösteri kazanır",
+   "live": false,
+   "effects": []
+  },
+  {
+   "id": "surus_50b_filo",
+   "branch": "surus",
+   "tier": 50,
+   "slot": "B",
+   "name": "Filo",
+   "text": "ikinci araç seni izler",
+   "live": false,
+   "effects": []
+  }
+ ]
+}
