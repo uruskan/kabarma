@@ -3,6 +3,41 @@
 > URETIM §7: ne doğrulandı, ne kısmen doğrulandı, ne yapılmadı. En yeni kayıt en üstte.
 > Durum: ✅ doğrulandı · ⚠️ kısmen / doğrulanmadı · ❌ yok · 👤 sahibin onayını bekliyor.
 
+## Yol haritası (canlı; ana oturum günceller)
+
+Sahibin kararı 24 (18 Kasım 2026): ana oturum M2'den M7'ye sormadan ilerler; akışlar CLAUDE.md "M2 akışları" tablosunda. Sıra URETIM §6: M2 çekirdek sandbox → M3 Kabarma ve savaş → M4 dünya ve içerik → M5 çok oyunculu → M6 cila → M7 çıkış.
+
+### Durum (18 Kasım 2026, öğleden sonra)
+
+- **M1:** main `9dd245a` sonrası. Teslimlerin çoğu main'de (Çapa elde, kemer ve Rust Üretim paneli, İnşa Planı, El Arabası iki elle, Suna'nın sesi, 75 ikon). Açık: `input_kbm`/`input_pad` testleri Taş Fırın ve Çivi adımında kırmızı (girdi); Taş Fırın ve ağaç modelleri (Tripo web, sahibin girişi); El Arabası LOD, çarpışma kabuğu ve rapor eski modeli anlatıyor, üçgen 14.747 > 14.000 (varlik); `kazma_isini_2` ~20 dB sessiz (ses); kapsül rampası pedin 0,4 m üstünde. 👤 his, 30 dk oynama, FPS, Megascans lisansı, ElevenLabs'teki 6 tasarlanmış ses.
+- **Dışa aktarma:** Windows .NET şablonları kurulu; `export/Kabarma.zip` (353 MB, `2577bd8`) ayrı klasörde açılıp `--test=camera` 73/73 geçti.
+- **M2:** başladı. Akışlar ve dalları aşağıda.
+
+### M2 akışları
+
+| Akış | Model | Durum |
+|---|---|---|
+| kayit | Opus high | başladı |
+| ortak | Opus high | başladı (sonradan katılma kayit sözleşmesi birleşince) |
+| yapi | Opus high | başladı |
+| tarim | Opus medium | başladı |
+| hayvan | Opus medium | başladı |
+| yaratik2 | Opus medium | başladı |
+| boss | Opus medium | başladı |
+| guc | Opus medium | başladı |
+| zincir | Opus medium | başladı |
+| ekonomi2 | Opus medium | başladı |
+| ilerleme | Opus medium | başladı |
+| dunya2 | Opus medium | başladı |
+| girdi (M1) | Opus medium | girdi testleri kırmızı taban çizgisi |
+| varlik (M1) | Sonnet 5.5 | El Arabası LOD, kabuk, rapor, üçgen bütçesi |
+
+### Kredi kuyruğu (sahibe tek listede sorulur)
+
+| İstek | Hat | Adet | Tahmin | Durum |
+|---|---|---|---|---|
+| Taş Fırın, ağaçlar | Tripo web | — | — | sahibin Tripo web girişi bekleniyor |
+
 ## 17 Kasım 2026, akşam: M1 eksik denetimi
 
 Dokuz ayrı denetim, M1 teslim listesinin (URETIM §6 M1) her satırını ve açık M0 denemelerini belgelere karşı kodla, veriyle ve kanıtla karşılaştırdı. Kod değişmedi. Bu kayıt o denetimin özetidir.

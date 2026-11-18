@@ -292,7 +292,7 @@ Tohumlar ilk kez yabani bitkiden ya da Yabani Bahçe'den alınır; sonra hasat t
 | Çekim | Nesneyi, hayvanı ya da arkadaşı tutar, taşır, fırlatır |
 | Toprak | Yükseltir, alçaltır, düzler, tarla sürer, yol açar |
 | Sulama | Su püskürtür (100 L depo); yangın söndürür, küçük düşmanı iter |
-| İnşa | Yerleştirir, onarır, yükseltir, söker |
+| İnşa Planı (karar 23: Çapa başlığı değil, kemerde ayrı bir eşya) | Yerleştirir, onarır, yükseltir, söker |
 
 ### 6.2 Silah başlıkları (12)
 

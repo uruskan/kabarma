@@ -11,6 +11,7 @@ Bu bölüm sahibin kurallarıdır ve yukarıdaki Genex sözleşmesiyle çelişti
 - Sıra: **önce belge, sonra veri, sonra kod** (URETIM §7). Belgeyle çelişen bir şey gerekiyorsa koda geçmeden önce dur ve raporla.
 - Kurallar motordan bağımsız `src/Kabarma.Sim` içinde ve testli; sayılar `game/data/*.json` içinde, kodda sihirli sayı yok.
 - Kilometre taşı sırası URETIM §6'dadır, ama **M1 kapısı kalktı** (sahibin kararı, 18 Kasım 2026, URETIM M1 kararı 22): oyunun tamamı hızla yapılır, sahip sonda oynar ve düzeltme ister. Efor yalnız medium/high (xhigh ve üstü yasak); test hafif, raporlar kısa.
+- **Sormadan ilerle (sahibin kararı, 18 Kasım 2026):** ana oturum taşları (M2 → M7) sahibe "devam edeyim mi" diye sormadan sırayla yapar; sahip sonda oynar. Sorulan yalnız şunlar: kredi tutarı, `git push`/yayın, sahibin dosyasını silmek. Model: kolay işler (belge, veri girişi, ikon, küçük düzeltme, test) **Sonnet 5.5**; varsayılan **Opus 5.5 medium**; yalnız en zor işler (ağ/ortak oyun, kayıt, yapı dengesi, yol bulma) **Opus 5.5 high**. Danışman (advisor) Fable kalır.
 - "Bitti" = PLAN §7.2'nin altı koşulu. Raporda her koşulu ayrı yaz: geçti / kısmen / yok / M2'de (ortak oyun yarısı ve kayıt, URETIM §6 M1 kapsamı). Sahibin yargısına kalanları (his, dinleme, 30 dk oynama, RTX 2070S FPS) asla "geçti" diye yazma; "sahibin onayını bekliyor" yaz.
 - M1 kapsamı ve kararları: `docs/URETIM.md` §6 "M1 kapsamı ayrıntısı" ve "M1 kararları" tabloları. Önce bunları oku.
 - Yer tutucu varlıklar `data/` içinde işaretlenir (URETIM §3).
@@ -60,3 +61,25 @@ Bu bölüm sahibin kurallarıdır ve yukarıdaki Genex sözleşmesiyle çelişti
 | gecehud | `Night.cs`, `cards.json`, `kabarma.json`, `Hud*.cs` (`Hud.Stamina.cs` ve `Hud.Voice.cs` hariç), `Director.Night.cs`, gün döngüsü ve takvim (ilk geceden sonra; `Events.Slept` ile normal gecenin atlanması), F1'den Küçük Kabarma'yı yeniden başlatma, Defter ve iş emirleri (`orders.json`), envanter arayüzü, pusula |
 | girdi | `Main.cs` girdi eşlemesi, oyun kolu, `Director.Input.cs`, girdi glifleri, gerçek girdi sürücüsü testi, `tools/test.ps1`, `game/scripts/tests/`, Sim kıyaslama testi, `export_presets.cfg` (Windows dışa aktarma) |
 | ses | `Sfx.cs`, ses kanalları, `data/audio.json`, müzik durum makinesi, `Hud.Voice.cs`, `pipeline/audio_qc.py`, `pipeline/eleven.py`, `pipeline/licenses.md` |
+
+## M2 akışları (18 Kasım 2026)
+
+M1 tablosu M1 akışlarınındır; M2 akışları aşağıdakilerdir. Kurallar aynı: kendi dalında çalış, başta ve sonda main'i birleştir, kredi harcama (üretim isteğini `docs/PROGRESS.md` "Kredi kuyruğu"na yazdırmak için ana oturuma bildir), yer tutucuyu işaretle, `Sim`'e giren her durum düz ve serileştirilebilir (TEKNIK §9). Ortak dosyalara yalnız satır ekle. Aynı anda çok oturum Godot koşturduğu için bot ve Godot testlerinde `-BotTimeout 900` kullan.
+
+**Kayıt sözleşmesi:** `kayit` akışı önce Godot düğümlerinde duran durumu denetler ve bir anlık görüntü sözleşmesi (bölüm arayüzü) yazar; ana oturum onu erken birleştirir. O birleşene kadar akışlar durumlarını düz `Sim` sınıflarında tutar; birleşince kendi bölümlerini satır ekleyerek bağlar. Birleşmemiş koda dayanma.
+
+| Akış | Model | Sahip olduğu dosyalar ve işler |
+|---|---|---|
+| kayit | Opus high | `src/Kabarma.Sim/Save*.cs`, `GameState.Save.cs`, `game/scripts/save/`, `data/save.json`; kayıt ve yükleme, yuvalar, otomatik kayıt (5 dk, şafak, çıkış), 5 yedek, göçler, karakter dosyası; Godot statiklerinin temizlenmesi |
+| ortak | Opus high | `src/Kabarma.Sim/Net*.cs`, `game/scripts/net/`, `data/net.json`; Steam (Steamworks.NET) ve ENet taşıması, lobi ve davet, host yetkili çoğaltma (oyuncu, yaratık, yapı, arazi farkı, envanter), sonradan katılma (kayıt anlık görüntüsüyle), sesli sohbet, şok tokadı, `--test=coop` |
+| yapi | Opus high | `game/scripts/building/` (`BuildBridge*.cs`'e yalnız satır ekler), `src/Kabarma.Sim/Structure*.cs`; taşıma dengesi, 4 malzemeye yükseltme, plan modu, Plan Defteri, `data/build.json`, yapı parçası modelleri (`pipeline/` betiği) |
+| tarim | Opus medium | `Farm*.cs`, `FarmView*.cs`, `crops.json`, `src/Kabarma.Sim/Genetics*.cs`; bitki genleri, çaprazlama, Alaca, zararlılar, T1–T2 ekinleri |
+| hayvan | Opus medium | `Pen*.cs`, `Coop.cs` (Sim), `Gidak.Pen.cs`, `src/Kabarma.Sim/Husbandry*.cs`; evcilleştirme, ihtiyaç ve mutluluk, hayvan genleri ve üreme, roller; 8 evcil türün kuralı ve ağıl davranışı |
+| yaratik2 | Opus medium | Çayır ve Koru'nun 12 yaratığının görünüşü ve vahşi davranışı (`Zipzip*.cs`, `Pofuduk*.cs`, yeni yaratık aktörleri), Çekirge, `PoseLibrary.cs`, `Swellable.cs`, `creatures.json` (satır ekleyerek). Evcil türlerin kuralı hayvan'da |
+| boss | Opus medium | Koca Pofuduk ve Boynuzlu Dede: `src/Kabarma.Sim/Ata*.cs`, `game/scripts/boss/`, `data/atalar.json`, karşılaşma alanları |
+| guc | Opus medium | `src/Kabarma.Sim/Power*.cs`, `Signal*.cs`, `game/scripts/power/`, `data/power.json`; güç ağı ve temel sinyal, T1–T2 parçaları (ICERIK §12) |
+| zincir | Opus medium | T1–T2 üretim zinciri ve araştırma, yeni istasyonlar (ICERIK §11), ambardan üretim, envanter; `Station*.cs`, `Crafting*.cs`, `src/Kabarma.Sim/Research*.cs`, `data/research.json`, `recipes.json` ve `placeables.json` (satır ekleyerek) |
+| ekonomi2 | Opus medium | borsa, katalog, çark (GDD §13, ICERIK §18): `Economy*.cs`, `economy.json`, `prices.json`, `src/Kabarma.Sim/Market*.cs`, `Catalog*.cs`, `Wheel*.cs`, yeni `Hud.Market*.cs` |
+| ilerleme | Opus medium | iş emirleri altyapısı ve ilk 12 zincir (`Orders*.cs`, `orders.json`), Ustalık (`src/Kabarma.Sim/Mastery*.cs`, `data/mastery.json`, `Hud.Mastery*.cs`) |
+| dunya2 | Opus medium | Sis Korusu biyomu, harita ve Seyir Kulesi, mancınık, T1–T2 keşif noktaları; `World*.cs`, `biomes.json`, `Hud.Map*.cs` |
+| girdi, varlik, ses | M1 oturumları | M1'deki sahiplikleri sürer (girdi testleri, varlık hattı, ses) |
