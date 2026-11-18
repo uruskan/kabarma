@@ -12,7 +12,8 @@ Sahibin kararı 24 (18 Kasım 2026): ana oturum M2'den M7'ye sormadan ilerler; a
 - **M1:** main `9dd245a` sonrası. Teslimlerin çoğu main'de (Çapa elde, kemer ve Rust Üretim paneli, İnşa Planı, El Arabası iki elle, Suna'nın sesi, 75 ikon). Açık: `input_kbm`/`input_pad` testleri Taş Fırın ve Çivi adımında kırmızı (girdi); Taş Fırın ve ağaç modelleri (Tripo web, sahibin girişi); El Arabası LOD, çarpışma kabuğu ve rapor eski modeli anlatıyor, üçgen 14.747 > 14.000 (varlik); `kazma_isini_2` ~20 dB sessiz (ses); kapsül rampası pedin 0,4 m üstünde. 👤 his, 30 dk oynama, FPS, Megascans lisansı, ElevenLabs'teki 6 tasarlanmış ses.
 - **Dışa aktarma:** Windows .NET şablonları kurulu; `export/Kabarma.zip` (353 MB, `2577bd8`) ayrı klasörde açılıp `--test=camera` 73/73 geçti.
 - **M2:** akışların çoğu main'de (bcb5e4a). Kalan: kayit (12 commit dalda), hayvan, tarim; bot/input testleri `hasat` adımında kırmızı (tarim düzeltiyor). Kabul: 4 bot istemciyle senkron (`--test=coop` geçti), kayıt-yükleme farkı 0 (kayit), SimRunner T3 hedefi (ölçülmedi), 👤 sahip ve arkadaşı Steam'de 2 saat.
-- **M3:** başladı (18 Kasım akşam); akışlar CLAUDE.md "M3 akışları", boştaki M2 oturumları yeniden kullanılıyor.
+- **M3:** main'de (b64d3c4): savas, kabarma3, kartlar, savunma, gucler, holding, yolbulma, cip, oyuk, savas-hayvan. Kırmızı: `input_kbm`/`input_pad` (inceleniyor), `--test=world` (M4 biyom ilk iş). KS 10'da 200 düşman ~33 ms: Optimizasyon listesinde.
+- **M4:** başladı (18 Kasım gece); akışlar CLAUDE.md "M4 akışları", aynı anda en çok 3, kimlikler `docs/kimlikler-m4.md`.
 
 ### M2 akışları
 
@@ -37,7 +38,16 @@ Sahibin kararı 24 (18 Kasım 2026): ana oturum M2'den M7'ye sormadan ilerler; a
 
 | İstek | Hat | Adet | Tahmin | Durum |
 |---|---|---|---|---|
-| Taş Fırın, ağaçlar | Tripo web | — | — | sahibin Tripo web girişi bekleniyor |
+| Ağaçlar (meşe, huş, turuncu, koru, ladin, çalı) | Tripo web | 7 iş + 1 yeniden doku | 405 | üretildi (18 Kasım). Ham dosyalar `.tools/tripo_web/agaclar/`; bitki oturumu hattan geçirip bağlıyor |
+| Dalga 1: dev mantar, kütük, demir, reçine, güherçile, yuva, enkaz, oyuk ağzı | Tripo web | 8 iş + 1 yeniden doku | 460 | üretildi (18 Kasım). Ham dosyalar `.tools/tripo_web/dalga1/`, istemler `istemler.md`; bitki bağlıyor |
+| Homur (yaratık denemesi) | Tripo web | 1 iş + iskelet | 55 + ? | model üretildi, iskelet ve yaratik2 doğrulaması bekliyor; öteki 6 tür ve Atalar bundan sonra |
+| Taş Fırın, kuleler, tuzaklar, istasyonlar | Tripo web | — | — | sırada. Hareketli parçası olanlar (kule başı, kapak, mancınık kolu) önce parçalama planı ister |
+
+### Optimizasyon listesi (sahibin kararı: en sona; ölçüm ve iyileştirme şimdi yapılmaz)
+
+| Bulgu | Nerede | Not |
+|---|---|---|
+| KS 10'da 200 düşmanla kare ~33 ms (bütçe üstü) | gece, sürü | Şüphe (ölçülmedi): şişme shader'ı parametreleri her karede her yaratığın kendi materyaline yazılıyor; çizimler toplanamıyor |
 
 ## 17 Kasım 2026, akşam: M1 eksik denetimi
 

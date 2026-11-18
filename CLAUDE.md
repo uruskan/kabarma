@@ -50,6 +50,11 @@ Bu bölüm sahibin kurallarıdır ve yukarıdaki Genex sözleşmesiyle çelişti
   - İş bitince kendi geçicilerini sil: TEMP'te açtığın git worktree'leri (`git worktree remove`), büyük log ve ham çıktılar, `__pycache__`.
   - Kanıt `progress/` altında, ham model ve büyük dosya `.tools/` altında kalır.
   - Akış bitince her şey commit'lenmiş ve main'e alınmış olsun ki oturum arşivlenip worktree'si silinebilsin.
+- **Optimizasyon en sona (sahibin kararı, 18 Kasım 2026):**
+  - Bütçe ölçümü, profil çıkarma, stres ya da FPS koşusu ve optimizasyon şimdi yapılmaz.
+  - Bir şey bütçeyi aşıyorsa `docs/PROGRESS.md` "Optimizasyon listesi"ne tek satır yaz ve özellik işine devam et.
+  - Stres testleri (KS 30 gibi) olağan koşuya girmez.
+  - Kararlar sektörün olağan yoluna ve mantığa göre verilir.
 - **Otomatik koşular sessiz (sahibin kararı, 18 Kasım 2026):** `--test`, `--bot`, `--shots`, `--quit_after` gibi her otomatik koşuda `Main.cs` ana kanalı susturur (sahip çalışırken müzik dinliyor). Sesi gerçekten duymak gereken bir koşu `--ses` ekler. Pencereli koşularda ayrıca `--audio-driver Dummy` kullanılabilir.
 - **Ayak işi Sonnet'e (sahibin kararı, 18 Kasım 2026):** test koşuları (`tools/test.ps1`, Godot testleri), ekran görüntüsü koşuları, log taraması ve `tools/integrate.ps1` koşusu Opus oturumunun kendisinde değil, bir **Sonnet alt ajanında** yapılır (Agent aracı, `model: "sonnet"`). Alt ajana komutu, worktree yolunu ve neye bakacağını ver; o koşar, logu okur ve kısa özet döner (geçti/kaldı, ilk hata satırları, ekran görüntüsü yolları). Uzun koşuyu alt ajan arka planda koşturur. Kod düzeltmesi Opus'ta kalır.
 - **Botu dürüst tut:** kaynak oyun yolundan gelir; bot için eşya verme, adım silme ya da atlama yok. Gevşettiğin her bot adımını raporda yaz. Aynı anda çok oturum Godot koşturduğu için bot zaman aşımı olabilir: hata ayıklamadan önce `-BotTimeout` büyütüp yeniden koş.
@@ -120,3 +125,29 @@ M3 (URETIM §6): tam Kabarma ve savaş, dünya hâlâ Altın Çayır + Sis Korus
 
 **Kabarma bağlanma notu (kabarma3):** Başlatma `State.StartKabarma(State.KabarmaSpecFor(KabarmaKind.Full|Small|Drill, ks, oyuncu, x, z))` (Çan/takvim, Maya Feneri, Tatbikat); plan `Waves.Compose` (`src/Kabarma.Sim/Wave.cs`), gece `KabarmaNight` (`Plan`, `TakeDue`, `Kazan`, `DamageKazan`, `ReportGosteri(GosteriEvent)`, `CreditKill`, olaylar `DorukStarted`/`Ended(KabarmaEnd)`), kalıcı `State.Kabarma` (kayıt bölümü `kabarma`).
 Gece düşmanını bulmak ve vurmak için yalnız `Kabarans.Near(nokta, yarıçap)` ve `Kabarans.Hit(k, hasar, kaynak, itme, saldıran, çevre, gece)` (`game/scripts/night/Kabarans.cs`, aktör `IKabaran`); vuruş geçici, savaş sözleşmesi gelince yalnız `Kabarans.Hit` değişir. Azman Doruk'ta `WaveSlot.Azman` yerinden doğar (savaş).
+
+## M4 akışları (18 Kasım 2026)
+
+M4 (URETIM §6): dört yeni biyom, T3–T6 ve kalan içerik. Kurallar M3 ile aynı: kendi dal, başta ve sonda `tools/integrate.ps1`, ayak işi Sonnet alt ajanında, otomatik koşular sessiz, kredi yok, Sim düz ve kayda/ağa bağlı, optimizasyon yok. Ek kurallar:
+
+- **Aynı anda en çok 3 akış** (makine yükü). Bir akış main'e alınıp arşivlenince ana oturum sıradakini başlatır; sıra tablodaki "Sıra" sütunu. Sonraki akışa dayanma; gerekeni kendi dosyanda küçük, işaretli bir geçiciyle çöz.
+- **Ortak kimlikler: `docs/kimlikler-m4.md`.** Biyom, kaynak, yaratık, ekin, istasyon, araç, yemek ve öteki içerik kimlikleri oradan alınır. Yeni kimlik satır eklenerek gelir; var olan kimlik yeniden adlandırılmaz. Listede olmayan bir şey gerekirse satırı ekle ve raporda say.
+- **Modeller:** yeni yaratık, Ata, araç, istasyon ve kozmetik modelleri önce yer tutucudur (`data/assets.json`'da işaretli, URETIM §3). Kredi isteyen üretimi listele; ana oturum Tripo web'de üretir.
+- **Adetler:** içerik adetleri PLAN §7.1 ile birebir olmalı. Akış kendi bölümünü bitirince `DataCheckTests` sayısını günceller.
+
+| Akış | Sıra | Model | Sahip olduğu dosyalar ve işler |
+|---|---|---|---|
+| biyom | 1 | Opus medium | **Önce** kırmızı `--test=world`'ü yeşile çevir. ICERIK §1 Işıl Sazlık, Kızıl Kanyon, Ayaz Yaylası, Göbek: arazi, ışık, iklim, giriş donanımı. §2 T3–T6 kaynak düğümleri ve toplama verimi. §17 Zengin Yatak ve dört biyomun keşif noktaları. Her biyomun ekran görüntüsü seti. Dosyalar: `World*.cs`, `biomes.json`, `Hud.Map*.cs`, biyom shader'ları |
+| zincir4 | 1 | Opus medium | ICERIK §11 T3–T6 istasyon ve makineleri (Aşı Tezgâhı tarim4'te), Kabartma Odası, §2 T3–T6 işleme tarifleri, T3–T6 araştırması. `RecipeGraph`'te başlangıçtan Kabartma Odası'na yol olmalı. Dosyalar: `Station*.cs`, `Crafting*.cs`, `Research*.cs`, `recipes.json`, `placeables.json`, `research.json` |
+| yaratik4 (yaratik2) | 1 | Opus medium | ICERIK §3 yeni biyomların 15 yaratığı (Sazlık 5, Kanyon 5, Ayaz 4, Göbek 1): görünüş, vahşi davranış, Kabaran hâli. Dosyalar: `game/scripts/actors/` (yeni aktörler), `CreatureRules.cs`, `PoseLibrary.cs`, `creatures.json` (satır ekleyerek) |
+| ata4 | 2 | Opus medium | ICERIK §4: Kurbağa Ağa, Çıyan Paşa, Buz Tosunu, Ana Maya, Kabarık Atalar, dört Azman, üç Oyuk koruyucusu ve karşılaşma alanları. Dosyalar: `Ata*.cs`, `game/scripts/boss/`, `atalar.json`, `Azman*.cs`, `azman.json`, `Oyuk*.cs`, `oyuk.json` |
+| tarim4 | 3 | Opus medium | ICERIK §5 13 ekin ve sera, Aşı Tezgâhı (gen aktarma), §15 kalan 18 yemek. Dosyalar: `Farm*.cs`, `FarmView*.cs`, `crops.json`, `Genetics*.cs`, `foods.json` |
+| tasima | 4 | Opus medium | ICERIK §12 kalan güç, sinyal ve taşıma parçaları: otomasyon, drone, teleferik. Dosyalar: `Power*.cs`, `Signal*.cs`, `game/scripts/power/`, `power.json`, yeni `Drone*.cs` ve `Teleferik*.cs` |
+| kusam | 5 | Opus medium | ICERIK §6 yedi silah başlığı, §7 yedi güç ve iki ulti, §16 dört takım, 12 modül, Çapa Mk.III–VI. Dosyalar: `heads.json`, `weapons.json`, `abilities.json`, `Ability*.cs`, yeni `Armor*.cs` |
+| kale | 6 | Opus medium | ICERIK §13 beş kule ve dört tuzak; §10 Çelik Sac, Cam, Mayalı Beton ve kalan yerleştirilebilirler. Dosyalar: `Tower*.cs`, `Trap*.cs`, `game/scripts/defense/`, `defense.json`, `build.json`, `game/scripts/building/`, `Structure*.cs` |
+| arac | 7 | Opus medium | ICERIK §14 Traktör, Kamyon, Biçerdöver, Hava Yastıklı, Zeplin ve 10 eklenti. Dosyalar: `Vehicle*.cs`, `Director.Vehicles.cs`, `vehicles.json` |
+| holding4 | 8 | Opus medium | ICERIK §3.7 ve §4.4: ikinci ve üçüncü kamp, Genel Merkez ve Müdür. Dosyalar: `Holding*.cs`, `game/scripts/holding/`, `holding.json` |
+| gece4 | 9 | Opus medium | GDD §14, ICERIK §8.4: KS 11 ve üstü, 12 tüzük maddesi, Yeni Ay. Dosyalar: `Night*.cs`, `Wave*.cs`, `kabarma.json`, yeni `Tuzuk*.cs` |
+| dolap | 10 | Opus medium | ICERIK §9 kalan 11 üye tipi (pasif, başlangıç kartı, açılma yolu) ve 72 kozmetik (kask, vizör yüzü, tulum deseni, çanta süsü, Çapa kaplaması, jest). Dosyalar: yeni `Member*.cs`, `Cosmetic*.cs`, `members.json`, `cosmetics.json` |
+| ilerleme4 | 11 | Sonnet 5.5 | ICERIK §18 kalan 24 iş emri zinciri, başarımlar, katalog ve çark tabloları. Dosyalar: `Orders*.cs`, `orders.json`, `achievements.json`, `catalog.json`, `wheel.json` |
+| kabul | 12 | Opus medium | M4 kabulü: `DataCheckTests` adetleri PLAN §7.1 ile birebir; hızlandırılmış bot başlangıçtan Ana Maya'ya; biyom ekran görüntüsü setleri; kalan kırmızı testler. Dosyalar: yeni `Bot.AnaMaya*.cs` |

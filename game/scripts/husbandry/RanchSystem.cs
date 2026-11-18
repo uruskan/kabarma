@@ -304,9 +304,11 @@ public partial class RanchSystem : Node
         float range = Ranch.Rules.Def.PetRange + 0.6f;
         var bag = _d.State.Backpack;
         float D(Vector3 q) => new Vector2(q.X - p.X, q.Z - p.Z).Length();
+        if (Riding) { act = Dismount; dist = 0f; return "Binekten in"; } // M3: binekteyken E iner (Interact)
         foreach (var ag in _agents)
         {
             if (!IsInstanceValid(ag) || !IsInstanceValid(ag.Host)) continue;
+            if (ag.Animal.Hidden || ag.Animal.Rider != 0) continue; // M3: Kabarma'da saklanan ya da binilen hayvan E almaz
             if (ag.Passive && (!ag.Animal.Registered || !TutorialDone)) continue; // ilk gunun E sirasi (kapi, Folluk) bozulmasin
             float d = D(ag.Host.GlobalPosition) - ag.Species.Size * 0.4f;
             if (d > range || d >= dist) continue;
