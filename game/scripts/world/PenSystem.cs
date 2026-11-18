@@ -142,9 +142,11 @@ public partial class PenSystem : Node
             foreach (var k in _gates.Keys.Where(k => !IsInstanceValid(k) || k.IsQueuedForDeletion()).ToList()) { _gates.Remove(k); _dirty = true; }
             if (_dirty) Rebuild();
             // Agil halkasina ait kapilar once: halkanin disinda kalmis basi bos kapi (kaymis yerlestirme) ilk sayilmaz.
-            return _gates.Values.OrderBy(g => _wallOf.TryGetValue(g.Piece, out var w) && Pens.Any(p => p.Walls.Contains(w.Id)) ? 0 : 1).ToList();
+            return _gates.Values.OrderBy(g => InPen(g) ? 0 : 1).ToList();
         }
     }
+
+    bool InPen(Gate g) => _wallOf.TryGetValue(g.Piece, out var w) && Pens.Any(p => p.Walls.Contains(w.Id));
 
     /// <summary>
     /// Duvarlarin arasindan yol: dogrudan gidilebiliyorsa hedefin kendisi, degilse agil koselerinin disindan (ve icinden)
@@ -211,7 +213,7 @@ public partial class PenSystem : Node
     void ToggleGateGroup(Gate g)
     {
         bool open = !g.Open;
-        foreach (var x in Gates.Where(x => x.Leaves.Count > 0 && x.Piece.GlobalPosition.DistanceTo(g.Piece.GlobalPosition) < 2f).ToList())
+        foreach (var x in Gates.Where(x => x.Leaves.Count > 0 && x.Piece.GlobalPosition.DistanceTo(g.Piece.GlobalPosition) < 2.5f).ToList())
             SetGate(x, open);
         SetGate(g, open);
     }
@@ -355,7 +357,8 @@ public partial class PenSystem : Node
         }
         foreach (var g in _gates.Values.Where(g => g.Leaves.Count > 0 && IsInstanceValid(g.Piece)))
         {
-            float d = D(g.Piece.GlobalPosition);
+            // Agil halkasindaki kapi, halkanin disinda kalmis basi bos kapidan once (1 m pay): kosede kaymis kapi E'yi calmaz.
+            float d = D(g.Piece.GlobalPosition) + (InPen(g) ? 0f : 1f);
             if (d >= bestD) continue;
             bestD = d; var gg = g; act = () => ToggleGateGroup(gg); lab = g.Open ? "Kapıyı kapat" : "Kapıyı aç";
         }
