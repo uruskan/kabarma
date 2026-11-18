@@ -1,0 +1,121 @@
+﻿Godot Engine v4.7.2.stable.mono.official.ed1daf0bf - https://godotengine.org
+Vulkan 1.4.357 - Forward+ - Using Device #0: NVIDIA - NVIDIA GeForce RTX 2070 SUPER
+
+TEST oyuk
+MUSIC ready day=yes layers=3/3 bar=2.00s
+WORLD decor agac box=98 outside=285
+WORLD decor turuncu_agac box=28 outside=84
+WORLD decor cali box=153 outside=450
+WORLD decor ot box=226 outside=660
+WORLD decor bugday box=74 outside=210
+WORLD decor cicek box=240 outside=720
+WORLD decor egrelti box=156 outside=450
+WORLD decor kaya_duz box=36 outside=108
+WORLD decor kaya_dik box=17 outside=42
+WORLD pois 22: seyir_kulesi_altin_cayir_0@105,40 ata_tasi_altin_cayir_0@64,36 yabani_bahce_altin_cayir_0@-145,2 yuva_altin_cayir_0@143,192 yuva_altin_cayir_1@-231,-56 enkaz_altin_cayir_0@-69,179 enkaz_altin_cayir_1@84,195 enkaz_altin_cayir_2@-139,-84 oyuk_altin_cayir_0@-202,-106 oyuk_altin_cayir_1@-45,-226 oyuk_altin_cayir_2@165,215 seyir_kulesi_sis_korusu_0@-46,287 ata_tasi_sis_korusu_0@-212,219 yabani_bahce_sis_korusu_0@-53,256 yuva_sis_korusu_0@-200,189 yuva_sis_korusu_1@-88,230 enkaz_sis_korusu_0@-257,293 enkaz_sis_korusu_1@-151,238 enkaz_sis_korusu_2@-235,110 oyuk_sis_korusu_0@-172,215 oyuk_sis_korusu_1@-280,237 oyuk_sis_korusu_2@-276,130
+PLAYER model anims: carry,cheer,crouch_walk,eat,getup_back_pose,getup_front_pose,hurt,idle,jump,jump_air,jump_land,jump_start,kneel,knockdown,plant,push,run,shock_fall,sleep,sprint,walk,walk_casual,wave
+AUDIO sounds=60 playable=60 variant_files=180 m0_only=0 silent=0 placeholder=0
+AUDIO ok 60/60
+POFUDUK anims: pose/attack1,pose/attack2,pose/eat,pose/hit,pose/idle,pose/rest,pose/run,pose/walk,preset_quadruped_walk
+BUILD kit pieces=28
+ATALAR arenas=koca_pofuduk@64,36/r18:ata_tasi_altin_cayir_0,boynuzlu_dede@-212,219/r20:ata_tasi_sis_korusu_0
+OYUK rooms 6: oyuk_altin_cayir_0(kostebek_bey t0)@1000 oyuk_altin_cayir_1(kostebek_bey t1)@1120 oyuk_altin_cayir_2(kostebek_bey t2)@1240 oyuk_sis_korusu_0(yarasa_yumagi t0)@1360 oyuk_sis_korusu_1(yarasa_yumagi t1)@1480 oyuk_sis_korusu_2(yarasa_yumagi t2)@1600
+BOOT Kabarma MVP
+TARIM wild=22
+HELD capa
+MUSIC Silence -> Day
+ZIPZIP herd size=3 at=-18,-37 herds=1
+ZIPZIP herd size=2 at=-4,-36 herds=2
+ZIPZIP herd size=3 at=-15,17 herds=3
+WILDLIFE spawn homur herd=1 at=-15,9
+WILDLIFE spawn homur herd=1 at=-19,13
+WILDLIFE spawn dalli herd=1 at=35,15
+WILDLIFE spawn dalli herd=1 at=39,10
+WILDLIFE spawn vicik herd=1 at=-11,-35
+WILDLIFE spawn vicik herd=1 at=-8,-39
+WILDLIFE spawn bozuk herd=1 at=45,-39
+WILDLIFE spawn vizviz swarm at=27,21
+WILDLIFE spawn hu herd=1 at=-25,-17
+RANCH start animals=11 agents=11
+OYUK ok rooms 6
+OYUK ok 3 Kostebek + 3 Yarasa odasi
+OYUK ok HeightAt oda icinde oda tabani
+OYUK ok HeightAt usste arazi
+EXPLORE found oyuk_altin_cayir_0 at=-202,-106
+OYUK ok agizda 'Gir' istemi
+OYUK enter oyuk_altin_cayir_0 guardian=kostebek_bey tier=0 cleared=False
+OYUK ok agizda E iceri alir
+OYUK ok iceride
+OYUK ok iceride gunes ve sis yok (gunes 0.00, once 2.90)
+OYUK ok oyuncu oda tabaninda y=-500.0
+OYUK ok kostebek dovusu basladi
+OYUK ok sakli kostebek hedef degil
+SUNA line=giris_1 voice=yes
+OYUK ok kostebek cikti
+HATCH intro done
+OYUK shot C:/Users/uruskan/Documents/GitHub/kabarma/.claude/worktrees/m2-dunya-9fd4f9/progress/m3/oyuk/shots/kostebek_ustte.png
+OYUK flood hole=2 state=Stunned
+OYUK ok Sulama deligi islatinca sersem (durum Stunned)
+OYUK ok sersem kostebek zayif hedef
+OYUK ok sersem hasar carpani (20.0)
+OYUK ok Cekim kayayi tutar (Plug0)
+OYUK plug hole=0 state=Stunned
+OYUK ok Cekim kayayi tutar (Plug1)
+OYUK plug hole=1 state=Stunned
+OYUK ok Cekim kayayi tutar (Plug2)
+OYUK plug hole=2 state=Stunned
+OYUK ok Cekim kayayi tutar (Plug3)
+OYUK plug hole=3 state=Stunned
+OYUK ok Cekim kayayi tutar (Plug4)
+OYUK plug hole=4 state=Trapped
+OYUK ok delikler tikandi 5/5
+OYUK ok butun delikler tikali: sikisti (Trapped)
+OYUK shot C:/Users/uruskan/Documents/GitHub/kabarma/.claude/worktrees/m2-dunya-9fd4f9/progress/m3/oyuk/shots/kostebek_sikisti.png
+SUNA line=giris_2 voice=yes
+OYUK cleared oyuk_altin_cayir_0 guardian=kostebek_bey tier=0
+OYUK ok Kostebek Bey yenildi, Oyuk temiz
+OYUK ok Events.OyukCleared 1
+OYUK chest oyuk_altin_cayir_0#0 copper_ingot=3,scrap=4,nadir_cip=1
+OYUK ok sandik 0 acildi
+OYUK chest oyuk_altin_cayir_0#1 copper_ingot=3,scrap=4
+OYUK ok sandik 1 acildi
+OYUK ok Bakir Kulce odulu 6
+OYUK ok ikinci acilis bos
+OYUK exit oyuk_altin_cayir_0
+OYUK ok kapidan cikis
+OYUK ok disarida gunes geri geldi
+OYUK ok agzin yanina cikti
+EXPLORE found ata_tasi_sis_korusu_0 at=-212,219
+EXPLORE found enkaz_sis_korusu_1 at=-151,238
+EXPLORE found oyuk_sis_korusu_0 at=-172,215
+OYUK shot C:/Users/uruskan/Documents/GitHub/kabarma/.claude/worktrees/m2-dunya-9fd4f9/progress/m3/oyuk/shots/koru_oyuk_agzi.png
+OYUK enter oyuk_sis_korusu_0 guardian=yarasa_yumagi tier=0 cleared=False
+OYUK ok Koru Oyuguna giris
+OYUK ok yumak toplu
+OYUK ok toplu yumak hedef degil
+OYUK shot C:/Users/uruskan/Documents/GitHub/kabarma/.claude/worktrees/m2-dunya-9fd4f9/progress/m3/oyuk/shots/yarasa_toplu.png
+OYUK ok karanlikta dalis oyuncuya vurdu
+OYUK ok kandil istemi
+OYUK lamp lit Lamp0
+OYUK ok kandil yandi
+OYUK ok isikla yumak dagildi
+OYUK shot C:/Users/uruskan/Documents/GitHub/kabarma/.claude/worktrees/m2-dunya-9fd4f9/progress/m3/oyuk/shots/yarasa_dagildi.png
+OYUK cleared oyuk_sis_korusu_0 guardian=yarasa_yumagi tier=0
+OYUK ok Yarasa Yumagi yenildi, Oyuk temiz
+OYUK exit oyuk_sis_korusu_0
+OYUK enter oyuk_sis_korusu_0 guardian=yarasa_yumagi tier=0 cleared=True
+OYUK ok temiz Oyukta dovus yok
+OYUK exit oyuk_sis_korusu_0
+OYUK ok temiz Oyuk 2
+OYUK RESULT ok checks=passed hurt=6 rooms=6
+Godot_v4.7.2-stable_mono_win64_console.exe : WARNING: 4 ObjectDB instances were leaked at exit (run with `--verbose` 
+for details).
+At line:4 char:1
++ & $G --audio-driver Dummy --path game -- --test=oyuk --oyuk_shots=C:\ ...
++ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : NotSpecified: (WARNING: 4 Obje...` for details).:String) [], RemoteException
+    + FullyQualifiedErrorId : NativeCommandError
+ 
+   at: cleanup (core/object/object.cpp:2536)
+ERROR: 1 resources still in use at exit (run with --verbose for details).
+   at: clear (core/io/resource.cpp:822)

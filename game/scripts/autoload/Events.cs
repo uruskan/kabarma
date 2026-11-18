@@ -88,10 +88,12 @@ public static class Events
     public static event Action<string> AnimalBorn;
     /// <summary>Hayvan kacti (tur kimligi). Yayan: RanchSystem.</summary>
     public static event Action<string> AnimalEscaped;
+    public static event Action<string> OyukCleared; // oyuk (M3): temizlenen Oyuk kimligi (Magaraci ustaligi)
     public static void RaiseAnimalTamed(string species) => AnimalTamed?.Invoke(species);
     public static void RaiseAnimalCollected(string item, int n) => AnimalCollected?.Invoke(item, n);
     public static void RaiseAnimalBorn(string species) => AnimalBorn?.Invoke(species);
     public static void RaiseAnimalEscaped(string species) => AnimalEscaped?.Invoke(species);
+    public static void RaiseOyukCleared(string oyukId) => OyukCleared?.Invoke(oyukId);
     public static void RaisePieceUpgraded(string id, string material) => PieceUpgraded?.Invoke(id, material);
     public static void RaisePlanCompleted(string id) => PlanCompleted?.Invoke(id);
 
@@ -111,6 +113,13 @@ public static class Events
     public static void RaiseSlept() => Slept?.Invoke();
     public static void RaisePaid(int credits, string what) => Paid?.Invoke(credits, what);
     public static void RaiseDeconstructed(string id) => Deconstructed?.Invoke(id);
+    /// <summary>Bereket Holding (holding, M3): kervan pususu (kamp), oyuncu baskini bir binayi yikti (kamp, bina), cekirdek dustu (kamp). Yayan: HoldingWorld.</summary>
+    public static event Action<int> HoldingAmbushed;
+    public static event Action<int, string> HoldingRaided;
+    public static event Action<int> HoldingCoreDestroyed;
+    public static void RaiseHoldingAmbushed(int camp) => HoldingAmbushed?.Invoke(camp);
+    public static void RaiseHoldingRaided(int camp, string structure) => HoldingRaided?.Invoke(camp, structure);
+    public static void RaiseHoldingCoreDestroyed(int camp) => HoldingCoreDestroyed?.Invoke(camp);
 
     /// <summary>Butun aboneleri birakir.</summary>
     public static void Clear()
@@ -124,9 +133,11 @@ public static class Events
         Deconstructed = null;
         PenChanged = null; AnimalPenned = null; Laid = null; SunaSaid = null;
         AnimalTamed = null; AnimalCollected = null; AnimalBorn = null; AnimalEscaped = null;
+        OyukCleared = null;
         PieceUpgraded = null; PlanCompleted = null;
         CatalogBought = null; Delivered = null; WheelSpun = null; // ekonomi2
         AtaDefeated = null; AtaPhase = null;
         AzmanDefeated = null; // savas
+        HoldingAmbushed = null; HoldingRaided = null; HoldingCoreDestroyed = null; // holding
     }
 }
