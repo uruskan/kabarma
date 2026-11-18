@@ -63,6 +63,10 @@ Sahibin varlık kitaplığından (`F:\Assets`, yalnız okundu) kopyalanıp `pipe
 | Ata Taşı ve sunak, arena sütunları, yardımcılar (Yün Yumağı = ölçekli Pofuduk; Koru Bekçisi = koddan fındık), boynuz parçası, yün yumağı, kök halkası (`game/scripts/boss/`) | Koddan (`MeshKit`, Godot ilkel şekilleri) | Projenin kendi eseri | Ata Taşı ICERIK §17 keşif noktası modeli olarak yeniden üretilebilir |
 | Ata sesleri | `audio.json`'daki mevcut sesler (sisme, kabarik_gumleme, firlatma, kaya_kemirme, parca_darbe, kabarmis_patlama, gokyuzu_dalga ...) düşük perdeyle | Yukarıdaki ElevenLabs satırı | Üretim isteği: her Ata'ya kendi teması (SANAT-SES §5 "Atalar 6") ve 6–8 kendi sesi |
 
+## Zincir istasyonları (M2, yer tutucu)
+
+Araştırma Masası, Kömür Ocağı, Demirci Ocağı, Bıçkı, Değirmen, Dokuma Tezgâhı, Kasap Tezgâhı, Kuluçka, Araç Atölyesi, Oyma İskelesi: **koddan** (`game/scripts/world/Station.Visuals.cs`, `MeshKit` yastık kutu ve silindir). Üçüncü taraf içerik yok, kredi harcanmadı. Gerçek model gelince `placeables.json` `model` alanı yer tutucunun yerini alır.
+
 ## tarim (M2): ekin ve Korkuluk yer tutuculari
 
 | Varlik | Kaynak | Lisans | Not |

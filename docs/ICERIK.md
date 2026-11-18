@@ -656,7 +656,7 @@ Kimlik sütunu `game/data/recipes.json` ve `placeables.json` içindeki kimliktir
 
 Araştırma ağacı (T2, her biri 25 Veri): Bıçkı ve Dokuma Tezgâhı köktür; Değirmen, Kasap Tezgâhı, Kuluçka ve Oyma İskelesi Bıçkı'yı; Araç Atölyesi Bıçkı ve Değirmen'i; Filtre Maskesi Dokuma Tezgâhı'nı ister.
 
-Yeni ham kaynak kimlikleri (toplama yerini dunya2 ve hayvan akışları kurar): Demir Cevheri `iron_ore`, Sert Odun `hardwood`, Reçine `resin`, Güherçile `saltpeter`, Hurda `scrap`, Yün `wool`, Deri `leather`. Yığın: Odun Kömürü, Kerpiç, Bakır Tel, Demir Külçe, Kereste, Kumaş ve Un ara üründür (20).
+Yeni ham kaynak kimlikleri (toplama yerini dunya2 ve hayvan akışları kurar): Demir Cevheri `iron_ore`, Sert Odun `hard_wood`, Reçine `resin`, Güherçile `saltpeter`, Hurda `scrap`, Yün `yun`, Deri `deri`. Yığın: Odun Kömürü, Kerpiç, Bakır Tel, Demir Külçe, Kereste, Kumaş ve Un ara üründür (20).
 
 ## 12. Güç, sinyal ve taşıma parçaları (43)
 

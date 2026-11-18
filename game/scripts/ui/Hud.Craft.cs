@@ -59,6 +59,8 @@ public partial class Hud
         var all = _d.Data.Tool.Recipes;
         if (_craftStation != null) return all.Where(r => r.Station == _craftStation).ToList();
         IEnumerable<RecipeDef> q = all.Where(r => r.Station != "paketleme"); // kasa Paketleme'nin kendi menusunden
+        if (_craftCategory == ResearchCategory) q = q.Where(ResearchRow); // zincir: arastirilabilir satirlar (Hud.Craft.Research.cs)
+        else
         if (_craftCategory != "all") q = q.Where(r => r.Category == _craftCategory);
         if (_craftSearch.Length > 0)
         {
@@ -92,7 +94,7 @@ public partial class Hud
     {
         var rows = CraftRows();
         if (_craftSel < 0 || _craftSel >= rows.Count) return;
-        int max = Math.Max(1, Math.Min(_d.Data.Tool.CraftCountMax, CraftRules.Affordable(rows[_craftSel], _d.State.Backpack, _d.Data.Tool.CraftCountMax)));
+        int max = Math.Max(1, Math.Min(_d.Data.Tool.CraftCountMax, CraftRules.Affordable(rows[_craftSel], _d.StoreFor(rows[_craftSel]), _d.Data.Tool.CraftCountMax)));
         _craftCount = Mathf.Clamp(_craftCount + d, 1, max);
         Sfx.Play("place", null, -24f);
     }
@@ -132,8 +134,9 @@ public partial class Hud
         {
             Section(ItemNames.Of(_craftStation), CLeftX, CTop);
             var st = _d.NearStation(_craftStation);
-            Paragraph(st != null ? "İstasyonun tarifleri. Bu istasyonun yanında üretilir; malzeme çantadan, yakıt varsa çantadan." : "İstasyondan uzaklaştın: tarifler yanına dönünce üretilir.", CLeftX, CTop + 40, CLeftW, 15, T.A(T.Ink, 0.8f), 4);
+            Paragraph(st != null ? "İstasyonun tarifleri. Bu istasyonun yanında üretilir; malzeme ve yakıt önce çantadan, eksiği tapudaki Sandıklardan." : "İstasyondan uzaklaştın: tarifler yanına dönünce üretilir.", CLeftX, CTop + 40, CLeftW, 15, T.A(T.Ink, 0.8f), 4);
             Button("BÜTÜN TARİFLER", CLeftX, CTop + 120, CLeftW, 40, 18);
+            PaintStationExtras(); // zincir: Masa, guc, kuyruk (Hud.Craft.Research.cs)
         }
         else
         {
@@ -146,9 +149,10 @@ public partial class Hud
             var cats = _d.Data.Tool.CraftCategories;
             for (int i = 0; i < cats.Count; i++)
             {
-                int n = cats[i].Id == "all" ? _d.Data.Tool.Recipes.Count(r => r.Station != "paketleme") : _d.Data.Tool.Recipes.Count(r => r.Category == cats[i].Id && r.Station != "paketleme");
+                int n = cats[i].Id == ResearchCategory ? _d.Data.Tool.Recipes.Count(ResearchRow) : cats[i].Id == "all" ? _d.Data.Tool.Recipes.Count(r => r.Station != "paketleme") : _d.Data.Tool.Recipes.Count(r => r.Category == cats[i].Id && r.Station != "paketleme");
                 Button($"{T.Upper(cats[i].Name)}  ({n})", CLeftX, CTop + 96 + i * 45, CLeftW, 40, 17, null, true, true, _craftCategory == cats[i].Id);
             }
+            PaintVeri(CTop + 96 + cats.Count * 45 + 8); // zincir: Veri ve Ocak basamagi
         }
 
         // Orta: tarifler
@@ -168,7 +172,7 @@ public partial class Hud
         bool sel = i == _craftSel;
         bool unlocked = Unlocked(r);
         string needSt = CraftRules.NeedStation(r, near);
-        var miss = CraftRules.Missing(r, 1, _d.State.Backpack);
+        var miss = CraftRules.Missing(r, 1, _d.StoreFor(r)); // zincir: istasyon tarifinde canta + tapudaki Sandiklar
         bool ok = unlocked && needSt == null && miss.Count == 0;
         _p.DrawRect(area, sel ? T.Selected : Under(area) ? T.PanelHover : T.Panel);
         if (sel) Frame(CMidX, y, CMidW, CRowH, T.SelectedEdge, 1.5f);
@@ -181,12 +185,12 @@ public partial class Hud
         var bad = sel ? T.Ink : T.Red;
         var good = sel ? T.A(T.Ink, 0.55f) : T.A(T.Ink, 0.8f);
         float cx = tx;
-        if (!unlocked) Text($"Kilitli: ilk {ItemNames.Of(r.UnlockOn)} ile açılır", cx, y + 33, 15, T.Muted);
+        if (!unlocked) Text(Fit(_d.LockText(r), tw, 15), cx, y + 33, 15, _d.ResearchLocked(r) ? T.A(T.Ink, 0.85f) : T.Muted); // zincir: arastirma / Ocak basamagi / kesif
         else
         {
             foreach (var (item, n) in r.In)
             {
-                int have = _d.State.Backpack.Count(item);
+                int have = _d.StoreFor(r).Count(item);
                 string part = $"{n} {ItemNames.Of(item)}  ";
                 if (cx + Measure(part, 15) > tx + tw) { Text("…", cx, y + 33, 15, T.Muted); break; }
                 cx += Text(part, cx, y + 33, 15, have >= n ? good : bad);
@@ -233,7 +237,7 @@ public partial class Hud
         foreach (var (item, n) in r.In)
         {
             float y = y0 + 130 + k * 64;
-            int have = _d.State.Backpack.Count(item), need = n * _craftCount;
+            int have = _d.StoreFor(r).Count(item), need = n * _craftCount;
             bool okItem = have >= need;
             Rect(x, y, w, 60, T.Panel);
             ItemIcon(item, x + 4, y + 4, 52, 52, okItem ? 1f : 0.6f, false);
@@ -257,7 +261,7 @@ public partial class Hud
         // Alt: adet ve URET
         string needSt = CraftRules.NeedStation(r, near);
         bool unlocked = Unlocked(r);
-        bool can = unlocked && needSt == null && CraftRules.Missing(r, _craftCount, _d.State.Backpack).Count == 0;
+        bool can = unlocked && needSt == null && CraftRules.Missing(r, _craftCount, _d.StoreFor(r)).Count == 0;
         float by = CBottom - 92;
         Text("ADET", x, by - 24, 15, T.Muted, true, true);
         Button("−", x, by, 46, 40, 24);
@@ -267,6 +271,7 @@ public partial class Hud
         Button("MAKS", x + 168, by, 70, 40, 16);
         Text($"TOPLAM {r.Seconds * _craftCount:0.#} SN", x, by + 46, 14, T.A(T.Ink, 0.7f), true, true);
         string label = !unlocked ? "KİLİTLİ" : needSt != null ? T.Upper($"{ItemNames.Of(needSt)} gerekir") : can ? "ÜRET" : "MALZEME EKSİK";
+        if (_d.ResearchLocked(r)) (label, can) = ResearchButton(r); // zincir: "ARASTIR · 25 VERI" (Hud.Craft.Research.cs)
         Button(label, x + w - 220, by, 220, 82, label.Length > 10 ? 20 : 30, can ? T.Green.Darkened(0.35f) : T.Panel, can);
     }
 
@@ -320,7 +325,7 @@ public partial class Hud
             int k = 0;
             foreach (var (item, n) in r.In)
             {
-                if (_d.State.Backpack.Count(item) < n * _craftCount && CraftDetailRect("pin", k).HasPoint(at)) { _d.PinSource(item); return true; }
+                if (_d.StoreFor(r).Count(item) < n * _craftCount && CraftDetailRect("pin", k).HasPoint(at)) { _d.PinSource(item); return true; }
                 k++;
             }
         }
