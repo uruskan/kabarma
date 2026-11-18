@@ -20,33 +20,8 @@ public partial class Rock
     }
 }
 
-public partial class PenProp
-{
-    /// <summary>Kapiyi kayittaki duruma aninda getirir (tween ve ses yok).</summary>
-    internal void LoadDoor(bool open)
-    {
-        if (Kasa == null || _hinge == null) return;
-        DoorOpen = open;
-        _hinge.Rotation = new Vector3(0, open ? Mathf.DegToRad(_d.Data.Pen.GateOpenDegrees) : 0f, 0);
-        _doorCol?.SetDeferred(CollisionShape3D.PropertyName.Disabled, open);
-        _pens.SyncDoor(Kasa);
-    }
-}
-
 public partial class PenSystem
 {
-    /// <summary>PlaceProp'un sessizi: ses, efekt, olay yok. Feeder/Nest kurucuda Coop'a eklenir.</summary>
-    internal PenProp LoadProp(PlaceableDef def, Vector3 at, float yaw)
-    {
-        var prop = new PenProp(_d, this, def);
-        _d.AddChild(prop);
-        prop.GlobalPosition = at;
-        prop.Rotation = new Vector3(0, yaw, 0);
-        if (def.Id == "ahsap_kapi" && FreeKasaNear(at) is BuildPiece kasa) prop.FitInto(kasa, _gates[kasa]);
-        _props.Add(prop);
-        return prop;
-    }
-
     /// <summary>Kayittan kurulan parcalardan agil halkalarini simdi hesaplar (normalde bir sonraki karede).</summary>
     internal void RebuildNow() { if (_dirty) Rebuild(); }
 

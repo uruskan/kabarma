@@ -124,10 +124,10 @@ public partial class Director
     {
         // Yapi parcalari yapi akisinin: Sim "build" bolumu + "build.view" (AfterRestore'da dugumleri kurar). Agil parcalara
         // baglandigi icin agil bolumleri okunanlari saklar, isi kendi AfterRestore'unda (build.view'den sonra) yapar.
-        PenPropsSaved = null; PenGroundSaved = null;
+        // Agil nesneleri hayvan akisinin "pen.props" bolumunde (world/PenSystem.Save.cs; o da build.view'den sonra uygular).
+        PenGroundSaved = null;
         Save.Add(SaveSection.Json("placeables", 1, CapturePlaced, ApplyPlaced, SaveOrder.Spawn + 10));
-        Save.Add(SaveSection.Json<List<PlacedSave>>("pen.props", 1, CaptureProps, l => PenPropsSaved = l, SaveOrder.Spawn + 20, afterRestore: ApplyPenAfterBuild));
-        Save.Add(SaveSection.Json<PenGroundSave>("pen.ground", 1, CapturePenGround, s => PenGroundSaved = s, SaveOrder.Spawn + 30));
+        Save.Add(SaveSection.Json<PenGroundSave>("pen.ground", 1, CapturePenGround, s => PenGroundSaved = s, SaveOrder.Spawn + 30, afterRestore: ApplyPenAfterBuild));
         Save.Add(SaveSection.Json("world.resources", 1, CaptureWorldRes, ApplyWorldRes, SaveOrder.Spawn + 40));
         Save.Add(SaveSection.Json("loads", 1, CaptureLoads, ApplyLoads, SaveOrder.Spawn + 50, afterRestore: AdoptRampCrates));
         Save.Add(SaveSection.Json("player", 1, CapturePlayer, ApplyPlayer, SaveOrder.State + 10));
@@ -137,17 +137,18 @@ public partial class Director
 
     // ---------- yapi parcalari (yapi akisinin bolumleri) ----------
 
-    List<PlacedSave> PenPropsSaved;
     PenGroundSave PenGroundSaved;
 
-    /// <summary>pen.props AfterRestore: build.view parcalari kurduktan sonra agil kapilari, nesneleri ve yumurtalari.</summary>
+    /// <summary>
+    /// pen.ground AfterRestore: build.view parcalari, pen.props (hayvan) nesneleri kurduktan sonra bahce kapilari ve yerdeki
+    /// yumurtalar. pen.props kayitta yoksa parca baglari burada kurulur.
+    /// </summary>
     void ApplyPenAfterBuild()
     {
-        if (Pens == null) return;
-        Pens.RelinkPieces(); // RebuildFromGraph olay yaymaz: kapilar ve halkalar yeni dugumlerden
-        if (PenPropsSaved != null) ApplyProps(PenPropsSaved);
-        if (PenGroundSaved != null) ApplyPenGround(PenGroundSaved);
-        PenPropsSaved = null; PenGroundSaved = null;
+        if (Pens == null || PenGroundSaved == null) return;
+        Pens.RebuildNow();
+        ApplyPenGround(PenGroundSaved);
+        PenGroundSaved = null;
     }
 
     // ---------- yerlestirilebilirler ----------
@@ -199,27 +200,6 @@ public partial class Director
     }
 
     // ---------- agil ----------
-
-    List<PlacedSave> CaptureProps() => Pens == null ? new() : Pens.Props.Where(IsInstanceValid).Select(p => new PlacedSave
-    {
-        E = Rec("pen_prop", p.Def.Id, p),
-        Amount = p.Feeder?.Amount ?? p.Nest?.Eggs ?? 0,
-        Open = p.DoorOpen,
-    }).ToList();
-
-    void ApplyProps(List<PlacedSave> list)
-    {
-        if (Pens == null) return;
-        foreach (var p in list)
-        {
-            var def = SavedPlaceable(p.E.Content);
-            if (def == null) continue;
-            var prop = Pens.LoadProp(def, V(p.E.Pos), YawOf(p.E));
-            if (prop.Feeder != null) prop.Feeder.Amount = p.Amount;
-            if (prop.Nest != null) prop.Nest.Eggs = p.Amount;
-            if (p.Open) prop.LoadDoor(true);
-        }
-    }
 
     PenGroundSave CapturePenGround()
     {

@@ -76,7 +76,7 @@ Sıfırlama tek yerde: `game/scripts/save/GameStatics.cs` (`GameStatics.Reset()`
 | `world.settings` | GDD §25 dünya ayarı | Spawn−50 | `GameState.Save.cs` |
 | `build` + `build.view` | yapı parçaları (malzeme, plan, can): yapi akışının Sim bölümü; düğümler `RebuildFromGraph` ile (AfterRestore) | Spawn | `StructurePlanBook.cs`, `building/BuildBridge.Yapi.cs` (yapi) |
 | `placeables` | Ocak, istasyonlar, mobilya, Sandık içi | Spawn+10 | aynı |
-| `pen.props` | Yemlik yemi, Folluk yumurtası, Ahşap Kapı | Spawn+20 | aynı |
+| `pen.props` | Yemlik, Folluk, Ahşap Kapı, Suluk, Fırça, Kovan (hayvan akışı devraldı; build.view'den sonra uygular) | Spawn | `world/PenSystem.Save.cs` (hayvan) |
 | `pen.ground` | açık bahçe kapıları, yerdeki yumurta | Spawn+30 | aynı |
 | `world.resources` | kaya (ad → kalan), tutam verimi | Spawn+40 | aynı |
 | `loads` | El Arabası (yuvalar, yük), kargo kasası (rampa, araba), yerdeki kabarık ürün | Spawn+50 | aynı |
