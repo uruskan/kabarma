@@ -40,6 +40,9 @@ public partial class BuildBridge
         _ => Structures.Refund(cost, Rules),
     };
 
+    /// <summary>Yapi parcasinin sokum iadesi (NetSync host'u icin).</summary>
+    public Dictionary<string, int> RefundOf(BuildPiece bp, IReadOnlyDictionary<string, int> cost) => RefundFor(bp, cost);
+
     /// <summary>Sokum sirasinda coken parca: iadesi ayni kuralla (malzeme kaybolmaz).</summary>
     void AddFallRefund(BuildPiece piece)
     {
@@ -72,6 +75,7 @@ public partial class BuildBridge
         if (t is not BuildPiece bp) return false;
         UpgradePreview(t, out bool ok);
         if (!ok) return false;
+        if (_d.Net?.ForwardUpgrade(t) == true) return true; // istemci: host yukseltir
         var (to, pay, back) = StructureCosts.Upgrade(BData, bp.Material, _sys.UnitsOf(bp.Def.Id), InClaimAt(bp.GlobalPosition)).Value;
         string from = bp.Material;
         if (!_sys.Upgrade(bp, to.Id, out _)) return false;
@@ -116,6 +120,7 @@ public partial class BuildBridge
         _d.Hud.Hint($"Plan modu: {NameOf(id)} (malzeme sonra: {CostOf(id)} Odun){(why != "" ? "  ·  " + why : "")}  ·  {{act:fire}}: plan bırak  ·  {{act:build_plan}}: kapat  ·  {{act:plan_book}} basılı: Plan Defteri", 0.2f);
         if (!place || cur == null) return true;
         if (why != "") { Sfx.Play("hit", null, -10f); return true; }
+        if (_d.Net?.ForwardPlan(_sys) == true) return true; // istemci: host plan olarak kurar
         var piece = _sys.TryPlace();
         if (piece != null) Sfx.Play("place", piece.GlobalPosition, -8f, 1.25f);
         return true;
@@ -128,6 +133,7 @@ public partial class BuildBridge
         var missing = StructureCosts.Missing(cost, target.S.Delivered);
         _d.Hud.Hint($"Plan: {target.Def.Name} ({MatName(target.Material)})  ·  eksik {CostText(missing)}  ·  {{act:fire}}: malzeme koy  ·  {{act:interact}} basılı: sök", 0.2f);
         if (!place) return;
+        if (_d.Net?.ForwardDeliver(target) == true) return; // istemci: host malzemeyi alir
         var moved = StructureCosts.Deliver(cost, target.S.Delivered, _d.State.Backpack);
         if (moved.Count == 0 && missing.Count > 0) { Sfx.Play("hit", null, -10f); return; }
         if (moved.Count > 0)
@@ -208,6 +214,7 @@ public partial class BuildBridge
         bool ok = _sys.Current != null && _sys.Current.Valid;
         _d.Hud.Hint($"Plan Defteri: {bp.Name} ({bp.Pieces.Count} parça){(ok ? "" : "  ·  " + (_sys.Current?.Reason ?? "temel için düz yer"))}  ·  {{act:fire}}: plan olarak bırak  ·  {{act:build_rotate}}: döndür  ·  {{act:build_plan}}: vazgeç", 0.2f);
         if (!place) return;
+        if (_d.Net != null && !_d.Net.IsHost) { _d.Hud.Hint("Plan Defteri ortak oyunda yalnız kurucuda (M2)", 2f); Sfx.Play("hit", null, -10f); return; }
         var (k, n) = _sys.PlaceBlueprint();
         if (k == 0) { Sfx.Play("hit", null, -10f); return; }
         Sfx.Play("place", null, -4f, 1.2f);

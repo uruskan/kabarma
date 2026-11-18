@@ -56,6 +56,29 @@ public sealed class Swellable
         Set(swell: 0f, glow: 0f, push: def.Push, wobble: def.Wobble);
     }
 
+    /// <summary>
+    /// Ornekli mesh (suru uyeleri, MultiMesh): yuzey malzemeleri mesh'in kendisinde sisme shader'ina cevrilir;
+    /// bu mesh'i kullanan butun ornekler birlikte sisip isir.
+    /// </summary>
+    public Swellable(ArrayMesh mesh, SwellDef def)
+    {
+        _shader ??= GD.Load<Shader>("res://shaders/swell_tex.gdshader");
+        for (int i = 0; i < mesh.GetSurfaceCount(); i++)
+        {
+            var sm = new ShaderMaterial { Shader = _shader };
+            if (mesh.SurfaceGetMaterial(i) is BaseMaterial3D b)
+            {
+                sm.SetShaderParameter("albedo_color", b.AlbedoColor);
+                sm.SetShaderParameter("roughness_value", Mathf.Clamp(b.Roughness, 0.4f, 1f));
+            }
+            sm.SetShaderParameter("vein_scale", def.VeinScale);
+            mesh.SurfaceSetMaterial(i, sm);
+            _mats.Add(sm);
+        }
+        _def = def;
+        Set(swell: 0f, glow: 0f, push: def.Push, wobble: def.Wobble);
+    }
+
     public bool Valid => _mats.Count > 0;
     public int MaterialCount => _mats.Count;
     public static bool UsesShader(Material m) => m is ShaderMaterial sm && sm.Shader != null && sm.Shader.ResourcePath == "res://shaders/swell_tex.gdshader";

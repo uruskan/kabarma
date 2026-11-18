@@ -614,8 +614,28 @@ public partial class BuildSystem : Node3D
         reason = def == null ? "parça yok" : "";
         if (def == null) return null;
         var p = Evaluate(def, xf, "snap", material);
-        if (!p.Valid) { reason = p.Reason; return null; }
+        // Ortak oyun istemcisi: host dogruladi; yalniz dolu yuva reddedilir (plan ve malzeme "pieces.state" ile gelir).
+        if (!p.Valid && !(RemoteAuthority && p.Reason != "dolu")) { reason = p.Reason; return null; }
         return Spawn(p, PlanMode, material);
+    }
+
+    /// <summary>Ortak oyun istemcisi: yapi durumu host'tan gelir, yerel denge denetimi yerlesimi reddetmez (NetSync.Yapi.cs).</summary>
+    public bool RemoteAuthority { get; set; }
+
+    /// <summary>Host'un parca durumunu uygular (denetimsiz): malzeme, plan bayragi, konan malzeme. Gorunus degisirse model yenilenir.</summary>
+    public void ApplyRemote(BuildPiece piece, string material, bool planned, Dictionary<string, int> delivered)
+    {
+        if (piece?.S == null) return;
+        bool look = false;
+        if (piece.Material != material) { Graph.TrySetMaterial(piece.Sid, material, force: true); look = true; }
+        if (piece.Planned != planned)
+        {
+            Graph.SetPlanned(piece.Sid, planned);
+            piece.CollisionLayer = planned ? BuildLayer : 1u | BuildLayer;
+            look = true;
+        }
+        piece.S.Delivered = delivered;
+        if (look) SwapModel(piece, planned ? PlanModel(piece.Def) : ModelFor(piece.Def, material));
     }
 
     /// <summary>Nisan isininin vurdugu parca (sokme, onarim, yukseltme, plan malzemesi icin).</summary>
@@ -632,7 +652,7 @@ public partial class BuildSystem : Node3D
     {
         var piece = FindPiece(node);
         if (piece == null || !_pieces.Contains(piece)) return false;
-        var fallen = Graph.Remove(piece.Sid);
+        var fallen = Graph.Remove(piece.Sid, collapse: !RemoteAuthority); // istemcide cokmeyi host yapar, "pieces" getirir
         Detach(piece);
         Removed?.Invoke(piece);
         piece.QueueFree();

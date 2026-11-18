@@ -230,6 +230,22 @@ public class StructureTests
     }
 
     [Fact]
+    public void Remote_plan_flag_and_forced_material_keep_the_graph_consistent()
+    {
+        var g = Graph(out var b);
+        int f = Foundation(g);
+        int w = Wall(g, f);
+        int fl = Floor(g, new[] { w });
+        g.SetPlanned(w, true); // host: duvar plan (istemci once kurulu sanmisti)
+        Assert.False(g.Get(fl)!.Stable);
+        Assert.Equal(g.Weight(g.Get(f)!), g.Get(f)!.Load, 3);
+        g.SetPlanned(w, false);
+        Assert.Equal(1, g.Get(fl)!.Span);
+        Assert.True(g.TrySetMaterial(w, "mayali_beton", force: true).Valid);
+        AssertMatchesRebuild(g, b);
+    }
+
+    [Fact]
     public void Plan_book_captures_a_structure_and_places_it_rotated()
     {
         var g = Graph(out var b);

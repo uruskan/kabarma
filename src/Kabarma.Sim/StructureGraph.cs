@@ -169,8 +169,27 @@ public sealed class StructureGraph
         SupportedBy = p.SupportedBy.ToList(), Supports = p.Supports.ToList(),
     };
 
-    /// <summary>Malzemeyi degistirir (yukseltme). Yuk sinirini asacaksa (ya da commit=false ise) geri alir.</summary>
-    public StabilityReport TrySetMaterial(int id, string material, bool commit = true)
+    /// <summary>
+    /// Plan bayragini yetkili kaynaktan (ortak oyunda host) uygular: denetim yok. true: dengeden cikar (altindakiler
+    /// yeniden hesaplanir, cokme yok); false: dengeye girer.
+    /// </summary>
+    public void SetPlanned(int id, bool planned)
+    {
+        var p = Pieces[id];
+        if (p.Planned == planned) return;
+        if (!planned) { p.Planned = false; Activate(p); return; }
+        var touched = p.SupportedBy.Concat(p.Supports).ToHashSet();
+        var aff = p.Stable ? Dependents(p) : new HashSet<int>();
+        p.Planned = true;
+        p.Span = StructurePiece.Unsupported;
+        p.Load = 0;
+        Reseed(aff);
+        touched.UnionWith(aff);
+        RecomputeLoads(touched);
+    }
+
+    /// <summary>Malzemeyi degistirir (yukseltme). Yuk sinirini asacaksa (ya da commit=false ise) geri alir; force: yetkili kaynaktan, denetimsiz.</summary>
+    public StabilityReport TrySetMaterial(int id, string material, bool commit = true, bool force = false)
     {
         var p = Pieces[id];
         string old = p.Material;
@@ -180,7 +199,7 @@ public sealed class StructureGraph
         {
             var comp = RecomputeLoads(new[] { id });
             Worst(comp.Select(x => Pieces[x]), rep);
-            if (rep.Load > rep.Capacity + 1e-3f) { rep.Valid = false; rep.Reason = $"aşırı yük {rep.Load:0}/{rep.Capacity:0}"; }
+            if (!force && rep.Load > rep.Capacity + 1e-3f) { rep.Valid = false; rep.Reason = $"aşırı yük {rep.Load:0}/{rep.Capacity:0}"; }
         }
         if (!commit || !rep.Valid)
         {

@@ -64,3 +64,14 @@ Sahibin varlık kitaplığından (`F:\Assets`, yalnız okundu) kopyalanıp `pipe
 | Mayalı Beton (beton yüzey tanesi) | `PSG_Compound_Utilities_R01\Textures\Source\concrete_wall_001\concrete_wall_001_diff_4k.jpg` (Poly Haven "Concrete Wall 001") | CC0 1.0 | Lisans: `PSG_Compound_Utilities_R01\Reports\Texture_sources.json` |
 
 Demir karoları (cıvata, kayış) ahşap kitinin yordamsal `metal_tile` işlevinden gelir. Megascans ve lisansı yazılı olmayan klasörler kullanılmadı.
+## Zincir istasyonları (M2, yer tutucu)
+
+Araştırma Masası, Kömür Ocağı, Demirci Ocağı, Bıçkı, Değirmen, Dokuma Tezgâhı, Kasap Tezgâhı, Kuluçka, Araç Atölyesi, Oyma İskelesi: **koddan** (`game/scripts/world/Station.Visuals.cs`, `MeshKit` yastık kutu ve silindir). Üçüncü taraf içerik yok, kredi harcanmadı. Gerçek model gelince `placeables.json` `model` alanı yer tutucunun yerini alır.
+
+## tarim (M2): ekin ve Korkuluk yer tutuculari
+
+| Varlik | Kaynak | Lisans | Not |
+|---|---|---|---|
+| Cayir ve Koru'nun 10 ekini (Bugday, Kabak, Aycicegi, Lifotu, Domates, Sapkali Mantar, Bogurtlen, Eksilik, Findik, Sarimsak) | Koddan: `game/scripts/world/FarmView.Meshes.cs` (`CropVisuals`, MeshKit ilkelleri) | Projenin kendi kodu | YER TUTUCU; uretim istegi: ekin basina 1 Tripo modeli |
+| Korkuluk | Koddan: `KorkulukVisual` (ayni dosya) | Projenin kendi kodu | YER TUTUCU |
+| Alaca gorunusu | Toon golgelendiricinin `tint` degeri | Projenin kendi kodu | Benekli, Altin, Aurora |
