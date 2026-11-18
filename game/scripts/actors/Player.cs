@@ -199,6 +199,7 @@ public partial class Player : CharacterBody3D
             Hp = 0;
             _dead = true;
             StartDown(k.Normalized() * 2.5f + Vector3.Up * 1.5f, RigDef.DownSeconds);
+            NetDowned(); // Player.Net.cs (ortak): ortak oyunda 30 sn baygin, sok tokadiyla kalkar
         }
         else
         {

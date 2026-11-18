@@ -57,7 +57,7 @@ kabarma/
   src/
     Kabarma.Sim/         net8.0 kütüphane, Godot bağımlılığı yok: oyunun kuralları
     Kabarma.Sim.Tests/   xUnit
-    Kabarma.Net/         protokol: mesajlar, snapshot kodlayıcı; Godot bağımlılığı yok
+    (protokol: mesajlar, anlık görüntü kodlayıcı; Godot bağımlılığı yok → ayrı proje yerine src/Kabarma.Sim/Net*.cs, 18 Kasım 2026)
     Kabarma.Tools/       konsol: SimRunner, DataCheck, BalanceReport, RecipeGraph
   game/                  Godot projesi (C#)
     project.godot  Kabarma.Game.csproj (Sim ve Net'e başvurur)
@@ -112,7 +112,7 @@ kabarma/
 
 ### 5.1 Taşıma
 
-Kendi ince mesaj katmanımız (`Kabarma.Net`, ikili, sürümlü). Godot'un üst düzey RPC'si kullanılmaz. `ITransport` arayüzünün iki uygulaması var:
+Kendi ince mesaj katmanımız (`src/Kabarma.Sim/Net*.cs`: ikili, sürümlü; `net.json` `protocol`). Godot'un üst düzey RPC'si kullanılmaz. `ITransport` arayüzünün (`game/scripts/net/`) iki uygulaması var:
 
 | Taşıma | Kullanım |
 |---|---|
@@ -135,8 +135,8 @@ Kendi ince mesaj katmanımız (`Kabarma.Net`, ikili, sürümlü). Godot'un üst 
 
 | Veri | Boyut ve sıklık |
 |---|---|
-| Oyuncu | 16 B, 20 Hz |
-| Yaratık (120 m içinde) | 10 B, 10 Hz; daha uzakta 2 Hz |
+| Oyuncu | 16 B, 20 Hz (konum 3 × 24 bit, metrede 256 adım: 3,9 mm) |
+| Yaratık (120 m içinde) | 13 B, 10 Hz; daha uzakta 2 Hz (10 B'de 16 bitlik konum 1 cm ölçütünü tutmuyordu; 24 bite çıktı, 18 Kasım 2026) |
 | Sürü | 14 B, 5 Hz |
 | Fizik nesnesi | 15 B, uyanıkken 20 Hz, uzakta 5 Hz (Oduncu biçimi) |
 | `Sim` durumu | Değişince fark; 10 sn'de bir özet doğrulaması |
@@ -175,6 +175,14 @@ Host ya da sunucu yetkilidir. İstemci istekleri mesafe, bekleme süresi ve enva
 
 **Arazi farkları** parça başına seyrek tutulur; kayda ve ağa yalnızca farklar gider.
 
+**M2 dünyası (ara adım, 18 Kasım 2026; dunya2 akışı).** 5 × 5 km'lik ada M4'te gelir; M2'de dünya **640 × 640 m**'dir ve iki biyom taşır:
+- **Biyom haritası `Sim`'dedir** (`BiomeMap`, motordan bağımsız, tohumlu): Ocak'tan krater ışık sütununa doğru ölçülen uzaklık, gürültüyle bükülmüş bir sınırı geçince Sis Korusu başlar. Bu, açısal dilimlerin ilk ikisinin (güney Çayır, krater yönünde Koru) yerel karşılığıdır; kademe (T) kratere yaklaştıkça artar.
+- **Geçiş yumuşaktır** (GDD §21): sınırda ~45 m'lik bir karışım bandı. Yükseklik terimleri, zemin rengi, ot sıklığı, sis ve ışık biyom ağırlığıyla karışır.
+- **Çayır'ın M1 yerleşimi bit bit korunur:** üssün 42 m'si yükseklikte, Çayır'ın eski ±146 m'lik kutusu da bitki, tutam ve kaya dağılımında aynı tohum akışıyla kalır. Kutunun dışındaki Çayır ve Koru ayrı tohumlarla doldurulur.
+- **Keşif noktaları** `Sim`'de tohumdan yerleşir (`PoiPlacer`: tür başına asgari aralık, biyom ağırlığı, Ocak'a uzaklık, göl dışı); kayda yalnız oyuncunun durumu (açılan harita hücreleri, tırmanılan kuleler, bulunan noktalar) gider, yerler tohumdan yeniden üretilir.
+- **Arazi** 64 m'lik görsel parçalara bölünür (görüş konisi eleme); çarpışma tek yükseklik şeklidir. Bütçeler §10'dakilerle aynıdır.
+- **Doğma tabloları** biyom başına `biomes.json` `spawns` içindedir: `creatures` (yaratık sürüleri: gündüz/gece, ağırlık, sürü boyu, en çok sürü, Ocak'a uzaklık) ve `atalar` (Ata'nın çağrıldığı Ata Taşı ve arena yarıçapı). Yaratık ve Ata akışları satır ekler; tabloyu `SpawnTable` okur.
+
 ## 8. Yapay zekâ
 
 - **Izgara:** 1 m'lik maliyet ızgarası; eğim, su ve yapı ayak izinden türetilir. Duvar hücreleri kapalı değil, "kırma maliyetli"dir.
@@ -193,6 +201,16 @@ Host ya da sunucu yetkilidir. İstemci istekleri mesafe, bekleme süresi ve enva
 - **Göç:** her sürüm artışı için bir göç fonksiyonu ve birim testi zorunlu.
 - **Karakter** ayrı dosyadadır (Ustalık, Nişan, Ansiklopedi, kozmetik) ve Steam Cloud ile eşlenir.
 - **Hedef boyut:** dünya kaydı en fazla 30 MB.
+- **Yuvalar ve dosyalar:** her yuva bir klasördür (`user://saves/<yuva>/`): `world.kbs` (gerçek kayıt: bildirim + ikili bölümler), `manifest.json` (menünün okuduğu kopya), `world.kbs.1`–`.5` (yedekler). Karakter `user://saves/character.kbs`. Sınamalar yalnız `user://test/<koşu>/` altına yazar; otomasyon argümanlarıyla (`--test`, `--bot`, `--shots`, ...) açılan oyun kayıt yazmaz. Sayılar `data/save.json`'da.
+
+### 9.1 Anlık görüntü sözleşmesi (M2, `kayit` akışı)
+
+- **Bölüm** (`ISaveSection`, `src/Kabarma.Sim/Save.cs`): kimlik (küçük harf, noktalı: `farm`, `player.pack`, `pen.animals`), sürüm (1'den başlar), kapsam (dünya ya da karakter), yükleme sırası, `Write() → byte[]`, `Read(byte[])`, tek adımlık `Migrate(from, byte[])` ve yükleme sonrası kancası. Çoğu bölüm düz bir DTO'yu JSON'a döker (`SaveSection.Json`); ağır bölümler (arazi farkı, tarla) kendi ikili yazımını yapabilir. Kapsayıcı dosya ikilidir, her bölüm sıkıştırılmış ve CRC'lidir.
+- **Bağlanma, merkezî liste olmadan:** `Sim` durumu `GameState` üzerinde `[SaveSection("kimlik", sürüm, Order = ...)]` işaretli bir özellikle (get: DTO üretir, set: DTO'yu uygular) bölüm olur; her akış bunu kendi partial dosyasında yazar, yansıma onu bulur (`[DataFile]` kalıbı). Godot katmanındaki durum, sahibi düğümün kurulumunda `Director.Save.Add(SaveSection.Json(...))` ile kaydolur. Kayıt defteri örnek başınadır, statik değildir.
+- **Kimlikle başvuru:** kayıtta düğüm ya da nesne başvurusu yoktur. İçerik `data/` kimliğiyle (`tezgah`, `gidak`), dünyadaki örnek `State.Ids.New()`'dan alınmış `ulong` örnek kimliğiyle anılır; kimlik bir daha kullanılmaz, kayıtla saklanır ve ağdaki `net_id` ile aynıdır (§4). Örnek tanımlayıcısı `EntityRecord`: `{id, tür, içerik, konum, dönüş, parametreler}`. Kişisel durum (çanta, kemer, dayanıklılık) oyuncu kimliğine göre listededir (bugün tek oyuncu).
+- **Yükleme sırası:** önce dünyada var olanlar kurulur (`SaveOrder.Spawn`), sonra sistem durumu (`SaveOrder.State`), en son ilerleme sayaçları (`SaveOrder.Progress`: senaryo, Defter, Known, kredi). `Read` durumu **sessizce** yerine koyar: olay yaymaz, `Add`/`Plant` gibi sayaç ilerleten yolları kullanmaz. Görünümler kanca (`AfterRestore`) içinde yenilenir. Kayıtta olmayan bölüm yeni oyun değeriyle kalır; tanınmayan bölüm silinmeden taşınır; gelecekteki bir sürüm yüklenmez.
+- **Göç:** bölüm sürümü artınca her eski sürüm için bir adım (`[SaveMigration("kimlik", from)]` ya da `Migrate`) ve bir birim testi zorunlu; `SaveContractTests` eksik adımı yakalar. `GameState`'e eklenen her özellik ya bir bölümce kapsanır (`Covers`) ya da testteki geçici listeye yazılır; yoksa test kırılır.
+- **Ağ:** aynı `Capture`/`Restore` bellekte bayt dizisiyle de çalışır; sonradan katılma (§5.4) dosyasız anlık görüntü kullanır.
 - **Kayda hazır yazım (M1'den itibaren):** Kayıt ve ortak oyun M2'de gelir; M1'de yazılan kod onlar için yeniden yazılmasın diye: `Sim`'e giren her yeni durum düz, serileştirilebilir sınıftır (Godot tipi, düğüm başvurusu ya da olay aboneliği tutmaz; kimlikle başvurur). Godot katmanına yeni statik durum eklenmez: statikler kayıt yüklenince sıfırlanmaz ve aynı süreçte koşan host ile istemciyi birbirine karıştırır ([PLAN.md](PLAN.md) §7.2).
 
 ## 10. Performans bütçeleri
