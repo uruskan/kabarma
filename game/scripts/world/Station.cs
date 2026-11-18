@@ -27,7 +27,7 @@ public partial class Station : Node3D
     }
 
     /// <summary>Gorunus: Tas Firin ve Ocakbasi kendi siniflari (kodla hareket eden parcalar), digerleri model (PlaceableVisuals).</summary>
-    public static Node3D MakeVisual(PlaceableDef def) => PlaceableVisuals.Make(def);
+    public static Node3D MakeVisual(PlaceableDef def) => ZincirVisuals.Make(def) ?? PlaceableVisuals.Make(def); // zincir istasyonlari: koddan yer tutucu (Station.Visuals.cs)
 
     /// <summary>Yuk urununun cikacagi nokta: istasyonun onu (+Z), yere oturmus.</summary>
     public Vector3 OutputPoint => _d.World.Ground(GlobalPosition + GlobalBasis.Z * 1.9f);
@@ -76,7 +76,7 @@ public partial class Station : Node3D
     public override void _Process(double delta)
     {
         float dt = (float)delta;
-        if (_d.Stations.FirstOrDefault(s => s.Queue == Queue) == this) Queue.Tick(dt, _d.State.Backpack);
+        if (_d.Stations.FirstOrDefault(s => s.Queue == Queue) == this) Queue.Tick(dt, _d.StationStore()); // ambardan uretim: urun cantaya, dolarsa tapudaki Sandiklara (GDD 5)
         bool working = Queue.Active != null;
         if (_oven != null) _oven.Working = working;
         if (_grill != null) _grill.Working = working;
@@ -84,7 +84,7 @@ public partial class Station : Node3D
         string fuel = Def.FuelPerJob > 0 && Def.Fuel.Count > 0 ? $"  ·  yakıt: {ItemNames.Of(Def.Fuel[0])} {_d.State.Backpack.Count(Def.Fuel[0])}" : "";
         string packing = Def.Station == "paketleme" && _d.State.Cargo.Open != null ? $"\nkasa: {_d.State.Cargo.Open.Items.UsedSlots}/{_d.State.Cargo.Open.Items.Slots} yığın · {_d.State.Cargo.Value(_d.State.Cargo.Open)} Kredi" : "";
         _label.Text = working
-            ? $"{Def.Name}\n{Queue.Active.Name} {(int)(Queue.Progress * 100)}%  ·  sırada {Queue.Queued}"
+            ? $"{Def.Name}\n{Queue.Active.Name} {(int)(Queue.Progress * 100)}%  ·  sırada {Queue.Queued}{QueueTail()}"
             : near ? $"{Def.Name}{fuel}\nE: üretim{packing}" : Def.Name + packing;
         _label.Modulate = near ? Palette.Warning : Palette.OffWhite;
         if (_bounce > 0)

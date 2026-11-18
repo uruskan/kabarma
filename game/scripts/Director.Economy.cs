@@ -160,6 +160,7 @@ public partial class Director
     {
         chest.Opened = true;
         var items = new List<Hud.MenuItem>();
+        AddChestTools(items, chest); // zincir: hizli yigma ve siralama (Director.Zincir.cs, GDD 5)
         TransferItems(items, chest.Storage, () => true, () => OpenChestMenu(chest));
         Hud.ShowMenu($"{chest.Def.Name} · {chest.Storage.UsedSlots}/{chest.Storage.Slots} yuva", items, Stack(chest.Storage) + "\n{act:interact} / {act:ui_cancel}: kapat");
     }
