@@ -47,4 +47,12 @@ yürürken, çit kırma maliyeti 40).
 
 ## Son doğrulama
 
-(aşağıya eklenir)
+Kurulum bölündükten sonra 8 süreç (`stress_8_final.log`): akış tiki iş yapılan 150 tikte p95 2,24 ms, en kötü
+21,3 ms; host yükleme 1080 kbps, istemci indirme en çok 20,3 KB/sn, host karesi med 43 / p95 178 ms, istemci karesi
+p95 184 ms. Makine o sırada çok yüklüydü (başka oturumların Godot süreçleri); tik işi 1500 hücreyle sınırlı olduğu
+hâlde tek örnek 21 ms, yani işletim sistemi duraklaması. Sert yargı bu yüzden iş tiklerinin p95'inde; en kötü değer
+satırda kalır. Sim kıyasında (tek süreç) kurulum tiki en çok 0,1 ms, yayılım dilimi en çok 2,1 ms.
+
+Tam `tools/test.ps1 -BotTimeout 900` (`test_full.log`, merge sonrası): build, sim (584), bot, coop, ekonomi, zincir ve
+diğerleri geçti; `save` (`ranch` bölümü farklı: hayvan akışı) ve `input_kbm` (`yukselt` adımında takılı: yapı/girdi)
+kaldı, ikisi de bu akışın dosyalarına dokunmuyor.
