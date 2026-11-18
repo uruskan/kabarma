@@ -26,6 +26,7 @@ public partial class KabarmaTest : Node
     Zipzip _walker;
     Vector3 _walkerFrom;
     float _walked;
+    int _peak;
 
     public KabarmaTest(Director d) { _d = d; ProcessMode = ProcessModeEnum.Always; }
 
@@ -81,8 +82,28 @@ public partial class KabarmaTest : Node
                 }
                 if (_d.Phase != Director.Act.Free || _stageT < 2f) return;
                 Check(_d.State.UnlockedKs == 1, $"baslangic KS {_d.State.UnlockedKs}");
+                // Olcum kipi (--kabarma_perf=KS, istege bagli --kabarma_stress=KS:oyuncu): tek tam gece, perf satirlari ve goruntuler.
+                if (Main.Args.TryGetValue("kabarma_perf", out var pk))
+                {
+                    Check(_d.StartKabarma(KabarmaKind.Full, int.TryParse(pk, out var pks) ? pks : 10), "olcum gecesi baslamadi");
+                    _stage = 20; _stageT = 0;
+                    return;
+                }
                 Check(_d.StartKabarma(KabarmaKind.Full, 1), "tam Kabarma baslamadi");
                 Next();
+                return;
+            case 20: // olcum: Kazan devrilmesin diye cani buyuk (yalniz bu kipte), kimse vurmaz; kalabalik birikir
+                if (n == null || n.Plan == null) { if (_stageT > 30f) Fail("olcum gecesi kurulmadi"); return; }
+                if (n.Kazan != null) n.Kazan.Hp = 1e9f;
+                int live = Kabarans.Live.Count();
+                _peak = Mathf.Max(_peak, live);
+                if (live >= 60) _d.DebugShot($"kabarma_ks{n.Ks}_kalabalik", 0.2f);
+                if (live >= 150) _d.DebugShot($"kabarma_ks{n.Ks}_yogun", 0.2f);
+                if (n.InDoruk) _d.DebugShot($"kabarma_ks{n.Ks}_doruk", 3f);
+                if (n.Phase != NightPhase.Dawn && _stageT < 1100f) return;
+                GD.Print($"KABARMA RESULT ok perf ks={n.Ks} players={n.Plan.Spec.Players} slots={n.Plan.TotalSlots} peak={_peak} t={_t:0}");
+                GetTree().Quit(0);
+                SetProcess(false);
                 return;
             case 1: // aksam -> gece planli mi
                 if (n == null || n.Plan == null) { if (_stageT > 30f) Fail("planli gece kurulmadi"); return; }
