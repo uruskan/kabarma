@@ -104,7 +104,7 @@ public partial class Zipzip : Node3D
         All.Add(this);
     }
 
-    public override void _ExitTree() => All.Remove(this);
+    public override void _ExitTree() { All.Remove(this); KabaranExit(); } // KabaranExit: Zipzip.Kabaran.cs
 
     public Vector3 Center => GlobalPosition + Vector3.Up * 0.38f * Scale0;
     public Vector3 SacPos => _sac.GlobalPosition;
@@ -202,7 +202,7 @@ public partial class Zipzip : Node3D
         if (!chasePlayer && (_target == null || !_target.Plot.Planted))
         {
             if (_target != null) _target.Claimed = false;
-            _target = _dir.FarmView.NearestPlanted(pos);
+            _target = FindCropTarget(pos); // Zipzip.Kabaran.cs: kendi ailesinin ekini (GDD 14.3)
             if (_target != null) _target.Claimed = true;
             _eatT = 0;
         }
@@ -228,17 +228,19 @@ public partial class Zipzip : Node3D
         else if (chasePlayer && dist < Radius + 0.8f && _attackCd <= 0)
         {
             _attackCd = 1.3f;
-            player.Hurt(Mathf.Round(Def.Damage * _damageMult * (Scale0 > 1.5f ? 1.6f : 1f)), pos);
+            player.Hurt(Mathf.Round(AttackDamage * (Scale0 > 1.5f ? 1.6f : 1f)), pos);
             PlayAttack();
         }
+        else if (!chasePlayer && _target == null && TickKazan(dt, pos, dist)) eating = true; // Zipzip.Kabaran.cs: Maya Kazani
 
-        // Ziplama hareketi
-        if (_hopT <= 0 && dist > 0.5f + Radius * 0.7f)
+        // Ziplama hareketi (sicramayan Kabaran yurur: Zipzip.Kabaran.cs)
+        if (Walks) WalkStep(dt, goal, eating ? 0f : dist, slow);
+        else if (_hopT <= 0 && dist > 0.5f + Radius * 0.7f)
         {
             _hopT = _hopDur / slow;
             _hopFrom = pos;
             var dir = new Vector3(goal.X - pos.X, 0, goal.Z - pos.Z).Normalized();
-            float step = Mathf.Min(dist - Radius * 0.5f, Def.Speed * _hopDur * (0.8f + Scale0 * 0.1f));
+            float step = Mathf.Min(dist - Radius * 0.5f, MoveSpeed * _hopDur * (0.8f + Scale0 * 0.1f));
             _hopTo = _dir.World.Ground(pos + dir * Mathf.Max(0.2f, step));
             bool blocked = false;
             FenceHop(pos, ref _hopTo, ref blocked);
@@ -263,7 +265,7 @@ public partial class Zipzip : Node3D
         // Klip secimi: vurulunca aci, saldiriyorsa saldiri, yerken yeme, ziplarken kosu, yoksa bekleme.
         if (_rig != null && _hurtT <= 0 && _attackAnimT <= 0)
         {
-            string want = eating ? "eat" : _hopT > 0 || _knock.LengthSquared() > 0.5f ? "run" : "idle";
+            string want = eating ? "eat" : _hopT > 0 || Walking || _knock.LengthSquared() > 0.5f ? "run" : "idle";
             _rig.Play(want, 0.15f, (FreezeT > 0 ? 0.6f : 1f) * (want == "run" ? 1.3f : 1f));
         }
     }

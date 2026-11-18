@@ -49,6 +49,7 @@
     "firstClearCardTokens": 1,
     "firstClearCredits": 150,
     "maxKs": 10,
+    "everyDays": 4,
     "families": {
       "root": ["homur"],
       "grain": ["gidak", "cekirge", "findikci"],
@@ -75,6 +76,7 @@
     ],
     "kazan": { "hpByTier": [600, 900, 1300, 1800, 2400], "routDamage": 0.25, "toppleMayaLoss": 0.5, "repairAtDawn": true },
     "small": { "radius": 40, "seconds": 240, "ksFactor": 0.5, "maxCardLevels": 3, "waveCount": 3 },
-    "drill": { "rewards": false, "freeRepair": true }
+    "drill": { "rewards": false, "freeRepair": true },
+    "balance": { "_not": "GECICI onerilen donanim (savas, kartlar, savunma sayilari gelene kadar). URETIM M3 kabul: ilk denemede gecme %60-80. Bulgu: dalga cani KS 1->10 yaklasik 10 kat buyur; bandi tutmak icin onerilen donanimin toplam etkin hasari KS basina ~%28 artmali (Capa basamagi + cip + kart + savunma birlikte). baseDps: etkin saniye hasari (isabet ve alan dahil).", "baseDps": 31, "accuracy": 1.0, "areaTargets": 1.0, "gearPerKs": 0.28, "cardPerLevel": 0.03, "levelsPerWave": 2.6, "towerDpsPerKs": 0, "skillSd": 0.22, "travelSeconds": 9, "attackInterval": 1.3, "ksPerOcakTier": 2, "runs": 300, "passMin": 0.6, "passMax": 0.8 }
   }
 }

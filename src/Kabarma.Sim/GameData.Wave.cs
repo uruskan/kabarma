@@ -67,6 +67,8 @@ public sealed class FullKabarmaDef
     public int FirstClearCardTokens { get; set; }
     public int FirstClearCredits { get; set; }
     public int MaxKs { get; set; }
+    /// <summary>GDD 2: varsayilan her N. gece Kabarma (Can ayrica).</summary>
+    public int EveryDays { get; set; } = 4;
     /// <summary>Ekin ailesi -> o ailenin cektigi turler (ICERIK 5). Bos liste: pay yerlilere.</summary>
     public Dictionary<string, List<string>> Families { get; set; } = new();
     /// <summary>Biyom -> yerli turler (ICERIK 3).</summary>
@@ -75,4 +77,6 @@ public sealed class FullKabarmaDef
     public KazanDef Kazan { get; set; } = new();
     public SmallKabarmaDef Small { get; set; } = new();
     public DrillDef Drill { get; set; } = new();
+    /// <summary>Denge simulasyonunun onerilen donanimi (GECICI yer tutucu, WaveBalance.cs).</summary>
+    public BalanceDef Balance { get; set; } = new();
 }

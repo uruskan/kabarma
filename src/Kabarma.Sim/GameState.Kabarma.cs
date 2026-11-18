@@ -7,6 +7,8 @@ public sealed class KabarmaProgress
     public int CardTokens { get; set; }
     public int FullNights { get; set; }
     public int Toppled { get; set; }
+    /// <summary>Son tam Kabarma gununun takvim gunu (GDD 2: her N. gece).</summary>
+    public int LastDay { get; set; }
 }
 
 /// <summary>
@@ -80,7 +82,7 @@ public sealed partial class GameState
     [SaveSection("kabarma", 1, Order = SaveOrder.Progress, Covers = new[] { nameof(Kabarma), nameof(UnlockedKs) })]
     KabarmaProgress KabarmaSection
     {
-        get => new() { HighestCleared = Kabarma.HighestCleared, CardTokens = Kabarma.CardTokens, FullNights = Kabarma.FullNights, Toppled = Kabarma.Toppled };
+        get => new() { HighestCleared = Kabarma.HighestCleared, CardTokens = Kabarma.CardTokens, FullNights = Kabarma.FullNights, Toppled = Kabarma.Toppled, LastDay = Kabarma.LastDay };
         set => Kabarma = value ?? new KabarmaProgress();
     }
 }
