@@ -33,7 +33,7 @@ public partial class SavasHayvanTest : Node
     PenShape _pen;
     bool _stoppedAtWall;
 
-    public SavasHayvanTest(Director d) { _d = d; Name = "SavasHayvanTest"; ProcessPriority = -400; }
+    public SavasHayvanTest(Director d) { _d = d; Name = "SavasHayvanTest"; ProcessPriority = 1000; /* botun (Done sonrasi MoveOverride = 0) ardindan */ }
 
     RanchSystem R => _d.Ranch;
     Ranch Sim => _d.State.Ranch;
@@ -166,7 +166,7 @@ public partial class SavasHayvanTest : Node
                 _bellStage = 2; _st = 0;
                 return;
             default:
-                if (!_dalli.Animal.Registered && _st < 40f) return;
+                if (!_dalli.Animal.Registered && _st < 90f) return;
                 Check(_dalli.Animal.Registered && !_dalli.Animal.Called, $"zille agila dondu ve kayit oldu ({_st:0} sn)");
                 if (gate != null) _d.Pens.SetGate(gate, false);
                 Go(S.Night);

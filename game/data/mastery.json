@@ -634,7 +634,7 @@
    "slot": "B",
    "name": "Savaş Çığlığı",
    "text": "kabarık hayvan hasarı +%25",
-   "live": true,
+   "live": false,
    "effects": [
     {
      "stat": "swell_animal_damage",
