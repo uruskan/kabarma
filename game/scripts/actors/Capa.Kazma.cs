@@ -17,6 +17,7 @@ public partial class Capa
     /// <summary>Kazma isini kayayi kemirir; kopan her parca hedefi sarsar ve cantaya ucar (bot da bunu cagirir).</summary>
     public void MineRock(Rock rock, float dt, Vector3 hitPoint)
     {
+        if (_d.Net?.ForwardMine(rock, _t.MineRate * dt, hitPoint) == true) return; // ortak: istemcide host'a istek
         int got = rock.Mine(_t.MineRate * dt);
         var src = F.Source("kazma");
         _mineDebrisT -= dt;

@@ -129,7 +129,8 @@
         "creatures": [
           { "creature": "zipzip", "time": "day", "weight": 1, "group": [2, 3], "maxGroups": 3, "baseDistance": [40, 140], "minWeight": 0.6, "respawn": 120, "note": "Bugun ZipzipMeadow (creatures.json 'day') suruyor; aktor kaydi yaratik2'de." },
           { "creature": "gidak", "time": "day", "weight": 0.6, "group": [2, 4], "maxGroups": 2, "baseDistance": [70, 300], "minWeight": 0.7, "respawn": 240, "note": "Yabani Gidak suruleri (hayvan akisi evcillestirme)." },
-          { "creature": "pofuduk", "time": "day", "weight": 0.5, "group": [2, 3], "maxGroups": 2, "baseDistance": [80, 300], "minWeight": 0.7, "respawn": 240 }
+          { "creature": "pofuduk", "time": "day", "weight": 0.5, "group": [2, 3], "maxGroups": 2, "baseDistance": [80, 300], "minWeight": 0.7, "respawn": 240 },
+          { "creature": "homur", "time": "day", "weight": 0.7, "group": [1, 2], "maxGroups": 2, "baseDistance": [45, 200], "minWeight": 0.7, "respawn": 180, "note": "ICERIK 3.8 yagmaci: olgun ekine gelir; aktor yaratik2 (WildCreature)." },           { "creature": "cekirge", "time": "day", "weight": 0.5, "group": [1, 1], "maxGroups": 1, "baseDistance": [60, 220], "minWeight": 0.7, "respawn": 240, "note": "Suru tek varlik (WildSwarm); tahila akar." },           { "creature": "sinsi", "time": "any", "weight": 0.5, "group": [1, 1], "maxGroups": 1, "baseDistance": [60, 220], "minWeight": 0.7, "respawn": 300, "note": "Gececi: gunduz calilikta uyur, gece kumese sokulur." }
         ],
         "atalar": [
           { "ata": "koca_pofuduk", "site": "ata_tasi", "arenaRadius": 18, "note": "Boss akisi: arena ve cagirma." }

@@ -81,6 +81,39 @@ public partial class PowerShots : Node
         net.Press(f, btn.NodeId);
         await Frames(12);
         await Shot("guc_gece.png", G(4, 0) + Vector3.Up * 4f, G(11, -8) + Vector3.Up * 1.2f);
+        // Arayuz: E paneli (lamba 2) ve Kablo eldeyken cekme onizlemesi (oyuncu kamerasi, HUD acik)
+        foreach (var l in GetTree().Root.FindChildren("*", "DirectionalLight3D", true, false).OfType<DirectionalLight3D>()) l.LightEnergy = 1f;
+        foreach (var we in GetTree().Root.FindChildren("*", "WorldEnvironment", true, false).OfType<WorldEnvironment>())
+            if (we.Environment != null) { we.Environment.AmbientLightEnergy = 1f; we.Environment.BackgroundEnergyMultiplier = 1f; }
+        _d.Hud.Visible = true;
+        _d.Player.Cam.MakeCurrent();
+        _d.Player.GlobalPosition = lamp2.GlobalPosition + new Vector3(0, 0.3f, 2.2f);
+        _d.Player.AimOverride = lamp2.GlobalPosition + Vector3.Up * 1.5f;
+        await Frames(10);
+        ps.OpenPanel(lamp2.NodeId);
+        await Frames(10);
+        await Grab("guc_panel.png");
+        _d.Hud.HideMenu();
+        _d.State.Backpack.Add(f.CableItem, 4); // goruntu sahnesi (bot degil): Kablo elde
+        await Frames(2);
+        int slot = _d.State.Belt.SlotOf(f.CableItem);
+        Check(slot >= 0, "Kablo kemerde (heldItems)");
+        if (slot >= 0) _d.SelectBelt(slot);
+        _d.Player.GlobalPosition = pole.GlobalPosition + new Vector3(-3.5f, 0.3f, 3.5f);
+        _d.Player.AimOverride = pole.SocketWorld;
+        await Frames(6);
+        ps.TickCableTool(pole.SocketWorld, true); // ilk soket
+        _d.Player.AimOverride = plate.GlobalPosition + Vector3.Up * 0.3f;
+        await Frames(12);
+        Check(ps.Picked == pole.NodeId, "Kablo: ilk soket secili, onizleme");
+        await Grab("guc_kablo.png");
+    }
+
+    async Task Grab(string file)
+    {
+        GetViewport().GetTexture().GetImage().SavePng(_out + file);
+        GD.Print($"POWERSHOT shot {file}");
+        await Frames(1);
     }
 
     async Task Shot(string file, Vector3 from, Vector3 at)
