@@ -557,6 +557,7 @@ Kare Temel · Üçgen Temel · Kazık Temel · Duvar · Yarım Duvar · Alçak D
 | Meşale | 2 Odun | 6 m gece ışığı |
 | Yemlik | 6 Odun | Ağılda; içine yem konur |
 | Folluk | 4 Odun + 4 Lif | Ağıldaki Gıdak buraya yumurtlar (6 yuva); Folluk yoksa yere |
+| Korkuluk (M2) | 4 Odun + 3 Lif, elde | 10 m içindeki ekine gündüz zararlısı gelmez ([GDD.md](GDD.md) §8.2) |
 
 ## 11. İstasyonlar ve makineler (43)
 

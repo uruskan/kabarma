@@ -16,6 +16,7 @@ public sealed class Pricing
     {
         var t = _d.Tool;
         if (t.Prices.TryGetValue(id, out int p)) return p;
+        if (Genetics.TryPrice(_d, id, out int cropPrice)) return cropPrice; // tarim: T1-T2 ekinleri ve Alaca urun (GDD 8.3, crops.json)
         if (depth > 8 || !t.Processed.Contains(id)) return 0;
         var r = t.Recipes.FirstOrDefault(x => x.Id == id && !x.Load);
         if (r == null || r.Out <= 0) return 0;
