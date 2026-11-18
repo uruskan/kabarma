@@ -50,11 +50,17 @@ public static class Events
     public static event Action<string, string> Laid;
     /// <summary>Suna bir repligi soyledi (scenario.json "lines" kimligi). Seslendirme buna baglanir.</summary>
     public static event Action<string> SunaSaid;
+    /// <summary>Yapi parcasi yerinde yukseltildi (sekil kimligi, yeni malzeme; GDD 7). Yayan: BuildBridge.Yapi.cs.</summary>
+    public static event Action<string, string> PieceUpgraded;
+    /// <summary>Plan modu parcasinin malzemesi tamamlandi ve kuruldu (sekil kimligi). Yayan: BuildBridge.Yapi.cs.</summary>
+    public static event Action<string> PlanCompleted;
 
     public static void RaisePenChanged(int cells) => PenChanged?.Invoke(cells);
     public static void RaiseAnimalPenned(string species) => AnimalPenned?.Invoke(species);
     public static void RaiseLaid(string product, string where) => Laid?.Invoke(product, where);
     public static void RaiseSunaSaid(string lineId) => SunaSaid?.Invoke(lineId);
+    public static void RaisePieceUpgraded(string id, string material) => PieceUpgraded?.Invoke(id, material);
+    public static void RaisePlanCompleted(string id) => PlanCompleted?.Invoke(id);
 
     public static void RaiseStationPlaced(string id) => StationPlaced?.Invoke(id);
     public static void RaisePiecePlaced(string id) => PiecePlaced?.Invoke(id);
@@ -83,5 +89,6 @@ public static class Events
         Paid = null;
         Deconstructed = null;
         PenChanged = null; AnimalPenned = null; Laid = null; SunaSaid = null;
+        PieceUpgraded = null; PlanCompleted = null;
     }
 }

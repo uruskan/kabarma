@@ -41,6 +41,7 @@ public partial class Bot : Node
         RegisterBuild();     // Bot.Build.cs: odun, yapi
         RegisterIlkgun();    // Bot.Ilkgun.cs: ilk gun (GDD 24): mine (kapak), tezgah, tarla, agil, gidak, night (agil kapisi)
         RegisterZincir();    // Bot.Zincir.cs (entegrasyon): yemek, firin, civi, kasa, barinak
+        RegisterYapi();      // Bot.Yapi.cs (M2 yapi): yukselt (duvari Kerpic-Tas'a)
         _steps["end"] = StepEnd;
     }
 

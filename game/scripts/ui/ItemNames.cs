@@ -40,6 +40,12 @@ public static class ItemNames
         ["tezgah"] = "Tezgâh",
         ["tas_firin"] = "Taş Fırın",
         ["paketleme"] = "Paketleme Tezgâhı",
+        // M2 yapi: malzeme girdileri (ICERIK 2.3) ve yapi malzemeleri (build.json).
+        ["kerpic"] = "Kerpiç",
+        ["celik"] = "Çelik",
+        ["mayali_beton"] = "Mayalı Beton",
+        ["kerpic_tas"] = "Kerpiç-Taş",
+        ["celik_sac"] = "Çelik Sac",
     };
 
     public static string Of(string id) => Names.TryGetValue(id, out var n) ? n : id;
