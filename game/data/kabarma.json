@@ -51,19 +51,23 @@
     "maxKs": 10,
     "everyDays": 4,
     "families": {
-      "root": ["homur"],
+      "root": ["homur", "dehliz"],
       "grain": ["gidak", "cekirge", "findikci"],
-      "gourd": ["zipzip"],
-      "fruit": ["hu"],
-      "fiber": [],
-      "oil": ["bozuk"],
-      "spice": [],
-      "mushroom": ["vicik"],
-      "flower": ["vizviz"]
+      "gourd": ["zipzip", "paytak"],
+      "fruit": ["hu", "lescci", "tukurgen"],
+      "fiber": ["kiskac", "billur"],
+      "oil": ["bozuk", "kizgin"],
+      "spice": ["kivrik", "ayaz_kurdu"],
+      "mushroom": ["vicik", "hamurcuk"],
+      "flower": ["vizviz", "vrak"]
     },
     "natives": {
       "altin_cayir": ["zipzip", "gidak", "pofuduk", "homur", "cekirge", "sinsi"],
-      "sis_korusu": ["dalli", "hu", "vicik", "bozuk", "vizviz", "findikci"]
+      "sis_korusu": ["dalli", "hu", "vicik", "bozuk", "vizviz", "findikci"],
+      "isil_sazlik": ["vrak", "kiskac", "suluk_surusu", "tukurgen", "cizbiz"],
+      "kizil_kanyon": ["kosar", "kivrik", "kizgin", "lescci", "dehliz"],
+      "ayaz_yaylasi": ["tosun", "ayaz_kurdu", "paytak", "billur"],
+      "gobek": ["hamurcuk"]
     },
     "elites": [
       { "id": "zirhli", "name": "Zırhlı", "hp": 1.6, "speed": 0.9, "damage": 1.0, "scale": 1.1, "armor": 40 },

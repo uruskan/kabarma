@@ -50,6 +50,8 @@ public sealed class WildState
     public bool Swollen { get; set; }
     /// <summary>Evcillesti: davranisi hayvancilik akisi surer (GDD §9).</summary>
     public bool Tamed { get; set; }
+    /// <summary>Bolunen turun kusagi (Hamurcuk, WildDef.SplitInto): 0 ilk, her bolunmede +1.</summary>
+    public int Gen { get; set; }
     public ulong Rand { get; set; } = 0x9E3779B97F4A7C15UL;
     public float Next() { var r = Rand; var v = WildRandom.Next(ref r); Rand = r; return v; }
     public float Range(float min, float max) => min + Next() * (max - min);

@@ -31,7 +31,7 @@ public partial class Wildlife
             c.TakeHit(new Kabarma.Sim.CombatHit(damage, type, Kabarma.Sim.CombatTeam.Player), from); // savas: tur profili ve durumlar (combat/WildCreature.Combat.cs)
             if (c.IsInsideTree()) Fx.Burst(center, Palette.OffWhite, 6, 2f, 0.06f, 0.4f, true, -4f);
             Startle(creatures, center, 12f);
-            if (c.Dead) { GD.Print($"WILD {c.Def.Id}#{c.State.Id} down"); Events.RaiseWildActed(c.Def.Id, "Down", center.X, center.Z); c.QueueFree(); }
+            if (c.Dead) { GD.Print($"WILD {c.Def.Id}#{c.State.Id} down"); Events.RaiseWildActed(c.Def.Id, "Down", center.X, center.Z); c.OnDowned(); c.QueueFree(); } // OnDowned: bolunen tur (WildCreature.Traits.cs)
             return c;
         }
         foreach (var s in swarms)

@@ -113,7 +113,7 @@ public partial class WildCreature : Node3D
     {
         if (!Loaded) return;
         _scale = Look != null ? Mathf.Lerp(1f, Def.SwollenScale, Look.Tick(dt)) : 1f;
-        _visual.Scale = Vector3.One * _scale;
+        _visual.Scale = Vector3.One * _scale * SizeMult; // SizeMult: bolunen parca (WildCreature.Traits.cs)
         if (_sac != null) _sac.Visible = (Look?.Amount ?? 0f) > 0.5f;
         if (_flash > 0) { _flash = Mathf.Max(0, _flash - dt * 8f); Look?.Set(flash: _flash * 0.6f); }
         if (Display) { Rig.PlayRepeat(DisplaySlot); return; }
@@ -139,7 +139,7 @@ public partial class WildCreature : Node3D
             var sense = new WildSense { PlayerX = p.X, PlayerZ = p.Z, Night = _w.Night, Hit = _hit, HasTarget = _hasTarget, TargetX = _target.X, TargetZ = _target.Z };
             _hit = false;
             Last = WildBrain.Step(Def, Herd ?? new WildHerdState { WanderX = pos.X, WanderZ = pos.Z, HomeX = pos.X, HomeZ = pos.Z }, State, sense, dt);
-            if (Last.Event != WildEvent.None) _w.Report(this, Last.Event);
+            if (Last.Event != WildEvent.None) { _w.Report(this, Last.Event); TraitEvent(Last.Event); } // Traits: menzilli vurus gorseli
             goal = new Vector3(Last.GoalX, pos.Y, Last.GoalZ);
             speed = Last.Speed; clip = Last.Clip;
             face = Last.Face; faceAt = new Vector3(Last.FaceX, 0, Last.FaceZ);
@@ -169,7 +169,7 @@ public partial class WildCreature : Node3D
         float fly = Def.Wild?.FlyHeight ?? 0f;
         bool flying = fly > 0 && moving && WildBrain.Awake(Def.Wild!, _w.Night);
         _flyY = Mathf.Lerp(_flyY, flying ? fly : 0f, Mathf.Min(1f, dt * 2f));
-        _visual.Position = new Vector3(0, _flyY, 0);
+        _visual.Position = new Vector3(0, _flyY + TraitY(dt, clip, moving), 0); // TraitY: pusu, kayma (WildCreature.Traits.cs)
         if (flying) clip = "run";
 
         if (_lock > 0) return;
