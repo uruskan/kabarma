@@ -20,6 +20,10 @@ public partial class WorldTest : Node3D
 
     void Check(bool ok, string what) { if (!ok) _fail.Add(what); }
 
+    /// <summary>Us cevresi tasi ilk gunun tariflerini karsilamali (M1): kilitsiz ve yalniz ilk gun kaynagindan. M2 zincir/guc tarifleri uzak kaynaktan.</summary>
+    static readonly System.Collections.Generic.HashSet<string> FirstDayItems = new() { "stone", "wood", "fiber", "clay", "copper_ore", "copper_ingot", "wheat", "egg", "turnip", "turnip_seed", "civi" };
+    static bool FirstDayRecipe(Kabarma.Sim.RecipeDef r) => r.UnlockOn == null && r.In.Keys.All(FirstDayItems.Contains);
+
     public override void _Ready()
     {
         try { Run(); }
@@ -112,7 +116,7 @@ public partial class WorldTest : Node3D
         float nearR = kaya.NearBase.Count > 0 ? kaya.NearBase[0] : 35f;
         int nearStone = w.Rocks.Where(r => r.Item == "stone" && new Vector2(r.GlobalPosition.X, r.GlobalPosition.Z).Length() <= nearR).Sum(r => r.Stones);
         int placeStone = w.Data.Tool.Placeables.Sum(p => p.Cost.TryGetValue("stone", out int n) ? n : 0)
-            + w.Data.Tool.Recipes.Sum(r => r.In.TryGetValue("stone", out int n) ? n : 0);
+            + w.Data.Tool.Recipes.Where(FirstDayRecipe).Sum(r => r.In.TryGetValue("stone", out int n) ? n : 0);
         Check(kaya.NearBase.Count < 2 || nearStone >= kaya.NearBase[1], $"stone near base {nearStone} < need {(kaya.NearBase.Count > 1 ? kaya.NearBase[1] : 0)}");
         Check(nearStone >= placeStone, $"stone near base {nearStone} < placeable+recipe stone {placeStone}");
         int farStone = w.Rocks.Count(r => r.Item == "stone" && new Vector2(r.GlobalPosition.X, r.GlobalPosition.Z).Length() > nearR + 10f);
