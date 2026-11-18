@@ -23,19 +23,22 @@ Dal `claude/m2-tarim-66b764`. Kaynaklar: GDD §8.1–8.3, ICERIK §5 (#1–#11),
   - `Genetics.Save.cs`: kayıt bölümü `farm.genetics`.
 - **Godot:**
   - `FarmView.Meshes.cs`: 10 ekinin ve Korkuluk'un koddan modeli (YER TUTUCU). Alaca, toon gölgelendiricinin `tint` değeriyle görünür.
-  - `FarmView.Tarim.cs`: tohum seçimi (T / DPad aşağı), yabani bitkiler (YER TUTUCU), Korkuluk ve Arı Kovanı taraması, hasat geri bildirimi.
+  - `FarmView.Tarim.cs`: tohum seçimi (H / DPad sol), yabani bitkiler (YER TUTUCU), Korkuluk ve Arı Kovanı taraması, hasat geri bildirimi.
   - `FarmCard.cs`: tohum ve ekin bilgi kartı.
   - `Hud.DefterIslah.cs`: Defter'de Islah notları.
   - `Bot.Tarim.cs` ve `--test=tarim`.
 - **Testler:**
   - `GeneticsTests`: istatistik; mutasyon 200 bin, Alaca 400 bin çekiliş; sınırlar; çaprazlama ortalaması.
-  - `FarmM2Tests`: 11 ekinin evreleri ve hasadı, zararlı, Korkuluk, Sarımsak, nöbet, nadas, kalıcı çalı, mantar, yabani bitki, D. Ayrıca 100 büyüme günlük tarla simülasyonu: kendi kendine yeter, gen toplamı seçilimle artar, Alaca bulunur, çaprazlama olur.
+  - `FarmM2Tests`: 11 ekinin evreleri ve hasadı, zararlı, Korkuluk, Sarımsak, nöbet, nadas, kalıcı çalı, mantar, yabani bitki, D. Ayrıca 100 oyun günlük tarla simülasyonu. Her gün 22 dk gündüz ve 8 dk gece; dört sıra Şalgam, Buğday, Domates ve Mantar; sabah ve akşam sulanır. Tarla kendi kendine yeter, gen toplamı seçilimle artar, Alaca bulunur, çaprazlama olur.
   - `GeneticsSaveTests`: bayt bayt aynı gidiş-dönüş.
 
 ## Test sonuçları
 - Tam `tools/test.ps1 -BotTimeout 900`, birleşmiş main üzerinde (`full.log`): **20/20 PASS**. Gündüz zararlısı açıkken ilk gün botu, `input_kbm`, `input_pad` ve `tarim` dahil.
   - `tarim`: `RESULT ok tarim crop=wheat item=16 alaca=5 seeds=4 ledger=4 best=V2 H3 D3 M2 korkuluk=1 protected=2`
   - Bot gerçek yoldan oynar: Ocak'ı kurar; Odun ve Lif toplayıp Korkuluk üretir ve kurar; yabani Buğday'ı biçer; 2 kare sürer, tohumu seçer ve eker; sular, bekler, hasat eder. Bu tohumda bir bitki Altın Alaca çıktı.
+- Son değişikliklerden sonra (main `c6d42b2` birleşmiş; tohum tuşu H / DPad sol, yabani bitki tarla listesinin dışında, Defter adımı): `-Only build,tarim,bot,gece,coop -BotTimeout 900` **PASS**. Ortak oyunda `plots=4 tilled=4`.
+- Doğrulanmamış: oyun içinde çaprazlama (yalnız Sim testinde); zararlı ısırığı (bot koşusunda `TARIM bite` satırı çıkmadı); H tuşunun yolu (bot `SelectSeed` çağırır); Defter Islah bölümünün ekran görüntüsü; kayıttan yüklenmiş tarlanın Godot görünüşü; kabarık Alaca satış çarpanı.
+- Not: DPad sol hem `seed_cycle` hem `card_1`. Tohum seçimi yalnız Toprak eldeyken ve menü kapalıyken çalışır; gece kartı ile çakışırsa sahip değiştirebilir.
 - Görüntüler (`shots/`):
   - `tarim_030`: tohum kartı.
   - `tarim_kart_120`: ekin kartı. Genler, Alaca Altın ve Korkuluk koruması görünür.

@@ -6,7 +6,7 @@ using Kabarma.Sim;
 namespace Kabarma.Game;
 
 /// <summary>
-/// tarim (M2, GDD 8.2-8.3) Godot katmani: tohum secimi (T / DPad asagi), yabani bitkiler (yer tutucu: Ocak cevresinde),
+/// tarim (M2, GDD 8.2-8.3) Godot katmani: tohum secimi (H / DPad sol), yabani bitkiler (yer tutucu: Ocak cevresinde),
 /// Korkuluk ve Ari Kovani taramasi (Sim'e konum), gunduz zararlisi isirigi, hasat geri bildirimi, bilgi karti (FarmCard).
 /// Durum Sim'de (Farm.Selected, Farm.Seeds); burada statik durum yok.
 /// </summary>
@@ -18,7 +18,8 @@ public partial class FarmView
 
     void InitTarim()
     {
-        Farm.Bitten += p => View(p)?.OnBitten();
+        Farm.Bitten += p => { View(p)?.OnBitten(); GD.Print($"TARIM bite plot={p.X},{p.Y} crop={p.Crop} damage={p.PestDamage:0.00}"); };
+        Farm.Eaten += p => { if (!p.Wild && p.Stage == CropStage.Mature && p.Swollen == null) GD.Print($"TARIM eaten plot={p.X},{p.Y} crop={p.Crop}"); };
         Farm.WildGrown += p =>
         {
             var v = View(p);
@@ -47,7 +48,7 @@ public partial class FarmView
         return first?.Id;
     }
 
-    /// <summary>Siradaki tohuma gec (T / DPad asagi; bot da bunu cagirir).</summary>
+    /// <summary>Siradaki tohuma gec (H / DPad sol; bot da bunu cagirir).</summary>
     public void CycleSeed()
     {
         var list = SeedChoices();
@@ -58,7 +59,7 @@ public partial class FarmView
         _card?.Pulse();
     }
 
-    /// <summary>Belirli ekinin tohumunu sec (bot; oyuncunun T'ye basmasi gibi, tohum yoksa secmez).</summary>
+    /// <summary>Belirli ekinin tohumunu sec (bot; oyuncunun H'ye basmasi gibi, tohum yoksa secmez).</summary>
     public bool SelectSeed(string crop)
     {
         var def = _data.FindCrop(crop);
