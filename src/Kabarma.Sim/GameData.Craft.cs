@@ -32,6 +32,8 @@ public sealed partial class ToolFile
     public int CraftCountMax { get; set; } = 10;
     /// <summary>Istasyon tarifi bu yaricap (m) icindeki istasyonda uretilir; ayni yaricap E menusunu acar.</summary>
     public float StationReach { get; set; } = 3.2f;
+    /// <summary>Erisimde birden cok istasyon varsa E nisangahin bu aci (derece) icinde baktigini acar; yoksa en yakini.</summary>
+    public float StationFocusDegrees { get; set; } = 30f;
     /// <summary>Insa Plani eldeyken parcaya bakip E bu kadar basili tutulunca yukselt / onar / sok carki acilir.</summary>
     public float PlanHoldSeconds { get; set; } = 0.35f;
     public List<CraftCategoryDef> CraftCategories { get; set; } = new();

@@ -1,10 +1,11 @@
 {
-  "_not": "Kemer, Uretim paneli ve eksik malzeme (GDD §4, §5; URETIM §6 M1 karari 23). beltTools: cantaya girmeyen, kemerde hep duran aletler (GDD §3.6: olumde oyuncuda kalir). beltStart: kemerin baslangic dizilisi (1. yuvada Capa, 2. yuvada Insa Plani). Kemere kendiliginden yalniz elde tutulabilen esya girer (alet, yerlestirilebilir, yemek). craftQueueMax: el kuyrugundaki is sayisi. craftCountMax: panelde secilebilen en buyuk adet. stationReach: istasyon tarifinin uretildigi ve E menusunun acildigi yaricap (m). planHoldSeconds: Insa Plani eldeyken E basili tutma suresi (yukselt / onar / sok carki); kisa basis olagan E'dir.",
+  "_not": "Kemer, Uretim paneli ve eksik malzeme (GDD §4, §5; URETIM §6 M1 karari 23). beltTools: cantaya girmeyen, kemerde hep duran aletler (GDD §3.6: olumde oyuncuda kalir). beltStart: kemerin baslangic dizilisi (1. yuvada Capa, 2. yuvada Insa Plani). Kemere kendiliginden yalniz elde tutulabilen esya girer (alet, yerlestirilebilir, yemek). craftQueueMax: el kuyrugundaki is sayisi. craftCountMax: panelde secilebilen en buyuk adet. stationReach: istasyon tarifinin uretildigi ve E menusunun acildigi yaricap (m). stationFocusDegrees: erisimde birden cok istasyon varsa E nisangahin bu aci icinde baktigini acar, yoksa en yakini. planHoldSeconds: Insa Plani eldeyken E basili tutma suresi (yukselt / onar / sok carki); kisa basis olagan E'dir.",
   "beltTools": ["capa", "insa_plani"],
   "beltStart": ["capa", "insa_plani"],
   "craftQueueMax": 8,
   "craftCountMax": 10,
   "stationReach": 3.2,
+  "stationFocusDegrees": 30,
   "planHoldSeconds": 0.35,
   "craftCategories": [
     { "id": "all", "name": "Tümü" },
