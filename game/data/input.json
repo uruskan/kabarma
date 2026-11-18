@@ -62,6 +62,10 @@
   "actions": {
     "move_forward": { "name": "İleri", "kb": ["W", "Up"], "pad": ["LS:Up"] },
     "move_back": { "name": "Geri", "kb": ["S", "Down"], "pad": ["LS:Down"] },
+    "voice_ptt": { "name": "Bas-konuş (yakın ses)", "kb": ["T"], "pad": ["Start"] },
+    "voice_radio": { "name": "Telsiz (uzak ses)", "kb": ["Y"], "pad": ["DPad:Down"] },
+    "player_list": { "name": "Oyuncu listesi", "kb": ["P"], "padVia": "controls_panel" },
+    "coop_panel": { "name": "Ortak oyun paneli", "kb": ["F4"], "padVia": "controls_panel" },
     "move_left": { "name": "Sola", "kb": ["A", "Left"], "pad": ["LS:Left"] },
     "move_right": { "name": "Sağa", "kb": ["D", "Right"], "pad": ["LS:Right"] },
     "look_left": { "name": "Sola bak", "kbGlyph": "Fare", "pad": ["RS:Left"] },

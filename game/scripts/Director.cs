@@ -109,6 +109,7 @@ public partial class Director : Node3D
         WireNightAndDay(); // Director.Calendar.cs: takvim, uyku, Defter olaylari
         State.Farm.Eaten += p => { GD.Print($"EATEN plot {p.X},{p.Y}"); Sfx.Play("pop", FarmView.CellCenter(p.X, p.Y), -2f); };
         Pod.BeginHatchIntro(this); // Pod.Hatch.cs: kapak acilir, Suna giris repliklerini soyler (PLAN 1.4, 0:00)
+        InitNet(); // Director.Net.cs (ortak): --coop varsa NetSync; tek oyuncuda null
 
         if (Main.Args.ContainsKey("bot")) { Bot = new Bot(this); AddChild(Bot); }
         // Sinama: --look=x,y,z:tx,ty,tz sabit bir kameradan bakar (varlik denetimi goruntuleri icin).
@@ -161,6 +162,7 @@ public partial class Director : Node3D
         float realDt = (float)delta;
         if (HitStopActive()) Engine.TimeScale = Feel.Data.HitStop.TimeScale * SpeedScale; // Director.Feel.cs: gercek saatle
         else Engine.TimeScale = _slowMo * SpeedScale;
+        NetTimeScale(); // Director.Net.cs (ortak): ortak oyunda zaman yavaslamaz
         float dt = realDt; // delta zaten TimeScale ile olcekli
         _actT += dt;
 

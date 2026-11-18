@@ -74,6 +74,7 @@ public partial class Capa
         if (def == null) return;
         if (!_ghostOk) { _d.Hud.Hint(def.Id != "ocak" && _d.Ocak == null ? "Önce Ocak'ı kur: tapu Ocak'la gelir" : "Buraya konmaz", 1.2f); Sfx.Play("hit", null, -10f); return; }
         if (_d.State.Backpack.Count(def.Id) < 1) { _d.Hud.Hint($"{def.Name} yok: Tab → Üretim", 1.5f); Sfx.Play("hit", null, -10f); return; }
+        if (_d.Net?.ForwardPlaceItem(def.Id, _ghost.GlobalPosition, _ghostYaw) == true) { _ghost.Visible = false; return; } // ortak: host kurar
         _d.State.Backpack.Remove(def.Id, 1);
         var at = _ghost.GlobalPosition; float yaw = _ghostYaw;
         _ghost.QueueFree(); _ghost = null; _ghostId = null;
