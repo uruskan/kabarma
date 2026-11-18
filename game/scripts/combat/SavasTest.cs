@@ -248,7 +248,7 @@ public partial class SavasTest : Node
         bool throwing = a.Pending == "uproot" && a.Telegraphing || a.Acting == "uproot" || GetTree().GetNodesInGroup("azman_flying").Count > 0;
         float want = a.Def.Radius + 7.5f;
         if (throwing) P.MoveOverride = (away.Cross(Vector3.Up).Normalized() * 1.5f + away.Normalized() * 0.3f);
-        else if (dist < a.Def.Radius + 4f) P.MoveOverride = (away.Normalized() + away.Normalized().Cross(Vector3.Up) * 0.7f).Normalized() * 1.5f;
+        else if (dist < a.Def.Radius + 5f) P.MoveOverride = (away.Normalized() + away.Normalized().Cross(Vector3.Up) * 0.7f).Normalized() * 1.5f;
         else if (dist < want - 1.5f) P.MoveOverride = away.Normalized() + away.Normalized().Cross(Vector3.Up) * 0.4f;
         else if (dist > want + 2f) MoveTo(a.GlobalPosition, want, false);
         else P.MoveOverride = away.Normalized().Cross(Vector3.Up) * 0.6f;
