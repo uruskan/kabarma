@@ -1,0 +1,10 @@
+﻿[1] derleme ve Sim testleri
+[PASS] build  exit=0 warnings=0 errors=0
+[PASS] sim  exit=0 Passed!  - Failed:     0, Passed:   607, Skipped:     0, Total:   607, Duration: 31 s - Kabarma.Sim.Tests.dll (net8.0)
+
+sinama     sonuc  sure(sn)  ayrinti
+------     -----  --------  -------
+build      PASS       10.3  exit=0 warnings=0 errors=0
+sim        PASS       37.4  exit=0 Passed!  - Failed:     0, Passed:   607, Skipped:     0, Total:   607, Duration: 31 s - Kabarma.Sim.Tests.dll (net8.0)
+TEST PASS
+TAMAM: main d455f5d -> 33e1107 (claude/m2-dunya-9fd4f9)

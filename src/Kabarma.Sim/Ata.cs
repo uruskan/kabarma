@@ -7,8 +7,9 @@ namespace Kabarma.Sim;
 public sealed class AtaFight
 {
     public string AtaId { get; set; } = "";
-    public float Hp { get; set; }
-    public float MaxHp { get; set; }
+    /// <summary>Can Body'dedir (savas sozlesmesi); bu ikisi eski kayitlar ve okunurluk icin ona yonlenir.</summary>
+    public float Hp { get => Body.Hp; set => Body.Hp = value; }
+    public float MaxHp { get => Body.MaxHp; set => Body.MaxHp = value; }
     /// <summary>0, 1, 2: AtaDef.Phases sirasi.</summary>
     public int Phase { get; set; }
     /// <summary>Zirh (0..1): silah hasarindan dusen pay (Koca Pofuduk'un yunu).</summary>
@@ -37,6 +38,12 @@ public sealed class AtaFight
     public bool Defeated { get; set; }
     /// <summary>Toplam alinan hasar, kaynaga gore (sinama ve rapor).</summary>
     public Dictionary<string, float> DamageBySource { get; set; } = new();
+    /// <summary>
+    /// Savas govdesi (GDD §16.1, Combat.cs): can, durumlar (yanik, donma, sok, zehir), Kabarik. Zirh puani her silah
+    /// isabetinde Armor payindan kurulur; kalkan ve sersemleme Ata'nin kendi alanlarindadir. Hp/MaxHp'den sonra
+    /// yazilir: eski kayitta yoksa Hp'nin kurdugu govde kalir. Eklenen alan, surum degismez.
+    /// </summary>
+    public CombatBody Body { get; set; } = new() { Team = CombatTeam.Wild };
 }
 
 /// <summary>Bir Ata'nin kalici kaydi: adak ilerlemesi, yenilme sayisi.</summary>

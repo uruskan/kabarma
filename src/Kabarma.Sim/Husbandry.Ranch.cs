@@ -57,7 +57,7 @@ public enum RanchEventKind { Product, Nested, Grounded, Manure, Worked, Scouted,
 /// <summary>Bir adimda olan sey: Godot katmani gorur (efekt, ses, ipucu); Sim testleri sayar.</summary>
 public readonly record struct RanchEvent(RanchEventKind Kind, int AnimalId, string Item = "", int Count = 0, int OtherId = 0);
 
-public sealed class Ranch
+public sealed partial class Ranch
 {
     public HusbandryRules Rules { get; }
     readonly Coop _coop;
@@ -214,7 +214,7 @@ public sealed class Ranch
                 if (t != null) t.Water = Math.Max(0, t.Water - def.Trough.PerAnimalPerDay * days);
             }
 
-            bool adult = a.Adult(def.Breeding.AdultDays);
+            bool adult = a.Adult(def.Breeding.AdultDays) && !Exhausted(a); // M3: bayilan ve yorgun uretmez (Husbandry.Combat.cs)
             if (adult && a.Role == "uretici") Produce(a, s, pen, dt, ev);
             if (adult && a.Role == "isci" && s.Work != null) Work(a, s, pen, dt, ev);
             if (pen != null) DropManure(a, dt, ev);
@@ -393,6 +393,7 @@ public sealed class Ranch
     /// <summary>Safak: Suluk dolar (yagmur gelene kadar, husbandry.json trough.refillAtDawn).</summary>
     public void Dawn()
     {
+        DawnCombat(); // M3: bayilan uyanir, yorgunluk, dagilan ahir (Husbandry.Combat.cs)
         if (!Rules.Def.Trough.RefillAtDawn) return;
         foreach (var t in Troughs) t.Water = t.Capacity;
     }

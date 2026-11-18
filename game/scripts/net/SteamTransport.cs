@@ -175,12 +175,16 @@ public sealed class SteamTransport : ITransport
         }
     }
 
+    public long BytesSent { get; private set; }
+    public long BytesReceived { get; private set; }
+
     public void Send(int peer, byte[] data, NetChannel channel)
     {
         var c = IsHost ? (_peers.TryGetValue(peer, out var p) ? p : HSteamNetConnection.Invalid) : _server;
         if (c == HSteamNetConnection.Invalid) return;
         int flags = channel == NetChannel.Reliable ? Constants.k_nSteamNetworkingSend_Reliable : Constants.k_nSteamNetworkingSend_UnreliableNoDelay;
         var h = GCHandle.Alloc(data, GCHandleType.Pinned);
+        BytesSent += data.Length; // yuk (Steam'in ek yuku sayilmaz)
         try { SteamNetworkingSockets.SendMessageToConnection(c, h.AddrOfPinnedObject(), (uint)data.Length, flags, out _); }
         finally { h.Free(); }
     }
@@ -201,6 +205,7 @@ public sealed class SteamTransport : ITransport
         {
             var m = Marshal.PtrToStructure<SteamNetworkingMessage_t>(_msgs[i]);
             var buf = new byte[m.m_cbSize];
+            BytesReceived += m.m_cbSize;
             Marshal.Copy(m.m_pData, buf, 0, m.m_cbSize);
             SteamNetworkingMessage_t.Release(_msgs[i]);
             into.Add(new NetEvent(NetEventKind.Data, id, buf, 0));

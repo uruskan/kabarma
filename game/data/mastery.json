@@ -635,7 +635,13 @@
    "name": "Savaş Çığlığı",
    "text": "kabarık hayvan hasarı +%25",
    "live": false,
-   "effects": []
+   "effects": [
+    {
+     "stat": "swell_animal_damage",
+     "op": "add",
+     "value": 0.25
+    }
+   ]
   },
   {
    "id": "muhendislik_10a_cabuk_el",

@@ -29,6 +29,16 @@ public sealed class OyukTarget : IAtaTarget
         float got = _fight.Hit(dmg);
         OnHit?.Invoke(got, crit);
     }
+
+    // savas sozlesmesi (M3, ICombatTarget): IAtaTarget artik isabeti TakeHit'ten verir. Yerel kopru, savas akisi ekledi:
+    // koruyucunun kendi govdesi yok (alan etkisi almaz), isabet eski yola iner. Gercek gecis oyuk akisinin isi.
+    public CombatBody Body => null;
+    public CombatResult TakeHit(CombatHit hit, Vector3 from)
+    {
+        float got = _fight.Hit(hit.Amount);
+        OnHit?.Invoke(got, hit.Crit);
+        return new CombatResult { Damage = got };
+    }
 }
 
 /// <summary>Kostebek Bey gorunusu (YER TUTUCU, koddan): govde, pembe burun, pence, bere. Sersemken basinda yildizlar.</summary>

@@ -289,6 +289,7 @@ public partial class OyukSystem : Node3D
         var rec = P.Of(room.Poi.Id);
         if (rec.Cleared) return;
         rec.Cleared = true;
+        ForwardClear(room); // ortak: istemcide host'a da bildirilir (OyukSystem.Net.cs)
         GD.Print($"OYUK cleared {room.Poi.Id} guardian={room.Guardian.Id} tier={room.Tier}");
         Events.RaiseOyukCleared(room.Poi.Id);
         Sfx.Play("kabarmis_patlama", _target?.Center ?? room.Center, -2f);
@@ -343,6 +344,7 @@ public partial class OyukSystem : Node3D
         var chest = room.Chests.FirstOrDefault(c => !c.Opened && c.GlobalPosition.DistanceTo(p) < 2.2f);
         if (chest != null)
         {
+            if (ForwardChest(room, chest)) return true; // ortak: odul host'ta aktorun cantasina
             var loot = P.OpenChest(room.Poi.Id, room.Guardian, room.Tier, chest.Slot);
             if (loot.Count == 0) { _d.Hud.Hint("Sandık kilitli: önce koruyucuyu yen", 1.5f); return true; }
             chest.Open();

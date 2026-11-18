@@ -132,6 +132,8 @@ public sealed class AtaDef
     public float Radius { get; set; }
     public float Height { get; set; }
     public float Scale { get; set; } = 1f;
+    /// <summary>Kutle (GDD §16.1 Itme: itme hizi = kuvvet / kutle).</summary>
+    public float Mass { get; set; } = 25f;
     public string Add { get; set; } = "";
     public List<AtaPhaseDef> Phases { get; set; } = new();
     public AtaRewardDef Reward { get; set; } = new();

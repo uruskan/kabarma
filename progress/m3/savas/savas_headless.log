@@ -1,0 +1,92 @@
+﻿Godot Engine v4.7.2.stable.mono.official.ed1daf0bf - https://godotengine.org
+
+TEST savas
+MUSIC ready day=yes layers=3/3 bar=2.00s
+WORLD decor agac box=98 outside=285
+WORLD decor turuncu_agac box=28 outside=84
+WORLD decor cali box=153 outside=450
+WORLD decor ot box=226 outside=660
+WORLD decor bugday box=74 outside=210
+WORLD decor cicek box=240 outside=720
+WORLD decor egrelti box=156 outside=450
+WORLD decor kaya_duz box=36 outside=108
+WORLD decor kaya_dik box=17 outside=42
+WORLD pois 22: seyir_kulesi_altin_cayir_0@105,40 ata_tasi_altin_cayir_0@64,36 yabani_bahce_altin_cayir_0@-145,2 yuva_altin_cayir_0@143,192 yuva_altin_cayir_1@-231,-56 enkaz_altin_cayir_0@-69,179 enkaz_altin_cayir_1@84,195 enkaz_altin_cayir_2@-139,-84 oyuk_altin_cayir_0@-202,-106 oyuk_altin_cayir_1@-45,-226 oyuk_altin_cayir_2@165,215 seyir_kulesi_sis_korusu_0@-46,287 ata_tasi_sis_korusu_0@-212,219 yabani_bahce_sis_korusu_0@-53,256 yuva_sis_korusu_0@-200,189 yuva_sis_korusu_1@-88,230 enkaz_sis_korusu_0@-257,293 enkaz_sis_korusu_1@-151,238 enkaz_sis_korusu_2@-235,110 oyuk_sis_korusu_0@-172,215 oyuk_sis_korusu_1@-280,237 oyuk_sis_korusu_2@-276,130
+PLAYER model anims: carry,cheer,crouch_walk,eat,getup_back_pose,getup_front_pose,hurt,idle,jump,jump_air,jump_land,jump_start,kneel,knockdown,plant,push,run,shock_fall,sleep,sprint,walk,walk_casual,wave
+AUDIO sounds=60 playable=60 variant_files=180 m0_only=0 silent=0 placeholder=0
+AUDIO ok 60/60
+POFUDUK anims: pose/attack1,pose/attack2,pose/eat,pose/hit,pose/idle,pose/rest,pose/run,pose/walk,preset_quadruped_walk
+BUILD kit pieces=28
+ATALAR arenas=koca_pofuduk@64,36/r18:ata_tasi_altin_cayir_0,boynuzlu_dede@-212,219/r20:ata_tasi_sis_korusu_0
+OYUK rooms 6: oyuk_altin_cayir_0(kostebek_bey t0)@1000 oyuk_altin_cayir_1(kostebek_bey t1)@1120 oyuk_altin_cayir_2(kostebek_bey t2)@1240 oyuk_sis_korusu_0(yarasa_yumagi t0)@1360 oyuk_sis_korusu_1(yarasa_yumagi t1)@1480 oyuk_sis_korusu_2(yarasa_yumagi t2)@1600
+BOOT Kabarma MVP
+TARIM wild=22
+KADIM stones kadim_atilma@-10,40,y1.1 kadim_kalkan@48,-62,y20.7 kadim_sok@-150,170,y13.7 kadim_yem@-175,140,y12.6 kadim_sifa@-130,205,y14.0
+HELD capa
+MUSIC Silence -> Day
+ZIPZIP herd size=3 at=-3,-31 herds=1
+ZIPZIP herd size=2 at=21,20 herds=2
+ZIPZIP herd size=2 at=48,-4 herds=3
+WILDLIFE spawn gidak herd=2 at=142,-69
+WILDLIFE spawn homur herd=1 at=-15,9
+WILDLIFE spawn homur herd=1 at=-19,13
+WILDLIFE spawn dalli herd=1 at=35,15
+WILDLIFE spawn dalli herd=1 at=39,10
+WILDLIFE spawn vicik herd=1 at=-11,-35
+WILDLIFE spawn vicik herd=1 at=-8,-39
+WILDLIFE spawn bozuk herd=1 at=45,-39
+WILDLIFE spawn vizviz swarm at=27,21
+WILDLIFE spawn hu herd=1 at=-25,-17
+RANCH start animals=11 agents=11
+SUNA line=giris_1 voice=yes
+SAVAS start hp=100
+SAVAS state DayGo t=2.5
+WILDLIFE spawn bozuk herd=1 at=24,-9
+SAVAS day spawn bozuk hp=300
+SAVAS state Day t=2.5
+WILD bozuk#22 Warned at=23.7,-7.9
+WILDLIFE spawn homur herd=2 at=9,113
+HATCH intro done
+WILDLIFE spawn sinsi herd=1 at=104,-56
+SUNA line=giris_2 voice=yes
+WILDLIFE spawn gidak herd=2 at=-51,103
+WILD bozuk#22 down
+SAVAS day down bozuk t=10.4
+SAVAS state HomurGo t=12.9
+WILDLIFE spawn pofuduk herd=3 at=76,66
+WILDLIFE spawn cekirge swarm at=-137,-74
+SAVAS state HomurWalls t=19.0
+BUILT kare_temel pieces=1
+BUILT kare_temel pieces=2
+BUILT kare_temel pieces=3
+SAVAS walls 3
+AZMAN summon azman_homur ks=5 hp=1500 at=(0,34)
+SAVAS state Homur t=19.5
+SUNA line=- voice=no
+WILDLIFE spawn homur herd=2 at=16,115
+AZMAN wall_hit azman_homur piece=kare_temel hp=260
+WILDLIFE spawn pofuduk herd=2 at=140,56
+AZMAN riders azman_homur n=2
+AZMAN riders azman_homur n=2
+AZMAN riders azman_homur n=2
+AZMAN defeated azman_homur t=107.3 ks=5
+SAVAS defeated azman_homur fight_s=107.3 hp=100 walls=1 riders=6 uproots=0 logs=0 log_hits=0
+SUNA line=- voice=no
+SAVAS state BozukGo t=128.4
+SAVAS bozuk tree=(-13,-55) spot=(-8,-36)
+AZMAN summon azman_bozuk ks=5 hp=1600 at=(-12,-50)
+SAVAS state Bozuk t=130.5
+SUNA line=- voice=no
+AZMAN log_land at=(-10,-49)
+AZMAN log_land at=(-11,-47)
+AZMAN log_land at=(5,-48)
+AZMAN log_land at=(15,-51)
+AZMAN log_land at=(17,-45)
+AZMAN log_land at=(1,-41)
+AZMAN log_land at=(-9,-43)
+AZMAN log_land at=(-7,-35)
+AZMAN defeated azman_bozuk t=94.0 ks=5
+SAVAS defeated azman_bozuk fight_s=94.0 hp=100 walls=1 riders=6 uproots=8 logs=8 log_hits=0
+SUNA line=- voice=no
+SAVAS note: kutuk Azman'a firlatilmadi (kapi degil)
+RESULT ok savas day_down=True defeated=azman_homur,azman_bozuk fights=azman_homur:ok,azman_bozuk:ok player_hp=100 hurts=0 walls_placed=3 wall_hits=1 riders=6 uproots=8 log_landings=8 log_hits=0 spreads=0 chains=0 wild_mixed= t=226

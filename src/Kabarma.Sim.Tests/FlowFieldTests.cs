@@ -83,10 +83,10 @@ public class FlowFieldTests
         Assert.True(s.Cost < Def.BreakOf("wall"), $"cost {s.Cost}");
         // Kapi kapali (door) olunca aralik da kirma ister; acik kapi (doorOpen) yurunur.
         g.Stamp(2, "door", new[] { g.Index(16, 3) });
-        set.Tick(10);
+        set.Tick(10, int.MaxValue);
         Assert.True(set.Sample("crop", x, z).Cost >= Def.BreakOf("door"));
         g.Stamp(2, "doorOpen", new[] { g.Index(16, 3) });
-        set.Tick(10);
+        set.Tick(10, int.MaxValue);
         Assert.True(set.Sample("crop", x, z).Cost < Def.BreakOf("wall"));
     }
 
@@ -155,7 +155,7 @@ public class FlowFieldTests
         var (x, z) = W(g, 17, 16);
         Assert.True(set.Sample("crop", x, z).DirX > 0.9f); // yakin ekin dogu
         set.SetGoals("crop", new[] { W(g, 4, 16) }); // dogudaki yendi
-        set.Tick(10);
+        set.Tick(10, int.MaxValue);
         Assert.True(set.Sample("crop", x, z).DirX < -0.9f);
         Assert.Equal(13 * g.OpenCost, set.Sample("crop", x, z).Cost);
     }
@@ -211,6 +211,89 @@ public class FlowFieldTests
                 if (f.Dist(i) != full.Dist(i)) Assert.Fail($"adim {step} op {op}: hucre {g.X(i)},{g.Z(i)} onarim {f.Dist(i)} tam {full.Dist(i)}");
         }
         Assert.True(f.Repairs > 100, $"artimli onarim calismadi (repairs={f.Repairs}, recomputes={f.Recomputes})");
+    }
+
+    /// <summary>
+    /// Karelere bolunmus is (Step, kucuk butce): is surerken izgara ve hedef degisir; sorgular eski alani okur (is
+    /// bitene kadar on tampon degismez), her is bittiginde ve sonda alan tam hesapla ayni maliyeti verir.
+    /// </summary>
+    [Fact]
+    public void Sliced_repair_with_changes_mid_job_equals_full_recompute()
+    {
+        var rng = new Random(77);
+        var g = Grid(40);
+        var set = new FlowFieldSet(g);
+        var f = set.Field("crop");
+        var goals = new List<(float, float)> { W(g, 20, 20), W(g, 5, 33) };
+        set.SetGoals("crop", goals);
+        f.Update();
+        var owners = new List<ulong>();
+        ulong next = 1;
+        string[] kinds = { "wall", "fence", "door", "doorOpen", "trap", "station" };
+        int checks = 0, sliced = 0;
+        void Check(string at)
+        {
+            var full = new FlowField(g, "full");
+            full.SetGoals(f.Goals);
+            full.Recompute();
+            for (int i = 0; i < g.Count; i++)
+                if (f.Dist(i) != full.Dist(i)) Assert.Fail($"{at}: hucre {g.X(i)},{g.Z(i)} dilimli {f.Dist(i)} tam {full.Dist(i)}");
+            checks++;
+        }
+        for (int step = 0; step < 300; step++)
+        {
+            int op = rng.Next(10);
+            if (op < 4 || owners.Count == 0)
+            {
+                var (cx, cz) = W(g, rng.Next(40), rng.Next(40));
+                ulong o = next++;
+                g.Stamp(o, kinds[rng.Next(kinds.Length)], g.CellsUnderBox(cx, cz, 0.5f + (float)rng.NextDouble() * 4f, 0.15f, (float)(rng.NextDouble() * Math.PI)));
+                owners.Add(o);
+            }
+            else if (op < 7) { int k = rng.Next(owners.Count); g.Unstamp(owners[k]); owners.RemoveAt(k); }
+            else if (op < 8) g.SetTerrain(g.Index(rng.Next(40), rng.Next(40)), rng.Next(4) == 0 ? FlowGrid.Impassable : g.OpenCost + rng.Next(30));
+            else
+            {
+                if (rng.Next(2) == 0 && goals.Count > 1) goals.RemoveAt(rng.Next(goals.Count));
+                else goals.Add(W(g, rng.Next(40), rng.Next(40)));
+                set.SetGoals("crop", goals);
+            }
+            // Birkac kucuk dilim; is surerken on tampon degismez.
+            int slices = rng.Next(4);
+            for (int s = 0; s < slices && f.Dirty; s++)
+            {
+                bool wasBusy = f.Busy;
+                var before = wasBusy ? Enumerable.Range(0, g.Count).Select(f.Dist).ToArray() : null;
+                f.Step(37);
+                if (f.Busy) sliced++;
+                if (wasBusy && f.Busy)
+                    for (int i = 0; i < g.Count; i++) Assert.Equal(before![i], f.Dist(i));
+            }
+            if (step % 10 == 9) while (f.Dirty) f.Step(37); // ara ara dilimlerle sonuna kadar
+            if (!f.Dirty) Check($"adim {step} is bitti");
+        }
+        f.Update();
+        Check("son");
+        Assert.True(sliced > 50, $"is karelere bolunmedi ({sliced})");
+        Assert.True(checks > 20, $"az denetim ({checks})");
+    }
+
+    [Fact]
+    public void Tick_spends_at_most_cell_budget()
+    {
+        var g = Grid(160);
+        var set = new FlowFieldSet(g);
+        set.SetGoals("kazan", new[] { W(g, 80, 80) });
+        set.Field("kazan").Update();
+        g.Stamp(1, "wall", g.CellsUnderBox(W(g, 80, 70).x, W(g, 80, 70).z, 7f, 0.15f, 0f));
+        int ticks = 0;
+        var f = set.Field("kazan");
+        while (f.Dirty) { set.Tick(cells: 500); ticks++; Assert.True(ticks < 1000); }
+        Assert.True(ticks > 2, $"is tek tikte bitti ({ticks}); butce uygulanmiyor");
+        var full = new FlowField(g, "full");
+        full.SetGoals(f.Goals);
+        full.Recompute();
+        for (int i = 0; i < g.Count; i++) Assert.Equal(full.Dist(i), f.Dist(i));
     }
 
     [Fact]

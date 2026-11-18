@@ -272,6 +272,44 @@ Komutlar: izle, bekle, işaretlediğime saldır, dön. Uysallığı düşük hay
 - Ahırdakiler saklanır. Ahır yıkılırsa kaçışırlar; sabah mutlulukları yarıya iner.
 - Hayvan kalıcı olarak ölmez (Sert Ay ayarında ölür).
 
+**Tanımlar ve sayılar (M3, hayvan akışı; sayılar `husbandry.json` `combat` ve `mount`):**
+
+- **Savaş Ağılı:** içinde Savaş Ağılı Bayrağı duran ağıl.
+  - Oradaki Savaşçı rolündeki yetişkin hayvan Kabarma'da kabarır ve savaşır.
+  - Savaşçı olmayan ya da yavru hayvan Savaş Ağılı'nda da saklanır.
+- **Ahır:** bayraksız her kayıtlı ağıl. Kabarma'da içindekiler saklanır: dalga onlara dokunmaz ve onlar da savaşmaz.
+- **Ahır yıkılırsa:** gece ağılın çevresi kopar (bir duvar ya da kapı düşer) ve ağıl kaybolur. İçindekiler kaçışır:
+  - kaydı düşer;
+  - sabah mutluluğu yarıya iner;
+  - güveni kaçma kuralındaki gibi düşer (§9.1).
+- **Kabarık hayvan:**
+  - Can = türün canı (`creatures.json`) × B geni can çarpanı × kabarma can çarpanı.
+  - Hasar ve tür, türün kabarmış hâlinden gelir (ICERIK §3).
+  - Ortak hasar kuralıyla vurur ve vurulur (§16.1, oyuncu takımı).
+- **Bayılma:** canı biten hayvan bayılır ve gece boyu yerde kalır. Şafakta kendi ağılına döner ve yorgun uyanır. Yorgunluk ertesi şafağa dek sürer:
+  - ürün vermez;
+  - savaşa girmez;
+  - binilmez.
+- **Sert Ay:** dünya ayarı. Açıksa bayılan hayvan ölür. Ayar M4'te gelir; kural verisi şimdiden `combat.hardMoonDies`.
+- **Ahır Zili:** çalınca 30 m içindeki evcil hayvanlar (izleyen ya da kaçmış) zilin ağılına döner.
+- **Bağlama Direği:**
+  - Binekten direğin 3 m yakınında inilirse hayvan direğe bağlanır.
+  - Bağlı hayvanın mutluluğu bağlıyken değişmez (ağıl ihtiyaçları işlemez); kaçmaz ve Kabarma'da saklanır.
+  - Bir direğe bir hayvan bağlanır.
+- **Eyerlik ve eyer:**
+  - Eyer Tezgâh'ta Deri ve Lif'ten yapılır.
+  - Eyerlik'te E, 3 m içindeki Binek rolündeki evcil yetişkin hayvana çantadaki eyeri takar.
+  - Eyer hayvanda kalır.
+- **Binek:**
+  - Eyerli, Binek rolündeki, yorgun olmayan evcil yetişkin hayvana E ile binilir.
+  - Hız = türün binek hızı × B geni binek çarpanı × (1 + Ustalık `mount_speed`).
+  - E ya da zıplama ile inilir.
+  - Binilen yol `mount_m` ölçüsüne ve Sürüş ustalığına (her 100 m) sayılır.
+  - Kabarık Gıdak (Koç Gıdak) gece de binilir.
+- **Savaş ölçüleri:**
+  - Kabarık hayvanların öldürdüğü düşmanlar Savaş Ağılı başarısına sayılır.
+  - Hayvancılık "Savaş Çığlığı" özelliği (`swell_animal_damage`) kabarık hayvan hasarını artırır.
+
 ## 10. Ustalık
 
 Sekiz dal: **Kazı, Hasat, Çiftçilik, Hayvancılık, Mühendislik, Aşçılık, Savaş, Sürüş.** Her dal 1–50.
@@ -477,6 +515,31 @@ Dokuz arketip: Koşucu, Tank, Sıçrayan, Menzilli, Uçan, Sürü, Kazıcı, Hı
 ### 16.3 Gündüz savaşı
 
 Yabani yaratıklar, açık arazideki Holding ekipleri ve kervanları, Oyuk koruyucuları ve Atalar. Kart yoktur; güç kalıcı donanımdan gelir: Çapa basamağı, başlıklar, çipler, zırh, güçler, yemek, hayvan.
+
+**M3 uygulaması:**
+- Yabani yaratıklar ortak hasar sisteminden geçer (§16.1).
+- Çapa başlığının türü ve yaratığın zayıflığı ya da direnci hasarı değiştirir.
+- Durumlar gündüz de işler; yanık ya da zehirle ölen yaratık da düşer, yanık yakındaki yaratıklara yayılır. (M3 açığı: donma ve sersemin yavaşlatması yabani yaratığın yürüyüşüne henüz bağlı değil.)
+- Gündüz kart yoktur. Bu yüzden durumlar şimdilik gece kartlarından, alan etkilerinden ve Azmanların saldırılarından gelir.
+
+### 16.3.1 Azmanlar (M3: Azman Homur ve Azman Bozuk)
+
+Sayılar `data/azman.json`'da; kural `src/Kabarma.Sim/Azman*.cs`, Godot katmanı `game/scripts/combat/Azman*.cs` ([ICERIK.md](ICERIK.md) §4.2).
+
+- **Gelişi:** Her 5. KS'nin Doruk aşamasında üssün biyomunun Azman'ı gelir. Gece akışı Doruk'a girerken `AzmanSystem.OnPeak(KS, biyom, geliş noktası)` çağırır.
+- **Can:** Taban can `1 + 0,15 × (KS − 5)` ile, sonra Atalardaki gibi ekip boyuyla çarpılır.
+- **İniş ve çekilme:** İnişte 2 saniye hasar almaz; inince hemen ilk saldırısını yapar. Şafakta hâlâ ayaktaysa çekilir ve ödül vermez.
+- **Azman Homur:**
+  - Sezdirip uzun hücum eder. Yoldaki yapı parçalarına ağır hasar verir.
+  - İlk parçaya toslayınca durur ve 1,5 saniye sersemler. Sur onu durdurur ama hasar alır.
+  - Sırtında altı küçük Homur taşır. Canı %75, %50 ve %25'e indikçe ikişer tanesi düşer ve oyuncuya saldırır.
+- **Azman Bozuk:**
+  - Yakındaki bir ağaca yürür, kütük söküp oyuncuya fırlatır; yakında ağaç yoksa yerden kaya koparır.
+  - Kütük en az bir saniye uçar ve düşeceği yer yerde kırmızı bir halkayla görünür. Düştüğü yerde oyuncuya ve yapılara hasar verir, sonra yerde kalır.
+  - Kütük Çekim'le alınıp Bozuk'a fırlatılabilir; zırhı delen büyük Darbe hasarı verir.
+  - Ağaç yerinde kalır (yer tutucu).
+- **Ödül:** Ganimet çantaya girer. Öz, `Events.AzmanDefeated` olayıyla gece akışına bırakılır.
+- **Kural:** Her Azman yalnız Tırpan Işını ile de yenilebilir. Sur ve kütük dövüşü hızlandırır ama şart değildir.
 
 ### 16.4 Savunma yapıları
 

@@ -44,6 +44,17 @@ Bu bölüm sahibin kurallarıdır ve yukarıdaki Genex sözleşmesiyle çelişti
 - **Ortak kimlikler** (değiştirme, yeniden adlandırma; yeni kimlik satır eklenerek gelir): kaynak `stone`, `wood`, `fiber`, `clay`, `copper_ore`, `copper_ingot`, `wheat`, `egg` (çanta eşyası), `turnip`, `turnip_seed`, `civi` · ürün `civi_tabancasi`, `el_arabasi`, `kargo_kasasi`, `kozde_salgam`, `haslanmis_yumurta`, `sebze_corbasi` · yerleştirilebilir/istasyon `ocak`, `tezgah`, `tas_firin`, `paketleme`, `ocakbasi`, `kargo_rampasi`, `ahsap_kapi`, `sandik`, `uyku_tulumu`, `mesale`, `yemlik`, `folluk`. Türkçe adları `game/scripts/ui/ItemNames.cs`.
 - **Yer tutucu kaynaklar:** `World.Placeholders.cs` kil, bakır, lif ve yabani buğday için geçici düğümler kurar (Kazma ve Biçme ile toplanır). Diğer akışlar bunları gerçek oyun yolundan toplar; dunya akışı gerçekleriyle değiştirir.
 - **Testleri hafif tut (sahibin kararı, 18 Kasım):** ara koşularda yalnız `tools/test.ps1 -Only build,sim` ve gerekirse kendi yeni Godot testin tek başına. Tam `tools/test.ps1` (bot dahil) yalnız commit'ten hemen önce bir kez. Aynı koşuyu kanıt için tekrarlama; ekran görüntüsü koşusu en sonda bir kez.
+- **Makineyi yorma, arkanı topla (sahibin isteği, 18 Kasım 2026: makine donuyor, disk doluyor):**
+  - `tools/test.ps1` bütün oturumlar için aynı anda en çok 2 Godot koşturur (`KABARMA_GODOT_MAX`); fazlası sırada bekler.
+  - Godot'u `& $G` ile doğrudan yalnız ekran görüntüsü için ve tek başına aç.
+  - İş bitince kendi geçicilerini sil: TEMP'te açtığın git worktree'leri (`git worktree remove`), büyük log ve ham çıktılar, `__pycache__`.
+  - Kanıt `progress/` altında, ham model ve büyük dosya `.tools/` altında kalır.
+  - Akış bitince her şey commit'lenmiş ve main'e alınmış olsun ki oturum arşivlenip worktree'si silinebilsin.
+- **Optimizasyon en sona (sahibin kararı, 18 Kasım 2026):**
+  - Bütçe ölçümü, profil çıkarma, stres ya da FPS koşusu ve optimizasyon şimdi yapılmaz.
+  - Bir şey bütçeyi aşıyorsa `docs/PROGRESS.md` "Optimizasyon listesi"ne tek satır yaz ve özellik işine devam et.
+  - Stres testleri (KS 30 gibi) olağan koşuya girmez.
+  - Kararlar sektörün olağan yoluna ve mantığa göre verilir.
 - **Otomatik koşular sessiz (sahibin kararı, 18 Kasım 2026):** `--test`, `--bot`, `--shots`, `--quit_after` gibi her otomatik koşuda `Main.cs` ana kanalı susturur (sahip çalışırken müzik dinliyor). Sesi gerçekten duymak gereken bir koşu `--ses` ekler. Pencereli koşularda ayrıca `--audio-driver Dummy` kullanılabilir.
 - **Ayak işi Sonnet'e (sahibin kararı, 18 Kasım 2026):** test koşuları (`tools/test.ps1`, Godot testleri), ekran görüntüsü koşuları, log taraması ve `tools/integrate.ps1` koşusu Opus oturumunun kendisinde değil, bir **Sonnet alt ajanında** yapılır (Agent aracı, `model: "sonnet"`). Alt ajana komutu, worktree yolunu ve neye bakacağını ver; o koşar, logu okur ve kısa özet döner (geçti/kaldı, ilk hata satırları, ekran görüntüsü yolları). Uzun koşuyu alt ajan arka planda koşturur. Kod düzeltmesi Opus'ta kalır.
 - **Botu dürüst tut:** kaynak oyun yolundan gelir; bot için eşya verme, adım silme ya da atlama yok. Gevşettiğin her bot adımını raporda yaz. Aynı anda çok oturum Godot koşturduğu için bot zaman aşımı olabilir: hata ayıklamadan önce `-BotTimeout` büyütüp yeniden koş.

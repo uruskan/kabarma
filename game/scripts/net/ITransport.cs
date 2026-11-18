@@ -26,4 +26,7 @@ public interface ITransport : IDisposable
     void Kick(int peer);
     /// <summary>Kullaniciya gosterilecek adres (IP:port ya da Steam lobisi).</summary>
     string Address { get; }
+    /// <summary>Kablodan giden ve gelen toplam bayt (ENet: protokol ek yuku dahil; olcum, TEKNIK 5.3).</summary>
+    long BytesSent { get; }
+    long BytesReceived { get; }
 }

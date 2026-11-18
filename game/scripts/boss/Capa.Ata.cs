@@ -10,15 +10,19 @@ namespace Kabarma.Game;
 /// </summary>
 public partial class Capa
 {
-    /// <summary>Mermi bir Ata hedefine degdi: Zipzip'le ayni hasar zarlari ve isabet hissi.</summary>
+    /// <summary>
+    /// Mermi bir Ata/Azman hedefine degdi (savas sozlesmesi): kritik ve zayif nokta zari (gece Night.RollHit, gunduz
+    /// silahin kendi kritik sansi), hasar turu ve kart durumlari CombatSystem.WeaponHit'ten; kural hedefin TakeHit'inde.
+    /// </summary>
     internal void AtaWeaponHit(string feel, WeaponDef w, CombatStats s, IAtaTarget t, Vector3 at, Vector3 dir, Color color)
     {
         var night = _d.Night;
+        float weakMult = _d.Data.Combat.WeakPointMult;
         float dmg; bool crit;
-        if (night != null) (dmg, crit) = night.RollHit(w, t.IsWeakPoint, 1.5f);
-        else { dmg = w.Damage; crit = false; }
-        t.TakeWeapon(dmg, crit, dir with { Y = 0 }, w.Knockback * s.KnockbackMult);
-        if (night != null && night.RollBurn()) t.Burn(w.BurnSeconds);
+        if (night != null) (dmg, crit) = night.RollHit(w, t.IsWeakPoint, weakMult);
+        else { crit = GD.Randf() < w.CritChance; dmg = Kabarma.Sim.Combat.Raw(w.Damage, crit, w.CritMult, t.IsWeakPoint, weakMult); }
+        var hit = _d.Savas.WeaponHit(w, dmg, crit, t.IsWeakPoint, w.Knockback * s.KnockbackMult);
+        _d.Savas.Hit(t, hit, at - dir);
         FeelHit(feel, at, crit || t.IsWeakPoint ? Palette.Warning : color, crit, t.IsWeakPoint);
     }
 

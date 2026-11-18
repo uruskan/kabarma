@@ -49,6 +49,8 @@ public partial class PenSystem
             if (p.Trough != null) { r.Params["id"] = p.Trough.Id.ToString(CultureInfo.InvariantCulture); r.Params["water"] = F(p.Trough.Water); }
             if (p.Brush != null) r.Params["id"] = p.Brush.Id.ToString(CultureInfo.InvariantCulture);
             if (p.Hive != null) { r.Params["id"] = p.Hive.Id.ToString(CultureInfo.InvariantCulture); r.Params["animal"] = p.Hive.AnimalId.ToString(CultureInfo.InvariantCulture); }
+            if (p.Flag != null) r.Params["id"] = p.Flag.Id.ToString(CultureInfo.InvariantCulture);
+            if (p.Post != null) { r.Params["id"] = p.Post.Id.ToString(CultureInfo.InvariantCulture); r.Params["animal"] = p.Post.AnimalId.ToString(CultureInfo.InvariantCulture); }
             if (p.Kasa != null) r.Params["open"] = p.DoorOpen ? "1" : "0";
             list.Add(r);
         }
@@ -65,11 +67,21 @@ public partial class PenSystem
             if (p.Trough != null) ranch.Troughs.Remove(p.Trough);
             if (p.Brush != null) ranch.Brushes.Remove(p.Brush);
             if (p.Hive != null) ranch.Hives.Remove(p.Hive);
+            if (p.Flag != null) ranch.Flags.Remove(p.Flag);
+            if (p.Post != null) ranch.Posts.Remove(p.Post);
             p.QueueFree();
         }
         _props.Clear();
         // Silinen Ahsap Kapi'lar kasalarini birakir: kayittakiler yeniden oturur (FreeKasaNear).
         foreach (var g in _gates.Values.Where(g => g.Door != null).ToList()) { g.Door = null; SyncDoor(g.Piece); }
+        // PlaceProp Sim nesnesini yeni kimlikle kurar, kimlik sonra kayittakiyle degisir: "ranch" bolumunun sayaci ilerlemesin.
+        int nextId = ranch.NextId;
+        try { ApplyPropRecords(list); }
+        finally { ranch.NextId = nextId; }
+    }
+
+    void ApplyPropRecords(List<EntityRecord> list)
+    {
         foreach (var r in list ?? new())
         {
             var def = _d.Data.Tool.Placeables.FirstOrDefault(x => x.Id == r.Content);
@@ -82,6 +94,8 @@ public partial class PenSystem
             if (prop.Trough != null) { prop.Trough.Id = I(d, "id"); prop.Trough.Water = P(d, "water"); }
             if (prop.Brush != null) prop.Brush.Id = I(d, "id");
             if (prop.Hive != null) { prop.Hive.Id = I(d, "id"); prop.Hive.AnimalId = I(d, "animal"); }
+            if (prop.Flag != null) prop.Flag.Id = I(d, "id");
+            if (prop.Post != null) { prop.Post.Id = I(d, "id"); prop.Post.AnimalId = I(d, "animal"); }
             if (prop.Kasa != null && d.GetValueOrDefault("open") == "1" && !prop.DoorOpen) prop.ToggleDoor();
         }
     }

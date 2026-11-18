@@ -19,7 +19,7 @@ public class CombatTests
     public void Data_types_match_enum_and_profiles_and_weapons_exist()
     {
         Assert.Equal(Enum.GetValues<DamageType>().Select(Combat.Id), D.Types.Select(t => t.Id));
-        var known = G.Creatures.Creatures.Select(c => c.Id).Concat(G.Atalar.Atalar.Select(a => a.Id)).ToHashSet();
+        var known = G.Creatures.Creatures.Select(c => c.Id).Concat(G.Atalar.Atalar.Select(a => a.Id)).Concat(G.Azman.Azmanlar.Select(a => a.Id)).ToHashSet();
         foreach (var (id, mults) in D.Profiles)
         {
             Assert.True(known.Contains(id), $"combat.json profil '{id}' bilinmeyen kimlik");

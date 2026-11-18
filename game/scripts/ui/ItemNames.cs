@@ -44,6 +44,8 @@ public static class ItemNames
         ["kargo_rampasi"] = "Kargo Rampası",
         // boss akisi (M2, GDD §18): Ata odulleri ve Ata Tasi.
         ["cayir_cekirdegi"] = "Çayır Çekirdeği", ["koru_cekirdegi"] = "Koru Çekirdeği", ["ata_yunu"] = "Ata Yünü", ["dede_boynuzu"] = "Dede Boynuzu", ["ata_tasi"] = "Ata Taşı",
+        // savas (M3, ICERIK §4.2): Azman odulleri.
+        ["azman_postu"] = "Azman Postu", ["azman_boynuzu"] = "Azman Boynuzu",
         // Karar 23 (kemer akisi): kemer aletleri ve uretilen yerlestirilebilirler.
         ["capa"] = "Çapa",
         ["insa_plani"] = "İnşa Planı",
@@ -93,6 +95,11 @@ public static class ItemNames
         ["suluk"] = "Suluk",
         ["kasinma_fircasi"] = "Kaşınma Fırçası",
         ["ari_kovani"] = "Arı Kovanı",
+        ["savas_agili_bayragi"] = "Savaş Ağılı Bayrağı",
+        ["ahir_zili"] = "Ahır Zili",
+        ["baglama_diregi"] = "Bağlama Direği",
+        ["eyerlik"] = "Eyerlik",
+        ["eyer"] = "Eyer",
         // M2 dunya2: Koru kaynaklari ve Enkaz (ICERIK 2.1, 17), mancinik (ICERIK 10.2).
         ["hard_wood"] = "Sert Odun",
         ["resin"] = "Reçine",

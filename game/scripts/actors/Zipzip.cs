@@ -161,6 +161,16 @@ public partial class Zipzip : Node3D
 
     public override void _Process(double delta)
     {
+        long t0 = System.Diagnostics.Stopwatch.GetTimestamp();
+        ProcessInner(delta);
+        ProcessTicks += System.Diagnostics.Stopwatch.GetTimestamp() - t0; // kabarma3 olcumu: betik payi
+    }
+
+    /// <summary>Butun Zipzip'lerin _Process'te gecirdigi toplam sure (Stopwatch tik); Director perf satiri okur ve sifirlar.</summary>
+    public static long ProcessTicks;
+
+    void ProcessInner(double delta)
+    {
         float dt = (float)delta;
         if (TickRagdoll(dt)) return; // Zipzip.Ragdoll.cs
         if (Dead) return;
@@ -234,12 +244,13 @@ public partial class Zipzip : Node3D
         else if (!chasePlayer && _target == null && TickKazan(dt, pos, dist)) eating = true; // Zipzip.Kabaran.cs: Maya Kazani
 
         // Ziplama hareketi (sicramayan Kabaran yurur: Zipzip.Kabaran.cs)
-        if (Walks) WalkStep(dt, goal, eating ? 0f : dist, slow);
+        if (Walks) WalkStep(dt, goal, eating ? 0f : dist, slow, chasePlayer ? null : _target != null ? "crop" : "kazan");
         else if (_hopT <= 0 && dist > 0.5f + Radius * 0.7f)
         {
             _hopT = _hopDur / slow;
             _hopFrom = pos;
             var dir = new Vector3(goal.X - pos.X, 0, goal.Z - pos.Z).Normalized();
+            if (!chasePlayer && dist > 3f && _dir.Flow?.Steer(pos, _target != null ? "crop" : "kazan") is { } flow) dir = flow; // yolbulma: akis alani (TEKNIK 8.1); yakinda dogrudan
             float step = Mathf.Min(dist - Radius * 0.5f, MoveSpeed * _hopDur * (0.8f + Scale0 * 0.1f));
             _hopTo = _dir.World.Ground(pos + dir * Mathf.Max(0.2f, step));
             bool blocked = false;

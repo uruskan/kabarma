@@ -14,6 +14,7 @@ namespace Kabarma.Game;
 public partial class Director
 {
     KabarmaSpec _pendingSpec;
+    float _perfT; int _perfFrames;
     int _bellKs;
     Label3D _kazanLabel;
     readonly List<WildSwarm> _nightSwarms = new();
@@ -72,6 +73,13 @@ public partial class Director
         int players = Net?.Players().Count() ?? 1;
         _pendingSpec = State.KabarmaSpecFor(kind, ks, Mathf.Max(1, players), c.X, c.Z,
             kind == KabarmaKind.Small ? p => new Vector2(p.X + 0.5f - c.X, p.Y + 0.5f - c.Z).Length() <= r : null);
+        // Stres sahnesi (URETIM M3, TEKNIK 5.3): --kabarma_stress=KS[:oyuncu] maxKs sinirini ve oyuncu sayisini ezer (yolbulma --test=stress).
+        if (Main.Args.TryGetValue("kabarma_stress", out var st))
+        {
+            var sp = st.Split(':');
+            if (int.TryParse(sp[0], out var sks)) _pendingSpec.Ks = Mathf.Max(1, sks);
+            if (sp.Length > 1 && int.TryParse(sp[1], out var spl)) _pendingSpec.Players = Mathf.Max(1, spl);
+        }
         if (kind == KabarmaKind.Full) State.Kabarma.LastDay = State.Calendar.Day;
         _replay = true; // safakta rapor (GDD 14.1)
         _reportShown = false;
@@ -143,6 +151,14 @@ public partial class Director
             foreach (var (slot, wave) in n.TakeDue(active)) SpawnKabaran(n, slot, wave);
         }
         _nightSwarms.RemoveAll(s => !IsInstanceValid(s) || s.Dead);
+        // Olcum (KS 10 / KS 30 stres): 5 sn'de bir sahnedeki Kabaran sayisi ve kare suresi.
+        _perfT += dt; _perfFrames++;
+        if (_perfT >= 5f)
+        {
+            GD.Print($"KABARMA perf wave={n.WaveIndex + 1} active={Kabarans.Live.Count()} swarms={_nightSwarms.Count} pending={n.PendingSpawns} frameMs={_perfT * 1000f / _perfFrames:0.0} scriptMs={Zipzip.ProcessTicks * 1000.0 / System.Diagnostics.Stopwatch.Frequency / _perfFrames:0.0} fps={Engine.GetFramesPerSecond():0} process={Performance.GetMonitor(Performance.Monitor.TimeProcess) * 1000:0.0} physics={Performance.GetMonitor(Performance.Monitor.TimePhysicsProcess) * 1000:0.0}");
+            Zipzip.ProcessTicks = 0;
+            _perfT = 0; _perfFrames = 0;
+        }
         TickElites(n, dt);
         // Bozgun (GDD 14.4): butun oyuncular yerde. Tek oyuncuda: oyuncu yere dusunce bir kez.
         bool allDown = Player.Down && (Net == null || Net.Players().All(p => p.down));
@@ -165,7 +181,8 @@ public partial class Director
     void SpawnKabaran(KabarmaNight n, WaveSlot slot, int wave)
     {
         var p = EntryPoint(n);
-        if (slot.Azman) slot = new WaveSlot { Species = slot.Species, Elite = "dev" }; // GECICI: Azman savas akisinda; o gelene kadar Dev elit
+        if (slot.Azman && Azman?.SpawnSlot(slot, n.Ks, p) == true) return; // savas: combat/AzmanSystem.cs
+        if (slot.Azman) slot = new WaveSlot { Species = slot.Species, Elite = "dev" }; // yedek: Azman tanimi yoksa Dev elit
         var def = Data.Creature(slot.Species);
         if (def.Swarm != null)
         {
