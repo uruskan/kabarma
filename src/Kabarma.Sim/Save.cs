@@ -233,6 +233,8 @@ public sealed class SaveManifest
     public ulong Seed { get; set; }
     /// <summary>Oyun gunu (takvim).</summary>
     public int Day { get; set; } = 1;
+    /// <summary>Dunya ayari (GDD 25), menude gosterilir.</summary>
+    public string Preset { get; set; } = "";
     public List<string> Crew { get; set; } = new();
     /// <summary>ISO 8601, UTC.</summary>
     public string SavedUtc { get; set; } = "";

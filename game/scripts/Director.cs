@@ -125,6 +125,7 @@ public partial class Director : Node3D
         if (Main.Args.ContainsKey("zipview")) CallDeferred(nameof(ZipView));
         if (Main.Args.ContainsKey("ragtest")) GetTree().CreateTimer(1.5).Timeout += () => Player.Hurt(999, Player.GlobalPosition + Player.Visual.GlobalBasis.Z * 2f);
         if (Main.Args.ContainsKey("showwheel")) GetTree().CreateTimer(1.0).Timeout += () => { Hud.OpenWheel(0); Hud.WheelMotion(new Vector2(30, 10)); };
+        InitSave(); // save/Director.Save.cs: kayit bolumleri, otomatik kayit, bekleyen kaydin yuklenmesi (TEKNIK 9)
     }
 
     public override void _ExitTree() => Events.Clear();

@@ -69,6 +69,25 @@ Main `f38521f` üstünde. Soru: bir oyunu geri kurmak için gereken değişken d
 
 Sıfırlama tek yerde: `game/scripts/save/GameStatics.cs` (`GameStatics.Reset()`), yeni oyun ve yükleme öncesi.
 
+## Bağlantı durumu (kayit akışı, 2. teslim)
+
+| Bölüm | Kapsam | Sıra | Yer |
+|---|---|---|---|
+| `world.settings` | GDD §25 dünya ayarı | Spawn−50 | `GameState.Save.cs` |
+| `build.pieces` | yapı parçaları: kimlik, dönüşüm, can | Spawn | `save/Director.SaveSections.cs` |
+| `placeables` | Ocak, istasyonlar, mobilya, Sandık içi | Spawn+10 | aynı |
+| `pen.props` | Yemlik yemi, Folluk yumurtası, Ahşap Kapı | Spawn+20 | aynı |
+| `pen.ground` | açık bahçe kapıları, yerdeki yumurta | Spawn+30 | aynı |
+| `world.resources` | kaya (ad → kalan), tutam verimi | Spawn+40 | aynı |
+| `loads` | El Arabası (yuvalar, yük), kargo kasası (rampa, araba), yerdeki kabarık ürün | Spawn+50 | aynı |
+| `farm`, `pen.animals`, `stations`, `craft`, `cargo`, `capa`, `calendar`, `night`, `player.pack` | Sim sistemleri | State | `GameState.Save*.cs` |
+| `player` | konum, bakış, can, doğma noktası, Çapa başlığı | State+10 | `save/Director.SaveSections.cs` |
+| `creatures` | Gıdak: görünürlük, konum, yem; hayvan kaydına bağ | State+20 | aynı |
+| `core`, `scenario`, `orders` | kredi, satış, Known, Rng, kimlikler; senaryo; Defter | Progress | `GameState.Save*.cs` |
+| `director` | evre, rapor, senaryo yardımcı sayaçları, hasat, rampa | Progress+10 | `save/Director.SaveSections.cs` |
+
+Kaydedilmeyenler ve nedeni: gündüz Zıpzıp sürüleri (yeniden doğar), gece düşmanları ve kartlar (gece kaydı yok), Pofuduk (sabit yuva), Hasat Raporu (bir kez gösterilir).
+
 ## Belge notu
 
 CLAUDE.md `World.Placeholders.cs`'ten söz ediyor, ama bu dosya main'de yok. Yer tutucu düğümler `World.Resources.cs` içinde (dunya akışı).
