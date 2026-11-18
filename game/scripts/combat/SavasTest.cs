@@ -52,7 +52,12 @@ public partial class SavasTest : Node
         if (_total > 1500f) { Fail($"zaman asimi ({_s})"); return; }
         if (_d != null && P != null)
         {
-            if (P.Hp < _lastHp - 0.5f) _hurts++;
+            if (P.Hp < _lastHp - 0.5f)
+            {
+                _hurts++;
+                var logNear = _sys?.GetChildren().OfType<AzmanLog>().Select(l => l.GlobalPosition.DistanceTo(P.GlobalPosition)).DefaultIfEmpty(99).Min() ?? 99;
+                Say($"SAVAS hurt -{_lastHp - P.Hp:0} hp={P.Hp:0} state={_s} acting={_az?.Acting} pending={_az?.Pending} tel={_az?.Telegraphing} dist={(_az != null && IsInstanceValid(_az) ? P.GlobalPosition.DistanceTo(_az.GlobalPosition) : -1):0.0} log_near={logNear:0.0} riders={GetTree().GetNodesInGroup("azman_rider").Count} held={_d.Capa.Held != null} vel={new Vector2(P.Velocity.X, P.Velocity.Z).Length():0.0}");
+            }
             _lastHp = P.Hp;
             if (P.Down && P.Hp <= 0 && _s != S.Wait) { Fail($"oyuncu oldu ({_s}, Azman {_az?.Def.Id} can {_az?.Body?.Hp:0})"); return; }
         }
