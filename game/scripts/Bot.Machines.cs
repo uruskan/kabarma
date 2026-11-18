@@ -147,7 +147,7 @@ public partial class Bot
     void StepHasat(Vector3 o)
     {
         Head(Capa.Head.Bicme);
-        var v = _d.FarmView.Views.Where(x => x.Plot.Planted && x.Plot.Stage == Kabarma.Sim.CropStage.Mature)
+        var v = _d.FarmView.Views.Where(x => x.Plot.Planted && !x.Plot.Wild && x.Plot.Stage == Kabarma.Sim.CropStage.Mature)
             .OrderBy(x => x.GlobalPosition.DistanceTo(P.GlobalPosition)).FirstOrDefault();
         if (v == null) { GD.Print("BOT nothing to harvest"); return; }
         Aim(v.GlobalPosition + Vector3.Up * 0.3f);
