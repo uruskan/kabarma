@@ -25,7 +25,8 @@ STYLE = ("Semi-stylised high-end game asset, mature and believable, grounded PBR
 Q = ["--model", "tripo-v3.1", "-p", "texture_quality=detailed", "-p", "texture_version=v3.5", "-p", "pbr=true"]
 SEGMENT_CREDITS = 40  # tripo --dry-run segment adimini tahmine katmiyor; M0 olcumu
 
-# Sira = oncelik. "cut": 310 kredilik bakiyede kesme cizgisinin altinda kalanlar.
+# Sira = oncelik. "cut": 310 kredilik bakiyede kesme cizgisinin altinda kalanlar. "detailed": geometry_quality=detailed
+# (Ultra, 50 kredi). Kapsul kapagi ve inis ayaklari artik Blender'da (pipeline/build_props.py, kredisiz).
 REQUESTS = {
     "kapsul_govde": {
         "why": "kapsul: sahibin 1 numarali sikayeti (oyuncak balon). Ilk kare, Kargo Rampasi, her sabah gorunur",
@@ -36,26 +37,7 @@ REQUESTS = {
                    "an empty recessed frame, the door itself is NOT included), small round porthole, recessed grab handles, "
                    "four RCS thruster quads, a short antenna mast and a parachute housing on top, stencilled hazard chevrons, "
                    "four short sturdy leg mount brackets near the base (legs NOT included). " + STYLE),
-        "face_limit": 14000, "then": "",
-    },
-    "kapsul_kapak": {
-        "why": "kapsul kapagi = rampa: alt kenarindan menteseli, acilinca yere iner (Pod.Hatch). Ayri model: temiz pivot",
-        "target": "game/assets/models/kapsul/kapsul_kapak.glb (dugum hatch; mentese alt kenar)",
-        "prompt": ("A heavy rectangular spacecraft boarding door that folds down into a ramp, shown as a single flat-lying "
-                   "object: thick steel slab about 1.6 m long and 1.3 m wide, outer face off-white painted with cobalt blue "
-                   "band and yellow-black hazard stripes on the edges, inner face is an anti-slip diamond tread steel ramp "
-                   "with raised cleats, two big hinge knuckles along one short edge, heavy latch bolts on the other edge, "
-                   "worn paint, scuffs, grime. " + STYLE),
-        "face_limit": 5000, "then": "",
-    },
-    "kapsul_ayak": {
-        "why": "kapsul inis ayagi (4 ornek): okunur, yere oturmus bir arac. Ayri model: ayaklar kodla yerlestirilir",
-        "target": "game/assets/models/kapsul/kapsul_ayak.glb (dugum leg; ust ucta baglanti pimi)",
-        "prompt": ("A single sturdy hydraulic landing leg for a small spacecraft, about 1.4 m long: angled steel strut with a "
-                   "chrome hydraulic piston and dust boot, a pivot clevis bracket at the top, a wide round articulated foot "
-                   "pad with bolted rim at the bottom, hoses clipped along the strut, chipped grey-blue paint, dust and grime. "
-                   + STYLE),
-        "face_limit": 3000, "then": "",
+        "face_limit": 14000, "then": "", "detailed": True,
     },
     "capa": {
         "why": "Capa: ekranda her an oyuncunun elinde; tabanca oyuncak gibi",
@@ -64,7 +46,7 @@ REQUESTS = {
                    "rubber over-mould, chunky off-white painted steel housing with cobalt blue panels, a round emitter nozzle "
                    "with a thick knurled steel collar at the front, a quick-swap head socket on top, a small analog pressure "
                    "gauge, cooling fins, exposed screws, worn edges and grime. " + STYLE),
-        "face_limit": 5000, "then": "",
+        "face_limit": 5000, "then": "", "detailed": True,
     },
     "ocak": {
         "why": "Ocak: ussun kalbi; mavi kubbe ve topak bicim oyuncak gibi, ates agzi gorunmuyor",
@@ -73,7 +55,7 @@ REQUESTS = {
                    "big glowing fire door on the front (visible fire through the grate), riveted dark steel hood, a tall "
                    "flue pipe with a spark arrestor cap, a brass pressure gauge and a valve wheel on the side, a small "
                    "cobalt-blue co-op badge plate, soot stains around the door, worn and lived-in. " + STYLE),
-        "face_limit": 14000, "then": "",
+        "face_limit": 14000, "then": "", "detailed": True,
     },
     "tezgah": {
         "why": "Tezgah: mavi oyuncak cerceve, 64 px silueti koltuk gibi",
@@ -82,7 +64,7 @@ REQUESTS = {
                    "blue with chipped edges, a cast-iron bench vice on one end, a perforated steel tool board on the back "
                    "with a few hand tools (hammer, saw, wrench), a lower shelf with a toolbox, a hanging work lamp, sawdust "
                    "and grease stains. " + STYLE),
-        "face_limit": 14000, "then": "",
+        "face_limit": 14000, "then": "", "detailed": True,
     },
     "paketleme": {
         "why": "Paketleme Tezgahi: daginik oyuncak; isi okunmuyor",
@@ -118,6 +100,8 @@ def cmd_for(name, r, dry):
     ref = os.path.join(REF, f"{name}.png")
     src = ref if os.path.exists(ref) else r["prompt"]
     c = ["tripo.cmd" if os.name == "nt" else "tripo", "make", src, *Q, "-p", f"face_limit={r['face_limit']}", "--name", f"{name}_v3"]
+    if r.get("detailed"):
+        c += ["-p", "geometry_quality=detailed"]  # Ultra geometri: 50 kredi (standart 30)
     if r["then"]:
         c += ["--then", r["then"]]
     if dry:

@@ -11,7 +11,7 @@ Kusur kodları: **D** düz renk / malzeme ayrımı yok · **P** plastik, tebeşi
 
 | # | Model | Kusur | Bu dalda (kredisiz) | Kalan / istek |
 |---|---|---|---|---|
-| 1 | İniş kapsülü `kapsul` | B, P, D | PBR pişirme: boya kenarında metal, alttan is ve toprak, gerçek AO; iç kabuk UV çakışması ayıklandı | Baştan üretim: gövde + kapak-rampa + 4 ayak (90 kredi). Bağlama hazır (`Pod.Model.cs`, `data/kapsul.json`) |
+| 1 | İniş kapsülü `kapsul` | B, P, D | PBR pişirme: boya kenarında metal, alttan is ve toprak, gerçek AO; iç kabuk UV çakışması ayıklandı | Kapak-rampa ve iniş ayağı **Blender modeli** (`props/kapsul_kapak.glb`, `props/kapsul_ayak.glb`); gövde Tripo Ultra (50 kredi). Bağlama hazır (`Pod.Model.cs`, `data/kapsul.json`) |
 | 2 | Kargo Rampası pisti (Pod `_pad`) | K | **Blender modeli** `props/rampa_pisti.glb`: çelik çerçeve, baklava sac, uyarı şeridi, köşe direkleri, cıvatalar | yok |
 | 3 | Kargo roketi (Pod `_rocket`) | K | **Blender modeli** `props/kargo_roketi.glb`: panel derzleri, RCS, kanatlar, motor çanı, yanık izi | yok |
 | 4 | Ocakbaşı | K | **Blender modeli** `props/ocakbasi.glb`: taş halka, kül, kömürleşmiş odun, dökme demir ızgara, emaye tencere | yok |
@@ -21,11 +21,11 @@ Kusur kodları: **D** düz renk / malzeme ayrımı yok · **P** plastik, tebeşi
 | 8 | Paketleme `paketleme` | B, A | PBR | Yeniden üretim (30) |
 | 9 | El Arabası `el_arabasi` | P, ince çerçeve | PBR: boyalı tekne, lastik, ahşap sap | Yeniden üretim + parçalama (70) |
 | 10 | Taş Fırın `tas_firin` | B | PBR | Yeniden üretim + parçalama (70), kesme çizgisinin altında |
-| 11 | Cevherli kaya `kaya` | B, D (mor topak, sarı yumru) | Yalnız albedo: doygunluk 0,58, oyuk kiri, kenar | Tripo web'de yeniden üretim önerisi (tahmin yok) |
+| 11 | Cevherli kaya `kaya` | B, D (mor topak, sarı yumru) | **Kütüphaneden değiştirildi:** Poly Haven `boulder_01` (CC0), `lib/kaya/kaya.glb` (`biomes.json` nodes) | yok |
 | 12 | Çayır ağacı `agac` | B (lolipop taç) | Yalnız albedo: doygunluk 0,8, gövdede AO | Tripo web'de yeniden üretim önerisi (tahmin yok); oyun içinde "bebek" hissini en çok veren |
 | 13 | Sulama kovası `kova` | B, P | Yalnız albedo | — |
 | 14 | Turuncu ağaç, çalı, ot, buğday, çiçek, eğrelti | P | PBR (bitki sınıfı, hafif AO) | — (dunya akışı) |
-| 15 | Kaya (düz, dik), bakır, kil yatağı | P | PBR (taş, bakır cevheri metal, kil) | — |
+| 15 | Kaya (düz, dik), bakır, kil yatağı | P | Düz ve dik kaya **kütüphaneden** (Poly Haven CC0 `rock_moss_set_02`, `boulder_01`; `lib/`); bakır ve kil PBR (bakır cevheri metal, kil). Sahibin `stone_node`/`metal_node`'u denendi: sadeleştirmede kırıldı ve Rust'a çok benziyor | — |
 | 16 | Şalgam `salgam` | — | PBR (hafif) | — |
 | 17 | Ahşap yapı kiti (28 parça), Sandık, Uyku Tulumu, Meşale, Kargo Kasası, Ahşap Kapı, Yemlik, Folluk | — | Dokunulmadı: zaten yordamsal ahşap albedo + normal + rm (`build_kit.py`); bu dildeki en olgun varlıklar, ölçü çubuğu | — |
 | 18 | Yaratıklar (Zıpzıp, Gıdak, Pofuduk) | B (kimlik gereği sevimli) | Dokunulmadı (yaratik akışı; `Swellable` normal'i devralır) | Kimlik kararı sahibin; istek yazılmadı |
