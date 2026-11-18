@@ -23,7 +23,7 @@ public partial class AbilityHud : CanvasLayer
 
     public override void _Ready()
     {
-        _root = new Control { AnchorLeft = 1, AnchorRight = 1, AnchorTop = 1, AnchorBottom = 1, OffsetLeft = -W - 24, OffsetRight = -24, OffsetTop = -250, OffsetBottom = -120, MouseFilter = Control.MouseFilterEnum.Ignore };
+        _root = new Control { AnchorLeft = 1, AnchorRight = 1, AnchorTop = 1, AnchorBottom = 1, OffsetLeft = -W - 24, OffsetRight = -24, OffsetTop = -330, OffsetBottom = -200, MouseFilter = Control.MouseFilterEnum.Ignore };
         AddChild(_root);
         float y = 0;
         for (int i = 0; i < 3; i++)
@@ -73,7 +73,7 @@ public partial class AbilityHud : CanvasLayer
         if (!any) return;
         AbilityRules.Normalize(f, l);
         var c = _sys.D.Controls;
-        string Key(string act) => c != null ? $"[{c.Glyph(act)}]" : act;
+        string Key(string act) => c != null ? c.Glyph(act) : act; // Glyph koseli parantezi kendisi koyar
         for (int i = 0; i < 3; i++)
         {
             bool ulti = i == 2;

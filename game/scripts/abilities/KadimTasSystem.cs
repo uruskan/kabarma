@@ -301,7 +301,7 @@ public partial class KadimTasSystem : Node3D
         Results.Add($"{s.Id}:won");
         GD.Print($"KADIM won {s.Id} ability={s.Ability} fresh={fresh} t={Run.Time:0.0} slots={string.Join(",", _sys.L.Slots)}");
         D.Hud.Big($"GÜÇ: {F.Def(s.Ability).Name.ToUpperInvariant()}", Palette.MayaTeal, 3f);
-        D.Hud.Say($"{F.Def(s.Ability).Name} açıldı. {{act:ability_1}} ile kullan. Yuvayı tamamlanmış bir Kadim Taş'ta değiştirirsin.");
+        D.Hud.Hint($"{F.Def(s.Ability).Name} açıldı: {{act:ability_1}} ile kullan. Yuvayı tamamlanmış bir Kadim Taş'ta değiştirirsin.", 5f);
         Sfx.Play("levelup", StonePos(s), 0f);
         Fx.Burst(StonePos(s) + Vector3.Up * 2.3f, Palette.MayaTeal, 40, 6f, 0.12f, 0.9f, true, -1f);
         ClearProps();
