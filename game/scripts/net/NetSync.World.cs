@@ -318,9 +318,10 @@ public partial class NetSync
             var c = D.FarmView.CellCenter(plot.X, plot.Y);
             if (new Vector2(c.X - aim.X, c.Z - aim.Z).Length() > T.MowRadius) continue;
             if (plot.Wild && new Vector2(c.X - aim.X, c.Z - aim.Z).Length() > D.Data.Crops.Genetics.Wild.MowRadius) continue; // tarim: Capa.Bicme ile ayni
-            var h = D.State.Farm.HarvestFull(plot.X, plot.Y, D.State.Rng); // tarim M2: ekine gore urun ve tohum (Capa.Bicme ile ayni)
+            var h = D.State.Farm.HarvestFull(plot.X, plot.Y, D.State.Rng); // Capa.Bicme ile ayni (tarim: urun ekine gore)
             if (h == null) continue;
-            a.Bag.Add(h.Item, h.Yield, h.Stars);
+            D.FarmView.OnHarvestedBy(h, c);
+            a.Bag.Add(h.Item, h.Yield, h.Stars); // Ustalik carpani kisisel, host'ta uzak oyuncu icin yok (bilinen eksik)
             a.Bag.Add(h.SeedItem, h.Seeds);
         }
         foreach (var tp in D.World.TreePositions.Where(t => new Vector2(t.X - aim.X, t.Z - aim.Z).Length() < T.TreeRadius))

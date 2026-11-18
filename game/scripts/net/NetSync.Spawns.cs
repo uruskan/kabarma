@@ -25,6 +25,7 @@ public partial class NetSync
     {
         Register("spawns", false, WriteSpawns, ReadSpawns);
         On("hit", HostHit);
+        On("whit", HostWildHit);
         if (IsClient)
         {
             // Istemcide dogurucular kapanir: yaratiklar host'tan gelir.
@@ -156,6 +157,26 @@ public partial class NetSync
             w.F32(dir.X); w.F32(dir.Z); w.F32(knock); w.F32(burn); w.F32(freeze);
         });
         return true;
+    }
+
+    /// <summary>
+    /// Wildlife.ProjectileHit: istemcide mermi dogrusu host'a gider; yerelde kuklaya hasarsiz bakilir (mermi durur, his
+    /// oynar). Host'ta ve tek oyuncuda null (yerel kural isler).
+    /// </summary>
+    public bool? ForwardWildHit(Vector3 from, Vector3 to, float radius, float damage, ISet<Node3D> already)
+    {
+        if (IsHost || D.Wildlife == null) return null;
+        Forward("whit", w => { w.F32(from.X); w.F32(from.Y); w.F32(from.Z); w.F32(to.X); w.F32(to.Y); w.F32(to.Z); w.F32(radius); w.F32(damage); });
+        return Wildlife.Strike(D.Wildlife.Creatures, D.Wildlife.Swarms, from, to, radius, 0f, already) != null;
+    }
+
+    void HostWildHit(NetActor a, NetReader r)
+    {
+        var from = new Vector3(r.F32(), r.F32(), r.F32());
+        var to = new Vector3(r.F32(), r.F32(), r.F32());
+        float radius = Mathf.Clamp(r.F32(), 0f, 1f), damage = Mathf.Clamp(r.F32(), 0f, 200f); // hile payi: tek mermi
+        if (D.Wildlife == null || !NetRules.InRange(a, from.X, from.Y, from.Z, 80f) || from.DistanceTo(to) > 20f) { Reject(a, "whit"); return; }
+        Wildlife.Strike(D.Wildlife.Creatures, D.Wildlife.Swarms, from, to, radius, damage);
     }
 
     void HostHit(NetActor a, NetReader r)

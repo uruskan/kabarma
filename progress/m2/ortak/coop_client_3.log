@@ -1,28 +1,4 @@
-1.00 COOP client port=28659 bot=3
-27.04 COOP client done t=18.0
-29.58 COOP report sent
-29.65 COOP final from host code=0
-0.78 COOP client port=27179 bot=3
-29.99 COOP client done t=17.9
-32.51 COOP report sent
-32.56 COOP final from host code=0
-0.46 COOP client port=27866 bot=3
-32.87 COOP client done t=24.1
-35.40 COOP report sent
-35.45 COOP final from host code=0
-0.70 COOP client port=27208 bot=3
-41.42 COOP client done t=29.0
-68.95 COOP report sent
-68.99 COOP final from host code=1
-0.45 COOP client port=27663 bot=3
-33.55 COOP client done t=22.2
-61.09 COOP report sent
-61.15 COOP final from host code=1
-0.66 COOP client port=28773 bot=3
-39.45 COOP client done t=22.1
-67.11 COOP report sent
-67.64 COOP final from host code=1
-0.74 COOP client port=27889 bot=3
-32.16 COOP client done t=22.1
-36.44 COOP report sent
-36.54 COOP final from host code=0
+0.58 COOP client port=28215 bot=3
+46.58 COOP client done t=31.6
+50.88 COOP report sent
+50.97 COOP final from host code=0
