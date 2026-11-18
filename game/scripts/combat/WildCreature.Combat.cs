@@ -41,11 +41,11 @@ public partial class WildCreature : ICombatTarget
     }
 
     /// <summary>Durum zamani (CombatSystem her kare): surekli hasar cani dusurur. Islenen hasar.</summary>
-    public float TickCombat(CombatFile data, float dt)
+    public float TickCombat(CombatFile data, float dt, System.Collections.Generic.List<CombatArea> areas = null)
     {
         if (_cbody == null || _cbody.Statuses.Count == 0 || Dead) return 0;
         var b = Body;
-        float dealt = Combat.Tick(data, b, dt);
+        float dealt = Combat.Tick(data, b, dt, areas); // yanik yayilmasi alanlari CombatSystem cozer
         if (dealt > 0) State.Hp = b.Hp;
         return dealt;
     }

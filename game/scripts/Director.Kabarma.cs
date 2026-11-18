@@ -165,7 +165,8 @@ public partial class Director
     void SpawnKabaran(KabarmaNight n, WaveSlot slot, int wave)
     {
         var p = EntryPoint(n);
-        if (slot.Azman) slot = new WaveSlot { Species = slot.Species, Elite = "dev" }; // GECICI: Azman savas akisinda; o gelene kadar Dev elit
+        if (slot.Azman && Azman?.SpawnSlot(slot, n.Ks, p) == true) return; // savas: combat/AzmanSystem.cs
+        if (slot.Azman) slot = new WaveSlot { Species = slot.Species, Elite = "dev" }; // yedek: Azman tanimi yoksa Dev elit
         var def = Data.Creature(slot.Species);
         if (def.Swarm != null)
         {
