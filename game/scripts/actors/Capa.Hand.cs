@@ -16,6 +16,8 @@ public partial class Capa
     {
         var id = HeldItem;
         if (id == null) { HideHandGhosts(); return false; }
+        if (id != _d.Data.Power.CableItem) _d.Power?.CancelTool();
+        else { if (_ghost != null) _ghost.Visible = false; _d.Build?.Hide(); return _d.Power?.TickCableTool(aim, firePressed && !_d.Hud.WheelOpen) ?? false; } // guc: Kablo eldeyken sokete tak (power/PowerSystem.cs)
         if (id == PlanTools.Plan)
         {
             if (_ghost != null) _ghost.Visible = false;

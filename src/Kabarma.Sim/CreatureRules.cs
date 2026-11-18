@@ -54,7 +54,7 @@ public static class Herds
     public static bool ShouldFlee(DayHerdDef d, float playerDistance) => playerDistance < d.FleeRadius;
 
     /// <summary>Gelecegi ekin: ekili, Olgun, kabarmamis (GDD §8.1: zararli olgun ekine gelir).</summary>
-    public static bool Attracts(Plot p) => p.Planted && p.Stage == CropStage.Mature && p.Swollen == null;
+    public static bool Attracts(Plot p) => p.Planted && p.Stage == CropStage.Mature && p.Swollen == null && !p.Wild && !p.Protected; // tarim: Korkuluk/Sarimsak korumasi, yabani bitki (GDD 8.2)
 
     /// <summary>Surular yalnizca gunduz cayirdadir; Kabarma gecesi yabani yaratiklar dalga olarak gelir (GDD §14.2).</summary>
     public static bool Out(bool nightActive) => !nightActive;
