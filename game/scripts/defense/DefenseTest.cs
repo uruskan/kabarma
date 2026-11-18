@@ -75,7 +75,7 @@ public partial class DefenseTest : Node
 
         var zs = new List<Zipzip> { Spawn(G(2, -8)), Spawn(G(11, -10)), Spawn(G(-8, -4)), Spawn(G(-10, -5)) };
         await Wait(1.0f);
-        Shot("savunma_kuleler_atis");
+        await Shot("savunma_kuleler_atis", G(0, 13) + Vector3.Up * 8f, G(0, -4) + Vector3.Up * 1f);
         await Wait(7f);
         int dead = zs.Count(z => !IsInstanceValid(z) || z.Dead);
         Check(sys.Shots > 5, $"kuleler atti ({sys.Shots})");
@@ -120,7 +120,7 @@ public partial class DefenseTest : Node
         var zPd = Spawn(G(10, 30), 3f);
         await Wait(0.3f);
         Check(pad.TrapState.Triggers > 0 && IsInstanceValid(zPd) && zPd.Airborne, "Firlatma Pedi Zipzip'i firlatti");
-        Shot("savunma_tuzaklar");
+        await Shot("savunma_tuzaklar", G(7, 39) + Vector3.Up * 7f, G(7, 29));
         await Wait(2f);
         Check(!IsInstanceValid(zPd) || zPd.GlobalPosition.DistanceTo(pad.GlobalPosition) > 3f, "pedin yonunde uzaga dustu");
         // oyuncu
@@ -142,7 +142,7 @@ public partial class DefenseTest : Node
         Check(pit.TrapState.Held.Count == 1, $"acik cukura dustu ({pit.TrapState.Held.Count})");
         await Wait(1.5f);
         Check(IsInstanceValid(zP2) && zP2.GlobalPosition.Y < pit.GlobalPosition.Y - 0.4f, "cukurda tutuluyor");
-        Shot("savunma_cukur");
+        await Shot("savunma_cukur", pit.GlobalPosition + new Vector3(2.5f, 3.2f, 3f), pit.GlobalPosition + Vector3.Down * 0.4f);
         sys.Apply(DefenseSystem.Op.Toggle, pit.StateId, bag, true);
         await Wait(0.3f);
         Check(pit.TrapState.Held.Count == 0 && (!IsInstanceValid(zP2) || zP2.GlobalPosition.Y > pit.GlobalPosition.Y - 0.3f), "kapak kapaninca birakti");
@@ -158,11 +158,24 @@ public partial class DefenseTest : Node
         foreach (var z in Zipzip.All.Where(z => z.Name.ToString().StartsWith("TestZipzip")).ToList()) z.QueueFree();
     }
 
-    void Shot(string name)
+    /// <summary>Gecici kameradan goruntu (oyuncu kamerasi geri doner). Basliksizda atlanir.</summary>
+    async Task Shot(string name, Vector3 eye, Vector3 at)
     {
         if (DisplayServer.GetName() == "headless") return;
+        var prev = GetViewport().GetCamera3D();
+        var cam = new Camera3D { Fov = 55f, Far = 400f };
+        _d.AddChild(cam);
+        cam.GlobalPosition = eye;
+        cam.LookAt(at);
+        cam.MakeCurrent();
+        _d.Hud.Visible = false;
+        await ToSignal(RenderingServer.Singleton, RenderingServer.SignalName.FramePostDraw);
+        await ToSignal(RenderingServer.Singleton, RenderingServer.SignalName.FramePostDraw);
         var img = GetViewport().GetTexture().GetImage();
         img?.SavePng(_out + name + ".png");
         GD.Print($"DEFENSE shot {_out}{name}.png");
+        _d.Hud.Visible = true;
+        prev?.MakeCurrent();
+        cam.QueueFree();
     }
 }
