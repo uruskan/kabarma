@@ -198,6 +198,7 @@ public partial class Director
 
     public void Interact()
     {
+        if (InteractVehicle()) return; // Director.Vehicles.cs: Cekirge ATV'ye bin / in (yaratik2)
         if (InteractEconomy()) return; // Director.Economy.cs: El Arabasi, Sandik, Uyku Tulumu
         if (InteractPower()) return; // power/Director.Power.cs: guc parcasi ayari, Dugme
         var st = Stations.Where(s => s.InReach(Player.GlobalPosition)).OrderBy(s => s.GlobalPosition.DistanceTo(Player.GlobalPosition)).FirstOrDefault();

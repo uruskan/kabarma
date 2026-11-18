@@ -134,6 +134,7 @@ public partial class Crescent : Node3D
     float _traveled;
     int _bounces;
     readonly HashSet<Zipzip> _hit = new();
+    readonly HashSet<Node3D> _hitWild = new(); // yaratik2
     readonly MeshInstance3D _mesh;
     readonly float _width;
 
@@ -200,6 +201,7 @@ public partial class Crescent : Node3D
                 }
             }
         }
+        _d.Wildlife?.ProjectileHit(GlobalPosition - _dir * step, GlobalPosition, _width * 0.5f + _w.HitRadius, _w.Damage * _s.SizeMult, _hitWild); // yaratik2: gunduz yabanileri (Wildlife.Hits.cs)
         if (_traveled > _w.Range * _s.SizeMult) QueueFree();
     }
 }
@@ -273,6 +275,7 @@ public partial class Nail : Node3D
             QueueFree();
             return;
         }
+        if (_d.Wildlife != null && _d.Wildlife.ProjectileHit(from, GlobalPosition, _w.HitRadius * _s.SizeMult, _w.Damage * _s.SizeMult)) { QueueFree(); return; } // yaratik2: gunduz yabanileri
         if (GlobalPosition.Y < _d.World.HeightAt(GlobalPosition.X, GlobalPosition.Z) + _w.GroundOffset)
         {
             _d.Capa.FeelDebris("civi_zemin", GlobalPosition, Palette.Soil);
