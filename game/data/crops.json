@@ -1,6 +1,8 @@
 {
   "_not": "MVP ekin verisi. Olgunlasma suresi MVP icin saniyeye sikistirildi (GDD 8.2: tasarim 2 oyun gunu).",
   "_not_m1": "Tarla kucuk kurallari (URETIM 6 M1, Salgam tarlasi): maxSlopeDegrees GDD 8.1 (egim 15 dereceden az). qualityMult GDD 13'un kalite carpani (1,0 / 1,3 / 1,7); GDD 8.2 hasat veriminde de 'kalite' der. star3MinFertility GDD 8.2. deflateAfterSeconds GDD 8.4 'safaktan sonra 1 gun' = 1 oyun gunu, GDD 2: 30 gercek dakika. deflateYieldMult GDD 8.4 'iki kat normal urun'.",
+  "_not_m2": "tarim akisi (URETIM 6 M2): Cayir ve Koru'nun 11 ekini (ICERIK 5, #1-#11). growSeconds = days x growDaySeconds (GDD 8.2 'Gun birimi': buyume gunu). water: az/orta/cok (ICERIK 5 Su sutunu) -> waters tablosu (bosalma hizi, cok: su sever, 80 ustu x1). band: biyom bandi (Cayir ve Koru ayni bant 'ilik'). product: hasat urunu (bos: ekin kimligi; Bugday 'wheat', Lifotu 'fiber'). fertilityLoss: hasatta Bereket kaybi (GDD 8.2: kok -10, diger -8). perennial + regrowDays: kalici cali (hasattan sonra regrowFrom buyumesine doner). dark: yalniz karanlikta buyur (mantar). wardsPests: kendi karesine ve 8 komsuya zararli gelmez (Sarimsak). seedGenes: kaydi olmayan tohumun taban genleri. Fiyatlar ilk deger (ICERIK 0: sayilar ayarlanabilir).",
+  "growDaySeconds": 37.5,
   "crops": [
     {
       "id": "turnip",
@@ -13,7 +15,17 @@
       "seedGenes": { "V": 2, "H": 2, "D": 2, "M": 2 },
       "moistureDrainPerSecond": 0.35,
       "waterPerShot": 100
-    }
+    },
+    { "id": "wheat", "name": "Buğday", "family": "grain", "band": "cayir", "days": 2, "growSeconds": 75, "water": "az", "basePrice": 15, "baseYield": 4, "seedReturn": 3, "fertilityLoss": 8, "seedGenes": { "V": 2, "H": 2, "D": 2, "M": 2 }, "moistureDrainPerSecond": 0.22, "waterPerShot": 100 },
+    { "id": "pumpkin", "name": "Kabak", "family": "gourd", "band": "cayir", "days": 3, "growSeconds": 112.5, "water": "orta", "basePrice": 30, "baseYield": 2, "seedReturn": 2, "fertilityLoss": 8, "seedGenes": { "V": 2, "H": 2, "D": 2, "M": 2 }, "moistureDrainPerSecond": 0.35, "waterPerShot": 100 },
+    { "id": "sunflower", "name": "Ayçiçeği", "family": "oil", "band": "cayir", "days": 2.5, "growSeconds": 93.75, "water": "az", "basePrice": 20, "baseYield": 3, "seedReturn": 2, "fertilityLoss": 8, "seedGenes": { "V": 2, "H": 2, "D": 2, "M": 2 }, "moistureDrainPerSecond": 0.22, "waterPerShot": 100 },
+    { "id": "flax", "name": "Lifotu", "family": "fiber", "band": "cayir", "days": 1.5, "growSeconds": 56.25, "water": "az", "product": "fiber", "basePrice": 6, "baseYield": 5, "seedReturn": 2, "fertilityLoss": 8, "seedGenes": { "V": 2, "H": 2, "D": 2, "M": 2 }, "moistureDrainPerSecond": 0.22, "waterPerShot": 100 },
+    { "id": "tomato", "name": "Domates", "family": "fruit", "band": "cayir", "days": 2.5, "growSeconds": 93.75, "water": "cok", "basePrice": 22, "baseYield": 4, "seedReturn": 2, "fertilityLoss": 8, "seedGenes": { "V": 2, "H": 2, "D": 2, "M": 2 }, "moistureDrainPerSecond": 0.5, "waterPerShot": 100 },
+    { "id": "mushroom", "name": "Şapkalı Mantar", "family": "mushroom", "band": "koru", "days": 2, "growSeconds": 75, "water": "cok", "dark": true, "basePrice": 22, "baseYield": 3, "seedReturn": 2, "fertilityLoss": 8, "seedGenes": { "V": 2, "H": 2, "D": 2, "M": 2 }, "moistureDrainPerSecond": 0.5, "waterPerShot": 100 },
+    { "id": "blackberry", "name": "Böğürtlen", "family": "fruit", "band": "koru", "days": 3, "growSeconds": 112.5, "water": "orta", "perennial": true, "regrowDays": 1, "basePrice": 18, "baseYield": 4, "seedReturn": 1, "fertilityLoss": 8, "seedGenes": { "V": 2, "H": 2, "D": 2, "M": 2 }, "moistureDrainPerSecond": 0.35, "waterPerShot": 100 },
+    { "id": "sourberry", "name": "Ekşilik", "family": "fruit", "band": "koru", "days": 2, "growSeconds": 75, "water": "orta", "basePrice": 20, "baseYield": 3, "seedReturn": 2, "fertilityLoss": 8, "seedGenes": { "V": 2, "H": 2, "D": 2, "M": 2 }, "moistureDrainPerSecond": 0.35, "waterPerShot": 100 },
+    { "id": "hazelnut", "name": "Fındık", "family": "oil", "band": "koru", "days": 4, "growSeconds": 150, "water": "az", "perennial": true, "regrowDays": 2, "basePrice": 25, "baseYield": 3, "seedReturn": 1, "fertilityLoss": 8, "seedGenes": { "V": 2, "H": 2, "D": 2, "M": 2 }, "moistureDrainPerSecond": 0.22, "waterPerShot": 100 },
+    { "id": "garlic", "name": "Sarımsak", "family": "spice", "band": "koru", "days": 2, "growSeconds": 75, "water": "az", "wardsPests": true, "basePrice": 20, "baseYield": 3, "seedReturn": 2, "fertilityLoss": 8, "seedGenes": { "V": 2, "H": 2, "D": 2, "M": 2 }, "moistureDrainPerSecond": 0.22, "waterPerShot": 100 }
   ],
   "moisture": { "stopBelow": 20, "halfBelow": 40, "wetAbove": 80, "wetFactor": 0.8 },
   "startFertility": 60,
@@ -28,5 +40,40 @@
   "maxSlopeDegrees": 15,
   "star3MinFertility": 70,
   "deflateAfterSeconds": 1800,
-  "deflateYieldMult": 2
+  "deflateYieldMult": 2,
+  "genetics": {
+    "_not": "GDD 8.3 ve 8.2 (tarim akisi). mutation: gen basina zar (%70 degismez, %20 +1, %8 -1, %2 +2). wildMin/wildMax: yabani tohum genleri. crossRadius: ayni aileden es en fazla bu kadar (m, kare merkezi). pollinatorRadius: kovan bu kadar icinde (m). alaca: odds = 1/n, priceMult satista. alacaSeedKeep: Alaca tohumun Alaca vermesi. dMoistureShift: nem esikleri 0,5 x (D-1) iner. outOfBand + dBandBonus: bant disi hiz. pest: isirik Zarar'i biteDamage x (1 - dBiteReduce x D); scarecrowRadius Korkuluk (m); wardCells Sarimsak komsulugu (kare). rotationBonus: art arda farkli aile +%10 verim. fallowPerDay: bos kare buyume gunu basina +3 Bereket. wild: tapu disindaki yabani bitkiler (ICERIK 5 'tohumlar ilk kez yabani bitkiden'); her ekinden perCrop tane, Ocak'tan ringMin-ringMax m halkada, hasattan regrowDays buyume gunu sonra yeniden. maxNotes: Defter'in Islah notlari.",
+    "geneMin": 1,
+    "geneMax": 10,
+    "mutation": [
+      { "delta": 0, "p": 0.70 },
+      { "delta": 1, "p": 0.20 },
+      { "delta": -1, "p": 0.08 },
+      { "delta": 2, "p": 0.02 }
+    ],
+    "wildMin": 1,
+    "wildMax": 3,
+    "crossRadius": 2.0,
+    "pollinatorRadius": 12.0,
+    "alaca": [
+      { "id": "benekli", "name": "Benekli", "odds": 40, "priceMult": 3 },
+      { "id": "altin", "name": "Altın", "odds": 250, "priceMult": 10 },
+      { "id": "aurora", "name": "Aurora", "odds": 2000, "priceMult": 50 }
+    ],
+    "alacaSeedKeep": 0.5,
+    "dMoistureShift": 0.5,
+    "outOfBand": 0.25,
+    "dBandBonus": 0.03,
+    "bands": { "cayir": "ilik", "koru": "ilik" },
+    "farmBand": "ilik",
+    "biteDamage": 0.10,
+    "dBiteReduce": 0.05,
+    "scarecrowRadius": 10.0,
+    "wardCells": 1,
+    "rotationBonus": 0.10,
+    "fallowPerDay": 3,
+    "regrowFrom": 0.6,
+    "wild": { "perCrop": 2, "ringMin": 24, "ringMax": 48, "regrowDays": 2 },
+    "maxNotes": 30
+  }
 }

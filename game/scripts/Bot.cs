@@ -43,6 +43,8 @@ public partial class Bot : Node
         RegisterZincir();    // Bot.Zincir.cs (entegrasyon): yemek, firin, civi, kasa, barinak
         RegisterUretim();    // Bot.Uretim.cs (zincir M2): arastir_t2 (--test=zincir; senaryoda yok)
         _steps["end"] = StepEnd;
+        RegisterCoop();      // Bot.Coop.cs (ortak): --test=coop'ta butun adimlar ortak bot
+        RegisterTarim();     // Bot.Tarim.cs (tarim M2): yalniz --test=tarim; ikinci ekin, Korkuluk, yabani tohum
     }
 
     Player P => _d.Player;

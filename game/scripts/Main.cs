@@ -53,6 +53,9 @@ public partial class Main : Node3D
         ["grip"] = m => { Args["mute"] = "1"; Sfx.Muted = true; m.AddChild(new GripTest()); return false; }, // oyuncu akisi: Capa elde, namlu nisanda, araba iki elle
         ["kemer"] = m => { Args["bot"] = "1"; if (m._quitAfter <= 0) m._quitAfter = 600; m.AddChild(new KemerShots()); return false; }, // karar 23 kaniti: progress/kemer/*.png
         ["zincir"] = m => { Args["bot"] = "1"; Args["mute"] = "1"; Sfx.Muted = true; m.AddChild(new ZincirTest()); return false; }, // zincir M2: bot T2 urununu arastirir ve uretir (ZincirTest.cs)
+        ["tarim"] = m => { Args["bot"] = "1"; Args["tarim"] = "1"; Args["mute"] = "1"; Sfx.Muted = true; if (m._quitAfter <= 0) m._quitAfter = 900; return false; }, // tarim M2: Bot.Tarim.cs ikinci ekin
+        ["coop"] = m => { CoopTest.Setup(); m.AddChild(new CoopTest()); return false; }, // ortak: host + 3 istemci (ENet), senkron < 1 cm (net/CoopTest.cs)
+        ["steam"] = m => { m.AddChild(new SteamTest()); return true; }, // ortak: tek surec Steam baslatma ve lobi (yalniz -Only steam)
         ["input"] = m => { m._inputDevice = InputDriver.ParseDevice(Args.TryGetValue("device", out var d) ? d : "kbm"); if (m._quitAfter <= 0) m._quitAfter = 900; return false; }, // zincir bitince Bot.Hands cikar; bu ust sinir
     };
 

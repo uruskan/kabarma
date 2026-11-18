@@ -55,3 +55,11 @@ Sahibin varlık kitaplığından (`F:\Assets`, yalnız okundu) kopyalanıp `pipe
 ## Zincir istasyonları (M2, yer tutucu)
 
 Araştırma Masası, Kömür Ocağı, Demirci Ocağı, Bıçkı, Değirmen, Dokuma Tezgâhı, Kasap Tezgâhı, Kuluçka, Araç Atölyesi, Oyma İskelesi: **koddan** (`game/scripts/world/Station.Visuals.cs`, `MeshKit` yastık kutu ve silindir). Üçüncü taraf içerik yok, kredi harcanmadı. Gerçek model gelince `placeables.json` `model` alanı yer tutucunun yerini alır.
+
+## tarim (M2): ekin ve Korkuluk yer tutuculari
+
+| Varlik | Kaynak | Lisans | Not |
+|---|---|---|---|
+| Cayir ve Koru'nun 10 ekini (Bugday, Kabak, Aycicegi, Lifotu, Domates, Sapkali Mantar, Bogurtlen, Eksilik, Findik, Sarimsak) | Koddan: `game/scripts/world/FarmView.Meshes.cs` (`CropVisuals`, MeshKit ilkelleri) | Projenin kendi kodu | YER TUTUCU; uretim istegi: ekin basina 1 Tripo modeli |
+| Korkuluk | Koddan: `KorkulukVisual` (ayni dosya) | Projenin kendi kodu | YER TUTUCU |
+| Alaca gorunusu | Toon golgelendiricinin `tint` degeri | Projenin kendi kodu | Benekli, Altin, Aurora |
