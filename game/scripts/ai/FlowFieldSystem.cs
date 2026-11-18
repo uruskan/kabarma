@@ -57,7 +57,7 @@ public partial class FlowFieldSystem : Node
         var grid = new FlowGrid(Def, c.X, c.Z);
         var w = _d.World;
         grid.BuildTerrain((x, z) => w.HeightAt(x, z), (x, z) => w.IsWater(new Vector3(x, w.HeightAt(x, z), z)));
-        Fields = new FlowFieldSet(grid);
+        Fields = new FlowFieldSet(grid) { EagerFirstQuery = false }; // ilk hesap da tik butcesiyle; o arada Steer null (dogrudan yurur)
         _mine.Clear();
         _dirty = true;
         GD.Print($"FLOW window center={c.X:0},{c.Z:0} size={grid.Size}");

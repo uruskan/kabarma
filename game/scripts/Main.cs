@@ -60,6 +60,7 @@ public partial class Main : Node3D
         ["save"] = m => { SaveTest.Prepare(); m.AddChild(new SaveTest(m)); return false; }, // kayit: bot bir gun oynar, kaydeder, sahne bastan yuklenir; fark 0 (save/SaveTest.cs)
         ["menu"] = m => { MenuFlowTest.Prepare(); m.AddChild(new MenuFlowTest(m)); return false; }, // kayit: ana menu -> yeni oyun -> Esc ana menu -> Devam -> kapatma kaydi (save/MenuFlowTest.cs)
         ["hayvan"] = m => { Args["bot"] = "1"; Args["hayvanbot"] = "1"; if (m._quitAfter <= 0) m._quitAfter = 1300; return false; }, // hayvan akisi: zincir + ikinci tur (Bot.Hayvan.cs)
+        ["savashayvan"] = m => { Args["bot"] = "1"; Args["hayvanbot"] = "1"; Args["savashayvan"] = "1"; if (m._quitAfter <= 0) m._quitAfter = 2200; return false; }, // M3 savas-hayvan: hayvan botu + Kabarma'da hayvanlar ve binek (husbandry/Husbandry.Combat.Test.cs)
         ["borsa"] = m => { Args["borsatest"] = "1"; Args["mute"] = "1"; Sfx.Muted = true; return false; }, // ekonomi2: Borsa, Katalog, Cark (MarketTest.cs)
         ["holding"] = m => { Args["holdingtest"] = "1"; Args["mute"] = "1"; Sfx.Muted = true; return false; }, // holding M3: kamp, Perde, kervan, baskinlar (holding/HoldingTest.cs)
         ["boss"] = m => { Args.TryAdd("fast", "3"); Args.TryAdd("mute", "1"); Sfx.Muted = Args["mute"] == "1"; m.AddChild(new AtaTest()); return false; }, // boss akisi: bot iki Ata'yi bulur ve yener (boss/AtaTest.cs)

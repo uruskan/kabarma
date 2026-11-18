@@ -607,6 +607,10 @@ Kare Temel · Üçgen Temel · Kazık Temel · Duvar · Yarım Duvar · Alçak D
 | Suluk (M2) | 4 Odun + 2 Taş | Ağılın su ihtiyacı; Sulama başlığıyla ya da kendiliğinden yağmurla dolar (şimdilik her şafakta dolu) |
 | Kaşınma Fırçası (M2) | 3 Odun + 3 Lif | Ağıldakilerin mutluluğuna sürekli ek |
 | Arı Kovanı (M2) | 8 Odun + 2 Lif | Vızvız sürüsü yerleşir, kayıt olur; bal ve balmumu birikir |
+| Savaş Ağılı Bayrağı (M3) | 6 Odun + 4 Lif | Durduğu ağıl Savaş Ağılı olur: Savaşçılar Kabarma'da kabarıp savaşır ([GDD.md](GDD.md) §9.5) |
+| Ahır Zili (M3) | 4 Odun + 2 Bakır Külçe | Çalınca 30 m içindeki evcil hayvanlar ağılına döner |
+| Bağlama Direği (M3) | 3 Odun + 2 Lif | Binek direğe bağlanır: kaçmaz, Kabarma'da saklanır |
+| Eyerlik (M3) | 5 Odun + 2 Deri | Binek rolündeki hayvana eyer takar. Eyer: Tezgâh'ta 3 Deri + 2 Lif |
 
 ## 11. İstasyonlar ve makineler (43)
 

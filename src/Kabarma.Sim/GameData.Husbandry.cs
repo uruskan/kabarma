@@ -171,7 +171,7 @@ public sealed class SpeciesDef
     public float Speed { get; set; } = 1.5f;
 }
 
-public sealed class HusbandryFile
+public sealed partial class HusbandryFile
 {
     public HappinessDef Happiness { get; set; } = new();
     public AnimalGenesDef Genes { get; set; } = new();

@@ -44,6 +44,7 @@ if (-not $PSBoundParameters.ContainsKey('Only')) { $Only += 'ekonomi' }  # ekono
 if (-not $PSBoundParameters.ContainsKey('Only')) { $Only += 'save' } # kayit akisi: --test=save (bot bir gun, kaydet, bastan yukle, fark 0)
 if (-not $PSBoundParameters.ContainsKey('Only')) { $Only += 'menu' } # kayit akisi: --test=menu (ana menu, Esc, Devam, kapatma kaydi)
 if (-not $PSBoundParameters.ContainsKey('Only')) { $Only += 'hayvan' }   # hayvan akisi: zincir + Pofuduk evcillestir, sutunu al (--test=hayvan)
+if (-not $PSBoundParameters.ContainsKey('Only')) { $Only += 'savashayvan' } # M3 savas-hayvan: Kabarma'da hayvanlar ve binek (--test=savashayvan)
 if (-not $PSBoundParameters.ContainsKey('Only')) { $Only += 'borsa' }    # ekonomi2: Borsa, Katalog, Cark (--test=borsa)
 if (-not $PSBoundParameters.ContainsKey('Only')) { $Only += 'holding' }  # holding (M3): Bereket Holding kampi, Perde, kervan, baskinlar (--test=holding)
 if (-not $PSBoundParameters.ContainsKey('Only')) { $Only += 'coop' }  # ortak: host + 3 istemci (ENet), senkron < 1 cm; steam yalniz -Only steam
@@ -179,6 +180,19 @@ if ($Only -contains 'hayvan') {
         if (-not $res) { $res = 'RESULT satiri yok' }
         if (-not $hv) { $hv = 'HAYVAN satiri yok' }
         [pscustomobject]@{ Ok = ($res -match '^RESULT ok') -and ($hv -match '^HAYVAN ok'); Detail = (($hv -replace ' t=[0-9.]+$', '') + ' | ' + ($res -replace ' t=[0-9.]+$', '')) }
+    }
+}
+
+if ($Only -contains 'savashayvan') {
+    # M3 savas-hayvan: hayvan botu + Kabarma'da hayvanlar ve binek (husbandry/Husbandry.Combat.Test.cs)
+    if (-not $G) { $G = Find-Godot }
+    Invoke-GodotTest 'savashayvan' '--test=savashayvan --fast=4 --quit_after=2200 --mute' ([Math]::Max($BotTimeout, 1200)) {
+        param($r)
+        $lines = $r.Text -split "`r?`n"
+        $sv = ($lines | Where-Object { $_ -match '^SAVASHAYVAN ok checks' } | Select-Object -Last 1)
+        $fl = ($lines | Where-Object { $_ -match '^RESULT fail' } | Select-Object -Last 1)
+        $det = if ($sv) { $sv } elseif ($fl) { $fl } else { 'SAVASHAYVAN satiri yok' }
+        [pscustomobject]@{ Ok = [bool]$sv -and -not $fl; Detail = ($det -replace ' t=[0-9.]+$', '') }
     }
 }
 
