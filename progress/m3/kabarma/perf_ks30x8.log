@@ -1,0 +1,984 @@
+Godot Engine v4.7.2.stable.mono.official.ed1daf0bf - https://godotengine.org
+Vulkan 1.4.357 - Forward+ - Using Device #0: NVIDIA - NVIDIA GeForce RTX 2070 SUPER
+
+TEST kabarma
+MUSIC ready day=yes layers=3/3 bar=2.00s
+WORLD decor agac box=98 outside=285
+WORLD decor turuncu_agac box=28 outside=84
+WORLD decor cali box=153 outside=450
+WORLD decor ot box=226 outside=660
+WORLD decor bugday box=74 outside=210
+WORLD decor cicek box=240 outside=720
+WORLD decor egrelti box=156 outside=450
+WORLD decor kaya_duz box=36 outside=108
+WORLD decor kaya_dik box=17 outside=42
+WORLD pois 16: seyir_kulesi_altin_cayir_0@105,40 ata_tasi_altin_cayir_0@64,36 yabani_bahce_altin_cayir_0@-145,2 yuva_altin_cayir_0@143,192 yuva_altin_cayir_1@-231,-56 enkaz_altin_cayir_0@-69,179 enkaz_altin_cayir_1@84,195 enkaz_altin_cayir_2@-139,-84 seyir_kulesi_sis_korusu_0@-46,287 ata_tasi_sis_korusu_0@-212,219 yabani_bahce_sis_korusu_0@-53,256 yuva_sis_korusu_0@-200,189 yuva_sis_korusu_1@-88,230 enkaz_sis_korusu_0@-257,293 enkaz_sis_korusu_1@-151,238 enkaz_sis_korusu_2@-235,110
+PLAYER model anims: carry,cheer,crouch_walk,eat,getup_back_pose,getup_front_pose,hurt,idle,jump,jump_air,jump_land,jump_start,kneel,knockdown,plant,push,run,shock_fall,sleep,sprint,walk,walk_casual,wave
+AUDIO sounds=60 playable=60 variant_files=180 m0_only=0 silent=0 placeholder=0
+AUDIO ok 60/60
+POFUDUK anims: pose/attack1,pose/attack2,pose/eat,pose/hit,pose/idle,pose/rest,pose/run,pose/walk,preset_quadruped_walk
+BUILD kit pieces=28
+ATALAR arenas=koca_pofuduk@64,36/r18:ata_tasi_altin_cayir_0,boynuzlu_dede@-212,219/r20:ata_tasi_sis_korusu_0
+BOOT Kabarma MVP
+TARIM wild=22
+STEP mine -> odun t=12.1
+STEP odun -> ocak t=12.1
+STEP ocak -> tezgah t=12.2
+STEP tezgah -> tarla t=12.2
+ORDER ciraklik step=1 done (defter kapali)
+STEP tarla -> agil t=12.3
+STEP agil -> gidak t=12.3
+GIDAK appears at (-12, 0, 9)
+STEP gidak -> night t=12.3
+HELD capa
+SUNA line=tas_bitti voice=yes
+WILDLIFE spawn pofuduk herd=2 at=154,-61
+KABARMA wait phase=Dusk night=False report=False
+FLOW window center=0,0 size=160
+WILDLIFE spawn homur herd=1 at=-15,9
+WILDLIFE spawn homur herd=1 at=-19,13
+WILDLIFE spawn dalli herd=1 at=35,15
+WILDLIFE spawn dalli herd=1 at=39,10
+WILDLIFE spawn vicik herd=1 at=-11,-35
+WILDLIFE spawn vicik herd=1 at=-8,-39
+WILDLIFE spawn bozuk herd=1 at=45,-39
+WILDLIFE spawn vizviz swarm at=27,21
+WILDLIFE spawn hu herd=1 at=-25,-17
+RANCH start animals=11 agents=11
+WILDLIFE spawn pofuduk herd=2 at=127,7
+HATCH intro done
+NIGHT start n=1
+FIRSTNIGHT ripen=0
+MUSIC Silence -> Kabarma
+WILDLIFE leave creatures=12 swarms=1
+SUNA line=odun_basla voice=yes
+NIGHT swell crops=9
+WILDLIFE leave creatures=8 swarms=1
+WILDLIFE leave creatures=8 swarms=1
+SUNA line=ocak_basla voice=yes
+NIGHT wave 1 count=3
+WILDLIFE leave creatures=8 swarms=1
+SUNA line=ocak_bitti voice=yes
+WILDLIFE leave creatures=8 swarms=1
+SUNA line=tezgah_basla voice=yes
+WILDLIFE leave creatures=8 swarms=1
+WILDLIFE leave creatures=8 swarms=1
+KABARMA wait phase=Night night=True report=False
+SUNA line=tarla_basla voice=yes
+WILDLIFE leave creatures=8 swarms=1
+GECEHUD SHOT C:/Users/uruskan/Documents/GitHub/kabarma/.claude/worktrees/m2-yaratik-28315e/game/../progress/m1/gecehud/../../m3/kabarma/kart_teklifi_gece1.png
+WILDLIFE leave creatures=8 swarms=1
+SUNA line=tarla_bitti voice=yes
+WILDLIFE leave creatures=8 swarms=1
+NIGHT wave 2 count=7
+MUSIC layers=2 bar=26
+GECEHUD SHOT C:/Users/uruskan/Documents/GitHub/kabarma/.claude/worktrees/m2-yaratik-28315e/game/../progress/m1/gecehud/../../m3/kabarma/kabarma_pano_gece1.png
+SUNA line=agil_basla voice=yes
+WILDLIFE leave creatures=8 swarms=1
+WILDLIFE leave creatures=8 swarms=1
+SUNA line=agil_bitti voice=yes
+WILDLIFE leave creatures=8 swarms=1
+NIGHT card catal rank=1
+WILDLIFE leave creatures=8 swarms=1
+SUNA line=gidak_basla voice=yes
+KABARMA wait phase=Night night=True report=False
+WILDLIFE leave creatures=8 swarms=1
+SUNA line=gidak_bitti voice=yes
+WILDLIFE leave creatures=8 swarms=1
+WILDLIFE leave creatures=8 swarms=1
+SUNA line=kabarma_basla voice=yes
+WILDLIFE leave creatures=8 swarms=1
+SUNA line=giris_1 voice=yes
+NIGHT wave 3 count=11
+MUSIC layers=3 bar=67
+WILDLIFE leave creatures=8 swarms=1
+WILDLIFE leave creatures=8 swarms=1
+SUNA line=giris_2 voice=yes
+WILDLIFE leave creatures=8 swarms=1
+WILDLIFE leave creatures=8 swarms=1
+KABARMA wait phase=Night night=True report=False
+SUNA line=gece_alarm voice=yes
+NIGHT card kule_asiri_yuku rank=1
+WILDLIFE leave creatures=8 swarms=1
+SUNA line=gece_kabarma voice=yes
+WILDLIFE leave creatures=8 swarms=1
+SUNA line=gece_gidak voice=yes
+WILDLIFE leave creatures=8 swarms=1
+WILDLIFE leave creatures=8 swarms=1
+SUNA line=gece_dalga voice=yes
+WILDLIFE leave creatures=8 swarms=1
+ACHIEVEMENT ilk_gece
+ORDER ciraklik step=4 done (defter kapali)
+CALENDAR morning day=2
+NIGHT oz picked=0 auto=21
+NIGHT dawn kills=21 level=3 maya=48 cards=2 statsBase=True
+NIGHT swollenLeft=9
+FENCE night hits=0 lowest_hp=0/400 knocked_over=0
+STEP night -> sell t=217.7
+CHIP added tasarruf rare id=1
+MUSIC Kabarma -> Day
+STEP sell -> hasat t=218.6
+GECEHUD SHOT C:/Users/uruskan/Documents/GitHub/kabarma/.claude/worktrees/m2-yaratik-28315e/game/../progress/m1/gecehud/../../m3/kabarma/gunduz_pano_defter.png
+SUNA line=gece_kart voice=yes
+WILDLIFE spawn sinsi herd=1 at=49,124
+ORDER PAID ciraklik 1 credits=100 veri=10
+ORDER PAID ciraklik 4 credits=6000 veri=70
+REPORT shown night=1 kills=21 maya=48 level=3 cards=kule_asiri_yuku:1,catal:1 swollen=9 eaten=0 sold=0 defter=True
+KABARMA start kind=Full ks=30 players=8 families=root:9
+MUSIC Day -> Silence
+GECEHUD SHOT C:/Users/uruskan/Documents/GitHub/kabarma/.claude/worktrees/m2-yaratik-28315e/game/../progress/m1/gecehud/../../m3/kabarma/hasat_raporu_gece1.png
+WILDLIFE spawn homur herd=1 at=-19,-147
+WILDLIFE spawn pofuduk herd=2 at=-161,13
+SUNA line=safak voice=yes
+KABARMA plan ks=30 waves=9 slots=3515 hpx=57.58 maya=1.0
+NIGHT start n=2 replay
+MUSIC Silence -> Kabarma
+WILDLIFE leave creatures=12 swarms=1
+SUNA line=kargo_basla voice=yes
+WILDLIFE leave creatures=8 swarms=1
+KABARMA perf wave=0 active=0 swarms=0 pending=0 frameMs=8.9 fps=106
+WILDLIFE leave creatures=8 swarms=1
+SUNA line=kargo_bitti voice=yes
+NIGHT swell crops=0
+KABARMA perf wave=0 active=0 swarms=0 pending=0 frameMs=8.7 fps=127
+WILDLIFE leave creatures=8 swarms=1
+SUNA line=siradaki_is voice=yes
+KABARMA perf wave=0 active=0 swarms=0 pending=0 frameMs=7.6 fps=135
+WILDLIFE leave creatures=8 swarms=1
+KABARMA perf wave=0 active=0 swarms=0 pending=0 frameMs=8.2 fps=102
+WILDLIFE leave creatures=8 swarms=1
+SUNA line=hasat_basla voice=yes
+WILDLIFE leave creatures=8 swarms=1
+KABARMA perf wave=0 active=0 swarms=0 pending=0 frameMs=9.7 fps=102
+WILDLIFE leave creatures=8 swarms=1
+KABARMA perf wave=0 active=0 swarms=0 pending=0 frameMs=8.4 fps=141
+SUNA line=gece_alarm voice=yes
+WILDLIFE leave creatures=8 swarms=1
+KABARMA perf wave=0 active=0 swarms=0 pending=0 frameMs=7.5 fps=129
+WILDLIFE leave creatures=8 swarms=1
+SUNA line=gece_kabarma voice=yes
+KABARMA perf wave=0 active=0 swarms=0 pending=0 frameMs=8.4 fps=115
+WILDLIFE leave creatures=8 swarms=1
+SUNA line=gece_gidak voice=yes
+WILDLIFE leave creatures=8 swarms=1
+KABARMA perf wave=0 active=0 swarms=0 pending=0 frameMs=8.8 fps=116
+WILDLIFE leave creatures=8 swarms=1
+KABARMA perf wave=0 active=0 swarms=0 pending=0 frameMs=8.0 fps=126
+WILDLIFE leave creatures=8 swarms=1
+KABARMA perf wave=0 active=0 swarms=0 pending=0 frameMs=8.2 fps=117
+WILDLIFE leave creatures=8 swarms=1
+KABARMA perf wave=0 active=0 swarms=0 pending=0 frameMs=8.4 fps=134
+WILDLIFE leave creatures=8 swarms=1
+WILDLIFE leave creatures=8 swarms=1
+KABARMA perf wave=0 active=0 swarms=0 pending=0 frameMs=7.9 fps=112
+WILDLIFE leave creatures=8 swarms=1
+KABARMA perf wave=0 active=0 swarms=0 pending=0 frameMs=7.7 fps=141
+WILDLIFE leave creatures=8 swarms=1
+KABARMA perf wave=0 active=0 swarms=0 pending=0 frameMs=7.3 fps=130
+WILDLIFE leave creatures=8 swarms=1
+KABARMA perf wave=0 active=0 swarms=0 pending=0 frameMs=7.5 fps=133
+WILDLIFE leave creatures=8 swarms=1
+WILDLIFE leave creatures=8 swarms=1
+KABARMA perf wave=0 active=0 swarms=0 pending=0 frameMs=7.8 fps=126
+WILDLIFE leave creatures=8 swarms=1
+KABARMA perf wave=0 active=0 swarms=0 pending=0 frameMs=7.7 fps=129
+WILDLIFE leave creatures=8 swarms=1
+KABARMA perf wave=0 active=0 swarms=0 pending=0 frameMs=7.3 fps=141
+WILDLIFE leave creatures=8 swarms=1
+KABARMA perf wave=0 active=0 swarms=0 pending=0 frameMs=7.1 fps=141
+WILDLIFE leave creatures=8 swarms=1
+WILDLIFE leave creatures=8 swarms=1
+KABARMA perf wave=0 active=0 swarms=0 pending=0 frameMs=7.1 fps=142
+WILDLIFE leave creatures=8 swarms=1
+KABARMA perf wave=0 active=0 swarms=0 pending=0 frameMs=7.4 fps=124
+WILDLIFE leave creatures=8 swarms=1
+KABARMA perf wave=0 active=0 swarms=0 pending=0 frameMs=8.2 fps=104
+WILDLIFE leave creatures=8 swarms=1
+NIGHT wave 1 count=417
+WILDLIFE spawn cekirge swarm at=46,-5
+SUNA line=gece_dalga voice=yes
+KABARMA perf wave=1 active=0 swarms=1 pending=416 frameMs=7.9 fps=127
+WILDLIFE leave creatures=8 swarms=2
+WILDLIFE spawn cekirge swarm at=-3,42
+WILDLIFE leave creatures=8 swarms=3
+GIDAK kick to=0.97,-0.23
+KABARMA perf wave=1 active=46 swarms=2 pending=369 frameMs=17.7 fps=36
+GECEHUD SHOT C:/Users/uruskan/Documents/GitHub/kabarma/.claude/worktrees/m2-yaratik-28315e/game/../progress/m1/gecehud/../../m3/kabarma/kabarma_ks30_kalabalik.png
+GIDAK kick to=-0.82,0.58
+WILDLIFE spawn cekirge swarm at=-45,-5
+WILDLIFE spawn vizviz swarm at=43,9
+WILDLIFE leave creatures=8 swarms=5
+WILDLIFE spawn cekirge swarm at=45,-0
+WILDLIFE spawn cekirge swarm at=-22,38
+GIDAK kick to=-0.89,-0.45
+KABARMA rout kazan=999999900
+WILDLIFE spawn cekirge swarm at=19,-41
+KABARMA perf wave=1 active=87 swarms=7 pending=323 frameMs=61.9 fps=5
+EATEN plot 5,-1
+WILDLIFE spawn cekirge swarm at=-27,-32
+GIDAK kick to=-0.83,-0.55
+WILDLIFE leave creatures=8 swarms=9
+WILDLIFE spawn cekirge swarm at=-13,-42
+KABARMA rout kazan=999999600
+EATEN plot 5,0
+EATEN plot 3,-1
+EATEN plot 5,1
+EATEN plot 4,1
+GIDAK kick to=-0.63,-0.78
+WILDLIFE spawn vizviz swarm at=42,-17
+KABARMA perf wave=1 active=131 swarms=10 pending=276 frameMs=84.8 fps=3
+EATEN plot 3,0
+EATEN plot 3,1
+WILDLIFE spawn vizviz swarm at=-23,-39
+EATEN plot 4,0
+EATEN plot 4,-1
+KABARMA rout kazan=999999700
+WILDLIFE spawn cekirge swarm at=-4,-43
+WILDLIFE leave creatures=8 swarms=13
+GIDAK kick to=-0.52,-0.86
+GECEHUD SHOT C:/Users/uruskan/Documents/GitHub/kabarma/.claude/worktrees/m2-yaratik-28315e/game/../progress/m1/gecehud/../../m3/kabarma/kabarma_ks30_yogun.png
+WILDLIFE spawn vizviz swarm at=13,-41
+KABARMA rout kazan=999999600
+GIDAK kick to=-0.65,-0.76
+KABARMA perf wave=1 active=175 swarms=13 pending=229 frameMs=122.7 fps=3
+WILDLIFE leave creatures=8 swarms=14
+WILDLIFE spawn cekirge swarm at=-41,-16
+KABARMA rout kazan=999998800
+GIDAK kick to=-0.83,-0.55
+WILDLIFE spawn cekirge swarm at=39,17
+WILDLIFE leave creatures=8 swarms=16
+GIDAK kick to=-0.66,-0.75
+KABARMA rout kazan=999999400
+KABARMA perf wave=1 active=205 swarms=15 pending=197 frameMs=84.9 fps=12
+GIDAK kick to=-1.00,0.09
+KABARMA rout kazan=999999700
+WILDLIFE leave creatures=8 swarms=16
+GIDAK kick to=-0.68,-0.74
+KABARMA perf wave=1 active=205 swarms=15 pending=197 frameMs=57.8 fps=17
+KABARMA rout kazan=999999700
+GIDAK kick to=-0.33,-0.94
+WILDLIFE leave creatures=8 swarms=16
+KABARMA rout kazan=999999100
+GIDAK kick to=-0.99,-0.11
+KABARMA perf wave=1 active=205 swarms=15 pending=197 frameMs=57.8 fps=15
+WILDLIFE leave creatures=8 swarms=16
+GIDAK kick to=-0.86,0.52
+KABARMA rout kazan=999999700
+GIDAK kick to=-1.00,-0.04
+KABARMA rout kazan=999999800
+KABARMA perf wave=1 active=205 swarms=15 pending=197 frameMs=52.6 fps=21
+WILDLIFE leave creatures=8 swarms=16
+GIDAK kick to=-0.92,-0.38
+KABARMA rout kazan=999998200
+GIDAK kick to=0.01,-1.00
+WILDLIFE leave creatures=8 swarms=16
+KABARMA perf wave=1 active=205 swarms=15 pending=197 frameMs=67.4 fps=15
+KABARMA rout kazan=999999900
+GIDAK kick to=-0.88,-0.48
+WILDLIFE leave creatures=8 swarms=16
+GIDAK kick to=-0.41,-0.91
+KABARMA rout kazan=999999800
+KABARMA perf wave=1 active=205 swarms=15 pending=197 frameMs=73.5 fps=15
+GIDAK kick to=-0.63,-0.77
+KABARMA rout kazan=999999900
+WILDLIFE leave creatures=8 swarms=16
+GIDAK kick to=-0.51,-0.86
+KABARMA rout kazan=999999900
+KABARMA perf wave=1 active=205 swarms=15 pending=197 frameMs=56.3 fps=17
+GIDAK kick to=-0.79,-0.61
+WILDLIFE leave creatures=8 swarms=16
+KABARMA rout kazan=999998800
+GIDAK kick to=-0.83,-0.56
+KABARMA perf wave=1 active=205 swarms=15 pending=197 frameMs=69.7 fps=16
+WILDLIFE leave creatures=8 swarms=16
+GIDAK kick to=-0.83,-0.56
+KABARMA rout kazan=999999900
+GIDAK kick to=-0.94,0.35
+KABARMA rout kazan=999996900
+WILDLIFE leave creatures=8 swarms=16
+KABARMA perf wave=1 active=205 swarms=15 pending=197 frameMs=84.4 fps=10
+GIDAK kick to=-0.28,-0.96
+GIDAK kick to=-0.22,-0.98
+WILDLIFE leave creatures=8 swarms=16
+KABARMA perf wave=1 active=205 swarms=15 pending=197 frameMs=111.2 fps=7
+GIDAK kick to=0.65,-0.76
+WILDLIFE leave creatures=8 swarms=16
+GIDAK kick to=-0.08,-1.00
+KABARMA perf wave=1 active=205 swarms=15 pending=197 frameMs=122.5 fps=7
+GIDAK kick to=-0.79,-0.61
+WILDLIFE leave creatures=8 swarms=16
+GIDAK kick to=-0.88,0.48
+KABARMA perf wave=1 active=205 swarms=15 pending=197 frameMs=75.0 fps=15
+WILDLIFE leave creatures=8 swarms=16
+GIDAK kick to=-0.96,0.29
+GIDAK kick to=-1.00,-0.06
+WILDLIFE leave creatures=8 swarms=16
+KABARMA perf wave=1 active=205 swarms=15 pending=197 frameMs=65.3 fps=16
+GIDAK kick to=-0.57,0.82
+GIDAK kick to=-0.88,0.47
+WILDLIFE leave creatures=8 swarms=16
+NIGHT wave 2 count=417
+GIDAK kick to=-0.83,-0.55
+KABARMA perf wave=2 active=205 swarms=15 pending=614 frameMs=42.3 fps=26
+MUSIC layers=2 bar=132
+GECEHUD SHOT C:/Users/uruskan/Documents/GitHub/kabarma/.claude/worktrees/m2-yaratik-28315e/game/../progress/m1/gecehud/../../m3/kabarma/kabarma_pano_gece2.png
+WILDLIFE leave creatures=8 swarms=16
+GIDAK kick to=-0.92,-0.39
+GIDAK kick to=-0.96,-0.29
+KABARMA perf wave=2 active=205 swarms=15 pending=614 frameMs=31.5 fps=34
+WILDLIFE leave creatures=8 swarms=16
+GIDAK kick to=-0.80,0.60
+GIDAK kick to=0.13,-0.99
+KABARMA perf wave=2 active=205 swarms=15 pending=614 frameMs=29.7 fps=36
+WILDLIFE leave creatures=8 swarms=16
+GIDAK kick to=-0.72,0.69
+WILDLIFE leave creatures=8 swarms=16
+GIDAK kick to=-0.81,0.58
+KABARMA perf wave=2 active=205 swarms=15 pending=614 frameMs=29.8 fps=34
+GIDAK kick to=-0.87,-0.50
+WILDLIFE leave creatures=8 swarms=16
+GIDAK kick to=-0.89,0.45
+KABARMA perf wave=2 active=205 swarms=15 pending=614 frameMs=29.1 fps=34
+GIDAK kick to=-0.92,0.40
+WILDLIFE leave creatures=8 swarms=16
+GIDAK kick to=-0.75,-0.66
+KABARMA perf wave=2 active=205 swarms=15 pending=614 frameMs=34.7 fps=28
+WILDLIFE leave creatures=8 swarms=16
+GIDAK kick to=-0.96,-0.28
+GIDAK kick to=-0.93,0.37
+KABARMA perf wave=2 active=205 swarms=15 pending=614 frameMs=30.8 fps=36
+WILDLIFE leave creatures=8 swarms=16
+GIDAK kick to=-0.96,0.29
+GIDAK kick to=-0.69,0.72
+WILDLIFE leave creatures=8 swarms=16
+KABARMA perf wave=2 active=205 swarms=15 pending=614 frameMs=33.2 fps=28
+GIDAK kick to=-0.81,0.58
+WILDLIFE leave creatures=8 swarms=16
+GIDAK kick to=-0.90,0.45
+KABARMA perf wave=2 active=205 swarms=15 pending=614 frameMs=31.1 fps=30
+GIDAK kick to=-1.00,0.09
+WILDLIFE leave creatures=8 swarms=16
+GIDAK kick to=-0.96,0.27
+KABARMA perf wave=2 active=205 swarms=15 pending=614 frameMs=34.4 fps=27
+GIDAK kick to=-0.98,0.20
+WILDLIFE leave creatures=8 swarms=16
+GIDAK kick to=-0.93,-0.36
+KABARMA perf wave=2 active=205 swarms=15 pending=614 frameMs=32.7 fps=29
+WILDLIFE leave creatures=8 swarms=16
+GIDAK kick to=-0.62,-0.78
+GIDAK kick to=-0.86,0.50
+WILDLIFE leave creatures=8 swarms=16
+KABARMA perf wave=2 active=205 swarms=15 pending=614 frameMs=41.1 fps=24
+GIDAK kick to=-0.98,0.21
+GIDAK kick to=-0.98,-0.19
+WILDLIFE leave creatures=8 swarms=16
+KABARMA perf wave=2 active=205 swarms=15 pending=614 frameMs=39.4 fps=25
+GIDAK kick to=-0.99,-0.17
+WILDLIFE leave creatures=8 swarms=16
+GIDAK kick to=-0.94,-0.33
+KABARMA perf wave=2 active=205 swarms=15 pending=614 frameMs=40.5 fps=26
+GIDAK kick to=-0.98,-0.20
+WILDLIFE leave creatures=8 swarms=16
+GIDAK kick to=-0.88,-0.48
+GIDAK kick to=-0.44,-0.90
+KABARMA perf wave=2 active=205 swarms=15 pending=614 frameMs=39.1 fps=25
+WILDLIFE leave creatures=8 swarms=16
+GIDAK kick to=-0.95,-0.31
+WILDLIFE leave creatures=8 swarms=16
+GIDAK kick to=-0.79,-0.61
+KABARMA perf wave=2 active=205 swarms=15 pending=614 frameMs=38.8 fps=24
+GIDAK kick to=-0.60,-0.80
+WILDLIFE leave creatures=8 swarms=16
+GIDAK kick to=-0.92,-0.38
+KABARMA perf wave=2 active=205 swarms=15 pending=614 frameMs=30.8 fps=33
+GIDAK kick to=-0.50,-0.86
+WILDLIFE leave creatures=8 swarms=16
+GIDAK kick to=-0.79,-0.62
+KABARMA perf wave=2 active=205 swarms=15 pending=614 frameMs=42.9 fps=23
+WILDLIFE leave creatures=8 swarms=16
+GIDAK kick to=-0.42,-0.91
+NIGHT wave 3 count=407
+GIDAK kick to=-0.91,-0.42
+MUSIC layers=3 bar=178
+KABARMA perf wave=3 active=205 swarms=15 pending=1021 frameMs=44.4 fps=21
+WILDLIFE leave creatures=8 swarms=16
+GIDAK kick to=-0.68,-0.73
+GIDAK kick to=-0.83,-0.56
+WILDLIFE leave creatures=8 swarms=16
+KABARMA perf wave=3 active=205 swarms=15 pending=1021 frameMs=49.6 fps=19
+GIDAK kick to=-0.04,-1.00
+WILDLIFE leave creatures=8 swarms=16
+GIDAK kick to=-0.79,-0.61
+KABARMA perf wave=3 active=205 swarms=15 pending=1021 frameMs=49.0 fps=20
+GIDAK kick to=0.61,-0.80
+WILDLIFE leave creatures=8 swarms=16
+GIDAK kick to=-0.85,-0.53
+KABARMA perf wave=3 active=205 swarms=15 pending=1021 frameMs=45.9 fps=20
+GIDAK kick to=-0.95,-0.32
+WILDLIFE leave creatures=8 swarms=16
+GIDAK kick to=-0.95,-0.31
+KABARMA perf wave=3 active=205 swarms=15 pending=1021 frameMs=47.2 fps=21
+WILDLIFE leave creatures=8 swarms=16
+GIDAK kick to=-0.78,-0.63
+GIDAK kick to=-1.00,0.03
+WILDLIFE leave creatures=8 swarms=16
+KABARMA perf wave=3 active=205 swarms=15 pending=1021 frameMs=48.8 fps=20
+GIDAK kick to=-1.00,0.05
+GIDAK kick to=-0.95,0.31
+WILDLIFE leave creatures=8 swarms=16
+KABARMA perf wave=3 active=205 swarms=15 pending=1021 frameMs=49.4 fps=19
+GIDAK kick to=-0.88,0.48
+WILDLIFE leave creatures=8 swarms=16
+GIDAK kick to=-0.30,-0.95
+KABARMA perf wave=3 active=205 swarms=15 pending=1021 frameMs=51.1 fps=20
+GIDAK kick to=-0.91,-0.41
+WILDLIFE leave creatures=8 swarms=16
+GIDAK kick to=-0.44,-0.90
+KABARMA perf wave=3 active=205 swarms=15 pending=1021 frameMs=47.9 fps=18
+GIDAK kick to=-0.52,-0.85
+WILDLIFE leave creatures=8 swarms=16
+GIDAK kick to=-0.06,-1.00
+WILDLIFE leave creatures=8 swarms=16
+KABARMA perf wave=3 active=205 swarms=15 pending=1021 frameMs=49.3 fps=18
+GIDAK kick to=-0.90,-0.43
+GIDAK kick to=-0.61,-0.79
+WILDLIFE leave creatures=8 swarms=16
+GIDAK kick to=-0.95,-0.32
+KABARMA perf wave=3 active=205 swarms=15 pending=1021 frameMs=51.9 fps=19
+GIDAK kick to=-0.77,-0.63
+WILDLIFE leave creatures=8 swarms=16
+GIDAK kick to=-0.98,-0.18
+KABARMA perf wave=3 active=205 swarms=15 pending=1021 frameMs=48.6 fps=19
+WILDLIFE leave creatures=8 swarms=16
+GIDAK kick to=-0.91,0.42
+GIDAK kick to=-0.66,-0.75
+KABARMA perf wave=3 active=205 swarms=15 pending=1021 frameMs=48.9 fps=21
+WILDLIFE leave creatures=8 swarms=16
+GIDAK kick to=-0.61,-0.79
+WILDLIFE leave creatures=8 swarms=16
+GIDAK kick to=-0.65,-0.76
+KABARMA perf wave=3 active=205 swarms=15 pending=1021 frameMs=49.1 fps=21
+GIDAK kick to=-0.79,0.61
+WILDLIFE leave creatures=8 swarms=16
+GIDAK kick to=-0.33,-0.95
+KABARMA perf wave=3 active=205 swarms=15 pending=1021 frameMs=49.4 fps=21
+GIDAK kick to=-0.16,-0.99
+WILDLIFE leave creatures=8 swarms=16
+GIDAK kick to=0.51,-0.86
+KABARMA perf wave=3 active=205 swarms=15 pending=1021 frameMs=45.6 fps=26
+WILDLIFE leave creatures=8 swarms=16
+GIDAK kick to=-0.15,-0.99
+GIDAK kick to=0.40,-0.92
+KABARMA perf wave=3 active=205 swarms=15 pending=1021 frameMs=42.3 fps=23
+WILDLIFE leave creatures=8 swarms=16
+GIDAK kick to=-0.12,-0.99
+GIDAK kick to=-0.67,-0.74
+WILDLIFE leave creatures=8 swarms=16
+KABARMA perf wave=3 active=205 swarms=15 pending=1021 frameMs=44.2 fps=24
+GIDAK kick to=-0.39,-0.92
+WILDLIFE leave creatures=8 swarms=16
+NIGHT wave 4 count=408
+GIDAK kick to=0.41,-0.91
+KABARMA perf wave=4 active=205 swarms=15 pending=1429 frameMs=50.7 fps=19
+GIDAK kick to=-0.39,-0.92
+WILDLIFE leave creatures=8 swarms=16
+GIDAK kick to=-0.31,-0.95
+KABARMA perf wave=4 active=205 swarms=15 pending=1429 frameMs=44.5 fps=22
+GIDAK kick to=-0.11,-0.99
+WILDLIFE leave creatures=8 swarms=16
+GIDAK kick to=-0.65,-0.76
+KABARMA perf wave=4 active=205 swarms=15 pending=1429 frameMs=46.4 fps=21
+WILDLIFE leave creatures=8 swarms=16
+GIDAK kick to=-0.10,-1.00
+GIDAK kick to=-0.20,-0.98
+WILDLIFE leave creatures=8 swarms=16
+KABARMA perf wave=4 active=205 swarms=15 pending=1429 frameMs=47.5 fps=21
+GIDAK kick to=-0.44,-0.90
+GIDAK kick to=-0.07,-1.00
+WILDLIFE leave creatures=8 swarms=16
+KABARMA perf wave=4 active=205 swarms=15 pending=1429 frameMs=47.5 fps=22
+GIDAK kick to=-0.25,-0.97
+WILDLIFE leave creatures=8 swarms=16
+GIDAK kick to=-0.33,-0.94
+GIDAK kick to=-0.31,-0.95
+KABARMA perf wave=4 active=205 swarms=15 pending=1429 frameMs=47.5 fps=21
+WILDLIFE leave creatures=8 swarms=16
+GIDAK kick to=-0.57,-0.82
+GIDAK kick to=-0.33,-0.94
+KABARMA perf wave=4 active=205 swarms=15 pending=1429 frameMs=46.8 fps=21
+WILDLIFE leave creatures=8 swarms=16
+GIDAK kick to=-0.26,-0.97
+WILDLIFE leave creatures=8 swarms=16
+GIDAK kick to=0.04,-1.00
+KABARMA perf wave=4 active=205 swarms=15 pending=1429 frameMs=48.2 fps=21
+GIDAK kick to=0.04,-1.00
+WILDLIFE leave creatures=8 swarms=16
+GIDAK kick to=0.11,-0.99
+KABARMA perf wave=4 active=205 swarms=15 pending=1429 frameMs=50.1 fps=19
+GIDAK kick to=0.10,-1.00
+WILDLIFE leave creatures=8 swarms=16
+GIDAK kick to=-0.45,-0.89
+KABARMA perf wave=4 active=205 swarms=15 pending=1429 frameMs=46.8 fps=23
+WILDLIFE leave creatures=8 swarms=16
+GIDAK kick to=-0.33,-0.95
+GIDAK kick to=0.02,-1.00
+KABARMA perf wave=4 active=205 swarms=15 pending=1429 frameMs=49.1 fps=20
+WILDLIFE leave creatures=8 swarms=16
+GIDAK kick to=-0.06,-1.00
+GIDAK kick to=-0.02,-1.00
+WILDLIFE leave creatures=8 swarms=16
+KABARMA perf wave=4 active=205 swarms=15 pending=1429 frameMs=49.8 fps=18
+GIDAK kick to=0.93,-0.36
+WILDLIFE leave creatures=8 swarms=16
+GIDAK kick to=0.07,-1.00
+KABARMA perf wave=4 active=205 swarms=15 pending=1429 frameMs=48.8 fps=21
+GIDAK kick to=0.13,-0.99
+WILDLIFE leave creatures=8 swarms=16
+GIDAK kick to=0.24,-0.97
+KABARMA perf wave=4 active=205 swarms=15 pending=1429 frameMs=50.5 fps=19
+GIDAK kick to=-0.11,-0.99
+WILDLIFE leave creatures=8 swarms=16
+GIDAK kick to=-0.25,-0.97
+KABARMA perf wave=4 active=205 swarms=15 pending=1429 frameMs=54.4 fps=17
+WILDLIFE leave creatures=8 swarms=16
+GIDAK kick to=0.16,-0.99
+GIDAK kick to=0.95,0.30
+WILDLIFE leave creatures=8 swarms=16
+KABARMA perf wave=4 active=205 swarms=15 pending=1429 frameMs=46.8 fps=22
+GIDAK kick to=0.11,-0.99
+GIDAK kick to=0.62,-0.79
+WILDLIFE leave creatures=8 swarms=16
+KABARMA perf wave=4 active=205 swarms=15 pending=1429 frameMs=50.1 fps=20
+GIDAK kick to=0.08,-1.00
+WILDLIFE leave creatures=8 swarms=16
+GIDAK kick to=0.31,-0.95
+KABARMA perf wave=4 active=205 swarms=15 pending=1429 frameMs=54.4 fps=16
+GIDAK kick to=0.30,-0.95
+WILDLIFE leave creatures=8 swarms=16
+GIDAK kick to=0.23,-0.97
+NIGHT wave 5 count=410
+KABARMA perf wave=5 active=205 swarms=15 pending=1839 frameMs=52.4 fps=20
+GIDAK kick to=0.28,-0.96
+WILDLIFE leave creatures=8 swarms=16
+GIDAK kick to=0.53,-0.85
+WILDLIFE leave creatures=8 swarms=16
+GIDAK kick to=0.54,-0.84
+KABARMA perf wave=5 active=205 swarms=15 pending=1839 frameMs=47.2 fps=23
+GIDAK kick to=0.28,-0.96
+WILDLIFE leave creatures=8 swarms=16
+GIDAK kick to=0.88,-0.48
+KABARMA perf wave=5 active=205 swarms=15 pending=1839 frameMs=46.8 fps=23
+GIDAK kick to=-0.10,-0.99
+WILDLIFE leave creatures=8 swarms=16
+GIDAK kick to=0.50,-0.86
+KABARMA perf wave=5 active=205 swarms=15 pending=1839 frameMs=57.8 fps=21
+WILDLIFE leave creatures=8 swarms=16
+GIDAK kick to=0.66,-0.76
+GIDAK kick to=0.28,-0.96
+KABARMA perf wave=5 active=205 swarms=15 pending=1839 frameMs=50.0 fps=15
+WILDLIFE leave creatures=8 swarms=16
+GIDAK kick to=0.53,-0.85
+GIDAK kick to=0.94,-0.34
+WILDLIFE leave creatures=8 swarms=16
+KABARMA perf wave=5 active=205 swarms=15 pending=1839 frameMs=48.7 fps=21
+GIDAK kick to=-0.47,-0.88
+WILDLIFE leave creatures=8 swarms=16
+GIDAK kick to=0.13,-0.99
+KABARMA perf wave=5 active=205 swarms=15 pending=1839 frameMs=50.4 fps=19
+GIDAK kick to=0.34,-0.94
+WILDLIFE leave creatures=8 swarms=16
+GIDAK kick to=0.18,-0.98
+KABARMA perf wave=5 active=205 swarms=15 pending=1839 frameMs=48.5 fps=20
+GIDAK kick to=0.48,-0.88
+WILDLIFE leave creatures=8 swarms=16
+GIDAK kick to=-0.41,-0.91
+KABARMA perf wave=5 active=205 swarms=15 pending=1839 frameMs=49.6 fps=21
+WILDLIFE leave creatures=8 swarms=16
+GIDAK kick to=0.06,-1.00
+GIDAK kick to=-0.73,-0.69
+WILDLIFE leave creatures=8 swarms=16
+KABARMA perf wave=5 active=205 swarms=15 pending=1839 frameMs=48.6 fps=22
+GIDAK kick to=-0.23,-0.97
+GIDAK kick to=0.56,-0.83
+WILDLIFE leave creatures=8 swarms=16
+KABARMA perf wave=5 active=205 swarms=15 pending=1839 frameMs=47.9 fps=22
+GIDAK kick to=0.31,-0.95
+WILDLIFE leave creatures=8 swarms=16
+GIDAK kick to=0.04,-1.00
+KABARMA perf wave=5 active=205 swarms=15 pending=1839 frameMs=47.4 fps=19
+GIDAK kick to=0.69,-0.73
+WILDLIFE leave creatures=8 swarms=16
+GIDAK kick to=0.88,-0.48
+KABARMA perf wave=5 active=205 swarms=15 pending=1839 frameMs=49.5 fps=20
+GIDAK kick to=0.71,-0.70
+WILDLIFE leave creatures=8 swarms=16
+GIDAK kick to=0.21,-0.98
+WILDLIFE leave creatures=8 swarms=16
+KABARMA perf wave=5 active=205 swarms=15 pending=1839 frameMs=51.3 fps=21
+GIDAK kick to=0.84,-0.54
+GIDAK kick to=0.75,-0.66
+WILDLIFE leave creatures=8 swarms=16
+KABARMA perf wave=5 active=205 swarms=15 pending=1839 frameMs=43.4 fps=23
+GIDAK kick to=0.73,-0.68
+GIDAK kick to=0.63,-0.77
+WILDLIFE leave creatures=8 swarms=16
+KABARMA perf wave=5 active=205 swarms=15 pending=1839 frameMs=46.5 fps=23
+GIDAK kick to=0.81,-0.58
+WILDLIFE leave creatures=8 swarms=16
+GIDAK kick to=0.80,-0.60
+GIDAK kick to=0.69,-0.72
+KABARMA perf wave=5 active=205 swarms=15 pending=1839 frameMs=47.1 fps=23
+WILDLIFE leave creatures=8 swarms=16
+GIDAK kick to=0.65,-0.76
+WILDLIFE leave creatures=8 swarms=16
+GIDAK kick to=0.68,-0.73
+KABARMA perf wave=5 active=205 swarms=15 pending=1839 frameMs=48.6 fps=15
+GIDAK kick to=0.49,-0.87
+NIGHT wave 6 count=418
+WILDLIFE leave creatures=8 swarms=16
+GIDAK kick to=0.85,-0.53
+KABARMA perf wave=6 active=205 swarms=15 pending=2257 frameMs=47.9 fps=20
+GIDAK kick to=0.89,-0.46
+WILDLIFE leave creatures=8 swarms=16
+GIDAK kick to=0.95,0.31
+KABARMA perf wave=6 active=205 swarms=15 pending=2257 frameMs=47.0 fps=22
+WILDLIFE leave creatures=8 swarms=16
+GIDAK kick to=0.95,-0.30
+GIDAK kick to=0.66,-0.75
+KABARMA perf wave=6 active=205 swarms=15 pending=2257 frameMs=47.2 fps=21
+WILDLIFE leave creatures=8 swarms=16
+GIDAK kick to=0.84,-0.54
+GIDAK kick to=0.69,-0.73
+WILDLIFE leave creatures=8 swarms=16
+KABARMA perf wave=6 active=205 swarms=15 pending=2257 frameMs=43.5 fps=24
+GIDAK kick to=0.48,-0.88
+WILDLIFE leave creatures=8 swarms=16
+GIDAK kick to=0.95,-0.32
+KABARMA perf wave=6 active=205 swarms=15 pending=2257 frameMs=38.3 fps=25
+GIDAK kick to=0.75,-0.66
+WILDLIFE leave creatures=8 swarms=16
+GIDAK kick to=0.75,-0.67
+KABARMA perf wave=6 active=205 swarms=15 pending=2257 frameMs=44.4 fps=24
+GIDAK kick to=0.95,-0.32
+WILDLIFE leave creatures=8 swarms=16
+GIDAK kick to=0.66,-0.75
+KABARMA perf wave=6 active=205 swarms=15 pending=2257 frameMs=42.6 fps=29
+WILDLIFE leave creatures=8 swarms=16
+GIDAK kick to=0.85,-0.53
+GIDAK kick to=1.00,0.09
+WILDLIFE leave creatures=8 swarms=16
+KABARMA perf wave=6 active=205 swarms=15 pending=2257 frameMs=43.4 fps=22
+GIDAK kick to=0.83,-0.55
+GIDAK kick to=0.64,-0.77
+WILDLIFE leave creatures=8 swarms=16
+KABARMA perf wave=6 active=205 swarms=15 pending=2257 frameMs=47.1 fps=20
+GIDAK kick to=0.90,-0.44
+WILDLIFE leave creatures=8 swarms=16
+GIDAK kick to=1.00,-0.08
+KABARMA perf wave=6 active=205 swarms=15 pending=2257 frameMs=38.0 fps=30
+GIDAK kick to=0.97,-0.24
+WILDLIFE leave creatures=8 swarms=16
+GIDAK kick to=0.99,-0.14
+KABARMA perf wave=6 active=205 swarms=15 pending=2257 frameMs=36.6 fps=27
+GIDAK kick to=1.00,0.03
+WILDLIFE leave creatures=8 swarms=16
+GIDAK kick to=1.00,-0.09
+WILDLIFE leave creatures=8 swarms=16
+KABARMA perf wave=6 active=205 swarms=15 pending=2257 frameMs=35.5 fps=32
+GIDAK kick to=0.91,-0.42
+GIDAK kick to=0.64,-0.77
+WILDLIFE leave creatures=8 swarms=16
+GIDAK kick to=0.93,-0.36
+KABARMA perf wave=6 active=205 swarms=15 pending=2257 frameMs=36.5 fps=27
+GIDAK kick to=0.93,-0.36
+WILDLIFE leave creatures=8 swarms=16
+GIDAK kick to=0.90,-0.43
+KABARMA perf wave=6 active=205 swarms=15 pending=2257 frameMs=36.6 fps=28
+WILDLIFE leave creatures=8 swarms=16
+GIDAK kick to=0.78,-0.63
+GIDAK kick to=0.46,-0.89
+KABARMA perf wave=6 active=205 swarms=15 pending=2257 frameMs=35.4 fps=18
+WILDLIFE leave creatures=8 swarms=16
+GIDAK kick to=0.90,-0.43
+GIDAK kick to=0.50,-0.87
+WILDLIFE leave creatures=8 swarms=16
+KABARMA perf wave=6 active=205 swarms=15 pending=2257 frameMs=33.7 fps=31
+GIDAK kick to=0.91,-0.42
+WILDLIFE leave creatures=8 swarms=16
+GIDAK kick to=0.76,-0.65
+KABARMA perf wave=6 active=205 swarms=15 pending=2257 frameMs=36.8 fps=25
+GIDAK kick to=0.82,-0.58
+WILDLIFE leave creatures=8 swarms=16
+GIDAK kick to=0.94,-0.35
+KABARMA perf wave=6 active=205 swarms=15 pending=2257 frameMs=47.7 fps=21
+GIDAK kick to=0.81,-0.59
+WILDLIFE leave creatures=8 swarms=16
+NIGHT wave 7 count=412
+GIDAK kick to=0.87,-0.50
+KABARMA perf wave=7 active=205 swarms=15 pending=2669 frameMs=46.1 fps=25
+WILDLIFE leave creatures=8 swarms=16
+GIDAK kick to=0.90,-0.44
+GIDAK kick to=0.99,-0.13
+WILDLIFE leave creatures=8 swarms=16
+KABARMA perf wave=7 active=205 swarms=15 pending=2669 frameMs=43.7 fps=26
+GIDAK kick to=0.61,0.79
+GIDAK kick to=1.00,-0.03
+WILDLIFE leave creatures=8 swarms=16
+KABARMA perf wave=7 active=205 swarms=15 pending=2669 frameMs=34.6 fps=34
+GIDAK kick to=0.69,-0.72
+WILDLIFE leave creatures=8 swarms=16
+GIDAK kick to=0.94,-0.35
+KABARMA perf wave=7 active=205 swarms=15 pending=2669 frameMs=30.7 fps=33
+GIDAK kick to=0.97,-0.24
+WILDLIFE leave creatures=8 swarms=16
+GIDAK kick to=0.77,-0.64
+KABARMA perf wave=7 active=205 swarms=15 pending=2669 frameMs=33.5 fps=28
+GIDAK kick to=0.72,-0.69
+WILDLIFE leave creatures=8 swarms=16
+GIDAK kick to=0.72,-0.69
+WILDLIFE leave creatures=8 swarms=16
+KABARMA perf wave=7 active=205 swarms=15 pending=2669 frameMs=70.4 fps=9
+GIDAK kick to=0.73,-0.69
+GIDAK kick to=0.84,-0.54
+WILDLIFE leave creatures=8 swarms=16
+KABARMA perf wave=7 active=205 swarms=15 pending=2669 frameMs=68.8 fps=15
+GIDAK kick to=0.87,-0.49
+GIDAK kick to=0.54,-0.84
+WILDLIFE leave creatures=8 swarms=16
+KABARMA perf wave=7 active=205 swarms=15 pending=2669 frameMs=35.0 fps=27
+GIDAK kick to=0.80,-0.59
+WILDLIFE leave creatures=8 swarms=16
+GIDAK kick to=0.34,-0.94
+GIDAK kick to=0.80,-0.60
+KABARMA perf wave=7 active=205 swarms=15 pending=2669 frameMs=33.9 fps=29
+WILDLIFE leave creatures=8 swarms=16
+GIDAK kick to=0.98,-0.21
+GIDAK kick to=0.95,-0.30
+WILDLIFE leave creatures=8 swarms=16
+KABARMA perf wave=7 active=205 swarms=15 pending=2669 frameMs=32.6 fps=34
+GIDAK kick to=0.93,-0.37
+WILDLIFE leave creatures=8 swarms=16
+GIDAK kick to=1.00,0.06
+KABARMA perf wave=7 active=205 swarms=15 pending=2669 frameMs=32.9 fps=30
+GIDAK kick to=0.93,0.36
+WILDLIFE leave creatures=8 swarms=16
+GIDAK kick to=0.42,-0.91
+KABARMA perf wave=7 active=205 swarms=15 pending=2669 frameMs=31.0 fps=34
+GIDAK kick to=0.98,-0.19
+WILDLIFE leave creatures=8 swarms=16
+GIDAK kick to=0.77,-0.63
+KABARMA perf wave=7 active=205 swarms=15 pending=2669 frameMs=32.0 fps=28
+WILDLIFE leave creatures=8 swarms=16
+GIDAK kick to=0.90,-0.44
+GIDAK kick to=0.84,-0.54
+WILDLIFE leave creatures=8 swarms=16
+KABARMA perf wave=7 active=205 swarms=15 pending=2669 frameMs=34.8 fps=29
+GIDAK kick to=0.88,-0.47
+WILDLIFE leave creatures=8 swarms=16
+GIDAK kick to=0.99,0.11
+KABARMA perf wave=7 active=205 swarms=15 pending=2669 frameMs=34.0 fps=29
+GIDAK kick to=0.84,-0.55
+WILDLIFE leave creatures=8 swarms=16
+GIDAK kick to=0.99,-0.17
+KABARMA perf wave=7 active=205 swarms=15 pending=2669 frameMs=40.7 fps=23
+GIDAK kick to=1.00,0.07
+WILDLIFE leave creatures=8 swarms=16
+GIDAK kick to=0.97,-0.25
+KABARMA perf wave=7 active=205 swarms=15 pending=2669 frameMs=34.7 fps=31
+WILDLIFE leave creatures=8 swarms=16
+GIDAK kick to=1.00,-0.01
+GIDAK kick to=0.97,0.26
+WILDLIFE leave creatures=8 swarms=16
+KABARMA perf wave=7 active=205 swarms=15 pending=2669 frameMs=32.3 fps=32
+GIDAK kick to=0.43,0.90
+NIGHT wave 8 count=414
+GIDAK kick to=0.97,-0.25
+WILDLIFE leave creatures=8 swarms=16
+KABARMA perf wave=8 active=205 swarms=15 pending=3083 frameMs=32.4 fps=28
+GIDAK kick to=0.63,0.77
+WILDLIFE leave creatures=8 swarms=16
+GIDAK kick to=1.00,-0.04
+KABARMA perf wave=8 active=205 swarms=15 pending=3083 frameMs=35.7 fps=29
+GIDAK kick to=0.90,-0.44
+WILDLIFE leave creatures=8 swarms=16
+GIDAK kick to=1.00,0.09
+KABARMA perf wave=8 active=205 swarms=15 pending=3083 frameMs=34.1 fps=27
+GIDAK kick to=0.72,0.70
+WILDLIFE leave creatures=8 swarms=16
+GIDAK kick to=0.98,0.18
+WILDLIFE leave creatures=8 swarms=16
+KABARMA perf wave=8 active=205 swarms=15 pending=3083 frameMs=37.2 fps=28
+GIDAK kick to=0.95,-0.32
+GIDAK kick to=0.98,-0.20
+WILDLIFE leave creatures=8 swarms=16
+GIDAK kick to=0.99,0.10
+KABARMA perf wave=8 active=205 swarms=15 pending=3083 frameMs=32.6 fps=29
+GIDAK kick to=0.97,-0.24
+WILDLIFE leave creatures=8 swarms=16
+GIDAK kick to=0.84,0.54
+KABARMA perf wave=8 active=205 swarms=15 pending=3083 frameMs=31.2 fps=30
+WILDLIFE leave creatures=8 swarms=16
+GIDAK kick to=0.90,-0.44
+GIDAK kick to=0.95,0.32
+KABARMA perf wave=8 active=205 swarms=15 pending=3083 frameMs=33.4 fps=27
+WILDLIFE leave creatures=8 swarms=16
+GIDAK kick to=1.00,-0.03
+GIDAK kick to=0.95,-0.30
+WILDLIFE leave creatures=8 swarms=16
+KABARMA perf wave=8 active=205 swarms=15 pending=3083 frameMs=37.3 fps=26
+GIDAK kick to=0.99,-0.15
+WILDLIFE leave creatures=8 swarms=16
+GIDAK kick to=1.00,0.05
+KABARMA perf wave=8 active=205 swarms=15 pending=3083 frameMs=40.2 fps=25
+GIDAK kick to=0.99,-0.15
+WILDLIFE leave creatures=8 swarms=16
+GIDAK kick to=0.98,-0.18
+KABARMA perf wave=8 active=205 swarms=15 pending=3083 frameMs=37.6 fps=27
+GIDAK kick to=0.70,-0.72
+WILDLIFE leave creatures=8 swarms=16
+GIDAK kick to=0.94,0.34
+KABARMA perf wave=8 active=205 swarms=15 pending=3083 frameMs=40.1 fps=24
+WILDLIFE leave creatures=8 swarms=16
+GIDAK kick to=1.00,-0.01
+GIDAK kick to=0.98,-0.18
+WILDLIFE leave creatures=8 swarms=16
+KABARMA perf wave=8 active=205 swarms=15 pending=3083 frameMs=40.9 fps=24
+GIDAK kick to=0.87,-0.49
+GIDAK kick to=0.81,-0.59
+WILDLIFE leave creatures=8 swarms=16
+KABARMA perf wave=8 active=205 swarms=15 pending=3083 frameMs=58.2 fps=15
+GIDAK kick to=0.94,-0.35
+WILDLIFE leave creatures=8 swarms=16
+GIDAK kick to=0.99,-0.16
+KABARMA perf wave=8 active=205 swarms=15 pending=3083 frameMs=54.6 fps=15
+GIDAK kick to=0.97,0.26
+WILDLIFE leave creatures=8 swarms=16
+GIDAK kick to=0.87,0.50
+KABARMA perf wave=8 active=205 swarms=15 pending=3083 frameMs=50.7 fps=14
+GIDAK kick to=0.99,-0.11
+WILDLIFE leave creatures=8 swarms=16
+GIDAK kick to=1.00,0.04
+WILDLIFE leave creatures=8 swarms=16
+KABARMA perf wave=8 active=205 swarms=15 pending=3083 frameMs=47.0 fps=22
+GIDAK kick to=0.93,0.36
+GIDAK kick to=0.96,0.27
+WILDLIFE leave creatures=8 swarms=16
+KABARMA perf wave=8 active=205 swarms=15 pending=3083 frameMs=61.1 fps=17
+GIDAK kick to=1.00,0.03
+GIDAK kick to=0.94,0.34
+WILDLIFE leave creatures=8 swarms=16
+KABARMA perf wave=8 active=205 swarms=15 pending=3083 frameMs=47.6 fps=28
+GIDAK kick to=0.63,0.77
+KABARMA doruk slots=212 azman=True
+NIGHT wave 9 count=211
+WILDLIFE leave creatures=8 swarms=16
+GIDAK kick to=0.83,0.56
+GECEHUD SHOT C:/Users/uruskan/Documents/GitHub/kabarma/.claude/worktrees/m2-yaratik-28315e/game/../progress/m1/gecehud/../../m3/kabarma/kabarma_ks30_doruk.png
+KABARMA perf wave=9 active=205 swarms=15 pending=3295 frameMs=31.3 fps=29
+GIDAK kick to=0.38,0.92
+WILDLIFE leave creatures=8 swarms=16
+GIDAK kick to=0.94,0.35
+GIDAK kick to=0.55,0.83
+KABARMA perf wave=9 active=205 swarms=15 pending=3295 frameMs=30.4 fps=34
+WILDLIFE leave creatures=8 swarms=16
+GIDAK kick to=0.99,0.16
+WILDLIFE leave creatures=8 swarms=16
+GIDAK kick to=0.75,0.66
+KABARMA perf wave=9 active=205 swarms=15 pending=3295 frameMs=30.7 fps=32
+GIDAK kick to=0.92,0.40
+WILDLIFE leave creatures=8 swarms=16
+GIDAK kick to=0.30,0.96
+KABARMA perf wave=9 active=205 swarms=15 pending=3295 frameMs=33.3 fps=29
+GIDAK kick to=0.90,0.44
+WILDLIFE leave creatures=8 swarms=16
+GIDAK kick to=0.73,0.69
+KABARMA perf wave=9 active=205 swarms=15 pending=3295 frameMs=30.4 fps=34
+WILDLIFE leave creatures=8 swarms=16
+GIDAK kick to=0.38,0.93
+GIDAK kick to=0.74,0.68
+KABARMA perf wave=9 active=205 swarms=15 pending=3295 frameMs=32.5 fps=33
+WILDLIFE leave creatures=8 swarms=16
+GIDAK kick to=0.31,0.95
+GIDAK kick to=0.84,0.54
+WILDLIFE leave creatures=8 swarms=16
+KABARMA perf wave=9 active=205 swarms=15 pending=3295 frameMs=31.5 fps=32
+GIDAK kick to=0.87,0.49
+WILDLIFE leave creatures=8 swarms=16
+GIDAK kick to=0.90,0.44
+KABARMA perf wave=9 active=205 swarms=15 pending=3295 frameMs=32.5 fps=30
+GIDAK kick to=0.55,0.84
+WILDLIFE leave creatures=8 swarms=16
+GIDAK kick to=0.60,0.80
+KABARMA perf wave=9 active=205 swarms=15 pending=3295 frameMs=32.6 fps=31
+GIDAK kick to=0.97,0.24
+WILDLIFE leave creatures=8 swarms=16
+GIDAK kick to=1.00,0.04
+KABARMA perf wave=9 active=205 swarms=15 pending=3295 frameMs=32.6 fps=29
+WILDLIFE leave creatures=8 swarms=16
+GIDAK kick to=0.85,0.52
+GIDAK kick to=0.85,0.52
+WILDLIFE leave creatures=8 swarms=16
+KABARMA perf wave=9 active=205 swarms=15 pending=3295 frameMs=32.6 fps=31
+GIDAK kick to=0.83,0.57
+GIDAK kick to=0.56,0.83
+WILDLIFE leave creatures=8 swarms=16
+KABARMA perf wave=9 active=205 swarms=15 pending=3295 frameMs=34.3 fps=28
+GIDAK kick to=0.88,0.48
+WILDLIFE leave creatures=8 swarms=16
+GIDAK kick to=0.91,0.42
+KABARMA perf wave=9 active=205 swarms=15 pending=3295 frameMs=36.3 fps=25
+GIDAK kick to=0.98,0.20
+WILDLIFE leave creatures=8 swarms=16
+GIDAK kick to=0.87,0.49
+KABARMA perf wave=9 active=205 swarms=15 pending=3295 frameMs=37.7 fps=23
+GIDAK kick to=0.88,0.47
+WILDLIFE leave creatures=8 swarms=16
+GIDAK kick to=0.80,0.60
+WILDLIFE leave creatures=8 swarms=16
+GIDAK kick to=0.86,0.51
+KABARMA perf wave=9 active=205 swarms=15 pending=3295 frameMs=36.9 fps=28
+GIDAK kick to=0.92,0.40
+WILDLIFE leave creatures=8 swarms=16
+GIDAK kick to=0.95,0.33
+KABARMA perf wave=9 active=205 swarms=15 pending=3295 frameMs=36.6 fps=28
+GIDAK kick to=0.98,-0.21
+WILDLIFE leave creatures=8 swarms=16
+GIDAK kick to=0.82,0.57
+KABARMA perf wave=9 active=205 swarms=15 pending=3295 frameMs=35.9 fps=29
+WILDLIFE leave creatures=8 swarms=16
+GIDAK kick to=0.94,0.35
+GIDAK kick to=0.97,0.24
+KABARMA perf wave=9 active=205 swarms=15 pending=3295 frameMs=37.1 fps=23
+WILDLIFE leave creatures=8 swarms=16
+GIDAK kick to=0.99,-0.14
+GIDAK kick to=0.89,0.46
+WILDLIFE leave creatures=8 swarms=16
+KABARMA perf wave=9 active=205 swarms=15 pending=3295 frameMs=38.2 fps=26
+GIDAK kick to=0.94,0.33
+WILDLIFE leave creatures=8 swarms=16
+GIDAK kick to=1.00,-0.01
+KABARMA perf wave=9 active=205 swarms=15 pending=3295 frameMs=33.2 fps=34
+GIDAK kick to=0.90,0.44
+WILDLIFE leave creatures=8 swarms=16
+GIDAK kick to=0.88,0.47
+KABARMA perf wave=9 active=205 swarms=15 pending=3295 frameMs=31.3 fps=30
+GIDAK kick to=0.98,0.18
+WILDLIFE leave creatures=8 swarms=16
+GIDAK kick to=1.00,-0.09
+KABARMA perf wave=9 active=205 swarms=15 pending=3295 frameMs=34.5 fps=27
+WILDLIFE leave creatures=8 swarms=16
+GIDAK kick to=0.79,0.61
+GIDAK kick to=0.86,0.51
+WILDLIFE leave creatures=8 swarms=16
+KABARMA perf wave=9 active=205 swarms=15 pending=3295 frameMs=30.4 fps=33
+GIDAK kick to=0.81,0.59
+GIDAK kick to=0.96,0.27
+WILDLIFE leave creatures=8 swarms=16
+KABARMA perf wave=9 active=205 swarms=15 pending=3295 frameMs=34.5 fps=31
+GIDAK kick to=0.99,0.16
+KABARMA end reason=Dawn ks=30 kills=0 maya=0 kazan=1000000000/600 highest=0
+NIGHT dawn kills=0 level=0 maya=0 cards=0 statsBase=True replay
+FENCE night hits=0 lowest_hp=0/400 knocked_over=0
+CHIP added itici epic id=2
+MUSIC Kabarma -> Day
+KABARMA RESULT ok perf ks=30 players=8 slots=3515 peak=205 t=1082

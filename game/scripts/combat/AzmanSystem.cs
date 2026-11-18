@@ -9,8 +9,9 @@ namespace Kabarma.Game;
 /// Azmanlar (ICERIK §4.2): Azman Homur (Altin Cayir) ve Azman Bozuk (Sis Korusu). Kural ve durum Sim'de
 /// (AzmanRules, GameState.Azman: kayit bolumu "azman"); bu dugum aktorleri kurar, komutlari oynatir, isabeti iletir.
 ///
-/// Cagirma kabarma3'un isidir: Doruk asamasina girerken <see cref="OnPeak"/> (KS, ussun biyomu, gelis noktasi).
-/// Her 5. KS'de o biyomun Azman'i gelir. Safakta <see cref="DismissAll"/> cagrilir.
+/// Gercek gecede plan (Waves.Compose) her 5. KS'nin Doruk dalgasina bir Azman yeri koyar; kabarma3'un
+/// SpawnKabaran'i o yeri <see cref="SpawnSlot"/>'a verir (tapu sinirindaki giris noktasinda doger).
+/// <see cref="OnPeak"/> plansiz cagirma icin (sinama). Safakta <see cref="DismissAll"/> cagrilir.
 ///
 /// Ortak oyun: Azman yalniz host'ta dogar ve dusunur. "azman" dunya bolumu (NetSync.Save.cs) istemciye gider;
 /// istemci ayni durumdan kukla kurar (konuma kayar, yapay zeka yok). Istemcinin isabeti "azman.hit" ile host'a gider.
@@ -38,6 +39,23 @@ public partial class AzmanSystem : Node
     {
         Events.Dawn += DismissAll; // safakta kalan Azman cekilir
         TreeExiting += () => Events.Dawn -= DismissAll;
+        Callable.From(BindNet).CallDeferred(); // ag InitSavas'tan sonra kurulur (Director.InitNet)
+    }
+
+    /// <summary>
+    /// kabarma3 kancasi (Director.Kabarma.cs SpawnKabaran): plandaki Azman yeri geldi. Turu "azman_" + slot turu;
+    /// tanim yoksa false (cagiran Dev elit yedegine duser). Istemcide true (host doger).
+    /// </summary>
+    public bool SpawnSlot(WaveSlot slot, int ks, Vector3 at)
+    {
+        if (Puppet) return true;
+        string id = "azman_" + slot.Species;
+        if (Data.Azmanlar.All(a => a.Id != id)) return false;
+        return Summon(id, ks, at) != null;
+    }
+
+    void BindNet()
+    {
         _d.Net?.On("azman.hit", (actor, r) =>
         {
             ulong id = r.U64();

@@ -1,0 +1,33 @@
+﻿SAVAS start hp=100
+SAVAS state DayGo t=2.5
+SAVAS day spawn bozuk hp=300
+SAVAS state Day t=2.5
+SAVAS day down bozuk t=10.3
+SAVAS state HomurGo t=12.8
+SAVAS state HomurWalls t=19.0
+SAVAS walls 3
+AZMAN summon azman_homur ks=5 hp=1500 at=(0,34)
+SAVAS state Homur t=19.5
+AZMAN wall_hit azman_homur piece=kare_temel hp=260
+AZMAN riders azman_homur n=2
+AZMAN riders azman_homur n=2
+SAVAS hurt -6 hp=94 state=Homur acting=charge pending= tel=False dist=13.6 log_near=99.0 riders=0 held=False vel=8.0
+AZMAN riders azman_homur n=2
+AZMAN defeated azman_homur t=97.9 ks=5
+SAVAS defeated azman_homur fight_s=97.9 hp=94 walls=1 riders=6 uproots=0 logs=0 log_hits=0
+SAVAS state BozukGo t=118.8
+SAVAS bozuk tree=(-6,36) spot=(-3,17)
+AZMAN summon azman_bozuk ks=5 hp=1600 at=(-5,31)
+SAVAS state Bozuk t=118.9
+AZMAN log_land at=(-2,24)
+AZMAN log_land at=(1,17)
+AZMAN log_land at=(2,8)
+AZMAN log_land at=(-9,-0)
+AZMAN log_land at=(-10,-3)
+AZMAN log_land at=(-3,-3)
+AZMAN log_land at=(4,-5)
+AZMAN log_land at=(-4,-7)
+AZMAN defeated azman_bozuk t=92.1 ks=5
+SAVAS defeated azman_bozuk fight_s=92.1 hp=94 walls=1 riders=6 uproots=8 logs=8 log_hits=0
+SAVAS note: kutuk Azman'a firlatilmadi (kapi degil)
+RESULT ok savas day_down=True defeated=azman_homur,azman_bozuk fights=azman_homur:ok,azman_bozuk:ok player_hp=94 hurts=1 walls_placed=3 wall_hits=1 riders=6 uproots=8 log_landings=8 log_hits=0 spreads=0 chains=0 wild_mixed= t=212
