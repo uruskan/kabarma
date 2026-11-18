@@ -8,6 +8,7 @@ namespace Kabarma.Sim;
 public sealed class HoldingSystem
 {
     readonly HoldingFile _h;
+    readonly CombatFile _combat;
     public HoldingState State { get; private set; }
 
     /// <summary>Kamp kuruldu ya da yeniden kuruldu.</summary>
@@ -30,6 +31,7 @@ public sealed class HoldingSystem
     public HoldingSystem(GameData d, HoldingState? state = null)
     {
         _h = d.Holding;
+        _combat = d.Combat;
         State = state ?? new HoldingState();
     }
 
@@ -230,8 +232,10 @@ public sealed class HoldingSystem
         var c = CampOf(u)!;
         if (PerdeUp(c) && InPerde(c, u.X, u.Z)) return 0;
         var def = _h.Unit(u.Kind);
-        float done = Math.Max(0, dmg) * (1f - Math.Clamp(def.Armor, 0f, 0.9f));
-        u.Hp -= done;
+        // Ortak hasar arayuzu (savas, Combat.cs): birimin zirh orani zirh puanina cevrilir; durumlar M3'te birimde tutulmaz.
+        var body = CombatBody.Of(u.Hp, CombatTeam.Holding, "", Combat.ArmorPointsFor(_combat, Math.Clamp(def.Armor, 0f, 0.9f)));
+        float done = Combat.Apply(_combat, body, new CombatHit(Math.Max(0, dmg), DamageType.Darbe, CombatTeam.Player)).Damage;
+        u.Hp = body.Hp;
         if (u.Hp <= 0) { u.Hp = 0; u.Alive = false; u.Carrying = false; }
         if (u.Job == "caravan") CheckAmbush(c);
         return done;

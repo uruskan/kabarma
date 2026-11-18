@@ -13,6 +13,7 @@
     "rebuildDays": 3,
     "veinRadius": 150,
     "veinHitsPerWorkerDay": 2,
+    "provokeSeconds": 30,
     "composition": { "guardsBase": 2, "guardsPerLevel": 1, "workersBase": 2, "workersPerLevel": 0.5, "towersPerLevel": 0.5, "wallsPerLevel": 0.3334 },
     "structures": [
       { "id": "silo", "name": "Silo", "hp": 260, "hpPerLevel": 60, "offset": [-9, 4] },
@@ -47,7 +48,9 @@
     "truckFromLevel": 5,
     "carriers": 2,
     "carrySpeedMult": 0.5,
-    "entryOffset": 8
+    "entryOffset": 8,
+    "claimRadius": 30,
+    "spawnDistance": 70
   },
   "husumet": {
     "_not": "GDD §19.3. Kamp basina 0-100, baslangic start.",
