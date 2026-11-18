@@ -109,6 +109,10 @@ public partial class SavasHayvanTest : Node
                 R.MountUp(_homur);
                 Check(R.Riding && _homur.Animal.Rider != 0, "Homur'a binildi");
                 Check(P.SpeedMult > _baseSpeed * 1.05f, $"binek hizi (carpan {P.SpeedMult:0.00})");
+                // sinama kisayolu: binisten sonra oyuncu agilin 12 m disina konur (binek altinda tasinir); sinanan yol bulma degil binis
+                { var c = new Vector3(_pen.Centroid.X, P.GlobalPosition.Y, _pen.Centroid.Z); var away = (P.GlobalPosition - c) with { Y = 0 };
+                  if (away.LengthSquared() < 0.01f) away = Vector3.Right;
+                  P.GlobalPosition = _d.World.Ground(c + away.Normalized() * 12f) + Vector3.Up * 0.2f; P.Velocity = Vector3.Zero; }
                 _rideStart = P.GlobalPosition;
                 foreach (var g in _d.Pens.Gates.ToList()) _d.Pens.SetGate(g, true); // agildan cikis yolu (Route acik kapidan gecer)
                 _rideStage = 1; _st = 0;
