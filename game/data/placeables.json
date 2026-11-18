@@ -11,7 +11,20 @@
     { "id": "mesale", "name": "Meşale", "lightRange": 6.0, "radius": 0.4 },
     { "id": "ahsap_kapi", "name": "Ahşap Kapı", "model": "res://assets/models/yerlestirilebilir/ahsap_kapi.glb", "radius": 0.8 },
     { "id": "yemlik", "name": "Yemlik", "model": "res://assets/models/yerlestirilebilir/yemlik.glb", "radius": 0.8 },
-    { "id": "folluk", "name": "Folluk", "model": "res://assets/models/yerlestirilebilir/folluk.glb", "radius": 0.7 }
+    { "id": "folluk", "name": "Folluk", "model": "res://assets/models/yerlestirilebilir/folluk.glb", "radius": 0.7 },
+    { "_not": "M2 zincir (ICERIK §11.1). Model yok: gorunus koddan yer tutucu (game/scripts/world/Station.Visuals.cs, YER TUTUCU; pipeline/licenses.md). Watt'lar research.json 'watts' (guc akisi baglayana kadar uygulanmaz).", "id": "arastirma_masasi", "name": "Araştırma Masası", "station": "arastirma_masasi", "radius": 1.0 },
+    { "id": "komur_ocagi", "name": "Kömür Ocağı", "station": "komur_ocagi", "radius": 1.0 },
+    { "id": "demirci_ocagi", "name": "Demirci Ocağı", "station": "demirci_ocagi", "fuel": ["charcoal", "wood"], "fuelPerJob": 1, "radius": 1.1 },
+    { "id": "bicki", "name": "Bıçkı", "station": "bicki", "radius": 1.1 },
+    { "id": "degirmen", "name": "Değirmen", "station": "degirmen", "radius": 1.1 },
+    { "id": "dokuma_tezgahi", "name": "Dokuma Tezgâhı", "station": "dokuma_tezgahi", "radius": 1.0 },
+    { "id": "kasap_tezgahi", "name": "Kasap Tezgâhı", "station": "kasap_tezgahi", "radius": 1.0 },
+    { "id": "kulucka", "name": "Kuluçka", "station": "kulucka", "radius": 0.9 },
+    { "id": "arac_atolyesi", "name": "Araç Atölyesi", "station": "arac_atolyesi", "radius": 1.6 },
+    { "id": "oyma_iskelesi", "name": "Oyma İskelesi", "station": "oyma_iskelesi", "radius": 1.4 },
+    { "id": "suluk", "name": "Suluk", "radius": 0.8 },
+    { "id": "kasinma_fircasi", "name": "Kaşınma Fırçası", "radius": 0.5 },
+    { "id": "ari_kovani", "name": "Arı Kovanı", "radius": 0.6 }
   ],
   "planWheel": ["kare_temel", "ucgen_temel", "duvar", "yarim_duvar", "pencereli_duvar", "kapi_kasasi", "kare_zemin", "duz_cati", "egimli_cati", "merdiven", "cit", "bahce_kapisi"],
   "buildCosts": {

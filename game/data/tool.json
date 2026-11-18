@@ -5,6 +5,6 @@
   "stackResource": 50,
   "stackIntermediate": 20,
   "stackFood": 10,
-  "intermediates": ["copper_ingot"],
+  "intermediates": ["copper_ingot", "copper_wire", "brick", "charcoal", "iron_ingot", "plank", "cloth", "flour"],
   "startItems": { "turnip_seed": 12, "wheat": 10, "civi": 40, "ocak": 1 }
 }

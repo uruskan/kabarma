@@ -22,7 +22,7 @@ public partial class Station : Node3D
     public Station(Director d, PlaceableDef def)
     {
         _d = d; Def = def;
-        Queue = d.State.Stations[def.Station!];
+        Queue = d.State.QueueFor(def.Station!); // tarifi olmayan istasyon (Kulucka, Arastirma Masasi) da kuyruk alir
         Name = def.Id;
     }
 

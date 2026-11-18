@@ -1,7 +1,7 @@
 namespace Kabarma.Sim;
 
 /// <summary>Bir is emri zincirinin ilerlemesi (ICERIK 18: 5 adim). Sayaclar zincir acildiktan sonra sayar.</summary>
-public sealed class ChainState
+public sealed partial class ChainState
 {
     public OrderChainDef Def { get; }
     public bool Opened { get; internal set; }
@@ -49,7 +49,7 @@ public delegate void OrderPayout(int credits, int veri, string what);
 /// Adim odulu (Kredi + Veri) Defter aciksa adim biter bitmez, degilse Defter acilinca odenir (sessiz sayim, GDD 24).
 /// Genel sayaclar (Stats) zincirlerden bagimsizdir ve her zaman sayar: basarimlar bunlara bakar.
 /// </summary>
-public sealed class OrderBook
+public sealed partial class OrderBook
 {
     readonly OrdersFile _def;
     readonly List<ChainState> _chains;
