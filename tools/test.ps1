@@ -45,6 +45,7 @@ if (-not $PSBoundParameters.ContainsKey('Only')) { $Only += 'save' } # kayit aki
 if (-not $PSBoundParameters.ContainsKey('Only')) { $Only += 'menu' } # kayit akisi: --test=menu (ana menu, Esc, Devam, kapatma kaydi)
 if (-not $PSBoundParameters.ContainsKey('Only')) { $Only += 'hayvan' }   # hayvan akisi: zincir + Pofuduk evcillestir, sutunu al (--test=hayvan)
 if (-not $PSBoundParameters.ContainsKey('Only')) { $Only += 'savashayvan' } # M3 savas-hayvan: Kabarma'da hayvanlar ve binek (--test=savashayvan)
+if (-not $PSBoundParameters.ContainsKey('Only')) { $Only += 'kabarma' } # M3 kabarma3: tam/kucuk/tatbikat Kabarma akisi (--test=kabarma, KabarmaTest.cs)
 if (-not $PSBoundParameters.ContainsKey('Only')) { $Only += 'borsa' }    # ekonomi2: Borsa, Katalog, Cark (--test=borsa)
 if (-not $PSBoundParameters.ContainsKey('Only')) { $Only += 'holding' }  # holding (M3): Bereket Holding kampi, Perde, kervan, baskinlar (--test=holding)
 if (-not $PSBoundParameters.ContainsKey('Only')) { $Only += 'coop' }  # ortak: host + 3 istemci (ENet), senkron < 1 cm; steam yalniz -Only steam
@@ -80,13 +81,43 @@ function Find-Godot {
     return $null
 }
 
+# Sahibin istegi (18 Kasim 2026, makine donuyordu): butun oturumlar birlikte ayni anda en cok KABARMA_GODOT_MAX
+# (varsayilan 2) Godot kosturur; fazlasi sirada bekler. Yuva adli bir mutex'tir: surec olurse Windows birakir (sizinti yok).
+function Enter-GodotSlot {
+    $max = 2
+    if ($env:KABARMA_GODOT_MAX -match '^\d+$') { $max = [Math]::Max(1, [int]$env:KABARMA_GODOT_MAX) }
+    $sw = [Diagnostics.Stopwatch]::StartNew(); $next = 30
+    while ($true) {
+        for ($i = 0; $i -lt $max; $i++) {
+            $m = New-Object System.Threading.Mutex($false, "KabarmaGodotSlot$i")
+            $got = $false
+            try { $got = $m.WaitOne(0) }
+            catch {
+                $e = $_.Exception
+                if ($e -is [Threading.AbandonedMutexException] -or $e.InnerException -is [Threading.AbandonedMutexException]) { $got = $true } else { throw }
+            }
+            if ($got) { return $m }
+            $m.Dispose()
+        }
+        if ($sw.Elapsed.TotalSeconds -ge $next) { Write-Host ("Godot sirasi bekleniyor ({0:N0} sn)" -f $sw.Elapsed.TotalSeconds); $next += 60 }
+        Start-Sleep -Seconds 3
+    }
+}
+
 # Sureci baslatir, ciktiyi dosyaya yazar, zaman asiminda agaciyla oldurur. ExitCode PS 5.1'de Handle okunmazsa bos kalir.
+# Godot surecleri once Enter-GodotSlot ile yer alir; sure siniri yer alindiktan sonra baslar.
 function Invoke-Proc([string]$exe, [string]$argLine, [string]$outFile, [int]$timeoutSec) {
     $errFile = "$outFile.err"
-    $p = Start-Process -FilePath $exe -ArgumentList $argLine -WorkingDirectory $Root -RedirectStandardOutput $outFile -RedirectStandardError $errFile -PassThru -NoNewWindow
-    $null = $p.Handle
-    $timedOut = -not $p.WaitForExit($timeoutSec * 1000)
-    if ($timedOut) { & taskkill /T /F /PID $p.Id | Out-Null; $p.WaitForExit() }
+    $slot = $null
+    if ($exe -match 'Godot') { $slot = Enter-GodotSlot }
+    try {
+        $p = Start-Process -FilePath $exe -ArgumentList $argLine -WorkingDirectory $Root -RedirectStandardOutput $outFile -RedirectStandardError $errFile -PassThru -NoNewWindow
+        $null = $p.Handle
+        $timedOut = -not $p.WaitForExit($timeoutSec * 1000)
+        if ($timedOut) { & taskkill /T /F /PID $p.Id | Out-Null; $p.WaitForExit() }
+    } finally {
+        if ($slot) { $slot.ReleaseMutex(); $slot.Dispose() }
+    }
     $text = ''
     if (Test-Path $outFile) { $text = [IO.File]::ReadAllText($outFile) }
     return [pscustomobject]@{ Code = $p.ExitCode; TimedOut = $timedOut; Text = $text; Out = $outFile }
@@ -285,6 +316,7 @@ if ($Only -contains 'ekonomi') {
 if ($Only -contains 'borsa') { if (-not $G) { $G = Find-Godot }; $bo = Join-Path $RunDir 'borsa'; New-Item -ItemType Directory -Force $bo | Out-Null; Invoke-GodotTest 'borsa' "--test=borsa --fast=4 --test_out=`"$bo`"" 300 { param($r) $ok = $false; $detail = 'BORSA RESULT satiri yok'; if ($r.Text -match 'BORSA RESULT ok=(\d+) fail=(\d+)') { $ok = [int]$Matches[2] -eq 0; $detail = "ok=$($Matches[1]) fail=$($Matches[2])" }; [pscustomobject]@{ Ok = $ok; Detail = $detail } } } # ekonomi2: Borsa, Katalog, Cark (--test=borsa)
 if ($Only -contains 'holding') { if (-not $G) { $G = Find-Godot }; $ho = Join-Path $RunDir 'holding'; New-Item -ItemType Directory -Force $ho | Out-Null; Invoke-GodotTest 'holding' "--test=holding --fast=2 --test_out=`"$ho`"" 420 { param($r) $ok = $false; $detail = 'HOLDING RESULT satiri yok'; if ($r.Text -match 'HOLDING RESULT ok=(\d+) fail=(\d+)') { $ok = [int]$Matches[2] -eq 0; $detail = "ok=$($Matches[1]) fail=$($Matches[2])" }; [pscustomobject]@{ Ok = $ok; Detail = $detail } } } # holding M3: kamp, Perde, kervan, baskinlar (holding/HoldingTest.cs)
 if ($Only -contains 'zincir') { if (-not $G) { $G = Find-Godot }; Invoke-GodotTest 'zincir' "--test=zincir --fast=4 --mute" $BotTimeout { param($r) $res = ($r.Text -split "`r?`n" | Where-Object { $_ -match '^ZINCIR RESULT ' } | Select-Object -Last 1); if (-not $res) { $res = 'ZINCIR RESULT satiri yok' }; [pscustomobject]@{ Ok = ($res -match 'fail=0'); Detail = ($res -replace '^ZINCIR RESULT ', '') } } } # zincir M2: arastirma ve T2 uretimi (ZincirTest.cs)
+if ($Only -contains 'kabarma') { if (-not $G) { $G = Find-Godot }; Invoke-GodotTest 'kabarma' "--test=kabarma --mute" ([Math]::Max($BotTimeout, 900)) { param($r) $res = ($r.Text -split "`r?`n" | Where-Object { $_ -match '^KABARMA RESULT ' } | Select-Object -Last 1); if (-not $res) { $res = 'KABARMA RESULT satiri yok' }; [pscustomobject]@{ Ok = ($res -match '^KABARMA RESULT ok'); Detail = ($res -replace '^KABARMA RESULT ', '') } } } # kabarma3 M3 (KabarmaTest.cs)
 if ($Only -contains 'kartlar') { if (-not $G) { $G = Find-Godot }; Invoke-GodotTest 'kartlar' "--test=kartlar --mute" $BotTimeout { param($r) $res = ($r.Text -split "`r?`n" | Where-Object { $_ -match '^KARTLAR RESULT ' } | Select-Object -Last 1); if (-not $res) { $res = 'KARTLAR RESULT satiri yok' }; [pscustomobject]@{ Ok = ($res -match 'fail=0'); Detail = ($res -replace '^KARTLAR RESULT ', '') } } } # kartlar M3 (KartlarTest.cs)
 if (($Only -contains 'gece') -and -not $G) { $G = Find-Godot }
 if ($Only -contains 'gece') {

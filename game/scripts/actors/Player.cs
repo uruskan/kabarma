@@ -194,6 +194,7 @@ public partial class Player : CharacterBody3D
         _shake = Mathf.Max(_shake, 0.35f);
         var k = (GlobalPosition - from); k.Y = 0;
         _knock += k.Normalized() * 6f + Vector3.Up * 2f;
+        _knock = _knock.LimitLength(12f); // kabarma3: kalabalikta ayni karede onlarca vurus oyuncuyu haritadan firlatiyordu (KS 10 olcumu)
         Fx.DamageNumber(GlobalPosition + Vector3.Up * 1.8f, dmg, false);
         Sfx.Play("hit", GlobalPosition, -2f);
         if (Hp <= 0)

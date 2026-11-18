@@ -63,6 +63,10 @@ public partial class Zipzip : IKabaran
     /// <summary>GDD 14.3 hedef: kendi ailesinin olgun ekini (ilk gecede: herhangi ekin).</summary>
     PlotView FindCropTarget(Vector3 pos)
     {
+        // Olcum (KS 10, 200 Kabaran): hedefsiz olan her karede butun tarlayi tariyordu; arama 0.4-0.7 sn'de bir, kaydirmali.
+        ulong now = Time.GetTicksMsec();
+        if (now < _nextFind) return null;
+        _nextFind = now + 400 + GetInstanceId() % 300;
         if (_families == null) return _dir.FarmView.NearestPlanted(pos);
         if (_families.Count == 0) return null; // ailesiz tur dogrudan Kazan'a gider
         var data = _dir.Data;
@@ -83,12 +87,15 @@ public partial class Zipzip : IKabaran
     }
 
     /// <summary>Yuruyen turun adimi: dogrudan hedefe, egime oturur. Klip "run".</summary>
-    void WalkStep(float dt, Vector3 goal, float dist, float slow)
+    ulong _nextFind;
+
+    void WalkStep(float dt, Vector3 goal, float dist, float slow, string flowKey)
     {
         var pos = GlobalPosition;
         var dir = new Vector3(goal.X - pos.X, 0, goal.Z - pos.Z);
         if (dist < 0.4f + Radius * 0.6f || dir.LengthSquared() < 1e-4f) { _walkPhase = 0; return; }
         dir = dir.Normalized();
+        if (flowKey != null && dist > 3f && _dir.Flow?.Steer(pos, flowKey) is { } flow) dir = flow; // yolbulma: akis alani (TEKNIK 8.1), sicrayanlarla ayni
         float step = Mathf.Min(dist, MoveSpeed * slow * dt);
         GlobalPosition = _dir.World.Ground(pos + dir * step);
         _body.Rotation = new Vector3(0, Mathf.LerpAngle(_body.Rotation.Y, Mathf.Atan2(dir.X, dir.Z), Mathf.Min(1f, dt * 8f)), 0);

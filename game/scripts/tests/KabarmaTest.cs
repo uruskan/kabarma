@@ -95,6 +95,9 @@ public partial class KabarmaTest : Node
             case 20: // olcum: Kazan devrilmesin diye cani buyuk (yalniz bu kipte), kimse vurmaz; kalabalik birikir
                 if (n == null || n.Plan == null) { if (_stageT > 30f) Fail("olcum gecesi kurulmadi"); return; }
                 if (n.Kazan != null) n.Kazan.Hp = 1e9f;
+                // Oyuncu Ocak'in yaninda durur: kalabalik gorus alaninda (gercek gece), goruntulerde suru gorunur.
+                var stand = _d.World.Ground(_d.OcakPos + new Vector3(0, 0, 7f));
+                if (_d.Player.GlobalPosition.DistanceTo(stand) > 4f) _d.Player.GlobalPosition = stand + Vector3.Up * 0.2f;
                 int live = Kabarans.Live.Count();
                 _peak = Mathf.Max(_peak, live);
                 if (live >= 60) _d.DebugShot($"kabarma_ks{n.Ks}_kalabalik", 0.2f);
