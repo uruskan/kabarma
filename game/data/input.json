@@ -62,6 +62,10 @@
   "actions": {
     "move_forward": { "name": "İleri", "kb": ["W", "Up"], "pad": ["LS:Up"] },
     "move_back": { "name": "Geri", "kb": ["S", "Down"], "pad": ["LS:Down"] },
+    "voice_ptt": { "name": "Bas-konuş (yakın ses)", "kb": ["T"], "pad": ["Start"] },
+    "voice_radio": { "name": "Telsiz (uzak ses)", "kb": ["Y"], "pad": ["DPad:Down"] },
+    "player_list": { "name": "Oyuncu listesi", "kb": ["P"], "padVia": "controls_panel" },
+    "coop_panel": { "name": "Ortak oyun paneli", "kb": ["F4"], "padVia": "controls_panel" },
     "move_left": { "name": "Sola", "kb": ["A", "Left"], "pad": ["LS:Left"] },
     "move_right": { "name": "Sağa", "kb": ["D", "Right"], "pad": ["LS:Right"] },
     "look_left": { "name": "Sola bak", "kbGlyph": "Fare", "pad": ["RS:Left"] },
@@ -98,7 +102,8 @@
     "camera_zoom_in": { "name": "Kamerayı yakınlaştır (normal kip; Ctrl ya da Alt + tekerlek)", "kb": ["Wheel:Up"], "padVia": "camera_mode" },
     "camera_zoom_out": { "name": "Kamerayı uzaklaştır (normal kip; Ctrl ya da Alt + tekerlek)", "kb": ["Wheel:Down"], "padVia": "camera_mode" },
     "controls_panel": { "name": "Tuş atamaları", "kb": ["F2"], "pad": ["Back"] },
-    "pause_menu": { "name": "Duraklat: Kaydet ve Çıkış", "kb": ["Escape"], "pad": ["Start"] }
+    "pause_menu": { "name": "Duraklat: Kaydet ve Çıkış", "kb": ["Escape"], "pad": ["Start"] },
+    "scan": { "name": "Tarayıcı: baktığını tara (Veri)", "kb": ["T"], "pad": ["DPad:Up"] }
   },
   "hints": {
     "menu_pick": { "name": "Menüden seç", "kb": "1–9", "pad": "✚ + Ⓐ" },

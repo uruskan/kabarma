@@ -57,7 +57,7 @@ kabarma/
   src/
     Kabarma.Sim/         net8.0 kütüphane, Godot bağımlılığı yok: oyunun kuralları
     Kabarma.Sim.Tests/   xUnit
-    Kabarma.Net/         protokol: mesajlar, snapshot kodlayıcı; Godot bağımlılığı yok
+    (protokol: mesajlar, anlık görüntü kodlayıcı; Godot bağımlılığı yok → ayrı proje yerine src/Kabarma.Sim/Net*.cs, 18 Kasım 2026)
     Kabarma.Tools/       konsol: SimRunner, DataCheck, BalanceReport, RecipeGraph
   game/                  Godot projesi (C#)
     project.godot  Kabarma.Game.csproj (Sim ve Net'e başvurur)
@@ -112,7 +112,7 @@ kabarma/
 
 ### 5.1 Taşıma
 
-Kendi ince mesaj katmanımız (`Kabarma.Net`, ikili, sürümlü). Godot'un üst düzey RPC'si kullanılmaz. `ITransport` arayüzünün iki uygulaması var:
+Kendi ince mesaj katmanımız (`src/Kabarma.Sim/Net*.cs`: ikili, sürümlü; `net.json` `protocol`). Godot'un üst düzey RPC'si kullanılmaz. `ITransport` arayüzünün (`game/scripts/net/`) iki uygulaması var:
 
 | Taşıma | Kullanım |
 |---|---|
@@ -135,8 +135,8 @@ Kendi ince mesaj katmanımız (`Kabarma.Net`, ikili, sürümlü). Godot'un üst 
 
 | Veri | Boyut ve sıklık |
 |---|---|
-| Oyuncu | 16 B, 20 Hz |
-| Yaratık (120 m içinde) | 10 B, 10 Hz; daha uzakta 2 Hz |
+| Oyuncu | 16 B, 20 Hz (konum 3 × 24 bit, metrede 256 adım: 3,9 mm) |
+| Yaratık (120 m içinde) | 13 B, 10 Hz; daha uzakta 2 Hz (10 B'de 16 bitlik konum 1 cm ölçütünü tutmuyordu; 24 bite çıktı, 18 Kasım 2026) |
 | Sürü | 14 B, 5 Hz |
 | Fizik nesnesi | 15 B, uyanıkken 20 Hz, uzakta 5 Hz (Oduncu biçimi) |
 | `Sim` durumu | Değişince fark; 10 sn'de bir özet doğrulaması |
@@ -174,6 +174,14 @@ Host ya da sunucu yetkilidir. İstemci istekleri mesafe, bekleme süresi ve enva
 **Akış:** 64 m'lik parçalar. Oyuncuya 400 m içinde tam ayrıntı, 1,5 km'ye kadar iki kademe düşük ayrıntı, ötesinde biyom başına tek siluet mesh'i. Kat kat ufuk görüntüsü bu siluetlerle ve yükseklik sisiyle kurulur.
 
 **Arazi farkları** parça başına seyrek tutulur; kayda ve ağa yalnızca farklar gider.
+
+**M2 dünyası (ara adım, 18 Kasım 2026; dunya2 akışı).** 5 × 5 km'lik ada M4'te gelir; M2'de dünya **640 × 640 m**'dir ve iki biyom taşır:
+- **Biyom haritası `Sim`'dedir** (`BiomeMap`, motordan bağımsız, tohumlu): Ocak'tan krater ışık sütununa doğru ölçülen uzaklık, gürültüyle bükülmüş bir sınırı geçince Sis Korusu başlar. Bu, açısal dilimlerin ilk ikisinin (güney Çayır, krater yönünde Koru) yerel karşılığıdır; kademe (T) kratere yaklaştıkça artar.
+- **Geçiş yumuşaktır** (GDD §21): sınırda ~45 m'lik bir karışım bandı. Yükseklik terimleri, zemin rengi, ot sıklığı, sis ve ışık biyom ağırlığıyla karışır.
+- **Çayır'ın M1 yerleşimi bit bit korunur:** üssün 42 m'si yükseklikte, Çayır'ın eski ±146 m'lik kutusu da bitki, tutam ve kaya dağılımında aynı tohum akışıyla kalır. Kutunun dışındaki Çayır ve Koru ayrı tohumlarla doldurulur.
+- **Keşif noktaları** `Sim`'de tohumdan yerleşir (`PoiPlacer`: tür başına asgari aralık, biyom ağırlığı, Ocak'a uzaklık, göl dışı); kayda yalnız oyuncunun durumu (açılan harita hücreleri, tırmanılan kuleler, bulunan noktalar) gider, yerler tohumdan yeniden üretilir.
+- **Arazi** 64 m'lik görsel parçalara bölünür (görüş konisi eleme); çarpışma tek yükseklik şeklidir. Bütçeler §10'dakilerle aynıdır.
+- **Doğma tabloları** biyom başına `biomes.json` `spawns` içindedir: `creatures` (yaratık sürüleri: gündüz/gece, ağırlık, sürü boyu, en çok sürü, Ocak'a uzaklık) ve `atalar` (Ata'nın çağrıldığı Ata Taşı ve arena yarıçapı). Yaratık ve Ata akışları satır ekler; tabloyu `SpawnTable` okur.
 
 ## 8. Yapay zekâ
 

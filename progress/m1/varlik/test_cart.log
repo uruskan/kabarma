@@ -1,0 +1,14 @@
+tools/test.ps1  2026-11-18 17:09  git 32e669c
+
+[PASS] build  exit=0 warnings=0 errors=0
+[PASS] sim  exit=0 Passed!  - Failed:     0, Passed:   198, Skipped:     0, Total:   198, Duration: 957 ms - Kabarma.Sim.Tests.dll (net8.0)
+[PASS] grip  exit=0 RESULT ok grip checks=67 cart=sag 1.0cm sol 0.1cm
+[PASS] ekonomi  exit=0 ok=82 fail=0
+
+sinama     sonuc  sure(sn)  ayrinti
+------     -----  --------  -------
+build      PASS        2.9  exit=0 warnings=0 errors=0
+sim        PASS        3.5  exit=0 Passed!  - Failed:     0, Passed:   198, Skipped:     0, Total:   198, Duration: 957 ms - Kabarma.Sim.Tests.dll (net8.0)
+grip       PASS       35.5  exit=0 RESULT ok grip checks=67 cart=sag 1.0cm sol 0.1cm
+ekonomi    PASS       67.8  exit=0 ok=82 fail=0
+TEST PASS
