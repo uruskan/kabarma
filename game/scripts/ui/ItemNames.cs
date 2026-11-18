@@ -33,6 +33,8 @@ public static class ItemNames
         ["folluk"] = "Folluk",
         ["ocakbasi"] = "Ocakbaşı",
         ["kargo_rampasi"] = "Kargo Rampası",
+        // boss akisi (M2, GDD §18): Ata odulleri ve Ata Tasi.
+        ["cayir_cekirdegi"] = "Çayır Çekirdeği", ["koru_cekirdegi"] = "Koru Çekirdeği", ["ata_yunu"] = "Ata Yünü", ["dede_boynuzu"] = "Dede Boynuzu", ["ata_tasi"] = "Ata Taşı",
         // Karar 23 (kemer akisi): kemer aletleri ve uretilen yerlestirilebilirler.
         ["capa"] = "Çapa",
         ["insa_plani"] = "İnşa Planı",

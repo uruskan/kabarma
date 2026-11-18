@@ -26,7 +26,7 @@ public sealed class Plot
 }
 
 /// <summary>Tapu icindeki tarla: surme, ekme, sulama, buyume, kabarma (GDD 8).</summary>
-public sealed class Farm
+public sealed partial class Farm
 {
     readonly GameData _data;
     readonly Dictionary<(int, int), Plot> _plots = new();

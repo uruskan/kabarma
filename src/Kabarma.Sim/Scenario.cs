@@ -1,7 +1,7 @@
 namespace Kabarma.Sim;
 
 /// <summary>Ilk 10 dakikanin adim zinciri (PLAN 1.4). Godot katmani olaylari bildirir, senaryo ilerler.</summary>
-public sealed class Scenario
+public sealed partial class Scenario
 {
     readonly List<StepDef> _steps;
     public int StepIndex { get; private set; }
