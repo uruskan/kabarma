@@ -74,6 +74,13 @@ public sealed class PackSave
     public List<FoodSave> Food { get; set; } = new();
 }
 
+/// <summary>Dunya ayari (GDD 25). Etkileri (Kabarma sikligi, dusman hasari, hayvan olumu) ilgili sistemler Preset'e bakarak uygular.</summary>
+public sealed class WorldSettings
+{
+    /// <summary>save.json worldPresets kimligi.</summary>
+    public string Preset { get; set; } = "";
+}
+
 public sealed class PacksSave
 {
     public List<PackSave> Players { get; set; } = new();
@@ -99,7 +106,19 @@ public sealed partial class GameState
         Name = name,
         Reason = reason,
         Crew = new List<string> { LocalPlayer },
+        Preset = Settings.Preset,
     };
+
+    WorldSettings? _settings;
+    /// <summary>Dunya ayari (GDD 25): yeni oyunda secilir, dunyayla saklanir.</summary>
+    public WorldSettings Settings => _settings ??= new WorldSettings { Preset = Data.Save.DefaultPreset };
+
+    [SaveSection("world.settings", 1, Order = SaveOrder.Spawn - 50, Covers = new[] { nameof(Settings) })]
+    WorldSettings SettingsSection
+    {
+        get => new() { Preset = Settings.Preset };
+        set => Settings.Preset = string.IsNullOrEmpty(value.Preset) ? Data.Save.DefaultPreset : value.Preset;
+    }
 
     [SaveSection("core", 1, Order = SaveOrder.Progress, Covers = new[] { nameof(Seed), nameof(Rng), nameof(Ids), nameof(Credits), nameof(Sales), nameof(Known) })]
     CoreSave CoreSection

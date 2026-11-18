@@ -37,7 +37,7 @@ Dal `claude/m2-tarim-66b764`. Kaynaklar: GDD §8.1–8.3, ICERIK §5 (#1–#11),
   - `tarim`: `RESULT ok tarim crop=wheat item=16 alaca=5 seeds=4 ledger=4 best=V2 H3 D3 M2 korkuluk=1 protected=2`
   - Bot gerçek yoldan oynar: Ocak'ı kurar; Odun ve Lif toplayıp Korkuluk üretir ve kurar; yabani Buğday'ı biçer; 2 kare sürer, tohumu seçer ve eker; sular, bekler, hasat eder. Bu tohumda bir bitki Altın Alaca çıktı.
 - Son değişikliklerden sonra (main `c6d42b2` birleşmiş; tohum tuşu H / DPad sol, yabani bitki tarla listesinin dışında, Defter adımı): `-Only build,tarim,bot,gece,coop -BotTimeout 900` **PASS**. Ortak oyunda `plots=4 tilled=4`.
-- Doğrulanmamış: oyun içinde çaprazlama (yalnız Sim testinde); zararlı ısırığı (bot koşusunda `TARIM bite` satırı çıkmadı); H tuşunun yolu (bot `SelectSeed` çağırır); Defter Islah bölümünün ekran görüntüsü; kayıttan yüklenmiş tarlanın Godot görünüşü; kabarık Alaca satış çarpanı.
+- Doğrulanmamış: oyun içinde çaprazlama (yalnız Sim testinde); H tuşunun yolu (bot `SelectSeed` çağırır); Defter Islah bölümünün ekran görüntüsü; kayıttan yüklenmiş tarlanın Godot görünüşü; kabarık Alaca satış çarpanı.
 - Not: DPad sol hem `seed_cycle` hem `card_1`. Tohum seçimi yalnız Toprak eldeyken ve menü kapalıyken çalışır; gece kartı ile çakışırsa sahip değiştirebilir.
 - Görüntüler (`shots/`):
   - `tarim_030`: tohum kartı.

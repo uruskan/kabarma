@@ -11,26 +11,27 @@ Sahibin kararı 24 (18 Kasım 2026): ana oturum M2'den M7'ye sormadan ilerler; a
 
 - **M1:** main `9dd245a` sonrası. Teslimlerin çoğu main'de (Çapa elde, kemer ve Rust Üretim paneli, İnşa Planı, El Arabası iki elle, Suna'nın sesi, 75 ikon). Açık: `input_kbm`/`input_pad` testleri Taş Fırın ve Çivi adımında kırmızı (girdi); Taş Fırın ve ağaç modelleri (Tripo web, sahibin girişi); El Arabası LOD, çarpışma kabuğu ve rapor eski modeli anlatıyor, üçgen 14.747 > 14.000 (varlik); `kazma_isini_2` ~20 dB sessiz (ses); kapsül rampası pedin 0,4 m üstünde. 👤 his, 30 dk oynama, FPS, Megascans lisansı, ElevenLabs'teki 6 tasarlanmış ses.
 - **Dışa aktarma:** Windows .NET şablonları kurulu; `export/Kabarma.zip` (353 MB, `2577bd8`) ayrı klasörde açılıp `--test=camera` 73/73 geçti.
-- **M2:** başladı. Akışlar ve dalları aşağıda.
+- **M2:** akışların çoğu main'de (bcb5e4a). Kalan: kayit (12 commit dalda), hayvan, tarim; bot/input testleri `hasat` adımında kırmızı (tarim düzeltiyor). Kabul: 4 bot istemciyle senkron (`--test=coop` geçti), kayıt-yükleme farkı 0 (kayit), SimRunner T3 hedefi (ölçülmedi), 👤 sahip ve arkadaşı Steam'de 2 saat.
+- **M3:** başladı (18 Kasım akşam); akışlar CLAUDE.md "M3 akışları", boştaki M2 oturumları yeniden kullanılıyor.
 
 ### M2 akışları
 
 | Akış | Model | Durum |
 |---|---|---|
-| kayit | Opus high | başladı |
-| ortak | Opus high | başladı (sonradan katılma kayit sözleşmesi birleşince) |
-| yapi | Opus high | başladı |
-| tarim | Opus medium | başladı |
-| hayvan | Opus medium | başladı |
-| yaratik2 | Opus medium | başladı |
-| boss | Opus medium | başladı |
-| guc | Opus medium | başladı |
-| zincir | Opus medium | başladı |
-| ekonomi2 | Opus medium | başladı |
-| ilerleme | Opus medium | başladı |
-| dunya2 | Opus medium | başladı |
-| girdi (M1) | Opus medium | girdi testleri kırmızı taban çizgisi |
-| varlik (M1) | Sonnet 5.5 | El Arabası LOD, kabuk, rapor, üçgen bütçesi |
+| kayit | Opus high | dalda, main'e alınıyor |
+| ortak | Opus high | main'de (2151474): coop ve steam testleri geçti → M3 yolbulma |
+| yapi | Opus high | main'de (71e7aa5); bot `yukselt` adımı hasat yüzünden doğrulanmadı → M3 savunma |
+| tarim | Opus medium | main'de; bot `hasat` kırığını düzeltiyor |
+| hayvan | Opus medium | dalda, bitiyor → sonra M3 savas-hayvan |
+| yaratik2 | Opus medium | main'de (68105e2) → M3 kabarma3 |
+| boss | Opus medium | main'de (db010d2) → M3 savas |
+| guc | Opus medium | main'de (96abc5c) → M3 gucler |
+| zincir | Opus medium | main'de → M3 kartlar |
+| ekonomi2 | Opus medium | main'de (51399ce) → M3 holding |
+| ilerleme | Sonnet 5.5 | main'de (4b1c001) → M3 cip |
+| dunya2 | Opus medium | main'de (79c94b1) → M3 oyuk |
+| bitki | Opus medium | çizgi film ağaçlar → F:\Assets PBR ağaç ve bitki |
+| girdi, varlik (M1) | — | main'de, arşivlendi |
 
 ### Kredi kuyruğu (sahibe tek listede sorulur)
 

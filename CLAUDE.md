@@ -90,3 +90,24 @@ M1 tablosu M1 akışlarınındır; M2 akışları aşağıdakilerdir. Kurallar a
 | girdi, varlik, ses | M1 oturumları | M1'deki sahiplikleri sürer (girdi testleri, varlık hattı, ses) |
 
 **Güç bağlanma notu (guc):** Güç isteyen istasyon yalnız `research.json` `watts` tablosuna satır ekler (istasyon kimliği → W; tabloda olmayan güç istemez). Kurulunca `PowerSystem` ona kendiliğinden bir soket açar ve `StationQueue.PowerOk`'u bağlar: sıra yalnız kabloyla beslenirken ilerler, iş yokken talep yok. İstasyon kodu değişmez; etiket için `_d.Power?.PortOf(this)?.Status` (sözleşme `game/scripts/power/PowerPort.cs`, durum `GameState.Power`, kayıt bölümü `power`).
+
+## M3 akışları (18 Kasım 2026)
+
+M3 (URETIM §6): tam Kabarma ve savaş, dünya hâlâ Altın Çayır + Sis Korusu (T1–T2). Kurallar M2 ile aynı (kendi dal, `tools/integrate.ps1`, ayak işi Sonnet alt ajanında, otomatik koşular sessiz, kredi yok, Sim düz ve kayda/ağa bağlı). M2 oturumları yeniden kullanılır; her akış önce main'i birleştirir.
+
+**Sözleşmeler (erken main'e alınır):** `savas` ortak hasar, sağlık ve durum arayüzünü (`Combat*`), `kabarma3` dalga ve Kabaran arayüzünü (`Wave*`), `yolbulma` akış alanı sorgusunu (`FlowField*`) ilk iş olarak yazar ve main'e alır, CLAUDE.md'ye iki satırlık bağlanma notu ekler. O birleşene kadar ötekiler yerel, işaretli bir geçici arayüz kullanır.
+
+**Akış alanına bağlanma (yolbulma, birleşti; TEKNIK §8.1):** Yön için `_d.Flow?.Steer(pos, "crop" | "crop:<aile>" | "kazan" | kendi anahtarın)` (null: pencere dışı ya da yol yok, doğrudan yürü); kırılacak engel için `_d.Flow.Sample(key, pos)` → `Blocked`, `Blocker` (sahip kimliği; `FlowFieldSystem.OwnerNode(id)` yapı parçasını verir), `BlockerKind`; hasarı veren sensin. Kendi hedef kümen için `_d.Flow.SetGoals(key, noktalar)`; kendi engelin (tuzak, kule, kapı; tür `flowfield.json` `breakCost` anahtarı, açık kapı `doorOpen`) için `_d.Flow.StampBox(kimlik, tür, merkez, yarıX, yarıZ, yön)` / `Unstamp(kimlik)`; Holding için `_d.Flow.FindPath(a, b)` (kırma maliyetli A*). Alan yalnız host'ta işler, türetilmiş veridir (kayda ve ağa bölüm gerekmez).
+
+| Akış (oturum) | Model | Sahip olduğu dosyalar ve işler |
+|---|---|---|
+| savas (boss) | Opus medium | GDD §16.1 hasar ve durumlar, §16.3 gündüz savaşı: `src/Kabarma.Sim/Combat*.cs`, `Status*.cs`, `data/combat.json`, `game/scripts/combat/`; Azman Homur ve Azman Bozuk (ICERIK §4.2): `Azman*.cs`, `data/azman.json` |
+| kabarma3 (yaratik2) | Opus medium | GDD §14.1–14.5 ve §14.6: tam Kabarma akışı, Kabaranlar, dalga kuralları ve bileşimi, "ne ekersen onu çekersin", KS 1–10 (stres sahnesi KS 30), kazanç ve kayıp, Gösteri çarpanı: `Night*.cs`, `Director.Night.cs`, `kabarma.json`, `src/Kabarma.Sim/Wave*.cs`, `Kabaran*.cs`, sürü çizimi |
+| kartlar (zincir) | Opus medium | GDD §15, ICERIK §8: 72 kart (60 + 12 aşı), baştan açık 20, Nişan; `cards.json`, `src/Kabarma.Sim/Card*.cs`, `Asi*.cs`, `Nisan*.cs`, kart arayüzü (`Hud.Night*.cs`'e satır, yeni `Hud.Cards*.cs`); her kartın ve aşının senaryo testi |
+| savunma (yapi) | Opus medium | GDD §16.4, ICERIK §13: T1–T2 kuleleri (Çivi, Sapan, Saçma) ve tuzakları (Diken Tarlası, Yapışkan Zemin, Fırlatma Pedi, Çukur Kapağı); `src/Kabarma.Sim/Tower*.cs`, `Trap*.cs`, `game/scripts/defense/`, `data/defense.json` |
+| gucler (guc) | Opus medium | GDD §17, ICERIK §7: ilk beş güç, Kadim Taş denemeleri, iki ulti; GDD §14.7 Tatbikat ve Maya Feneri (§14 Kabarma başlatma, `kabarma3` sözleşmesiyle); `src/Kabarma.Sim/Ability*.cs`, `KadimTas*.cs`, `Tatbikat*.cs`, `data/abilities.json` |
+| holding (ekonomi2) | Opus medium | GDD §19, ICERIK §3.7: beş Holding birimi, ilk kamp (seviye 1–4), kervan, baskın ve karşı baskın, Husumet; `src/Kabarma.Sim/Holding*.cs`, `game/scripts/holding/`, `data/holding.json` |
+| yolbulma (ortak) | Opus high | TEKNIK §8 akış alanlı yol bulma (sürü ve Holding birimleri için), KS 30 stres sahnesi 8 botla kare süresi ve ağ bütçesi (TEKNIK §5.3, §10); `src/Kabarma.Sim/FlowField*.cs`, `game/scripts/ai/`, `--test=stress` |
+| cip (ilerleme) | Sonnet 5.5 | ICERIK §6.3: 24 çip × 4 nadirlik, Çapa'ya takma, düşme kaynakları; `src/Kabarma.Sim/Chip*.cs`, `data/chips.json`, `Hud.Chips*.cs` |
+| savas-hayvan (hayvan) | Opus medium | GDD §9.5 Kabarma'da hayvanlar, savaş hayvanları ve binek; `Husbandry.Combat*.cs`, `Mount*.cs` (M2 işi bittikten sonra) |
+| oyuk (dunya2) | Opus medium | Köstebek Bey ve Yarasa Yumağı (ICERIK §4.3) ve Oyuk alanları; `Oyuk*.cs`, `data/oyuk.json`, `World*.cs`'e satır |

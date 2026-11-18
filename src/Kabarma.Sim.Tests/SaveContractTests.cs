@@ -195,6 +195,20 @@ public class SaveContractTests
     }
 
     [Fact]
+    public void Unknown_character_sections_survive_a_rewrite()
+    {
+        // Baska bir akisin karakter bolumu (Ustalik) bu surumde yoksa da karakter dosyasi yeniden yazilinca kaybolmaz.
+        var g = new SaveGame();
+        g.Sections["mastery"] = new SaveBlob { Version = 2, Data = "{\"lvl\":7}"u8.ToArray() };
+        var r = new SaveRegistry().Add(SaveSection.Json("cosmetic", 1, () => 1, _ => { }, scope: SaveScope.Character));
+        var rep = r.Restore(g, SaveScope.Character);
+        Assert.Equal(new[] { "mastery" }, rep.Unknown);
+        var again = r.Capture(SaveScope.Character);
+        Assert.Equal(g.Sections["mastery"].Data, again.Sections["mastery"].Data);
+        Assert.False(r.Capture(SaveScope.World).Sections.ContainsKey("mastery")); // dunya kaydina karismaz
+    }
+
+    [Fact]
     public void Duplicate_or_bad_ids_are_refused()
     {
         var r = new SaveRegistry().Add(SaveSection.Json("x", 1, () => 0, _ => { }));
