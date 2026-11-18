@@ -45,6 +45,8 @@ public sealed class AtaPhaseDef
     public float ChargeSeconds { get; set; } = 1.4f;
     /// <summary>Yumak / mermi: adet, hiz (m/s), oyuncuyu itme (m/s).</summary>
     public int VolleyCount { get; set; }
+    /// <summary>Tek yumagin hasari (hucumun AttackDamage'indan ayri).</summary>
+    public float VolleyDamage { get; set; }
     public float VolleySpeed { get; set; }
     public float Knockback { get; set; }
     /// <summary>Kok halkasi: yayilma hizi (m/s), en buyuk yaricap, kalinlik (m).</summary>

@@ -50,6 +50,12 @@ public static class Events
     public static event Action<string, string> Laid;
     /// <summary>Suna bir repligi soyledi (scenario.json "lines" kimligi). Seslendirme buna baglanir.</summary>
     public static event Action<string> SunaSaid;
+    /// <summary>Ata yenildi (atalar.json kimligi). Yayan: AtaSystem (boss akisi).</summary>
+    public static event Action<string> AtaDefeated;
+    /// <summary>Ata'nin asamasi degisti (kimlik, 0'dan asama). Yayan: AtaSystem.</summary>
+    public static event Action<string, int> AtaPhase;
+    public static void RaiseAtaDefeated(string id) => AtaDefeated?.Invoke(id);
+    public static void RaiseAtaPhase(string id, int phase) => AtaPhase?.Invoke(id, phase);
 
     public static void RaisePenChanged(int cells) => PenChanged?.Invoke(cells);
     public static void RaiseAnimalPenned(string species) => AnimalPenned?.Invoke(species);
@@ -83,5 +89,6 @@ public static class Events
         Paid = null;
         Deconstructed = null;
         PenChanged = null; AnimalPenned = null; Laid = null; SunaSaid = null;
+        AtaDefeated = null; AtaPhase = null;
     }
 }
