@@ -14,6 +14,7 @@ namespace Kabarma.Game;
 public partial class Director
 {
     KabarmaSpec _pendingSpec;
+    float _perfT; int _perfFrames;
     int _bellKs;
     Label3D _kazanLabel;
     readonly List<WildSwarm> _nightSwarms = new();
@@ -151,7 +152,13 @@ public partial class Director
         }
         _nightSwarms.RemoveAll(s => !IsInstanceValid(s) || s.Dead);
         // Olcum (KS 10 / KS 30 stres): 5 sn'de bir sahnedeki Kabaran sayisi ve kare suresi.
-        PerfTick(n, dt);
+        _perfT += dt; _perfFrames++;
+        if (_perfT >= 5f)
+        {
+            GD.Print($"KABARMA perf wave={n.WaveIndex + 1} active={Kabarans.Live.Count()} swarms={_nightSwarms.Count} pending={n.PendingSpawns} frameMs={_perfT * 1000f / _perfFrames:0.0} scriptMs={Zipzip.ProcessTicks * 1000.0 / System.Diagnostics.Stopwatch.Frequency / _perfFrames:0.0} fps={Engine.GetFramesPerSecond():0} process={Performance.GetMonitor(Performance.Monitor.TimeProcess) * 1000:0.0} physics={Performance.GetMonitor(Performance.Monitor.TimePhysicsProcess) * 1000:0.0}");
+            Zipzip.ProcessTicks = 0;
+            _perfT = 0; _perfFrames = 0;
+        }
         TickElites(n, dt);
         // Bozgun (GDD 14.4): butun oyuncular yerde. Tek oyuncuda: oyuncu yere dusunce bir kez.
         bool allDown = Player.Down && (Net == null || Net.Players().All(p => p.down));
