@@ -54,7 +54,7 @@
       "root": ["homur", "dehliz"],
       "grain": ["gidak", "cekirge", "findikci"],
       "gourd": ["zipzip", "paytak"],
-      "fruit": ["hu", "lescci", "tukurgen"],
+      "fruit": ["hu", "lesci", "tukurgen"],
       "fiber": ["kiskac", "billur"],
       "oil": ["bozuk", "kizgin"],
       "spice": ["kivrik", "ayaz_kurdu"],
@@ -65,7 +65,7 @@
       "altin_cayir": ["zipzip", "gidak", "pofuduk", "homur", "cekirge", "sinsi"],
       "sis_korusu": ["dalli", "hu", "vicik", "bozuk", "vizviz", "findikci"],
       "isil_sazlik": ["vrak", "kiskac", "suluk_surusu", "tukurgen", "cizbiz"],
-      "kizil_kanyon": ["kosar", "kivrik", "kizgin", "lescci", "dehliz"],
+      "kizil_kanyon": ["kosar", "kivrik", "kizgin", "lesci", "dehliz"],
       "ayaz_yaylasi": ["tosun", "ayaz_kurdu", "paytak", "billur"],
       "gobek": ["hamurcuk"]
     },

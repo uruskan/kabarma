@@ -56,7 +56,7 @@ public class WildTests
     {
         // ICERIK §3: 27 tur (PLAN §7.1); kimlikler docs/kimlikler-m4.md §3.
         string[] ids = { "zipzip", "gidak", "pofuduk", "homur", "cekirge", "sinsi", "dalli", "hu", "vicik", "bozuk", "vizviz", "findikci",
-            "vrak", "kiskac", "suluk_surusu", "tukurgen", "cizbiz", "kosar", "kivrik", "kizgin", "lescci", "dehliz",
+            "vrak", "kiskac", "suluk_surusu", "tukurgen", "cizbiz", "kosar", "kivrik", "kizgin", "lesci", "dehliz",
             "tosun", "ayaz_kurdu", "paytak", "billur", "hamurcuk" };
         Assert.Equal(27, D.Creatures.Creatures.Count);
         foreach (var id in ids) Assert.Contains(D.Creatures.Creatures, c => c.Id == id);

@@ -354,7 +354,7 @@ creature("kizgin", "Kızgın", "ranged", 4, 170, 11, 2.8, "kizil_kanyon", "quadr
 
 # Lesci: tasinan yuku kapan, gokte suzulen akbaba.
 bn = bird_bones(0.6, 0.98, 0.2, 0.22, 0.1, 0.3, tail_z=-0.28)
-body("lescci", {"feather": "4A3A34", "ruff": "E8DCC8", "skin": "D87A6A", "beak": "E8C87A", "leg": "8A7A6A", "eye": "101010", "eyeball": "FFE08A"}, bn, [
+body("lesci", {"feather": "4A3A34", "ruff": "E8DCC8", "skin": "D87A6A", "beak": "E8C87A", "leg": "8A7A6A", "eye": "101010", "eyeball": "FFE08A"}, bn, [
     P("body", "pillow", [0.42, 0.4, 0.56], [0, 0.62, -0.04], "feather", rnd=0.85),
     P("body", "pillow", [0.36, 0.14, 0.24], [0, 0.84, 0.14], "ruff", rnd=0.9),
     P("head", "sphere", [0.18, 0.16, 0.2], [0, 1.0, 0.24], "skin"),
@@ -367,7 +367,7 @@ body("lescci", {"feather": "4A3A34", "ruff": "E8DCC8", "skin": "D87A6A", "beak":
     P("shin_l", "capsule", [0.04, 0.26, 0.04], [0.1, 0.18, 0.04], "leg", mirror=True),
     P("foot_l", "pillow", [0.12, 0.03, 0.14], [0.1, 0.03, 0.08], "leg", rnd=0.6, mirror=True),
 ], "body", [0.0, 0.8, -0.05])
-creature("lescci", "Leşçi", "flyer", 2, 65, 6, 4.8, "kizil_kanyon", "bird", BIRD_ROLES, 1.05, {
+creature("lesci", "Leşçi", "flyer", 2, 65, 6, 4.8, "kizil_kanyon", "bird", BIRD_ROLES, 1.05, {
     "stance": "raider", "active": "day", "wanderRadius": 18, "walkSpeedMult": 0.5, "runSpeedMult": 1.0, "alertRadius": 10,
     "fleeRadius": 5, "fleeSeconds": 3, "target": "crop", "targetSense": 36, "targetStop": 1.2, "targetSeconds": 5,
     "flyHeight": 2.6, "pauseMin": 2, "pauseMax": 5, "idleShare": 0.4, "grazeShare": 0.3})
@@ -392,7 +392,7 @@ body("dehliz", {"scale": "8A5A3A", "plate": "C88A4A", "belly": "E2C29A", "claw":
 ], "spine", [0.0, 0.48, 0.1], 0.1)
 creature("dehliz", "Dehliz", "digger", 4, 150, 12, 3.4, "kizil_kanyon", "reptile", REPT_ROLES, 0.45, {
     "stance": "predator", "active": "always", "wanderRadius": 5, "walkSpeedMult": 0.25, "runSpeedMult": 1.1,
-    "alertRadius": 6, "chargeRadius": 5, "attackRange": 1.9, "attackInterval": 1.6, "attackDamage": 10, "warnSeconds": 0.6,
+    "alertRadius": 8, "chargeRadius": 6.5, "attackRange": 1.9, "attackInterval": 1.6, "attackDamage": 10, "warnSeconds": 0.6,
     "giveUpRadius": 14, "burrow": True, "pauseMin": 4, "pauseMax": 9, "idleShare": 0.6, "grazeShare": 0.1}, swell=SWELL_L, scale=2.2)
 
 # --- Ayaz Yaylasi ---

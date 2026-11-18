@@ -239,7 +239,7 @@
       "wild": {"stance": "predator", "active": "always", "wanderRadius": 10, "walkSpeedMult": 0.3, "runSpeedMult": 0.9, "alertRadius": 12, "chargeRadius": 9, "attackRange": 7, "attackInterval": 2.4, "attackDamage": 9, "warnSeconds": 1.5, "giveUpRadius": 20, "projectile": "fire", "pauseMin": 3, "pauseMax": 7, "idleShare": 0.5, "grazeShare": 0.3}
     },
     {
-      "id": "lescci",
+      "id": "lesci",
       "name": "Leşçi",
       "archetype": "flyer",
       "weight": 2,
@@ -249,7 +249,7 @@
       "swollenScale": 2.4,
       "weakPointMult": 2.0,
       "biome": "kizil_kanyon",
-      "rig": {"plan": "bird", "model": "code:lescci", "height": 1.05, "yaw": 0, "triBudget": 8000, "bones": {"root": "root", "body": "body", "head": "head", "comb": "comb", "tail": "tail", "wing_l": "wing_l", "wing_r": "wing_r", "thigh_l": "thigh_l", "shin_l": "shin_l", "foot_l": "foot_l", "thigh_r": "thigh_r", "shin_r": "shin_r", "foot_r": "foot_r"}, "placeholder": ["walk"]},
+      "rig": {"plan": "bird", "model": "code:lesci", "height": 1.05, "yaw": 0, "triBudget": 8000, "bones": {"root": "root", "body": "body", "head": "head", "comb": "comb", "tail": "tail", "wing_l": "wing_l", "wing_r": "wing_r", "thigh_l": "thigh_l", "shin_l": "shin_l", "foot_l": "foot_l", "thigh_r": "thigh_r", "shin_r": "shin_r", "foot_r": "foot_r"}, "placeholder": ["walk"]},
       "swell": {"push": 0.04, "wobble": 0.03, "glow": 0.9, "veinScale": 4.0, "seconds": 1.2, "stepJiggle": 0.012, "hitJiggle": 0.03},
       "wild": {"stance": "raider", "active": "day", "wanderRadius": 18, "walkSpeedMult": 0.5, "runSpeedMult": 1.0, "alertRadius": 10, "fleeRadius": 5, "fleeSeconds": 3, "target": "crop", "targetSense": 36, "targetStop": 1.2, "targetSeconds": 5, "flyHeight": 2.6, "pauseMin": 2, "pauseMax": 5, "idleShare": 0.4, "grazeShare": 0.3}
     },
@@ -266,7 +266,7 @@
       "biome": "kizil_kanyon",
       "rig": {"plan": "reptile", "model": "code:dehliz", "height": 0.45, "yaw": 0, "triBudget": 8000, "bones": {"root": "root", "spine": "spine", "head": "head", "tail": "tail", "tail2": "tail2", "front_l": "front_l", "frontlow_l": "frontlow_l", "front_r": "front_r", "frontlow_r": "frontlow_r", "back_l": "back_l", "backlow_l": "backlow_l", "back_r": "back_r", "backlow_r": "backlow_r"}, "placeholder": ["walk"]},
       "swell": {"push": 0.05, "wobble": 0.03, "glow": 0.8, "veinScale": 3.0, "seconds": 1.5, "stepJiggle": 0.016, "hitJiggle": 0.03},
-      "wild": {"stance": "predator", "active": "always", "wanderRadius": 5, "walkSpeedMult": 0.25, "runSpeedMult": 1.1, "alertRadius": 6, "chargeRadius": 5, "attackRange": 1.9, "attackInterval": 1.6, "attackDamage": 10, "warnSeconds": 0.6, "giveUpRadius": 14, "burrow": true, "pauseMin": 4, "pauseMax": 9, "idleShare": 0.6, "grazeShare": 0.1}
+      "wild": {"stance": "predator", "active": "always", "wanderRadius": 5, "walkSpeedMult": 0.25, "runSpeedMult": 1.1, "alertRadius": 8, "chargeRadius": 6.5, "attackRange": 1.9, "attackInterval": 1.6, "attackDamage": 10, "warnSeconds": 0.6, "giveUpRadius": 14, "burrow": true, "pauseMin": 4, "pauseMax": 9, "idleShare": 0.6, "grazeShare": 0.1}
     },
     {
       "id": "tosun",
