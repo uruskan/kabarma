@@ -1,0 +1,78 @@
+﻿Godot Engine v4.7.2.stable.mono.official.ed1daf0bf - https://godotengine.org
+
+TEST stress
+STRESS host port=29159 bot=0
+MUSIC ready day=yes layers=3/3 bar=2.00s
+WORLD decor agac box=98 outside=285
+WORLD decor turuncu_agac box=28 outside=84
+WORLD decor cali box=153 outside=450
+WORLD decor ot box=226 outside=660
+WORLD decor bugday box=74 outside=210
+WORLD decor cicek box=240 outside=720
+WORLD decor egrelti box=156 outside=450
+WORLD decor kaya_duz box=36 outside=108
+WORLD decor kaya_dik box=17 outside=42
+WORLD pois 22: seyir_kulesi_altin_cayir_0@105,40 ata_tasi_altin_cayir_0@64,36 yabani_bahce_altin_cayir_0@-145,2 yuva_altin_cayir_0@143,192 yuva_altin_cayir_1@-231,-56 enkaz_altin_cayir_0@-69,179 enkaz_altin_cayir_1@84,195 enkaz_altin_cayir_2@-139,-84 oyuk_altin_cayir_0@-202,-106 oyuk_altin_cayir_1@-45,-226 oyuk_altin_cayir_2@165,215 seyir_kulesi_sis_korusu_0@-46,287 ata_tasi_sis_korusu_0@-212,219 yabani_bahce_sis_korusu_0@-53,256 yuva_sis_korusu_0@-200,189 yuva_sis_korusu_1@-88,230 enkaz_sis_korusu_0@-257,293 enkaz_sis_korusu_1@-151,238 enkaz_sis_korusu_2@-235,110 oyuk_sis_korusu_0@-172,215 oyuk_sis_korusu_1@-280,237 oyuk_sis_korusu_2@-276,130
+PLAYER model anims: carry,cheer,crouch_walk,eat,getup_back_pose,getup_front_pose,hurt,idle,jump,jump_air,jump_land,jump_start,kneel,knockdown,plant,push,run,shock_fall,sleep,sprint,walk,walk_casual,wave
+AUDIO sounds=60 playable=60 variant_files=180 m0_only=0 silent=0 placeholder=0
+AUDIO ok 60/60
+POFUDUK anims: pose/attack1,pose/attack2,pose/eat,pose/hit,pose/idle,pose/rest,pose/run,pose/walk,preset_quadruped_walk
+BUILD kit pieces=28
+ATALAR arenas=koca_pofuduk@64,36/r18:ata_tasi_altin_cayir_0,boynuzlu_dede@-212,219/r20:ata_tasi_sis_korusu_0
+OYUK rooms 6: oyuk_altin_cayir_0(kostebek_bey t0)@1000 oyuk_altin_cayir_1(kostebek_bey t1)@1120 oyuk_altin_cayir_2(kostebek_bey t2)@1240 oyuk_sis_korusu_0(yarasa_yumagi t0)@1360 oyuk_sis_korusu_1(yarasa_yumagi t1)@1480 oyuk_sis_korusu_2(yarasa_yumagi t2)@1600
+NET host enet 0.0.0.0:29159 name=Host
+BOOT Kabarma MVP
+TARIM wild=22
+POWER net bound host=True
+DEFENSE net bound host=True
+KADIM stones kadim_atilma@-10,40,y1.1 kadim_kalkan@48,-62,y20.7 kadim_sok@-150,170,y13.7 kadim_yem@-175,140,y12.6 kadim_sifa@-130,205,y14.0
+ABILITY net bound host=True
+OYUK net bound host=True
+NET save bridge: save:calendar,save:cargo,save:chips,save:farm,save:holding,save:market,save:pen.animals,save:power,save:stations,save:farm.genetics,save:player,save:creatures,save:abilities,save:atalar,save:azman,save:core,save:explore,save:kabarma,save:orders,save:oyuk,save:progress,save:ranch,save:research,save:scenario,save:director
+HELD capa
+MUSIC Silence -> Day
+ZIPZIP herd size=2 at=-32,-9 herds=1
+ZIPZIP herd size=2 at=33,-31 herds=2
+ZIPZIP herd size=3 at=-10,-29 herds=3
+WILDLIFE spawn homur herd=1 at=-15,9
+WILDLIFE spawn homur herd=1 at=-19,13
+WILDLIFE spawn dalli herd=1 at=35,15
+WILDLIFE spawn dalli herd=1 at=39,10
+WILDLIFE spawn vicik herd=1 at=-11,-35
+WILDLIFE spawn vicik herd=1 at=-8,-39
+WILDLIFE spawn bozuk herd=1 at=45,-39
+WILDLIFE spawn vizviz swarm at=27,21
+WILDLIFE spawn hu herd=1 at=-25,-17
+RANCH start animals=11 agents=11
+BOT step mine t=1.0
+SUNA line=giris_1 voice=yes
+HELD ocak
+WILDLIFE spawn cekirge swarm at=-112,-107
+FLOW window center=0,0 size=160
+BOT coop phase 0 ok (ocak var) t=4.3
+STRESS start players=1 ks=30 target=220 t=4.4
+HELD -
+HELD capa
+HATCH intro done
+STRESS measure begin active=220 t=9.0
+SUNA line=giris_2 voice=yes
+BOT coop phase 1 ok (tas 4) t=9.3
+WILDLIFE spawn homur herd=1 at=142,46
+WILDLIFE spawn homur herd=1 at=108,-39
+WILDLIFE spawn gidak herd=4 at=84,-12
+WILDLIFE spawn sinsi herd=1 at=-134,-71
+BOT coop phase 2 ok (odun 6) t=33.8
+HELD insa_plani
+WILDLIFE spawn pofuduk herd=2 at=-95,86
+BUILT kare_temel pieces=1
+BOT coop phase 3 ok (temel (7.368488, 0, 3.1153467)) t=35.5
+HELD capa
+WILDLIFE spawn gidak herd=3 at=-34,128
+BOT coop phase 4 ok (tarla (4.5, 0, 1.5)) t=44.1
+WILDLIFE spawn pofuduk herd=3 at=-98,94
+QUEUED mesale x1
+PRODUCED mesale civi=40 ingot=0 soup=0
+BOT coop phase 5 ok (uretim mesale 1) t=48.7
+BOT coop done id=0 stone=5 wood=0 built=1 t=52.5
+STRESS measure end t=54.0
+STRESS RESULT partial players=1 ks=30 enemies_min=220 host_up_kbps=0 (hedef 1500, sinir 2000) client_down_kBps_max=0.0 (sinir 35) flow_tick_ms work_ticks=152 p95=1.61 max=4.81 (sinir 4, p95) cells_max=1792 (butce 1500) flow_scan_p95=0.04 repairs=22 recomputes=0 creature_packets=0 frame=over host_frame_ms med=37.14 p95=84.41 (sinir 11, basliksiz CPU) frames=1055 over16ms=100% client_frame_p95_max=0.00 window=45s

@@ -47,11 +47,18 @@ yürürken, çit kırma maliyeti 40).
 
 ## Son doğrulama
 
-Kurulum bölündükten sonra 8 süreç (`stress_8_final.log`): akış tiki iş yapılan 150 tikte p95 2,24 ms, en kötü
-21,3 ms; host yükleme 1080 kbps, istemci indirme en çok 20,3 KB/sn, host karesi med 43 / p95 178 ms, istemci karesi
-p95 184 ms. Makine o sırada çok yüklüydü (başka oturumların Godot süreçleri); tik işi 1500 hücreyle sınırlı olduğu
-hâlde tek örnek 21 ms, yani işletim sistemi duraklaması. Sert yargı bu yüzden iş tiklerinin p95'inde; en kötü değer
-satırda kalır. Sim kıyasında (tek süreç) kurulum tiki en çok 0,1 ms, yayılım dilimi en çok 2,1 ms.
+Yargı ikiye ayrıldı. Aynı makinedeki 8 süreçte duvar saati başka süreçlerin CPU'sunu da ölçer (host karesi medyanı
+koşudan koşuya 31–123 ms), bu yüzden orada ağ bütçesi, kuklalar ve tik başına hücre işi yargılanır; akış tikinin süresi
+tek süreçli koşuda (`--solo`) yargılanır. Oyunda bir anahtarın ilk alan hesabı da tik bütçesiyle yapılır.
+
+| Koşu | Sonuç |
+|---|---|
+| 8 süreç (`stress_8_final.log`, son kod; satırdaki "fail" eski süre yargısından) | host yükleme 1086 kbps (hedef 1500, sınır 2000), istemci indirme en çok 19,0 KB/sn (sınır 35), 8 oyuncu, tik işi en çok 1792 hücre (bütçe 1500, sınır 3000), onarım 21; host karesi med 123 / p95 232 ms (makine aşırı yüklü), akış tiki p95 8,0 ms (yük) |
+| tek süreç (`stress_solo_final.log`) | `partial`: akış tiki p95 1,61 ms, en kötü 4,81 ms (sınır 4, p95), tik işi en çok 1792 hücre, onarım 22; host karesi med 37 / p95 84 ms (sınır 11) |
+| Sim kıyası (tek süreç, Debug) | onarım kurulumu tiki en çok 0,1 ms, 1500 hücrelik yayılım dilimi en çok 2,1 ms |
+| ilk gün botu (`bot_final.log`, yeni içe aktarmadan sonra) | `RESULT ok ... kills=21 harvests=5` |
+
+Önceki ara koşu: 8 süreç, kurulum bölünmeden önce, akış tiki p95 2,24 / en kötü 21,3 ms (tek örnek, duraklama).
 
 Tam `tools/test.ps1 -BotTimeout 900` (`test_full.log`, merge sonrası): build, sim (584), bot, coop, ekonomi, zincir ve
 diğerleri geçti; `save` (`ranch` bölümü farklı: hayvan akışı) ve `input_kbm` (`yukselt` adımında takılı: yapı/girdi)
