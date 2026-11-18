@@ -57,7 +57,7 @@ kabarma/
   src/
     Kabarma.Sim/         net8.0 kütüphane, Godot bağımlılığı yok: oyunun kuralları
     Kabarma.Sim.Tests/   xUnit
-    Kabarma.Net/         protokol: mesajlar, snapshot kodlayıcı; Godot bağımlılığı yok
+    (protokol: mesajlar, anlık görüntü kodlayıcı; Godot bağımlılığı yok → ayrı proje yerine src/Kabarma.Sim/Net*.cs, 18 Kasım 2026)
     Kabarma.Tools/       konsol: SimRunner, DataCheck, BalanceReport, RecipeGraph
   game/                  Godot projesi (C#)
     project.godot  Kabarma.Game.csproj (Sim ve Net'e başvurur)
@@ -112,7 +112,7 @@ kabarma/
 
 ### 5.1 Taşıma
 
-Kendi ince mesaj katmanımız (`Kabarma.Net`, ikili, sürümlü). Godot'un üst düzey RPC'si kullanılmaz. `ITransport` arayüzünün iki uygulaması var:
+Kendi ince mesaj katmanımız (`src/Kabarma.Sim/Net*.cs`: ikili, sürümlü; `net.json` `protocol`). Godot'un üst düzey RPC'si kullanılmaz. `ITransport` arayüzünün (`game/scripts/net/`) iki uygulaması var:
 
 | Taşıma | Kullanım |
 |---|---|
@@ -135,8 +135,8 @@ Kendi ince mesaj katmanımız (`Kabarma.Net`, ikili, sürümlü). Godot'un üst 
 
 | Veri | Boyut ve sıklık |
 |---|---|
-| Oyuncu | 16 B, 20 Hz |
-| Yaratık (120 m içinde) | 10 B, 10 Hz; daha uzakta 2 Hz |
+| Oyuncu | 16 B, 20 Hz (konum 3 × 24 bit, metrede 256 adım: 3,9 mm) |
+| Yaratık (120 m içinde) | 13 B, 10 Hz; daha uzakta 2 Hz (10 B'de 16 bitlik konum 1 cm ölçütünü tutmuyordu; 24 bite çıktı, 18 Kasım 2026) |
 | Sürü | 14 B, 5 Hz |
 | Fizik nesnesi | 15 B, uyanıkken 20 Hz, uzakta 5 Hz (Oduncu biçimi) |
 | `Sim` durumu | Değişince fark; 10 sn'de bir özet doğrulaması |

@@ -338,6 +338,7 @@ Ocak'tan başlatılır. Seçilen KS'nin dalgaları hayalet olarak gelir; hasar g
 - **Aşı:** İki belirli kart 5. rütbeye gelince birleşik aşı kartı sunulur; iki yuvayı tek yuvaya indirir.
 - **Yenileme ve sürgün:** Gecede 2 yenileme, 2 sürgün.
 - **Ekip kartları** (Çiftlik sınıfı) bütün ekibi etkiler; aynı kart farklı oyunculardan yığılmaz, en yüksek rütbe geçerlidir.
+- **Ortak oyunda** her oyuncu kendi Öz'ünü toplar, kendi seviyesini atlar ve kendi üç kartından seçer; seçim sırasında zaman yavaşlamaz.
 - Şafakta bütün kartlar söner.
 - **Nişan:** Bir kartı geceyi 5. rütbede bitirmek 1 Nişan puanı verir. 3, 8, 15, 25, 40 puanda Nişan 1–5 olur: her seviye kartın etkisini %4 artırır; Nişan 5'te kart geceye 2. rütbeden başlar.
 - **Açılma:** 20 kart baştan açıktır. 40 kart iş emri zincirleri, üye tipleri, Atalar ve kart jetonlarıyla açılır ([ICERIK.md](ICERIK.md) §8.3). 12 aşı kartı, iki ebeveyni açık olunca kendiliğinden açılır.
