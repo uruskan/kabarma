@@ -36,6 +36,13 @@ public sealed class AtaFight
     public int TeamSize { get; set; } = 1;
     public float Time { get; set; }
     public bool Defeated { get; set; }
+    /// <summary>Kabarik Ata dovusu (M4): KS ve oyuncuya verilen hasar carpani. AtaId yine temel Ata'dir.</summary>
+    public bool Kabarik { get; set; }
+    public int Ks { get; set; }
+    public float DamageMult { get; set; } = 1f;
+    /// <summary>Yutulmus oyuncu icerde kalan sure (sn) ve Ata'nin suyun altinda kalan suresi (sn): M4.</summary>
+    public float SwallowT { get; set; }
+    public float SubmergedT { get; set; }
     /// <summary>Toplam alinan hasar, kaynaga gore (sinama ve rapor).</summary>
     public Dictionary<string, float> DamageBySource { get; set; } = new();
     /// <summary>
@@ -53,6 +60,11 @@ public sealed class AtaRecord
     /// <summary>Sunaga konmus adak (esya kimligi -> adet).</summary>
     public Dictionary<string, int> Offered { get; set; } = new();
     public int Defeats { get; set; }
+    /// <summary>Guc isteyen adak (Sismik Davul): su ana dek biriken beslenmis sure (sn).</summary>
+    public float PowerT { get; set; }
+    /// <summary>Kabarik Ata (kimlik kabarik_&lt;ata&gt;): en yuksek yenilen KS ve yenilen KS'ler.</summary>
+    public int BestKs { get; set; }
+    public List<int> KsBeaten { get; set; } = new();
 }
 
 /// <summary>Atalarin kalici ilerlemesi (GameState.Atalar): kayitlar, muhurler, ultiler, acilanlar, suren dovus.</summary>
@@ -61,6 +73,8 @@ public sealed class AtaProgress
     public List<AtaRecord> Records { get; set; } = new();
     public List<string> Seals { get; set; } = new();
     public List<string> Ultis { get; set; } = new();
+    /// <summary>GECICI (ata4): tanimi henuz abilities.json'da olmayan ultiler (AtaRewardDef.PendingUlti).</summary>
+    public List<string> UltisOwed { get; set; } = new();
     public List<string> Unlocks { get; set; } = new();
     /// <summary>Suren dovus; yoksa null.</summary>
     public AtaFight? Active { get; set; }
@@ -86,9 +100,20 @@ public sealed class AtaProgress
         foreach (var s in Seals)
         {
             var d = data.SealOf(s);
-            if (d != null && d.Effect == effect) m *= d.Mult;
+            if (d == null) continue;
+            if (d.Effect == effect) m *= d.Mult;
+            foreach (var e in d.Also) if (e.Effect == effect) m *= e.Mult;
         }
         return m;
+    }
+
+    /// <summary>Toplamsal muhur etkisi (Eksi Maya "boy_puani" +2); yoksa 0.</summary>
+    public float SealAdd(AtalarFile data, string effect)
+    {
+        float a = 0f;
+        foreach (var s in Seals)
+            foreach (var e in data.SealOf(s)?.Also ?? new()) if (e.Effect == effect) a += e.Add;
+        return a;
     }
 }
 

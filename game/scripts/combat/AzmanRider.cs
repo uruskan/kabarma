@@ -17,6 +17,8 @@ public partial class AzmanRider : Node3D, IAtaTarget
     float _cd, _hopT, _popT = -1;
     Vector3 _hopFrom, _hopTo, _popFrom, _knock;
     bool _dead;
+    /// <summary>Olunce cagrilir (Surubasi sayaci: cagirdigi kurtlar).</summary>
+    public System.Action OnGone;
 
     public AzmanRider(Director d, AzmanRidersDef def)
     {
@@ -67,6 +69,7 @@ public partial class AzmanRider : Node3D, IAtaTarget
     {
         if (_dead) return;
         _dead = true;
+        OnGone?.Invoke();
         _d.Savas.Remove(this);
         Fx.Burst(Center, Palette.Wood, 16, 4f, 0.14f, 0.6f);
         Sfx.Play("zipzip_aci", Center, 0f, 0.6f);

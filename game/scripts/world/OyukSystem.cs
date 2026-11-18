@@ -21,6 +21,14 @@ public partial class OyukSystem : Node3D
     public IOyukFight Fight { get; private set; }
     public MoleFight Mole => Fight as MoleFight;
     public BatKnotFight Bats => Fight as BatKnotFight;
+    public MudFight Mud => Fight as MudFight;
+    public ScorpionFight Scorpion => Fight as ScorpionFight;
+    public MirrorFight Mirror => Fight as MirrorFight;
+    MudVisual _mudVis;
+    ScorpionVisual _scorpVis;
+    MirrorVisual _mirrorVis;
+    readonly System.Collections.Generic.List<(OyukPoint pt, Node3D node)> _points = new();
+    int _lastCopies;
     MoleVisual _moleVis;
     BatVisual _batVis;
     OyukTarget _target;
@@ -99,6 +107,47 @@ public partial class OyukSystem : Node3D
         }
     }
 
+    // ---------- M4 (ata4): Buz Aynasi kopyalari ve gecici odalar ----------
+
+    readonly System.Collections.Generic.Dictionary<MirrorFight.Copy, OyukPoint> _copyPts = new();
+
+    /// <summary>Her kopya silahla vurulabilir hedef olur (Ates/Sok eritir); olen kopyanin hedefi kalkar.</summary>
+    void SyncCopyTargets(OyukRoom room, MirrorFight mir)
+    {
+        foreach (var c in mir.Copies)
+        {
+            if (_copyPts.ContainsKey(c)) continue;
+            var cc = c;
+            var pt = new OyukPoint(() => room.Center + new Vector3(cc.X, 1.1f, cc.Z), 0.9f, () => mir.Copies.Contains(cc), h =>
+            {
+                int i = mir.Copies.IndexOf(cc);
+                if (i >= 0 && mir.HitCopy(i, h.Amount, h.Type)) GD.Print("OYUK copy_melt");
+            });
+            _copyPts[c] = pt;
+            _d.Atalar?.Targets.Add(pt);
+        }
+        foreach (var kv in _copyPts.ToList())
+            if (!mir.Copies.Contains(kv.Key)) { _d.Atalar?.Targets.Remove(kv.Value); _copyPts.Remove(kv.Key); }
+    }
+
+    /// <summary>
+    /// GECICI (ata4): yeni biyomlarin (Isil Sazlik, Kizil Kanyon, Ayaz Yaylasi) Oyuk noktalari biyom akisi main'e girene dek
+    /// yoktur; sinama ve gelistirici bu biyomlarin koruyucusu icin sanal bir oda kurar (kesif noktasi olmadan; Enter ile girilir).
+    /// Gercek noktalar gelince OyukRules.Oyuks bu odalari kendisi kurar ve bu yontem yalniz sinamada kalir.
+    /// </summary>
+    public OyukRoom AddTemporaryRoom(string guardianId, int tier)
+    {
+        var g = Def.Get(guardianId);
+        var poi = new Poi { Id = $"oyuk_{g.Biome}_{tier}", Type = "oyuk", Biome = g.Biome, X = 240f, Z = 240f - tier * 12f };
+        var room = OyukRoom.Build(_d, poi, g, Rooms.Count);
+        AddChild(room);
+        room.GlobalPosition = room.Center;
+        Furnish(room);
+        Rooms.Add(room);
+        GD.Print($"OYUK temporary_room {poi.Id} guardian={g.Id} tier={room.Tier}");
+        return room;
+    }
+
     // ---------- Giris / cikis ----------
 
     public Poi MouthNear(Vector3 p)
@@ -116,7 +165,7 @@ public partial class OyukSystem : Node3D
         _d.World.SetIndoor(true, room.Guardian.Ambient > 0 ? room.Guardian.Ambient : Def.Interior.Ambient);
         Teleport(room.DoorPos + (room.Center - room.DoorPos).Normalized() * 1.6f);
         if (!P.IsCleared(room.Poi.Id)) StartFight(room);
-        _d.State.Explore.Discover(room.Poi.Id);
+        if (_d.State.Pois.Any(p => p.Id == room.Poi.Id)) _d.State.Explore.Discover(room.Poi.Id); // gecici oda (ata4 sinamasi) noktasiz
         GD.Print($"OYUK enter {room.Poi.Id} guardian={room.Guardian.Id} tier={room.Tier} cleared={P.IsCleared(room.Poi.Id)}");
     }
 
@@ -168,7 +217,7 @@ public partial class OyukSystem : Node3D
             room.AddChild(_moleVis);
             _target = new OyukTarget(() => _moleVis.GlobalPosition + Vector3.Up * 1.1f, g.Radius, m, () => m.Weak);
         }
-        else
+        else if (g.Kind == "yarasa")
         {
             var b = new BatKnotFight(g, room.Tier);
             Fight = b;
@@ -177,6 +226,45 @@ public partial class OyukSystem : Node3D
             _batVis.Init(b.Bats, new Vector3(0, g.HangHeight, 0));
             foreach (var l in room.Lamps) l.SetLit(false);
             _target = new OyukTarget(() => _batVis.MainPos, g.Radius, b, () => true);
+        }
+        else if (g.Kind == "camur")
+        {
+            var m = new MudFight(g, room.Tier);
+            Fight = m;
+            _mudVis = new MudVisual { Name = "CamurDevi" };
+            room.AddChild(_mudVis);
+            // Gol (dev kuruyunca buraya yurur)
+            room.AddChild(new MeshInstance3D { Name = "Gol", Mesh = new CylinderMesh { TopRadius = g.PoolRadius, BottomRadius = g.PoolRadius, Height = 0.06f }, MaterialOverride = new StandardMaterial3D { AlbedoColor = new Color("5A7A6A"), Roughness = 0.05f, Metallic = 0.2f }, Position = new Vector3(g.Pool[0], 0.04f, g.Pool[1]) });
+            _target = new OyukTarget(() => _mudVis.GlobalPosition + Vector3.Up * 1.9f, g.Radius, m, () => m.Dry);
+            _target.OnRaw = h => { if (h.Type == DamageType.Ates || (h.Procs & StatusProc.Burn) != 0) m.Heat(h.Amount); };
+        }
+        else if (g.Kind == "akrep")
+        {
+            var s = new ScorpionFight(g, room.Tier);
+            Fight = s;
+            _scorpVis = new ScorpionVisual { Name = "KuvarsAkrebi" };
+            room.AddChild(_scorpVis);
+            for (int i = 0; i < s.Stalactites.Count; i++)
+            {
+                int idx = i;
+                var node = new Node3D { Name = "Sarkit" + i };
+                node.AddChild(new MeshKit().Cylinder(0.5f, 0f, 2.6f, MeshKit.At(0, 0, 0), new Color("A89480"), 7).Instance());
+                room.AddChild(node);
+                node.Position = new Vector3(s.Stalactites[i].X, room.Height - 1.3f, s.Stalactites[i].Z);
+                var pt = new OyukPoint(() => node.GlobalPosition, 1.1f, () => idx < s.Stalactites.Count && !s.Stalactites[idx].Fallen && s.Stalactites[idx].Fall < 0 && !s.Dead, h => { if (s.DropStalactite(idx)) GD.Print($"OYUK stalactite_drop {idx}"); });
+                _points.Add((pt, node));
+            }
+            _target = new OyukTarget(() => _scorpVis.GlobalPosition + Vector3.Up * 1.1f, g.Radius, s, () => s.Cracked);
+        }
+        else
+        {
+            var mi = new MirrorFight(g, room.Tier, room.Radius);
+            Fight = mi;
+            _mirrorVis = new MirrorVisual { Name = "BuzAynasi" };
+            room.AddChild(_mirrorVis);
+            _mirrorVis.Position = new Vector3(mi.MirrorX, 0, mi.MirrorZ);
+            _target = new OyukTarget(() => _mirrorVis.GlobalPosition + Vector3.Up * 3f, g.Radius, mi, () => mi.Vulnerable);
+            _lastCopies = 0;
         }
         _target.OnHit = (got, crit) =>
         {
@@ -192,6 +280,13 @@ public partial class OyukSystem : Node3D
         _holes.Clear();
         _moleVis?.QueueFree(); _moleVis = null;
         _batVis?.QueueFree(); _batVis = null;
+        _mudVis?.QueueFree(); _mudVis = null;
+        _scorpVis?.QueueFree(); _scorpVis = null;
+        if (_mirrorVis != null) { _mirrorVis.Clear(); _mirrorVis.QueueFree(); _mirrorVis = null; }
+        foreach (var (pt, node) in _points) { _d.Atalar?.Targets.Remove(pt); node.QueueFree(); }
+        _points.Clear();
+        foreach (var cp in _copyPts.Values) _d.Atalar?.Targets.Remove(cp);
+        _copyPts.Clear();
         if (_target != null) _d.Atalar?.Targets.Remove(_target);
         _target = null;
         Fight = null;
@@ -230,6 +325,39 @@ public partial class OyukSystem : Node3D
             float dmg = b.Tick(dt, px, pz);
             if (dmg > 0) { _batVis.Swoop(); HurtPlayer(dmg, room.World(0, 0, room.Guardian.HangHeight)); }
             _batVis.Show(b, dt, _d.Player.GlobalPosition - room.GlobalPosition);
+        }
+        else if (Mud is { } mu)
+        {
+            // Mesale ya da yerlestirilmis isik dev'e yakinsa kurutur (Alev basligi gelene dek)
+            var gp = _mudVis.GlobalPosition;
+            bool torch = (_d.Capa.HeldItem == "mesale" && _d.Player.GlobalPosition.DistanceTo(gp) < 3.5f) || _d.Furniture.Any(f => IsInstanceValid(f) && f.Def.LightRange > 0 && room.Contains(f.GlobalPosition) && f.GlobalPosition.DistanceTo(gp) < 3.5f);
+            if (torch) mu.Heat(40f * dt);
+            float dmg = mu.Tick(dt, px, pz);
+            if (dmg > 0) { HurtPlayer(dmg, gp); Fx.Burst(gp + Vector3.Up, new Color("4A3A26"), 20, 5f, 0.2f, 0.6f); }
+            _mudVis.Position = new Vector3(mu.X, 0, mu.Z);
+            _mudVis.Show(mu, dt);
+        }
+        else if (Scorpion is { } sc)
+        {
+            float dmg = sc.Tick(dt, px, pz);
+            if (dmg > 0) { HurtPlayer(dmg, _scorpVis.GlobalPosition); Fx.Burst(_scorpVis.GlobalPosition + Vector3.Up * 2.5f, new Color("6A3A5A"), 16, 6f, 0.14f, 0.6f, true); Sfx.Play("firlatma", _scorpVis.GlobalPosition, 0f, 0.6f); }
+            _scorpVis.Position = new Vector3(sc.X, 0, sc.Z);
+            _scorpVis.Show(sc, dt, _d.Player.GlobalPosition);
+            for (int i = 0; i < _points.Count && i < sc.Stalactites.Count; i++)
+            {
+                var st = sc.Stalactites[i];
+                _points[i].node.Visible = !st.Fallen;
+                if (st.Fall >= 0) _points[i].node.Position += Vector3.Down * (room.Height / Mathf.Max(0.1f, room.Guardian.FallSeconds)) * dt * 0.8f;
+                else if (!st.Fallen) _points[i].node.Position = new Vector3(st.X, room.Height - 1.3f, st.Z);
+                if (_d.Atalar != null && !st.Fallen && st.Fall < 0 && !_d.Atalar.Targets.Contains(_points[i].pt)) _d.Atalar.Targets.Add(_points[i].pt);
+            }
+        }
+        else if (Mirror is { } mir)
+        {
+            float dmg = mir.Tick(dt, px, pz);
+            if (dmg > 0) HurtPlayer(dmg, room.World(mir.Copies.Count > 0 ? mir.Copies[0].X : 0, mir.Copies.Count > 0 ? mir.Copies[0].Z : 0, 1f));
+            _mirrorVis.Show(mir, room.Center, dt);
+            SyncCopyTargets(room, mir);
         }
         UpdateBar(room);
         if (Fight.Dead) Cleared(room);
@@ -279,7 +407,10 @@ public partial class OyukSystem : Node3D
             MoleFight.Phase.Stunned => "SERSEM",
             MoleFight.Phase.Trapped => m.Weak ? "SIKIŞTI · SERSEM" : "SIKIŞTI",
             _ => "üstte",
-        } : Bats is { } b ? (b.Scattered ? "DAĞILDI" : "toplu (ışık getir)") : "";
+        } : Bats is { } b ? (b.Scattered ? "DAĞILDI" : "toplu (ışık getir)")
+          : Mud is { } mu ? (mu.Dry ? "KURU · Darbe!" : "ıslak (ateş getir)")
+          : Scorpion is { } sc ? (sc.Cracked ? "ÇATLAK" : "zırhlı (Havan / sarkıt)")
+          : Mirror is { } mir ? (mir.Copies.Count > 0 ? $"{mir.Copies.Count} kopya (Ateş / Şok)" : "AYNA AÇIK") : "";
         _bar.Text = $"{room.Guardian.Name.ToUpperInvariant()}  {new string('▮', full)}{new string('▯', n - full)}  {f.Hp:0}/{f.MaxHp:0}  · {state}";
         _bar.Visible = true;
     }

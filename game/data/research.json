@@ -21,7 +21,7 @@
   "handFromStorage": false,
   "stationQueueMax": 8,
   "_not_watts": "Guc isteyen istasyonlar (ICERIK §11). guc akisinin tuketici arayuzu main'e girene kadar uygulanmaz; StationQueue.PowerOk null iken istasyon calisir.",
-  "watts": { "bicki": 20, "degirmen": 20, "kulucka": 40, "arac_atolyesi": 60 },
+  "watts": { "sismik_davul": 200, "bicki": 20, "degirmen": 20, "kulucka": 40, "arac_atolyesi": 60 },
   "_not_scan": "Tarayici (GDD §4, §12): bakilan turu ilk kez taramak Veri verir ve Ansiklopedi'ye yazar. kind: creature (dugum sinifi), plant (tutam/ekin/agac), mineral (kaya esyasi). range: oyuncudan en uzak (m); pick: nisan noktasina en uzak (m).",
   "scan": {
     "range": 14,

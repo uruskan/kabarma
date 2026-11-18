@@ -66,15 +66,178 @@
         "ulti": "dev_mod",
         "unlocks": ["recipe:capa_mk3", "card:dikenli_cit"]
       }
+    },
+    {
+      "id": "kurbaga_aga",
+      "name": "Kurbağa Ağa",
+      "nameEn": "Toad Baron",
+      "biome": "isil_sazlik",
+      "placeholder": "Model: koddan (sisman govde, genis agiz, dil, isiyan karin kesesi). Uretim istegi: Ata sinifi model (30.000 ucgen), iskelet, 6 klip (yurume, dil, yutma, dalis, sisme, olum).",
+      "arena": { "center": [180, -180], "radius": 20, "stone": [10, 12], "altarReach": 3.5, "pillars": [], "pillarRadius": 1, "leash": 34,
+        "temporary": "GECICI: biyom akisi Isil Sazlik'in Ata Tasi noktasini koyana dek yer tutucu merkez; AtaArena.Resolve gercek noktayi bulunca bu merkez kullanilmaz.",
+        "props": [
+          { "kind": "lake", "pos": [0, 0], "radius": 17 },
+          { "kind": "pad", "pos": [8, 0], "radius": 1.9 }, { "kind": "pad", "pos": [4, 7], "radius": 1.9 }, { "kind": "pad", "pos": [-4, 7], "radius": 1.9 },
+          { "kind": "pad", "pos": [-8, 0], "radius": 1.9 }, { "kind": "pad", "pos": [-4, -7], "radius": 1.9 }, { "kind": "pad", "pos": [4, -7], "radius": 1.9 }
+        ] },
+      "offeringName": "Dev Sinek Yemi",
+      "offering": [
+        { "item": "reed", "count": 5, "swollen": true },
+        { "item": "bal", "count": 10 },
+        { "item": "kukurt", "count": 5 }
+      ],
+      "hp": 2600,
+      "radius": 2.4,
+      "height": 3.4,
+      "scale": 1.0,
+      "mass": 60,
+      "add": "suluk",
+      "phases": [
+        { "name": "Dil", "hpUntil": 0.66, "moveSpeed": 2.2, "contactDamage": 9, "attacks": ["swallow"], "attackEvery": 5.5, "telegraph": 1.0, "attackDamage": 14, "knockback": 9, "swallowSeconds": 3, "swallowCritMult": 2.5 },
+        { "name": "Dalış", "hpUntil": 0.33, "moveSpeed": 2.0, "contactDamage": 9, "attacks": ["dive", "volley"], "attackEvery": 5.0, "telegraph": 1.1, "attackDamage": 22, "diveSeconds": 3.5, "lungeRadius": 5.5, "volleyCount": 3, "volleyDamage": 5, "volleySpeed": 9, "knockback": 7, "addCount": 2, "addEvery": 8, "addMax": 4 },
+        { "name": "Şişik", "hpUntil": 0, "moveSpeed": 1.7, "contactDamage": 10, "attacks": ["swell"], "attackEvery": 5.5, "telegraph": 1.0, "attackDamage": 18, "lungeRadius": 6.5, "knockback": 8, "weaponMult": 0.4, "weakPoints": 1, "weakPointHp": 240, "weakWindow": 5, "stunSeconds": 4, "stunMult": 1.5 }
+      ],
+      "reward": {
+        "items": [ { "item": "sazlik_cekirdegi", "count": 1 }, { "item": "aga_derisi", "count": 3 } ],
+        "seal": "islak_zemin",
+        "ulti": "",
+        "unlocks": ["slot:guc_2", "recipe:capa_mk4"]
+      }
+    },
+    {
+      "id": "ciyan_pasa",
+      "name": "Çıyan Paşa",
+      "nameEn": "Pasha Centipede",
+      "biome": "kizil_kanyon",
+      "placeholder": "Model: koddan (14 bogumlu govde, kiskac, tirnak). Uretim istegi: Ata sinifi model, bogum zinciri iskeleti (14 kemik), 6 klip (siyirma, hucum, kum firtinasi, tirmanma, ziplama, olum).",
+      "arena": { "center": [-180, -200], "radius": 24, "stone": [-12, 10], "altarReach": 3.5, "pillars": [], "pillarRadius": 1, "leash": 38,
+        "temporary": "GECICI: biyom akisi Kizil Kanyon'un Ata Tasi noktasini koyana dek yer tutucu merkez.",
+        "props": [
+          { "kind": "wall", "pos": [0, -22], "radius": 10 },
+          { "kind": "barrel", "pos": [-6, -19], "radius": 0.9 }, { "kind": "barrel", "pos": [-2, -19], "radius": 0.9 },
+          { "kind": "barrel", "pos": [2, -19], "radius": 0.9 }, { "kind": "barrel", "pos": [6, -19], "radius": 0.9 },
+          { "kind": "drum", "pos": [10, 10], "radius": 1.6 }
+        ] },
+      "offeringName": "Sismik Davul",
+      "offering": [
+        { "item": "celik", "count": 20 },
+        { "item": "kaucuk", "count": 10 },
+        { "item": "devre", "count": 4 }
+      ],
+      "powerWatts": 200,
+      "powerSeconds": 60,
+      "hp": 3400,
+      "radius": 2.8,
+      "height": 3.0,
+      "scale": 1.0,
+      "mass": 120,
+      "add": "kopan_bogum",
+      "phases": [
+        { "name": "Boğumlar", "hpUntil": 0.66, "moveSpeed": 3.2, "contactDamage": 9, "attacks": ["charge"], "attackEvery": 3.8, "telegraph": 1.0, "attackDamage": 16, "chargeSpeed": 14, "chargeSeconds": 1.5, "knockback": 9, "weakPoints": 14, "weakPointHp": 45, "stunSeconds": 0.8, "stunMult": 1.3 },
+        { "name": "Kopan Boğumlar", "hpUntil": 0.33, "moveSpeed": 3.2, "contactDamage": 9, "attacks": ["charge", "sandstorm"], "attackEvery": 3.4, "telegraph": 1.0, "attackDamage": 16, "chargeSpeed": 15, "chargeSeconds": 1.4, "knockback": 9, "lungeRadius": 9, "weakPoints": 14, "weakPointHp": 35, "stunSeconds": 0.6, "stunMult": 1.2, "breakSpawnsAdd": true },
+        { "name": "Mesa Duvarı", "hpUntil": 0, "moveSpeed": 3.0, "contactDamage": 10, "attacks": ["leap"], "attackEvery": 5.5, "telegraph": 1.2, "attackDamage": 24, "knockback": 10, "lungeRadius": 6, "weaponMult": 0.25, "shards": 4, "shardDamage": 300, "stunSeconds": 3, "stunMult": 2 }
+      ],
+      "reward": {
+        "items": [ { "item": "kanyon_cekirdegi", "count": 1 }, { "item": "pasa_kabugu", "count": 3 } ],
+        "seal": "sarsilmaz",
+        "ulti": "",
+        "pendingUlti": "yorunge_sulamasi",
+        "unlocks": ["recipe:capa_mk5"]
+      }
+    },
+    {
+      "id": "buz_tosunu",
+      "name": "Buz Tosunu",
+      "nameEn": "Frost Tusk",
+      "biome": "ayaz_yaylasi",
+      "placeholder": "Model: koddan (iri govde, uzun dis, sirtta buzul). Uretim istegi: Ata sinifi model, dort ayak iskeleti, 6 klip (yurume, hucum, buz sutunu, gole inis, ciglik, olum); buzul ayri parca.",
+      "arena": { "center": [230, 150], "radius": 24, "stone": [12, -10], "altarReach": 3.5, "pillars": [], "pillarRadius": 1, "leash": 38,
+        "temporary": "GECICI: biyom akisi Ayaz Yaylasi'nin Ata Tasi noktasini koyana dek yer tutucu merkez.",
+        "props": [
+          { "kind": "lake", "pos": [0, 0], "radius": 19 },
+          { "kind": "warm", "pos": [10, 6], "radius": 3.5 }, { "kind": "warm", "pos": [-10, 6], "radius": 3.5 }, { "kind": "warm", "pos": [0, -12], "radius": 3.5 }
+        ] },
+      "offeringName": "Tuz Yalağı",
+      "offering": [
+        { "item": "tuz", "count": 20 },
+        { "item": "prickly_pear", "count": 5, "swollen": true },
+        { "item": "titan_ingot", "count": 10 }
+      ],
+      "hp": 4200,
+      "radius": 2.6,
+      "height": 3.4,
+      "scale": 1.0,
+      "mass": 140,
+      "add": "kar_yavrusu",
+      "phases": [
+        { "name": "Diş", "hpUntil": 0.66, "moveSpeed": 2.8, "contactDamage": 10, "attacks": ["icepillar", "charge"], "attackEvery": 3.6, "telegraph": 1.0, "attackDamage": 18, "chargeSpeed": 14, "chargeSeconds": 1.3, "volleyCount": 1, "volleyDamage": 14, "volleySpeed": 14, "knockback": 9 },
+        { "name": "Donmuş Göl", "hpUntil": 0.33, "moveSpeed": 2.6, "contactDamage": 10, "attacks": ["icebreak", "icepillar"], "attackEvery": 4.0, "telegraph": 1.1, "attackDamage": 20, "lungeRadius": 7, "volleyCount": 1, "volleyDamage": 14, "volleySpeed": 14, "knockback": 8, "coldDps": 4, "warmRadius": 3.5, "addCount": 2, "addEvery": 9, "addMax": 3 },
+        { "name": "Buzul", "hpUntil": 0, "moveSpeed": 2.6, "contactDamage": 10, "attacks": ["charge", "icepillar"], "attackEvery": 3.2, "telegraph": 0.9, "attackDamage": 20, "chargeSpeed": 15, "chargeSeconds": 1.3, "volleyCount": 1, "volleyDamage": 14, "volleySpeed": 14, "knockback": 9, "coldDps": 2, "warmRadius": 3.5, "armor": 0.8, "burnPerSecond": 0.06, "weakPoints": 1, "weakPointHp": 260, "weakArmorBelow": 0.25, "stunSeconds": 4, "stunMult": 1.5 }
+      ],
+      "reward": {
+        "items": [ { "item": "ayaz_cekirdegi", "count": 1 }, { "item": "tosun_disi", "count": 3 } ],
+        "seal": "kalin_post",
+        "ulti": "",
+        "pendingUlti": "zaman_durdu",
+        "unlocks": ["recipe:capa_mk6"]
+      }
+    },
+    {
+      "id": "ana_maya",
+      "name": "Ana Maya",
+      "nameEn": "Mother Leaven",
+      "biome": "gobek",
+      "placeholder": "Model: koddan (yukselen hamur kutlesi, isiyan cekirdek, kabaran kollar). Uretim istegi: Ata sinifi model, kemiksiz (sekil anahtarli), klipler: yukselme, dogurma, kabarma, cekirdek acilmasi, olum.",
+      "arena": { "center": [0, -250], "radius": 28, "stone": [14, 14], "altarReach": 3.5, "pillars": [], "pillarRadius": 1, "leash": 42,
+        "temporary": "GECICI: biyom akisi Gobek kraterinin Ata Tasi noktasini koyana dek yer tutucu merkez.",
+        "props": [ { "kind": "lake", "pos": [0, 0], "radius": 24 } ] },
+      "offeringName": "Ekşi Maya Kazanı",
+      "offering": [
+        { "item": "ham_maya", "count": 30 },
+        { "item": "turnip", "count": 1, "swollen": true },
+        { "item": "mushroom", "count": 1, "swollen": true },
+        { "item": "reed", "count": 1, "swollen": true },
+        { "item": "prickly_pear", "count": 1, "swollen": true },
+        { "item": "frost_beet", "count": 1, "swollen": true },
+        { "item": "reaktor_cubugu", "count": 1 }
+      ],
+      "hp": 7000,
+      "radius": 3.2,
+      "height": 4.5,
+      "scale": 1.0,
+      "mass": 200,
+      "add": "maya_kopya",
+      "phases": [
+        { "name": "Kopyalar", "hpUntil": 0.66, "moveSpeed": 1.8, "contactDamage": 11, "attacks": ["volley", "charge"], "attackEvery": 3.6, "telegraph": 1.0, "attackDamage": 20, "chargeSpeed": 13, "chargeSeconds": 1.3, "volleyCount": 4, "volleyDamage": 6, "volleySpeed": 9, "knockback": 8, "addCount": 3, "addEvery": 9, "addMax": 5, "addId": "maya_kopya" },
+        { "name": "Kabaran Zemin", "hpUntil": 0.33, "moveSpeed": 1.8, "contactDamage": 11, "attacks": ["surge", "volley"], "attackEvery": 4.0, "telegraph": 1.2, "attackDamage": 16, "waveSpeed": 8, "waveRadius": 26, "waveWidth": 2.2, "volleyCount": 4, "volleyDamage": 6, "volleySpeed": 9, "knockback": 8, "addCount": 4, "addEvery": 6, "addMax": 8, "addId": "hamurcuk" },
+        { "name": "Dev Boyut", "hpUntil": 0, "moveSpeed": 2.2, "contactDamage": 12, "attacks": ["charge", "surge"], "attackEvery": 3.4, "telegraph": 0.9, "attackDamage": 22, "chargeSpeed": 15, "chargeSeconds": 1.3, "waveSpeed": 9, "waveRadius": 26, "waveWidth": 2.2, "knockback": 9, "weaponMult": 0.5, "weakPoints": 1, "weakPointHp": 500, "playerSwell": 1.8, "playerDamageMult": 1.6, "stunSeconds": 5, "stunMult": 2 }
+      ],
+      "reward": {
+        "items": [],
+        "seal": "eksi_maya",
+        "ulti": "",
+        "unlocks": ["recipe:kabartma_odasi", "mode:yeni_ay", "cosmetic:aurora_seti"]
+      }
     }
   ],
   "_adds": "Yardimci yaratiklar. Yer tutucu: Koca Pofuduk'un kucuk Pofuduklari olcekli pofuduk modeli; Dede'nin dallarindan dusen Findikci ve Hu, yaratik2 akisi gercegini yazana dek koddan 'bekci'.",
   "adds": [
     { "id": "mini_pofuduk", "name": "Yün Yumağı", "hp": 30, "speed": 3.2, "damage": 4, "scale": 0.55, "look": "pofuduk", "placeholder": "olcekli pofuduk.glb" },
-    { "id": "koru_bekcisi", "name": "Koru Bekçisi", "hp": 26, "speed": 3.6, "damage": 4, "scale": 1.0, "look": "kod", "placeholder": "Findikci ve Hu yerine koddan model (yaratik2 akisi)" }
+    { "id": "koru_bekcisi", "name": "Koru Bekçisi", "hp": 26, "speed": 3.6, "damage": 4, "scale": 1.0, "look": "kod", "placeholder": "Findikci ve Hu yerine koddan model (yaratik2 akisi)" },
+    { "id": "suluk", "name": "Sülük Sürüsü", "hp": 24, "speed": 4.0, "damage": 4, "scale": 0.8, "look": "kod", "color": "5B3A4A", "placeholder": "GECICI: suluk_surusu yaratigi yaratik4 akisinda gelince look o tura doner" },
+    { "id": "kopan_bogum", "name": "Kopan Boğum", "hp": 34, "speed": 3.8, "damage": 5, "scale": 0.8, "look": "kod", "color": "A0643C", "placeholder": "Ciyan Pasa'nin kopan bogumu; kod govde" },
+    { "id": "kar_yavrusu", "name": "Kar Yavrusu", "hp": 40, "speed": 3.4, "damage": 5, "scale": 0.9, "look": "kod", "color": "D7E7F2", "placeholder": "GECICI: Tosun/Ayaz Kurdu yaratik4 akisinda gelince o tur" },
+    { "id": "maya_kopya", "name": "Maya Kopyası", "hp": 60, "speed": 3.0, "damage": 6, "scale": 1.3, "look": "kod", "color": "A5E8D5", "placeholder": "Onceki Atalarin hamurdan kopyasi: yer tutucu kod govde" },
+    { "id": "hamurcuk", "name": "Hamurcuk", "hp": 25, "speed": 4.2, "damage": 4, "scale": 0.7, "look": "kod", "color": "F0E2C4", "placeholder": "GECICI: hamurcuk yaratigi yaratik4 akisinda gelince o tur" }
   ],
   "seals": [
     { "id": "bereketli_toprak", "name": "Bereketli Toprak", "effect": "bereket_tuketimi", "mult": 0.75 },
-    { "id": "derin_kok", "name": "Derin Kök", "effect": "yapi_cani", "mult": 1.2 }
-  ]
+    { "id": "derin_kok", "name": "Derin Kök", "effect": "yapi_cani", "mult": 1.2 },
+    { "id": "islak_zemin", "name": "Islak Zemin", "effect": "su_yapilari", "mult": 1.3 },
+    { "id": "sarsilmaz", "name": "Sarsılmaz", "effect": "kule_menzili", "mult": 1.2 },
+    { "id": "kalin_post", "name": "Kalın Post", "effect": "tehlike_direnci", "mult": 1.25, "also": [ { "effect": "hayvan_cani", "mult": 1.25 } ] },
+    { "id": "eksi_maya", "name": "Ekşi Maya", "effect": "boy", "mult": 1, "also": [ { "effect": "boy_puani", "add": 2 } ] }
+  ],
+  "_kabarik": "Kabarik Ata (GDD §18): yenilen Ata ayni adak ve KS × 50 Maya ile yeniden gelir; can 1 + hpPerKs × KS, oyuncuya hasar 1 + damagePerKs × KS; odul yalniz ust basamak cip malzemesi (KS/5 tane). Kimlik kabarik_<ata>. 'maya' esyasi Kabarma odulu (ICERIK §2 #26); 'kabarik_oz' = Kabarik Ata Ozu (docs/kimlikler-m4.md'ye eklendi).",
+  "kabarik": { "mayaItem": "maya", "mayaPerKs": 50, "ks": [5, 10, 15, 20, 30], "hpPerKs": 0.1, "damagePerKs": 0.02, "rewardItem": "kabarik_oz", "rewardPer5Ks": 1 }
 }
