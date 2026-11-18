@@ -2,7 +2,7 @@ namespace Kabarma.Sim;
 
 // Kabarma gecesi: cards.json (GDD 15) ve kabarma.json (GDD 14-15).
 
-public sealed class CardDef
+public sealed partial class CardDef
 {
     public string Id { get; set; } = "";
     public string Name { get; set; } = "";
@@ -12,7 +12,7 @@ public sealed class CardDef
     public float PerRank { get; set; }
 }
 
-public sealed class CardsFile
+public sealed partial class CardsFile
 {
     public Dictionary<string, int> RarityWeights { get; set; } = new();
     public int MaxRank { get; set; }

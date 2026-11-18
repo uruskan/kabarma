@@ -1,0 +1,58 @@
+{
+  "_not": "Cipler: ICERIK 6.3 ve 6.3.1, GDD 4. Etki = nadirlik carpani x scale, stat kimligine eklenir (0,08 = +%8). Efsane ayrica legendary ek etkisini verir. host: bos = grup kuralina gore (general her baslik, weapon silah basliklari); work cipleri yalniz host basligina. Ikonlar yer tutucu (cip tonunda kare, M3 kredisiz). craft: tur secilir, nadirlik bedele gore (Maya Kesesi ICERIK 36; Efsane ayrica Holding Parcasi ICERIK 27). sources: dusme kaynaklari, chance olay basina, weights nadirlik agirliklari (Efsane dusmez), ksEpicPerKs/ksRarePerKs Kabarma odulunde KS basina agirlik eki; yeni kaynak = bir satir.",
+  "rarities": [
+    { "id": "common", "name": "Sıradan", "bonus": 0.08, "color": "9AA0A6" },
+    { "id": "rare", "name": "Nadir", "bonus": 0.15, "color": "4DA3FF" },
+    { "id": "epic", "name": "Destansı", "bonus": 0.25, "color": "B56BFF" },
+    { "id": "legendary", "name": "Efsane", "bonus": 0.40, "color": "FFB02E" }
+  ],
+  "slotsByMk": [1, 1, 2, 2, 3, 4],
+  "storageMax": 200,
+  "workHeads": ["kazma", "bicme", "cekim", "toprak", "sulama", "insa_plani"],
+  "weaponHeads": ["tirpan_isini", "civi_tabancasi", "sapan", "sacma_borusu", "zipkin", "alev_puskurtecu", "havan", "ark", "tohum_makinalisi", "ayaz_lazeri", "yercekimi", "maya_topu"],
+  "chips": [
+    { "id": "hiz", "name": "Hız", "group": "general", "stat": "fire_rate", "scale": 1.0, "text": "Atış ve iş hızı", "legendary": { "stat": "reload_speed", "value": 0.2, "text": "Dolum +%20" } },
+    { "id": "menzil", "name": "Menzil", "group": "general", "stat": "range", "scale": 1.0, "text": "Menzil", "legendary": { "stat": "projectile_speed", "value": 0.2, "text": "Mermi hızı +%20" } },
+    { "id": "guc", "name": "Güç", "group": "general", "stat": "damage", "scale": 1.0, "text": "Hasar ve iş gücü", "legendary": { "stat": "crit_damage", "value": 0.25, "text": "Kritik hasarı +%25" } },
+    { "id": "genis_agiz", "name": "Geniş Ağız", "group": "general", "stat": "area", "scale": 1.0, "text": "Etki alanı ve genişlik", "legendary": { "stat": "sweep_angle", "value": 0.2, "text": "Süpürme açısı +%20" } },
+    { "id": "miknatis", "name": "Mıknatıs", "group": "general", "stat": "pickup_radius", "scale": 2.0, "text": "Toplama yarıçapı", "legendary": { "stat": "maya_pull", "value": 0.5, "text": "Maya çekimi +%50" } },
+    { "id": "verim", "name": "Verim", "group": "general", "stat": "head_yield", "scale": 1.0, "text": "Başlığın işinden verim", "legendary": { "stat": "double_yield_chance", "value": 0.1, "text": "%10 çift verim" } },
+    { "id": "hafif", "name": "Hafif", "group": "general", "stat": "carry_capacity", "scale": 1.5, "text": "Taşıma gücü (Çekim)", "legendary": { "stat": "stamina_regen", "value": 0.15, "text": "Dayanıklılık toparlanması +%15" } },
+    { "id": "tasarruf", "name": "Tasarruf", "group": "general", "stat": "ammo_saving", "scale": 1.0, "text": "Cephane ve şarj tasarrufu", "legendary": { "stat": "free_shot_chance", "value": 0.1, "text": "%10 bedava atış" } },
+
+    { "id": "cift_namlu", "name": "Çift Namlu", "group": "weapon", "stat": "extra_projectile_chance", "scale": 1.5, "text": "Ek mermi şansı", "legendary": { "stat": "extra_projectile_chance", "value": 0.1, "text": "Ek mermi şansı +%10" } },
+    { "id": "kritik", "name": "Kritik", "group": "weapon", "stat": "crit_chance", "scale": 0.6, "text": "Kritik şansı", "legendary": { "stat": "crit_damage", "value": 0.3, "text": "Kritik hasarı +%30" } },
+    { "id": "delici", "name": "Delici", "group": "weapon", "stat": "pierce_chance", "scale": 1.5, "text": "Delip geçme şansı", "legendary": { "stat": "pierce_damage_keep", "value": 0.3, "text": "Delince hasar korunur +%30" } },
+    { "id": "seken", "name": "Seken", "group": "weapon", "stat": "bounce_chance", "scale": 1.5, "text": "Sekme şansı", "legendary": { "stat": "bounce_count", "value": 1, "text": "+1 sekme" } },
+    { "id": "yakici", "name": "Yakıcı", "group": "weapon", "stat": "burn_chance", "scale": 1.5, "text": "Yanık bırakma şansı", "legendary": { "stat": "burn_spread", "value": 0.3, "text": "Yanık yayılır" } },
+    { "id": "ayaz", "name": "Ayaz", "group": "weapon", "stat": "freeze_chance", "scale": 1.5, "text": "Dondurma şansı", "legendary": { "stat": "freeze_duration", "value": 0.3, "text": "Donma süresi +%30" } },
+    { "id": "akim", "name": "Akım", "group": "weapon", "stat": "shock_chance", "scale": 1.5, "text": "Şok şansı", "legendary": { "stat": "chain_count", "value": 1, "text": "Şok +1 hedefe sıçrar" } },
+    { "id": "zehirli", "name": "Zehirli", "group": "weapon", "stat": "poison_chance", "scale": 1.5, "text": "Zehirleme şansı", "legendary": { "stat": "poison_stack", "value": 0.3, "text": "Zehir birikir +%30" } },
+    { "id": "vampir", "name": "Vampir", "group": "weapon", "stat": "lifesteal", "scale": 0.25, "text": "Verilen hasardan can", "legendary": { "stat": "heal_on_kill", "value": 0.05, "text": "Öldürünce %5 can" } },
+    { "id": "otomatik_nisan", "name": "Otomatik Nişan", "group": "weapon", "stat": "aim_assist", "scale": 1.5, "text": "Nişan yardımı", "legendary": { "stat": "aim_assist_range", "value": 0.3, "text": "Nişan menzili +%30" } },
+    { "id": "itici", "name": "İtici", "group": "weapon", "stat": "knockback", "scale": 2.0, "text": "Geri itme", "legendary": { "stat": "stagger_chance", "value": 0.15, "text": "%15 sersemletme" } },
+    { "id": "patlayici_uc", "name": "Patlayıcı Uç", "group": "weapon", "stat": "explosion_radius", "scale": 2.0, "text": "İsabette patlama alanı", "legendary": { "stat": "explosion_radius", "value": 0.3, "text": "Patlama alanı +%30" } },
+
+    { "id": "damar_goren", "name": "Damar Gören", "group": "work", "host": "kazma", "stat": "ore_sense", "scale": 2.0, "text": "Kazma: yakın damar pusulada", "legendary": { "stat": "ore_sense_range", "value": 0.5, "text": "Damar menzili +%50" } },
+    { "id": "nazik_el", "name": "Nazik El", "group": "work", "host": "bicme", "stat": "seed_chance", "scale": 1.5, "text": "Biçme: tohum şansı", "legendary": { "stat": "harvest_quality", "value": 0.1, "text": "Hasat kalitesi +%10" } },
+    { "id": "uzun_hortum", "name": "Uzun Hortum", "group": "work", "host": "sulama", "stat": "hose_range", "scale": 2.0, "text": "Sulama: menzil", "legendary": { "stat": "water_saving", "value": 0.25, "text": "Su tasarrufu +%25" } },
+    { "id": "usta_eli", "name": "Usta Eli", "group": "work", "host": "insa_plani", "stat": "build_speed", "scale": 2.0, "text": "İnşa: uzaktan ve hızlı kurma", "legendary": { "stat": "build_range", "value": 0.5, "text": "Kurma menzili +%50" } }
+  ],
+  "craft": {    "common": { "maya_kesesi": 3 },
+    "rare": { "maya_kesesi": 10 },
+    "epic": { "maya_kesesi": 30 },
+    "legendary": { "maya_kesesi": 60, "holding_parcasi": 5 }
+  },
+  "sources": {
+    "kabarma_reward": { "chance": 0.35, "weights": { "common": 70, "rare": 28, "epic": 2 }, "ksEpicPerKs": 0.5, "ksRarePerKs": 1.5 },
+    "ata:koca_pofuduk": { "chance": 1.0, "weights": { "common": 60, "rare": 40 } },
+    "ata:boynuzlu_dede": { "chance": 1.0, "weights": { "rare": 70, "epic": 30 } },
+    "ata_kabarik": { "chance": 1.0, "weights": { "rare": 40, "epic": 60 } },
+    "oyuk:kostebek_bey": { "chance": 1.0, "weights": { "rare": 100 } },
+    "oyuk:yarasa_yumagi": { "chance": 1.0, "weights": { "rare": 100 } },
+    "holding:kamp": { "chance": 0.5, "weights": { "rare": 70, "epic": 30 } },
+    "holding:genel_merkez": { "chance": 1.0, "weights": { "epic": 100 } },
+    "wheel:common": { "chance": 1.0, "weights": { "common": 70, "rare": 30 } },
+    "wheel:epic": { "chance": 1.0, "weights": { "epic": 100 } }
+  }
+}

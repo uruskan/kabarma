@@ -29,8 +29,8 @@ public sealed partial class KabarmaNight
     public event Action<KabarmaEnd>? Ended;
 
     /// <summary>Plandan gece: KabarmaNight(data, Waves.Compose(data, spec), seed).</summary>
-    public KabarmaNight(GameData data, WavePlan plan, ulong seed, string? memberCard = null)
-        : this(data, Waves.ToNightDef(plan, data.Kabarma.FirstNight), seed, memberCard)
+    public KabarmaNight(GameData data, WavePlan plan, ulong seed, string? memberCard = null, CardBook? book = null)
+        : this(data, Waves.ToNightDef(plan, data.Kabarma.FirstNight), seed, memberCard, book)
     {
         Plan = plan;
         if (plan.Spec.Kind != KabarmaKind.Small)

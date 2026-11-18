@@ -125,6 +125,22 @@ public class SaveRoundTripTests
     }
 
     [Fact]
+    public void World_preset_is_saved_and_listed_in_manifest()
+    {
+        var d = TestData.Load();
+        Assert.Equal(3, d.Save.WorldPresets.Count); // GDD 25: Sakin Ay, Kooperatif Standardi, Sert Ay
+        Assert.Contains(d.Save.WorldPresets, p => p.Id == d.Save.DefaultPreset);
+        var a = new GameState(d);
+        Assert.Equal(d.Save.DefaultPreset, a.Settings.Preset);
+        a.Settings.Preset = "sert";
+        var g = Reg(a).Capture(SaveScope.World, a.Manifest());
+        Assert.Equal("sert", g.Manifest.Preset);
+        var b = new GameState(TestData.Load());
+        Reg(b).Restore(g);
+        Assert.Equal("sert", b.Settings.Preset);
+    }
+
+    [Fact]
     public void Cargo_adopt_keeps_one_crate_object()
     {
         var a = Played();

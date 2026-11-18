@@ -58,7 +58,7 @@ public sealed partial class GameState
     public KabarmaNight StartKabarma(KabarmaSpec spec, string? memberCard = null)
     {
         var plan = Waves.Compose(Data, spec);
-        Night = new KabarmaNight(Data, plan, spec.Seed, memberCard);
+        Night = new KabarmaNight(Data, plan, spec.Seed, memberCard, CardBook); // CardBook: kartlar (Nisan, acilmalar)
         OnNightStarted(Night);
         var n = Night;
         n.Ended += end =>
@@ -71,6 +71,7 @@ public sealed partial class GameState
                 // GDD 14.4 ilk gecis: bir ust KS acilir, 1 kart jetonu ve kredi primi.
                 Kabarma.HighestCleared = spec.Ks;
                 Kabarma.CardTokens += Data.Kabarma.Full.FirstClearCardTokens;
+                CardBook.AddJeton(Data.Kabarma.Full.FirstClearCardTokens); // kartlar: kart jetonu
                 FirstClearBonus(Data.Kabarma.Full.FirstClearCredits * spec.Ks);
             }
         };

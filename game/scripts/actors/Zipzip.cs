@@ -198,7 +198,7 @@ public partial class Zipzip : Node3D
         var player = _dir.Player;
         var pos = GlobalPosition;
         // Hedef secimi: kendi ailesinin ekini -> saldirani (GDD 14.3). Oyuncu yakinsa ona dalar.
-        bool chasePlayer = !player.Down && player.GlobalPosition.DistanceTo(pos) < 3.5f + Radius;
+        bool chasePlayer = !player.Down && (player.GlobalPosition.DistanceTo(pos) < 3.5f + Radius || (Planned && _dir.Night?.Hand?.Bait == true)); // Yem karti (kartlar): dusman oyuncuya
         if (!chasePlayer && (_target == null || !_target.Plot.Planted))
         {
             if (_target != null) _target.Claimed = false;

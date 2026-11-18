@@ -97,6 +97,8 @@ M3 (URETIM §6): tam Kabarma ve savaş, dünya hâlâ Altın Çayır + Sis Korus
 
 **Sözleşmeler (erken main'e alınır):** `savas` ortak hasar, sağlık ve durum arayüzünü (`Combat*`), `kabarma3` dalga ve Kabaran arayüzünü (`Wave*`), `yolbulma` akış alanı sorgusunu (`FlowField*`) ilk iş olarak yazar ve main'e alır, CLAUDE.md'ye iki satırlık bağlanma notu ekler. O birleşene kadar ötekiler yerel, işaretli bir geçici arayüz kullanır.
 
+**Akış alanına bağlanma (yolbulma, birleşti; TEKNIK §8.1):** Yön için `_d.Flow?.Steer(pos, "crop" | "crop:<aile>" | "kazan" | kendi anahtarın)` (null: pencere dışı ya da yol yok, doğrudan yürü); kırılacak engel için `_d.Flow.Sample(key, pos)` → `Blocked`, `Blocker` (sahip kimliği; `FlowFieldSystem.OwnerNode(id)` yapı parçasını verir), `BlockerKind`; hasarı veren sensin. Kendi hedef kümen için `_d.Flow.SetGoals(key, noktalar)`; kendi engelin (tuzak, kule, kapı; tür `flowfield.json` `breakCost` anahtarı, açık kapı `doorOpen`) için `_d.Flow.StampBox(kimlik, tür, merkez, yarıX, yarıZ, yön)` / `Unstamp(kimlik)`; Holding için `_d.Flow.FindPath(a, b)` (kırma maliyetli A*). Alan yalnız host'ta işler, türetilmiş veridir (kayda ve ağa bölüm gerekmez).
+
 | Akış (oturum) | Model | Sahip olduğu dosyalar ve işler |
 |---|---|---|
 | savas (boss) | Opus medium | GDD §16.1 hasar ve durumlar, §16.3 gündüz savaşı: `src/Kabarma.Sim/Combat*.cs`, `Status*.cs`, `data/combat.json`, `game/scripts/combat/`; Azman Homur ve Azman Bozuk (ICERIK §4.2): `Azman*.cs`, `data/azman.json` |
