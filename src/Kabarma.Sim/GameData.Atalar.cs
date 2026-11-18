@@ -66,6 +66,8 @@ public sealed class AtaPhaseDef
     /// <summary>Zayif nokta (kovan) sayisi ve cani; kirilan kovan StunSeconds sersemletir.</summary>
     public int WeakPoints { get; set; }
     public float WeakPointHp { get; set; }
+    /// <summary>Zayif noktalar her saldiridan sonra bu kadar sn acik (isir); 0 = asama boyunca acik.</summary>
+    public float WeakWindow { get; set; }
     /// <summary>Sutuna toslayinca ya da kovan kirilinca sersemleme suresi ve o surede alinan hasar carpani.</summary>
     public float StunSeconds { get; set; }
     public float StunMult { get; set; } = 1f;

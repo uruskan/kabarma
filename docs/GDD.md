@@ -401,7 +401,7 @@ Sayılar `data/atalar.json`'da; kural `src/Kabarma.Sim/Ata*.cs`, Godot katmanı 
   - **Aşama 3:** Çıplak ve hızlıdır. Hücumda arenanın taş sütununa toslarsa sersemler; sersemken aldığı hasar artar.
 - **Boynuzlu Dede:**
   - **Aşama 1:** Dallardan koruyucular düşer; sis koyulaşır.
-  - **Aşama 2:** Yerden kök dalgası halkaları yayılır; zıplayan oyuncuya değmez. Boynuzdaki iki ışıyan kovan zayıf noktadır: kırılan kovan Dede'yi sersemletir.
+  - **Aşama 2:** Yerden kök dalgası halkaları yayılır; zıplayan oyuncuya değmez. Her dalgadan sonra boynuzdaki iki kovan birkaç saniye ışır. Işıyan kovan zayıf noktadır: kırılan kovan Dede'yi sersemletir.
   - **Aşama 3:** Boynuz kırılır ve parçaları yere düşer. Parçalar Çekim'le alınıp Dede'ye fırlatılınca büyük hasar verir. Silah hasarı azalır.
 - **Kural:** Özel mekanikler dövüşü hızlandırır, kapı değildir. Her aşama Tırpan Işını ya da Çivi Tabancası ile tek başına bitirilebilir.
 - **Ödül:** Çekirdek ve ganimet çantaya girer. Mühür, ulti ve açılan içerik Sim'deki Ata ilerlemesine yazılır. Mühür etkisinin oranını tarım ve yapı kuralları buradan okur.

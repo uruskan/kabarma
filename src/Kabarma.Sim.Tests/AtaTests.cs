@@ -186,12 +186,24 @@ public class AtaTests
         Assert.Equal(1, f.Phase);
         Assert.Equal(2, f.WeakPoints.Count);
         var ph = Dede.Phases[1];
+        // Kovanlar yalniz kok dalgasindan sonra isir (weakWindow): kapaliyken vurulmaz.
+        Assert.False(AtaRules.WeakOpen(f, Dede));
+        Assert.False(AtaRules.HitWeakPoint(f, D, Dede, 0, ph.WeakPointHp * 2f, cmds));
+        Assert.Equal(ph.WeakPointHp, f.WeakPoints[0], 3);
+        var seen = new List<AtaCommand>();
+        for (int i = 0; i < 400 && !seen.Any(c => c.Cue == AtaCue.Attack); i++) seen.AddRange(AtaRules.Tick(f, Dede, 0.05f));
+        Assert.Contains(seen, c => c.Cue == AtaCue.Attack && c.Attack == "rootwave");
+        Assert.True(AtaRules.WeakOpen(f, Dede));
+        Assert.Equal(ph.WeakWindow, f.WeakOpenT, 1);
         Assert.False(AtaRules.HitWeakPoint(f, D, Dede, 0, ph.WeakPointHp * 0.5f, cmds));
         Assert.Equal(0f, f.StunT);
         Assert.True(AtaRules.HitWeakPoint(f, D, Dede, 0, ph.WeakPointHp, cmds));
         Assert.Equal(ph.StunSeconds, f.StunT, 3);
         Assert.Contains(cmds, c => c.Cue == AtaCue.WeakPointBroken && c.Count == 0);
         Assert.False(AtaRules.HitWeakPoint(f, D, Dede, 0, 10, cmds)); // kirik kovan
+        AtaRules.Tick(f, Dede, ph.WeakWindow + 0.1f); // pencere sersemken de kapanir
+        Assert.False(AtaRules.WeakOpen(f, Dede));
+        Assert.False(AtaRules.HitWeakPoint(f, D, Dede, 1, 10, cmds));
         // Asama 3: silah yari, parca tam
         f.StunT = 0;
         AtaRules.Damage(f, D, Dede, f.Hp - f.MaxHp * 0.3f, AtaHitKind.Thrown, cmds);

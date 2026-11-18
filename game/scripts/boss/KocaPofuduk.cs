@@ -49,7 +49,8 @@ public partial class KocaPofuduk : AtaActor
 
         _decor = new Node3D { Name = "Sus" };
         _frame.AddChild(_decor);
-        float top = _box.End.Y, front = _box.End.Z, w = _box.Size.X;
+        // Model kutusu gorunen yunden buyuk (goruntude govdenin tepesi kutunun ~%70'i): susler gorunen govdeye gore.
+        float top = _box.Position.Y + _box.Size.Y * 0.68f, front = _box.GetCenter().Z + _box.Size.Z * 0.36f, w = _box.Size.X;
         var kitD = new MeshKit();
         // Yun tac: tepede bes buyuk tutam ve altin bir halka
         for (int i = 0; i < 5; i++)
@@ -59,23 +60,23 @@ public partial class KocaPofuduk : AtaActor
         }
         kitD.Cylinder(w * 0.2f, w * 0.24f, w * 0.06f, MeshKit.At(0, top - w * 0.01f, _box.GetCenter().Z * 0.3f), Palette.Warning, 14);
         // Tasma ve can cingiragi (bakir)
-        var neck = new Vector3(0, _box.Position.Y + _box.Size.Y * 0.55f, front - _box.Size.Z * 0.18f);
-        kitD.Add(new TorusMesh { InnerRadius = w * 0.3f, OuterRadius = w * 0.36f, Rings = 18, RingSegments = 6 }, MeshKit.At(neck, new Vector3(1.2f, 0, 0)), Palette.HoldingRed.Darkened(0.2f));
+        var neck = new Vector3(0, _box.Position.Y + _box.Size.Y * 0.36f, front);
+        kitD.Add(new TorusMesh { InnerRadius = w * 0.34f, OuterRadius = w * 0.38f, Rings = 24, RingSegments = 6 }, MeshKit.At(new Vector3(0, neck.Y + w * 0.12f, _box.GetCenter().Z), new Vector3(0.12f, 0, 0)), Palette.HoldingRed.Darkened(0.2f)); // yatay tasma
         kitD.Sphere(w * 0.09f, MeshKit.At(neck + new Vector3(0, -w * 0.28f, w * 0.12f)), Palette.Wood.Lerp(Palette.Warning, 0.5f), 10, 6);
         kitD.Cylinder(w * 0.03f, w * 0.05f, w * 0.06f, MeshKit.At(neck + new Vector3(0, -w * 0.2f, w * 0.1f)), Palette.Wood.Lerp(Palette.Warning, 0.5f), 8);
         _decor.AddChild(kitD.Instance());
         // Isiyan gozler (Ata isareti)
         var eyeMat = new StandardMaterial3D { ShadingMode = BaseMaterial3D.ShadingModeEnum.Unshaded, AlbedoColor = Palette.MayaTeal, EmissionEnabled = true, Emission = Palette.MayaTeal, EmissionEnergyMultiplier = 3f };
         foreach (float sx in new[] { -1f, 1f })
-            _decor.AddChild(new MeshInstance3D { Mesh = new SphereMesh { Radius = w * 0.045f, Height = w * 0.09f }, MaterialOverride = eyeMat, Position = new Vector3(sx * w * 0.16f, _box.Position.Y + _box.Size.Y * 0.72f, front - w * 0.02f), CastShadow = GeometryInstance3D.ShadowCastingSetting.Off });
+            _decor.AddChild(new MeshInstance3D { Mesh = new SphereMesh { Radius = w * 0.045f, Height = w * 0.09f }, MaterialOverride = eyeMat, Position = new Vector3(sx * w * 0.16f, _box.Position.Y + _box.Size.Y * 0.52f, front), CastShadow = GeometryInstance3D.ShadowCastingSetting.Off });
 
         // Yun zirhi (asama 2): govdeyi saran tutamlar; zirh dustukce azalir.
         var woolMat = new StandardMaterial3D { AlbedoColor = Palette.OffWhite.Lerp(Palette.Fog, 0.3f), Roughness = 1f };
         var rng = new RandomNumberGenerator { Seed = 7 };
         for (int i = 0; i < 22; i++)
         {
-            float a = rng.Randf() * Mathf.Tau, h = rng.RandfRange(0.3f, 0.85f);
-            var at = new Vector3(Mathf.Cos(a) * _box.Size.X * 0.5f, _box.Position.Y + _box.Size.Y * h, _box.GetCenter().Z + Mathf.Sin(a) * _box.Size.Z * 0.48f);
+            float a = rng.Randf() * Mathf.Tau, h = rng.RandfRange(0.15f, 0.62f);
+            var at = new Vector3(Mathf.Cos(a) * _box.Size.X * 0.4f, _box.Position.Y + _box.Size.Y * h, _box.GetCenter().Z + Mathf.Sin(a) * _box.Size.Z * 0.38f);
             var m = new MeshInstance3D { Mesh = new SphereMesh { Radius = w * rng.RandfRange(0.14f, 0.22f), Height = w * 0.32f, RadialSegments = 10, Rings = 6 }, MaterialOverride = woolMat, Position = at, Visible = false };
             _frame.AddChild(m);
             _wool.Add(m);

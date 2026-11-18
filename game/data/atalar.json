@@ -55,7 +55,7 @@
       "add": "koru_bekcisi",
       "phases": [
         { "name": "Koru Taşıyan", "hpUntil": 0.66, "moveSpeed": 1.6, "contactDamage": 9, "attacks": ["volley"], "attackEvery": 4.0, "telegraph": 0.9, "volleyCount": 3, "volleyDamage": 5, "volleySpeed": 8, "knockback": 4, "addCount": 2, "addEvery": 8, "addMax": 4, "fog": 3 },
-        { "name": "Kök Dalgası", "hpUntil": 0.33, "moveSpeed": 1.4, "contactDamage": 9, "attacks": ["rootwave"], "attackEvery": 4.5, "telegraph": 1.0, "attackDamage": 10, "waveSpeed": 7, "waveRadius": 16, "waveWidth": 1.2, "knockback": 5, "weakPoints": 2, "weakPointHp": 70, "stunSeconds": 5, "stunMult": 2, "fog": 1.5 },
+        { "name": "Kök Dalgası", "hpUntil": 0.33, "moveSpeed": 1.4, "contactDamage": 9, "attacks": ["rootwave"], "attackEvery": 4.5, "telegraph": 1.0, "attackDamage": 10, "waveSpeed": 7, "waveRadius": 16, "waveWidth": 1.2, "knockback": 5, "weakPoints": 2, "weakPointHp": 70, "weakWindow": 4, "stunSeconds": 5, "stunMult": 2, "fog": 1.5 },
         { "name": "Kırık Boynuz", "hpUntil": 0, "moveSpeed": 2.2, "contactDamage": 10, "attacks": ["volley"], "attackEvery": 3.8, "telegraph": 0.8, "volleyCount": 4, "volleyDamage": 5, "volleySpeed": 9, "knockback": 5, "weaponMult": 0.5, "shards": 3, "shardDamage": 120, "stunSeconds": 1.5, "stunMult": 1 }
       ],
       "reward": {

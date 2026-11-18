@@ -25,7 +25,7 @@ public partial class AtaBar : CanvasLayer
         AddChild(root);
         _panel = new PanelContainer { MouseFilter = Control.MouseFilterEnum.Ignore };
         _panel.AnchorLeft = 0.5f; _panel.AnchorRight = 0.5f;
-        _panel.OffsetLeft = -UiTheme.Pxf(330); _panel.OffsetRight = UiTheme.Pxf(330); _panel.OffsetTop = UiTheme.Pxf(18);
+        _panel.OffsetLeft = -UiTheme.Pxf(330); _panel.OffsetRight = UiTheme.Pxf(330); _panel.OffsetTop = UiTheme.Pxf(112); // pusula ve Defter satirinin altinda
         _panel.AddThemeStyleboxOverride("panel", new StyleBoxFlat
         {
             BgColor = UiTheme.A(UiTheme.Panel, 0.92f), BorderColor = UiTheme.A(UiTheme.Red, 0.6f), BorderWidthBottom = UiTheme.Px(2),

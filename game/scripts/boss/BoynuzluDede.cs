@@ -94,13 +94,14 @@ public partial class BoynuzluDede : AtaActor
         Visual.Scale = Vector3.One * Def.Scale;
 
         // Sis katmanlari (asama 1): arenayi saran yari saydam perdeler.
-        _fogMat = new StandardMaterial3D { ShadingMode = BaseMaterial3D.ShadingModeEnum.Unshaded, AlbedoColor = new Color(Palette.Fog.Lerp(Palette.SkyNoon, 0.4f), 0f), Transparency = BaseMaterial3D.TransparencyEnum.Alpha, BillboardMode = BaseMaterial3D.BillboardModeEnum.FixedY, CullMode = BaseMaterial3D.CullModeEnum.Disabled };
+        var soft = new GradientTexture2D { Fill = GradientTexture2D.FillEnum.Radial, FillFrom = new Vector2(0.5f, 0.5f), FillTo = new Vector2(0.5f, 0f), Width = 64, Height = 64, Gradient = new Gradient { Colors = new[] { Colors.White, new Color(1, 1, 1, 0) }, Offsets = new[] { 0f, 1f } } };
+        _fogMat = new StandardMaterial3D { AlbedoTexture = soft, DepthDrawMode = BaseMaterial3D.DepthDrawModeEnum.Disabled, ShadingMode = BaseMaterial3D.ShadingModeEnum.Unshaded, AlbedoColor = new Color(Palette.Fog.Lerp(Palette.SkyNoon, 0.4f), 0f), Transparency = BaseMaterial3D.TransparencyEnum.Alpha, BillboardMode = BaseMaterial3D.BillboardModeEnum.FixedY, CullMode = BaseMaterial3D.CullModeEnum.Disabled };
         var center = Sys.ArenaCenter(Def);
         for (int i = 0; i < 14; i++)
         {
             float a = i / 14f * Mathf.Tau;
             float r = Def.Arena.Radius * (0.55f + 0.4f * (i % 2));
-            var m = new MeshInstance3D { Mesh = new QuadMesh { Size = new Vector2(12f, 5f) }, MaterialOverride = _fogMat, CastShadow = GeometryInstance3D.ShadowCastingSetting.Off };
+            var m = new MeshInstance3D { Mesh = new QuadMesh { Size = new Vector2(16f, 7f) }, MaterialOverride = _fogMat, CastShadow = GeometryInstance3D.ShadowCastingSetting.Off };
             m.AddToGroup("ata_fx");
             Sys.AddChild(m);
             m.GlobalPosition = D.World.Ground(center + new Vector3(Mathf.Cos(a), 0, Mathf.Sin(a)) * r) + Vector3.Up * 2f;
@@ -125,7 +126,7 @@ public partial class BoynuzluDede : AtaActor
         base.OnPhase(phase, quiet);
         float fog = Phase.Fog;
         var tw = CreateTween();
-        tw.TweenProperty(_fogMat, "albedo_color:a", Mathf.Clamp((fog - 1f) * 0.18f, 0f, 0.5f), 2.0f);
+        tw.TweenProperty(_fogMat, "albedo_color:a", Mathf.Clamp((fog - 1f) * 0.22f, 0f, 0.6f), 2.0f);
         foreach (var h in _hives) h.SetActive(phase == 1 && Fight != null && h.Index < Fight.WeakPoints.Count && Fight.WeakPoints[h.Index] > 0);
         if (phase >= 2 && _antlers.Visible)
         {
@@ -228,7 +229,9 @@ public partial class AtaHive : Node3D, IAtaTarget
 
     public Vector3 Center => GlobalPosition;
     public float Radius => 0.45f;
-    public bool Alive => _active && !_broken && IsVisibleInTree();
+    /// <summary>Vurulabilir: asama 2, kirilmamis ve pencere acik (kok dalgasindan sonra isir, GDD §18.1).</summary>
+    public bool Alive => _active && !_broken && IsVisibleInTree() && Open;
+    bool Open { get { var s = FindSys(); return s?.Fight != null && AtaRules.WeakOpen(s.Fight, _dede.Def); } }
     public bool IsWeakPoint => true;
 
     public override void _Ready()
@@ -281,7 +284,8 @@ public partial class AtaHive : Node3D, IAtaTarget
     public override void _Process(double delta)
     {
         _t += (float)delta;
-        if (_mat != null) _mat.EmissionEnergyMultiplier = _active ? 2.5f + Mathf.Sin(_t * 6f) * 1.2f : 0.2f;
+        bool lit = _active && !_broken && Open;
+        if (_mat != null) _mat.EmissionEnergyMultiplier = lit ? 3f + Mathf.Sin(_t * 8f) * 1.5f : _active ? 0.5f : 0.2f;
     }
 }
 
