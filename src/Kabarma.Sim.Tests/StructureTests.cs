@@ -180,14 +180,14 @@ public class StructureTests
     {
         var b = TestData.Load().Build;
         Assert.Equal(new Dictionary<string, int> { ["wood"] = 4 }, StructureCosts.Cost(b, "wood", 4));
-        Assert.Equal(new Dictionary<string, int> { ["kerpic"] = 2, ["stone"] = 2 }, StructureCosts.Cost(b, "kerpic_tas", 4));
-        Assert.Equal(new Dictionary<string, int> { ["kerpic"] = 2, ["stone"] = 1 }, StructureCosts.Cost(b, "kerpic_tas", 3));
+        Assert.Equal(new Dictionary<string, int> { ["brick"] = 2, ["stone"] = 2 }, StructureCosts.Cost(b, "kerpic_tas", 4));
+        Assert.Equal(new Dictionary<string, int> { ["brick"] = 2, ["stone"] = 1 }, StructureCosts.Cost(b, "kerpic_tas", 3));
         Assert.Equal(new Dictionary<string, int> { ["celik"] = 6 }, StructureCosts.Cost(b, "celik_sac", 6));
         var up = StructureCosts.Upgrade(b, "wood", 4, inClaim: false)!.Value;
         Assert.Equal("kerpic_tas", up.To.Id);
         Assert.Equal(new Dictionary<string, int> { ["wood"] = 2 }, up.Back); // tapu disi %50
         Assert.Null(StructureCosts.Upgrade(b, "mayali_beton", 4, true));
-        Assert.Equal(new Dictionary<string, int> { ["kerpic"] = 1, ["stone"] = 1 }, StructureCosts.RepairCost(StructureCosts.Cost(b, "kerpic_tas", 4), 450, 900, b));
+        Assert.Equal(new Dictionary<string, int> { ["brick"] = 1, ["stone"] = 1 }, StructureCosts.RepairCost(StructureCosts.Cost(b, "kerpic_tas", 4), 450, 900, b));
         Assert.Equal(450f, StructureCosts.UpgradedHp(200, 400, 900));
         Assert.Equal(new[] { "wood", "kerpic_tas", "celik_sac", "mayali_beton" }, b.Materials.Select(m => m.Id));
         Assert.Equal(new[] { 3, 4, 6, 8 }, b.Materials.Select(m => m.MaxSpan));

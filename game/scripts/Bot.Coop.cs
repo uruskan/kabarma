@@ -5,7 +5,7 @@ namespace Kabarma.Game;
 
 /// <summary>
 /// Ortak oyun botu (--test=coop, ortak akisi): ayni makinede host ve istemciler ayni yolu oynar: tas kaz, agactan odun
-/// bic, Insa Plani ile Ocak'in cevresine kare temel kur, dinlen. Hile yok: Capa ve Insa Plani oyuncunun yolundan;
+/// bic, Insa Plani ile Ocak'in cevresine kare temel kur, bir tarla karesi sur, dinlen. Hile yok: Capa ve Insa Plani oyuncunun yolundan;
 /// istemcide istekler host'a gider, canta ve dunya host'tan doner (bot yalniz kendi cantasini okur).
 /// Host once Ocak'i kurar (tapu, GDD 6); istemciler Ocak bolumle gelince kurar.
 /// </summary>
@@ -77,6 +77,23 @@ public partial class Bot
                     FirePressed = true; _stepT = 0;
                     if (++_coopTries % 4 == 0) { _coopShift += 2f; GD.Print($"BOT coop yer degisti: {b.System.Current?.Reason}"); }
                 }
+                break;
+            }
+            case 4: // tarla: Ocak'in yaninda kendi yonunde bir kare sur (istemcide istek host'a gider, NetSync.Farm.cs)
+            {
+                Head(Capa.Head.Toprak);
+                float ang = CoopId * Mathf.Pi / 2f + 0.4f;
+                var cell = _d.World.Ground(_d.OcakPos + new Vector3(Mathf.Cos(ang), 0, Mathf.Sin(ang)) * (4.5f + _coopTries));
+                cell = _d.World.Ground(new Vector3(Mathf.Floor(cell.X) + 0.5f, 0, Mathf.Floor(cell.Z) + 0.5f));
+                if (_d.State.Farm.Get(Mathf.FloorToInt(cell.X), Mathf.FloorToInt(cell.Z)) != null) { Next($"tarla {cell}"); break; }
+                Aim(cell);
+                var from = cell + (cell - _d.OcakPos).Normalized() * 3.5f;
+                if (MoveTo(from, 0.8f, false))
+                {
+                    Fire = true;
+                    if (_stepT > 4f) { _stepT = 0; Fire = false; if (++_coopTries > 4) Next("tarla olmadi"); } // egim ya da kapsul: bir metre otede dene
+                }
+                else _stepT = 0;
                 break;
             }
             default: // dinlen: Ocak'in yaninda dur

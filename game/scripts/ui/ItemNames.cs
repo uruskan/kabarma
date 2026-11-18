@@ -51,8 +51,7 @@ public static class ItemNames
         ["tezgah"] = "Tezgâh",
         ["tas_firin"] = "Taş Fırın",
         ["paketleme"] = "Paketleme Tezgâhı",
-        // M2 yapi: malzeme girdileri (ICERIK 2.3) ve yapi malzemeleri (build.json).
-        ["kerpic"] = "Kerpiç",
+        // M2 yapi: malzeme girdileri (ICERIK 2.3; Kerpic zincirin "brick"i) ve yapi malzemeleri (build.json).
         ["celik"] = "Çelik",
         ["mayali_beton"] = "Mayalı Beton",
         ["kerpic_tas"] = "Kerpiç-Taş",

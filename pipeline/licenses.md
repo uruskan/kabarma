@@ -91,3 +91,6 @@ Araştırma Masası, Kömür Ocağı, Demirci Ocağı, Bıçkı, Değirmen, Doku
 | Cayir ve Koru'nun 10 ekini (Bugday, Kabak, Aycicegi, Lifotu, Domates, Sapkali Mantar, Bogurtlen, Eksilik, Findik, Sarimsak) | Koddan: `game/scripts/world/FarmView.Meshes.cs` (`CropVisuals`, MeshKit ilkelleri) | Projenin kendi kodu | YER TUTUCU; uretim istegi: ekin basina 1 Tripo modeli |
 | Korkuluk | Koddan: `KorkulukVisual` (ayni dosya) | Projenin kendi kodu | YER TUTUCU |
 | Alaca gorunusu | Toon golgelendiricinin `tint` degeri | Projenin kendi kodu | Benekli, Altin, Aurora |
+## Güç ve sinyal parçaları (guc akışı, M2)
+
+Rüzgâr Gülü, Hayvan Çarkı, Direk, Şalter, Elektrik Lambası, Düğme, Basınç Plakası ve kablolar koddan kurulur (`game/scripts/power/PowerVisuals.cs`, MeshKit; **yer tutucu**). Dış kaynak, kredi ve lisans yok. Altın varlık gelince `placeables.json` satırına `model` yazılır ve `PlaceableVisuals.Make` içindeki guc satırı kaldırılır. Akü Mk1'in görünüşü de koddan.
