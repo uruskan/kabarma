@@ -1,0 +1,23 @@
+tools/test.ps1  2026-11-18 20:49  git e31f8fe
+
+[FAIL] save  exit=1 RESULT fail 'ranch' farkli; 'ranch' farkli
+      --- son satirlar: C:\Users\uruskan\Documents\GitHub\kabarma\.claude\worktrees\m1-varlik-72a21b\.tools\run\test\save.log
+      WILDLIFE spawn homur herd=1 at=-15,9
+      WILDLIFE spawn homur herd=1 at=-19,13
+      WILDLIFE spawn dalli herd=1 at=35,15
+      WILDLIFE spawn dalli herd=1 at=39,10
+      WILDLIFE spawn vicik herd=1 at=-11,-35
+      WILDLIFE spawn vicik herd=1 at=-8,-39
+      WILDLIFE spawn bozuk herd=1 at=45,-39
+      WILDLIFE spawn vizviz swarm at=27,21
+      WILDLIFE spawn hu herd=1 at=-25,-17
+      RANCH start animals=11 agents=11
+      SAVETEST fresh stations=0 furniture=0 ocak=0 pieces=0 props=0 pens=0 rocks=84 tufts=7472 carts=0 crates=0 swollen=0 eggs=0 plots=0 planted=0 bag=63 credits=0 step=mine day=1
+      RESULT fail 'ranch' farkli; 'ranch' farkli
+[PASS] coop  exit=0 ok players=4 max_diff_mm=1.381 pieces=4 foundations=4 late_join=1 plots=4 tilled=4 crafted=4 revives=1 voice_frames=25 creatures_spawned=31 rejected=4 corrections=57
+
+sinama     sonuc  sure(sn)  ayrinti
+------     -----  --------  -------
+save       FAIL      179.1  exit=1 RESULT fail 'ranch' farkli; 'ranch' farkli
+coop       PASS       95.4  exit=0 ok players=4 max_diff_mm=1.381 pieces=4 foundations=4 late_join=1 plots=4 tilled=4 crafted=4 revives=1 voice_frames=25 creatures_spawned=31 rejected=4 corrections=57
+TEST FAIL (1)
