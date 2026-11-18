@@ -184,6 +184,27 @@ Oyuncu iskeletini ve animasyonlarını kullanırlar; kırmızı tulumludurlar.
 | Mekanik | Kule ve drone kurar, sabotaj yapar | Ark başlığı, tamir |
 | Müdür | Genel Merkez boss'u | Zırhlı araç, bütün başlıklar |
 
+### 3.8 Çayır ve Koru'nun gündüz tavrı (M2)
+
+[GDD.md](GDD.md) §16.2'deki arketiplerin kabarmamış, yabani hâli. Sayılar `data/creatures.json` `wild` alanında; sürü boyu ve doğma satırları `data/biomes.json` `spawns.creatures` alanında (dunya2 şeması). Etkiler (ekin kaybı, yumurta çalma, gündüz savaşı) sahibi olan sistemden geçer: ekin [GDD.md](GDD.md) §8.1 (`dayEats`), hayvan §9, savaş M3. M2'de yaratık yaklaşır, niyetini gösterir ve olayı bildirir.
+
+| Tür | Tavır | Sürü | Ne zaman | Gündüz davranışı |
+|---|---|---|---|---|
+| Gıdak | ürkek | 2–4 | gündüz | Gezinir, gagalar; koşana kaçar (ağıl davranışı hayvancılıkta) |
+| Pofuduk | sakin | 2–3 | gündüz | Otlar; vurulunca kısa kaçar |
+| Homur | yağmacı | 1–2 | gündüz | Otlar; olgun ekin görünce ona koşar; ateş edilince kaçar |
+| Zıpzıp | yağmacı | 2–3 | gündüz | Olgun ekine gelir, koklar; oyuncu yaklaşınca kaçar |
+| Çekirge Sürüsü | sürü | 1 küme | gündüz | Tek varlık; tahıl ekinine akar, üstünde döner; ateşle dağılır |
+| Sinsi | gececi | 1 | gece | Gündüz çalılıkta uyur; gece kümese ve yumurtaya sokulur |
+| Dallı | ürkek | 2–4 | gündüz | Otlar; 12 m'de başını kaldırır, 9 m'de sürü kaçar |
+| Hu | gececi | 1–2 | gece | Gündüz ağaçta uyur; gece süzülüp küçük avı kollar |
+| Vıcık | sakin | 1–2 | her zaman | Yavaş kayar, mantar otlar; arkasında iz bırakır |
+| Bozuk | yırtıcı | 1 | her zaman | Dolaşır; 14 m'de kükreyip uyarır, 8 m'de hücum edip pençe savurur |
+| Vızvız | sürü | 1 kovan + küme | gündüz | Kovan çevresinde çiçekten çiçeğe; kovana yaklaşana sokar |
+| Fındıkçı | yağmacı | 2–3 | gündüz | Ekili tohuma sokulur, yanağına doldurup kaçar |
+
+**Gövde:** Vıcık sürüngen planını, Hu kuş planını, Fındıkçı iki ayak planını, Homur, Sinsi, Dallı ve Bozuk dört ayak planını kullanır. Çekirge Sürüsü ve Vızvız kemiksiz sürü üyeleridir (tek mesh, örneklenir). Tripo modeli gelene kadar gövdeler koddan, işaretli yer tutucudur (`data/bodies.json`).
+
 ## 4. Atalar, Azmanlar, koruyucular
 
 ### 4.1 Atalar (6)

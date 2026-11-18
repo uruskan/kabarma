@@ -410,6 +410,8 @@ Hasar türleri: Darbe, Kesme, Ateş, Buz, Şok, Zehir, Maya. Her yaratığın za
 
 Dokuz arketip: Koşucu, Tank, Sıçrayan, Menzilli, Uçan, Sürü, Kazıcı, Hırsız (ürünü kapıp kaçar), Yıkıcı (yapıya öncelik verir). Her tür bir ya da iki arketip taşır.
 
+**Gündüz tavrı:** Kabarmamış yabani yaratık arketipini gündüz bir tavırla taşır: ürkek (yaklaşınca kaçar), sakin (otlar, vurulunca kaçar), yağmacı (ekine ya da tohuma gider, kovulunca kaçar), yırtıcı (yakına geleni uyarır, sonra saldırır), gececi (gündüz uyur), sürü (tek varlık, hedefe akar). Tür başına tavır ve eşikler [ICERIK.md](ICERIK.md) §3.8'de ve `data/creatures.json` `wild` alanında. Gündüz saldırısı M2'de uyarı ve küçük hasardır; tam savaş M3.
+
 ### 16.3 Gündüz savaşı
 
 Yabani yaratıklar, açık arazideki Holding ekipleri ve kervanları, Oyuk koruyucuları ve Atalar. Kart yoktur; güç kalıcı donanımdan gelir: Çapa basamağı, başlıklar, çipler, zırh, güçler, yemek, hayvan.
@@ -504,7 +506,7 @@ Kabarma gecesi Perde iner. Hedefler:
 ## 20. Araçlar
 
 - Araç Atölyesi'nde gövde basılır, eklentiler gövdenin yuvalarına takılır.
-- Yakıt: biyoyakıt ya da akü. Dolu depo yaklaşık bir saat sürüş verir.
+- Yakıt: T2'de Bitkisel Yağ (Çekirge), T3'ten biyoyakıt (iki kat verim), T4'ten akü ([ICERIK.md](ICERIK.md) §14). Dolu depo yaklaşık bir saat sürüş verir.
 - Araç hasar alır ve onarılır; devrilen araç E ile düzeltilir.
 - Kabarma'da araç silahtır: ezme ve biçme Gösteri çarpanını artırır.
 - Liste: [ICERIK.md](ICERIK.md) §14.
