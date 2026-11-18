@@ -144,7 +144,28 @@ def telsiz_mandali(v, rnd):
     return mix(click, thump, hiss, offsets=[0.0, 0.0, 0.006])
 
 
-SOUNDS = {"ui_odak": ui_odak, "ui_onay": ui_onay, "ui_hata": ui_hata, "ui_baslik_carki": ui_baslik_carki, "telsiz_mandali": telsiz_mandali}
+def parca_emilis(v, rnd):
+    """Parca emilisi (Capa.Kazma: tas cantaya girer): tonsuz cakil tikirtisi, kucuk sekme ve bez canta tok sesi.
+    Sahibin sikayeti (18 Kasim 2026): uretilen surumde surekli bir ton vardi, saniyede 2-3 kez calinca 'gaklama'
+    gibi duyuluyordu. Burada surekli ton yok; yalniz gurultu tiklari ve cok kisa, alcak bir tok ses."""
+    def tick(lo, hi, decay, amp):
+        n = n_of(decay * 6)
+        bp = band(lo, hi)
+        return [bp(rnd.uniform(-1, 1)) * env(i, n, 0.0003, decay) * amp for i in range(n)]
+
+    hit = tick((1800, 2200, 1600)[v], (6500, 7500, 6000)[v], 0.0025, 1.0)
+    bounce = tick(2400, 7000, 0.0018, 0.45)
+    n_th = n_of(0.05)
+    lp = LP(220)
+    thump = [lp(rnd.uniform(-1, 1)) * env(i, n_th, 0.002, 0.012) * 3.0 for i in range(n_th)]
+    n_r = n_of(0.06)
+    bp_r = band(700, 2600)
+    rustle = [bp_r(rnd.uniform(-1, 1)) * env(i, n_r, 0.004, 0.018) * 0.3 for i in range(n_r)]
+    return warm(mix(hit, bounce, thump, rustle, offsets=[0.0, (0.035, 0.028, 0.042)[v], 0.004, 0.006]), 7000)
+
+
+SOUNDS = {"ui_odak": ui_odak, "ui_onay": ui_onay, "ui_hata": ui_hata, "ui_baslik_carki": ui_baslik_carki, "telsiz_mandali": telsiz_mandali,
+          "parca_emilis": parca_emilis}
 
 
 def write_wav(path, samples, peak_dbfs=-3.0):
