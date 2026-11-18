@@ -51,6 +51,8 @@ public sealed class GosteriDef
     public float StreakWindow { get; set; }
     public float StreakBonus { get; set; }
     public float DecayPerSecond { get; set; }
+    /// <summary>GDD 14.5: GosteriEvent adi -> artis (kabarma3).</summary>
+    public Dictionary<string, float> Events { get; set; } = new();
 }
 
 public sealed class KabarmaFile
@@ -66,6 +68,8 @@ public sealed class KabarmaFile
     public float MayaKsFactor { get; set; }
     public float HpGrowth { get; set; }
     public float DamageGrowth { get; set; }
+    /// <summary>Tam Kabarma (GDD 14.1-14.6): GameData.Wave.cs.</summary>
+    public FullKabarmaDef Full { get; set; } = new();
 }
 
 public sealed partial class GameData

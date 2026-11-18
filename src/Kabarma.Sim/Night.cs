@@ -67,7 +67,7 @@ public sealed class CardOffer
 }
 
 /// <summary>Kabarma gecesi: asamalar, dalgalar, Oz, seviye, kart secimi, Gosteri carpani (GDD 14, 15).</summary>
-public sealed class KabarmaNight
+public sealed partial class KabarmaNight
 {
     readonly GameData _data;
     readonly NightDef _def;
@@ -148,7 +148,7 @@ public sealed class KabarmaNight
 
     public void RecordSwell(SizeClassDef size) => SwollenBySize[size.Id] = SwollenBySize.GetValueOrDefault(size.Id) + 1;
     public void RecordEaten() { if (Phase != NightPhase.Dawn) CropsEaten++; }
-    public void RecordPlayerDown() { if (Phase != NightPhase.Dawn) PlayerDowns++; }
+    public void RecordPlayerDown() { if (Phase != NightPhase.Dawn) { PlayerDowns++; if (Plan != null) Gosteri = _data.Kabarma.Gosteri.Min; } } // GDD 14.5: olunce sifirlanir (tam Kabarma)
     public void RecordAnimalSwell(int n = 1) => AnimalsSwollen += n;
 
     public WaveDef? CurrentWave => WaveIndex >= 0 && WaveIndex < _def.Waves.Count ? _def.Waves[WaveIndex] : null;
@@ -200,7 +200,7 @@ public sealed class KabarmaNight
     {
         if (Phase != NightPhase.Waves) return;
         var w = CurrentWave!;
-        if (SpawnedThisWave < w.Count) return;
+        if (SpawnedThisWave < w.Count || PendingSpawns > 0) return; // PendingSpawns: tasan kuyruk (Night.Wave.cs)
         CollectAll(); // M1 karari 19: dalga bitince yerde kalan Oz oyuncuya ucar
         if (WaveIndex == _def.Waves.Count - 1) EnterDawn();
         else if (PhaseTime < w.Seconds) PhaseTime = w.Seconds; // bir sonraki dalgaya kisa aradan sonra gec
@@ -214,6 +214,7 @@ public sealed class KabarmaNight
         SpawnedThisWave = 0;
         if (WaveIndex >= _def.Waves.Count) { EnterDawn(); return; }
         Phase = NightPhase.Waves;
+        OnWaveBegin(WaveIndex); // Night.Wave.cs: plan kuyrugu, Doruk
         WaveStarted?.Invoke(WaveIndex, _def.Waves[WaveIndex]);
     }
 
@@ -230,6 +231,7 @@ public sealed class KabarmaNight
                             .OrderByDescending(c => c.Rank).ThenBy(c => c.Name, StringComparer.Ordinal).ToList();
         _ranks.Clear();
         Stats.Reset();
+        OnDawnBegin(); // Night.Wave.cs: bitis nedeni, kuyruk duser
         DawnNow?.Invoke();
     }
 
@@ -250,7 +252,7 @@ public sealed class KabarmaNight
         }
         PeakGosteri = Math.Max(PeakGosteri, Gosteri);
 
-        Maya += c.Weight * _data.Kabarma.MayaPerWeight * (1f + _data.Kabarma.MayaKsFactor * Ks) * Gosteri;
+        Maya += c.Weight * _data.Kabarma.MayaPerWeight * (1f + _data.Kabarma.MayaKsFactor * Ks) * Gosteri * MayaMult; // MayaMult: Night.Wave.cs (ekinsiz gece, tatbikat)
         var mote = new OzMote { Id = ++_nextMote, X = x, Z = z, Value = c.Weight * _data.Kabarma.OzPerWeight * Gosteri };
         _motes.Add(mote);
         return mote;

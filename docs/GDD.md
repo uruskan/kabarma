@@ -359,10 +359,15 @@ Tapudaki olgun ekinler; Savaş Ağılı'ndaki hayvanlar; çevredeki yabani yarat
 - **Bileşim:** %50 ekili ailelerin çektiği türler (ekili alan oranında), %30 biyomun yerlileri, %20 komşu biyom. Tapuda hiç olgun ekin yoksa tamamı yerli gelir, sayı ×0,6 olur ve Maya kazancı yarıya iner.
 - **Hedef önceliği:** kendi ailesinin ekini → Maya Kazanı → kendisine saldıran. Yoldaki yapıyı kırarlar.
 - **Sürüler** (Çekirge, Sülük, Hamurcuk öbekleri) tek varlık sayılır ve tek can havuzu taşır.
+- **Taşma:** 220 sınırı yüzünden dalga süresinde giremeyen düşmanlar bir sonraki dalganın kuyruğuna, son dalgadan sonra Doruk'a devreder; Şafak'ta hâlâ girmemiş olanlar düşer (Maya vermez).
+- **Boş pay:** ekili ailenin bu taşın biyomlarında çektiği tür yoksa (M3'te Lif ve Baharat) o pay yerlilere gider. Komşu biyom, haritada tapunun biyomuna bitişik biyomdur (`biomes.json` `biomeMap.order` sırası); komşusu yoksa o pay da yerlilere gider. Ağırlık bir düşmandan fazla sayılır: dalga sayısı ağırlıkla doldurulur (Bozuk 6 yer tutar).
+- **Doruk:** her 5. KS'de Azman (savaş akışı); öteki KS'lerde ve Azman yokken son dalganın yarısı kadar, hepsi elit bir dalga.
+- **Sayılar:** sürelerin, elit öneklerinin, Kazan canının ve aile–tür eşleşmesinin sayıları `data/kabarma.json` `full` bölümünde.
 
 ### 14.4 Kazanç ve kayıp
 
 - **Maya** = öldürülen her düşmanın Maya değeri × `(1 + 0,15 × KS)` × Gösteri çarpanı. Kazan'da birikir.
+- **Kazan'ın canı** Ocak basamağıyla büyür (`kabarma.json` `full.kazan`); düşman ona ikinci öncelikle saldırır.
 - **Kazan devrilirse** Kabarma o an biter ve o gecenin Maya'sının yarısı gider. Ekinler kabarık kalır. Kazan sabah kendini onarır.
 - **Bozgun:** Bütün oyuncular aynı anda yerdeyse Kazan %25 hasar alır, herkes yatağında doğar.
 - **Yenen ekin** kaybedilir. Yıkılan yapı onarılır.
