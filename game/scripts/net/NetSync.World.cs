@@ -37,6 +37,7 @@ public partial class NetSync
         Register("tufts", false, WriteTufts, ReadTufts);
         Register("placed", false, WritePlaced, ReadPlaced);
         if (D.Build != null) Register("pieces", false, WritePieces, ReadPieces);
+        if (D.Build != null) RegisterYapi(); // NetSync.Yapi.cs: malzeme, plan, yukselt
 
         On("mine", HostMine);
         On("mow", HostMow);
@@ -342,7 +343,7 @@ public partial class NetSync
         if (!q.IsNormalized()) q = q.Normalized();
         if (!NetRules.InRange(a, o.X, o.Y, o.Z, Cfg.Ranges.Build)) { Reject(a, "place range"); return; }
         if (!a.Cooldown(NetReq.Place, Now, Cfg.Cooldowns.Place)) { Reject(a, "place cooldown"); return; }
-        if (!InClaim(o)) { Reject(a, "place claim"); return; }
+        // M2 (GDD §7): yapi parcasi tapu disinda da kurulur; sokumde iadesi %50.
         int cost = D.Build.CostOf(id);
         if (a.Bag.Count("wood") < cost) { Reject(a, "place wood"); return; }
         var piece = D.Build.System.PlaceAt(id, new Transform3D(new Basis(q), o), out var why);
@@ -376,14 +377,14 @@ public partial class NetSync
         var rules = D.Data.Economy.Build;
         var cost = t switch
         {
-            BuildPiece bp => new Dictionary<string, int> { ["wood"] = D.Build.CostOf(bp.Def.Id) },
+            BuildPiece bp => D.Build.PieceCost(bp), // malzemesine gore (GDD §7)
             Station st => new Dictionary<string, int> { [st.Def.Id] = 1 },
             Furniture f => new Dictionary<string, int> { [f.Def.Id] = 1 },
             _ => new Dictionary<string, int>(),
         };
         if (t is Station s2 && s2.Queue.Active != null) { Reject(a, "remove busy"); return; }
         if (t is Furniture f2 && f2.Storage != null && !f2.Storage.IsEmpty) { Reject(a, "remove chest"); return; }
-        var refund = Structures.Refund(cost, rules);
+        var refund = t is BuildPiece bpr ? D.Build.RefundOf(bpr, cost) : Structures.Refund(cost, rules);
         if (!NetRules.Fits(a.Bag, refund, T.StackOf)) { Reject(a, "remove bag full"); return; }
         switch (t)
         {
@@ -399,8 +400,8 @@ public partial class NetSync
     {
         if (FindTarget(r) is not BuildPiece bp) { Reject(a, "repair target"); return; }
         if (!NetRules.InRange(a, bp.GlobalPosition.X, bp.GlobalPosition.Y, bp.GlobalPosition.Z, Cfg.Ranges.Build)) { Reject(a, "repair range"); return; }
-        float max = D.Build.System.Kit.PieceHp;
-        var cost = Structures.RepairCost(new Dictionary<string, int> { ["wood"] = D.Build.CostOf(bp.Def.Id) }, bp.Hp, max, D.Data.Economy.Build);
+        float max = D.Build.System.MaxHp(bp);
+        var cost = Structures.RepairCost(D.Build.PieceCost(bp), bp.Hp, max, D.Data.Economy.Build);
         if (cost.Count == 0 || !NetRules.CanPay(a.Bag, cost)) { Reject(a, "repair cost"); return; }
         foreach (var (item, n) in cost) a.Bag.Remove(item, n);
         bp.Hp = max;

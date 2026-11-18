@@ -33,7 +33,8 @@ public partial class Director
     public bool Craft(RecipeDef r, int count)
     {
         count = Mathf.Max(1, count);
-        var inv = State.Backpack;
+        if (TryResearch(r)) return !ResearchLocked(r); // zincir: arastirmayla kilitli satir Masa yaninda arastirilir (Director.Zincir.cs)
+        IItemStore inv = StoreFor(r); // zincir: istasyon tarifi canta + tapudaki Sandiklar (GDD 5 ambardan uretim)
         string need = CraftRules.NeedStation(r, NearStations());
         if (need != null) { Hud.Hint($"{ItemNames.Of(need)} gerekir: yanına git", 1.5f); Sfx.Play("hit", null, -12f); return false; }
         var miss = CraftRules.Missing(r, count, inv);
@@ -55,7 +56,7 @@ public partial class Director
             for (int i = 0; i < count; i++) if (st != null && st.Queue.Enqueue(r, inv)) queued++; else break;
             if (queued == 0)
             {
-                Hud.Hint(st == null ? $"{ItemNames.Of(r.Station)} gerekir" : !st.Queue.IsUnlocked(r) ? $"Tarif kilitli: ilk {ItemNames.Of(r.UnlockOn)} ile açılır" : !st.Queue.HasFuel(r, inv) ? "Yakıt yok: Odun" : $"{st.Def.Name} başka bir şey üretiyor", 1.6f);
+                Hud.Hint(st == null ? $"{ItemNames.Of(r.Station)} gerekir" : !st.Queue.IsUnlocked(r) ? LockText(r) : !st.Queue.HasFuel(r, inv) ? $"Yakıt yok: {ItemNames.Of(st.Queue.FuelFor(r, inv) ?? "wood")}" : $"{st.Def.Name} sırası dolu", 1.6f);
                 Sfx.Play("hit", null, -12f);
                 return false;
             }
@@ -82,7 +83,7 @@ public partial class Director
     {
         if (st == null || st.Queue.Active == null) return;
         var name = st.Queue.Active.Name;
-        st.Queue.Cancel(State.Backpack);
+        st.Queue.Cancel(StationStore()); // zincir: malzeme cantaya, sigmazsa Sandiklara
         Hud.Hint($"{name} iptal: malzeme geri döndü", 1.4f);
         Sfx.Play("place", null, -10f);
     }

@@ -21,6 +21,7 @@ public partial class Director
         Save.Add(SaveSection.Json("wildlife", 1, Wildlife.Capture, Wildlife.Apply, SaveOrder.Spawn)); // kayit sozlesmesi (Wildlife.Save.cs)
         if (Main.Args.TryGetValue("creatureview", out var v) && v is "wild" or "normal" or "swollen" or "both" or "kick")
             Wildlife.ProcessMode = ProcessModeEnum.Disabled;
+        InitVehicles(); // Director.Vehicles.cs: Cekirge ATV (yaratik2)
     }
 
     List<CreatureDef> WildSpecies()

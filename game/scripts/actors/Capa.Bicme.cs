@@ -33,10 +33,11 @@ public partial class Capa
             if (!h.Wild) n++;
             FeelHit("bicme_ekin", c + Vector3.Up * 0.4f, Palette.Plant);
             _d.FarmView.OnHarvestedBy(h, c);
-            _d.State.Backpack.Add(h.Item, h.Yield, h.Stars); // kalite cantada tasinir (GDD 13: fiyat = taban × kalite)
+            _d.State.Backpack.Add(h.Item, _d.State.Mastery.Scale("crop_yield", h.Yield, _d.State.MasteryRng), h.Stars); // Ustalik: Ciftcilik seviyesi, Bol Hasat // kalite cantada tasinir (GDD 13: fiyat = taban × kalite)
             _d.State.Backpack.Add(h.SeedItem, h.Seeds);
         }
         if (n > 0) _d.OnHarvest(n);
+        MowAta(aim); // boss akisi: Koca Pofuduk'un yunu kirkilir (boss/Capa.Ata.cs)
 
         // Agaclar: her vurusta Odun, agac yerinde kalir (devrilme, kutuk, yenilenme M2).
         // Agaclar dunya akisinda parca parca MultiMesh (World.Decor.cs); esneme agacin kendi parcasinda.
