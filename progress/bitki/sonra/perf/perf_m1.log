@@ -1,0 +1,7 @@
+noon  ONCESI gpu_kullanim=51% godot_sureci=10  UYARI: GPU bos degil, sonuc gecersiz sayilmali
+noon  PERF kapsul ogle mean=6.28ms fps=159.2 p99=8.475ms draws=373 prims=4096874 frames=9553
+noon  PERF us ogle mean=7.01ms fps=142.6 p99=9.944ms draws=429 prims=4314938 frames=8555
+noon  PERF gol ogle mean=7.71ms fps=129.7 p99=25.658ms draws=209 prims=3371436 frames=7782
+noon  PERF tepe ogle mean=8.39ms fps=119.2 p99=14.634ms draws=437 prims=3561054 frames=7154
+noon  PERF file C:/Users/uruskan/Documents/GitHub/kabarma/.claude/worktrees/m1-varlik-72a21b/game/../progress/m1/dunya/perf/perf_noon.json gpu=NVIDIA GeForce RTX 2070 SUPER res=1920x1080 vsync=Disabled siblings=11
+noon  PERF RESULT ok budget=11.1ms

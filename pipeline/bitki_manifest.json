@@ -1,0 +1,193 @@
+{
+  "_not": "pipeline/build_bitki.py girdisi. Kaynaklar F:\\Assets (salt okunur); zip'ler ana kopyanin .tools/bitki_src/ klasorune acilir. Lisanslar pipeline/licenses.md 'Bitkiler (bitki-pbr)' bolumunde.",
+  "out": "game/assets/models",
+  "items": {
+    "agac": {
+      "kind": "tree",
+      "label": "Cayir agaci (Jacaranda Tree, yesil yaprak)",
+      "license": "Poly Haven CC0 (jacaranda_tree, Rico Cilliers ve Rob Tuytel)",
+      "source": { "zip": "F:/Assets/verdant_trail.zip", "cache": "verdant_trail", "members": ["verdant_trail.blend", "textures/jacaranda_tree_*"], "file": "verdant_trail.blend" },
+      "wood": ["jacaranda_tree_trunk", "jacaranda_tree_branches"],
+      "instancers": ["jacaranda_tree_branches"],
+      "height": 5.0,
+      "seed": 11,
+      "card_scale": 1.7,
+      "volume_normals": 0.6,
+      "leaf_grade": { "hue": 0.0, "sat": 1.1, "val": 0.9 },
+      "materials": {
+        "jacaranda_tree_trunk": { "albedo": "textures/jacaranda_tree_trunk_diff_1k.png", "normal": "textures/jacaranda_tree_trunk_nor_gl_1k.png", "rough": "textures/jacaranda_tree_trunk_rough_1k.png|G", "max_tex": 1024 },
+        "jacaranda_tree_branches": { "as": "jacaranda_tree_trunk", "albedo": "textures/jacaranda_tree_branches_diff_1k.png", "normal": "textures/jacaranda_tree_branches_nor_gl_1k.png" },
+        "jacaranda_tree_leaves": { "albedo": "textures/jacaranda_tree_leaves_diff_1k.png", "alpha": "textures/jacaranda_tree_leaves_alpha_1k.png|R", "normal": "textures/jacaranda_tree_leaves_nor_gl_1k.png" }
+      },
+      "lods": [
+        { "tris": 8000, "wood_tris": 2200, "tex": 1024 },
+        { "tris": 3800, "wood_tris": 1000, "tex": 512 },
+        { "tris": 1400, "wood_tris": 350, "tex": 256 }
+      ]
+    },
+    "turuncu_agac": {
+      "kind": "tree",
+      "label": "Turuncu agac (Island Tree 01, sonbahar tonu)",
+      "license": "Poly Haven CC0 (island_tree_01, Rico Cilliers ve Rob Tuytel)",
+      "source": { "zip": "F:/Assets/verdant_trail.zip", "cache": "verdant_trail", "members": ["verdant_trail.blend", "textures/island_tree_01*"], "file": "verdant_trail.blend" },
+      "wood": ["island_tree_01_a"],
+      "instancers": ["island_tree_01_a"],
+      "height": 4.8,
+      "seed": 5,
+      "card_scale": 1.25,
+      "volume_normals": 0.6,
+      "leaf_grade": { "hue": -0.11, "sat": 1.3, "val": 1.15 },
+      "materials": {
+        "island_tree_01": { "albedo": "textures/island_tree_01_diff_1k.jpg", "normal": "textures/island_tree_01_nor_gl_1k.exr", "rough": "textures/island_tree_01_rough_1k.exr|G" },
+        "island_tree_01_branches*": { "albedo": "textures/island_tree_01_branches_diff_1k.png", "normal": "textures/island_tree_01_branches_nor_gl_1k.png" },
+        "island_tree_01_leaves": { "albedo": "textures/island_tree_01_leaves_diff_1k.png", "alpha": "textures/island_tree_01_leaves_alpha_1k.png|R", "normal": "textures/island_tree_01_leaves_nor_gl_1k.png" }
+      },
+      "lods": [
+        { "tris": 7500, "wood_tris": 2000, "tex": 1024 },
+        { "tris": 3600, "wood_tris": 900, "tex": 512 },
+        { "tris": 1300, "wood_tris": 300, "tex": 256 }
+      ]
+    },
+    "cali": {
+      "kind": "plant",
+      "label": "Cali (Megascans Downy Willow VarF)",
+      "license": "Quixel Megascans (Fab), sahip dogrulamali",
+      "source": { "zip": "F:/Assets/Fab/Quixel-Megascans/Plants/Downy-Willow--0e466407-d473-41e2-90ff-f6ff9275d73c/fbx/963e492d-e7ec-4af3-81e2-4c1c14187283/downy_willow_wknlfiuqx_high.zip", "cache": "downy_willow", "members": ["*VarF_LOD2.fbx", "*VarF_LOD3.fbx", "*4K_BaseColor.jpg", "*4K_Opacity.jpg", "*4K_Normal.jpg", "*4K_Roughness.jpg"], "file": "Downy_Willow_wknlfiuqx_High_wknlfiuqx_VarF_LOD2.fbx", "extra_files": ["Downy_Willow_wknlfiuqx_High_wknlfiuqx_VarF_LOD3.fbx"] },
+      "parts": [ { "obj": "_dqaw_VarF_LOD3" } ],
+      "height": 1.1,
+      "hull_height": 0.6,
+      "grade": { "hue": 0.0, "sat": 1.1, "val": 1.3 },
+      "materials": {
+        "*": { "as": "yaprak", "albedo": "Downy_Willow_wknlfiuqx_High_4K_BaseColor.jpg", "alpha": "Downy_Willow_wknlfiuqx_High_4K_Opacity.jpg|R", "clip": true, "normal": "Downy_Willow_wknlfiuqx_High_4K_Normal.jpg", "normal_flip_g": true, "rough": "Downy_Willow_wknlfiuqx_High_4K_Roughness.jpg|R" }
+      },
+      "lods": [
+        { "tris": 2800, "tex": 1024 },
+        { "tris": 1400, "tex": 512 },
+        { "tris": 800, "tex": 256 }
+      ]
+    },
+    "egrelti": {
+      "kind": "plant",
+      "label": "Egrelti (Megascans Beech Fern)",
+      "license": "Quixel Megascans (Fab), sahip dogrulamali",
+      "source": { "dir": "F:/Assets/SourceWorld/vegetation", "file": "fern_a.glb" },
+      "parts": [ { "obj": "_ag8z_VarA" } ],
+      "height": 0.7,
+      "materials": {
+        "fern_leaves*": { "as": "yaprak", "albedo": "fern_a_albedo_alpha.png", "albedo_alpha": true, "clip": true, "normal": "fern_a_normal.png", "rough": "fern_a_roughness.png|R" }
+      },
+      "lods": [ { "tris": 1100, "tex": 1024 }, { "tris": 550, "tex": 512 }, { "tris": 220, "tex": 256 } ]
+    },
+    "ot": {
+      "kind": "plant",
+      "label": "Ot tutami (Megascans Cotton Grass; Lif verir)",
+      "license": "Quixel Megascans (Fab), sahip dogrulamali",
+      "source": { "dir": "F:/Assets/cotton_grass_wlykecdia_ue_high", "file": "standard/wlykecdia_tier_1_nonUE.gltf" },
+      "parts": [ { "obj": "SM_wlykecdia_VarA_LOD1" }, { "obj": "SM_wlykecdia_VarF_LOD1", "at": [0.25, -0.15], "rot": 140, "scale": 0.9 } ],
+      "height": 0.9,
+      "materials": {
+        "*": { "as": "yaprak", "albedo": "Textures/T_wlykecdia_4K_B-O.png", "albedo_alpha": true, "clip": true, "normal": "Textures/T_wlykecdia_4K_N.png", "normal_flip_g": true, "rough": "Textures/T_wlykecdia_4K_ORT.png|G" }
+      },
+      "lods": [
+        { "tris": 2200, "tex": 1024 },
+        { "replace": [["_LOD1", "_LOD2"]], "tris": 1400, "tex": 512 },
+        { "replace": [["_LOD1", "_LOD2"]], "tris": 600, "tex": 256 }
+      ]
+    },
+    "bugday": {
+      "kind": "plant",
+      "label": "Yabani bugday (Megascans Dry Grass; Bugday verir)",
+      "license": "Quixel Megascans (Fab), sahip dogrulamali",
+      "source": { "dir": "F:/Assets/dry_grass_tbbqejqr_ue_high", "file": "standard/tbbqejqr_tier_1_nonUE.gltf" },
+      "parts": [ { "obj": "SM_tbbqejqr_VarA" }, { "obj": "SM_tbbqejqr_VarB_LOD1", "at": [0.09, 0.05], "rot": 70 } ],
+      "height": 1.0,
+      "grade": { "hue": 0.005, "sat": 1.7, "val": 1.0, "tint": [1.0, 0.93, 0.78] },
+      "materials": {
+        "*": { "as": "yaprak", "albedo": "Textures/T_tbbqejqr_4K_B-O.png", "albedo_alpha": true, "clip": true, "normal": "Textures/T_tbbqejqr_4K_N.png", "normal_flip_g": true, "rough": "Textures/T_tbbqejqr_4K_ORT.png|G" }
+      },
+      "lods": [
+        { "tris": 2000, "tex": 1024 },
+        { "replace": [["SM_tbbqejqr_VarA", "SM_tbbqejqr_VarA_LOD1"]], "tris": 1300, "tex": 512 },
+        { "replace": [["SM_tbbqejqr_VarA", "SM_tbbqejqr_VarA_LOD1"]], "tris": 700, "tex": 256 }
+      ]
+    },
+    "cicek": {
+      "kind": "plant",
+      "label": "Cicek obegi (Poly Haven Dandelion 01, uc bitki)",
+      "license": "Poly Haven CC0 (dandelion_01, Rico Cilliers ve Rob Tuytel)",
+      "source": { "zip": "F:/Assets/dandelion_01_4k.blend.zip", "cache": "dandelion_01", "file": "dandelion_01_4k.blend" },
+      "parts": [
+        { "obj": "dandelion_01_a_LOD2" },
+        { "obj": "dandelion_01_b_LOD2", "at": [0.2, 0.09], "rot": 120 },
+        { "obj": "dandelion_01_c_LOD2", "at": [-0.12, 0.17], "rot": 230, "scale": 0.9 }
+      ],
+      "height": 0.38,
+      "materials": {
+        "dandelion_01*": { "as": "yaprak", "albedo": "textures/dandelion_01_diff_4k.jpg", "alpha": "textures/dandelion_01_alpha_4k.png|R", "clip": true, "normal": "textures/dandelion_01_nor_gl_4k.exr", "rough": "textures/dandelion_01_rough_4k.exr|R" }
+      },
+      "lods": [
+        { "tris": 1700, "tex": 1024 },
+        { "replace": [["_LOD2", "_LOD3"]], "tris": 700, "tex": 512 },
+        { "replace": [["_LOD2", "_LOD3"]], "tris": 350, "tex": 256 }
+      ]
+    },
+    "kutuk": {
+      "kind": "plant",
+      "label": "Kutuk (Poly Haven Tree Stump 02; Sis Korusu ve kesim artigi icin)",
+      "license": "Poly Haven CC0 (tree_stump_02, Rob Tuytel)",
+      "source": { "zip": "F:/Assets/tree_stump_02_4k.blend.zip", "cache": "tree_stump_02", "file": "tree_stump_02_4k.blend" },
+      "parts": [ { "obj": "tree_stump_02" } ],
+      "height": 0.6,
+      "materials": {
+        "tree_stump_02*": { "as": "kabuk", "albedo": "textures/tree_stump_02_diff_4k.jpg", "normal": "textures/tree_stump_02_nor_gl_4k.exr", "rough": "textures/tree_stump_02_rough_4k.exr|R" }
+      },
+      "lods": [ { "tris": 2400, "tex": 1024 }, { "tris": 900, "tex": 512 }, { "tris": 300, "tex": 256 } ]
+    },
+    "koknar": {
+      "kind": "plant",
+      "label": "Koknar (Fab Fir trees pack, Christmas tree LOD1; Sis Korusu icin)",
+      "license": "Fab Standard (Fir trees pack, sahibin Fab kutuphanesi), sahip dogrulamali",
+      "source": { "dir": "F:/Assets/SourceWorld/vegetation", "file": "fir_01.glb" },
+      "parts": [ { "obj": "Christmas tree_LOD1" } ],
+      "height": 9.0,
+      "hull_height": 0.2,
+      "grade": { "hue": 0.0, "sat": 0.9, "val": 0.95 },
+      "materials": {
+        "fir_bark*": { "as": "kabuk", "albedo": "fir_01_BarkAlbedo.png", "normal": "fir_01_Bark_normal.png", "max_tex": 512 },
+        "fir_leaves*": { "as": "dal", "albedo": "fir_01_BrunchesAlbedo.png", "albedo_alpha": true, "clip": true, "normal": "fir_01_Brunches_normal.png" }
+      },
+      "lods": [ { "tris": 6700, "tex": 1024 }, { "tris": 3000, "tex": 512 }, { "tris": 1100, "tex": 256 } ]
+    },
+    "koknar_genc": {
+      "kind": "plant",
+      "label": "Genc koknar (Fab Fir trees pack, Christmas tree 4 LOD1; Sis Korusu icin)",
+      "license": "Fab Standard (Fir trees pack, sahibin Fab kutuphanesi), sahip dogrulamali",
+      "source": { "dir": "F:/Assets/SourceWorld/vegetation", "file": "fir_04.glb" },
+      "parts": [ { "obj": "Christmas tree_4_LOD1" } ],
+      "height": 4.5,
+      "hull_height": 0.3,
+      "grade": { "hue": 0.0, "sat": 0.9, "val": 0.95 },
+      "materials": {
+        "fir_bark*": { "as": "kabuk", "albedo": "fir_04_BarkAlbedo.png", "normal": "fir_04_Bark_normal.png", "max_tex": 512 },
+        "fir_leaves*": { "as": "dal", "albedo": "fir_04_BrunchesAlbedo.png", "albedo_alpha": true, "clip": true, "normal": "fir_04_Brunches_normal.png" }
+      },
+      "lods": [ { "tris": 3900, "tex": 1024 }, { "tris": 1800, "tex": 512 }, { "tris": 700, "tex": 256 } ]
+    },
+    "ornek_tripo_agac": {
+      "_not": "Tripo GLB sablonu (kind stylized): file'i gelen GLB yoluyla, adi biomes.json model adiyla degistir, disabled'i sil. leaf_shell istege bagli (counts LOD basina kart, 0 = yok).",
+      "disabled": true,
+      "kind": "stylized",
+      "tree": true,
+      "label": "Tripo stilize agac (sablon)",
+      "license": "Tripo (sahibin hesabi, ticari)",
+      "source": { "dir": "game/assets/models/kaya", "file": "kaya.glb" },
+      "height": 5.0,
+      "grade": { "hue": 0.0, "sat": 1.0, "val": 1.0 },
+      "materials": { "m0": { "roughness": 0.85 } },
+      "leaf_shell": { "albedo": "progress/bitki/render/agac_atlas.png", "normal": "progress/bitki/render/agac_atlas_normal.png",
+                      "grid": 3, "tiles": [[0, 0], [1, 0], [2, 0], [0, 1], [1, 1]], "counts": [500, 180, 0],
+                      "size": [0.5, 0.9], "offset": 0.05, "crown_start": 0.45, "seed": 7, "max_tex": 1024 },
+      "lods": [ { "tris": 8000, "tex": 1024 }, { "tris": 3500, "tex": 512 }, { "tris": 1200, "tex": 256 } ]
+    }
+  }
+}

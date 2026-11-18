@@ -90,15 +90,6 @@
         }
       }
     },
-    "res://assets/models/agac/agac.glb": {
-      "id": "agac",
-      "normalScale": 1.0,
-      "surfaces": {
-        "tripo_material_ab01422b-b3b0-4c29-afd4-0106c4f4f4ca": {
-          "albedo": "res://assets/models/agac/pbr/agac_albedo.png"
-        }
-      }
-    },
     "res://assets/models/kova/kova.glb": {
       "id": "kova",
       "normalScale": 1.0,
@@ -116,72 +107,6 @@
           "albedo": "res://assets/models/salgam/pbr/salgam_albedo.png",
           "normal": "res://assets/models/salgam/pbr/salgam_normal.png",
           "orm": "res://assets/models/salgam/pbr/salgam_orm.png"
-        }
-      }
-    },
-    "res://assets/models/turuncu_agac/turuncu_agac.glb": {
-      "id": "turuncu_agac",
-      "normalScale": 1.0,
-      "surfaces": {
-        "tripo_material_ce10f6ea-2da0-49d9-bb99-924d37015762": {
-          "albedo": "res://assets/models/turuncu_agac/pbr/turuncu_agac_albedo.png",
-          "normal": "res://assets/models/turuncu_agac/pbr/turuncu_agac_normal.png",
-          "orm": "res://assets/models/turuncu_agac/pbr/turuncu_agac_orm.png"
-        }
-      }
-    },
-    "res://assets/models/cali/cali.glb": {
-      "id": "cali",
-      "normalScale": 1.0,
-      "surfaces": {
-        "tripo_material_d555cf49-06b7-46f1-bcd3-60accb8ec254": {
-          "albedo": "res://assets/models/cali/pbr/cali_albedo.png",
-          "normal": "res://assets/models/cali/pbr/cali_normal.png",
-          "orm": "res://assets/models/cali/pbr/cali_orm.png"
-        }
-      }
-    },
-    "res://assets/models/ot/ot.glb": {
-      "id": "ot",
-      "normalScale": 1.0,
-      "surfaces": {
-        "tripo_material_7ce835e7-4932-4b66-a3b3-92c7a79e3db7": {
-          "albedo": "res://assets/models/ot/pbr/ot_albedo.png",
-          "normal": "res://assets/models/ot/pbr/ot_normal.png",
-          "orm": "res://assets/models/ot/pbr/ot_orm.png"
-        }
-      }
-    },
-    "res://assets/models/bugday/bugday.glb": {
-      "id": "bugday",
-      "normalScale": 1.0,
-      "surfaces": {
-        "tripo_material_22cbca48-e30c-41fd-bbe6-8da2dc0c6092": {
-          "albedo": "res://assets/models/bugday/pbr/bugday_albedo.png",
-          "normal": "res://assets/models/bugday/pbr/bugday_normal.png",
-          "orm": "res://assets/models/bugday/pbr/bugday_orm.png"
-        }
-      }
-    },
-    "res://assets/models/cicek/cicek.glb": {
-      "id": "cicek",
-      "normalScale": 1.0,
-      "surfaces": {
-        "tripo_material_210feef8-15b6-41df-a1f9-fb5ef2ec4422": {
-          "albedo": "res://assets/models/cicek/pbr/cicek_albedo.png",
-          "normal": "res://assets/models/cicek/pbr/cicek_normal.png",
-          "orm": "res://assets/models/cicek/pbr/cicek_orm.png"
-        }
-      }
-    },
-    "res://assets/models/egrelti/egrelti.glb": {
-      "id": "egrelti",
-      "normalScale": 1.0,
-      "surfaces": {
-        "tripo_material_fcf7c01a-c436-42c1-ba05-9c989438b141": {
-          "albedo": "res://assets/models/egrelti/pbr/egrelti_albedo.png",
-          "normal": "res://assets/models/egrelti/pbr/egrelti_normal.png",
-          "orm": "res://assets/models/egrelti/pbr/egrelti_orm.png"
         }
       }
     }

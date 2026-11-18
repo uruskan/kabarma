@@ -1,0 +1,38 @@
+{
+  "name": "koknar",
+  "label": "Koknar (Fab Fir trees pack, Christmas tree LOD1; Sis Korusu icin)",
+  "kind": "plant",
+  "source": {
+    "dir": "F:/Assets/SourceWorld/vegetation",
+    "file": "fir_01.glb"
+  },
+  "license": "Fab Standard (Fir trees pack, sahibin Fab kutuphanesi), sahip dogrulamali",
+  "height_target": 9.0,
+  "lods": [
+    {
+      "path": "res://assets/models/koknar/koknar.glb",
+      "tris": 6633,
+      "tex": 1024,
+      "surfaces": 2
+    },
+    {
+      "path": "res://assets/models/koknar/koknar_lod1.glb",
+      "tris": 3000,
+      "tex": 512,
+      "surfaces": 2
+    },
+    {
+      "path": "res://assets/models/koknar/koknar_lod2.glb",
+      "tris": 1100,
+      "tex": 256,
+      "surfaces": 2
+    }
+  ],
+  "size_m": [
+    5.076,
+    4.869,
+    9.0
+  ],
+  "hull_points": 64,
+  "tris": 6633
+}
