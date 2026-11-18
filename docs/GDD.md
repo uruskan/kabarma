@@ -449,7 +449,7 @@ Sayılar `data/atalar.json`'da; kural `src/Kabarma.Sim/Ata*.cs`, Godot katmanı 
   - **Aşama 3:** Çıplak ve hızlıdır. Hücumda arenanın taş sütununa toslarsa sersemler; sersemken aldığı hasar artar.
 - **Boynuzlu Dede:**
   - **Aşama 1:** Dallardan koruyucular düşer; sis koyulaşır.
-  - **Aşama 2:** Yerden kök dalgası halkaları yayılır; zıplayan oyuncuya değmez. Boynuzdaki iki ışıyan kovan zayıf noktadır: kırılan kovan Dede'yi sersemletir.
+  - **Aşama 2:** Yerden kök dalgası halkaları yayılır; zıplayan oyuncuya değmez. Her dalgadan sonra boynuzdaki iki kovan birkaç saniye ışır. Işıyan kovan zayıf noktadır: kırılan kovan Dede'yi sersemletir.
   - **Aşama 3:** Boynuz kırılır ve parçaları yere düşer. Parçalar Çekim'le alınıp Dede'ye fırlatılınca büyük hasar verir. Silah hasarı azalır.
 - **Kural:** Özel mekanikler dövüşü hızlandırır, kapı değildir. Her aşama Tırpan Işını ya da Çivi Tabancası ile tek başına bitirilebilir.
 - **Ödül:** Çekirdek ve ganimet çantaya girer. Mühür, ulti ve açılan içerik Sim'deki Ata ilerlemesine yazılır. Mühür etkisinin oranını tarım ve yapı kuralları buradan okur.
@@ -589,6 +589,7 @@ Ayrı bir dünya türüdür; ortak oyun dünyalarında PvP yoktur.
 | 14 | Çivi | Tezgâh'ta Çivi Tabancası ve Çivi yap |
 | 15 | Kasa | Paketleme Tezgâhı kur, kasa doldur; Tezgâh'ta El Arabası yap, kasayı onunla rampaya götür, sat |
 | 16 | Barınak | Temel, duvar, kapı kasası ve Ahşap Kapı, çatı; içine Uyku Tulumu |
+| 17 | Katalog | Kargo Rampası terminalinden Katalog'u aç, satıştan gelen Krediyle Şalgam Tohumu paketi al; kapsül Ocak'ın yanına iner, E ile aç (M2, §13) |
 
 - **Suna'nın seslendirilen replikleri tuş adı içermez.** Tuşlar değiştirilebilir; yönlendirme ekrandaki adım satırında son kullanılan aygıtın glifiyle yazılır ([SANAT-SES.md](SANAT-SES.md) §10.3).
 - **Çıraklık zinciri:** Defter'deki ilk zincir ilk iki saati taşır.

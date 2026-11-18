@@ -41,6 +41,7 @@ public partial class Bot : Node
         RegisterBuild();     // Bot.Build.cs: odun, yapi
         RegisterIlkgun();    // Bot.Ilkgun.cs: ilk gun (GDD 24): mine (kapak), tezgah, tarla, agil, gidak, night (agil kapisi)
         RegisterZincir();    // Bot.Zincir.cs (entegrasyon): yemek, firin, civi, kasa, barinak
+        RegisterMarket();    // Bot.Market.cs (ekonomi2): katalog (rampadan tohum al, kapsulu ac)
         RegisterUretim();    // Bot.Uretim.cs (zincir M2): arastir_t2 (--test=zincir; senaryoda yok)
         _steps["end"] = StepEnd;
         RegisterCoop();      // Bot.Coop.cs (ortak): --test=coop'ta butun adimlar ortak bot
