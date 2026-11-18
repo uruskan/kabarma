@@ -214,7 +214,8 @@ public partial class SavasTest : Node
 
         // Bozuk: yerde kutuk varsa Cekim'le al ve firlat.
         bool logFlying = GetTree().GetNodesInGroup("azman_flying").Count > 0;
-        if (id == "azman_bozuk" && !riderNear && !logFlying && !(a.Telegraphing || a.Acting != "") && ThrowLog(a)) return;
+        bool tooClose = dist < a.Def.Radius + 4.5f; // Azman dibindeyse once uzaklas (govde degmesi)
+        if (id == "azman_bozuk" && !riderNear && !logFlying && !tooClose && !(a.Telegraphing || a.Acting != "") && ThrowLog(a)) return;
         if (_d.Capa.Held != null) { Release(); _d.Capa.Drop(); }
 
         Head(Capa.Head.Tirpan);
