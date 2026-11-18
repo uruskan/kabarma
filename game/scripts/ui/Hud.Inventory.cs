@@ -203,6 +203,7 @@ public partial class Hud
             if (JP("ui_left", "move_left")) CraftCountStep(-1);
             else if (JP("ui_right", "move_right")) CraftCountStep(1);
         }
+        else if (_invPage == 1) DefterInput(); // Hud.Mastery.cs: Defter alt sekmeleri
         else if (_invPage == 0)
         {
             if (JP("ui_left", "move_left")) InventoryMove(-1, 0);
@@ -277,6 +278,7 @@ public partial class Hud
             : "YÖN TUŞLARI: SEÇ   ·   ENTER: KULLAN   ·   1–8: KEMER YUVASI   ·   SÜRÜKLE: KEMERE   ·   SHIFT+TIK: HIZLI AKTAR   ·   TAB / E / ESC: KAPAT";
         if (StationOpen) keys = _padLast ? "D-PAD: SATIR   ·   A: SIRAYA EKLE   ·   X / B: KAPAT" : "1–9 YA DA TIK: SIRAYA EKLE   ·   SÜRÜKLE: KEMERE   ·   E / ESC: KAPAT";
         if (_invPage == CraftPage) keys = _padLast ? "D-PAD ↑↓: TARİF   ·   ←→: ADET   ·   A: ÜRET   ·   X / B: KAPAT" : "TIK: SEÇ   ·   ÇİFT TIK / ENTER: ÜRET   ·   1–9: SATIRI ÜRET   ·   ←→: ADET   ·   TAB / E / ESC: KAPAT";
+        if (_invPage == 1) keys = _padLast ? "←→: SEKME   ·   ↑↓: SATIR   ·   A: TAKİP ET   ·   LB / RB: SAYFA   ·   X / B: KAPAT" : "←→: SEKME   ·   ↑↓: SATIR   ·   ENTER: TAKİP ET   ·   Q: SAYFA   ·   TAB / E / ESC: KAPAT";
         CentreText(keys, T.DesignH - 20, T.Data.Type.Caption, T.A(T.Ink, 0.7f), true, true);
         if (_invPage == CraftPage) { PaintCraft(); return; } // Hud.Craft.cs
         if (_invPage != 0) return;

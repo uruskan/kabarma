@@ -69,7 +69,7 @@ public partial class Zipzip
             if (d != null && d.DayEats && new Vector2(goal.X - pos.X, goal.Z - pos.Z).Length() < 0.4f)
             {
                 _eatT += dt * slow;
-                if (_eatT >= Def.EatSeconds) { _dir.State.Farm.Eat(h.Crop.Plot.X, h.Crop.Plot.Y); _eatT = 0; }
+                if (_eatT >= Def.EatSeconds) { _dir.State.Farm.PestBite(h.Crop.Plot.X, h.Crop.Plot.Y); _eatT = 0; } // tarim M2: isirik, D ve Korkuluk (GDD 8.2)
             }
         }
         else

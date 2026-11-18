@@ -21,7 +21,7 @@ public sealed class Rng
 /// Her yuva kaliteyi (★1-3, GDD 8 hasat, GDD 13 fiyat) tasir: yalniz ayni kimlik ve ayni ★ ust uste biner.
 /// Kalitesi olmayan esya ★1'dir. Count ve Remove butun kaliteleri kapsar; harcama once dusuk ★'dan.
 /// </summary>
-public sealed class Inventory
+public sealed partial class Inventory
 {
     /// <summary>Kalitesi belirtilmeyen esya (kaynak, ara urun, yemek): ★1.</summary>
     public const int BaseStars = 1;

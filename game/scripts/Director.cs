@@ -101,13 +101,17 @@ public partial class Director : Node3D
         // Tas Firin artik Insa basligiyla kurulan bir istasyon (M1).
         Build = BuildBridge.TryCreate(this);
         SetupPens(); // Director.Pen.cs: agil, kapilar, Yemlik, Folluk (yapi setinden sonra)
+        InitAtalar(); // boss/Director.Ata.cs: Ata Taslari, arenalar, Ata dovusu (GDD §18.1)
 
         State.Scenario.StepChanged += OnStepChanged;
         WireScenario(); // Director.Scenario.cs: olay -> adim sayaci
         InitEconomy();  // Director.Economy.cs: odeme, kargo, yerlestirilebilirler
+        InitPower();    // power/Director.Power.cs: guc agi, Kablo, sinyal (guc akisi)
         WireNightAndDay(); // Director.Calendar.cs: takvim, uyku, Defter olaylari
+        WireProgress();    // Director.Progress.cs: Ustalik XP'si, is emri olculeri, basarim ve odul bildirimleri
         State.Farm.Eaten += p => { GD.Print($"EATEN plot {p.X},{p.Y}"); Sfx.Play("pop", FarmView.CellCenter(p.X, p.Y), -2f); };
         Pod.BeginHatchIntro(this); // Pod.Hatch.cs: kapak acilir, Suna giris repliklerini soyler (PLAN 1.4, 0:00)
+        InitNet(); // Director.Net.cs (ortak): --coop varsa NetSync; tek oyuncuda null
 
         if (Main.Args.ContainsKey("bot")) { Bot = new Bot(this); AddChild(Bot); }
         // Sinama: --look=x,y,z:tx,ty,tz sabit bir kameradan bakar (varlik denetimi goruntuleri icin).
@@ -160,6 +164,7 @@ public partial class Director : Node3D
         float realDt = (float)delta;
         if (HitStopActive()) Engine.TimeScale = Feel.Data.HitStop.TimeScale * SpeedScale; // Director.Feel.cs: gercek saatle
         else Engine.TimeScale = _slowMo * SpeedScale;
+        NetTimeScale(); // Director.Net.cs (ortak): ortak oyunda zaman yavaslamaz
         float dt = realDt; // delta zaten TimeScale ile olcekli
         _actT += dt;
 
@@ -171,13 +176,14 @@ public partial class Director : Node3D
         if (Input.IsActionJustPressed("ui_accept") && Hud.ReportOpen) CloseReport();
         TickEconomy(dt); // Director.Economy.cs: gecikmeli odeme, kasa izleme
         TickKemer(dt);   // Director.Belt.cs: elde tutulan esya, el uretim kuyrugu (karar 23)
+        TickZincir(dt);  // Director.Zincir.cs: Tarayici, Ocak basamagi, arastirma geri bildirimi (zincir M2)
 
         Capa.Process(dt, fire && !Hud.ReportOpen, firePressed && !Hud.ReportOpen);
 
         // Ekin: gunduz isik var; gece ve aksamda buyume durur (GDD 8.2 Isik).
         bool light = Phase is Act.Day or Act.Dawn or Act.Report or Act.Free;
         light = light && ClockDaylight; // Director.Calendar.cs: takvimin normal gecesinde de buyume durur
-        State.Farm.Tick(dt, light);
+        State.Farm.Tick(dt * State.Mastery.Mult("crop_growth"), light); // Ustalik: Cabuk Filiz
         State.Scenario.SetProgress("grow", State.Farm.MatureCount);
 
         // Gidak yakinsa ipucu

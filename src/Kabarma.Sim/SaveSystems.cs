@@ -78,25 +78,49 @@ public sealed partial class FoodBuffs
     }
 }
 
+/// <summary>Istasyon kuyrugunun bir isi (zincir M2: istasyon basina cok is).</summary>
+public sealed class StationJobSave
+{
+    public string Recipe { get; set; } = "";
+    public int Left { get; set; }
+    public List<string?> Fuel { get; set; } = new();
+}
+
 public sealed class StationQueueSave
 {
     public string Station { get; set; } = "";
+    /// <summary>Ilk isin tarifi (M1 bicimi; Jobs bossa tek is olarak okunur).</summary>
     public string? Active { get; set; }
     public float Progress { get; set; }
     public int Queued { get; set; }
     public List<string?> Fuel { get; set; } = new();
+    /// <summary>Butun isler, sirasiyla (zincir M2).</summary>
+    public List<StationJobSave> Jobs { get; set; } = new();
 }
 
 public sealed partial class StationQueue
 {
-    public StationQueueSave Save() => new() { Station = Station, Active = Active?.Id, Progress = Progress, Queued = Queued, Fuel = _fuel.ToList() };
+    public StationQueueSave Save() => new()
+    {
+        Station = Station, Active = Active?.Id, Progress = Progress, Queued = Queued, Fuel = _jobs.Count > 0 ? _jobs[0].Fuel.ToList() : new(),
+        Jobs = _jobs.Select(j => new StationJobSave { Recipe = j.Recipe.Id, Left = j.Left, Fuel = j.Fuel.ToList() }).ToList(),
+    };
+
     public void Load(StationQueueSave s)
     {
-        Active = s.Active == null ? null : _data.Tool.Recipes.FirstOrDefault(r => r.Id == s.Active && r.Station == Station);
-        Queued = Active == null ? 0 : s.Queued;
-        Progress = Active == null ? 0 : s.Progress;
-        _fuel.Clear();
-        if (Active != null) _fuel.AddRange(s.Fuel);
+        _jobs.Clear();
+        Blocked = false;
+        var jobs = s.Jobs.Count > 0 ? s.Jobs
+            : s.Active != null ? new List<StationJobSave> { new() { Recipe = s.Active, Left = s.Queued, Fuel = s.Fuel } } : new();
+        foreach (var j in jobs)
+        {
+            var r = _data.Tool.Recipes.FirstOrDefault(x => x.Id == j.Recipe && x.Station == Station);
+            if (r == null || j.Left <= 0) continue;
+            var job = new Job { Recipe = r, Left = j.Left };
+            job.Fuel.AddRange(j.Fuel);
+            _jobs.Add(job);
+        }
+        Progress = _jobs.Count == 0 ? 0 : s.Progress;
     }
 }
 
@@ -242,12 +266,22 @@ public sealed class ChainSave
     public bool Opened { get; set; }
     public SortedDictionary<string, int> Counts { get; set; } = new(StringComparer.Ordinal);
     public List<bool> Done { get; set; } = new();
+    /// <summary>"farkli" olculerin gorulen anahtarlari (ilerleme akisi).</summary>
+    public SortedDictionary<string, List<string>> Keys { get; set; } = new(StringComparer.Ordinal);
 }
 
 public sealed class OrdersSave
 {
     public bool DefterOpen { get; set; }
     public List<ChainSave> Chains { get; set; } = new();
+    // ilerleme akisi
+    public string PinnedId { get; set; } = "";
+    public List<string> Pending { get; set; } = new();
+    public List<string> Granted { get; set; } = new();
+    public SortedDictionary<string, int> Stats { get; set; } = new(StringComparer.Ordinal);
+    public SortedDictionary<string, List<string>> StatKeys { get; set; } = new(StringComparer.Ordinal);
+    public int CreditsPaid { get; set; }
+    public int VeriPaid { get; set; }
 }
 
 public sealed partial class ChainState
@@ -257,6 +291,7 @@ public sealed partial class ChainState
         Id = Def.Id, Opened = Opened,
         Counts = new SortedDictionary<string, int>(Counts, StringComparer.Ordinal),
         Done = _done.ToList(),
+        Keys = new SortedDictionary<string, List<string>>(Keys.ToDictionary(k => k.Key, k => k.Value.OrderBy(x => x, StringComparer.Ordinal).ToList()), StringComparer.Ordinal),
     };
 
     public void Load(ChainSave s)
@@ -265,15 +300,32 @@ public sealed partial class ChainState
         Counts.Clear();
         foreach (var (k, v) in s.Counts) Counts[k] = v;
         for (int i = 0; i < _done.Length; i++) _done[i] = i < s.Done.Count && s.Done[i];
+        Keys.Clear();
+        foreach (var (k, v) in s.Keys) Keys[k] = new HashSet<string>(v);
     }
 }
 
 public sealed partial class OrderBook
 {
-    public OrdersSave Save() => new() { DefterOpen = DefterOpen, Chains = _chains.Select(c => c.Save()).ToList() };
+    public OrdersSave Save() => new()
+    {
+        DefterOpen = DefterOpen, Chains = _chains.Select(c => c.Save()).ToList(),
+        PinnedId = PinnedId, Pending = _pending.ToList(), Granted = Granted.OrderBy(x => x, StringComparer.Ordinal).ToList(),
+        Stats = new SortedDictionary<string, int>(Stats, StringComparer.Ordinal),
+        StatKeys = new SortedDictionary<string, List<string>>(StatKeys.ToDictionary(k => k.Key, k => k.Value.OrderBy(x => x, StringComparer.Ordinal).ToList()), StringComparer.Ordinal),
+        CreditsPaid = CreditsPaid, VeriPaid = VeriPaid,
+    };
+
+    /// <summary>Sessiz yukleme: olay yaymaz, odeme yapmaz.</summary>
     public void Load(OrdersSave s)
     {
         DefterOpen = s.DefterOpen;
+        PinnedId = s.PinnedId ?? "";
+        _pending.Clear(); _pending.AddRange(s.Pending ?? new());
+        Granted.Clear(); foreach (var g in s.Granted ?? new()) Granted.Add(g);
+        Stats.Clear(); foreach (var (k, v) in s.Stats ?? new()) Stats[k] = v;
+        StatKeys.Clear(); foreach (var (k, v) in s.StatKeys ?? new()) StatKeys[k] = new HashSet<string>(v);
+        CreditsPaid = s.CreditsPaid; VeriPaid = s.VeriPaid;
         foreach (var c in s.Chains) Chain(c.Id)?.Load(c);
     }
 }

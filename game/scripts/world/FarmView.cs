@@ -22,10 +22,12 @@ public partial class FarmView : Node3D
         farm.Watered += p => View(p)?.OnWatered();
         farm.Swelled += p => View(p)?.OnSwelled();
         farm.Eaten += p => View(p)?.OnEaten();
-        farm.Harvested += p => View(p)?.OnEaten(); // bicilen ekin tarladan kalkar (parca efekti ayni)
+        // bicilen ekin tarladan kalkar (parca efekti ayni); kalici cali yerinde kalir, Genc evreye doner (tarim M2)
+        farm.Harvested += p => { if (p.Planted) View(p)?.OnRegrow(); else View(p)?.OnEaten(); };
         // GDD 8.4: safakta sonme saati baslar; 1 gun icinde toplanmayan kabarik urun soner.
         farm.Deflated += p => View(p)?.OnDeflated();
         Events.Dawn += farm.OnDawn;
+        InitTarim(); // FarmView.Tarim.cs: yabani bitkiler, isirik, Korkuluk/kovan taramasi, tohum secimi, bilgi karti
     }
 
     /// <summary>Vurus hissi (Capa.Feel.cs) icin: tarla Director'un cocugu.</summary>
@@ -79,11 +81,12 @@ public partial class PlotView : Node3D
     public PlotView(Plot p, FarmView owner)
     {
         Plot = p; _owner = owner;
+        _soilMat = MeshKit.NewLiveMaterial();
+        if (p.Wild) return; // yabani bitki: surulmus toprak yok
         var kit = new MeshKit();
         kit.Pillow(new Vector3(0.94f, 0.22f, 0.94f), MeshKit.At(0, 0.0f, 0), Palette.Soil, 0.3f, 10, 4);
         kit.Pillow(new Vector3(0.7f, 0.08f, 0.16f), MeshKit.At(0, 0.1f, -0.22f), Palette.Soil.Lerp(Palette.Wood, 0.3f), 0.4f, 8, 4);
         kit.Pillow(new Vector3(0.7f, 0.08f, 0.16f), MeshKit.At(0, 0.1f, 0.22f), Palette.Soil.Lerp(Palette.Wood, 0.3f), 0.4f, 8, 4);
-        _soilMat = MeshKit.NewLiveMaterial();
         _soilMat.SetShaderParameter("rim", 0f);
         _soil = kit.Instance(_soilMat);
         AddChild(_soil);
@@ -92,10 +95,19 @@ public partial class PlotView : Node3D
 
     public void OnPlanted()
     {
+        if (_crop != null) { _crop.QueueFree(); _crop = null; _cropSw = null; _cropMat = null; }
         _crop = new Node3D();
         AddChild(_crop);
-        var model = Assets.Load("res://assets/models/salgam/salgam.glb");
-        if (model != null)
+        bool turnip = Plot.Crop is null or "turnip";
+        // Salgam altin modeli; Alaca salgam ve diger ekinler koddan (tint alir; FarmView.Meshes.cs, YER TUTUCU)
+        var model = turnip && Plot.Alaca == null ? Assets.Load("res://assets/models/salgam/salgam.glb") : null;
+        if (!turnip)
+        {
+            _cropMat = MeshKit.NewLiveMaterial();
+            _cropMesh = CropVisuals.Make(Plot.Crop!, _cropMat);
+            _cropMesh.Rotation = new Vector3(0, (float)GD.RandRange(0, Mathf.Tau), 0);
+        }
+        else if (model != null)
         {
             // Yumru yarisi toprakta; her salgam biraz farkli doner.
             model.Position = new Vector3(0, -0.1f, 0);
@@ -112,7 +124,24 @@ public partial class PlotView : Node3D
             _cropMesh = kit.Instance(_cropMat);
         }
         _crop.AddChild(_cropMesh);
-        _crop.Scale = Vector3.One * 0.15f;
+        _crop.Scale = Vector3.One * (Plot.Wild ? 1f : 0.15f);
+        if (Plot.Alaca != null) _cropMat?.SetShaderParameter("tint", CropVisuals.AlacaTint(Plot.Alaca)); // GDD 8.3 Alaca gorunusu
+    }
+
+    /// <summary>Kalici cali bicildi: yerinde kalir, Genc boya iner (tarim M2).</summary>
+    public void OnRegrow()
+    {
+        if (_crop == null) return;
+        Fx.Burst(_crop.GlobalPosition + Vector3.Up * 0.5f, CropVisuals.ProduceColor(Plot.Crop), 14, 4f, 0.1f, 0.5f);
+        _owner.Capa?.FeelHit("bicme_ekin", _crop.GlobalPosition + Vector3.Up * 0.3f, Palette.Plant, squash: this);
+    }
+
+    /// <summary>Gunduz zararlisi isirdi (tarim M2): yaprak parcasi, kucuk sarsinti.</summary>
+    public void OnBitten()
+    {
+        if (_crop == null) return;
+        Fx.Burst(_crop.GlobalPosition + Vector3.Up * 0.4f, Palette.Plant, 6, 2.5f, 0.07f, 0.4f);
+        _flash = 0.25f;
         // Ekme efekti Capa.Toprak'ta: feel.json sources.toprak_ekim.
     }
 
@@ -141,7 +170,7 @@ public partial class PlotView : Node3D
     {
         if (_crop != null)
         {
-            Fx.Burst(_crop.GlobalPosition + Vector3.Up * 0.5f, Palette.TurnipBody, 22, 5f, 0.12f, 0.6f);
+            Fx.Burst(_crop.GlobalPosition + Vector3.Up * 0.5f, CropVisuals.ProduceColor(Plot.Crop), 22, 5f, 0.12f, 0.6f);
             Fx.Burst(_crop.GlobalPosition + Vector3.Up * 0.5f, Palette.TurnipTop, 12, 4f, 0.1f, 0.6f);
             _crop.QueueFree();
             _crop = null;

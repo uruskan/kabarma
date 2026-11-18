@@ -1,6 +1,6 @@
 {
   "_not": "Atalar (GDD §18, §18.1; ICERIK §4.1). M2: Koca Pofuduk ve Boynuzlu Dede. Arena merkezi [x, z] dunyada (Ocak 0,0); tas ve sutunlar merkeze gore. Can ekip boyuyla 1 + teamHpPerExtra × (n − 1). Asama, can orani hpUntil altina inene dek surer. Hasar sayilari M1 silahlarina gore (Tirpan 14 / 0,42 sn ~ 33 hasar/sn).",
-  "_not_kimlik": "Adak ve odul kimlikleri: wool (Yun, hayvan akisi), iron_ingot (Demir Kulce), resin (Recine), mushroom (Mantar, tarim akisi) henuz main'de yok; kendi akislari ayni kimligi yazmali ya da burasi duzeltilir.",
+  "_not_kimlik": "Adak kimlikleri diger akislarla ayni: yun (hayvan), iron_ingot (zincir, Demirci Ocagi), resin (dunya2), kabarik turnip ve mushroom (tarim). Kabarik urun Cekim ile sunaga birakilir.",
   "teamHpPerExtra": 0.5,
   "phaseShiftSeconds": 1.5,
   "arriveSeconds": 2.5,
@@ -15,7 +15,7 @@
       "offeringName": "Dev Yemlik",
       "offering": [
         { "item": "turnip", "count": 5, "swollen": true },
-        { "item": "wool", "count": 10 },
+        { "item": "yun", "count": 10 },
         { "item": "copper_ingot", "count": 20 }
       ],
       "hp": 1400,
@@ -24,9 +24,9 @@
       "scale": 3.6,
       "add": "mini_pofuduk",
       "phases": [
-        { "name": "Hücum", "hpUntil": 0.66, "moveSpeed": 2.4, "contactDamage": 12, "attacks": ["charge", "volley"], "attackEvery": 3.6, "telegraph": 1.0, "attackDamage": 18, "chargeSpeed": 13, "chargeSeconds": 1.3, "volleyCount": 3, "volleySpeed": 9, "knockback": 8 },
-        { "name": "Yün Dökümü", "hpUntil": 0.33, "moveSpeed": 1.8, "contactDamage": 10, "attacks": ["volley"], "attackEvery": 4.2, "telegraph": 0.8, "attackDamage": 6, "volleyCount": 4, "volleySpeed": 8, "knockback": 7, "addCount": 2, "addEvery": 7, "addMax": 4, "armor": 0.6, "shearPerHit": 0.15, "burnPerSecond": 0.05 },
-        { "name": "Çıplak", "hpUntil": 0, "moveSpeed": 3.6, "contactDamage": 14, "attacks": ["charge"], "attackEvery": 2.8, "telegraph": 0.8, "attackDamage": 20, "chargeSpeed": 17, "chargeSeconds": 1.1, "stunSeconds": 4, "stunMult": 2 }
+        { "name": "Hücum", "hpUntil": 0.66, "moveSpeed": 2.4, "contactDamage": 8, "attacks": ["charge", "volley"], "attackEvery": 3.6, "telegraph": 1.0, "attackDamage": 15, "chargeSpeed": 13, "chargeSeconds": 1.3, "volleyCount": 3, "volleyDamage": 5, "volleySpeed": 9, "knockback": 8 },
+        { "name": "Yün Dökümü", "hpUntil": 0.33, "moveSpeed": 1.8, "contactDamage": 8, "attacks": ["volley"], "attackEvery": 4.2, "telegraph": 0.8, "volleyCount": 4, "volleyDamage": 4, "volleySpeed": 8, "knockback": 7, "addCount": 2, "addEvery": 7, "addMax": 4, "armor": 0.6, "shearPerHit": 0.15, "burnPerSecond": 0.05 },
+        { "name": "Çıplak", "hpUntil": 0, "moveSpeed": 3.6, "contactDamage": 10, "attacks": ["charge"], "attackEvery": 2.8, "telegraph": 0.9, "attackDamage": 16, "chargeSpeed": 17, "chargeSeconds": 1.1, "stunSeconds": 4, "stunMult": 2 }
       ],
       "reward": {
         "items": [ { "item": "cayir_cekirdegi", "count": 1 }, { "item": "ata_yunu", "count": 3 } ],
@@ -54,9 +54,9 @@
       "scale": 1.0,
       "add": "koru_bekcisi",
       "phases": [
-        { "name": "Koru Taşıyan", "hpUntil": 0.66, "moveSpeed": 1.6, "contactDamage": 12, "attacks": ["volley"], "attackEvery": 4.0, "telegraph": 0.9, "attackDamage": 7, "volleyCount": 3, "volleySpeed": 8, "knockback": 4, "addCount": 2, "addEvery": 8, "addMax": 4, "fog": 3 },
-        { "name": "Kök Dalgası", "hpUntil": 0.33, "moveSpeed": 1.4, "contactDamage": 12, "attacks": ["rootwave"], "attackEvery": 4.5, "telegraph": 1.0, "attackDamage": 12, "waveSpeed": 7, "waveRadius": 16, "waveWidth": 1.2, "knockback": 5, "weakPoints": 2, "weakPointHp": 70, "stunSeconds": 5, "stunMult": 2, "fog": 1.5 },
-        { "name": "Kırık Boynuz", "hpUntil": 0, "moveSpeed": 2.2, "contactDamage": 14, "attacks": ["volley"], "attackEvery": 3.8, "telegraph": 0.8, "attackDamage": 8, "volleyCount": 4, "volleySpeed": 9, "knockback": 5, "weaponMult": 0.5, "shards": 3, "shardDamage": 120, "stunSeconds": 1.5, "stunMult": 1 }
+        { "name": "Koru Taşıyan", "hpUntil": 0.66, "moveSpeed": 1.6, "contactDamage": 9, "attacks": ["volley"], "attackEvery": 4.0, "telegraph": 0.9, "volleyCount": 3, "volleyDamage": 5, "volleySpeed": 8, "knockback": 4, "addCount": 2, "addEvery": 8, "addMax": 4, "fog": 3 },
+        { "name": "Kök Dalgası", "hpUntil": 0.33, "moveSpeed": 1.4, "contactDamage": 9, "attacks": ["rootwave"], "attackEvery": 4.5, "telegraph": 1.0, "attackDamage": 10, "waveSpeed": 7, "waveRadius": 16, "waveWidth": 1.2, "knockback": 5, "weakPoints": 2, "weakPointHp": 70, "weakWindow": 4, "stunSeconds": 5, "stunMult": 2, "fog": 1.5 },
+        { "name": "Kırık Boynuz", "hpUntil": 0, "moveSpeed": 2.2, "contactDamage": 10, "attacks": ["volley"], "attackEvery": 3.8, "telegraph": 0.8, "volleyCount": 4, "volleyDamage": 5, "volleySpeed": 9, "knockback": 5, "weaponMult": 0.5, "shards": 3, "shardDamage": 120, "stunSeconds": 1.5, "stunMult": 1 }
       ],
       "reward": {
         "items": [ { "item": "koru_cekirdegi", "count": 1 }, { "item": "dede_boynuzu", "count": 2 } ],
@@ -68,8 +68,8 @@
   ],
   "_adds": "Yardimci yaratiklar. Yer tutucu: Koca Pofuduk'un kucuk Pofuduklari olcekli pofuduk modeli; Dede'nin dallarindan dusen Findikci ve Hu, yaratik2 akisi gercegini yazana dek koddan 'bekci'.",
   "adds": [
-    { "id": "mini_pofuduk", "name": "Yün Yumağı", "hp": 30, "speed": 3.2, "damage": 6, "scale": 0.55, "look": "pofuduk", "placeholder": "olcekli pofuduk.glb" },
-    { "id": "koru_bekcisi", "name": "Koru Bekçisi", "hp": 26, "speed": 3.6, "damage": 5, "scale": 1.0, "look": "kod", "placeholder": "Findikci ve Hu yerine koddan model (yaratik2 akisi)" }
+    { "id": "mini_pofuduk", "name": "Yün Yumağı", "hp": 30, "speed": 3.2, "damage": 4, "scale": 0.55, "look": "pofuduk", "placeholder": "olcekli pofuduk.glb" },
+    { "id": "koru_bekcisi", "name": "Koru Bekçisi", "hp": 26, "speed": 3.6, "damage": 4, "scale": 1.0, "look": "kod", "placeholder": "Findikci ve Hu yerine koddan model (yaratik2 akisi)" }
   ],
   "seals": [
     { "id": "bereketli_toprak", "name": "Bereketli Toprak", "effect": "bereket_tuketimi", "mult": 0.75 },

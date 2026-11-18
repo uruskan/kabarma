@@ -184,6 +184,27 @@ Oyuncu iskeletini ve animasyonlarını kullanırlar; kırmızı tulumludurlar.
 | Mekanik | Kule ve drone kurar, sabotaj yapar | Ark başlığı, tamir |
 | Müdür | Genel Merkez boss'u | Zırhlı araç, bütün başlıklar |
 
+### 3.8 Çayır ve Koru'nun gündüz tavrı (M2)
+
+[GDD.md](GDD.md) §16.2'deki arketiplerin kabarmamış, yabani hâli. Sayılar `data/creatures.json` `wild` alanında; sürü boyu ve doğma satırları `data/biomes.json` `spawns.creatures` alanında (dunya2 şeması). Etkiler (ekin kaybı, yumurta çalma, gündüz savaşı) sahibi olan sistemden geçer: ekin [GDD.md](GDD.md) §8.1 (`dayEats`), hayvan §9, savaş M3. M2'de yaratık yaklaşır, niyetini gösterir ve olayı bildirir.
+
+| Tür | Tavır | Sürü | Ne zaman | Gündüz davranışı |
+|---|---|---|---|---|
+| Gıdak | ürkek | 2–4 | gündüz | Gezinir, gagalar; koşana kaçar (ağıl davranışı hayvancılıkta) |
+| Pofuduk | sakin | 2–3 | gündüz | Otlar; vurulunca kısa kaçar |
+| Homur | yağmacı | 1–2 | gündüz | Otlar; olgun ekin görünce ona koşar; ateş edilince kaçar |
+| Zıpzıp | yağmacı | 2–3 | gündüz | Olgun ekine gelir, koklar; oyuncu yaklaşınca kaçar |
+| Çekirge Sürüsü | sürü | 1 küme | gündüz | Tek varlık; tahıl ekinine akar, üstünde döner; ateşle dağılır |
+| Sinsi | gececi | 1 | gece | Gündüz çalılıkta uyur; gece kümese ve yumurtaya sokulur |
+| Dallı | ürkek | 2–4 | gündüz | Otlar; 12 m'de başını kaldırır, 9 m'de sürü kaçar |
+| Hu | gececi | 1–2 | gece | Gündüz ağaçta uyur; gece süzülüp küçük avı kollar |
+| Vıcık | sakin | 1–2 | her zaman | Yavaş kayar, mantar otlar; arkasında iz bırakır |
+| Bozuk | yırtıcı | 1 | her zaman | Dolaşır; 14 m'de kükreyip uyarır, 8 m'de hücum edip pençe savurur |
+| Vızvız | sürü | 1 kovan + küme | gündüz | Kovan çevresinde çiçekten çiçeğe; kovana yaklaşana sokar |
+| Fındıkçı | yağmacı | 2–3 | gündüz | Ekili tohuma sokulur, yanağına doldurup kaçar |
+
+**Gövde:** Vıcık sürüngen planını, Hu kuş planını, Fındıkçı iki ayak planını, Homur, Sinsi, Dallı ve Bozuk dört ayak planını kullanır. Çekirge Sürüsü ve Vızvız kemiksiz sürü üyeleridir (tek mesh, örneklenir). Tripo modeli gelene kadar gövdeler koddan, işaretli yer tutucudur (`data/bodies.json`).
+
 ## 4. Atalar, Azmanlar, koruyucular
 
 ### 4.1 Atalar (6)
@@ -557,6 +578,10 @@ Kare Temel · Üçgen Temel · Kazık Temel · Duvar · Yarım Duvar · Alçak D
 | Meşale | 2 Odun | 6 m gece ışığı |
 | Yemlik | 6 Odun | Ağılda; içine yem konur |
 | Folluk | 4 Odun + 4 Lif | Ağıldaki Gıdak buraya yumurtlar (6 yuva); Folluk yoksa yere |
+| Korkuluk (M2) | 4 Odun + 3 Lif, elde | 10 m içindeki ekine gündüz zararlısı gelmez ([GDD.md](GDD.md) §8.2) |
+| Suluk (M2) | 4 Odun + 2 Taş | Ağılın su ihtiyacı; Sulama başlığıyla ya da kendiliğinden yağmurla dolar (şimdilik her şafakta dolu) |
+| Kaşınma Fırçası (M2) | 3 Odun + 3 Lif | Ağıldakilerin mutluluğuna sürekli ek |
+| Arı Kovanı (M2) | 8 Odun + 2 Lif | Vızvız sürüsü yerleşir, kayıt olur; bal ve balmumu birikir |
 
 ## 11. İstasyonlar ve makineler (43)
 
@@ -575,7 +600,7 @@ Kare Temel · Üçgen Temel · Kazık Temel · Duvar · Yarım Duvar · Alçak D
 | 2 | Bıçkı | Kereste | 20 W | A |
 | 2 | Değirmen | Un, yağ | 20 W | A |
 | 2 | Dokuma Tezgâhı | Kumaş, termal kumaş | — | A |
-| 2 | Araştırma Masası | Veri harcama | — | Ata |
+| 1 | Araştırma Masası | Veri harcama | — | B |
 | 2 | Kasap Tezgâhı | Büyük leşi parçalama | — | A |
 | 2 | Kuluçka | Yumurtadan yavru | 40 W | A |
 | 2 | Araç Atölyesi | Araç ve eklenti | 60 W | A |
@@ -606,6 +631,33 @@ Kare Temel · Üçgen Temel · Kazık Temel · Duvar · Yarım Duvar · Alçak D
 | 4 | Paketleyici | Depodan kasa doldurur, rampaya yollar | 60 W | A |
 | 4 | Sondaj Kulesi | Zengin Yatak'tan sürekli cevher | 200 W | A |
 
+**Açılma sütunundaki "Ata":** Ata'nın verdiği Çekirdek Ocak'ı bir basamak yükseltir ([GDD.md](GDD.md) §6, §12); istasyon o basamakta açılır. Demirci Ocağı T2'de (Koca Pofuduk), Yüksek Fırın T3'te, Cam Ocağı T4'te, Kristal Kesici T5'te, Maya Dökümhanesi T6'da.
+
+**Araştırma Masası T1'dedir** (M2 belge düzeltmesi, 18 Kasım 2026): §0'da T1 araştırması 10 Veri; masa T2'de ve Ata ile açılsaydı T2'nin araştırmalı istasyonları (Bıçkı, Dokuma…) Koca Pofuduk'tan önce hiç açılamazdı. Masa Tezgâh'ta üretilir.
+
+### 11.1 T1–T2 istasyon bedelleri ve tarifleri (M2)
+
+Kimlik sütunu `game/data/recipes.json` ve `placeables.json` içindeki kimliktir; başka akışlar bu kimlikleri kullanır. Hepsi Tezgâh'ta üretilir. Watt'lar güç ağı main'e girene kadar uygulanmaz (istasyon güçsüz çalışır).
+
+| İstasyon | Kimlik | Bedel | Açılma | Tarifleri (girdi → ürün, süre) |
+|---|---|---|---|---|
+| Kömür Ocağı | `komur_ocagi` | 10 Taş + 10 Kil | K: ilk Kil | Odun Kömürü (`charcoal`): 2 Odun → 1, 6 sn |
+| Taş Fırın | `tas_firin` | 15 Taş + 5 Kil | B | + Kerpiç (`brick`): 2 Kil + 1 Lif → 1, 5 sn, yakıtlı |
+| Tezgâh | `tezgah` | 10 Odun + 5 Taş | B | + Bakır Tel (`copper_wire`): 1 Bakır Külçe → 2, 3 sn (K: ilk Bakır Külçe) · Filtre Maskesi (`filtre_maskesi`): 4 Kumaş + 4 Odun Kömürü + 2 Demir Külçe (A) |
+| Araştırma Masası | `arastirma_masasi` | 12 Odun + 6 Taş + 4 Bakır Tel | B | — (Veri harcanır, [GDD.md](GDD.md) §12) |
+| Demirci Ocağı | `demirci_ocagi` | 20 Taş + 10 Bakır Külçe + 5 Kil | Ata (Ocak T2) | Demir Külçe (`iron_ingot`): 2 Demir Cevheri + 1 Odun Kömürü → 1, 6 sn · Saçma (`sacma`): 1 Demir Külçe → 20, 3 sn; iş başına 1 yakıt (Odun Kömürü ya da Odun) |
+| Bıçkı | `bicki` | 5 Demir Külçe + 10 Odun + 2 Bakır Tel | A | Kereste (`plank`): 2 Odun → 1, 3 sn |
+| Değirmen | `degirmen` | 10 Kereste + 4 Demir Külçe + 10 Taş | A (Bıçkı'dan sonra) | Un (`flour`): 2 Buğday → 1, 4 sn |
+| Dokuma Tezgâhı | `dokuma_tezgahi` | 12 Odun + 4 Bakır Tel + 6 Lif | A | Kumaş (`cloth`): 3 Lif → 1, 4 sn |
+| Kasap Tezgâhı | `kasap_tezgahi` | 6 Kereste + 2 Demir Külçe | A (Bıçkı'dan sonra) | büyük leş (hayvan akışı) |
+| Kuluçka | `kulucka` | 8 Kereste + 4 Demir Külçe + 2 Bakır Tel | A (Bıçkı'dan sonra) | yumurtadan yavru (hayvan akışı) |
+| Araç Atölyesi | `arac_atolyesi` | 10 Demir Külçe + 10 Kereste + 4 Bakır Tel | A (Bıçkı ve Değirmen'den sonra) | Çekirge (yaratik2 akışı) |
+| Oyma İskelesi | `oyma_iskelesi` | 12 Kereste + 4 Demir Külçe | A (Bıçkı'dan sonra) | dev ürün → yapı (M3) |
+
+Araştırma ağacı (T2, her biri 25 Veri): Bıçkı ve Dokuma Tezgâhı köktür; Değirmen, Kasap Tezgâhı, Kuluçka ve Oyma İskelesi Bıçkı'yı; Araç Atölyesi Bıçkı ve Değirmen'i; Filtre Maskesi Dokuma Tezgâhı'nı ister.
+
+Yeni ham kaynak kimlikleri (toplama yerini dunya2 ve hayvan akışları kurar): Demir Cevheri `iron_ore`, Sert Odun `hard_wood`, Reçine `resin`, Güherçile `saltpeter`, Hurda `scrap`, Yün `yun`, Deri `deri`. Yığın: Odun Kömürü, Kerpiç, Bakır Tel, Demir Külçe, Kereste, Kumaş ve Un ara üründür (20).
+
 ## 12. Güç, sinyal ve taşıma parçaları (43)
 
 | Grup | Parça · değer · T |
@@ -618,7 +670,24 @@ Kare Temel · Üçgen Temel · Kazık Temel · Duvar · Yarım Duvar · Alçak D
 | Uyarı (2) | Siren · Sinyal Lambası |
 | Taşıma (9) | Bant · Ayırıcı · Birleştirici · Kol · Boru · Pompa · Drone İstasyonu (6 drone, 80 m) · Teleferik İstasyonu · Teleferik Direği |
 
-Sinyal parçaları T3'te (basit) ve T4'te (sensörler, kapılar) açılır. Bant ve kol T3, drone ve teleferik T5.
+Sinyal parçaları T3'te (basit) ve T4'te (sensörler, kapılar) açılır; yalnız Düğme ve Basınç Plakası T2'dedir (URETIM §6 M2 listesi; ilk güç ağını açıp kapatmak için). Bant ve kol T3, drone ve teleferik T5.
+
+**M2 bedelleri ve değerleri** (güç akışı, 18 Kasım 2026). İlk güç Koru'dan önce kurulabilsin diye Rüzgâr Gülü, Hayvan Çarkı ve dağıtım parçaları yalnız Çayır malzemesi ister (Bıçkı'nın 20 W'ı Kereste'den önce gelmeli). Akü Mk1 §20'deki bedeliyle kalır; tarifi Demir Külçe ve Ekşilik oyuna girince eklenir. Kablo iki soket arasına elle çekilir (GDD §11.1): her çekilen kablo 1 Kablo harcar, sökülünce geri verir; sinyal teli aynı Kablo'dan, ince çekilir.
+
+| Parça | Bedel (yer) | Değer |
+|---|---|---|
+| Bakır Tel (`copper_wire`) | Tezgâh: 1 Bakır Külçe → 2 | (§2.3, §11.1; zincir akışının tarifi) |
+| Kablo | Tezgâh: 1 Bakır Tel + 1 Lif → 2 | en fazla 12 m |
+| Direk | El: 4 Odun + 1 Bakır Tel | 4 soket |
+| Şalter | Tezgâh: 2 Odun + 2 Bakır Tel | ağı böler; sinyal bağlıysa sinyal > 0 iken kapalı (iletir) |
+| Rüzgâr Gülü | Tezgâh: 12 Odun + 4 Bakır Tel | 0–80 W, rüzgârla değişir |
+| Hayvan Çarkı | Tezgâh: 16 Odun + 2 Bakır Tel | 40 W, içinde hayvan varken |
+| Akü Mk1 | 5 Bakır Külçe + 5 Demir Külçe + 3 Ekşilik (§20) | 500 Wh, en fazla 200 W |
+| Elektrik Lambası (§10.2) | Tezgâh: 2 Odun + 1 Bakır Tel | 5 W, 8 m ışık; sinyal bağlıysa sinyal > 0 iken yanar |
+| Düğme | Tezgâh: 1 Odun + 1 Bakır Tel | basınca 1 sn 100 sinyal |
+| Basınç Plakası | Tezgâh: 2 Taş + 1 Bakır Tel | üstünde oyuncu ya da yaratık varken 100 sinyal |
+
+Soket: üretici, akü ve şalter 2, tüketici 1, Direk 4; sinyal teli soket saymaz. Öncelik: tüketici başına 1 (en önemli) – 5, varsayılan 3; üretim ve akü talebi karşılamazsa 5'ten başlayarak kapanır (GDD §11.1). Sigorta Kutusu M4'te, o zamana dek öncelik tüketicinin E menüsünden ayarlanır.
 
 ## 13. Kuleler (8) ve tuzaklar (8)
 
@@ -818,6 +887,24 @@ Her adım Kredi ve Veri verir. Zincirin son adımı sütundaki ödülü de verir
 
 **İş emri adım ödülleri** (1. adımdan 5. adıma): 100 · 400 · 1.500 · 6.000 · 25.000 Kredi ve 10 · 20 · 40 · 70 · 100 Veri. **KS ilk geçiş primi:** `200 × KS` Kredi.
 
+**M2 ölçü kaynakları (ilk 12 zincir; `orders.json` `measures`).** Üç kip: **toplam** (her olay sayılır), **farklı** (farklı anahtar sayısı), **tepe** (ulaşılan en yüksek değer; Defter açılınca o âna dek ulaşılan tepeyle başlar). Zincirler Defter açılınca sayar (Çıraklık baştan); Defter açılmadan biten adımın ödülü Defter açılınca toplu ödenir. Genel sayaçlar (`OrderBook.Stats`) zincirden bağımsız her zaman sayar; başarımlar onlara bakar.
+
+| Ölçü | Kip | Kim bildirir | Durum |
+|---|---|---|---|
+| `planted`, `swollen_crop`, `cargo_sold`, `kabarma_survived` | toplam | `GameState` (Farm ve Kargo olayları) | M2'de bağlı |
+| `swollen_m` `swollen_l` `swollen_xl` | toplam (M ve üstü, L ve üstü, XL) | `GameState` (Farm.Swelled) | M2'de bağlı; "ilk M" = M ya da büyüğü |
+| `crop_kind` | farklı (ekin kimliği) | `GameState` (hasat, kabarma) | M2'de bağlı |
+| `animal_registered`, `tamed_species`, `herd_size`, `animal_product` | toplam, farklı (tür), tepe (kayıtlı hayvan), toplam | `Director.Progress.cs` (`AnimalPenned`, `Laid`) | M2'de bağlı; hayvan akışı yeni olay eklerse aynı çağrıları yapar |
+| `plant_gene` | tepe (en yüksek bitki geni puanı) | tarım akışı: `Orders.Level("plant_gene", v)` | tarım bağlar |
+| `alaca_crop` | toplam | tarım akışı: `Orders.Report("alaca_crop")` | tarım bağlar |
+| `animal_gene` | tepe | hayvan akışı | hayvan bağlar |
+| `mount_m` | toplam (**metre**; hedefler 1.000, 10.000 ...) | binek (savaş hayvanları ve binek M3) | M3 |
+| `animal_kills` | toplam | savaş hayvanları | M3 |
+| `ata_defeated` | toplam | Ata akışı (boss) | boss bağlar |
+
+**Zincir ödülleri** (kart, üye, kozmetik, plan, eşya): `OrderBook.Granted` kümesine `tür:kimlik` olarak yazılır (`plan:maya_feneri`, `card:bereket`, `member:coban`, `item:semaver`, `cosmetic:duduk_kaplama`); ödülün sahibi sistem (kartlar M3, üyeler, kozmetik) bu kümeyi okuyup kendi tarafını açar. Adım ödülü Kredi ve Veri hesaba doğrudan geçer; Kargo satışı sayılmaz, Hasat Raporu'na girmez.
+
+**Başarımlar:** 48 zincirin tamamlanması (`chain_<zincir>`) + İlk Gece + Maya Hâkimi; `achievements.json`. M2'de 12 zincir + 2 = 14 tanımlı; zincirler 48'e tamamlandıkça 50'ye çıkar (`total` 50). Steam'e bağlama M6: kimlik API adı olur.
 **Borsa kategorileri (12):** Tahıl · Kök ve Kabakgil · Meyve · Baharat ve Çay · Mantar · Yağ ve Yakıt · Lif ve Kumaş · Süt, Yumurta, Bal · Et ve Deri · Maden ve Külçe · İşlenmiş Mal · Yemek. Kabarık ürün kendi ekininin kategorisinde satılır. Maya ve Holding Parçası satılmaz.
 
 **Satış taban fiyatları** (birim başına, kalite ★1):
@@ -865,6 +952,9 @@ Her kademede iki özellikten biri seçilir (A / B).
 | **Savaş** | Keskin Nişan: kritik +%5 / Kalın Deri: can +15 | Hızlı Dolum: başlık anında değişir / Soğukkanlı: hasar alınca Gösteri düşmez | Zayıf Nokta: kese hasarı ×2,5 / İnatçı: baygınlık süresi 45 sn | Yenileme +1 / Sürgün +1 | Cephanelik: gündüz cephane harcanmaz / İlk Kart: gecenin ilk kartı 2. rütbeden başlar |
 | **Sürüş** | Hafif Ayak: yakıt −%20 / Sağlam Kasa: araç canı +%25 | Yol Tutuş: araç zor devrilir / Çekici: römork kapasitesi +%50 | Gazcı: araç hızı +%10 / Ezici: ezme hasarı ×2 | Tamir Çantası: sürerken araç onarılır / Vinç Ustası: vinç iki kat hızlı, XL kaldırır | Kaskadör: araç havadayken Gösteri kazanır / Filo: ikinci araç seni izler |
 
+**Ustalık etki kimlikleri (`mastery.json`).** Her özelliğin `effects` listesi `{stat, op, value}`: `add` toplanır (`0,15` = +%15; sayısal özelliklerde birim sayıdır: `max_hp` +15), `set` değer olur (`cable_len` 16). Dal seviyesinin +%1'i dalın `levelStat` kimliğine gider: Kazı `dig_speed`, Hasat `gather_yield`, Çiftçilik `crop_yield`, Hayvancılık `tame_rate`, Mühendislik `craft_speed`, Aşçılık `food_duration`, Savaş `damage`, Sürüş `vehicle_speed`. Sistemler `Mastery.Sum("kimlik")`, `Mult`, `Set` ya da `Has("özellik")` ile sorar. **T1–T2 = 10. ve 20. seviye özellikleri** (32 özellik, `live`): sayıları M2'de veride; M2'de oyuna bağlı olanlar: `dig_speed`, `ore_yield`, `wood_yield`, `gather_yield`, `wild_plant_yield` (toplama), `crop_yield`, `crop_growth` (tarla). Kalan T1–T2 özelliklerinin sayıları hazır; ilgili sistem (güç, yemek, araç, hayvan) kendi akışında `Sum` çağırır. 30–50. seviye özellikleri seçilir ve kaydedilir; etkileri ilgili sistemle gelir (`live` yanlış).
+
+**XP kaynakları (`mastery.json` `xp`; denge M7).** Kazı: taş, kil 2, bakır cevheri 4. Hasat: odun, lif, buğday 2. Çiftçilik: ekme 2, hasat 3, kabarma 6. Hayvancılık: ağıla kayıt 25, ürün 4, evcilleşme 40. Mühendislik: üretim 4, istasyon kurma 10, yapı parçası 2. Aşçılık: pişirme 6, yeme 1. Savaş: öldürme 2, kabarık öldürme 6. Sürüş: her 100 m 2.
 ## 20. Basamak zincirinin doğrulaması
 
 Her basamakta ilerlemek için gereken her şeyin girdisi, o basamakta ya da daha öncesinde elde edilebilir olmalı. Aşağıda zincir baştan sona yürünüyor.
@@ -874,10 +964,11 @@ Her basamakta ilerlemek için gereken her şeyin girdisi, o basamakta ya da daha
 | **Başlangıç** | Ocak, 6 iş başlığı, Tırpan Işını, Sırt Yazıcısı, 12 Şalgam tohumu, 10 Buğday (yem) | İniş kapsülünde. Kapsülün kendisi ilk Kargo Rampası'na dönüşür. | ✔ |
 | **T1** | Tezgâh (10 Odun + 5 Taş) · Taş Fırın (15 Taş + 5 Kil) · Kömür Ocağı (10 Taş + 10 Kil) · Ocakbaşı (8 Taş + 4 Odun) · Paketleme Tezgâhı (8 Odun) · El Arabası (Tezgâh: 12 Odun + 4 Taş). Taş Fırın ve Ocakbaşı iş başına 1 yakıt yakar (Odun ya da Odun Kömürü). | Hepsi Çayır | ✔ |
 | | Bakır Külçe (Taş Fırın: 2 Bakır Cevheri + 1 Odun) → Çivi Tabancası (Tezgâh: 2 Bakır Külçe + 4 Odun; tarifi ilk Bakır Külçe'de açılır), Çivi (Tezgâh: 1 Bakır Külçe → 20), Bakır Tel | Bakır Cevheri: Çayır | ✔ |
+| | Araştırma Masası (Tezgâh: 12 Odun + 6 Taş + 4 Bakır Tel) · Odun Kömürü · Kerpiç | Hepsi Çayır; Veri: tarama ([GDD.md](GDD.md) §4) ve iş emirleri | ✔ |
 | | **Adak: Dev Yemlik** (5 Kabarık Şalgam + 10 Yün + 20 Bakır Külçe) | Kabarık Şalgam: bir Kabarma · Yün: Pofuduk (Çayır, Şalgam ile evcilleşir) · Bakır: Çayır | ✔ Tarım, hayvancılık ve Kabarma'dan geçiyor |
 | **T2** | Demirci Ocağı (20 Taş + 10 Bakır Külçe + 5 Kil) | Çayır | ✔ |
 | | Demir Külçe (2 Demir Cevheri + 1 Odun Kömürü) | Demir: Koru (tehlikesiz girilir) | ✔ |
-| | Bıçkı, Değirmen, Dokuma, Araştırma Masası, Kuluçka, Araç Atölyesi | Demir, Kereste, Bakır Tel, Taş | ✔ |
+| | Bıçkı, Değirmen, Dokuma, Kuluçka, Araç Atölyesi (bedeller §11.1; Bıçkı ve Dokuma Kereste istemez, Dokuma Demir de istemez: Kereste Bıçkı'dan çıkar) | Demir, Kereste, Bakır Tel, Taş | ✔ |
 | | Çekirge (15 Demir Külçe + 6 Reçine + 4 Bakır Tel); yakıt Bitkisel Yağ | Reçine: Koru · Yağ: Ayçiçeği (Çayır) + Değirmen | ✔ |
 | | Hayvan Çarkı, Rüzgâr Gülü, Akü Mk1 (5 Bakır + 5 Demir + 3 Ekşilik) | Ekşilik: Koru | ✔ |
 | | Çapa Mk.II (10 Demir Külçe + 2 Ata Yünü) | Ata Yünü: Koca Pofuduk | ✔ |
