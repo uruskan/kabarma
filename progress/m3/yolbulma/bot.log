@@ -1,0 +1,8 @@
+tools/test.ps1  2026-11-18 20:40  git a1c9f84
+
+[PASS] bot  exit=0 RESULT ok ciraklik=4/5 veri=140 credits=8096 eggs=1 kills=21 cards=2 maya=48 stations=4 harvests=5 skipped=-
+
+sinama     sonuc  sure(sn)  ayrinti
+------     -----  --------  -------
+bot        PASS      249.9  exit=0 RESULT ok ciraklik=4/5 veri=140 credits=8096 eggs=1 kills=21 cards=2 maya=48 stations=4 harvests=5 skipped=-
+TEST PASS

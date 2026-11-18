@@ -357,6 +357,7 @@ public partial class NetSync : Node
                 RosterChanged?.Invoke();
                 break;
             case NetMsg.Snapshot: OnSnapshot(r, now); break;   // NetSync.Players.cs
+            case NetMsg.Creatures: ReadCreatures(r, now); break; // NetSync.Creatures.cs: bolunmus anlik goruntu
             case NetMsg.Look: OnLook(null, r); break;
             case NetMsg.Correction: OnCorrection(r); break;
             case NetMsg.Section:
