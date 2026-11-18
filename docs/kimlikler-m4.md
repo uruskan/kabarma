@@ -116,6 +116,8 @@ Bant kimlikleri (crops.json `band`: `cayir`, `koru`): yeni `sazlik`, `kanyon`, `
 
 Var olan ve bu gruba girmeyen T1–T2: `stone, wood, fiber, clay, copper_ore, scrap, hard_wood, resin, iron_ore, saltpeter, yun, deri, tuy, sut, kurk, bal, balmumu, gubre, sumuk, et, kompost, brick, charcoal, copper_ingot, copper_wire, iron_ingot, plank, cloth, flour, civi, sacma`.
 
+**zincir4 eklemeleri (19 Kasım 2026):** `ark_eki` (Yüksek Fırın'ın ark eki, Tezgâh'ta 10 Çelik + 4 Devre; ilk alınınca `titan_ingot` tarifi açılır, harcanmaz), `kabartma_plani` (Ana Maya'nın ödülü: Kabartma Odası tarifini açar; ata4 düşürür, `research.json` `rawSources` T6 `by: ata4`), tarif girdisi olarak T1–T2 ham kaynak satırları `sunflower`, `saltpeter`, `yun`, `kompost` (`rawSources`'a eklendi). Ham kaynak kimlikleri bu bölümdekilerdir (`titan_ore` vb.); ara ürün tarifinin kimliği ürünün kimliğidir (`celik`, `cam`, `devre` …). Biyom akışı: `rawSources` `by: biyom` satırları (turba, kukurt, kaucuk_sutu, balcik, isil_yosun T3; kum, kuvars, titan_ore, katran, tuz T4; buz, ayaz_kristali T5; ham_maya, obsidyen, isil_cevher T6) düğümlerinin eşya kimliğidir; `craft.json` `sources` hedefi `rock:<kimlik>`.
+
 ## 3. Yaratıklar (ICERIK §3)
 
 Main creatures.json (var): `zipzip, gidak, pofuduk, homur, cekirge, sinsi, dalli, hu, vicik, bozuk, vizviz, findikci`.

@@ -149,6 +149,21 @@ public static class ItemNames
         ["diken_tarlasi"] = "Diken Tarlası", ["yapiskan_zemin"] = "Yapışkan Zemin", ["firlatma_pedi"] = "Fırlatma Pedi", ["cukur_kapagi"] = "Çukur Kapağı",
         // holding akisi (M3, GDD §19.4): baskin ganimeti. Holding Parcasi satilmaz (ICERIK §2.1 #27).
         ["holding_parcasi"] = "Holding Parçası", ["holding_plani"] = "Holding Planı", ["nadir_hayvan"] = "Nadir cins hayvan",
+        // zincir4 (M4, ICERIK §2, §11): T3-T6 ham kaynaklari, ara urunler ve istasyonlar.
+        ["turba"] = "Turba", ["kukurt"] = "Kükürt", ["kaucuk_sutu"] = "Kauçuk Sütü", ["balcik"] = "Balçık", ["isil_yosun"] = "Işıl Yosun",
+        ["kum"] = "Kum", ["kuvars"] = "Kuvars", ["titan_ore"] = "Titan Cevheri", ["katran"] = "Katran", ["tuz"] = "Tuz",
+        ["buz"] = "Buz", ["ayaz_kristali"] = "Ayaz Kristali", ["ham_maya"] = "Ham Maya", ["obsidyen"] = "Obsidyen", ["isil_cevher"] = "Işıl Cevher", ["maya"] = "Maya",
+        ["kaucuk"] = "Kauçuk", ["barut"] = "Barut", ["kimyasal_gubre"] = "Kimyasal Gübre", ["bitkisel_yag"] = "Bitkisel Yağ", ["biyoyakit"] = "Biyoyakıt",
+        ["cam"] = "Cam", ["devre"] = "Devre", ["plastik"] = "Plastik", ["titan_ingot"] = "Titan Külçe", ["termal_kumas"] = "Termal Kumaş",
+        ["kristal_lens"] = "Kristal Lens", ["aku_hucresi"] = "Akü Hücresi", ["mayali_alasim"] = "Mayalı Alaşım", ["reaktor_cubugu"] = "Reaktör Çubuğu",
+        ["havan_mermisi"] = "Havan Mermisi", ["maya_siringasi"] = "Maya Şırıngası", ["ark_eki"] = "Ark Eki", ["kabartma_plani"] = "Kabartma Planı",
+        ["sirt_yazicisi"] = "Sırt Yazıcısı", ["tabaklama_askisi"] = "Tabaklama Askısı", ["harman_yeri"] = "Harman Yeri",
+        ["yuksek_firin"] = "Yüksek Fırın", ["kimya_tezgahi"] = "Kimya Tezgâhı", ["pres"] = "Pres", ["mutfak"] = "Mutfak", ["damitici"] = "Damıtıcı",
+        ["tursu_ficisi"] = "Turşu Fıçısı", ["hasat_robotu"] = "Hasat Robotu", ["otomatik_yemlik"] = "Otomatik Yemlik", ["yumurta_toplayici"] = "Yumurta Toplayıcı", ["kompostor"] = "Kompostör",
+        ["cam_ocagi"] = "Cam Ocağı", ["elektronik_tezgahi"] = "Elektronik Tezgâhı", ["montaj_makinesi"] = "Montaj Makinesi", ["rafineri"] = "Rafineri",
+        ["sera_kontrol_unitesi"] = "Sera Kontrol Ünitesi", ["ekim_robotu"] = "Ekim Robotu", ["sagim_kirkim_kolu"] = "Sağım-Kırkım Kolu", ["paketleyici"] = "Paketleyici", ["sondaj_kulesi"] = "Sondaj Kulesi",
+        ["kristal_kesici"] = "Kristal Kesici", ["batarya_tezgahi"] = "Batarya Tezgâhı", ["zeplin_hangari"] = "Zeplin Hangarı",
+        ["maya_dokumhanesi"] = "Maya Dökümhanesi", ["kabartma_odasi"] = "Kabartma Odası",
     };
 
     public static string Of(string id) => Names.TryGetValue(id, out var n) ? n : id;

@@ -20,7 +20,8 @@ public class ResearchTests
     {
         var d = Data();
         var g = RecipeGraph.Walk(d, 2);
-        Assert.True(g.Unreached.Count == 0, "T2'de ulasilamayan tarif: " + string.Join(", ", g.Unreached.Select(r => r.Id)));
+        var stuck = g.Unreached.Where(r => !ZincirChain4Tests.T3Plus.Contains(r.Id)).ToList(); // T3+ tarifleri T2'de beklenen sekilde ulasilmaz (zincir4)
+        Assert.True(stuck.Count == 0, "T2'de ulasilamayan tarif: " + string.Join(", ", stuck.Select(r => r.Id)));
         foreach (var id in new[] { "arastirma_masasi", "komur_ocagi", "charcoal", "brick", "copper_wire", "demirci_ocagi", "iron_ingot", "bicki", "plank", "degirmen", "flour", "dokuma_tezgahi", "cloth", "arac_atolyesi", "filtre_maskesi" })
             Assert.True(g.Has(id), id);
         Assert.Contains("arastirma:arac_atolyesi", g.Tokens);
