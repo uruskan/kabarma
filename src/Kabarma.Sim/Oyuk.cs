@@ -133,7 +133,6 @@ public sealed class MoleFight : IOyukFight
     public (float x, float z) Pos => At >= 0 ? (Holes[At].X, Holes[At].Z) : (0f, 0f);
     public int Surfacings { get; private set; }
     float _trapStun, _lunge;
-    bool _justSurfaced;
 
     public MoleFight(OyukGuardianDef g, int tier, Rng rng)
     {
