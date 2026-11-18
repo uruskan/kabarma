@@ -151,7 +151,7 @@ public partial class SavasTest : Node
 
     void BozukGo()
     {
-        if (_st < 0.2f)
+        if (_tree == Vector3.Zero)
         {
             // Agacli bir yer: origin'e yakin, arazinin icinde bir agac.
             var trees = _d.World.TreePositions.Where(t => Mathf.Abs(t.X) < 110 && Mathf.Abs(t.Z) < 110 && !_sys.UsedTrees.Contains(t))
@@ -208,7 +208,8 @@ public partial class SavasTest : Node
         bool riderNear = rider != null && rider.GlobalPosition.DistanceTo(me) < 7f;
 
         // Bozuk: yerde kutuk varsa Cekim'le al ve firlat.
-        if (id == "azman_bozuk" && !riderNear && !(a.Telegraphing || a.Acting != "") && ThrowLog(a)) return;
+        bool logFlying = GetTree().GetNodesInGroup("azman_flying").Count > 0;
+        if (id == "azman_bozuk" && !riderNear && !logFlying && !(a.Telegraphing || a.Acting != "") && ThrowLog(a)) return;
         if (_d.Capa.Held != null) { Release(); _d.Capa.Drop(); }
 
         Head(Capa.Head.Tirpan);
@@ -248,7 +249,8 @@ public partial class SavasTest : Node
         if (_logItem == null || !IsInstanceValid(_logItem) || _logItem.Gone || !_logItem.IsInGroup("cekim"))
         {
             _logItem = _sys.GetParent().GetChildren().OfType<AzmanLog>().Concat(_sys.GetChildren().OfType<AzmanLog>())
-                .Where(l => !l.Gone && l.IsInGroup("cekim")).OrderBy(l => l.GlobalPosition.DistanceTo(P.GlobalPosition)).FirstOrDefault();
+                .Where(l => !l.Gone && l.IsInGroup("cekim") && l.GlobalPosition.DistanceTo(a.GlobalPosition) > a.Def.Radius + 5f) // Azman'in dibindeki kutuge gitme
+                .OrderBy(l => l.GlobalPosition.DistanceTo(P.GlobalPosition)).FirstOrDefault();
             _cekimStage = 0;
             if (_logItem == null) return false;
         }

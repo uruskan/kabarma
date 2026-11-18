@@ -21,12 +21,16 @@ public class AzmanTests
 
     static CombatHit Hit(float n, DamageType t = DamageType.Darbe) => new(n, t, CombatTeam.Player) { IgnoreArmor = true };
 
+    /// <summary>Profil carpanindan sonra tam olarak n hasar veren Darbe isabeti (Homur Darbe'ye direncli).</summary>
+    static CombatHit Exact(AzmanDef def, float n) => Hit(n / C.Mult(def.Id, DamageType.Darbe));
+
     [Fact]
     public void Data_has_homur_and_bozuk_for_m3_biomes_with_valid_bases()
     {
         Assert.Equal("altin_cayir", Homur.Biome);
         Assert.Equal("sis_korusu", Bozuk.Biome);
-        Assert.Same(Homur, D.ForBiome("altin_cayir"));
+        Assert.Equal("azman_homur", D.ForBiome("altin_cayir")?.Id);
+        Assert.Equal("azman_bozuk", D.ForBiome("sis_korusu")?.Id);
         foreach (var def in new[] { Homur, Bozuk })
         {
             Assert.NotNull(G.Creatures.Creatures.FirstOrDefault(c => c.Id == def.Base));
@@ -81,7 +85,7 @@ public class AzmanTests
         foreach (var at in rd.At)
         {
             float target = f.Body.MaxHp * at - 1;
-            AzmanRules.Damage(f, C, Homur, Hit(f.Body.Hp - target), cmds);
+            AzmanRules.Damage(f, C, Homur, Exact(Homur, f.Body.Hp - target), cmds);
         }
         dropped = cmds.Where(c => c.Cue == AzmanCue.DropRiders).Sum(c => c.Count);
         Assert.Equal(rd.Count, dropped);
@@ -94,7 +98,7 @@ public class AzmanTests
     {
         var f = Start(Homur);
         var cmds = new List<AzmanCommand>();
-        AzmanRules.Damage(f, C, Homur, Hit(f.Body.MaxHp * 0.8f), cmds);
+        AzmanRules.Damage(f, C, Homur, Exact(Homur, f.Body.MaxHp * 0.8f), cmds);
         Assert.Equal(Homur.Riders!.Count, cmds.Where(c => c.Cue == AzmanCue.DropRiders).Sum(c => c.Count));
     }
 

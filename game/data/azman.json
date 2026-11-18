@@ -23,10 +23,10 @@
       "base": "bozuk",
       "placeholder": "Yer tutucu: Bozuk'un koddan govdesi 2,4 kat, sirtinda yosun ve dal koddan; sokulen agac kutugu koddan silindir (Tripo modeli uretim isteginde).",
       "scale": 2.4, "radius": 1.9, "height": 3.6,
-      "hp": 1900, "armor": 50, "mass": 60,
+      "hp": 1600, "armor": 50, "mass": 60,
       "moveSpeed": 2.6, "contactDamage": 16, "contactEvery": 1.4,
-      "attacks": ["uproot"], "attackEvery": 7, "firstAttack": 2.5, "telegraph": 1.6,
-      "uproot": { "treeReach": 22, "pull": 1.4, "throwSpeed": 17, "damage": 30, "radius": 2.6, "knockback": 10, "structureDamage": 90, "logDamage": 70, "logSeconds": 25 },
+      "attacks": ["uproot"], "attackEvery": 8.5, "firstAttack": 2.5, "telegraph": 1.6,
+      "uproot": { "treeReach": 22, "pull": 1.4, "throwSpeed": 17, "damage": 24, "radius": 2.6, "knockback": 10, "structureDamage": 90, "logDamage": 70, "logSeconds": 25 },
       "_uproot": "Telegraph: en yakin agaca (treeReach) yuruyup kutuk soker (pull sn); agac yoksa yerden kaya kopar. Kutuk oyuncuya yay cizer; dustugu yerde hasar ve yapi hasari. Yerde kalan kutuk Cekim'le alinip Azman'a firlatilabilir (logDamage, Darbe, zirhsiz); logSeconds sonra cozulur.",
       "reward": { "oz": 200, "items": [ { "item": "azman_boynuzu", "count": 1 }, { "item": "hard_wood", "count": 8 } ] }
     }
