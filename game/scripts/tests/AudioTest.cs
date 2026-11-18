@@ -32,7 +32,7 @@ public partial class AudioTest : Node
         foreach (var b in a.Buses) Check(AudioServer.GetBusIndex(b.Id) >= 0, $"bus {b.Id} yok");
         var radio = Sfx.BusEffects(a.Radio.Bus);
         foreach (var e in new[] { "AudioEffectHighPassFilter", "AudioEffectLowPassFilter", "AudioEffectDistortion" })
-            Check(radio.Contains(e), $"telsiz kanalinda {e} yok");
+            Check(radio.Contains(e) == a.Radio.Filter, a.Radio.Filter ? $"telsiz kanalinda {e} yok" : $"suzgec kapaliyken telsiz kanalinda {e} var");
         Check(Sfx.BusEffects("Master").Contains("AudioEffectHardLimiter"), "ana kanalda tepe siniri yok");
         Check(Sfx.BusEffects(a.Music.Bus).Contains("AudioEffectAmplify"), "muzik kanalinda kisma yok");
         int buses = AudioServer.BusCount, voiceFx = radio.Length;

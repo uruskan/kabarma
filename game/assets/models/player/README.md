@@ -21,15 +21,15 @@ $GX = "C:\Users\uruskan\Documents\GitHub\kabarma\game\assets\genex"
 ```
 
 1. **glTF stage (plain Python):** the clip GLBs have no skin, so Blender would import them as empty objects and drop their keys. The script copies their animation channels into the skinned base GLB by node name, under the ids from `player_anims.json`.
-2. **Blender stage:** it scales location keys by the armature scale, removes horizontal hips motion from clips marked `inPlace`, applies the scale, and adds a `Backpack` bone (child of `Spine`, weighted to the backpack vertices) for the bag spring. Every action gets its own NLA track, with the action slot set explicitly so all clips export.
-3. **Check:** each clip must last at least 0.2 s and have at least 20 channels, and the `Backpack` joint must exist. Otherwise the script exits with code 1. It also fails if a clip that is not marked `placeholder` is missing.
+2. **Blender stage:** it scales location keys by the armature scale, removes horizontal hips motion from clips marked `inPlace`, applies the scale, and adds a `Backpack` bone (child of `Spine`). The bag is rigid: every vertex inside the bag (region weight at least 0.5) is weighted only to `Backpack`, and only the thin strip where the bag touches the back blends with the body. No code animates this bone, so the bag stays fixed on the back (owner's decision, 18 November: no breathing, sway or scaling). Every action gets its own NLA track, with the action slot set explicitly so all clips export.
+3. **Check:** each clip must last at least 0.2 s and have at least 20 channels, the `Backpack` joint must exist, and the bag's rigid core must survive export. Otherwise the script exits with code 1. It also fails if a clip that is not marked `placeholder` is missing.
 
 To add a clip that is produced later, put its Genex folder in `--clips`, set `action` in `player_anims.json`, remove `placeholder`, and run the command again.
 
 ## Mesh facts (player.glb)
 
 - 1 skinned mesh, **10,348 triangles**, 10,830 vertices. The art bible's player budget is 8,000, and Meshy's lowest setting is 10,000 faces.
-- Skeleton: 25 joints. The 24 from Meshy are Hips, Spine, Spine01, Spine02, neck, Head, headfront, head_end, L/R Shoulder, Arm, ForeArm, Hand, UpLeg, Leg, Foot and ToeBase. The merge adds **Backpack** (parent Spine; about 1,700 backpack vertices weighted to it).
+- Skeleton: 25 joints. The 24 from Meshy are Hips, Spine, Spine01, Spine02, neck, Head, headfront, head_end, L/R Shoulder, Arm, ForeArm, Hand, UpLeg, Leg, Foot and ToeBase. The merge adds **Backpack** (parent Spine; about 1,250 vertices weighted only to it, and about 400 in the contact strip blended with the body).
 - Scale applied (the `Armature` node is 1.0; bone units are metres).
 - Bounds: 1.056 m wide × 1.60 m tall × 0.57 m deep. Feet at y = 0, centred on the origin, facing +Z.
 - 1 material (double-sided). On import, Godot extracts the textures to `player_Image_0.jpg` (base colour), `player_Image_1.jpg` and `player_Image_2.jpg`. The older `player_Material_0*.jpg/png` files came from the previous merge and are no longer used by `player.glb`.

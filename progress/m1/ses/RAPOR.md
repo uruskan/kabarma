@@ -7,7 +7,7 @@
 - Sim: 28/28 (12'si ses testi).
 - Bot: `RESULT ok credits=210 eggs=1 kills=21 cards=3 maya=48 stations=3 harvests=4` (önceki ile aynı).
 - İnşa: 60/0.
-- `audio`: `ok sounds=60 playable=60 variant_files=180 buses=6 layers_loaded=3/3 day_music=yes`. Ana oturumun commit edilmemiş üretimi içe aktarılmış hâldeyken koştu; commit'li dal tek başına `playable=17 variant_files=15 layers_loaded=1/3 day_music=no` verir.
+- `audio`: `ok sounds=60 playable=60 variant_files=180 buses=6 layers_loaded=3/3 day_music=yes`. Üretim, onarımlar ve yeniden toplanan katmanlar commit'li; çıkışta sızıntı satırı yok.
 
 Günlük: `progress/m1/ses/test.log`.
 
@@ -39,22 +39,19 @@ Kanıt:
 | Teslim | 1 Belge + veri | 2 Otomatik test | 3 Ses/efekt/arayüz | 4 KM + kol (ortak oyun) | 5 Kayıt | 6 Görüntü |
 |---|---|---|---|---|---|---|
 | Ses kanalları ve sürgüler | geçti | geçti (`audio`: kanallar, etkiler, ikinci kurulum, düzey) | kısmen (sürgü hemen duyulur; sürgüde arayüz sesi yok) | kısmen: F2 ve kol Geri, yön pedi sürgüde; gerçek kolla denenmedi · ortak oyun M2'de | M2'de | yok (F2 paneli görüntüsü alınmadı) |
-| 60 ses (`audio.json`, `Sfx`) | geçti | geçti (Sim: 60 ses, gruplar, 12 M0, döngüler, varyasyon; `audio`: 60'ı da çöker mi, tutulan döngü; bot `--mute` olmadan da yeşil) | kısmen. Commit'li dalda 17/60 çalınabilir (12 M0 tek sürüm + 5 sentez × 3). Bu worktree'de ana oturumun commit edilmemiş üretimiyle 60/60 ve 180 dosya; `audio` sınaması bunlarla geçti, 10 dosya denetimde KALDI. 33 sesin çalma noktası sahibi akışta bağlanmalı. Dinleme: sahibin onayını bekliyor | M2'de (ortak oyun); girdi yok | M2'de | yok |
-| Müzik (2 parça, 3 katman) | geçti (eşikler belgenin sustuğu yer, aşağıda) | geçti (Sim: yoğunluk, katman, bekleme; `audio`: durumlar ve katmanlar; bot günlüğünde Gündüz → Sessizlik → Kabarma → 2 → 3 katman → Gündüz) | kısmen. Commit'li dalda yalnız M0 Kabarma parçası (1. katman). Ana oturumun ürettiği gündüz parçası ve 3 katman bu worktree'de yüklendi (`layers_loaded=3/3 day_music=yes`), commit'te yok. Dinleme: sahibin onayını bekliyor | M2'de | M2'de | yok |
+| 60 ses (`audio.json`, `Sfx`) | geçti | geçti (Sim: 60 ses, gruplar, 12 M0, döngüler, varyasyon; `audio`: 60'ı da çöker mi, tutulan döngü; bot `--mute` olmadan da yeşil) | kısmen. 60/60 çalınabilir: 180 dosya (165 ElevenLabs + 15 sentez), hepsi betikli denetimden geçti, yer tutucu 0. 33 sesin çalma noktası sahibi akışta bağlanmalı. Dinleme: sahibin onayını bekliyor | M2'de (ortak oyun); girdi yok | M2'de | yok |
+| Müzik (2 parça, 3 katman) | geçti (eşikler belgenin sustuğu yer, aşağıda) | geçti (Sim: yoğunluk, katman, bekleme; `audio`: durumlar ve katmanlar; bot günlüğünde Gündüz → Sessizlik → Kabarma → 2 → 3 katman → Gündüz) | kısmen. Gündüz parçası ve 3 katman (bas / davul / ezgi) yüklü (`layers_loaded=3/3 day_music=yes`). Katmanlar örnek örnek eşit boy; toplamın dikişi ve temposu geçti. Dinleme: sahibin onayını bekliyor | M2'de | M2'de | yok |
 | Suna (30 replik, telsiz, altyazı) | kısmen: kod iki metin yapısını da okur. Bu daldaki metin eski (41 replik, 12'sinde tuş adı, İngilizcesi yok); ilkgun dalında 30 TR + 30 EN hazır | kısmen. Sim: iki yapı ve bugünkü dosya. Birleşik ağaçta bot: 24 Suna satırının hepsi ilkgun kimliğine çözüldü (`merge_ilkgun_bot.log`). Sesli yol, replik dosyası olmadığı için koşmadı | kısmen: mandal ve altyazı var; seslendirme yok (3 aday üretildi, sahip seçecek) | M2'de | M2'de | yok |
-| `audio_qc.py` | kısmen: −1 dBTP ve Suna +3 dB belgeden; LUFS aralıkları seçilmiş (UYARI) | kısmen: 198 gerçek dosyada koştu; sessiz katmanı ve tutmayan tepe düzeltmesini yakaladı (ikisi de düzeltildi, (e)). Katman kayma özeti ve tek enstrüman dikişi yanıltıcı. Birim testi yok | — | — | — | — |
+| `audio_qc.py` | kısmen: −1 dBTP ve Suna +3 dB belgeden; LUFS aralıkları ve dikiş ölçütü seçilmiş ((f) 22) | kısmen: 198 gerçek dosyada koştu; sessiz katmanı, tutmayan tepe düzeltmesini ve köklerin 25 ms gecikmesini yakaladı, üçü de düzeltildi ((e)). Döngü dikişi çapraz geçişle onarılıyor. Birim testi yok | — | — | — | — |
 | `eleven.py` + istek | geçti (sınırlar M1 kararlarından) | kısmen: kuru koşu iki metin yapısıyla koştu; ağ yolu ana oturumda `sfx`, `music`, `stems`, `design` için koştu (defter); `save-voice` ve `voice` koşmadı | — | — | — | — |
 | `licenses.md` | geçti | — | — | — | — | — |
 
-His ve dinleme: **sahibin onayını bekliyor** (12 M0 sesi, 15 sentez arayüz sesi, M0 Kabarma parçası; ElevenLabs üretimleri gelince onlar).
+His ve dinleme: **sahibin onayını bekliyor**: 165 ElevenLabs sesi, 15 sentez arayüz sesi, gündüz parçası, 3 Kabarma katmanı ve Suna'nın 3 aday sesi.
 
 **M0 denemeleri (URETIM §2.3):**
 - 5 (10 ses + 1 döngü): ⚠️ Betikli denetim artık var. 12 M0 sesinin 8'i geçti. `hit` ve `pop` gerçek tepe −1 dBTP üstünde; `pickup` 40 ms baş sessizliği; `water` döngü olarak kullanılamıyor (0,5 sn, dikiş 26 dB). Dinleme turu 👤.
-- 5, ElevenLabs ile (18 Kasım): 165 ses üretildi. Betikli denetim 10'unu KALDI saydı (8 dikiş, 2 tepe; tepe düzeltmesi artık tutuyor). Dinleme turu 👤.
-- 6 (1 müzik, 3 katman): ⚠️
-  - Kabarma parçası (120 sn, ölçülen 119,9 BPM) ayrıştırıldı. Teslim edilen 3. katman sessiz (eşleme kusuru, (e)).
-  - Düzeltilmiş eşleme scratch'te üç sesli, aynı boyda ve hizalı katman verdi; kredisiz uygulama ana oturumun kararı.
-  - Dinleme 👤.
+- 5, ElevenLabs ile (18 Kasım): ✅ betikli denetim. 165 ses üretildi; ilk denetimde 10'u KALDI, 4'ü onarıldı, 6'sı yeni dikiş ölçütüyle geçti. Dinleme turu 👤.
+- 6 (1 müzik, 3 katman): ✅ betikli denetim. 120 sn, 119,9 BPM. Katmanlar bas / davul / ezgi; örnek örnek eşit boy; toplamın dikişi geçti. Ayrıştırmanın 25 ms gecikmesi kırpıldı. Dinleme 👤.
 - 7 (Suna: 3 aday, 10 replik): ❌ Betik hazır (tasarım → sahip seçer → kayıt → replik + geri çevirme). Üretim isteği. Replik metni (30 TR + 30 EN) ilkgun dalında hazır; dallar birleşince başlanabilir. 👤
 
 ## (c) Dokunduğum başka akış dosyaları
@@ -91,41 +88,39 @@ Toplam tahmin ~1,9 $ (liste fiyatı) + ses tasarımı ve katman ayrıştırma (f
 - Müzik: `cayir_gunduz` 180 sn, `kabarma_full` 120 sn ve katman ayrıştırma 120 sn; toplam 420 sn / 750.
 - Suna ses tasarımı: 1 çağrı, 142 karakter, 3 aday (`suna_adaylari/aday_{1,2,3}.mp3`).
 
-Indirmeden sonra `post_process` denetiminde 10 dosya KALDI:
-- 8'i döngü dikişi: `kaya_kemirme_1,2`, `ates_citirti_1,2`, `tezgah_calisma_1,2,3`, `el_arabasi_teker_2`.
-- 2'si tepe: `sokum_1`, `kargo_roketi_1`.
+İndirmeden sonra `post_process` denetiminde 10 dosya KALDI: 8 döngü dikişi (`kaya_kemirme_1,2`, `ates_citirti_1,2`, `tezgah_calisma_1,2,3`, `el_arabasi_teker_2`) ve 2 tepe (`sokum_1`, `kargo_roketi_1`).
 
-Üretilen dosyalar ve `.import` dosyaları commit'imde **yok**: üretim ana oturumun, ne yapılacağına o karar verir. Defter commit edildi (`bf5d6fd`; sert sınırlar sıfırlanmasın diye, (f) 16). 5. madde (Suna replikleri) duruyor: bu dalda metin engelli, ayrıca sahip adaylardan birini seçmeli.
+**İşleme (18 Kasım, ana oturumun isteğiyle; kredi yok).** Sonuç: üretilen her dosya betikli denetimden geçti ve commit edildi. Değiştirilen 6 dosyanın önceki hâli `.tools/eleven_raw/before_fix/` altında (git dışı).
 
-**Gerçek dosyalarda denetim (18 Kasım, `audio_qc.md`, 198 dosya; kredi yok).** İki betik kusuru çıktı, ikisi de düzeltildi; teslim edilen dosyalara dokunulmadı.
+`audio_qc.md` 198 dosya: 193 geçti, 5 KALDI, 94 UYARI.
+- 5 KALDI'nin hepsi eski Genex M0 asılları: `hit`, `pop`, `pickup`, `water`, `kabarma_night`. Bu seslerin hepsinin artık 3'er gerçek sürümü var; M0 yalnız yedek ve çalınmıyor. Kaynak kaydı olarak dokunulmadı.
+- UYARI'lar yalnız seçtiğim yükseklik aralıkları (54) ve grup içi spektrum yayılması (40). Kulak kararı sahipte.
 
-1. **`kabarma_3.mp3` tamamen sessiz:** gerçek tepe −87,5 dBTP, 120 sn boyunca. Oyunda 3. katman hiçbir şey çalmıyor.
-   - Neden: benim katman eşlemem. Ayrıştırma bass, drums, guitar, other, piano, vocals döndürdü; enstrümantal parçada guitar, piano ve vocals boş. Eşleme 3. katmana yalnız `vocal` veriyordu, zurna ve sentezler (`other`) 1. katmana gitmişti.
-   - Düzeltme:
-     - Yeni eşleme: 1 = bass, 2 = drums, 3 = other.
-     - Boş kök hiçbir katmana girmez, uymayan kök son katmana gider.
-     - Sesli kökü olmayan katman varsa betik, dosya yazmadan durur.
-     - Katmanlar kırpılmaz; döngü bilgisi artık yoldan çıkarılmıyor.
-     - Yeni bayrak `--reuse-raw`: indirilmiş kökleri kullanır, API'ye gitmez, anahtar istemez.
-   - Scratch'te sınandı:
-     - Üç katmanın üçü de sesli: −19,5 / −15,6 / −17,9 LUFS, tepe ≤ −1,1 dBTP.
-     - Üçü de 5.294.592 örnek.
-     - Köklerin toplamı tam parçayla 0,991 korelasyon veriyor; tek ve sabit kayma 25 ms (mp3 kodlayıcı gecikmesi). Yani katmanlar birbirine hizalı.
-   - Uygulamak için, kredisiz: `python pipeline/eleven.py pipeline/requests/m1_audio.json --only stems --reuse-raw --force`. Bu komut teslim edilen `kabarma_{1,2,3}.mp3` dosyalarının üzerine yazar; karar ana oturumun.
-2. **Tepe düzeltmesi tutmuyordu:** `sokum_1` ve `kargo_roketi_1` düzeltmeden sonra yine −0,9 dBTP.
-   - Neden: `fix` tepeyi −1,5'e indirip mp3'e yeniden kodluyordu; kodlama tepeyi geri taşıyordu.
-   - Düzeltme: artık ölçüp en çok 3 kez yeniden indiriyor.
-   - Kopyalarda: −1,5 ve −2,2 dBTP; asıllar değişmedi.
-   - Uygulamak için: `python pipeline/audio_qc.py game/assets/audio/sfx/sokum_1.mp3 game/assets/audio/sfx/kargo_roketi_1.mp3 --fix-dir <klasör>`, sonra kopyalar elle yerine konur.
-3. **Döngü dikişi (yeniden üretim ya da çapraz geçiş isteği; kredi gerekirse ayrı onay):**
-   - `el_arabasi_teker_2` dikişte gerçek atlama gösteriyor (7,6×, tık).
-   - `kaya_kemirme_1,2`, `ates_citirti_1,2`, `tezgah_calisma_1,2,3` baş ile son arasında 3–37 dB düzey farkı gösteriyor.
-   - Dinlemeden karar verilmemeli: çıtırtı ve tıkırtı seslerinde 50 ms'lik pencere yanıltabilir.
-4. **Müzik:**
-   - `kabarma_full` +0,1 dBTP; `run_music` müziğe `post_process` uygulamıyor. Oyunda ana kanaldaki −1 dB sınırlayıcı tutar; `kabarma_full` oyunda çalmaz.
-   - `cayir_gunduz` 3,5 sn sonda sessizlik (sönüş; döngü değil). Tempo kestirimi 166,8; veride gündüz temposu yok.
-   - Denetimin katman kayma özeti (−130 / −120 ms) farklı enstrümanların vuruş zarflarını karşılaştırıyor ve burada yanıltıcı. Örnek düzeyinde ölçüm hizayı gösterdi (yukarıda).
-   - Tek enstrümanlı katmanda "dikiş düzeyi" ve ezgi katmanında "tempo 80" da aynı nedenle beklenen sonuçlar. Tam parçada dikiş geçiyor.
+1. **Kabarma katmanları baştan toplandı** (`--only stems --reuse-raw --force`; indirilmiş kökler, API yok).
+   - Teslim edilen `kabarma_3` tamamen sessizdi (−87,5 dBTP). Benim eşlemem boş `vocals` kökünü 3. katmana veriyordu.
+   - Yeni eşleme: 1 bas, 2 davul, 3 `other` (zurna, bağlama, sentez). guitar, piano ve vocals kökleri boş geldi; katmana girmedi.
+   - **Ayrıca:** ayrıştırma servisi her kökü tam parçadan tam 1.152 örnek (bir mp3 karesi) uzun ve o kadar geç veriyor. Baştaki fazlalık −80 dBFS altında, yani sessiz. Kırpılmasa her döngüde 25 ms boşluk olurdu; toplamın dikişi 22 dB atlıyordu.
+     - `eleven.py` bu fazlalığı ölçüyor, sessiz olduğunu doğrulayıp kırpıyor; sessiz değilse durur.
+   - Sonuç:
+     - Üç katman da 5.293.440 örnek, tam parçayla örnek örnek aynı boy.
+     - Toplamın dikişi 2,9 dB; parçanın kendi oynaması 5,3 dB.
+     - Atlama 0,01×; tempo 119,9 BPM; tepeler −5,0 / −1,1 / −3,0 dBTP.
+2. **Tepe:**
+   - `sokum_1` −0,9 → −1,5 dBTP.
+   - `kargo_roketi_1` −0,9 → −2,2 dBTP.
+   - `kabarma_full` +0,1 → −1,4 dBTP (oyunda çalmaz; ayrıştırma kaynağı).
+   - `fix` artık her kodlamadan sonra ölçüyor; önceden mp3'e yeniden kodlama tepeyi geri taşıyordu.
+3. **Döngü dikişi:**
+   - Çapraz geçişle onarılan ikisi:
+     - `el_arabasi_teker_2`: tık 7,6× → 0,2×; 3,0 → 2,5 sn.
+     - `tezgah_calisma_3`: 37 dB → 15,9 dB; sesin kendi oynaması 22,7 dB, 4,0 → 3,5 sn.
+     - Çapraz geçiş, sonun en çok 0,5 sn'sini başa eşit güçle bindiriyor. Dikiş tanım gereği süreklidir: yeni son ve ilk örnek, orijinalde komşu iki örnektir.
+   - Diğer 6'sı (`kaya_kemirme_1,2`, `ates_citirti_1,2`, `tezgah_calisma_1,2`) yeni ölçütle geçti, dokunulmadı. Ölçüt değişikliği: (f) 22.
+4. **`cayir_gunduz`:** sondaki 3,4 sn sessizlik kırpıldı (180,0 → 176,7 sn); tepe −1,5 dBTP.
+
+**Kredisiz onarılamayan:** yok. Betikli denetime göre yeniden üretim isteği de yok. Sahibin dinlemesinde reddedilen ses olursa istek o zaman yazılır; sınırda ~13,5 dk ses efekti payı var.
+
+Defter `bf5d6fd`'de commit edildi. 5. madde (Suna replikleri) duruyor: bu dalda metin engelli, ayrıca sahip 3 adaydan birini seçmeli.
 
 ## (f) Belgeyle çelişen ya da belgenin sustuğu yerler
 
@@ -158,3 +153,10 @@ Indirmeden sonra `post_process` denetiminde 10 dosya KALDI:
     Oynatıcı serbest kalıyor, ama ses döngüsü playback'i bırakmaya yetişmiyor. Dosyasızken çalan döngü yoktu; şimdi ortam ve müzik hep çalıyor. Bu yalnız çıkışta olur, oyunu etkilemez.
     - `Sfx.StopAll()` eklendi. `audio` sınaması çıkmadan önce onu çağırıp 0,1 sn bekliyor: sızıntı satırı 0.
     - Bot ve `Main.Tests` çıkışı başka akışların dosyasında. Orada `Quit` öncesine aynı iki satır eklenirse bot günlüğü de temizlenir (öneri; dokunmadım).
+22. **Dikiş ölçütü (benim seçimim, inceleme için):** belge yalnız "döngü dikişi denetimi" diyor (URETIM §2.2).
+    - Eski ölçüt: son ve ilk 50 ms arasındaki düzey farkı > 3 dB ise KALDI. Çıtırtı ve kemirme gibi seslerde komşu iki 50 ms penceresi bile 5–20 dB oynar; bu yüzden ölçüt iyi dikişleri de düşürüyordu.
+    - Yeni ölçüt: fark, sesin kendi komşu pencereleri arasındaki farkın %95'ini (ve 3 dB'yi) aşarsa KALDI. Örnek atlaması (tık) ölçütü değişmedi.
+    - Bu ölçütle 8 dikiş hatasının 6'sı geçti, bunlara dokunulmadı. Kalan 2'si çapraz geçişle onarıldı.
+    - Kabarma katmanları tek tek değil toplamıyla denetleniyor: aynı boy, toplamın dikişi ve temposu. Tek enstrüman katmanında bas notası ölçü başında çalar, sonda susar; tek başına dikiş anlamsız. Katmanlar hiç çapraz geçişe sokulmaz, sokulsa boyları değişip birbirinden kayarlar.
+23. **Yer tutucu işareti:** önceki notum "dinleme onayından sonra false" diyordu. URETIM §3'e göre yer tutucu geçici varlıktır. Ana oturumun isteğiyle 60 ses ve 2 müzik `placeholder: false` (gerçek M1 dosyaları, denetimden geçti). Dinleme onayı ayrı izleniyor; reddedilen ses yeniden `true` olur.
+24. **ElevenLabs katman ayrıştırma gecikmesi** belgelerde yok: kökler girişten 1.152 örnek (bir mp3 karesi) uzun ve geç. `eleven.py` ölçüp kırpıyor ((e) 1).

@@ -1,0 +1,66 @@
+{
+  "cap": 10000,
+  "spent": 870, "spent_note": "abonelik sayacindan olculdu: 22277 -> 23147; cagri basina degerler sayac gecikmesi yuzunden eksik",
+  "calls": [
+    {
+      "tag": "a",
+      "model": "eleven_ttv_v3",
+      "chars": 230,
+      "credits": 0,
+      "description": "Young adult Turkish woman in her late twenties, native Turkish speaker with a natural Istanbul accent. Sultry, alluring, smoky low-mid voice with a soft breathy texture and a warm velvety tone. Speaks slowly and intimately, close to the microphone, with a subtle teasing smile in her voice; relaxed, confident, a little mischievous. Natural human delivery with real breaths and expressive intonation, never robotic or monotone. Clean studio recording, no effects.",
+      "previews": [
+        {
+          "file": "a_1.mp3",
+          "generated_voice_id": "GBLZKGNAuOOwYBOHNEBv",
+          "voice_id": "GBLZKGNAuOOwYBOHNEBv",
+          "v4_file": "v4_a_1.mp3",
+          "v4_credits": 0
+        },
+        {
+          "file": "a_2.mp3",
+          "generated_voice_id": "vYT64glVnWsYgvY3Ii9j",
+          "voice_id": "vYT64glVnWsYgvY3Ii9j",
+          "v4_file": "v4_a_2.mp3",
+          "v4_credits": 0
+        },
+        {
+          "file": "a_3.mp3",
+          "generated_voice_id": "K76TS1Ua8xl3QXjp8IQb",
+          "voice_id": "K76TS1Ua8xl3QXjp8IQb",
+          "v4_file": "v4_a_3.mp3",
+          "v4_credits": 0
+        }
+      ]
+    },
+    {
+      "tag": "b",
+      "model": "eleven_ttv_v3",
+      "chars": 230,
+      "credits": 460,
+      "description": "Turkish woman in her early thirties, native Turkish speaker. Husky, smoky, seductive late-night radio host voice: low and warm, slightly raspy, breathy and intimate, like she is speaking softly into your ear. Unhurried, playful, self-assured, with a hint of amusement. Fully natural human performance with breaths and lively intonation, never robotic, never flat. Clean close-mic studio recording, no effects.",
+      "previews": [
+        {
+          "file": "b_1.mp3",
+          "generated_voice_id": "YN0wmxl4PAtBmNTsmfh3",
+          "voice_id": "YN0wmxl4PAtBmNTsmfh3",
+          "v4_file": "v4_b_1.mp3",
+          "v4_credits": 0
+        },
+        {
+          "file": "b_2.mp3",
+          "generated_voice_id": "sEIh55HAiKEAmQYc1teh",
+          "voice_id": "sEIh55HAiKEAmQYc1teh",
+          "v4_file": "v4_b_2.mp3",
+          "v4_credits": 0
+        },
+        {
+          "file": "b_3.mp3",
+          "generated_voice_id": "PTet2xDlqdy4SQ9bpR05",
+          "voice_id": "PTet2xDlqdy4SQ9bpR05",
+          "v4_file": "v4_b_3.mp3",
+          "v4_credits": 246
+        }
+      ]
+    }
+  ]
+}

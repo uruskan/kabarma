@@ -116,7 +116,7 @@ public partial class Bot
                 // Ahsap Kapi: Insa hayaleti Kapi Kasasi'na oturur (PenSystem.SnapGhost); kasanin onunden.
                 var kasa = pieces.First(p => p.Def.Id == "kapi_kasasi" && Flat(p.GlobalPosition, c + Vector3.Back * 1.5f) < 0.8f);
                 var at = _d.World.Ground(kasa.GlobalPosition);
-                if (EnsureCost(PlaceableOf("ahsap_kapi"))) PlacePropAt("ahsap_kapi", at, _d.World.Ground(at + Vector3.Back * 4f));
+                if (HaveCost(PlaceableOf("ahsap_kapi"))) PlacePropAt("ahsap_kapi", at, _d.World.Ground(at + Vector3.Back * 4f));
                 return;
             }
             else if (!pieces.Any(p => p.Def.Kind == "roof" && Flat(p.GlobalPosition, c) < 2.2f))

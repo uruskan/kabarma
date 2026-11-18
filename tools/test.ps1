@@ -18,7 +18,7 @@ param(
     [int]$BotTimeout = 600,
     [int]$BuildTestTimeout = 300,
     [int]$LatencyTimeout = 300,
-    [string]$BotArgs = '--fast=4 --quit_after=400 --mute',
+    [string]$BotArgs = '--fast=4 --quit_after=900 --mute', # entegrasyon: 16 adimli ilk gun ~460 oyun sn surer (400 yetmez)
     [int]$InputTimeout = 900,
     [string]$InputArgs = '--fast=4 --quit_after=900 --mute',
     [int]$BenchTimeout = 600,

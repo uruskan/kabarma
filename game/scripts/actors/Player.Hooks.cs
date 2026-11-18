@@ -11,7 +11,7 @@ namespace Kabarma.Game;
 ///   --drive=f|b|l|r[s][a]                                             kameraya gore surekli yuru (s: depar, a: ileri nisan)
 ///   --expr=cycle                                                      her ifade 1,5 sn (1,0 sn'den), EXPR satiri yazar
 ///   --jumptest                                                        2 sn'de bir gercek "jump" eylemiyle zipla
-///   --rigtest                                                         0,5 sn'de bir RIG satiri (klip, hiz, dayaniklilik, canta, Capa, vizor)
+///   --rigtest                                                         0,5 sn'de bir RIG satiri (klip, hiz, dayaniklilik, Capa, vizor)
 /// </summary>
 public partial class Player
 {
@@ -73,7 +73,7 @@ public partial class Player
         {
             var tm = new Timer { WaitTime = 0.5, Autostart = true };
             AddChild(tm);
-            tm.Timeout += () => GD.Print($"RIG t={Time.GetTicksMsec() / 1000f:0.0} clip={_curId}->{_cur} mode={_mode} sp={new Vector3(Velocity.X, 0, Velocity.Z).Length():0.0} sprint={_sprinting} stam={Stamina?.Value:0} ex={Stamina?.Exhausted} bag={Rig?.Body.BagAngles} capaFromHand={_capaFromHand:0.00} handY={_handHeight:0.00} capaY={_capa.GlobalPosition.Y - GlobalPosition.Y:0.00} down={Down} visor={Visor?.Expression}");
+            tm.Timeout += () => GD.Print($"RIG t={Time.GetTicksMsec() / 1000f:0.0} clip={_curId}->{_cur} mode={_mode} sp={new Vector3(Velocity.X, 0, Velocity.Z).Length():0.0} sprint={_sprinting} stam={Stamina?.Value:0} ex={Stamina?.Exhausted} capaFromHand={_capaFromHand:0.00} handY={_handHeight:0.00} capaY={_capa.GlobalPosition.Y - GlobalPosition.Y:0.00} down={Down} visor={Visor?.Expression}");
         }
         if (a.TryGetValue("knocktest", out var kt)) // --knocktest: geriye (sirtustu), --knocktest=front: one (yuzustu)
             GetTree().CreateTimer(1.5).Timeout += () => Knockdown(Visual.GlobalBasis.Z * (kt == "front" ? 4f : -3f) + Vector3.Up * 2f);

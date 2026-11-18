@@ -6,7 +6,6 @@
     "footRayUp": 0.5, "footRayDown": 0.6, "footMaxDrop": 0.3, "footMaxRise": 0.3, "footBlend": 10,
     "twistMaxDeg": 55, "twistShare": [0.2, 0.25, 0.25], "pitchShare": 0.3,
     "leanRunDeg": 6, "leanSprintDeg": 12, "leanAccelDeg": 1.2, "bankMaxDeg": 8, "bankGain": 1.5, "recoilSpineDeg": 7,
-    "bagStiffness": 60, "bagDamping": 6, "bagGain": 0.02, "bagMaxPitch": 0.35, "bagMaxRoll": 0.25,
     "downSeconds": 3, "knockdownSeconds": 5, "getupBlend": 0.4,
     "pushWeight": 1.0, "wadeWeight": 0.85, "fallAfter": 0.7
   },
