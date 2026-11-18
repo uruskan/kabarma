@@ -27,7 +27,7 @@ public partial class WildSwarm : Node3D
     public float Travelled;
     public bool Display;
     public bool Dead => State.Hp <= 0;
-    public int Visible => _mm.VisibleInstanceCount;
+    public int MembersShown => _mm.VisibleInstanceCount;
     public Swellable Look => _sw;
     public Node3D Hive => _hive;
 

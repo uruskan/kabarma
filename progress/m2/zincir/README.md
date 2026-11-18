@@ -6,5 +6,8 @@
 - `zincir_dokuma_menusu.png`: Dokuma Tezgâhı'nın E menüsü (Kumaş: 3 Lif).
 - `test_full.log`: commit öncesi tam `tools/test.ps1` koşusu. Kalan üç kırmızı başka akışlardan:
   - `ekonomi`: Borsa çarpanı, ekonomi2.
-  - `input_kbm` ve `input_pad`: `civi`/`firin` adımında takılma. Aynı takılma boss, gecehud ve ilerleme worktree'lerinde de var.
+  - `input_kbm` ve `input_pad`: `civi` adımında takılma.
+    - Görünen düzenek: bot Taş Fırın'da E'ye basıyor, menü daha yakın olan Tezgâh'ınki açılıyor. 0. satır Çivi oluyor, külçe yetmiyor, döngü sürüyor.
+    - zincir'den önceki koşular da aynı biçimde `firin` adımında takılıyordu.
+    - Sorumluluk doğrulanmadı: boss, gecehud ve ilerleme dalları zincir'in ilk commit'ini de içeriyor.
   - `world`: zincir düzeltti, ayrı koşuda yeşil.

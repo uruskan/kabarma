@@ -88,7 +88,15 @@ public static class PowerVisuals
                     {
                         float a = i * Mathf.Tau / n;
                         var p = new Vector3(0, Mathf.Sin(a) * 0.62f, Mathf.Cos(a) * 0.62f);
-                        wheel.Pillow(new Vector3(0.9f, 0.08f, 0.3f), MeshKit.At(p, new Vector3(-a, 0, 0)), i % 2 == 0 ? Palette.Wood : Palette.Ground, 0.2f);
+                        // ince eksen (Y) yaricap yonune: X etrafinda pi/2 - a
+                        wheel.Pillow(new Vector3(0.9f, 0.08f, 0.3f), MeshKit.At(p, new Vector3(Mathf.Pi / 2f - a, 0, 0)), i % 2 == 0 ? Palette.Wood : Palette.Ground, 0.2f);
+                    }
+                    for (int s = 0; s < 4; s++) // iki yanda dorder parmak
+                    {
+                        float a = s * Mathf.Tau / 4f + 0.4f;
+                        var mid = new Vector3(0, Mathf.Sin(a) * 0.31f, Mathf.Cos(a) * 0.31f);
+                        foreach (var x in new[] { -0.42f, 0.42f })
+                            wheel.Pillow(new Vector3(0.06f, 0.62f, 0.06f), MeshKit.At(mid + new Vector3(x, 0, 0), new Vector3(Mathf.Pi / 2f - a, 0, 0)), WoodDark, 0.2f);
                     }
                     wheel.Cylinder(0.06f, 0.06f, 1.2f, MeshKit.At(Vector3.Zero, new Vector3(0, 0, Mathf.Pi / 2f)), Metal, 8);
                     var w = wheel.Instance();

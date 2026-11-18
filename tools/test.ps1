@@ -37,6 +37,7 @@ if (-not $PSBoundParameters.ContainsKey('Only')) { $Only += 'grip' } # oyuncu ak
 if (-not $PSBoundParameters.ContainsKey('Only')) { $Only += 'zincir' } # zincir M2: --test=zincir (bot T2 urununu arastirir ve uretir)
 if (-not $PSBoundParameters.ContainsKey('Only')) { $Only += 'ekonomi' }  # ekonomi sinamasi (--test=ekonomi) varsayilan kosuda
 if (-not $PSBoundParameters.ContainsKey('Only')) { $Only += 'hayvan' }   # hayvan akisi: zincir + Pofuduk evcillestir, sutunu al (--test=hayvan)
+if (-not $PSBoundParameters.ContainsKey('Only')) { $Only += 'borsa' }    # ekonomi2: Borsa, Katalog, Cark (--test=borsa)
 if (-not $PSBoundParameters.ContainsKey('Only')) { $Only += 'coop' }  # ortak: host + 3 istemci (ENet), senkron < 1 cm; steam yalniz -Only steam
 $Root = Split-Path -Parent $PSScriptRoot
 Set-Location $Root
@@ -236,6 +237,8 @@ if ($Only -contains 'latency') {
     }
 }
 
+if ($Only -contains 'power') { if (-not $G) { $G = Find-Godot }; Invoke-GodotTest 'power' "--test=power $BotArgs --quit_after=1500" $BotTimeout { param($r) $res = ($r.Text -split "`r?`n" | Where-Object { $_ -match '^POWER RESULT ' } | Select-Object -Last 1); if (-not $res) { $res = 'POWER RESULT satiri yok' }; [pscustomobject]@{ Ok = ($res -match '^POWER RESULT ok'); Detail = ($res -replace ' t=[0-9.]+$', '') } } } # guc akisi (-Only power): ilk gun zinciri + uretec, lamba, dugme; varsayilan listede yok (uzun)
+
 if ($Only -contains 'ekonomi') {
     $out = Join-Path $RunDir 'ekonomi'
     New-Item -ItemType Directory -Force $out | Out-Null
@@ -250,6 +253,7 @@ if ($Only -contains 'ekonomi') {
     }
 }
 
+if ($Only -contains 'borsa') { if (-not $G) { $G = Find-Godot }; $bo = Join-Path $RunDir 'borsa'; New-Item -ItemType Directory -Force $bo | Out-Null; Invoke-GodotTest 'borsa' "--test=borsa --fast=4 --test_out=`"$bo`"" 300 { param($r) $ok = $false; $detail = 'BORSA RESULT satiri yok'; if ($r.Text -match 'BORSA RESULT ok=(\d+) fail=(\d+)') { $ok = [int]$Matches[2] -eq 0; $detail = "ok=$($Matches[1]) fail=$($Matches[2])" }; [pscustomobject]@{ Ok = $ok; Detail = $detail } } } # ekonomi2: Borsa, Katalog, Cark (--test=borsa)
 if ($Only -contains 'zincir') { if (-not $G) { $G = Find-Godot }; Invoke-GodotTest 'zincir' "--test=zincir --fast=4 --mute" $BotTimeout { param($r) $res = ($r.Text -split "`r?`n" | Where-Object { $_ -match '^ZINCIR RESULT ' } | Select-Object -Last 1); if (-not $res) { $res = 'ZINCIR RESULT satiri yok' }; [pscustomobject]@{ Ok = ($res -match 'fail=0'); Detail = ($res -replace '^ZINCIR RESULT ', '') } } } # zincir M2: arastirma ve T2 uretimi (ZincirTest.cs)
 if (($Only -contains 'gece') -and -not $G) { $G = Find-Godot }
 if ($Only -contains 'gece') {

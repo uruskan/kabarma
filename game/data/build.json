@@ -1,0 +1,31 @@
+{
+  "_not": "Yapi (GDD §7, ICERIK §10.1; URETIM §6 M2 'yapi'). Malzemeler sirayla yukseltilir (geri yok). cost: sekil birimi (placeables.json buildCosts, Odun adedi) x oran; kesirler en buyuk kalanla dagitilir, esitlikte ilk yazilan alir. weightPerUnit x birim = parcanin agirligi; capacity = parcanin tasiyabildigi (kendi agirligi dahil). maxSpan GDD §7 tablosu. Yuk ve agirlik sayilari belgede yok (_belgesiz), oynayarak ayarlanir.",
+  "_belgesiz": "weightPerUnit, capacity, ghost renkleri, collapse, planBook.maxPieces",
+  "materials": [
+    { "id": "wood", "name": "Ahşap", "tier": 1, "hp": 400, "maxSpan": 3, "weightPerUnit": 1.0, "capacity": 30, "cost": { "wood": 1.0 }, "tint": [0.80, 0.60, 0.39] },
+    { "id": "kerpic_tas", "name": "Kerpiç-Taş", "tier": 2, "hp": 900, "maxSpan": 4, "weightPerUnit": 2.0, "capacity": 80, "cost": { "brick": 0.5, "stone": 0.5 }, "tint": [0.74, 0.62, 0.50] },
+    { "id": "celik_sac", "name": "Çelik Sac", "tier": 3, "hp": 2000, "maxSpan": 6, "weightPerUnit": 1.5, "capacity": 160, "cost": { "celik": 1.0 }, "tint": [0.58, 0.62, 0.66] },
+    { "id": "mayali_beton", "name": "Mayalı Beton", "tier": 6, "hp": 5000, "maxSpan": 8, "weightPerUnit": 3.0, "capacity": 400, "cost": { "mayali_beton": 1.0 }, "tint": [0.66, 0.70, 0.70] }
+  ],
+  "refundInClaim": 1.0,
+  "refundOutClaim": 0.5,
+  "repairFraction": 0.25,
+  "ghost": {
+    "_not": "Hayalet rengi (GDD §7): zorlanma 0 -> ok, 1 -> strained arasi; gecersiz bad; plan kipi plan; plan parcasi (yerlesik plan) planPiece. RGBA.",
+    "ok": [0.45, 1.0, 0.55, 0.42],
+    "strained": [1.0, 0.85, 0.3, 0.45],
+    "bad": [1.0, 0.35, 0.3, 0.42],
+    "plan": [0.45, 0.7, 1.0, 0.38],
+    "planPiece": [0.45, 0.7, 1.0, 0.28]
+  },
+  "collapse": {
+    "_not": "Coken parca fizik nesnesi olur (BuildSystem.Fall); lifetime sn sonra silinir. dust: toz parcacigi sayisi. sfx: audio.json kimligi (cokmede perdesi dusurulur).",
+    "lifetime": 7.0,
+    "dust": 22,
+    "sfx": "parca_darbe"
+  },
+  "planBook": {
+    "slots": 12,
+    "maxPieces": 200
+  }
+}

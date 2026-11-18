@@ -23,6 +23,10 @@ Her üretimden sonra bu tabloya bir satır eklenir. `pipeline/eleven.py` her ça
 | 18 Kasım 2026 | ElevenLabs API, `music_v2_5` + katman ayrıştırma. Plan adı: ⚠️ sahipten bekleniyor | `game/assets/audio/music/cayir_gunduz.mp3` (180 sn), `kabarma_full.mp3` (120 sn), `kabarma_{1,2,3}.mp3` (ayrıştırma) | 420 sn (180 + 120 + ayrıştırma 120) / 750 | Kökler: bass, drums, other sesli; guitar, piano, vocals boş. Katmanlar kredisiz yeniden toplandı: 1 bas, 2 davul, 3 other; köklerin baştaki 1.152 örneklik gecikmesi kırpıldı (RAPOR (e)). `cayir_gunduz` sondaki sessizlik kırpıldı, `kabarma_full` tepe indirildi. Müzik şartı: Free–Pro'da "bireysel kullanım", plan adı önemli |
 | 18 Kasım 2026 | ElevenLabs API, `eleven_ttv_v3` (ses tasarımı). Plan adı: ⚠️ sahipten bekleniyor | `progress/m1/ses/suna_adaylari/aday_{1,2,3}.mp3` | 1 çağrı, 142 karakter | Suna'nın 3 aday sesi; sahip seçecek, sonra `--only save-voice`. Replikler (30 TR + 30 EN) henüz üretilmedi |
 
+## Koddan yaratık gövdeleri (yaratik2, 18 Kasım 2026)
+
+`game/data/bodies.json` → `game/scripts/actors/CreatureBody.cs`: Homur, Sinsi, Dallı, Bozuk, Hu, Vıcık, Fındıkçı gövdeleri; Çekirge ve Vızvız sürü üyeleri; Vızvız kovanı (10 model). Projenin kendi kodu, Godot ilkel mesh'lerinden kurulur; üçüncü taraf model, doku ya da `F:\Assets` kullanılmadı, kredi yok. Hepsi işaretli yer tutucu (`placeholder` alanı); Tripo üretim isteği `pipeline/requests/yaratik2.json`.
+
 ## AI beyanı (URETIM §9)
 
 Steam içerik anketinde: ses efektleri, müzik ve Suna'nın seslendirmesi önceden üretilmiştir (Genex, ElevenLabs). Arayüz sesleri kodla sentezlenmiştir. Oyun sırasında çalışan üretken model yoktur.
@@ -61,6 +65,19 @@ Hepsi koddan, kredisiz ve lisans sorunu yok. Gerçekleri yaratik2 akışının a
 | Homur, Dallı, Hu, Vıcık, Bozuk, Vızvız gövdeleri | `game/scripts/husbandry/TameablePlaceholder.cs` (MeshKit küre/yastık) | Proje kodu | YER TUTUCU; renk ve boy `husbandry.json` |
 | Suluk, Kaşınma Fırçası, Arı Kovanı | `pipeline/hayvan_props_kit.py` (Blender, yapı kitinin kalas dili, ortak ahşap atlası) | Proje kodu | Kredisiz; 396–660 üçgen |
 | Gübre yığını | `RanchSystem.PilesSync` (MeshKit küre) | Proje kodu | YER TUTUCU |
+## Yapı kiti malzemeleri: Kerpiç-Taş, Çelik Sac, Mayalı Beton (M2, 18 Kasım 2026)
+
+`pipeline/build_kit_materials.py` kodla üretir; kredi harcanmadı (Genex, Tripo, ElevenLabs yok). Geometri ahşap kitinden (`pipeline/build_kit.py`, değiştirilmedi) modül olarak alınır; 28 parçanın sınırları, yuvaları, çarpışma kutuları ve üçgen sayıları ahşap `sockets.json` ile betikte birebir denetlenir. Doku yapısı (tuğla, blok, kiremit, oluk, perçin, panel, derz) numpy ile yordamsal. Yüzey tanesi ve pas deseni aşağıdaki taramalardan gelir: `F:\Assets`'ten yalnız okundu, 1024'lük atlasa küçültüldü ve yüksek geçiren ayrıntı olarak palet renklerinin üstüne karıştırıldı. Çıktı: `game/assets/models/build/{kerpic_tas,celik_sac,mayali_beton}/`. **Yer tutucu:** dokular sahip ve görsel akış onaylayana dek son kalite sayılmaz.
+
+| Malzeme | Kaynak (F:\Assets) | Lisans | Not |
+|---|---|---|---|
+| Kerpiç-Taş (taş blok ve kerpiç tanesi, kiremit) | `PSG_Compound_Utilities_R02\Textures\Source\rock_boulder_dry\rock_boulder_dry_diff_4k.jpg` (Poly Haven "Rock Boulder Dry") | CC0 1.0 | Lisans: aynı paketin `Reports\Texture_sources.json` dosyası (polyhaven.com/a/rock_boulder_dry) |
+| Çelik Sac (duvar sacı ve kiriş boyası, aşınma) | `PSG_Compound_Utilities_R02\Textures\Source\blue_metal_plate\blue_metal_plate_diff_4k.jpg` (Poly Haven "Blue Metal Plate") | CC0 1.0 | Aynı kaynak json |
+| Çelik Sac (çatı sacı pas ve kir deseni) | `PSG_Compound_Utilities_R02\Textures\Source\worn_corrugated_iron\worn_corrugated_iron_diff_4k.jpg` (Poly Haven "Worn Corrugated Iron") | CC0 1.0 | Aynı kaynak json |
+| Mayalı Beton (beton yüzey tanesi) | `PSG_Compound_Utilities_R01\Textures\Source\concrete_wall_001\concrete_wall_001_diff_4k.jpg` (Poly Haven "Concrete Wall 001") | CC0 1.0 | Lisans: `PSG_Compound_Utilities_R01\Reports\Texture_sources.json` |
+
+Demir karoları (cıvata, kayış) ahşap kitinin yordamsal `metal_tile` işlevinden gelir. Megascans ve lisansı yazılı olmayan klasörler kullanılmadı.
+
 ## Atalar: koddan yer tutucular (boss akışı, M2)
 
 18 Kasım 2026. Kredi harcanmadı; dış kaynak kullanılmadı. Hepsi `atalar.json` içinde `placeholder` alanıyla işaretli (URETIM §3).
@@ -83,3 +100,6 @@ Araştırma Masası, Kömür Ocağı, Demirci Ocağı, Bıçkı, Değirmen, Doku
 | Cayir ve Koru'nun 10 ekini (Bugday, Kabak, Aycicegi, Lifotu, Domates, Sapkali Mantar, Bogurtlen, Eksilik, Findik, Sarimsak) | Koddan: `game/scripts/world/FarmView.Meshes.cs` (`CropVisuals`, MeshKit ilkelleri) | Projenin kendi kodu | YER TUTUCU; uretim istegi: ekin basina 1 Tripo modeli |
 | Korkuluk | Koddan: `KorkulukVisual` (ayni dosya) | Projenin kendi kodu | YER TUTUCU |
 | Alaca gorunusu | Toon golgelendiricinin `tint` degeri | Projenin kendi kodu | Benekli, Altin, Aurora |
+## Güç ve sinyal parçaları (guc akışı, M2)
+
+Rüzgâr Gülü, Hayvan Çarkı, Direk, Şalter, Elektrik Lambası, Düğme, Basınç Plakası ve kablolar koddan kurulur (`game/scripts/power/PowerVisuals.cs`, MeshKit; **yer tutucu**). Dış kaynak, kredi ve lisans yok. Altın varlık gelince `placeables.json` satırına `model` yazılır ve `PlaceableVisuals.Make` içindeki guc satırı kaldırılır. Akü Mk1'in görünüşü de koddan.

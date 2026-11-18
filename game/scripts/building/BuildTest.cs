@@ -52,6 +52,7 @@ public partial class BuildTest : Node3D
             await Shots();
             await SpanDemo();
             await AllShapes();
+            await YapiTests(); // BuildTest.Yapi.cs (M2): yuk siniri, yukseltme, plan modu, Plan Defteri, cokme
         }
         catch (Exception e)
         {

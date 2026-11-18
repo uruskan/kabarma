@@ -133,6 +133,7 @@ public partial class Director
 
     void SpawnZipzip()
     {
+        if (NetClient) return; // ortak: dalga host'ta dogar, istemciye kukla olarak gelir (NetSync.Spawns.cs)
         var def = Data.Creature(Data.Kabarma.FirstNight.Enemy);
         var center = FarmCenter();
         float a = (float)GD.RandRange(0, Mathf.Tau);

@@ -117,6 +117,7 @@ public partial class Capa
         float dmg; bool crit;
         if (night != null) (dmg, crit) = night.RollHit(w, weak, z.Def.WeakPointMult);
         else { dmg = w.Damage; crit = false; }
+        if (_d.Net?.ForwardHit(z, dmg, crit, dir with { Y = 0 }, w.Knockback * s.KnockbackMult, weak, night != null && night.RollBurn() ? w.BurnSeconds : 0, night != null && night.RollFreeze() ? w.FreezeSeconds : 0) == true) { FeelHit(feel, at, crit ? Palette.Warning : color, crit, weak); return; } // ortak: istemcinin vurusu host'ta
         z.Hit(dmg, crit, dir with { Y = 0 }, w.Knockback * s.KnockbackMult, weak);
         if (night != null && night.RollBurn()) z.BurnT = w.BurnSeconds;
         if (night != null && night.RollFreeze()) z.FreezeT = w.FreezeSeconds;
@@ -134,6 +135,7 @@ public partial class Crescent : Node3D
     float _traveled;
     int _bounces;
     readonly HashSet<Zipzip> _hit = new();
+    readonly HashSet<Node3D> _hitWild = new(); // yaratik2
     readonly HashSet<IAtaTarget> _hitAta = new(); // boss akisi: Ata hedefleri (boss/Capa.Ata.cs)
     readonly MeshInstance3D _mesh;
     readonly float _width;
@@ -201,6 +203,7 @@ public partial class Crescent : Node3D
                 }
             }
         }
+        _d.Wildlife?.ProjectileHit(GlobalPosition - _dir * step, GlobalPosition, _width * 0.5f + _w.HitRadius, _w.Damage * _s.SizeMult, _hitWild); // yaratik2: gunduz yabanileri (Wildlife.Hits.cs)
         foreach (var t in _d.AtaTargetsNear(GlobalPosition, _width * 0.5f + _w.HitRadius)) if (_hitAta.Add(t)) _d.Capa.AtaWeaponHit("tirpan", _w, _s, t, t.Center, _dir, Palette.MayaTeal); // boss akisi
         if (_traveled > _w.Range * _s.SizeMult) QueueFree();
     }
@@ -275,6 +278,7 @@ public partial class Nail : Node3D
             QueueFree();
             return;
         }
+        if (_d.Wildlife != null && _d.Wildlife.ProjectileHit(from, GlobalPosition, _w.HitRadius * _s.SizeMult, _w.Damage * _s.SizeMult)) { QueueFree(); return; } // yaratik2: gunduz yabanileri
         if (_d.AtaSegmentHit(from, GlobalPosition, _w.HitRadius * _s.SizeMult) is IAtaTarget ata) { _d.Capa.AtaWeaponHit("civi", _w, _s, ata, ata.Center, _dir, Palette.OffWhite); QueueFree(); return; } // boss akisi
         if (GlobalPosition.Y < _d.World.HeightAt(GlobalPosition.X, GlobalPosition.Z) + _w.GroundOffset)
         {

@@ -283,7 +283,7 @@ public partial class Hud
         if (_invPage == CraftPage) { PaintCraft(); return; } // Hud.Craft.cs
         if (_invPage != 0) return;
 
-        PaintGear();
+        if (!PaintMarket()) PaintGear(); // Hud.Market.cs: Kargo Rampasi terminali sol sutunu (ekonomi2)
         PaintBag();
         if (StationOpen) PaintStation(); // Hud.Menu.cs
         else PaintDetail();

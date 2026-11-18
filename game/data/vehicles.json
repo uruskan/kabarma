@@ -1,0 +1,27 @@
+{
+  "_not": "Araclar (ICERIK §14, GDD §20). M2: Cekirge (ATV, T2). Govde koddan yer tutucu. Tarif ICERIK §20: 15 Demir Kulce + 6 Recine + 4 Bakir Tel, Arac Atolyesi; recine main'de yok, tarif satiri o gelince recipes.json'a eklenir. Yakit Bitkisel Yag (T2); esya kimligi main'de yok.",
+  "vehicles": [
+    {
+      "id": "cekirge",
+      "name": "Çekirge",
+      "tier": 2,
+      "seats": 2,
+      "slots": 1,
+      "maxSpeed": 14,
+      "reverseSpeed": 4,
+      "accel": 6,
+      "brake": 12,
+      "coast": 2,
+      "turnRate": 2.2,
+      "turnAtSpeed": 4,
+      "fuelItem": "bitkisel_yag",
+      "tankUnits": 12,
+      "unitSeconds": 300,
+      "flipSlopeDeg": 35,
+      "flipSpeed": 3,
+      "hp": 200,
+      "recipe": { "iron_ingot": 15, "recine": 6, "copper_wire": 4 },
+      "placeholder": "Govde koddan (CekirgeAtv.cs); Tripo modeli bekleniyor. Yakit esyasi ve tarif girdisi (recine, bitkisel_yag) main'de yok: --vehicle=cekirge dolu depoyla dogurur"
+    }
+  ]
+}

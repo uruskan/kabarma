@@ -51,6 +51,11 @@ public static class ItemNames
         ["tezgah"] = "Tezgâh",
         ["tas_firin"] = "Taş Fırın",
         ["paketleme"] = "Paketleme Tezgâhı",
+        // M2 yapi: malzeme girdileri (ICERIK 2.3; Kerpic zincirin "brick"i) ve yapi malzemeleri (build.json).
+        ["celik"] = "Çelik",
+        ["mayali_beton"] = "Mayalı Beton",
+        ["kerpic_tas"] = "Kerpiç-Taş",
+        ["celik_sac"] = "Çelik Sac",
         // M2 zincir (ICERIK §11.1): T1-T2 ara urunleri, ham kaynaklar ve istasyonlar.
         ["copper_wire"] = "Bakır Tel",
         ["brick"] = "Kerpiç",

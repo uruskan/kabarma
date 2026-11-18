@@ -18,11 +18,13 @@ public partial class AtaStone : Node3D
     float _pulse, _t;
     public Vector3 Altar { get; private set; }
 
-    public AtaStone(Director d, AtaDef def) { _d = d; _def = def; }
+    readonly Vector3 _center;
+
+    public AtaStone(Director d, AtaDef def, Vector3 center) { _d = d; _def = def; _center = center; }
 
     public override void _Ready()
     {
-        var center = new Vector3(_def.Arena.Center[0], 0, _def.Arena.Center[1]);
+        var center = _center;
         var pos = _d.World.Ground(center + new Vector3(_def.Arena.Stone[0], 0, _def.Arena.Stone[1]));
         GlobalPosition = pos;
         // Tas arenaya bakar; sunak tasin onunde (arena tarafinda).
