@@ -80,13 +80,43 @@ function Find-Godot {
     return $null
 }
 
+# Sahibin istegi (18 Kasim 2026, makine donuyordu): butun oturumlar birlikte ayni anda en cok KABARMA_GODOT_MAX
+# (varsayilan 2) Godot kosturur; fazlasi sirada bekler. Yuva adli bir mutex'tir: surec olurse Windows birakir (sizinti yok).
+function Enter-GodotSlot {
+    $max = 2
+    if ($env:KABARMA_GODOT_MAX -match '^\d+$') { $max = [Math]::Max(1, [int]$env:KABARMA_GODOT_MAX) }
+    $sw = [Diagnostics.Stopwatch]::StartNew(); $next = 30
+    while ($true) {
+        for ($i = 0; $i -lt $max; $i++) {
+            $m = New-Object System.Threading.Mutex($false, "KabarmaGodotSlot$i")
+            $got = $false
+            try { $got = $m.WaitOne(0) }
+            catch {
+                $e = $_.Exception
+                if ($e -is [Threading.AbandonedMutexException] -or $e.InnerException -is [Threading.AbandonedMutexException]) { $got = $true } else { throw }
+            }
+            if ($got) { return $m }
+            $m.Dispose()
+        }
+        if ($sw.Elapsed.TotalSeconds -ge $next) { Write-Host ("Godot sirasi bekleniyor ({0:N0} sn)" -f $sw.Elapsed.TotalSeconds); $next += 60 }
+        Start-Sleep -Seconds 3
+    }
+}
+
 # Sureci baslatir, ciktiyi dosyaya yazar, zaman asiminda agaciyla oldurur. ExitCode PS 5.1'de Handle okunmazsa bos kalir.
+# Godot surecleri once Enter-GodotSlot ile yer alir; sure siniri yer alindiktan sonra baslar.
 function Invoke-Proc([string]$exe, [string]$argLine, [string]$outFile, [int]$timeoutSec) {
     $errFile = "$outFile.err"
-    $p = Start-Process -FilePath $exe -ArgumentList $argLine -WorkingDirectory $Root -RedirectStandardOutput $outFile -RedirectStandardError $errFile -PassThru -NoNewWindow
-    $null = $p.Handle
-    $timedOut = -not $p.WaitForExit($timeoutSec * 1000)
-    if ($timedOut) { & taskkill /T /F /PID $p.Id | Out-Null; $p.WaitForExit() }
+    $slot = $null
+    if ($exe -match 'Godot') { $slot = Enter-GodotSlot }
+    try {
+        $p = Start-Process -FilePath $exe -ArgumentList $argLine -WorkingDirectory $Root -RedirectStandardOutput $outFile -RedirectStandardError $errFile -PassThru -NoNewWindow
+        $null = $p.Handle
+        $timedOut = -not $p.WaitForExit($timeoutSec * 1000)
+        if ($timedOut) { & taskkill /T /F /PID $p.Id | Out-Null; $p.WaitForExit() }
+    } finally {
+        if ($slot) { $slot.ReleaseMutex(); $slot.Dispose() }
+    }
     $text = ''
     if (Test-Path $outFile) { $text = [IO.File]::ReadAllText($outFile) }
     return [pscustomobject]@{ Code = $p.ExitCode; TimedOut = $timedOut; Text = $text; Out = $outFile }
