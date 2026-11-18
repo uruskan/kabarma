@@ -51,12 +51,31 @@ public sealed class StationQueue
     {
         if (r.Station != Station || !CanMake(r, inv)) return false;
         if (Active != null && Active.Id != r.Id) return false; // MVP: istasyon basina tek tur sira
+        var fuel = FuelFor(r, inv); // yakit, girdiler alinmadan secilir (FuelFor girdiyi zaten ayirir)
         foreach (var kv in r.In) inv.Remove(kv.Key, kv.Value);
-        var fuel = FuelFor(r, inv);
         if (fuel != null && Def != null) inv.Remove(fuel, Def.FuelPerJob);
+        _fuel.Add(fuel);
         Active = r;
         Queued++;
         return true;
+    }
+
+    readonly List<string?> _fuel = new();
+
+    /// <summary>
+    /// Siradaki butun isleri iptal eder (karar 23: iptal malzemeyi geri verir): kalan adetlerin girdisi ve yakiti cantaya
+    /// doner, sure sifirlanir. Donen: geri verilen (esya, adet).
+    /// </summary>
+    public Dictionary<string, int> Cancel(Inventory inv)
+    {
+        var back = new Dictionary<string, int>();
+        if (Active == null || Queued == 0) return back;
+        void Give(string item, int n) { int a = inv.Add(item, n); if (a > 0) back[item] = back.GetValueOrDefault(item) + a; }
+        foreach (var kv in Active.In) Give(kv.Key, kv.Value * Queued);
+        for (int i = _fuel.Count - Queued; i < _fuel.Count; i++) if (i >= 0 && _fuel[i] is string f && Def != null) Give(f, Def.FuelPerJob);
+        _fuel.Clear();
+        Active = null; Queued = 0; Progress = 0;
+        return back;
     }
 
     /// <returns>Bu tikte biten adet.</returns>
@@ -75,7 +94,7 @@ public sealed class StationQueue
             if (Queued == 0) { Active = null; Progress = 0; }
             Produced?.Invoke(r, r.Out);
         }
-        if (Queued == 0) { Active = null; Progress = 0; }
+        if (Queued == 0) { Active = null; Progress = 0; _fuel.Clear(); }
         return done;
     }
 }

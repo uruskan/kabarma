@@ -38,11 +38,12 @@ public partial class Hud
                 k.Text = _d?.Controls?.Last == InputDevice.Pad ? "" : $"Alt+{i + 1}";
     }
 
-    public int MenuCount => _menuItems.Count;
+    public int MenuCount => CraftOpen ? CraftRows().Count : _menuItems.Count;
 
     /// <summary>Menu imleci: secili satirin cercevesi (oyun kolu ✚ ile tasir, Ⓐ ile onaylar; klavyede Enter).</summary>
     public void MenuCursor(int sel)
     {
+        if (CraftOpen) { CraftCursor(sel); return; } // Uretim sayfasi (Hud.Craft.cs)
         _cursorBox ??= new StyleBoxFlat
         {
             BgColor = new Color(Palette.Warning, 0.18f), BorderColor = Palette.Warning,

@@ -42,6 +42,8 @@ public sealed class RecipeDef
     public bool Load { get; set; }
     /// <summary>Tarif bu esya ilk kez alininca acilir (GDD §12 Kesif); null: bastan acik.</summary>
     public string? UnlockOn { get; set; }
+    /// <summary>Uretim panelinin kategorisi (craft.json craftCategories).</summary>
+    public string Category { get; set; } = "";
 }
 
 public sealed class PlaceableDef
@@ -128,6 +130,6 @@ public sealed partial class ToolFile
 
 public sealed partial class GameData
 {
-    [DataFile("tool.json", "heads.json", "weapons.json", "recipes.json", "placeables.json", "foods.json", "prices.json")]
+    [DataFile("tool.json", "heads.json", "weapons.json", "recipes.json", "placeables.json", "foods.json", "prices.json", "craft.json")]
     public ToolFile Tool { get; private set; } = new();
 }

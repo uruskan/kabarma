@@ -14,7 +14,7 @@ public class DataSplitTests
     {
         var t = TestData.Load().Tool;
         // heads.json
-        Assert.Equal(new[] { "kazma", "bicme", "toprak", "sulama", "cekim", "insa" }, t.Heads);
+        Assert.Equal(new[] { "kazma", "bicme", "toprak", "sulama", "cekim" }, t.Heads);
         Assert.Equal(1.6f, t.MowRadius);
         Assert.Equal(5f, t.MowRange);
         Assert.Equal(2.5f, t.MineRate);
@@ -33,14 +33,15 @@ public class DataSplitTests
         Assert.Equal(1, t.Nailgun.AmmoPerShot);
         // recipes.json
         // (ekonomi M1: tarifler, bedeller, yemekler ve fiyatlar ICERIK §15, §18, §20'ye uyduruldu; ayrintisi CraftingTests, EconomyTests)
-        Assert.Equal(new[] { "civi", "civi_tabancasi", "el_arabasi", "copper_ingot", "kozde_salgam", "haslanmis_yumurta", "sebze_corbasi", "kargo_kasasi" }, t.Recipes.Select(r => r.Id));
-        Assert.Equal(20, t.Recipes[0].Out);
-        Assert.Equal(2, t.Recipes[6].In["turnip"]);
+        // karar 23: el tarifleri (yerlestirilebilirler) basta, istasyon tarifleri sonra; Tezgah'ta yapilan istasyonlar en sonda
+        Assert.Equal(new[] { "tezgah", "mesale", "uyku_tulumu", "sandik", "yemlik", "folluk", "ahsap_kapi", "civi", "civi_tabancasi", "el_arabasi", "copper_ingot", "kozde_salgam", "haslanmis_yumurta", "sebze_corbasi", "kargo_kasasi", "tas_firin", "ocakbasi", "paketleme" }, t.Recipes.Select(r => r.Id));
+        Assert.Equal(20, t.RecipeFor("civi")!.Out);
+        Assert.Equal(2, t.RecipeFor("sebze_corbasi")!.In["turnip"]);
         // placeables.json
         // ekonomi M1 yerlestirilebilirleri, ardindan ilkgun'unkiler (Ahsap Kapi, Yemlik, Folluk) arkaya eklenir
         Assert.Equal(new[] { "ocak", "tezgah", "tas_firin", "ocakbasi", "paketleme", "sandik", "uyku_tulumu", "mesale", "ahsap_kapi", "yemlik", "folluk" }, t.Placeables.Select(p => p.Id));
         Assert.True(t.Placeables[0].Once);
-        Assert.Equal(15, t.Placeables[2].Cost["stone"]);
+        Assert.Equal(15, t.CostOf(t.Placeables[2].Id)["stone"]);
         Assert.Equal(28, t.BuildCosts.Count);
         Assert.Equal(6, t.BuildCosts["kare_temel"]);
         // foods.json
@@ -56,7 +57,7 @@ public class DataSplitTests
         Assert.Equal(6.5f, t.Player.Jump);
         Assert.Equal(20, t.BackpackSlots);
         Assert.Equal(50, t.StackResource);
-        Assert.Equal(new[] { "turnip_seed", "wheat", "civi" }, t.StartItems.Keys);
+        Assert.Equal(new[] { "turnip_seed", "wheat", "civi", "ocak" }, t.StartItems.Keys); // karar 23: Ocak kapsulden gelir, kemerden kurulur
         Assert.Equal(40, t.StartItems["civi"]);
     }
 }

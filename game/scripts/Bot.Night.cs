@@ -13,6 +13,7 @@ public partial class Bot
 
     void StepNight()
     {
+        if (!_d.Capa.InHand && !_d.Hud.MenuOpen) { HoldItem(PlanTools.Capa); return; } // karar 23: Capa elde degilse ates yok
         var n = _d.Night;
         // --bot_card_delay=S: goruntu almak icin kart seridi S oyun saniyesi acik kalir (varsayilan 0,6; otomatik secim 20)
         float delay = Main.Args.TryGetValue("bot_card_delay", out var cd) ? float.Parse(cd, System.Globalization.CultureInfo.InvariantCulture) : 0.6f;

@@ -160,35 +160,79 @@ public sealed class Inventory
 }
 
 /// <summary>
-/// Kemer (GDD 5): 8 yuva, cantadaki esyalara kisayol. Yeni bir esya turu cantaya girince bos yuva varsa kendiliginden eklenir.
-/// Sayilar cantadan okunur; kemer kendi basina esya tutmaz.
+/// Kemer (GDD 4, 5; URETIM 6 M1 karari 23): 8 yuva. Secili yuvadaki esya eldedir; bos yuva secilirse eller bostur.
+/// Aletler (Capa, Insa Plani) cantaya girmez, kemerde hep vardir. Obur yuvalar cantadaki esyalara kisayoldur: elde
+/// tutulabilen (yerlestirilebilir, yemek) yeni bir esya cantaya girince bos yuva varsa kendiliginden eklenir; cantada
+/// bitince yuvadan duser. Sayilar cantadan okunur; kemer kendi basina esya tutmaz.
 /// </summary>
 public sealed class Belt
 {
     public const int Slots = 8;
     readonly string?[] _ids = new string?[Slots];
+    readonly HashSet<string> _tools = new();
+    readonly Func<string, bool> _auto;
     public IReadOnlyList<string?> Ids => _ids;
+    /// <summary>Secili yuva (0..7); -1: hicbiri (eller bos).</summary>
+    public int Selected { get; private set; } = -1;
+    /// <summary>Elde tutulan esya: secili yuvanin kimligi; yuva bossa ya da esya bittiyse null.</summary>
+    public string? Held => Selected >= 0 ? _ids[Selected] : null;
+    /// <summary>Secim degisti: (eski yuva, yeni yuva).</summary>
+    public event Action<int, int>? SelectionChanged;
 
-    public Belt(Inventory inv)
+    /// <param name="tools">Cantaya girmeyen aletler (craft.json beltTools).</param>
+    /// <param name="start">Baslangic dizilisi (craft.json beltStart); ilk yuva secili baslar.</param>
+    /// <param name="autoBelt">Kemere kendiliginden giren esya turu (ToolFile.IsHoldable); null: hepsi.</param>
+    public Belt(Inventory inv, IEnumerable<string>? tools = null, IEnumerable<string>? start = null, Func<string, bool>? autoBelt = null)
     {
+        foreach (var t in tools ?? Array.Empty<string>()) _tools.Add(t);
+        _auto = autoBelt ?? (_ => true);
+        int k = 0;
+        foreach (var id in start ?? Array.Empty<string>()) if (k < Slots) _ids[k++] = id;
+        if (k > 0) Selected = 0;
         foreach (var (id, _) in inv.Contents) AutoAssign(id);
-        inv.Changed += (id, count) => { if (count > 0) AutoAssign(id); };
+        inv.Changed += (id, count) =>
+        {
+            if (count > 0) AutoAssign(id);
+            else if (!IsTool(id)) { int i = Array.IndexOf(_ids, id); if (i >= 0) _ids[i] = null; } // bitti: yuvadan duser
+        };
     }
+
+    public bool IsTool(string id) => _tools.Contains(id);
 
     public bool Contains(string id) => Array.IndexOf(_ids, id) >= 0;
 
+    /// <summary>Yuva sec (1-8, tekerlek). Ayni yuvaya yeniden basmak secimi korur.</summary>
+    public void Select(int slot)
+    {
+        if (slot < -1 || slot >= Slots || slot == Selected) return;
+        int was = Selected;
+        Selected = slot;
+        SelectionChanged?.Invoke(was, slot);
+    }
+
+    /// <summary>Tekerlek: bir sonraki (+1) ya da onceki (-1) yuva; uclarda doner. Bos yuvalar da secilir (eller bos).</summary>
+    public void Scroll(int dir)
+    {
+        if (dir == 0) return;
+        int from = Selected < 0 ? (dir > 0 ? -1 : 0) : Selected;
+        Select(((from + Math.Sign(dir)) % Slots + Slots) % Slots);
+    }
+
+    /// <summary>Esyanin kemerdeki yuvasi; yoksa -1.</summary>
+    public int SlotOf(string id) => Array.IndexOf(_ids, id);
+
     public void AutoAssign(string id)
     {
-        if (Contains(id)) return;
+        if (Contains(id) || !_auto(id)) return;
         int free = Array.IndexOf(_ids, null);
         if (free >= 0) _ids[free] = id;
     }
 
-    /// <summary>Kemerdeyse cikarir, degilse ilk bos yuvaya koyar.</summary>
+    /// <summary>Kemerdeyse cikarir (alet cikmaz), degilse ilk bos yuvaya koyar.</summary>
     public bool Toggle(string id)
     {
         int i = Array.IndexOf(_ids, id);
-        if (i >= 0) { _ids[i] = null; return false; }
+        if (i >= 0) { if (!IsTool(id)) _ids[i] = null; return IsTool(id); }
         int free = Array.IndexOf(_ids, null);
         if (free < 0) return false;
         _ids[free] = id;
@@ -201,7 +245,19 @@ public sealed class Belt
     public void Assign(int slot, string? id)
     {
         if (slot < 0 || slot >= Slots) return;
-        if (id != null) { int was = Array.IndexOf(_ids, id); if (was >= 0) _ids[was] = null; }
+        var cur = _ids[slot];
+        if (cur == id) return;
+        int was = id != null ? Array.IndexOf(_ids, id) : -1;
+        if (cur != null && IsTool(cur))
+        {
+            // Alet kemerden cikmaz: yerine gelen esyanin eski yuvasina ya da ilk bos yuvaya kayar.
+            int to = was >= 0 ? was : Array.IndexOf(_ids, null);
+            if (id == null || to < 0) return;
+            _ids[to] = cur;
+            _ids[slot] = id;
+            return;
+        }
+        if (was >= 0) _ids[was] = null;
         _ids[slot] = id;
     }
 }

@@ -410,13 +410,14 @@ public partial class EconomyTest : Node
         if (chest.Storage.IsEmpty) { Bag.Add("wheat", 1); Bag.MoveTo(chest.Storage, "wheat", 1); }
         Check(!b.Deconstruct(chest), "dolu Sandik sokulmez");
         foreach (var id in chest.Storage.Contents.Select(x => x.id).Distinct().ToList()) chest.Storage.MoveTo(Bag, id, 999);
-        w = Bag.Count("wood");
-        Check(b.Deconstruct(chest) && Bag.Count("wood") == w + 10 && !_d.Furniture.Contains(chest), "bos Sandik sokuldu, 10 Odun iade");
+        // Karar 23: yerlestirilebilir uretilmis esyadir; sokulunce esyanin kendisi cantaya doner, kemerden yeniden kurulur.
+        w = Bag.Count("sandik");
+        Check(b.Deconstruct(chest) && Bag.Count("sandik") == w + 1 && !_d.Furniture.Contains(chest), "bos Sandik sokuldu, Sandik cantaya dondu");
         _tezgah.Queue.Enqueue(_tezgah.Queue.Recipes.Single(r => r.Id == "el_arabasi"), Bag);
         Check(!b.Deconstruct(_tezgah), "uretim surerken istasyon sokulmez");
         await Wait(4.6f);
-        int st = Bag.Count("stone"); w = Bag.Count("wood");
-        Check(b.Deconstruct(_tezgah) && Bag.Count("wood") == w + 10 && Bag.Count("stone") == st + 5 && !_d.Stations.Contains(_tezgah), "Tezgah sokuldu: 10 Odun + 5 Tas iade");
+        w = Bag.Count("tezgah");
+        Check(b.Deconstruct(_tezgah) && Bag.Count("tezgah") == w + 1 && !_d.Stations.Contains(_tezgah), "Tezgah sokuldu, Tezgah cantaya dondu");
     }
 
     // ---------------------------------------------------------------- uyku ve yemek

@@ -48,6 +48,10 @@ public sealed class HeldItemDef
     /// <summary>Modeldeki namlu ucu dugumu (+Z namlu ekseni, +Y ust). Nesnenin cercevesi budur: isinlar ve mermiler
     /// buradan cikar, nisan bu ekseni hedefe cevirir.</summary>
     public string MuzzleNode { get; set; } = "";
+    /// <summary>Yalniz isaret dugumu olmayan kemer esyalari (mesale, insa_plani; Player.Hand.cs): modelin nesne
+    /// dugumundeki yeri ve donusu. Capa ve El Arabasi kullanmaz (dugumleri var).</summary>
+    public float[] ModelPos { get; set; } = { 0f, 0f, 0f };
+    public float[] ModelRotDeg { get; set; } = { 0f, 0f, 0f };
     public GripFrameDef? Right { get; set; }
     public GripFrameDef? Left { get; set; }
     /// <summary>Nisanda yumruk omzun bu kadar onunde (m), nisan yonunde.</summary>

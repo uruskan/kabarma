@@ -33,6 +33,13 @@ public static class ItemNames
         ["folluk"] = "Folluk",
         ["ocakbasi"] = "Ocakbaşı",
         ["kargo_rampasi"] = "Kargo Rampası",
+        // Karar 23 (kemer akisi): kemer aletleri ve uretilen yerlestirilebilirler.
+        ["capa"] = "Çapa",
+        ["insa_plani"] = "İnşa Planı",
+        ["ocak"] = "Ocak",
+        ["tezgah"] = "Tezgâh",
+        ["tas_firin"] = "Taş Fırın",
+        ["paketleme"] = "Paketleme Tezgâhı",
     };
 
     public static string Of(string id) => Names.TryGetValue(id, out var n) ? n : id;

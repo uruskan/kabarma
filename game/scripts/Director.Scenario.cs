@@ -55,10 +55,7 @@ public partial class Director
 
         // Adim baslarken: dogru basligi tak, sahneyi hazirla.
         OnStepStart("odun", () => Capa.Select(Capa.Head.Bicme));
-        OnStepStart("ocak", () => Capa.Select(Capa.Head.Insa));
-        OnStepStart("tezgah", () => Capa.Select(Capa.Head.Insa));
         OnStepStart("tarla", () => Capa.Select(Capa.Head.Toprak));
-        OnStepStart("agil", () => Capa.Select(Capa.Head.Insa));
         OnStepStart("gidak", ShowGidak);
         OnStepStart("night", BeginDusk);
         OnStepStart("sell", () => Capa.Select(Capa.Head.Cekim));

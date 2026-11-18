@@ -27,9 +27,10 @@ public partial class Bot
         if (MoveTo(rock.GlobalPosition, 4.5f)) Fire = true;
     }
 
+    /// <summary>Ocak kapsulden cantada gelir (karar 23): kemerden ele al, hayaletle kur.</summary>
     void StepOcak()
     {
-        Head(Capa.Head.Insa);
+        if (!HoldItem("ocak")) { _stepT = 0; return; }
         var spot = _d.World.Ground(new Vector3(0, 0, 0));
         Aim(spot);
         if (MoveTo(spot + new Vector3(3, 0, -3), 0.8f) && _stepT > 1.5f) { FirePressed = true; _stepT = 0; }

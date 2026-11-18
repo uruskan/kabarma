@@ -70,7 +70,8 @@ public partial class Station : Node3D
         _d.OnProduced(r);
     }
 
-    public bool InReach(Vector3 p) => new Vector2(p.X - GlobalPosition.X, p.Z - GlobalPosition.Z).Length() < 3.2f;
+    /// <summary>Yakinlik: istasyon tarifleri ve E menusu bu yaricapta (craft.json stationReach).</summary>
+    public bool InReach(Vector3 p) => new Vector2(p.X - GlobalPosition.X, p.Z - GlobalPosition.Z).Length() < _d.Data.Tool.StationReach;
 
     public override void _Process(double delta)
     {
@@ -84,7 +85,7 @@ public partial class Station : Node3D
         string packing = Def.Station == "paketleme" && _d.State.Cargo.Open != null ? $"\nkasa: {_d.State.Cargo.Open.Items.UsedSlots}/{_d.State.Cargo.Open.Items.Slots} yığın · {_d.State.Cargo.Value(_d.State.Cargo.Open)} Kredi" : "";
         _label.Text = working
             ? $"{Def.Name}\n{Queue.Active.Name} {(int)(Queue.Progress * 100)}%  ·  sırada {Queue.Queued}"
-            : near ? $"{Def.Name}{fuel}\nE: üret{packing}" : Def.Name + packing;
+            : near ? $"{Def.Name}{fuel}\nE: üretim{packing}" : Def.Name + packing;
         _label.Modulate = near ? Palette.Warning : Palette.OffWhite;
         if (_bounce > 0)
         {

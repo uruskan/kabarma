@@ -48,13 +48,8 @@ public partial class Bot
     // ---------- kaynak ----------
 
     // Adlar ekonomi'nin Bot.Machines EnsureItem/EnsureCost'undan ayri (birlesince ayni imza derleme hatasi olurdu).
-    /// <summary>Yerlestirilebilirin bedeli cantada yoksa eksik kaynagi oyun yolundan toplar. Tamamsa true.</summary>
-    bool HaveCost(PlaceableDef def)
-    {
-        foreach (var (item, n) in def.Cost)
-            if (_d.State.Backpack.Count(item) < n) { Gather(item); return false; }
-        return true;
-    }
+    /// <summary>Karar 23: yerlestirilebilir cantada yoksa malzemesini toplayip uretir (Bot.Kemer.cs). Cantadaysa true.</summary>
+    bool HaveCost(PlaceableDef def) => HavePlaceable(def.Id);
 
     bool HaveItem(string item, int n)
     {
@@ -150,8 +145,7 @@ public partial class Bot
     void PlacePiece(string want, Vector3 target, Vector3 stand, bool free)
     {
         var b = _d.Build;
-        Head(Capa.Head.Insa);
-        if (_d.Capa.CurrentPlaceable != want) { if (_stepT > 0.12f) { NextPlaceable(); _stepT = 0; } return; }
+        if (!PlanWith(want)) return; // Insa Plani elde, parca carktan (karar 23)
         Aim(target + _aimFix + Vector3.Up * 0.3f);
         if (!MoveTo(stand, 0.6f, false)) { _stepT = 0; return; }
         var cur = b.System.Current;
@@ -225,15 +219,11 @@ public partial class Bot
         return false;
     }
 
-    /// <summary>Istasyon olmayan yerlestirilebiliri (Yemlik, Folluk) koyar: Insa, tekerlek, durulacak yer, nisan, sol tik.</summary>
-    void PlacePropAt(string id, Vector3 at, Vector3 stand)
-    {
-        Head(Capa.Head.Insa);
-        if (_d.Capa.CurrentPlaceable != id) { if (_stepT > 0.15f) { NextPlaceable(); _stepT = 0; } return; }
-        Aim(at);
-        if (!MoveRouted(stand, 0.5f)) { _stepT = 0; return; }
-        if (_stepT > 1.0f) { FirePressed = true; _stepT = 0; GD.Print($"BOT place {id} at {at}"); }
-    }
+    /// <summary>Yerlestirilebiliri (Yemlik, Folluk, istasyon) koyar: uret, kemerden ele al, durulacak yer, nisan, sol tik.</summary>
+    void PlacePropAt(string id, Vector3 at, Vector3 stand) => PlaceHeld(id, at, stand, 0.5f, routed: true);
+
+    Vector3? _gidakDetour;
+    bool _gidakDetourDone;
 
     void StepGidak(Vector3 o)
     {
@@ -248,7 +238,23 @@ public partial class Bot
             Aim(g.GlobalPosition + Vector3.Up * 0.4f);
             // E once en yakin istasyonun menusunu acar (Director.Interact): istasyon erimindeyse Gidak'in obur yanina gec.
             var st = _d.Stations.FirstOrDefault(s => s.InReach(P.GlobalPosition));
-            if (st != null) { var away = g.GlobalPosition - st.GlobalPosition; away.Y = 0; MoveTo(g.GlobalPosition + away.Normalized() * 1.5f, 0.4f, false); return; }
+            // E, Gidak istasyondan yakinsa Gidak'a gider (Director.Interact). Istasyon daha yakinsa istasyonun yanindan dolas:
+            // dolasma noktasi bir kez secilir (istasyonun oyuncu tarafindaki yani, Gidak'a dogru biraz ileride).
+            if (st != null && st.GlobalPosition.DistanceTo(P.GlobalPosition) < g.GlobalPosition.DistanceTo(P.GlobalPosition))
+            {
+                if (_gidakDetour == null)
+                {
+                    var away = g.GlobalPosition - st.GlobalPosition; away.Y = 0; away = away.Normalized();
+                    var side = new Vector3(-away.Z, 0, away.X);
+                    if (side.Dot(P.GlobalPosition - st.GlobalPosition) < 0) side = -side;
+                    _gidakDetour = _d.World.Ground(st.GlobalPosition + side * 2.4f + away * 1.2f);
+                }
+                // Dolasma noktasina varinca Gidak'in dibine gir (Gidak istasyondan yakin olur).
+                if (!_gidakDetourDone) { if (MoveTo(_gidakDetour.Value, 0.5f, false)) _gidakDetourDone = true; return; }
+                MoveTo(g.GlobalPosition, 0.7f, false);
+                return;
+            }
+            _gidakDetour = null; _gidakDetourDone = false;
             if (MoveTo(g.GlobalPosition, 1.8f, false) && _menuT <= 0) { Use(); _menuT = 0.8f; }
             return;
         }
@@ -275,6 +281,8 @@ public partial class Bot
     void StepNightPen()
     {
         _menuT -= (float)GetProcessDeltaTime();
+        // Karar 23: gece Capa elde olmali (onceki adim kemerden Folluk / Yemlik kurdu).
+        if (!_d.Capa.InHand && !_d.Hud.MenuOpen && !_d.Hud.ReportOpen) { HoldItem(PlanTools.Capa); return; }
         // Acik kalmis menu tetigi yutar (Director.ReadInput): gece boyu ates edilemez, safakta Cekim calismaz. Kapat.
         if (_d.Hud.MenuOpen && !_d.Hud.ReportOpen && _menuT <= 0) { GD.Print("BOT closed stray menu"); _d.Hud.HideMenu(); _menuT = 0.3f; return; }
         var gate = PenGate;

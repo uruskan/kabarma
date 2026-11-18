@@ -170,6 +170,7 @@ public partial class Director : Node3D
         if (!Player.Down && Player.Hp < Player.MaxHp) Player.Hp = Mathf.Min(Player.MaxHp, Player.Hp + State.Food.Regen * dt);
         if (Input.IsActionJustPressed("ui_accept") && Hud.ReportOpen) CloseReport();
         TickEconomy(dt); // Director.Economy.cs: gecikmeli odeme, kasa izleme
+        TickKemer(dt);   // Director.Belt.cs: elde tutulan esya, el uretim kuyrugu (karar 23)
 
         Capa.Process(dt, fire && !Hud.ReportOpen, firePressed && !Hud.ReportOpen);
 

@@ -62,7 +62,7 @@ public partial class Hud
     }
 
     /// <summary>Capa.Head sirasiyla glif adlari.</summary>
-    static readonly string[] HeadGlyphNames = { "kazma", "bicme", "toprak", "sulama", "cekim", "insa", "tirpan", "civi" };
+    static readonly string[] HeadGlyphNames = { "kazma", "bicme", "toprak", "sulama", "cekim", "tirpan", "civi" };
 
     static string HeadGlyphName(int head) => head >= 0 && head < HeadGlyphNames.Length ? HeadGlyphNames[head] : "kazma";
 

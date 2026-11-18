@@ -46,7 +46,7 @@ public partial class Hud
         var f = T.Data.Feed;
         var v = T.Data.Vitals;
         _pickups.RemoveAll(p => _now - p.At > f.Seconds + f.FadeSeconds);
-        float bottom = v.Bottom - 3 * v.Pitch - (_d.Capa.Current == Capa.Head.Civi ? 40 : 0);
+        float bottom = v.Bottom - 3 * v.Pitch - (_d.Capa.Current == Capa.Head.Civi && _d.Capa.InHand ? 40 : 0) - QueueHeight; // uretim sirasi (Hud.Craft.cs) altta
         for (int i = _pickups.Count - 1, row = 0; i >= 0; i--, row++)
         {
             var p = _pickups[i];

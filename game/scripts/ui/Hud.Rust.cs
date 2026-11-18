@@ -136,6 +136,7 @@ void fragment() {
         {
             PaintBelt(inv);   // Hud.Belt.cs
             PaintVitals(inv);
+            PaintQueue(inv);  // Hud.Craft.cs: uretim sirasi (sag alt)
         }
         if (!inv && !report)
         {

@@ -137,7 +137,9 @@ public partial class CameraTest : Node
         float d0 = C.ClampZoom(C.Normal.Distance);
         Pose("normal", d0, C.Normal.Side, C.Normal.Fov);
 
-        // 2. Tekerlek
+        // 2. Tekerlek (karar 23: Ctrl ya da Alt basiliyken yakinlastirir; tek basina kemeri secer)
+        int beltBefore = _d.State.Belt.Selected;
+        Input.ParseInputEvent(new InputEventKey { Keycode = Key.Ctrl, PhysicalKeycode = Key.Ctrl, Pressed = true });
         await Tap("camera_zoom_out", InputDevice.Kbm);
         Near(P.CameraZoom, C.StepZoom(d0, 1), 0.001f, "tekerlek asagi uzaklastirmadi");
         await Tap("camera_zoom_in", InputDevice.Kbm);
@@ -152,14 +154,14 @@ public partial class CameraTest : Node
         Near(P.CameraZoom, C.ZoomMin, 0.001f, "en yakinda durmadi");
         await Seconds(0.8f);
         Near(P.CameraBoom, C.ZoomMin, 0.05f, "en yakin kamera");
-        _d.Capa.Select(Capa.Head.Insa);
+        Check(_d.State.Belt.Selected == beltBefore, $"Ctrl + tekerlek kemeri de kaydirdi ({beltBefore} -> {_d.State.Belt.Selected})");
+        Input.ParseInputEvent(new InputEventKey { Keycode = Key.Ctrl, PhysicalKeycode = Key.Ctrl, Pressed = false });
         await Physics(2);
-        if (_d.Capa.Current == Capa.Head.Insa)
-        {
-            await Tap("camera_zoom_out", InputDevice.Kbm);
-            Near(P.CameraZoom, C.ZoomMin, 0.001f, "Insa basligindayken tekerlek yakinlastirdi (parca degistirmeli)");
-        }
-        else Check(false, "Insa secilemedi");
+        int slot0 = _d.State.Belt.Selected;
+        await Tap("camera_zoom_out", InputDevice.Kbm);
+        Near(P.CameraZoom, C.ZoomMin, 0.001f, "Ctrl'siz tekerlek yakinlastirdi (kemeri secmeli)");
+        Check(_d.State.Belt.Selected != slot0, "Ctrl'siz tekerlek kemeri secmedi");
+        _d.HoldCapa(); // nisan sinamasi Capa elde ister
         _d.Capa.Select(Capa.Head.Kazma);
         P.SetCameraZoom(d0);
         await Physics(5);
@@ -170,10 +172,13 @@ public partial class CameraTest : Node
         await Seconds(C.TransitionSeconds + 0.3f);
         Pose("yakin omuz", C.Shoulder.Distance, C.Shoulder.Side, C.Shoulder.Fov);
         float z = P.CameraZoom;
+        Input.ParseInputEvent(new InputEventKey { Keycode = Key.Ctrl, PhysicalKeycode = Key.Ctrl, Pressed = true }); // karar 23: zoom Ctrl + tekerlek
         await Tap("camera_zoom_in", InputDevice.Kbm);
         await Tap("camera_zoom_out", InputDevice.Kbm);
         await Tap("camera_zoom_out", InputDevice.Kbm);
+        Input.ParseInputEvent(new InputEventKey { Keycode = Key.Ctrl, PhysicalKeycode = Key.Ctrl, Pressed = false });
         Near(P.CameraZoom, z, 0.001f, "yakin omuzda tekerlek uzakligi degistirdi");
+        Check(_d.Capa.InHand, "Ctrl + tekerlek Capa'yi elden indirdi");
 
         // 4-5. Yakin omuzda nisan ve carpisma
         _d.State.Capa.Unlock(_d.Data.Tool.Nailgun.Id);

@@ -29,7 +29,12 @@ public partial class Hud
             }
             return;
         }
-        if (!InventoryOpen) return;
+        if (!InventoryOpen)
+        {
+            // Envanter kapaliyken sag alttaki uretim sirasina tiklanmaz (fare kilitli); yalniz envanterde iptal edilir.
+            return;
+        }
+        if (e is InputEventKey k && CraftKey(k)) { GetViewport().SetInputAsHandled(); return; } // Uretim arama kutusu
         if (e is InputEventMouseButton mb)
         {
             if (mb.Pressed) InventoryPress(mb);

@@ -46,7 +46,7 @@ public class UiTests
     public void Wheel_lists_six_work_heads_and_two_weapons_and_the_palette_has_every_colour_the_ui_uses()
     {
         var d = TestData.Load().Ui;
-        Assert.Equal(8, d.Heads.Count); // Capa.Head: Kazma, Bicme, Toprak, Sulama, Cekim, Insa, Tirpan, Civi
+        Assert.Equal(7, d.Heads.Count); // Capa.Head: Kazma, Bicme, Toprak, Sulama, Cekim, Tirpan, Civi (karar 23: Insa kalkti)
         Assert.All(d.Heads, h => { Assert.False(string.IsNullOrWhiteSpace(h.Title)); Assert.False(string.IsNullOrWhiteSpace(h.Text)); });
         foreach (var key in new[] { "ink", "muted", "red", "green", "panel", "panelHover", "hudSlot", "selected", "selectedEdge", "health", "stamina",
                      "ivory", "brick", "short", "warning", "tooltip", "star", "dialog", "toast", "shade", "locked", "oz", "teal" })

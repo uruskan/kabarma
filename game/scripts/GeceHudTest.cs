@@ -222,7 +222,13 @@ public partial class GeceHudTest : Node
                 Then(() => Check(d.Hud.BeltSelected == 1 && d.Capa.Current == head0, $"2 tusu kemeri secmeli, basligi degil (kemer {d.Hud.BeltSelected}, baslik {d.Capa.Current})"));
                 Then(() => Mouse(MouseButton.WheelDown, true, Vector2.Zero));
                 Then(() => Mouse(MouseButton.WheelDown, false, Vector2.Zero));
-                Then(() => Check(d.Capa.Current == head0, "fare tekerlegi basligi degistirmemeli"));
+                Then(() => Check(d.Capa.Current == head0 && d.Hud.BeltSelected == 2, $"fare tekerlegi kemeri secmeli, basligi degil (kemer {d.Hud.BeltSelected})"));
+                // Karar 23: Q carki yalniz Capa eldeyken acilir; 1 tusu Capa'yi ele alir.
+                Then(() => Key(global::Godot.Key.Q, true));
+                Then(() => Check(!d.Hud.WheelOpen, "Capa elde degilken Q carki acti"));
+                Then(() => Key(global::Godot.Key.Q, false));
+                Tap(global::Godot.Key.Key1);
+                Then(() => Check(d.Capa.InHand && d.Hud.BeltSelected == 0, $"1 tusu Capa'yi ele almadi (kemer {d.Hud.BeltSelected})"));
                 // Q basili: cark acilir, dilim secilir, birakinca takilir
                 Then(() => Key(global::Godot.Key.Q, true));
                 Then(() => Check(d.Hud.WheelOpen, "Q carki acmadi"));

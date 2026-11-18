@@ -1,13 +1,24 @@
 {
-  "_not": "Istasyon tarifleri (ICERIK §11, §20; URETIM §6 M1). Girdi cantadan alinir; yakit istasyonun 'fuel' alanindan (is basina). 'load': urun cantaya degil dunyaya yuk nesnesi olarak cikar. 'unlockOn': tarif bu esya ilk kez alininca acilir (GDD §12 Kesif). Menudeki sira bu siradir.",
+  "_not": "Tarifler (ICERIK §11, §20; URETIM §6 M1 karari 23). Tarifin kimligi urunun kimligidir. 'station' bos: el tarifi, Uretim panelinden her yerde (Tab); dolu: yalniz o istasyonun yakininda (craft.json stationReach) ya da istasyonun E menusunden. Girdi cantadan alinir; yakit istasyonun 'fuel' alanindan (is basina). 'load': urun cantaya degil dunyaya yuk nesnesi olarak cikar. 'unlockOn': tarif bu esya ilk kez alininca acilir (GDD §12 Kesif). 'category': panelin kategorisi (craft.json). Istasyon menusundeki sira bu siradir.",
+  "_not_yerlestirilebilir": "Karar 23: yerlestirilebilirler uretilir, envantere esya olarak girer, kemerden kurulur. Bedelleri ICERIK §10.2 ve §20 (eskiden placeables.json 'cost'). Uretim yeri ve sureleri GDD §5'teki M1 satirindan: Tezgah, Sandik, Uyku Tulumu, Mesale, Ahsap Kapi, Yemlik, Folluk elde; Tas Firin, Ocakbasi, Paketleme Tezgahi Tezgah'ta.",
   "recipes": [
-    { "id": "civi", "name": "Çivi", "station": "tezgah", "in": { "copper_ingot": 1 }, "out": 20, "seconds": 2.0 },
-    { "id": "civi_tabancasi", "name": "Çivi Tabancası", "station": "tezgah", "in": { "copper_ingot": 2, "wood": 4 }, "out": 1, "seconds": 4.0, "unlockOn": "copper_ingot" },
-    { "id": "el_arabasi", "name": "El Arabası", "station": "tezgah", "in": { "wood": 12, "stone": 4 }, "out": 1, "seconds": 4.0, "load": true },
-    { "id": "copper_ingot", "name": "Bakır Külçe", "station": "tas_firin", "in": { "copper_ore": 2 }, "out": 1, "seconds": 4.0 },
-    { "id": "kozde_salgam", "name": "Közde Şalgam", "station": "ocakbasi", "in": { "turnip": 1 }, "out": 1, "seconds": 3.0 },
-    { "id": "haslanmis_yumurta", "name": "Haşlanmış Yumurta", "station": "ocakbasi", "in": { "egg": 1 }, "out": 1, "seconds": 3.0 },
-    { "id": "sebze_corbasi", "name": "Sebze Çorbası", "station": "ocakbasi", "in": { "turnip": 2 }, "out": 1, "seconds": 4.0 },
-    { "id": "kargo_kasasi", "name": "Kargo Kasası", "station": "paketleme", "in": {}, "out": 1, "seconds": 3.0, "load": true }
+    { "id": "tezgah", "name": "Tezgâh", "station": "", "category": "yapi", "in": { "wood": 10, "stone": 5 }, "out": 1, "seconds": 5.0 },
+    { "id": "mesale", "name": "Meşale", "station": "", "category": "yapi", "in": { "wood": 2 }, "out": 1, "seconds": 1.0 },
+    { "id": "uyku_tulumu", "name": "Uyku Tulumu", "station": "", "category": "yapi", "in": { "fiber": 6 }, "out": 1, "seconds": 3.0 },
+    { "id": "sandik", "name": "Sandık", "station": "", "category": "yapi", "in": { "wood": 10 }, "out": 1, "seconds": 3.0 },
+    { "id": "yemlik", "name": "Yemlik", "station": "", "category": "yapi", "in": { "wood": 6 }, "out": 1, "seconds": 3.0 },
+    { "id": "folluk", "name": "Folluk", "station": "", "category": "yapi", "in": { "wood": 4, "fiber": 4 }, "out": 1, "seconds": 3.0 },
+    { "id": "ahsap_kapi", "name": "Ahşap Kapı", "station": "", "category": "yapi", "in": { "wood": 4 }, "out": 1, "seconds": 3.0 },
+    { "id": "civi", "name": "Çivi", "station": "tezgah", "category": "alet", "in": { "copper_ingot": 1 }, "out": 20, "seconds": 2.0 },
+    { "id": "civi_tabancasi", "name": "Çivi Tabancası", "station": "tezgah", "category": "alet", "in": { "copper_ingot": 2, "wood": 4 }, "out": 1, "seconds": 4.0, "unlockOn": "copper_ingot" },
+    { "id": "el_arabasi", "name": "El Arabası", "station": "tezgah", "category": "yuk", "in": { "wood": 12, "stone": 4 }, "out": 1, "seconds": 4.0, "load": true },
+    { "id": "copper_ingot", "name": "Bakır Külçe", "station": "tas_firin", "category": "malzeme", "in": { "copper_ore": 2 }, "out": 1, "seconds": 4.0 },
+    { "id": "kozde_salgam", "name": "Közde Şalgam", "station": "ocakbasi", "category": "yemek", "in": { "turnip": 1 }, "out": 1, "seconds": 3.0 },
+    { "id": "haslanmis_yumurta", "name": "Haşlanmış Yumurta", "station": "ocakbasi", "category": "yemek", "in": { "egg": 1 }, "out": 1, "seconds": 3.0 },
+    { "id": "sebze_corbasi", "name": "Sebze Çorbası", "station": "ocakbasi", "category": "yemek", "in": { "turnip": 2 }, "out": 1, "seconds": 4.0 },
+    { "id": "kargo_kasasi", "name": "Kargo Kasası", "station": "paketleme", "category": "yuk", "in": {}, "out": 1, "seconds": 3.0, "load": true },
+    { "id": "tas_firin", "name": "Taş Fırın", "station": "tezgah", "category": "yapi", "in": { "stone": 15, "clay": 5 }, "out": 1, "seconds": 6.0 },
+    { "id": "ocakbasi", "name": "Ocakbaşı", "station": "tezgah", "category": "yapi", "in": { "stone": 8, "wood": 4 }, "out": 1, "seconds": 5.0 },
+    { "id": "paketleme", "name": "Paketleme Tezgâhı", "station": "tezgah", "category": "yapi", "in": { "wood": 8 }, "out": 1, "seconds": 5.0 }
   ]
 }

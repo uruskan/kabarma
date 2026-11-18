@@ -29,15 +29,49 @@ public partial class Bot
 
     // ---------- Eller ----------
 
-    /// <summary>Capa basligini tak (klavye: sayi tusu; kol: LB basili + sag cubuk carki).</summary>
+    /// <summary>
+    /// Capa basligini tak: once Capa ele (kemer, karar 23), sonra Q / LB carki (klavye: Q + fare; kol: LB + sag cubuk).
+    /// </summary>
     void Head(Capa.Head h)
     {
+        if (!_d.Capa.InHand) { HoldItem(PlanTools.Capa); return; }
         if (!UsesInput) { _d.Capa.Select(h); return; }
         if (_d.Capa.Current != h) _driver.SelectHead((int)h);
     }
 
-    /// <summary>Insa basliginda sonraki yerlestirilebilir/parca (tekerlek / RB).</summary>
-    void NextPlaceable() { if (!UsesInput) _d.Capa.CyclePlaceable(1); else _driver.Tap("build_next"); }
+    /// <summary>
+    /// Kemerdeki esyayi ele al (karar 23): klavye sayi tusu 1-8, kol RB (sonraki yuva). Eldeyse true; kemerde yoksa false.
+    /// </summary>
+    bool HoldItem(string id)
+    {
+        if (_d.State.Belt.Held == id) return true;
+        int slot = _d.State.Belt.SlotOf(id);
+        if (slot < 0) { if (_stepT > 3f) { GD.Print($"BOT {id} kemerde yok"); _stepT = 0; } return false; }
+        if (_d.Hud.MenuOpen) { if (_menuT <= 0) { MenuClose(); _menuT = 0.3f; } return false; }
+        if (!UsesInput) { _d.SelectBelt(slot); return _d.State.Belt.Held == id; }
+        if (_driver.Device == InputDevice.Kbm) _driver.Tap($"head_{slot + 1}");
+        else _driver.Tap("belt_next");
+        return false;
+    }
+
+    /// <summary>Insa Plani'nin parcasini sec: sag tik (kol LB) basili parca carki.</summary>
+    void PickPiece(string id)
+    {
+        if (!UsesInput) { _d.Capa.SelectPiece(id); return; }
+        var l = _d.Capa.PlanPieces;
+        int i = l.IndexOf(id);
+        if (i >= 0) _driver.SelectPiece(i, l.Count);
+    }
+
+    /// <summary>Kurulacak seyi dondur (R / ✚↓).</summary>
+    void Rotate() { if (!UsesInput) _d.Capa.RotateGhost(); else _driver.Tap("build_rotate"); }
+
+    /// <summary>Envanterde sonraki sayfa (klavye Q, kol RB): Canta → Defter → Uretim.</summary>
+    void NextPage()
+    {
+        if (!UsesInput) { _d.Hud.SetInventoryPage((_d.Hud.InventoryPage + 1) % (Hud.CraftPage + 1)); return; }
+        _driver.Tap(_driver.Device == InputDevice.Kbm ? "head_wheel" : "belt_next");
+    }
 
     /// <summary>Etkilesim (E / Ⓧ): istasyon menusu, rampa, Gidak'i besleme.</summary>
     void Use() { if (!UsesInput) _d.Interact(); else _driver.Tap("interact"); }
@@ -118,14 +152,15 @@ public partial class Bot
     }
 
     /// <summary>Isleyicinin oyuna dokunup dokunmadigini anlamaya yeten ucuz durum ozeti.</summary>
-    readonly record struct HandsState(int Head, string Placeable, bool Menu, bool Report, bool Wheel, int Cards, int Bag, int Slots, int Stations, int Pieces, int Credits, int Plots, bool Ocak);
+    readonly record struct HandsState(int Head, string Placeable, bool Menu, bool Report, bool Wheel, int Cards, int Bag, int Slots, int Stations, int Pieces, int Credits, int Plots, bool Ocak, int Belt, int Jobs, int Page);
 
     HandsState Snapshot()
     {
         var s = _d.State;
         int bag = 0;
         foreach (var c in s.Backpack.Contents) bag = bag * 31 + c.id.GetHashCode() * 7 + c.count;
-        return new HandsState((int)_d.Capa.Current, _d.Capa.Current == Capa.Head.Insa ? _d.Capa.CurrentPlaceable : "", _d.Hud.MenuOpen, _d.Hud.ReportOpen, _d.Hud.WheelOpen,
-            _d.Night?.CardsCount ?? 0, bag, s.Backpack.UsedSlots, _d.Stations.Count, _d.Build?.System?.Pieces.Count ?? 0, s.Credits, System.Linq.Enumerable.Count(s.Farm.Plots), _d.Ocak != null);
+        return new HandsState((int)_d.Capa.Current, _d.Capa.CurrentPlaceable, _d.Hud.MenuOpen, _d.Hud.ReportOpen, _d.Hud.WheelOpen,
+            _d.Night?.CardsCount ?? 0, bag, s.Backpack.UsedSlots, _d.Stations.Count, _d.Build?.System?.Pieces.Count ?? 0, s.Credits, System.Linq.Enumerable.Count(s.Farm.Plots), _d.Ocak != null,
+            s.Belt.Selected, s.Craft.Jobs.Count, _d.Hud.InventoryOpen ? _d.Hud.InventoryPage : -1);
     }
 }

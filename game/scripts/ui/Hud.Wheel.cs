@@ -6,25 +6,49 @@ using T = Kabarma.Game.UiTheme;
 namespace Kabarma.Game;
 
 /// <summary>
-/// Baslik carki (GDD 4, SANAT-SES 8.1, M1 karari 20): Capa'nin 6 is basligi, Tirpan Isini ve Civi Tabancasi **yalniz**
-/// buradan secilir. Q basili tutulur (kolda sol tampon), fareyle ya da sag cubukla dilim secilir, birakinca takilir;
+/// Cark (GDD 4, 7; SANAT-SES 8.1; M1 kararlari 20 ve 23). Uc tur: Capa'nin bes is basligi, Tirpan Isini ve Civi Tabancasi
+/// (yalniz Capa eldeyken, Q); Insa Plani'nin parca carki (sag tik basili); Insa Plani ile parcaya bakip E basili (yukselt,
+/// onar, sok). Dilimler listeden gelir (<see cref="WheelSlice"/>). Basliklar **yalniz** buradan secilir. Q basili tutulur (kolda sol tampon), fareyle ya da sag cubukla dilim secilir, birakinca takilir;
 /// Esc ya da sag tik secmeden kapatir. Gorunus Rust'in insa carki gibi: krem halka, kizil-turuncu secim dilimi, ortada
 /// secilenin buyuk glifi, adi ve bir satir aciklamasi. Basvuru: Hollow-Universe GroundUi.Radial.cs.
 /// </summary>
 public partial class Hud
 {
+    public enum WheelKind { Heads, Pieces, Plan }
+    /// <summary>Carkin bir dilimi: glif (ya da esya ikonu), baslik, aciklama, secilebilir mi.</summary>
+    public sealed record WheelSlice(string Glyph, string Icon, string Title, string Text, bool Enabled = true);
+
     Control _wheel;
     readonly List<PanelContainer> _wheelSlots = new();
+    readonly List<WheelSlice> _slices = new();
     Vector2 _wheelDir;
     int _wheelSel = -1, _wheelCurrent;
     public bool WheelOpen => _wheel != null && _wheel.Visible;
+    /// <summary>Acik carkin turu.</summary>
+    public WheelKind OpenWheelKind { get; private set; }
     /// <summary>Carkta su an secili dilim (sinama icin).</summary>
     public int WheelSelection => _wheelSel;
 
-    static int WheelCount => Capa.HeadNames.Length;
+    int WheelCount => Math.Max(1, _slices.Count);
 
+    /// <summary>Baslik carki (Q, Capa eldeyken): dilimler Capa.Head sirasiyla.</summary>
     public void OpenWheel(int current)
     {
+        var l = new List<WheelSlice>();
+        for (int i = 0; i < Capa.HeadNames.Length; i++)
+        {
+            var head = i < T.Data.Heads.Count ? T.Data.Heads[i] : new Kabarma.Sim.UiHeadDef { Title = Capa.HeadNames[i] };
+            l.Add(new WheelSlice(HeadGlyphName(i), null, head.Title, head.Text, _d.Capa.IsAvailable((Capa.Head)i)));
+        }
+        OpenWheel(WheelKind.Heads, l, current);
+    }
+
+    /// <summary>Listeden cark: Insa Plani'nin parcalari ya da E basili eylemleri.</summary>
+    public void OpenWheel(WheelKind kind, List<WheelSlice> slices, int current)
+    {
+        _slices.Clear();
+        _slices.AddRange(slices);
+        OpenWheelKind = kind;
         _wheel.Visible = true;
         _wheelDir = Vector2.Zero;
         _wheelSel = current;
@@ -83,6 +107,7 @@ public partial class Hud
         var w = T.Data.Wheel;
         int n = WheelCount;
         int shown = _wheelSel >= 0 ? _wheelSel : _wheelCurrent;
+        if (_slices.Count == 0) return;
         double sector = Math.Tau / n;
         Annulus(0, Math.Tau, w.Inner, w.Outer, T.Ivory);
         if (shown >= 0 && shown < n)
@@ -96,19 +121,28 @@ public partial class Hud
             double a = WheelAngle(i, n);
             float r = i == shown ? w.IconRadiusSelected : w.IconRadius;
             var at = new Vector2(cx + (float)Math.Cos(a) * r, cy + (float)Math.Sin(a) * r);
-            Glyph(HeadGlyphName(i), at, w.IconSize, i == shown ? T.Ivory : T.Brick);
+            var sl = _slices[i];
+            var tone = i == shown ? T.Ivory : sl.Enabled ? T.Brick : T.A(T.Brick, 0.35f);
+            if (sl.Icon != null && ItemIcons.Has(sl.Icon)) ItemIcon(sl.Icon, at.X - w.IconSize * 1.1f, at.Y - w.IconSize * 1.1f, w.IconSize * 2.2f, w.IconSize * 2.2f, sl.Enabled ? 1f : 0.4f, false);
+            else Glyph(sl.Glyph, at, w.IconSize, tone);
             if (i == _wheelCurrent) Disc(at.X, at.Y + w.IconSize + 9, 3, i == shown ? T.Ivory : T.Brick); // takili baslik noktasi
         }
         if (shown >= 0 && shown < n)
         {
-            Glyph(HeadGlyphName(shown), new Vector2(cx, cy - 105), w.CenterIconSize * 0.62f, T.Brick);
-            var head = shown < T.Data.Heads.Count ? T.Data.Heads[shown] : new Kabarma.Sim.UiHeadDef { Title = Capa.HeadNames[shown] };
-            WheelText(T.Upper(head.Title), cy - 35, 330, 60, 30, T.Ivory, true);
-            WheelText(head.Text, cy + 26, 320, 50, 18, T.Ivory, false);
-            if (shown == _wheelCurrent) WheelText("TAKILI", cy + 80, 300, 30, 16, T.Short, true);
+            var sl = _slices[shown];
+            if (sl.Icon != null && ItemIcons.Has(sl.Icon)) ItemIcon(sl.Icon, cx - 46, cy - 150, 92, 92, sl.Enabled ? 1f : 0.45f, false);
+            else Glyph(sl.Glyph, new Vector2(cx, cy - 105), w.CenterIconSize * 0.62f, T.Brick);
+            WheelText(T.Upper(sl.Title), cy - 35, 330, 60, 30, sl.Enabled ? T.Ivory : T.Muted, true);
+            WheelText(sl.Text, cy + 26, 320, 50, 18, T.Ivory, false);
+            if (shown == _wheelCurrent && OpenWheelKind != WheelKind.Plan) WheelText(OpenWheelKind == WheelKind.Heads ? "TAKILI" : "SEÇİLİ", cy + 80, 300, 30, 16, T.Short, true);
         }
-        string key = KeyText("head_wheel", PadDevice ? "LB" : "Q");
-        CentreText($"{key} BIRAKILINCA TAKILIR   ·   ESC / SAĞ TIK: VAZGEÇ", T.DesignH - 108, 17, T.Ivory, false, false, true);
+        string foot = OpenWheelKind switch
+        {
+            WheelKind.Pieces => $"{KeyText("build_wheel", PadDevice ? "LB" : "SAĞ TIK")} BIRAKILINCA SEÇİLİR   ·   ESC: VAZGEÇ",
+            WheelKind.Plan => $"{KeyText("interact", PadDevice ? "X" : "E")} BIRAKILINCA YAPILIR   ·   ESC / SAĞ TIK: VAZGEÇ",
+            _ => $"{KeyText("head_wheel", PadDevice ? "LB" : "Q")} BIRAKILINCA TAKILIR   ·   ESC / SAĞ TIK: VAZGEÇ",
+        };
+        CentreText(foot, T.DesignH - 108, 17, T.Ivory, false, false, true);
     }
 
     /// <summary>Ortadaki alanlarin her biri kendi kutusuna sarar ve sigar.</summary>

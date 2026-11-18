@@ -42,14 +42,13 @@
     "inner": 200, "outer": 300, "selectInner": 197, "selectOuter": 318, "iconRadius": 250, "iconRadiusSelected": 257,
     "iconSize": 29, "centerIconSize": 64, "deadZone": 0.35, "blur": 1.6, "dim": 1.0
   },
-  "_heads": "Cark dilimleri Capa.Head sirasiyla: 6 is basligi, Tirpan Isini, Civi Tabancasi. Aciklamalar oyunun bugunku davranisini anlatir (GDD 4, 8).",
+  "_heads": "Cark dilimleri Capa.Head sirasiyla: 5 is basligi, Tirpan Isini, Civi Tabancasi (karar 23: Insa basligi kalkti, yerine Insa Plani esyasi). Aciklamalar oyunun bugunku davranisini anlatir (GDD 4, 8).",
   "heads": [
     { "title": "Kazma", "text": "Kaya, kil yatağı ve bakır damarını kazar." },
     { "title": "Biçme", "text": "Olgun ekini biçer; ağaçtan odun, ottan lif alır." },
     { "title": "Toprak", "text": "Tapu içinde toprağı sürer, tohum eker." },
     { "title": "Sulama", "text": "Depodaki suyla tarlayı sular." },
     { "title": "Çekim", "text": "Kabarık ürünü ve yükü çekip taşır." },
-    { "title": "İnşa", "text": "İstasyon ve yapı kurar. Tekerlek: parça, R: döndür." },
     { "title": "Tırpan Işını", "text": "Kabarma silahı: ışınla kabarıkları söndürür." },
     { "title": "Çivi Tabancası", "text": "Çivi atar. Gündüz çivi harcar, Kabarma'da sınırsız." }
   ]

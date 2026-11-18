@@ -1,0 +1,7 @@
+﻿kemer-uretim (karar 23) — son tam kosu (tools/test.ps1), 18 Kasim 2026
+build PASS · sim PASS 198 · bench PASS · bot PASS (skipped=-) · buildtest PASS · audio PASS · world PASS · camera PASS 73 · creatures PASS · latency PASS 7/7 · gece PASS
+ekonomi FAIL ok=81 fail=1 "araba oyuncunun onunde (0.64 m)" — main'de de ayni (baseline.log)
+input_kbm FAIL stuck step=firin — main'de de ayni adim (baseline.log)
+input_pad FAIL stuck step=civi — main'de de ayni adim (baseline.log)
+Bu koşudan sonra yalnız Bot.Ilkgun.cs gidak dolasmasi degisti; ardindan -Only build,bot PASS ve -Only input (kbm firin, pad civi: baseline ile ayni).
+Kanit goruntuleri: --test=kemer (pencereli) -> capa_kemerde, bos_el, uretim_eksik, uretim_paneli, tezgah_kemerden, tezgah_kuruldu

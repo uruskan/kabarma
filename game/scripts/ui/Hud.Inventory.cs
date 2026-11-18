@@ -20,7 +20,7 @@ public partial class Hud
 {
     bool _invOpen;
     int _invSel;
-    int _invPage; // 0 Canta, 1 Defter
+    int _invPage; // 0 Canta, 1 Defter, 2 Uretim (Hud.Craft.cs)
     int _invFocusBelt = -1;
     float _invRefreshT;
     bool _joyL, _joyR;
@@ -55,7 +55,8 @@ public partial class Hud
         if (_defterPanel == null) return;
         bool was = _invOpen;
         _invOpen = true;
-        _invPage = StationOpen ? 0 : Mathf.Clamp(page, 0, 1);
+        _invPage = StationOpen ? 0 : Mathf.Clamp(page, 0, CraftPage);
+        if (_invPage != CraftPage) _craftStation = null;
         var inv = _d.State.Backpack;
         _invSel = Mathf.Clamp(_invSel, 0, Math.Max(0, inv.Slots - 1));
         _invFocusBelt = -1;
@@ -88,7 +89,8 @@ public partial class Hud
     public void SetInventoryPage(int page)
     {
         if (StationOpen) page = 0;
-        _invPage = Mathf.Clamp(page, 0, 1);
+        _invPage = Mathf.Clamp(page, 0, CraftPage);
+        _searchFocus = false;
         Sfx.Play("place", null, -18f);
         RefreshInventoryPage();
     }
@@ -179,7 +181,11 @@ public partial class Hud
 
         static bool JP(params string[] actions) => actions.Any(a => InputMap.HasAction(a) && Input.IsActionJustPressed(a));
         bool joyL = Input.IsJoyButtonPressed(0, JoyButton.LeftShoulder), joyR = Input.IsJoyButtonPressed(0, JoyButton.RightShoulder);
-        bool page = JP("head_wheel", "build_next", "build_prev", "ui_page_up", "ui_page_down") || (joyL && !_joyL) || (joyR && !_joyR);
+        if (CraftTyping) { _joyL = joyL; _joyR = joyR; return; } // arama kutusuna yaziliyor (Hud.Craft.cs)
+        // Sayfalar: Canta, Defter, Uretim; Q / RB ileri, LB geri (karar 23: ucuncu sayfa Uretim).
+        // LB kolda head_wheel ile ayni dugme: once LB (geri) bakilir.
+        int pageDir = (joyL && !_joyL) || JP("ui_page_up") ? -1 : JP("head_wheel", "ui_page_down") || (joyR && !_joyR) ? 1 : 0;
+        bool page = pageDir != 0;
         _joyL = joyL; _joyR = joyR;
         if (StationOpen)
         {
@@ -191,7 +197,12 @@ public partial class Hud
                 else if (JP("ui_accept")) ActivateMenu(_menuRow);
             }
         }
-        else if (page) SetInventoryPage(1 - _invPage);
+        else if (page) SetInventoryPage((_invPage + pageDir + CraftPage + 1) % (CraftPage + 1));
+        else if (_invPage == CraftPage)
+        {
+            if (JP("ui_left", "move_left")) CraftCountStep(-1);
+            else if (JP("ui_right", "move_right")) CraftCountStep(1);
+        }
         else if (_invPage == 0)
         {
             if (JP("ui_left", "move_left")) InventoryMove(-1, 0);
@@ -235,7 +246,8 @@ public partial class Hud
         return Area(BagX(i), BagY(i), s, s);
     }
 
-    Rect2 TabRect(int page) { _o = TopFrame; return Area(T.DesignW / 2f - 160 + page * 165, 0, 155, 54); }
+    Rect2 TabRect(int page) { _o = TopFrame; return Area(T.DesignW / 2f - 245 + page * 165, 0, 155, 54); }
+    static readonly string[] PageNames = { "ÇANTA", "DEFTER", "ÜRETİM" };
 
     /// <summary>Isaretcinin altindaki yuva: (kemer mi, sira); yoksa null.</summary>
     (bool belt, int index)? SlotAt(Vector2 screen)
@@ -252,19 +264,21 @@ public partial class Hud
     {
         // Sekmeler (ust orta)
         _o = TopFrame;
-        for (int pg = 0; pg < 2; pg++)
+        for (int pg = 0; pg <= CraftPage; pg++)
         {
-            Button(pg == 0 ? "ÇANTA" : "DEFTER", T.DesignW / 2f - 160 + pg * 165, 0, 155, 54, 28, null, !StationOpen || pg == 0, false, _invPage == pg);
+            Button(PageNames[pg], T.DesignW / 2f - 245 + pg * 165, 0, 155, 54, 28, null, !StationOpen || pg == 0, false, _invPage == pg);
         }
         string pk = _padLast ? "LB / RB" : "Q";
-        Text($"{pk}: SAYFA", T.DesignW / 2f + 180, 18, T.Data.Type.Caption + 1, T.Muted, true, true);
+        Text($"{pk}: SAYFA", T.DesignW / 2f + 265, 18, T.Data.Type.Caption + 1, T.Muted, true, true);
 
         _o = CanvasFrame;
         string keys = _padLast
             ? "D-PAD: SEÇ   ·   A: KULLAN   ·   LB / RB: SAYFA   ·   X / B: KAPAT"
             : "YÖN TUŞLARI: SEÇ   ·   ENTER: KULLAN   ·   1–8: KEMER YUVASI   ·   SÜRÜKLE: KEMERE   ·   SHIFT+TIK: HIZLI AKTAR   ·   TAB / E / ESC: KAPAT";
         if (StationOpen) keys = _padLast ? "D-PAD: SATIR   ·   A: SIRAYA EKLE   ·   X / B: KAPAT" : "1–9 YA DA TIK: SIRAYA EKLE   ·   SÜRÜKLE: KEMERE   ·   E / ESC: KAPAT";
+        if (_invPage == CraftPage) keys = _padLast ? "D-PAD ↑↓: TARİF   ·   ←→: ADET   ·   A: ÜRET   ·   X / B: KAPAT" : "TIK: SEÇ   ·   ÇİFT TIK / ENTER: ÜRET   ·   1–9: SATIRI ÜRET   ·   ←→: ADET   ·   TAB / E / ESC: KAPAT";
         CentreText(keys, T.DesignH - 20, T.Data.Type.Caption, T.A(T.Ink, 0.7f), true, true);
+        if (_invPage == CraftPage) { PaintCraft(); return; } // Hud.Craft.cs
         if (_invPage != 0) return;
 
         PaintGear();
@@ -457,6 +471,8 @@ public partial class Hud
     void InventoryPress(InputEventMouseButton mb)
     {
         var at = mb.Position;
+        if (mb.Pressed && QueuePress(mb)) return; // sag alttaki uretim sirasi: iptal (Hud.Craft.cs)
+        if (CraftPress(mb)) return;               // Uretim sayfasi (Hud.Craft.cs)
         // Once yuvalar (asil hedef), sonra panel dugmeleri, en son sekmeler.
         if (SlotAt(at) is not (bool belt, int index))
         {
@@ -469,8 +485,8 @@ public partial class Hud
                 var acts = DetailActions(sid);
                 for (int k = 0; k < acts.Count; k++) if (DetailActionRect(k).HasPoint(at)) { acts[k].act(); return; }
             }
-            for (int pg = 0; pg < 2; pg++)
-                if (TabRect(pg).HasPoint(at)) { if (!StationOpen) SetInventoryPage(pg); return; }
+            for (int pg = 0; pg <= CraftPage; pg++)
+                if (TabRect(pg).HasPoint(at)) { if (!StationOpen) { if (pg == CraftPage) _craftStation = null; SetInventoryPage(pg); } return; }
             return;
         }
         string id = belt ? _d.State.Belt.At(index) : index < _d.State.Backpack.Contents.Count ? _d.State.Backpack.Contents[index].id : null;
