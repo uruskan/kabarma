@@ -175,6 +175,8 @@ public partial class Player
         _wristErr = Rig.RightGoal is Transform3D g && Rig.RightWeight > 0.99f ? g.Origin.DistanceTo(hand.Origin) : 0f;
         _leftErr = Rig.LeftGoal is Transform3D lg && Rig.LeftWeight > 0.99f ? Rig.BoneOrigin("LeftHand").DistanceTo(lg.Origin) : 0f;
         var sockR = SocketWorld(hand, _sockR);
+        // Kemerden elde tutulan esya (Meshale, Insa Plani; Player.Hand.cs) araba itilirken gizlenir: iki el saplarda.
+        if (_handItem != null) _handItem.Visible = _cart == null;
         if (_cart != null)
         {
             var sockL = SocketWorld(Rig.BoneWorld("LeftHand"), _sockL);

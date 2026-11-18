@@ -12,3 +12,7 @@ RESULT ok grip checks=67 cart=sag 1.1cm sol 0.1cm
 ECON OK   araba oyuncunun onunde (0.82 m)
 ECON ECONOMY RESULT ok=82 fail=0
 ECONOMY RESULT ok=82 fail=0
+
+# main 1b53f2b birlestikten sonra (bb27fd8): build, sim PASS
+GRIP cart sag=1.0/0.0cm sol=0.1/0.0cm (yururken/dururken) eksen=0.0/0.0d kol=0.547 omuz_onde=0.077 omuz-sap_dikey=0.414 yana=0.110 itme_ideal=0.340 pushReach=0.340 sap_onde=0.343 egim=3.2d
+RESULT ok grip checks=67 cart=sag 1.0cm sol 0.1cm
