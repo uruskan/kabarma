@@ -50,6 +50,11 @@ Bu bölüm sahibin kurallarıdır ve yukarıdaki Genex sözleşmesiyle çelişti
   - İş bitince kendi geçicilerini sil: TEMP'te açtığın git worktree'leri (`git worktree remove`), büyük log ve ham çıktılar, `__pycache__`.
   - Kanıt `progress/` altında, ham model ve büyük dosya `.tools/` altında kalır.
   - Akış bitince her şey commit'lenmiş ve main'e alınmış olsun ki oturum arşivlenip worktree'si silinebilsin.
+- **Optimizasyon en sona (sahibin kararı, 18 Kasım 2026):**
+  - Bütçe ölçümü, profil çıkarma, stres ya da FPS koşusu ve optimizasyon şimdi yapılmaz.
+  - Bir şey bütçeyi aşıyorsa `docs/PROGRESS.md` "Optimizasyon listesi"ne tek satır yaz ve özellik işine devam et.
+  - Stres testleri (KS 30 gibi) olağan koşuya girmez.
+  - Kararlar sektörün olağan yoluna ve mantığa göre verilir.
 - **Otomatik koşular sessiz (sahibin kararı, 18 Kasım 2026):** `--test`, `--bot`, `--shots`, `--quit_after` gibi her otomatik koşuda `Main.cs` ana kanalı susturur (sahip çalışırken müzik dinliyor). Sesi gerçekten duymak gereken bir koşu `--ses` ekler. Pencereli koşularda ayrıca `--audio-driver Dummy` kullanılabilir.
 - **Ayak işi Sonnet'e (sahibin kararı, 18 Kasım 2026):** test koşuları (`tools/test.ps1`, Godot testleri), ekran görüntüsü koşuları, log taraması ve `tools/integrate.ps1` koşusu Opus oturumunun kendisinde değil, bir **Sonnet alt ajanında** yapılır (Agent aracı, `model: "sonnet"`). Alt ajana komutu, worktree yolunu ve neye bakacağını ver; o koşar, logu okur ve kısa özet döner (geçti/kaldı, ilk hata satırları, ekran görüntüsü yolları). Uzun koşuyu alt ajan arka planda koşturur. Kod düzeltmesi Opus'ta kalır.
 - **Botu dürüst tut:** kaynak oyun yolundan gelir; bot için eşya verme, adım silme ya da atlama yok. Gevşettiğin her bot adımını raporda yaz. Aynı anda çok oturum Godot koşturduğu için bot zaman aşımı olabilir: hata ayıklamadan önce `-BotTimeout` büyütüp yeniden koş.
