@@ -62,11 +62,15 @@ public partial class DefenseTest : Node
         await Wait(0.3f);
         Check(civi.TowerState != null && sapan.TowerState != null && sacma.TowerState != null, "uc kule kuruldu, Sim durumu var");
         bag.Add("civi", 60); bag.Add("stone", 20); bag.Add("sacma", 40);
+        int civiBag = bag.Count("civi"), stoneBag = bag.Count("stone"), sacmaBag = bag.Count("sacma");
         _d.Player.GlobalPosition = civi.GlobalPosition + Vector3.Back * 1.2f;
-        Check(sys.Apply(DefenseSystem.Op.Load, civi.StateId, bag, true) && civi.TowerState.Loaded == 60, $"Civi Kulesi doldu ({civi.TowerState.Loaded})");
+        int civiIn = System.Math.Min(civiBag, civi.Tower.Magazine);
+        Check(sys.Apply(DefenseSystem.Op.Load, civi.StateId, bag, true) && civi.TowerState.Loaded == civiIn, $"Civi Kulesi doldu ({civi.TowerState.Loaded}/{civiIn})");
         sys.Apply(DefenseSystem.Op.Load, sapan.StateId, bag, true);
         sys.Apply(DefenseSystem.Op.Load, sacma.StateId, bag, true);
-        Check(bag.Count("civi") == 0 && sapan.TowerState.Loaded == 20 && sacma.TowerState.Loaded == 40, "cephane cantadan depoya");
+        Check(bag.Count("civi") == civiBag - civiIn && sapan.TowerState.Loaded == System.Math.Min(stoneBag, sapan.Tower.Magazine)
+            && sacma.TowerState.Loaded == System.Math.Min(sacmaBag, sacma.Tower.Magazine), "cephane cantadan depoya");
+        int civiLoaded = civi.TowerState.Loaded, sacmaLoaded = sacma.TowerState.Loaded;
         _d.Player.GlobalPosition = G(0, 16);
 
         var zs = new List<Zipzip> { Spawn(G(2, -8)), Spawn(G(11, -10)), Spawn(G(-8, -4)), Spawn(G(-10, -5)) };
@@ -76,7 +80,7 @@ public partial class DefenseTest : Node
         int dead = zs.Count(z => !IsInstanceValid(z) || z.Dead);
         Check(sys.Shots > 5, $"kuleler atti ({sys.Shots})");
         Check(dead >= 3, $"kuleler dalgayi indirdi ({dead}/4)");
-        Check(civi.TowerState.Loaded < 60 && sacma.TowerState.Loaded < 40, $"cephane harcandi civi={civi.TowerState.Loaded} sacma={sacma.TowerState.Loaded}");
+        Check(civi.TowerState.Loaded < civiLoaded && sacma.TowerState.Loaded < sacmaLoaded,$"cephane harcandi civi={civi.TowerState.Loaded} sacma={sacma.TowerState.Loaded}");
         Check(civi.TowerState.Hp < civi.Tower.Hp, "atis asinma yazar");
 
         // oncelik dongusu ve kapali kule
