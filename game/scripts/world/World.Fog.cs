@@ -124,7 +124,8 @@ public partial class World
         {
             var sx = new Vector3(Mathf.Cos(rot), Mathf.Sin(rot), 0) * 0.5f;
             Vector3 top = new(0, 0, 0.5f), bot = new(0, 0, -0.5f);
-            void Q(Vector3 p, Vector2 uv) { st.SetUV(uv); st.AddVertex(p); }
+            var n = new Vector3(-Mathf.Sin(rot), Mathf.Cos(rot), 0); // kenardan bakista sonme icin (light_shaft facing)
+            void Q(Vector3 p, Vector2 uv) { st.SetNormal(n); st.SetUV(uv); st.AddVertex(p); }
             Q(top - sx, new Vector2(0, 0)); Q(top + sx, new Vector2(1, 0)); Q(bot - sx, new Vector2(0, 1));
             Q(top + sx, new Vector2(1, 0)); Q(bot + sx, new Vector2(1, 1)); Q(bot - sx, new Vector2(0, 1));
         }
@@ -142,7 +143,8 @@ public partial class World
     /// <summary>ApplyTime'dan: huzmeler gunesle guclenir (gece yok), sis gece koyulasir.</summary>
     void UpdateAtmosphere(in TimeLight L)
     {
-        float sun = Mathf.Clamp(L.SunDisk * Mathf.SmoothStep(2f, 30f, L.Elev), 0f, 1f);
+        // Gece ay "gunes" yerinde: huzme isik gucuyle de olceklenir (gecede belirgin huzme yok).
+        float sun = Mathf.Clamp(L.SunDisk * Mathf.SmoothStep(2f, 30f, L.Elev) * Mathf.SmoothStep(0.4f, 1.4f, L.Energy), 0f, 1f);
         _shaftMat?.SetShaderParameter("strength", sun);
         foreach (var m in _fogMats)
         {

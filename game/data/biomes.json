@@ -39,8 +39,9 @@
     "heightFog": [1, 0.01],
     "_clearings": "Bitki ve ot konmayan aciklik [x, z, yaricap]: inis kapsulu (Director.PodPos), Ocak cevresi (tarla, istasyonlar, agil).",
     "clearings": [[9, -9, 6], [0, 1, 9],
-      [64, 36, 18], [-212, 219, 20]],
-    "_clearings_atalar": "Son iki satir boss akisinin Ata arenalaridir (atalar.json arena.center/radius + 2 m): Koca Pofuduk (Altin Cayir) ve Boynuzlu Dede (Sis Korusu Ata Tasi; dunya2 tasidi).",
+      [64, 36, 18], [-212, 219, 20],
+      [-105, 245, 7]],
+    "_clearings_atalar": "Son iki satir boss akisinin Ata arenalaridir (atalar.json arena.center/radius + 2 m): Koca Pofuduk (Altin Cayir) ve Boynuzlu Dede (Sis Korusu Ata Tasi; dunya2 tasidi). Sonraki satir 'koru' yer iminin onu (agac kameraya girmesin).",
     "_paths": "Cignenmis patikalar [x, z] (gorsel-dunya): us-kapsul, us-gol, us-bakir-tepe, us-kuzey. Zemin toprak katmani, ot yok.",
     "paths": [
       [[0, -3], [4, -6], [8, -8]],
