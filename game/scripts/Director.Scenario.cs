@@ -123,7 +123,7 @@ public partial class Director
     void CatchUp()
     {
         var sc = State.Scenario;
-        foreach (var p in State.Farm.Plots.Where(p => p.Planted && p.Moisture > 0)) _wateredPlots.Add((p.X, p.Y));
+        foreach (var p in State.Farm.Plots.Where(p => p.Planted && !p.Wild && p.Moisture > 0)) _wateredPlots.Add((p.X, p.Y));
         sc.SetProgress("tarla", _wateredPlots.Count);
         sc.SetProgress("odun", State.Backpack.Count("wood"));
         if (Pens != null) sc.SetProgress("agil", Pens.Pens.Where(x => x.HasGate).Select(x => x.Cells(Data.Pen.CellArea)).DefaultIfEmpty(0).Max());
