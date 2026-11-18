@@ -24,7 +24,6 @@ public abstract partial class AtaActor : Node3D, IAtaTarget
     bool _chargeHitPlayer;
     string _telegraphKind = "";
     MeshInstance3D _arrow;
-    public float Burning { get; private set; }
 
     public void Init(Director d, AtaSystem sys, AtaDef def) { D = d; Sys = sys; Def = def; }
 
@@ -66,14 +65,20 @@ public abstract partial class AtaActor : Node3D, IAtaTarget
 
     // ---------- Hasar ----------
 
-    public void TakeWeapon(float dmg, bool crit, Vector3 dir, float knock)
+    public CombatBody Body => Fight?.Body;
+
+    /// <summary>Isabet (savas sozlesmesi): silah ya da alan etkisi; kural AtaRules.Damage → Combat.Apply.</summary>
+    public CombatResult TakeHit(CombatHit hit, Vector3 from)
     {
-        if (!Alive) return;
-        float done = Sys.Damage(dmg, AtaHitKind.Weapon);
-        Feedback(done, crit || Stunned);
+        if (!Alive) return default;
+        var r = Sys.Damage(hit, AtaHitKind.Weapon);
+        Feedback(r.Damage, hit.Crit || Stunned);
+        return r;
     }
 
-    public void Burn(float seconds) => Burning = Mathf.Max(Burning, seconds);
+    /// <summary>Durumlarin hiz carpani (donma yavaslatir, kilit ve sok durdurur).</summary>
+    protected float SpeedMult => Body == null ? 1f : Status.SpeedMult(D.Data.Combat, Body);
+    public float Burning => Body != null && Status.Has(Body, StatusKind.Burn) ? 1f : 0f;
 
     /// <summary>Isabet geri bildirimi: hasar sayisi (zirhta gri "zirh" yazisi), esneme, beyaz parlama.</summary>
     protected void Feedback(float done, bool big)
@@ -196,9 +201,9 @@ public abstract partial class AtaActor : Node3D, IAtaTarget
         float dt = (float)delta;
         _t += dt;
         _contactCd -= dt;
-        Burning = Mathf.Max(0, Burning - dt);
         if (_flash > 0) _flash = Mathf.Max(0, _flash - dt * 5f);
         if (Fight == null) return;
+        dt *= _move is Move.Walk or Move.Charge ? SpeedMult : 1f; // savas: donma yavaslatir, kilit durdurur
         var p = D.Player;
         var center = Sys.ArenaCenter(Def);
         if (Stunned && _move != Move.Stunned && _move != Move.Dead) _move = Move.Stunned;

@@ -15,11 +15,15 @@ public partial class AtaMinion : Node3D, IAtaTarget
     readonly AtaAddDef _def;
     Node3D _body;
     CreatureRig _rig;
-    float _hp, _cd, _hopT, _popT = -1, _t;
+    float _cd, _hopT, _popT = -1, _t;
     Vector3 _hopFrom, _hopTo, _popFrom, _knock;
     bool _dead;
 
-    public AtaMinion(Director d, AtaSystem sys, AtaAddDef def) { _d = d; _sys = sys; _def = def; _hp = def.Hp; }
+    public AtaMinion(Director d, AtaSystem sys, AtaAddDef def)
+    {
+        _d = d; _sys = sys; _def = def;
+        Body = CombatBody.Of(def.Hp, CombatTeam.Wild, def.Look == "pofuduk" ? "pofuduk" : "", mass: def.Scale);
+    }
 
     public Vector3 Center => GlobalPosition + Vector3.Up * 0.45f * _def.Scale;
     public float Radius => 0.5f * _def.Scale;
@@ -58,14 +62,27 @@ public partial class AtaMinion : Node3D, IAtaTarget
     /// <summary>Dogus: Ata'dan yay cizerek yere iner.</summary>
     public void Pop(Vector3 from) { _popFrom = from; _popT = 0; }
 
-    public void TakeWeapon(float dmg, bool crit, Vector3 dir, float knock)
+    /// <summary>Savas govdesi: profil yardimcinin gorunus turu (pofuduk) ya da Ata'nin kendisi.</summary>
+    public CombatBody Body { get; private set; }
+
+    public CombatResult TakeHit(CombatHit hit, Vector3 from)
+    {
+        if (_dead) return default;
+        var r = Combat.Apply(_d.Data.Combat, Body, hit);
+        var dir = (GlobalPosition - from) with { Y = 0 };
+        _knock += dir.Normalized() * r.Knock;
+        if (r.Damage > 0) Fx.DamageNumber(Center + Vector3.Up * Radius, Mathf.Round(r.Damage), hit.Crit);
+        Squash.Kick(_body, 0.2f, 0.25f, 2f);
+        if (Body.Dead) Poof();
+        return r;
+    }
+
+    /// <summary>Durum zamani (AtaSystem her kare): yanik ve zehir.</summary>
+    public void TickStatus(float dt)
     {
         if (_dead) return;
-        _hp -= dmg;
-        _knock += dir.Normalized() * knock;
-        Fx.DamageNumber(Center + Vector3.Up * Radius, dmg, crit);
-        Squash.Kick(_body, 0.2f, 0.25f, 2f);
-        if (_hp <= 0) Poof();
+        _d.Savas?.TickBody(this, dt);
+        if (Body.Dead) Poof();
     }
 
     public void Poof()
@@ -94,6 +111,7 @@ public partial class AtaMinion : Node3D, IAtaTarget
             if (k >= 1) { _popT = -1; GlobalPosition = g; Squash.Kick(_body, 0.3f, 0.3f, 2f); }
             return;
         }
+        dt *= Status.SpeedMult(_d.Data.Combat, Body); // savas: donma yavaslatir, kilit ve sok durdurur
         var pl = _d.Player;
         var d = (pl.GlobalPosition - GlobalPosition) with { Y = 0 };
         if (_hopT <= 0 && d.Length() > Radius + 0.5f)

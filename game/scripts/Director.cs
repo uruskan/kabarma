@@ -103,6 +103,7 @@ public partial class Director : Node3D
         SetupPens(); // Director.Pen.cs: agil, kapilar, Yemlik, Folluk (yapi setinden sonra)
         SetupRanch(); // Director.Ranch.cs: hayvancilik (M2 hayvan akisi)
         InitAtalar(); // boss/Director.Ata.cs: Ata Taslari, arenalar, Ata dovusu (GDD §18.1)
+        InitSavas(); // combat/Director.Savas.cs: ortak hasar ve alan etkileri, Azmanlar (GDD §16.1, ICERIK §4.2)
 
         State.Scenario.StepChanged += OnStepChanged;
         WireScenario(); // Director.Scenario.cs: olay -> adim sayaci

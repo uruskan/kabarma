@@ -61,7 +61,8 @@ public static class AtaRules
         if (!force && !OfferingComplete(p, def)) return null;
         p.Record(def.Id).Offered.Clear();
         float hp = def.Hp * TeamHpMult(data, teamSize);
-        var f = new AtaFight { AtaId = def.Id, Hp = hp, MaxHp = hp, TeamSize = Math.Max(1, teamSize), ShieldT = data.ArriveSeconds };
+        var f = new AtaFight { AtaId = def.Id, TeamSize = Math.Max(1, teamSize), ShieldT = data.ArriveSeconds };
+        f.Body = CombatBody.Of(hp, CombatTeam.Wild, def.Id, mass: def.Mass);
         EnterPhase(f, def, 0);
         f.AttackT = def.Phases[0].AttackEvery + data.ArriveSeconds;
         f.AddT = def.Phases[0].AddEvery;
@@ -82,29 +83,48 @@ public static class AtaRules
         f.Pending = "";
         f.StunT = 0;
         f.AddT = ph.AddEvery;
+        Status.Clear(f.Body); // kabarir: yanik, donma, zehir soner
     }
 
     public static AtaPhaseDef PhaseOf(AtaFight f, AtaDef def) => def.Phases[Math.Clamp(f.Phase, 0, def.Phases.Count - 1)];
 
     /// <summary>
-    /// Hasar: zirh yalniz silah hasarini azaltir (Weapon, Weak); asamanin WeaponMult'u silaha uygulanir; sersemken
-    /// StunMult. Kalkan (inis, asama gecisi) suresince hasar yok. Uygulanan hasar doner; komutlar cmds'e eklenir.
+    /// Hasar (savas sozlesmesi, Combat.Apply): asamanin WeaponMult'u silaha (Weapon, Weak), sersemken StunMult; sonra
+    /// ortak azaltma: tur profili (combat.json, Ata kimligi) → zirh. Zirh yalniz silah hasarini azaltir: Armor payi
+    /// GDD §16.1 zirh puanina cevrilir. Tur durumu (yanik, donma, sok) govdeye eklenir. Kalkan (inis, asama gecisi)
+    /// suresince hasar yok. Uygulanan hasar doner; komutlar cmds'e, alan etkileri areas'a eklenir.
     /// </summary>
-    public static float Damage(AtaFight f, AtalarFile data, AtaDef def, float amount, AtaHitKind kind, List<AtaCommand>? cmds = null)
+    public static float Damage(AtaFight f, AtalarFile data, CombatFile combat, AtaDef def, float amount, AtaHitKind kind,
+        List<AtaCommand>? cmds = null, DamageType type = DamageType.Darbe, StatusProc procs = StatusProc.None, List<CombatArea>? areas = null)
     {
         if (f.Defeated || f.ShieldT > 0 || amount <= 0) return 0;
         var ph = PhaseOf(f, def);
-        float dmg = amount;
-        if (kind is AtaHitKind.Weapon or AtaHitKind.Weak)
-        {
-            dmg *= ph.WeaponMult;
-            dmg *= 1f - Math.Clamp(f.Armor, 0f, 0.95f);
-        }
-        if (f.StunT > 0) dmg *= Math.Max(1f, ph.StunMult);
-        f.Hp = Math.Max(0, f.Hp - dmg);
-        f.DamageBySource[kind.ToString()] = f.DamageBySource.GetValueOrDefault(kind.ToString()) + dmg;
+        bool weapon = kind is AtaHitKind.Weapon or AtaHitKind.Weak;
+        float amt = amount * (weapon ? ph.WeaponMult : 1f) * (f.StunT > 0 ? Math.Max(1f, ph.StunMult) : 1f);
+        if (string.IsNullOrEmpty(f.Body.Profile)) f.Body.Profile = def.Id;
+        f.Body.Armor = weapon ? Combat.ArmorPointsFor(combat, f.Armor) : 0f;
+        var r = Combat.Apply(combat, f.Body, new CombatHit(amt, type, CombatTeam.Player) { Procs = procs, IgnoreArmor = !weapon }, areas);
+        f.DamageBySource[kind.ToString()] = f.DamageBySource.GetValueOrDefault(kind.ToString()) + r.Damage;
         CheckPhase(f, data, def, cmds);
-        return dmg;
+        return r.Damage;
+    }
+
+    /// <summary>
+    /// Durumlarin zamani (Combat.Tick): yanik ve zehir hasari islenir (asama esigi buradan da gecilir), yanik zirhi yer
+    /// (Koca Pofuduk asama 2). Islenen surekli hasar doner.
+    /// </summary>
+    public static float TickStatus(AtaFight f, AtalarFile data, CombatFile combat, AtaDef def, float dt, List<AtaCommand>? cmds = null, List<CombatArea>? areas = null)
+    {
+        if (f.Defeated) return 0;
+        if (Status.Has(f.Body, StatusKind.Burn)) Burn(f, def, dt);
+        if (f.ShieldT > 0) return 0; // kalkanda durum yok: asama gecisi durumlari siler, inis isabet almaz
+        float dealt = Combat.Tick(combat, f.Body, dt, areas);
+        if (dealt > 0)
+        {
+            f.DamageBySource["Status"] = f.DamageBySource.GetValueOrDefault("Status") + dealt;
+            CheckPhase(f, data, def, cmds);
+        }
+        return dealt;
     }
 
     static void CheckPhase(AtaFight f, AtalarFile data, AtaDef def, List<AtaCommand>? cmds)
@@ -157,7 +177,8 @@ public static class AtaRules
     /// Zayif noktaya (kovan) hasar: kovanin cani duser; kirilinca Ata sersemler (ve kovan hasari govdeye de islenir:
     /// zayif vurus). Kovan kirildiysa true.
     /// </summary>
-    public static bool HitWeakPoint(AtaFight f, AtalarFile data, AtaDef def, int index, float amount, List<AtaCommand>? cmds = null)
+    public static bool HitWeakPoint(AtaFight f, AtalarFile data, CombatFile combat, AtaDef def, int index, float amount, List<AtaCommand>? cmds = null,
+        DamageType type = DamageType.Darbe, StatusProc procs = StatusProc.None)
     {
         if (f.Defeated || index < 0 || index >= f.WeakPoints.Count || f.WeakPoints[index] <= 0) return false;
         if (!WeakOpen(f, def)) return false;
@@ -168,7 +189,7 @@ public static class AtaRules
             cmds?.Add(new AtaCommand(AtaCue.WeakPointBroken, Count: index, Phase: f.Phase));
             Stun(f, def, cmds);
         }
-        Damage(f, data, def, amount, AtaHitKind.Weak, cmds);
+        Damage(f, data, combat, def, amount, AtaHitKind.Weak, cmds, type, procs);
         return broke;
     }
 
@@ -192,6 +213,7 @@ public static class AtaRules
         if (f.WeakOpenT > 0) f.WeakOpenT = Math.Max(0, f.WeakOpenT - dt);
         if (f.ShieldT > 0) { f.ShieldT = Math.Max(0, f.ShieldT - dt); return cmds; }
         if (f.StunT > 0) { f.StunT = Math.Max(0, f.StunT - dt); return cmds; }
+        if (!Status.CanAct(f.Body)) return cmds; // savas: donma kilidi ya da sok sersemi saldiriyi durdurur
 
         if (f.TelegraphT > 0)
         {

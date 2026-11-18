@@ -93,7 +93,13 @@ public partial class AtaSystem : Node3D
         if (Actor == null || !IsInstanceValid(Actor)) { SpawnActor(def0, arriving: false); return; }
         Fight.AddsAlive = Targets.OfType<AtaMinion>().Count(m => m.Alive);
         foreach (var c in AtaRules.Tick(Fight, def0, dt)) Dispatch(def0, c);
-        if (Actor.Burning > 0) AtaRules.Burn(Fight, def0, dt);
+        // savas: yanik ve zehir hasari, yanik yunu yer (AtaRules.TickStatus → Combat.Tick)
+        var stCmds = new List<AtaCommand>(); var stAreas = new List<CombatArea>();
+        AtaRules.TickStatus(Fight, Data, _d.Data.Combat, def0, dt, stCmds, stAreas);
+        foreach (var c in stCmds) Dispatch(def0, c);
+        if (Fight == null || Actor == null) return;
+        _d.Savas?.Areas(Actor, stAreas);
+        foreach (var m in Targets.OfType<AtaMinion>().ToList()) m.TickStatus(dt);
         // Oyuncu arenadan uzaklasti: Ata merkezine doner; uzun sure yoksa dovus biter (adak geri gelmez, M2).
         float away = new Vector2(p.GlobalPosition.X - ArenaCenter(def0).X, p.GlobalPosition.Z - ArenaCenter(def0).Z).Length();
         _awayT = away > def0.Arena.Leash ? _awayT + dt : 0f;
@@ -224,24 +230,31 @@ public partial class AtaSystem : Node3D
 
     // ---------- Hasar yolu: dugumlerden Sim'e ----------
 
-    /// <summary>Govdeye hasar (silah, firlatilan parca). Uygulanan hasar doner.</summary>
-    public float Damage(float amount, AtaHitKind kind)
+    /// <summary>Govdeye hasar (firlatilan parca: Darbe, zirhsiz). Uygulanan hasar doner.</summary>
+    public float Damage(float amount, AtaHitKind kind) =>
+        Damage(new CombatHit(amount, DamageType.Darbe, CombatTeam.Player), kind).Damage;
+
+    /// <summary>Govdeye isabet (savas sozlesmesi): tur, kart durumlari; alan etkileri CombatSystem'de cozulur.</summary>
+    public CombatResult Damage(CombatHit hit, AtaHitKind kind)
     {
-        if (Fight == null) return 0;
+        if (Fight == null) return default;
         var def = Data.Get(Fight.AtaId);
         var cmds = new List<AtaCommand>();
-        float dmg = AtaRules.Damage(Fight, Data, def, amount, kind, cmds);
+        var areas = new List<CombatArea>();
+        float hp0 = Fight.Hp;
+        float dmg = AtaRules.Damage(Fight, Data, _d.Data.Combat, def, hit.Amount, kind, cmds, hit.Type, hit.Procs, areas);
         foreach (var c in cmds) Dispatch(def, c);
-        return dmg;
+        if (Actor != null) _d.Savas?.Areas(Actor, areas);
+        return new CombatResult { Damage = dmg, Blocked = dmg <= 0 && hit.Amount > 0, Killed = hp0 > 0 && Fight?.Hp <= 0 };
     }
 
-    /// <summary>Zayif noktaya (kovan) hasar. Kirildiysa true.</summary>
-    public bool DamageWeakPoint(int index, float amount)
+    /// <summary>Zayif noktaya (kovan) isabet. Kirildiysa true.</summary>
+    public bool DamageWeakPoint(int index, CombatHit hit)
     {
         if (Fight == null) return false;
         var def = Data.Get(Fight.AtaId);
         var cmds = new List<AtaCommand>();
-        bool broke = AtaRules.HitWeakPoint(Fight, Data, def, index, amount, cmds);
+        bool broke = AtaRules.HitWeakPoint(Fight, Data, _d.Data.Combat, def, index, hit.Amount, cmds, hit.Type, hit.Procs);
         foreach (var c in cmds) Dispatch(def, c);
         return broke;
     }

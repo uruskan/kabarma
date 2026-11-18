@@ -39,6 +39,8 @@
     "vizviz": { "zehir": 0.5, "buz": 1.3 },
     "zipzip": { "maya": 1.2 },
     "koca_pofuduk": { "ates": 1.25, "buz": 0.75 },
-    "boynuzlu_dede": { "ates": 1.25, "zehir": 0.75 }
+    "boynuzlu_dede": { "ates": 1.25, "zehir": 0.75 },
+    "azman_homur": { "darbe": 0.8, "kesme": 1.2, "buz": 1.2 },
+    "azman_bozuk": { "ates": 1.4, "darbe": 0.7, "zehir": 0.8 }
   }
 }
