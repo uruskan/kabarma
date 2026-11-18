@@ -77,7 +77,7 @@
   "sounds": [
     { "id": "kazma_isini", "group": "capa", "name": "kazma ışını", "bus": "Sfx", "loop": true, "variants": 3, "volumeDb": -8, "m0": "beam_loop", "play": "Capa: Kazma ışını açıkken (Sfx.Beam)", "wired": true, "source": "m0", "placeholder": false },
     { "id": "kaya_kemirme", "group": "capa", "name": "kaya kemirme (taş, kil, bakır)", "bus": "Sfx", "loop": true, "variants": 3, "volumeDb": -8, "play": "Capa.Kazma: ışın kayaya değerken; varyasyon malzemeye göre (1 taş, 2 kil, 3 bakır)", "wired": false, "placeholder": false },
-    { "id": "parca_emilis", "group": "capa", "name": "parça emilişi \"pıt\"", "bus": "Sfx", "loop": false, "variants": 3, "volumeDb": 0, "m0": "pickup", "play": "Capa.Kazma: kaynak çantaya girerken", "wired": true, "source": "m0", "placeholder": false },
+    { "id": "parca_emilis", "group": "capa", "name": "parça emilişi \"pıt\"", "bus": "Sfx", "loop": false, "variants": 3, "volumeDb": 0, "m0": "pickup", "play": "Capa.Kazma: kaynak çantaya girerken", "wired": true, "source": "synth", "placeholder": false },
     { "id": "bicme_supurme", "group": "capa", "name": "biçme süpürmesi", "bus": "Sfx", "loop": false, "variants": 3, "volumeDb": -6, "play": "Capa.Bicme: her vuruş", "wired": false, "placeholder": false },
     { "id": "bitki_darbe", "group": "capa", "name": "bitki darbesi (ağaç, çalı, ot)", "bus": "Sfx", "loop": false, "variants": 3, "volumeDb": -4, "play": "Capa.Bicme: ağaca, çalıya, ota isabet (şu an \"hit\" ve \"till\")", "wired": false, "placeholder": false },
     { "id": "cekim_isini", "group": "capa", "name": "çekim ışını", "bus": "Sfx", "loop": true, "variants": 3, "volumeDb": -8, "play": "Capa: Çekim ışını açıkken (Sfx.Beam, takılı başlık Çekim)", "wired": true, "placeholder": false },

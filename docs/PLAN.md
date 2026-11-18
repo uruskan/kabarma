@@ -94,7 +94,7 @@ Kurgu tek bu bölümde durur. Sistemler kurgudan bağımsız tasarlandı; kabuk 
 | Kabarma | Belirli aralıklarla gelen, zorluğu seçilebilen dalga olayı |
 | Maya | Dalga olayından ve son bölgeden gelen üst basamak kaynağı |
 | Ocak | Üs kalbi: tapu alanı, yeniden doğma, ortak depo bağlantısı, basamak kilidi |
-| Çapa | Başlık takılan tek el aleti |
+| Çapa | Başlık takılan ana el aleti; kemerdeki bir eşya |
 | Kabarma kartı | Dalga olayı boyunca geçerli, seviye atladıkça seçilen güçlendirme |
 | Atalar | Biyom boss'ları |
 | Bereket Holding | Seninle birlikte büyüyen rakip üsler (PvP dünyasında gerçek ekipler) |
@@ -106,7 +106,7 @@ Kurgu tek bu bölümde durur. Sistemler kurgudan bağımsız tasarlandı; kabuk 
 | Konu | Karar | Gerekçe |
 |---|---|---|
 | Kamera | Üçüncü şahıs, birinci şahıs modu yok. İki kip, V ile geçilir (sahibin kararı, 18 Kasım 2026): **normal** (karakterin arkasında ve üstünde; fare tekerleğiyle yakınlaştırma) ve **yakın omuz** (Astroneer'deki gibi kamera omzun hemen arkasında ve yanında; kafa ve omuz ekranın kenarında görünür, nişan neredeyse birinci şahıs gibi hisseder). | Karakter ve kozmetik hep görünür; yakın omuz kipi nişan ve inşa için. El ve kol animasyonu birinci şahıs için ayrıca gerekmez. |
-| Elde tutulan şey | Tek alet (Çapa), tek tutuş pozu, 18 başlık | Her yeni silah yeni animasyon istemez; iş ışına, efekte ve sese düşer. |
+| Elde tutulan şey | Kemerde seçili eşya (sahibin kararı, 18 Kasım 2026: Astroneer + Rust). Ana alet Çapa: tek tutuş pozu, 17 başlık. Öbür eşyalar (İnşa Planı, yerleştirilebilir, yemek, Meşale) el soketine oturur. Üretim Tab'daki Üretim panelinden ve istasyonlardan yapılır, Çapa'dan değil. | Her yeni silah yeni animasyon istemez; iş ışına, efekte ve sese düşer. Kemer, Çapa'yı zorunlu olmaktan çıkarır. |
 | Animasyon | Gövde ve yaratıklar: AI ile kemiklendirme ve hazır klipler + kodla katmanlar (IK, yay, şişme). Ölüm ve ezilme: ragdoll. | Tek zayıf nokta birinci şahıs animasyonuydu; o tasarımda yok. |
 | Motor | Godot 4.7.2 (.NET sürümü), C# | Her şey metinden yazılır; derleyici hataları çalıştırmadan yakalar. Godot bu makinede Oduncu ile doğrulandı; .NET sürümü M0'da doğrulanacak ([TEKNIK.md](TEKNIK.md) §1). Rust motoru (Bevy) seçilmedi: fizik, animasyon, ses, arayüz ve Steam katmanları Godot'ta hazır ve denenmiş; Bevy'de her biri ayrı risk olurdu. |
 | Kod yapısı | Motordan bağımsız `Sim` kütüphanesi (kurallar) + Godot katmanı (fizik, görüntü, ses) | Ekonomi, tarım, güç ve dalga dengesi saniyeler içinde binlerce oyun günü simüle edilerek test edilir. |
