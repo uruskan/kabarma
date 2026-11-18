@@ -1,0 +1,33 @@
+tools/test.ps1  2026-11-18 18:22  git e8cfa61
+
+[FAIL] build  exit=1 warnings=0 errors=6
+      --- son satirlar: C:\Users\uruskan\Documents\GitHub\kabarma\.claude\worktrees\m2-dunya-9fd4f9\.tools\run\test\build.log
+      C:\Users\uruskan\Documents\GitHub\kabarma\.claude\worktrees\m2-dunya-9fd4f9\game\scripts\Director.Input.cs(222,1): error CS8300: Merge conflict marker encountered [C:\Users\uruskan\Documents\GitHub\kabarma\.claude\worktrees\m2-dunya-9fd4f9\game\Kabarma.Game.csproj]
+      C:\Users\uruskan\Documents\GitHub\kabarma\.claude\worktrees\m2-dunya-9fd4f9\game\scripts\Director.Input.cs(224,1): error CS8300: Merge conflict marker encountered [C:\Users\uruskan\Documents\GitHub\kabarma\.claude\worktrees\m2-dunya-9fd4f9\game\Kabarma.Game.csproj]
+      Build FAILED.
+      C:\Users\uruskan\Documents\GitHub\kabarma\.claude\worktrees\m2-dunya-9fd4f9\game\scripts\Director.cs(111,1): error CS8300: Merge conflict marker encountered [C:\Users\uruskan\Documents\GitHub\kabarma\.claude\worktrees\m2-dunya-9fd4f9\game\Kabarma.Game.csproj]
+      C:\Users\uruskan\Documents\GitHub\kabarma\.claude\worktrees\m2-dunya-9fd4f9\game\scripts\Director.cs(113,1): error CS8300: Merge conflict marker encountered [C:\Users\uruskan\Documents\GitHub\kabarma\.claude\worktrees\m2-dunya-9fd4f9\game\Kabarma.Game.csproj]
+      C:\Users\uruskan\Documents\GitHub\kabarma\.claude\worktrees\m2-dunya-9fd4f9\game\scripts\Director.cs(115,1): error CS8300: Merge conflict marker encountered [C:\Users\uruskan\Documents\GitHub\kabarma\.claude\worktrees\m2-dunya-9fd4f9\game\Kabarma.Game.csproj]
+      C:\Users\uruskan\Documents\GitHub\kabarma\.claude\worktrees\m2-dunya-9fd4f9\game\scripts\Director.Input.cs(220,1): error CS8300: Merge conflict marker encountered [C:\Users\uruskan\Documents\GitHub\kabarma\.claude\worktrees\m2-dunya-9fd4f9\game\Kabarma.Game.csproj]
+      C:\Users\uruskan\Documents\GitHub\kabarma\.claude\worktrees\m2-dunya-9fd4f9\game\scripts\Director.Input.cs(222,1): error CS8300: Merge conflict marker encountered [C:\Users\uruskan\Documents\GitHub\kabarma\.claude\worktrees\m2-dunya-9fd4f9\game\Kabarma.Game.csproj]
+      C:\Users\uruskan\Documents\GitHub\kabarma\.claude\worktrees\m2-dunya-9fd4f9\game\scripts\Director.Input.cs(224,1): error CS8300: Merge conflict marker encountered [C:\Users\uruskan\Documents\GitHub\kabarma\.claude\worktrees\m2-dunya-9fd4f9\game\Kabarma.Game.csproj]
+          0 Warning(s)
+          6 Error(s)
+      Time Elapsed 00:00:02.34
+[FAIL] sim  exit=1 Failed!  - Failed:   377, Passed:    29, Skipped:     0, Total:   406, Duration: 2 s - Kabarma.Sim.Tests.dll (net8.0)
+      --- son satirlar: C:\Users\uruskan\Documents\GitHub\kabarma\.claude\worktrees\m2-dunya-9fd4f9\.tools\run\test\sim.log
+      Test run for C:\Users\uruskan\Documents\GitHub\kabarma\.claude\worktrees\m2-dunya-9fd4f9\src\Kabarma.Sim.Tests\bin\Debug\net8.0\Kabarma.Sim.Tests.dll (.NETCoreApp,Version=v8.0)
+      VSTest version 17.11.2 (x64)
+      Starting test execution, please wait...
+      A total of 1 test files matched the specified pattern.
+      Failed!  - Failed:   377, Passed:    29, Skipped:     0, Total:   406, Duration: 2 s - Kabarma.Sim.Tests.dll (net8.0)
+[FAIL] world  atlandi: derleme kaldi
+[FAIL] explore  atlandi: derleme kaldi
+
+sinama     sonuc  sure(sn)  ayrinti
+------     -----  --------  -------
+build      FAIL        2.7  exit=1 warnings=0 errors=6
+sim        FAIL        5.5  exit=1 Failed!  - Failed:   377, Passed:    29, Skipped:     0, Total:   406, Duration: 2 s - Kabarma.Sim.Tests.dll (net8.0)
+world      FAIL          0  atlandi: derleme kaldi
+explore    FAIL          0  atlandi: derleme kaldi
+TEST FAIL (4)

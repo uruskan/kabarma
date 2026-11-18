@@ -217,11 +217,8 @@ public partial class Director
 
     public void Interact()
     {
-<<<<<<< HEAD
         if (ExploreInteract()) return; // Director.Explore.cs: Seyir Kulesi, mancinik, yuva (dunya2)
-=======
         if (InteractVehicle()) return; // Director.Vehicles.cs: Cekirge ATV'ye bin / in (yaratik2)
->>>>>>> refs/heads/main
         if (InteractEconomy()) return; // Director.Economy.cs: El Arabasi, Sandik, Uyku Tulumu
         if (InteractPower()) return; // power/Director.Power.cs: guc parcasi ayari, Dugme
         var st = StationInFocus();
