@@ -2,7 +2,7 @@ namespace Kabarma.Sim;
 
 // Ekinler: crops.json (GDD 8).
 
-public sealed class Genes
+public sealed partial class Genes
 {
     public int V { get; set; } = 1;
     public int H { get; set; } = 1;
@@ -22,6 +22,24 @@ public sealed class CropDef
     public Genes SeedGenes { get; set; } = new();
     public float MoistureDrainPerSecond { get; set; }
     public float WaterPerShot { get; set; }
+    // M2 (tarim): ICERIK 5 sutunlari, GDD 8.2
+    /// <summary>Olgunlasma (buyume gunu); growSeconds = days x growDaySeconds.</summary>
+    public float Days { get; set; }
+    public string Band { get; set; } = "cayir";
+    /// <summary>az / orta / cok (ICERIK 5 Su). "cok": su sever, 80 ustu nemde x1.</summary>
+    public string Water { get; set; } = "orta";
+    /// <summary>Hasat urunu; bos: ekin kimligi.</summary>
+    public string? Product { get; set; }
+    /// <summary>Hasatta Bereket kaybi; bos: harvestFertilityLoss.</summary>
+    public float? FertilityLoss { get; set; }
+    public bool Perennial { get; set; }
+    public float RegrowDays { get; set; }
+    public bool Dark { get; set; }
+    public bool WardsPests { get; set; }
+
+    public string ProductId => string.IsNullOrEmpty(Product) ? Id : Product!;
+    public string SeedId => Id + "_seed";
+    public bool WetLoving => Water == "cok";
 }
 
 public sealed class MoistureRules
@@ -57,6 +75,10 @@ public sealed class CropsFile
     public float DeflateAfterSeconds { get; set; }
     /// <summary>GDD 8.4: sonen (ya da bicilen) kabarik urun "iki kat normal urune doner".</summary>
     public float DeflateYieldMult { get; set; } = 1f;
+    /// <summary>GDD 8.2 "Gun birimi": buyume gunu (sn).</summary>
+    public float GrowDaySeconds { get; set; } = 37.5f;
+    /// <summary>GDD 8.3 genler, ıslah, Alaca, zararli (GameData.Genetics.cs).</summary>
+    public GeneticsRules Genetics { get; set; } = new();
 }
 
 public sealed partial class GameData
@@ -64,5 +86,20 @@ public sealed partial class GameData
     [DataFile("crops.json")]
     public CropsFile Crops { get; private set; } = new();
 
-    public CropDef Crop(string id) => Crops.Crops.First(c => c.Id == id);
+    public CropDef Crop(string id) => FindCrop(id) ?? throw new InvalidOperationException($"bilinmeyen ekin '{id}'");
+
+    Dictionary<string, CropDef>? _cropIndex;
+    List<CropDef>? _cropIndexOf;
+    /// <summary>Ekin tanimi (sozluk onbellegi; liste degisirse yeniden kurulur). Tarla her tikte cagirir.</summary>
+    public CropDef? FindCrop(string id)
+    {
+        var list = Crops.Crops;
+        if (_cropIndex == null || !ReferenceEquals(_cropIndexOf, list) || _cropIndex.Count != list.Count)
+        {
+            _cropIndex = new Dictionary<string, CropDef>();
+            foreach (var c in list) _cropIndex[c.Id] = c;
+            _cropIndexOf = list;
+        }
+        return _cropIndex.TryGetValue(id, out var d) ? d : null;
+    }
 }
