@@ -497,7 +497,7 @@ Sayılar `data/azman.json`'da; kural `src/Kabarma.Sim/Azman*.cs`, Godot katmanı
   - Sırtında altı küçük Homur taşır. Canı %75, %50 ve %25'e indikçe ikişer tanesi düşer ve oyuncuya saldırır.
 - **Azman Bozuk:**
   - Yakındaki bir ağaca yürür, kütük söküp oyuncuya fırlatır; yakında ağaç yoksa yerden kaya koparır.
-  - Kütük düştüğü yerde oyuncuya ve yapılara hasar verir, sonra yerde kalır.
+  - Kütük en az bir saniye uçar ve düşeceği yer yerde kırmızı bir halkayla görünür. Düştüğü yerde oyuncuya ve yapılara hasar verir, sonra yerde kalır.
   - Kütük Çekim'le alınıp Bozuk'a fırlatılabilir; zırhı delen büyük Darbe hasarı verir.
   - Ağaç yerinde kalır (yer tutucu).
 - **Ödül:** Ganimet çantaya girer. Öz, `Events.AzmanDefeated` olayıyla gece akışına bırakılır.

@@ -34,10 +34,20 @@ public partial class AzmanLog : Node3D, ICarryable
         AddChild(kit.Instance());
     }
 
+    /// <summary>Dusecegi nokta (yerde halka ile sezdirilir; oyuncu ve bot kacabilir).</summary>
+    public Vector3 Target => _to;
+    MeshInstance3D _ring;
+
     public void Launch(Vector3 from, Vector3 to, float speed)
     {
         _from = from; _to = to + Vector3.Up * 0.4f;
-        _flyDur = Mathf.Clamp(from.DistanceTo(to) / Mathf.Max(1f, speed), 0.5f, 2.2f);
+        // En az 1 sn ucar: dusus yeri halkayla okunur, kacmaya zaman kalir.
+        _flyDur = Mathf.Clamp(from.DistanceTo(to) / Mathf.Max(1f, speed), 1.0f, 2.2f);
+        var mat = new StandardMaterial3D { ShadingMode = BaseMaterial3D.ShadingModeEnum.Unshaded, AlbedoColor = new Color(Palette.HoldingRed, 0.6f), Transparency = BaseMaterial3D.TransparencyEnum.Alpha };
+        _ring = new MeshInstance3D { Mesh = new TorusMesh { InnerRadius = _u.Radius - 0.25f, OuterRadius = _u.Radius, Rings = 24, RingSegments = 4 }, MaterialOverride = mat, TopLevel = true, CastShadow = GeometryInstance3D.ShadowCastingSetting.Off };
+        AddChild(_ring);
+        _ring.GlobalPosition = to + Vector3.Up * 0.1f;
+        _ring.Scale = new Vector3(1, 0.1f, 1);
         _flyT = 0;
         GlobalPosition = from;
         AddToGroup("azman_flying"); // sinama: havadaki kutuk (bot kacar)
@@ -83,6 +93,7 @@ public partial class AzmanLog : Node3D, ICarryable
     {
         _landed = true;
         _sys.LogLandings++;
+        if (_ring != null) { _ring.QueueFree(); _ring = null; }
         RemoveFromGroup("azman_flying");
         GD.Print($"AZMAN log_land at=({GlobalPosition.X:0},{GlobalPosition.Z:0})");
         var at = GlobalPosition;

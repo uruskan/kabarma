@@ -245,6 +245,17 @@ public partial class SavasTest : Node
             Fire(target.Center.DistanceTo(P.Muzzle.GlobalPosition) < 10.5f);
             return;
         }
+        // Havadaki kutuk: yerdeki halkanin (dusus yeri) disina cik.
+        var incoming = GetTree().GetNodesInGroup("azman_flying").OfType<AzmanLog>()
+            .Where(l => ((l.Target - me) with { Y = 0 }).Length() < _d.Data.Azman.Get(id).Uproot?.Radius + 2.5f).FirstOrDefault();
+        if (incoming != null)
+        {
+            var off = (me - incoming.Target) with { Y = 0 };
+            if (off.LengthSquared() < 0.01f) off = away.Cross(Vector3.Up);
+            P.MoveOverride = off.Normalized() * 1.5f;
+            Fire(target.Center.DistanceTo(P.Muzzle.GlobalPosition) < 10.5f);
+            return;
+        }
         bool throwing = a.Pending == "uproot" && a.Telegraphing || a.Acting == "uproot" || GetTree().GetNodesInGroup("azman_flying").Count > 0;
         float want = a.Def.Radius + 7.5f;
         if (throwing) P.MoveOverride = (away.Cross(Vector3.Up).Normalized() * 1.5f + away.Normalized() * 0.3f);
