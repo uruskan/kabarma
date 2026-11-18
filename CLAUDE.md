@@ -130,7 +130,7 @@ Gece düşmanını bulmak ve vurmak için yalnız `Kabarans.Near(nokta, yarıça
 
 M4 (URETIM §6): dört yeni biyom, T3–T6 ve kalan içerik. Kurallar M3 ile aynı: kendi dal, başta ve sonda `tools/integrate.ps1`, ayak işi Sonnet alt ajanında, otomatik koşular sessiz, kredi yok, Sim düz ve kayda/ağa bağlı, optimizasyon yok. Ek kurallar:
 
-- **Aynı anda en çok 3 akış** (makine yükü). Bir akış main'e alınıp arşivlenince ana oturum sıradakini başlatır; sıra tablodaki "Sıra" sütunu. Sonraki akışa dayanma; gerekeni kendi dosyanda küçük, işaretli bir geçiciyle çöz.
+- **Aynı anda en çok 5 akış** (makine yükü; 19 Kasım 2026'da 3'ten 5'e çıktı, Godot hâlâ en çok 2). Bir akış main'e alınıp arşivlenince ana oturum sıradakini başlatır; sıra tablodaki "Sıra" sütunu. Sonraki akışa dayanma; gerekeni kendi dosyanda küçük, işaretli bir geçiciyle çöz.
 - **Ortak kimlikler: `docs/kimlikler-m4.md`.** Biyom, kaynak, yaratık, ekin, istasyon, araç, yemek ve öteki içerik kimlikleri oradan alınır. Yeni kimlik satır eklenerek gelir; var olan kimlik yeniden adlandırılmaz. Listede olmayan bir şey gerekirse satırı ekle ve raporda say.
 - **Modeller:** yeni yaratık, Ata, araç, istasyon ve kozmetik modelleri önce yer tutucudur (`data/assets.json`'da işaretli, URETIM §3). Kredi isteyen üretimi listele; ana oturum Tripo web'de üretir.
 - **Adetler:** içerik adetleri PLAN §7.1 ile birebir olmalı. Akış kendi bölümünü bitirince `DataCheckTests` sayısını günceller.
