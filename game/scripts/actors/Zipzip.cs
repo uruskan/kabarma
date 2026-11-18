@@ -161,6 +161,16 @@ public partial class Zipzip : Node3D
 
     public override void _Process(double delta)
     {
+        long t0 = System.Diagnostics.Stopwatch.GetTimestamp();
+        ProcessInner(delta);
+        ProcessTicks += System.Diagnostics.Stopwatch.GetTimestamp() - t0; // kabarma3 olcumu: betik payi
+    }
+
+    /// <summary>Butun Zipzip'lerin _Process'te gecirdigi toplam sure (Stopwatch tik); Director perf satiri okur ve sifirlar.</summary>
+    public static long ProcessTicks;
+
+    void ProcessInner(double delta)
+    {
         float dt = (float)delta;
         if (TickRagdoll(dt)) return; // Zipzip.Ragdoll.cs
         if (Dead) return;
