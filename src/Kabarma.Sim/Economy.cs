@@ -59,7 +59,7 @@ public sealed class CargoCrate
 /// Rampa 1-6 kasa ya da tek bir kabarik urun alir; ikisi birden degil.
 /// Durum duz veridir (kayda hazir, TEKNIK 9): acik kasa, rampadaki kasalar, bekleyen odemeler, ilk satis bayragi.
 /// </summary>
-public sealed class Cargo
+public sealed partial class Cargo
 {
     readonly GameData _d;
     readonly Action<int, string> _credit;

@@ -21,15 +21,6 @@ public class SaveContractTests
         nameof(GameState.LastReport), // son gecenin raporu: ekranda bir kez gosterilir, safaktan sonra yeniden kurulur
     };
 
-    /// <summary>Kayit akisinin (kayit) M2'de bagladigi, henuz bolumu olmayan ozellikler. Bu liste bosalinca silinir.</summary>
-    static readonly HashSet<string> PendingKayit = new()
-    {
-        nameof(GameState.Farm), nameof(GameState.Scenario), nameof(GameState.Night), nameof(GameState.Food),
-        nameof(GameState.Stations), nameof(GameState.Stamina), nameof(GameState.Cargo), nameof(GameState.Coop),
-        nameof(GameState.Capa), nameof(GameState.Craft), nameof(GameState.NightsStarted), nameof(GameState.Calendar),
-        nameof(GameState.Orders),
-    };
-
     static GameState NewState() => new(TestData.Load());
 
     static SaveRegistry Registry(GameState s) => new SaveRegistry().AddRange(s.SaveSections());
@@ -41,12 +32,11 @@ public class SaveContractTests
         var covered = s.SaveSections().SelectMany(SaveSection.CoveredBy).ToHashSet();
         var missing = typeof(GameState).GetProperties(BindingFlags.Public | BindingFlags.Instance)
             .Select(p => p.Name)
-            .Where(n => !covered.Contains(n) && !Transient.Contains(n) && !PendingKayit.Contains(n))
+            .Where(n => !covered.Contains(n) && !Transient.Contains(n))
             .ToList();
         Assert.True(missing.Count == 0,
             "Kayda girmeyen GameState ozellikleri: " + string.Join(", ", missing) +
             ". Ya bir [SaveSection(..., Covers = ...)] bolumu yaz (TEKNIK 9.1) ya da SaveContractTests.Transient'e nedeniyle ekle.");
-        Assert.Empty(PendingKayit.Intersect(covered)); // baglanan ozellik bekleme listesinden silinmeli
     }
 
     [Fact]
