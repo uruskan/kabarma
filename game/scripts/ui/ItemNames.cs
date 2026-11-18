@@ -103,6 +103,9 @@ public static class ItemNames
         ["maya_kesesi"] = "Maya Kesesi",
         ["holding_parcasi"] = "Holding Parçası",
         ["mancinik"] = "Mancınık",
+        ["nadir_cip"] = "Nadir Çip", // oyuk (M3): cip akisi gelene dek yer tutucu odul (ICERIK 4.3)
+        ["maya_feneri"] = "Maya Feneri", // gucler M3
+        ["maya_kesesi"] = "Maya Kesesi", // gucler M3 (ICERIK 2 #36)
         // tarim (M2): Cayir ve Koru'nun ekinleri, tohumlari, Alaca urunleri (GDD 8.3), Korkuluk
         ["pumpkin"] = "Kabak",
         ["sunflower"] = "Ayçiçeği",

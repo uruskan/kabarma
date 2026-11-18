@@ -385,6 +385,15 @@ Maya Feneri (T2, günde bir kez kullanılır) 40 m yarıçapta 4 dakikalık bir 
 
 Ocak'tan başlatılır. Seçilen KS'nin dalgaları hayalet olarak gelir; hasar gerçektir ama onarım bedavadır ve ödül yoktur. Savunma düzenini sınamak için.
 
+**M3 kuralı (Fener ve Tatbikat):**
+
+- **Maya Feneri** kurulan bir yerleştirilebilirdir. Her fener oyun gününde bir kez yakılır. KS, açılmış en yüksek KS'nin yarısıdır (aşağı yuvarlanır, en az 1).
+- **Tatbikat** Ocak'ın E menüsünden, açılmış bir KS seçilerek başlar.
+  - Tatbikat gece sayacını, iş emirlerini, Öz'ü, kartları, Maya'yı ve ganimeti ilerletmez.
+  - Ekinler kabarmaz.
+  - Bittiğinde Tatbikat süresince hasar alan yapılar başlangıçtaki canlarına bedavaya döner.
+- **Gece akışı:** İkisi de Kabarma'yı `kabarma3` akışının dalga arayüzüyle başlatır. Gece akışı o akışındır; burada yalnız başlatma kuralı ve sınırlar vardır.
+
 ### 14.8 Tüzük maddeleri (KS 26 ve üstü)
 
 26'dan sonra her seviye 12 maddelik havuzdan birini kalıcı olarak ekler ([ICERIK.md](ICERIK.md) §8.4). 37'den sonra maddeler ikinci kez eklenip şiddetlenir.
@@ -487,6 +496,18 @@ Yabani yaratıklar, açık arazideki Holding ekipleri ve kervanları, Oyuk koruy
 - **Ulti** Maya ölçeriyle çalışır. Ölçer yalnızca Kabarma'da ve Ata dövüşünde dolar.
 - 12 etkin güç Kadim Taş denemelerinden, 4 ulti Atalardan gelir ([ICERIK.md](ICERIK.md) §7).
 
+### 17.1 M3 uygulaması (ilk beş güç, iki ulti)
+
+Sayılar `data/abilities.json`'da; kural `src/Kabarma.Sim/Ability*.cs`, `KadimTas*.cs`; Godot katmanı `game/scripts/abilities/`.
+
+- **Yuvalar:** M3'te bir etkin yuva açıktır; ikincisi Kurbağa Ağa ile (M4) açılır. İkinci yuvanın tuşu bağlıdır ama kilitlidir. Ulti yuvası birdir.
+- **Takma:** Kazanılan güç boş yuvaya kendiliğinden girer. Değiştirmek için tamamlanmış bir Kadim Taş'ta E'ye basılır; menüde açık güçler ve açık ultiler listelenir.
+- **Kime açılır:** Kadim Taş denemesi ve Ata'dan gelen ulti dünyaya yazılır; ekipteki herkes kullanır. Yuva, Şarj, bekleme ve ulti ölçeri oyuncu başınadır.
+- **Şarj:** 100 puandır. Son harcamadan 1,5 saniye sonra saniyede 5 dolar; boştan dolması 20 saniye sürer.
+- **Ulti ölçeri:** 100 puandır. Kabarma'da her öldürme 2, elit 6 puan verir. Ata dövüşünde Ata'nın canının her %1'i 2 puan verir. Ölçer başka zaman dolmaz ve boşalmaz. Dolunca ulti kullanılır, ölçer sıfırlanır.
+- **Kadim Taş denemesi:** Taşta E'ye basılınca deneme başlar. Başarısız olursa 10 saniye sonra yeniden denenir. Deneme düşmanları hayalettir: ganimet, Öz ya da Maya vermezler. M3'te beş taş vardır: Çayır'da Atılma ve Kalkan Balonu, Koru'da Şok Dalgası, Yem Hologramı ve Şifa Sisi. Taşların yeri `abilities.json`'dadır.
+- **Atılma'nın hasarsız anı:** Atılma'nın ilk 0,35 saniyesinde oyuncu hasar almaz.
+
 ## 18. Atalar
 
 - Her biyomda bir **Ata Taşı** var. Adağın bileşenleri taşın önündeki sunağa tek tek konur; tamamlanınca Ata gelir. Kabarık ürün yük nesnesi olduğu için sunağa taşımak işin parçasıdır.
@@ -567,12 +588,13 @@ Yukarıdaki kuralların belgede açık kalan yerleri; sayılar `game/data/holdin
 - **Yer:** M2–M3 haritası ±320 m olduğundan 600 m sığmaz. 1. kamp Sis Korusu kenarında, Ocak'tan en az 250 m uzakta sabit bir yerdedir (veride `anchor`). 600 m kuralı büyük harita (M4) gelince geri döner.
 - **"İlk gerçek Kabarma":** Küçük Kabarma (ilk gece, öğretici) sayılmaz. Kamp ilk gerçek Kabarma'nın ertesi sabahı kurulur.
 - **Seviye:** Kamp 1. seviyede kurulur. Baskın yemediği her 5 günde bir seviye atlar; oyuncunun gece baskını (kampa en az bir isabet) bu sayacı sıfırlar. Tavan `min(10, Ocak basamağı × 2)`; M3'te Ocak T2, yani en fazla 4. Bölmeler aşağı yuvarlanır: `L/2`, `L/3`, `L/2 + 2`.
-- **Kervan:** Her sabah saat 8'de (gün oranı 0,27) kamptan yola çıkar, Holding'in harita kenarındaki teslim noktasına gider ve geri döner. Bir araç ve `2 + L/2` bekçi (2–4). Yükü işçilerin topladığı cevher ve bir kredi kasasıdır. Araç ve bütün bekçiler düşerse pusu başarılıdır; yük yere düşer.
+- **Kervan:** Her sabah saat 8'de (gün oranı 0,27) kamptan yola çıkar, Holding'in harita kenarındaki teslim noktasına gider ve geri döner. Bir araç ve `2 + L/2` bekçi (2–4). Yükü işçilerin topladığı cevher ve bir kredi kasasıdır. Araç ve bütün bekçiler düşerse pusu başarılıdır; yük son vuranın çantasına geçer (sığmayan Kooperatif deposuna gider). Yıkılan binanın ganimeti de aynı yoldan gelir.
 - **Husumet:** Kamp başınadır ve 0'dan başlar. "İhracat geliri" o günkü kargo satışının bin Kredisi başına +1'dir (en fazla +3), ertesi sabah eklenir. −40 onların baskın ekibi oyuncunun tapusuna girdiği anda uygulanır.
-- **Onların baskını:** Husumet 50 ve üstündeyse Kabarma'nın ilk dalgasıyla birlikte kamp yönünden, tapu sınırından girer. Baskın ekibi ustabaşının yönettiği bekçiler ve bir mekaniktir. 1–4. seviyelerde yayadır: kabarık ürünü iki kişi taşır, taşıyanların yürüme hızı yarıya iner. Taşıyan düşerse ürün yerde kalır. Ürün kampa varırsa kaybolur. Kule yoksa sabotaj yapılmaz.
+- **Onların baskını:** Husumet 50 ve üstündeyse Kabarma'nın ilk dalgasıyla birlikte kamp yönünden, tapu sınırından girer. Baskın ekibi ustabaşının yönettiği bekçiler ve bir mekaniktir. 1–4. seviyelerde yayadır: iki taşıyıcı birer kabarık ürün kapar (tarladakini söker), taşırken yürüme hızları yarıya iner. Taşıyan düşerse ürün yerde kalır. Ürün kampa varırsa kaybolur. Kule yoksa sabotaj yapılmaz.
 - **Senin baskının:** Ganimet hedef yıkılınca düşer. Silo: kabarık ürün yerine (M3) Kredi kasası. Atölye: Holding Parçası ve bir plan. Ahır: nadir cins hayvan (hayvan akışının arayüzü gelene kadar Kooperatif deposunda sayılır). Şube Çekirdeği: Silo, Atölye ve Ahır yıkılmadan vurulamaz.
 - **Perde:** kamp tapusu (`perdeRadius`) içinde gündüz kimse hasar alamaz; içeri giren oyuncu kibarca dışarı itilir. Kabarma gecesi kalkar, şafakta iner; içeride kalan oyuncu dışarı fırlatılır.
 - **Birimler:** M3'te İşçi, Bekçi, Ustabaşı ve Mekanik oynar. Müdür ve Genel Merkez yalnız tanımdır (M5).
+- **Davranış (M3):** Gündüz bekçiler Perde içinde ateş etmez; kampa ya da kervana vurulursa 30 sn kışkırırlar (`provokeSeconds`). Gece kamp bekçileri `aggroRange` içindeki oyuncuya ateş eder. İşçiler kampla damar arasında gidip gelir, oyuncu yaklaşınca kaçar. M3'te damarı gerçekten tüketmezler. Baskın ekibi Ocak'tan 70 m uzakta, kamp yönünde doğar (`spawnDistance`). Ocak'a 30 m yaklaşınca "tapuya girdi" sayılır (`claimRadius`).
 
 ### 19.5 Genel Merkez
 

@@ -1,0 +1,8 @@
+tools/test.ps1  2026-11-18 21:02  git 6ba37f3
+
+[PASS] boss  exit=0 RESULT ok boss defeated=koca_pofuduk,boynuzlu_dede fights=koca_pofuduk:58,boynuzlu_dede:62 player_hp=23 shears=4 pillar_stuns=1 shard_hits=3 wave_jumps=1 seals=bereketli_toprak,derin_kok
+
+sinama     sonuc  sure(sn)  ayrinti
+------     -----  --------  -------
+boss       PASS       81.8  exit=0 RESULT ok boss defeated=koca_pofuduk,boynuzlu_dede fights=koca_pofuduk:58,boynuzlu_dede:62 player_hp=23 shears=4 pillar_stuns=1 shard_hits=3 wave_jumps=1 seals=bereketli_toprak,derin_kok
+TEST PASS

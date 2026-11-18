@@ -1,0 +1,8 @@
+﻿[PASS] build  exit=0 warnings=1 errors=0
+[PASS] sim  exit=0 Passed!  - Failed:     0, Passed:   390, Skipped:     0, Total:   390, Duration: 14 s - Kabarma.Sim.Tests.dll (net8.0)
+
+sinama     sonuc  sure(sn)  ayrinti
+------     -----  --------  -------
+build      PASS        3.8  exit=0 warnings=1 errors=0
+sim        PASS       16.9  exit=0 Passed!  - Failed:     0, Passed:   390, Skipped:     0, Total:   390, Duration: 14 s - Kabarma.Sim.Tests.dll (net8.0)
+TEST PASS

@@ -37,6 +37,8 @@ public sealed class HoldingCampDef
     public int RebuildDays { get; set; } = 3;
     public float VeinRadius { get; set; } = 150;
     public int VeinHitsPerWorkerDay { get; set; } = 2;
+    /// <summary>Gunduz kampa vurulunca bekcilerin ofkesi (sn).</summary>
+    public float ProvokeSeconds { get; set; } = 30;
     public HoldingCompositionDef Composition { get; set; } = new();
     public List<HoldingStructureDef> Structures { get; set; } = new();
 }
@@ -83,6 +85,10 @@ public sealed class HoldingRaidDef
     public int Carriers { get; set; } = 2;
     public float CarrySpeedMult { get; set; } = 0.5f;
     public float EntryOffset { get; set; } = 8;
+    /// <summary>Tapu yaricapi: baskin ekibi Ocak'a bu kadar yaklasinca 'girdi' sayilir (m).</summary>
+    public float ClaimRadius { get; set; } = 30;
+    /// <summary>Baskin ekibinin Ocak'tan, kamp yonunde dogdugu uzaklik (m).</summary>
+    public float SpawnDistance { get; set; } = 70;
 }
 
 public sealed class HoldingHusumetDef

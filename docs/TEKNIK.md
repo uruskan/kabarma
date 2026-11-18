@@ -193,7 +193,7 @@ Host ya da sunucu yetkilidir. İstemci istekleri mesafe, bekleme süresi ve enva
 2. **Yükseklik haritası.** 5 × 5 km, 1 m örnekleme. Biyoma göre gürültü katmanları, krater çanağı, kıyı yarları, nehir ve göl oyması, keşif noktası düzleştirmesi.
 3. **Keşif noktaları.** Kurallı Poisson dağılımı: tür başına asgari mesafe, biyom ve eğim şartı ([ICERIK.md](ICERIK.md) §17).
 4. **Damarlar ve bitki örtüsü.** Tohumdan; parça (chunk) başına üretilir.
-5. **İç mekânlar** (Oyuklar, Genel Merkez'in içi) hazır sahnelerdir; arazinin 500 m altına yerleştirilir ve kapıdan geçişle girilir. Yükleme ekranı yoktur.
+5. **İç mekânlar** (Oyuklar, Genel Merkez'in içi) hazır sahnelerdir; arazinin 500 m altına yerleştirilir ve kapıdan geçişle girilir. Yükleme ekranı yoktur. Odalar oynanabilir karenin dışındaki xz'lere konur (yükseklik sorgusu xz ile çalışır: `World.HeightAt` oda içinde oda tabanını verir; Çekim, mermi ve yerleştirme bu yüzden içeride de doğru zemini görür). İçerisi karanlıktır: güneş, gök ışığı ve sis kapanır, ışık yalnız odanın kendi kaynaklarından ve oyuncunun getirdiğinden gelir. Ayrıntı `game/data/oyuk.json` (M3).
 
 **Akış:** 64 m'lik parçalar. Oyuncuya 400 m içinde tam ayrıntı, 1,5 km'ye kadar iki kademe düşük ayrıntı, ötesinde biyom başına tek siluet mesh'i. Kat kat ufuk görüntüsü bu siluetlerle ve yükseklik sisiyle kurulur.
 

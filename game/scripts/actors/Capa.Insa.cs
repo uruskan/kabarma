@@ -80,6 +80,7 @@ public partial class Capa
         _ghost.QueueFree(); _ghost = null; _ghostId = null;
         if (_d.PlacePower(def, at, yaw)) return; // guc akisi: guc ve sinyal parcalari (power/Director.Power.cs)
         if (_d.PlaceDefense(def, at, yaw)) return; // savunma M3: kule ve tuzak (defense/Director.Defense.cs)
+        if (_d.PlaceAbility(def, at, yaw)) return; // gucler akisi: Maya Feneri (abilities/Director.Abilities.cs)
         bool furniture = def.Slots > 0 || def.Spawn || def.LightRange > 0; // Sandik, Uyku Tulumu, Mesale: ekonomi (entegrasyon)
         if (PenSystem.IsPenProp(def.Id) || (def.Station == null && def.Id != "ocak" && !furniture)) { _d.PlaceProp(def, at, yaw); return; } // Director.Pen.cs: Yemlik, Folluk, Ahsap Kapi
         if (def.Id == "ocak") _d.PlaceOcak(at);

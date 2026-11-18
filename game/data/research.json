@@ -51,6 +51,8 @@
     { "id": "turnip", "tier": 1, "by": "tarim" },
     { "id": "egg", "tier": 1, "by": "hayvan" },
     { "id": "iron_ore", "tier": 2, "by": "dunya2" },
-    { "id": "sourberry", "tier": 2, "by": "tarim" }
+    { "id": "sourberry", "tier": 2, "by": "tarim" },
+    { "id": "maya_kesesi", "tier": 2, "by": "gucler" },
+    { "id": "resin", "tier": 2, "by": "dunya2" }
   ]
 }

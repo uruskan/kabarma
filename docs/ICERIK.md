@@ -376,6 +376,23 @@ Her etkin güç bir Kadim Taş denemesinin ödülüdür.
 | Yörünge Sulaması | Kooperatif uydusundan işaretli alana ışın ve su: hasar verir, yangını söndürür, tarlayı sular | Çıyan Paşa |
 | Zaman Durdu | Bütün düşmanlar 5 sn donar | Buz Tosunu |
 
+**M3 sayıları (ilk beş güç, iki ulti; ayrıntı `data/abilities.json`, kural GDD §17.1):**
+
+| Güç | Sayılar | Kadim Taş denemesi |
+|---|---|---|
+| Atılma | 7 m, 0,25 sn; ilk 0,35 sn hasar yok | 6 halkalı parkur, 45 sn |
+| Kalkan Balonu | 3 m yarıçap, 4 sn; düşman mermisi geçmez | Taşın Gıdak'ı (200 can) 120 sn korunur; 10 saniyede bir 3 hayalet |
+| Şok Dalgası | 6 m, 25 Şok hasarı, itme 12 | 4 dalga (6, 8, 10, 12 hayalet) temizlenir |
+| Yem Hologramı | 8 sn, 15 m'deki düşmanı çeker, 60 can | 4 gözcünün (10 m, 70°) arasından 90 sn içinde hedefe; görülmek 0,5 sn'yi geçerse kayıp |
+| Şifa Sisi | 5 m, 6 sn, saniyede 8 can (oyuncu ve evcil hayvan) | 3 dalga, kimse yere düşmeden |
+
+| Ulti | Sayılar |
+|---|---|
+| Sürü Çağrısı | 60 m içindeki evcil hayvanların nişan yönünde 25 m koşar. Her biri yolundaki düşmana 40 Darbe hasarı ve itme verir. Hayvan yoksa 4 hayalet hayvan koşar (yer tutucu). |
+| Dev Mod | 20 sn boyunca boy ×2,5, hız ×1,3 ve alınan hasar −%50. Değdiğin düşmana saniyede 30 Darbe hasarı verir. |
+
+**Maya Feneri:** Bedeli 3 Maya Kesesi, 5 Bakır Tel ve 2 Reçine. M3'te ilk Maya Kesesi alınınca açılır; ileride Çıraklık zinciri bu planı verecek (§18).
+
 ## 8. Kabarma kartları (72)
 
 Nadirlik: **S** Sıradan · **N** Nadir · **D** Destansı · **E** Efsane. Etkiler rütbe başınadır.
@@ -828,7 +845,16 @@ Can ve Dayanıklılık değerleri yemeğin süresi boyunca eklenir.
 
 **Mancınık** bir yerleştirilebilirdir (§10.2 Hizmet). Ocak'ın tapusuna ve karakollara kurulur; her Seyir Kulesi'nin dibinde hazır bir durak vardır ve kule tırmanılınca açılır. Açık bir duraktan açık bir durağa fırlatır. El arabası iterken ya da yük nesnesi taşırken kullanılmaz.
 
-**Koru kaynak kimlikleri** (§2.1): `hard_wood` Sert Odun (Koru ağaçları, Kesme), `resin` Reçine (Koru ağaçlarındaki reçine yumruları, Kazma), `iron_ore` Demir Cevheri (Koru damarları, Kazma), `saltpeter` Güherçile (Oyuk'a kadar Koru'daki kaya çatlaklarında küçük damarlar, Kazma), `scrap` Hurda (Enkaz, Kazma).
+**Koru kaynak kimlikleri** (§2.1): `hard_wood` Sert Odun (Koru ağaçları, Kesme), `resin` Reçine (Koru ağaçlarındaki reçine yumruları, Kazma), `iron_ore` Demir Cevheri (Koru damarları, Kazma), `saltpeter` Güherçile (Koru'daki kaya çatlaklarında küçük damarlar, Kazma; asıl kaynak Oyuk: Yarasa Yumağı yenilince açılan damar), `scrap` Hurda (Enkaz, Kazma).
+
+**M3: Oyuklar** (URETIM §6 M3, §4.3). Altın Çayır ve Sis Korusu'nda üçer Oyuk; ağzı yüzeyde keşif noktasıdır, içi arazinin 500 m altındaki hazır odadır ([TEKNIK.md](TEKNIK.md) §7.5). Aynı biyomun üç Oyuğunu aynı koruyucu tutar; birinci, ikinci, üçüncü Oyukta daha dayanıklı ve hızlıdır (sayılar `game/data/oyuk.json`). Koruyucu yenilince Oyuk "temizlendi" sayılır (Mağaracı ustalığı, §18), sandıklar bir kez açılır; koruyucu bir daha doğmaz. Dövüş içeride sürer; Oyuktan çıkılırsa dövüş baştan başlar.
+
+| Koruyucu | Oda | Kural (M3) | Ödül sandıkları |
+|---|---|---|---|
+| Köstebek Bey | Çayır Oyuğu: düz toprak taban, çevrede 5–7 delik, köşelerde tıkaç kayaları | Saklıyken vurulmaz; açık bir delikten çıkar, birkaç saniye üstte kalır, çıkarken yakındaki oyuncuya çarpar, sonra dalar. Sulama ile ıslatılan delikten çıkarsa ya da üstteyken deliği ıslatılırsa sersemler (sersemken hasar iki kat). Çekim'le taşınıp deliğin üstüne bırakılan kaya deliği kalıcı tıkar. Bütün delikler tıkanınca dalamaz: odanın ortasında sıkışır, sersemler ve üstte kalır | Bakır Külçe, Hurda, nadir çip |
+| Yarasa Yumağı | Koru Oyuğu: yüksek tavan, tavanda asılı yumak, duvarlarda yakılabilen üç kandil | Yumak toplanmışken vurulmaz ve aralıkla oyuncuya dalış yapar. Yakınında ışık olunca (yakılan kandil, kurulan ya da elde tutulan Meşale) dağılır; ortadaki ana yarasa görünür ve vurulur. Işık sönünce ya da uzaklaşınca birkaç saniyede yeniden toplanır | Güherçile, nadir çip |
+
+Nadir çip, çip akışı gelene dek `nadir_cip` adlı yer tutucu eşyadır.
 
 ## 18. İş emirleri (48 zincir × 5 adım), başarımlar, katalog, çark
 

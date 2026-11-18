@@ -250,5 +250,6 @@ public partial class World
         if (_pillar != null) _pillar.Scale = new Vector3(1f + veins * 1.5f, 1f, 1f + veins * 1.5f);
         // Su gun saatine gore koyulasir (gece mavi, karanlik degil).
         _waterMat?.SetShaderParameter("tint", Colors.White.Lerp(L.Horizon.Lerp(L.Top, 0.5f), 0.25f) * Mathf.Clamp(0.45f + L.Energy * 0.45f, 0.5f, 1.05f));
+        ApplyIndoor(); // World.Oyuk.cs: Oyuk icinde gunes ve sis yok (M3)
     }
 }
