@@ -1,4 +1,4 @@
-﻿Godot Engine v4.7.2.stable.mono.official.ed1daf0bf - https://godotengine.org
+Godot Engine v4.7.2.stable.mono.official.ed1daf0bf - https://godotengine.org
 Vulkan 1.4.357 - Forward+ - Using Device #0: NVIDIA - NVIDIA GeForce RTX 2070 SUPER
 
 TEST oyuk
@@ -24,9 +24,9 @@ BOOT Kabarma MVP
 TARIM wild=22
 HELD capa
 MUSIC Silence -> Day
-ZIPZIP herd size=2 at=43,1 herds=1
-ZIPZIP herd size=3 at=-7,-47 herds=2
-ZIPZIP herd size=2 at=41,17 herds=3
+ZIPZIP herd size=2 at=48,-16 herds=1
+ZIPZIP herd size=2 at=-8,-37 herds=2
+ZIPZIP herd size=3 at=-20,11 herds=3
 WILDLIFE spawn homur herd=1 at=-15,9
 WILDLIFE spawn homur herd=1 at=-19,13
 WILDLIFE spawn dalli herd=1 at=35,15
@@ -71,11 +71,14 @@ OYUK plug hole=4 state=Trapped
 OYUK ok delikler tikandi 5/5
 OYUK ok butun delikler tikali: sikisti (Trapped)
 OYUK shot C:/Users/uruskan/Documents/GitHub/kabarma/.claude/worktrees/m2-dunya-9fd4f9/progress/m3/oyuk/shots/kostebek_sikisti.png
-OYUK FAIL Kostebek Bey yenildi, Oyuk temiz
-OYUK FAIL Events.OyukCleared 0
-OYUK FAIL sandik 0 acildi
-OYUK FAIL sandik 1 acildi
-OYUK FAIL Bakir Kulce odulu 0
+OYUK cleared oyuk_altin_cayir_0 guardian=kostebek_bey tier=0
+OYUK ok Kostebek Bey yenildi, Oyuk temiz
+OYUK ok Events.OyukCleared 1
+OYUK chest oyuk_altin_cayir_0#0 copper_ingot=3,scrap=4,nadir_cip=1
+OYUK ok sandik 0 acildi
+OYUK chest oyuk_altin_cayir_0#1 copper_ingot=3,scrap=4
+OYUK ok sandik 1 acildi
+OYUK ok Bakir Kulce odulu 6
 OYUK ok ikinci acilis bos
 OYUK exit oyuk_altin_cayir_0
 OYUK ok kapidan cikis
@@ -97,10 +100,11 @@ OYUK lamp lit Lamp0
 OYUK ok kandil yandi
 OYUK ok isikla yumak dagildi
 OYUK shot C:/Users/uruskan/Documents/GitHub/kabarma/.claude/worktrees/m2-dunya-9fd4f9/progress/m3/oyuk/shots/yarasa_dagildi.png
-OYUK FAIL Yarasa Yumagi yenildi, Oyuk temiz
+OYUK cleared oyuk_sis_korusu_0 guardian=yarasa_yumagi tier=0
+OYUK ok Yarasa Yumagi yenildi, Oyuk temiz
 OYUK exit oyuk_sis_korusu_0
-OYUK enter oyuk_sis_korusu_0 guardian=yarasa_yumagi tier=0 cleared=False
-OYUK FAIL temiz Oyukta dovus yok
+OYUK enter oyuk_sis_korusu_0 guardian=yarasa_yumagi tier=0 cleared=True
+OYUK ok temiz Oyukta dovus yok
 OYUK exit oyuk_sis_korusu_0
-OYUK FAIL temiz Oyuk 0
-OYUK RESULT fail checks=Kostebek Bey yenildi, Oyuk temiz; Events.OyukCleared 0; sandik 0 acildi; sandik 1 acildi; Bakir Kulce odulu 0; Yarasa Yumagi yenildi, Oyuk temiz; temiz Oyukta dovus yok; temiz Oyuk 0 hurt=0 rooms=6
+OYUK ok temiz Oyuk 2
+OYUK RESULT ok checks=passed hurt=6 rooms=6

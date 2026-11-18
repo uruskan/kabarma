@@ -1,42 +1,12 @@
-tools/test.ps1  2026-11-18 20:10  git d9ced22
+tools/test.ps1  2026-11-18 20:22  git 5e51daa
 
 [PASS] build  exit=0 warnings=0 errors=0
-[PASS] sim  exit=0 Passed!  - Failed:     0, Passed:   415, Skipped:     0, Total:   415, Duration: 18 s - Kabarma.Sim.Tests.dll (net8.0)
-[FAIL] world  exit=1 WORLD RESULT fail 1
-      --- son satirlar: C:\Users\uruskan\Documents\GitHub\kabarma\.claude\worktrees\m2-dunya-9fd4f9\.tools\run\test\world.log
-      WORLD farm_slope_max=0.0
-      WORLD lake_cells=445 ocak_dist=63.5-87.2 depth=0.90 level=-0.59
-      WORLD stone=41 near_stone=76 need=34 far_stone_rocks=26 clay=4 copper=3 fiber=1580 wheat=285
-      WORLD decor=agac:383,turuncu_agac:112,cali:603,ot:886,bugday:284,cicek:960,egrelti:606,kaya_duz:144,kaya_dik:59,koru_agac:120,dev_mantar:50,kutuk:26,sis_korusu_egrelti:260,koru_ot:90,sis_korusu_kaya_duz:24 grass=30901
-      WORLD tepe=33.3 interior_max=33.4
-      WORLD koru_trees=121 iron=12 resin=12 saltpeter=6
-      WORLD koru_area_m2~44604 koru_mean_h=16.0 koru_max_h=23.3
-      WORLD pois=22 seyir_kulesi_altin_cayir_0@105,40 ata_tasi_altin_cayir_0@64,36 seyir_kulesi_sis_korusu_0@-46,287 ata_tasi_sis_korusu_0@-212,219
-      WORLD fog_chunks=27 shafts=44 fog_meadow=0.0011 fog_koru=0.0045
-      WORLD note=build_ms ayni makinede ~15 Godot oturumu varken olculdu
-      WORLD FAIL pois 22 != 16
-      WORLD RESULT fail 1
-[PASS] explore  exit=0 EXPLORE RESULT ok
-[FAIL] oyuk  exit=1 OYUK RESULT fail checks=Kostebek Bey yenildi, Oyuk temiz; Events.OyukCleared 0; sandik 0 acildi; sandik 1 acildi; Bakir Kulce odulu 0; Yarasa Yumagi yenildi, Oyuk temiz; temiz Oyukta dovus yok; temiz Oyuk 0 hurt=0 rooms=6
-      --- son satirlar: C:\Users\uruskan\Documents\GitHub\kabarma\.claude\worktrees\m2-dunya-9fd4f9\.tools\run\test\oyuk.log
-      OYUK ok kandil istemi
-      OYUK lamp lit Lamp0
-      OYUK ok kandil yandi
-      OYUK ok isikla yumak dagildi
-      OYUK FAIL Yarasa Yumagi yenildi, Oyuk temiz
-      OYUK exit oyuk_sis_korusu_0
-      WILDLIFE spawn findikci herd=3 at=-196,118
-      OYUK enter oyuk_sis_korusu_0 guardian=yarasa_yumagi tier=0 cleared=False
-      OYUK FAIL temiz Oyukta dovus yok
-      OYUK exit oyuk_sis_korusu_0
-      OYUK FAIL temiz Oyuk 0
-      OYUK RESULT fail checks=Kostebek Bey yenildi, Oyuk temiz; Events.OyukCleared 0; sandik 0 acildi; sandik 1 acildi; Bakir Kulce odulu 0; Yarasa Yumagi yenildi, Oyuk temiz; temiz Oyukta dovus yok; temiz Oyuk 0 hurt=0 rooms=6
+[PASS] world  exit=0 WORLD RESULT ok checks passed (7794 ms)
+[PASS] oyuk  exit=0 OYUK RESULT ok checks=passed hurt=6 rooms=6
 
 sinama     sonuc  sure(sn)  ayrinti
 ------     -----  --------  -------
-build      PASS        5.3  exit=0 warnings=0 errors=0
-sim        PASS       21.8  exit=0 Passed!  - Failed:     0, Passed:   415, Skipped:     0, Total:   415, Duration: 18 s - Kabarma.Sim.Tests.dll (net8.0)
-world      FAIL       10.3  exit=1 WORLD RESULT fail 1
-explore    PASS       36.7  exit=0 EXPLORE RESULT ok
-oyuk       FAIL       26.3  exit=1 OYUK RESULT fail checks=Kostebek Bey yenildi, Oyuk temiz; Events.OyukCleared 0; sandik 0 acildi; sandik 1 acildi; Bakir Kulce odulu 0; Yarasa Yumagi yenildi, Oyuk temiz; temiz Oyukta dovus yok; temiz Oyuk 0 hurt=0 rooms=6
-TEST FAIL (2)
+build      PASS        4.7  exit=0 warnings=0 errors=0
+world      PASS        8.8  exit=0 WORLD RESULT ok checks passed (7794 ms)
+oyuk       PASS       24.1  exit=0 OYUK RESULT ok checks=passed hurt=6 rooms=6
+TEST PASS

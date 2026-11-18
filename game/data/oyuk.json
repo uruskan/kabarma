@@ -38,6 +38,8 @@
       "plugKg": 40,
       "trappedStunSeconds": 6,
       "trappedLungeEvery": 3,
+      "ambient": 0.35,
+      "wallLights": 6,
       "rewards": { "copper_ingot": [6, 9, 12], "scrap": [8, 12, 16], "nadir_cip": [1, 1, 2] },
       "chests": 2
     },

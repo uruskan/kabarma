@@ -74,6 +74,9 @@ public sealed class OyukGuardianDef
     public float LampSeconds { get; set; } = 0f;
     /// <summary>Yumagin tavandan asagi sarktigi yukseklik (m, tabandan).</summary>
     public float HangHeight { get; set; } = 7.5f;
+    /// <summary>Odanin ortam isigi (0: Interior.Ambient) ve duvar fenerleri (adet; karanlik yalniz Yarasa'nin mekanigi).</summary>
+    public float Ambient { get; set; } = 0f;
+    public int WallLights { get; set; } = 0;
     /// <summary>Oda tavani (m); 0 ise Interior.Height.</summary>
     public float RoomHeight { get; set; } = 0f;
 

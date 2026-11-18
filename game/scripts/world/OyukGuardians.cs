@@ -95,9 +95,9 @@ public partial class BatVisual : Node3D
     {
         Hang = hang;
         var bat = new MeshKit()
-            .Sphere(0.16f, MeshKit.At(0, 0, 0), new Color("3E3550"), 8, 4)
-            .Pillow(new Vector3(0.55f, 0.04f, 0.28f), MeshKit.At(new Vector3(-0.3f, 0.02f, 0), new Vector3(0, 0, 0.35f)), new Color("2A2338"), 0.2f)
-            .Pillow(new Vector3(0.55f, 0.04f, 0.28f), MeshKit.At(new Vector3(0.3f, 0.02f, 0), new Vector3(0, 0, -0.35f)), new Color("2A2338"), 0.2f)
+            .Sphere(0.16f, MeshKit.At(0, 0, 0), new Color("6A5C86"), 8, 4)
+            .Pillow(new Vector3(0.55f, 0.04f, 0.28f), MeshKit.At(new Vector3(-0.3f, 0.02f, 0), new Vector3(0, 0, 0.35f)), new Color("54496E"), 0.2f)
+            .Pillow(new Vector3(0.55f, 0.04f, 0.28f), MeshKit.At(new Vector3(0.3f, 0.02f, 0), new Vector3(0, 0, -0.35f)), new Color("54496E"), 0.2f)
             .Build();
         _mm = new MultiMesh { TransformFormat = MultiMesh.TransformFormatEnum.Transform3D, Mesh = bat, InstanceCount = count };
         AddChild(new MultiMeshInstance3D { Multimesh = _mm, MaterialOverride = MeshKit.StaticMaterial });

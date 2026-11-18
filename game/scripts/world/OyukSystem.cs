@@ -113,7 +113,7 @@ public partial class OyukSystem : Node3D
         Inside = room;
         _lastMouth = _d.World.Ground(new Vector3(room.Poi.X, 0, room.Poi.Z));
         P.Of(room.Poi.Id).Entered++;
-        _d.World.SetIndoor(true, Def.Interior.Ambient);
+        _d.World.SetIndoor(true, room.Guardian.Ambient > 0 ? room.Guardian.Ambient : Def.Interior.Ambient);
         Teleport(room.DoorPos + (room.Center - room.DoorPos).Normalized() * 1.6f);
         if (!P.IsCleared(room.Poi.Id)) StartFight(room);
         _d.State.Explore.Discover(room.Poi.Id);

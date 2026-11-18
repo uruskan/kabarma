@@ -100,6 +100,16 @@ public partial class OyukRoom : Node3D
             .Pillow(new Vector3(2.4f, 3.0f, 0.1f), MeshKit.At(door + new Vector3(0, 1.5f, 0.35f)), new Color(0.95f, 0.75f, 0.45f));
         AddChild(arch.Instance());
         AddChild(new OmniLight3D { Position = door + new Vector3(0, 2.2f, -1f), LightColor = new Color(1f, 0.78f, 0.5f), LightEnergy = 1.4f, OmniRange = 9f, ShadowEnabled = false });
+        // Duvar fenerleri (Kostebek odasi aydinlik; karanlik yalniz Yarasa'nin mekanigi).
+        for (int i = 0; i < g.WallLights; i++)
+        {
+            float a = i * Mathf.Tau / g.WallLights + 0.26f;
+            var p = new Vector3(Mathf.Cos(a) * (Radius - 0.6f), 3.2f, Mathf.Sin(a) * (Radius - 0.6f));
+            AddChild(new MeshKit().Cylinder(0.12f, 0.08f, 0.9f, MeshKit.At(p + Vector3.Down * 0.5f), Palette.Wood, 6)
+                .Sphere(0.2f, MeshKit.At(p), new Color(1f, 0.8f, 0.4f), 8, 4)
+                .Instance(new StandardMaterial3D { VertexColorUseAsAlbedo = true, EmissionEnabled = true, Emission = new Color(1f, 0.6f, 0.25f), EmissionEnergyMultiplier = 0.6f }));
+            AddChild(new OmniLight3D { Position = p + (Vector3.Zero - p with { Y = 0 }).Normalized() * 0.6f, LightColor = new Color(1f, 0.78f, 0.5f), LightEnergy = 1.6f, OmniRange = 12f, ShadowEnabled = false });
+        }
         // Zayif dolgu: oda tamamen kor olmasin (yarasa odasinda daha da zayif; karanlik dovusun parcasi).
         AddChild(new OmniLight3D { Position = new Vector3(0, Height * 0.7f, 0), LightColor = new Color(0.6f, 0.62f, 0.8f), LightEnergy = g.Kind == "yarasa" ? 0.35f : 0.8f, OmniRange = Radius * 1.6f });
     }
