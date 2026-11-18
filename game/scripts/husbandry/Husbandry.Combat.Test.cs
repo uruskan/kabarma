@@ -110,6 +110,7 @@ public partial class SavasHayvanTest : Node
                 Check(R.Riding && _homur.Animal.Rider != 0, "Homur'a binildi");
                 Check(P.SpeedMult > _baseSpeed * 1.05f, $"binek hizi (carpan {P.SpeedMult:0.00})");
                 _rideStart = P.GlobalPosition;
+                foreach (var g in _d.Pens.Gates.ToList()) _d.Pens.SetGate(g, true); // agildan cikis yolu (Route acik kapidan gecer)
                 _rideStage = 1; _st = 0;
                 return;
             case 1:
