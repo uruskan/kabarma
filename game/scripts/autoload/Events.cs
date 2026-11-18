@@ -85,10 +85,12 @@ public static class Events
     public static event Action<string> AnimalBorn;
     /// <summary>Hayvan kacti (tur kimligi). Yayan: RanchSystem.</summary>
     public static event Action<string> AnimalEscaped;
+    public static event Action<string> OyukCleared; // oyuk (M3): temizlenen Oyuk kimligi (Magaraci ustaligi)
     public static void RaiseAnimalTamed(string species) => AnimalTamed?.Invoke(species);
     public static void RaiseAnimalCollected(string item, int n) => AnimalCollected?.Invoke(item, n);
     public static void RaiseAnimalBorn(string species) => AnimalBorn?.Invoke(species);
     public static void RaiseAnimalEscaped(string species) => AnimalEscaped?.Invoke(species);
+    public static void RaiseOyukCleared(string oyukId) => OyukCleared?.Invoke(oyukId);
     public static void RaisePieceUpgraded(string id, string material) => PieceUpgraded?.Invoke(id, material);
     public static void RaisePlanCompleted(string id) => PlanCompleted?.Invoke(id);
 
@@ -128,6 +130,7 @@ public static class Events
         Deconstructed = null;
         PenChanged = null; AnimalPenned = null; Laid = null; SunaSaid = null;
         AnimalTamed = null; AnimalCollected = null; AnimalBorn = null; AnimalEscaped = null;
+        OyukCleared = null;
         PieceUpgraded = null; PlanCompleted = null;
         CatalogBought = null; Delivered = null; WheelSpun = null; // ekonomi2
         AtaDefeated = null; AtaPhase = null;

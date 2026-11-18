@@ -1,0 +1,12 @@
+﻿[PASS] build  exit=0 warnings=0 errors=0
+[PASS] sim  exit=0 Passed!  - Failed:     0, Passed:   607, Skipped:     0, Total:   607, Duration: 23 s - Kabarma.Sim.Tests.dll (net8.0)
+[PASS] world  exit=0 WORLD RESULT ok checks passed (7261 ms)
+[PASS] oyuk  exit=0 OYUK RESULT ok checks=passed hurt=6 rooms=6
+
+sinama     sonuc  sure(sn)  ayrinti
+------     -----  --------  -------
+build      PASS       11.3  exit=0 warnings=0 errors=0
+sim        PASS       29.5  exit=0 Passed!  - Failed:     0, Passed:   607, Skipped:     0, Total:   607, Duration: 23 s - Kabarma.Sim.Tests.dll (net8.0)
+world      PASS        8.1  exit=0 WORLD RESULT ok checks passed (7261 ms)
+oyuk       PASS       23.2  exit=0 OYUK RESULT ok checks=passed hurt=6 rooms=6
+TEST PASS

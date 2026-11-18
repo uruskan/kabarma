@@ -1,0 +1,12 @@
+tools/test.ps1  2026-11-18 20:22  git 5e51daa
+
+[PASS] build  exit=0 warnings=0 errors=0
+[PASS] world  exit=0 WORLD RESULT ok checks passed (7794 ms)
+[PASS] oyuk  exit=0 OYUK RESULT ok checks=passed hurt=6 rooms=6
+
+sinama     sonuc  sure(sn)  ayrinti
+------     -----  --------  -------
+build      PASS        4.7  exit=0 warnings=0 errors=0
+world      PASS        8.8  exit=0 WORLD RESULT ok checks passed (7794 ms)
+oyuk       PASS       24.1  exit=0 OYUK RESULT ok checks=passed hurt=6 rooms=6
+TEST PASS

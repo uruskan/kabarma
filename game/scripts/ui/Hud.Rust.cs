@@ -195,6 +195,7 @@ void fragment() {
         var st = _d.Stations.Where(s => s.InReach(p)).OrderBy(s => s.GlobalPosition.DistanceTo(p)).FirstOrDefault();
         if (st != null) { _promptVerb = "Kullan"; _promptObject = st.Def.Name; return; }
         if (_d.Explorer?.Prompt(p) is { } ex) { _promptVerb = ex.verb; _promptObject = ex.obj; return; } // dunya2: kule, mancinik, yuva
+        if (_d.Oyuk?.Prompt(p) is { } oy) { _promptVerb = oy.verb; _promptObject = oy.obj; return; } // oyuk (M3): agiz, kapi, sandik, kandil
         if (_d.Pod != null && _d.Pod.IsRamp && new Vector2(p.X - _d.Pod.PadCenter.X, p.Z - _d.Pod.PadCenter.Z).Length() < 4.5f)
         { _promptVerb = "Sat"; _promptObject = "Kargo Rampası"; return; }
         var g = _d.Gidak;

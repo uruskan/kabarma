@@ -1,0 +1,67 @@
+tools/test.ps1  2026-11-18 20:56  git 8d42afe
+
+[PASS] build  exit=0 warnings=0 errors=0
+[PASS] sim  exit=0 Passed!  - Failed:     0, Passed:   415, Skipped:     0, Total:   415, Duration: 25 s - Kabarma.Sim.Tests.dll (net8.0)
+[PASS] bench  exit=0 1000 gun 3.125 sn, ayrilan 59.3 MB, tepe 90.4 MB (Release, 3x3)
+[PASS] bot  exit=0 RESULT ok ciraklik=4/5 veri=140 credits=8096 eggs=1 kills=21 cards=2 maya=48 stations=4 harvests=5 skipped=-
+[PASS] hayvan  exit=0 HAYVAN ok species=pofuduk sut=1 yun=0 happiness=52 genes=B3 U3 V1 K3 | RESULT ok ciraklik=4/5 veri=140 credits=8096 eggs=3 kills=21 cards=2 maya=48 stations=4 harvests=7 skipped=-
+[PASS] buildtest  exit=0 placed=95 failed=0 pieces=88
+[PASS] audio  exit=0 ok sounds=60 playable=60 variant_files=180 buses=6 layers_loaded=3/3 day_music=yes
+[PASS] world  exit=0 WORLD RESULT ok checks passed (15208 ms)
+[PASS] explore  exit=0 EXPLORE RESULT ok
+[PASS] oyuk  exit=0 OYUK RESULT ok checks=passed hurt=6 rooms=6
+[FAIL] boss  exit=1 RESULT fail boss defeated=koca_pofuduk fights=koca_pofuduk:50,boynuzlu_dede:36 player_hp=0 shears=4 pillar_stuns=1 shard_hits=0 wave_jumps=1 seals=bereketli_toprak
+      --- son satirlar: C:\Users\uruskan\Documents\GitHub\kabarma\.claude\worktrees\m2-dunya-9fd4f9\.tools\run\test\boss.log
+      BOSS hurt -8 hp=28 phase=2 tel=volley charging=False adds=0 waves=0 dist=8.6
+      WILD bozuk#61 Struck at=-209.7,214.3
+      BOSS hurt -8 hp=20 phase=2 tel=rootwave charging=False adds=0 waves=0 dist=9.2
+      WILD bozuk#61 Struck at=-206.8,221.4
+      BOSS hurt -8 hp=12 phase=2 tel=rootwave charging=False adds=0 waves=1 dist=10.0
+      ATA weak_broken boynuzlu_dede #0
+      ATA stun boynuzlu_dede t=33.3
+      WILD bozuk#61 Struck at=-209.6,228.7
+      BOSS hurt -8 hp=4 phase=2 tel=rootwave charging=False adds=0 waves=0 dist=10.6
+      WILD bozuk#61 Struck at=-216.2,230.3
+      BOSS hurt -4 hp=0 phase=2 tel=rootwave charging=False adds=0 waves=0 dist=10.4
+      RESULT fail boss defeated=koca_pofuduk fights=koca_pofuduk:50,boynuzlu_dede:36 player_hp=0 shears=4 pillar_stuns=1 shard_hits=0 wave_jumps=1 seals=bereketli_toprak t=153 :: boynuzlu_dede: oyuncu oldu (asama 2, Ata cani 624)
+[PASS] camera  exit=0 RESULT ok camera checks=73
+[PASS] grip  exit=0 RESULT ok grip checks=67 cart=sag 1.1cm sol 0.1cm
+[PASS] tarim  exit=0 RESULT ok tarim crop=wheat item=21 alaca=5 seeds=7 ledger=7 best=V2 H1 D3 M2 korkuluk=1 protected=2
+[PASS] creatures  exit=0 RESULT ok creatures=10 wild=11 clips=80 posed=74
+[PASS] latency  exit=0 RESULT ok heads=7/7 budget_max_ms=33.3 wall_med_ms=36.1 wall_max_ms=44.8 hitstop=ok
+[PASS] ekonomi  exit=0 ok=82 fail=0
+[PASS] borsa  exit=0 ok=25 fail=0
+[PASS] zincir  exit=0 ok=8 fail=0 veri=2 t=203
+[PASS] gece  exit=0 GECE RESULT ok checks=2463 nights=2 day=3
+[PASS] ilerleme  exit=0 ILERLEME RESULT ok checks=15 credits=6100 veri=80
+[PASS] coop  exit=0 ok players=4 max_diff_mm=2.417 pieces=4 foundations=4 late_join=1 plots=4 tilled=4 crafted=4 revives=1 voice_frames=25 creatures_spawned=32 rejected=0 corrections=0
+[PASS] input_kbm  exit=0 RESULT ok ciraklik=4/5 veri=140 credits=8402 eggs=1 kills=21 cards=2 maya=48 stations=4 harvests=8 skipped=- olay=9171 basis=149 cark=37 menu=0 fare=7907 yanadim=1
+[PASS] input_pad  exit=0 RESULT ok ciraklik=4/5 veri=140 credits=8717 eggs=1 kills=21 cards=2 maya=48 stations=4 harvests=8 skipped=- olay=24784 basis=239 cark=30 menu=21 fare=0 yanadim=2
+
+sinama     sonuc  sure(sn)  ayrinti
+------     -----  --------  -------
+build      PASS        7.6  exit=0 warnings=0 errors=0
+sim        PASS       30.3  exit=0 Passed!  - Failed:     0, Passed:   415, Skipped:     0, Total:   415, Duration: 25 s - Kabarma.Sim.Tests.dll (net8.0)
+bench      PASS        9.2  exit=0 1000 gun 3.125 sn, ayrilan 59.3 MB, tepe 90.4 MB (Release, 3x3)
+bot        PASS      243.5  exit=0 RESULT ok ciraklik=4/5 veri=140 credits=8096 eggs=1 kills=21 cards=2 maya=48 stations=4 harvests=5 skipped=-
+hayvan     PASS      202.8  exit=0 HAYVAN ok species=pofuduk sut=1 yun=0 happiness=52 genes=B3 U3 V1 K3 | RESULT ok ciraklik=4/5 veri=140 credits=8096 eggs=3 kills=21 cards=2 maya=48 stations=4 harvests=7 skipped=-
+buildtest  PASS       26.8  exit=0 placed=95 failed=0 pieces=88
+audio      PASS       10.9  exit=0 ok sounds=60 playable=60 variant_files=180 buses=6 layers_loaded=3/3 day_music=yes
+world      PASS         18  exit=0 WORLD RESULT ok checks passed (15208 ms)
+explore    PASS       46.3  exit=0 EXPLORE RESULT ok
+oyuk       PASS       31.6  exit=0 OYUK RESULT ok checks=passed hurt=6 rooms=6
+boss       FAIL       75.4  exit=1 RESULT fail boss defeated=koca_pofuduk fights=koca_pofuduk:50,boynuzlu_dede:36 player_hp=0 shears=4 pillar_stuns=1 shard_hits=0 wave_jumps=1 seals=bereketli_toprak
+camera     PASS       33.6  exit=0 RESULT ok camera checks=73
+grip       PASS       40.5  exit=0 RESULT ok grip checks=67 cart=sag 1.1cm sol 0.1cm
+tarim      PASS       46.4  exit=0 RESULT ok tarim crop=wheat item=21 alaca=5 seeds=7 ledger=7 best=V2 H1 D3 M2 korkuluk=1 protected=2
+creatures  PASS          2  exit=0 RESULT ok creatures=10 wild=11 clips=80 posed=74
+latency    PASS       46.6  exit=0 RESULT ok heads=7/7 budget_max_ms=33.3 wall_med_ms=36.1 wall_max_ms=44.8 hitstop=ok
+ekonomi    PASS       71.8  exit=0 ok=82 fail=0
+borsa      PASS       51.4  exit=0 ok=25 fail=0
+zincir     PASS       73.2  exit=0 ok=8 fail=0 veri=2 t=203
+gece       PASS         56  exit=0 GECE RESULT ok checks=2463 nights=2 day=3
+ilerleme   PASS       14.5  exit=0 ILERLEME RESULT ok checks=15 credits=6100 veri=80
+coop       PASS       93.2  exit=0 ok players=4 max_diff_mm=2.417 pieces=4 foundations=4 late_join=1 plots=4 tilled=4 crafted=4 revives=1 voice_frames=25 creatures_spawned=32 rejected=0 corrections=0
+input_kbm  PASS      158.3  exit=0 RESULT ok ciraklik=4/5 veri=140 credits=8402 eggs=1 kills=21 cards=2 maya=48 stations=4 harvests=8 skipped=- olay=9171 basis=149 cark=37 menu=0 fare=7907 yanadim=1
+input_pad  PASS      164.5  exit=0 RESULT ok ciraklik=4/5 veri=140 credits=8717 eggs=1 kills=21 cards=2 maya=48 stations=4 harvests=8 skipped=- olay=24784 basis=239 cark=30 menu=21 fare=0 yanadim=2
+TEST FAIL (1)

@@ -112,6 +112,7 @@ public partial class Director : Node3D
         InitAbilities(); // abilities/Director.Abilities.cs: oyuncu gucleri, Kadim Tas, Maya Feneri, Tatbikat (gucler akisi)
         WireNightAndDay(); // Director.Calendar.cs: takvim, uyku, Defter olaylari
         InitExplore();     // Director.Explore.cs: harita, kesif noktalari, Seyir Kulesi, mancinik (dunya2)
+        InitOyuk();        // Director.Oyuk.cs: Oyuklar, Kostebek Bey, Yarasa Yumagi (oyuk, M3)
         WireProgress();    // Director.Progress.cs: Ustalik XP'si, is emri olculeri, basarim ve odul bildirimleri
         WireChips();       // Director.Chips.cs: cip kilidi (Kabarma) ve dusme kaynaklari
         State.Farm.Eaten += p => { GD.Print($"EATEN plot {p.X},{p.Y}"); Sfx.Play("pop", FarmView.CellCenter(p.X, p.Y), -2f); };

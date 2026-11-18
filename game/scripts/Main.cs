@@ -42,6 +42,7 @@ public partial class Main : Node3D
         ["audio"] = m => { m.AddChild(new AudioTest()); return true; }, // ses akisi: kanallar, 60 ses, muzik durumlari
         ["world"] = m => { m.AddChild(new WorldTest()); return true; },
         ["explore"] = m => { Args["explore"] = "1"; Args["mute"] = "1"; Sfx.Muted = true; return false; }, // dunya2: Director + ExploreTest (kule, mancinik, yuva, enkaz, harita)
+        ["oyuk"] = m => { Args["oyuk"] = "1"; Args["mute"] = "1"; Sfx.Muted = true; return false; }, // oyuk (M3): Director + OyukTest (Kostebek Bey, Yarasa Yumagi)
         ["shots"] = m => { Args.TryAdd("preset", "yuksek"); if (!Args.ContainsKey("shots_quick") && !Args.ContainsKey("shots_clip")) Args["bot"] = "1"; m.AddChild(new WorldShots()); return false; },
         ["perf"] = m => { Args.TryAdd("preset", "yuksek"); if (Args.GetValueOrDefault("perf") == "night") Args["bot"] = "1"; m.AddChild(new PerfProbe()); return false; },
         ["gfxab"] = m => { Args.TryAdd("preset", "yuksek"); m.AddChild(new GfxAb()); return false; },
