@@ -134,7 +134,7 @@ public partial class Hud
         {
             Section(ItemNames.Of(_craftStation), CLeftX, CTop);
             var st = _d.NearStation(_craftStation);
-            Paragraph(st != null ? "İstasyonun tarifleri. Bu istasyonun yanında üretilir; malzeme çantadan, yakıt varsa çantadan." : "İstasyondan uzaklaştın: tarifler yanına dönünce üretilir.", CLeftX, CTop + 40, CLeftW, 15, T.A(T.Ink, 0.8f), 4);
+            Paragraph(st != null ? "İstasyonun tarifleri. Bu istasyonun yanında üretilir; malzeme ve yakıt önce çantadan, eksiği tapudaki Sandıklardan." : "İstasyondan uzaklaştın: tarifler yanına dönünce üretilir.", CLeftX, CTop + 40, CLeftW, 15, T.A(T.Ink, 0.8f), 4);
             Button("BÜTÜN TARİFLER", CLeftX, CTop + 120, CLeftW, 40, 18);
             PaintStationExtras(); // zincir: Masa, guc, kuyruk (Hud.Craft.Research.cs)
         }

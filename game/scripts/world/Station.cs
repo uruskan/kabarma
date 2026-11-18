@@ -85,7 +85,7 @@ public partial class Station : Node3D
         string packing = Def.Station == "paketleme" && _d.State.Cargo.Open != null ? $"\nkasa: {_d.State.Cargo.Open.Items.UsedSlots}/{_d.State.Cargo.Open.Items.Slots} yığın · {_d.State.Cargo.Value(_d.State.Cargo.Open)} Kredi" : "";
         _label.Text = working
             ? $"{Def.Name}\n{Queue.Active.Name} {(int)(Queue.Progress * 100)}%  ·  sırada {Queue.Queued}{QueueTail()}"
-            : near ? $"{Def.Name}{fuel}\nE: üretim{packing}" : Def.Name + packing;
+            : near ? $"{Def.Name}{fuel}\nE: {(Def.Station == _d.Data.Research.Table ? "araştırma" : "üretim")}{packing}" : Def.Name + packing;
         _label.Modulate = near ? Palette.Warning : Palette.OffWhite;
         if (_bounce > 0)
         {

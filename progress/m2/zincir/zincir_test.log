@@ -1,5 +1,5 @@
 ilk gun botu durdu (adim tarla, t=29); arastir_t2 basliyor
-bot bitti t=198
+bot bitti t=199
 OK   Dokuma Tezgahi arastirildi (Arastirma Masasi, Veri)
 OK   Tarayici: 4 tur tarandi (stone,fiber,wheat,tree)
 OK   T2 urunu Kumas uretildi
@@ -8,4 +8,7 @@ OK   arastirilmayan dugum kilitli kaldi (Bicki)
 OK   tapudaki Sandik istasyon deposunda (GDD 5 ambardan uretim)
 OK   el tarifi yalniz cantadan
 OK   zincir istasyonlarinin yer tutucusu var
-ZINCIR RESULT ok=8 fail=0 veri=2 t=198
+SHOT zincir_istasyonlar.png
+SHOT zincir_arastirma_paneli.png
+SHOT zincir_dokuma_menusu.png
+ZINCIR RESULT ok=8 fail=0 veri=2 t=199
