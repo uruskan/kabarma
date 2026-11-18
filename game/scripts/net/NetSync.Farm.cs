@@ -19,7 +19,7 @@ public partial class NetSync
     /// <summary>Capa.Toprak: istemci yerelde de surer/eker (tahmin); host'a istek. Host'ta ve tek oyuncuda bir sey yapmaz.</summary>
     public void ForwardTill(Vector3 aim)
     {
-        if (IsClient) Forward("till", w => w.Pos(aim.X, aim.Y, aim.Z, Cfg.PosPerMetre));
+        if (IsClient) Forward("till", w => { w.Pos(aim.X, aim.Y, aim.Z, Cfg.PosPerMetre); w.Str(D.FarmView.PlantableSeed() ?? ""); }); // tarim: secili tohum
     }
 
     /// <summary>Capa.Sulama: istemci kendi deposundan harcar ve yerelde islatir (tahmin); host'ta tarla islanir.</summary>
@@ -35,6 +35,7 @@ public partial class NetSync
     void HostTill(NetActor a, NetReader r)
     {
         var (x, y, z) = r.Pos(Cfg.PosPerMetre);
+        string seed = r.Str();
         var aim = new Vector3(x, y, z);
         if (!NetRules.InRange(a, x, y, z, T.TillRange + 2f)) { Reject(a, "till range"); return; }
         // Capa.Toprak.TillOrPlant ile ayni kosullar: tapu icinde, Ocak'a ve kapsule cok yakin degil, egim siniri (Farm.Till).
@@ -51,7 +52,7 @@ public partial class NetSync
             float dz = w.HeightAt(px, pz + 0.5f) - w.HeightAt(px, pz - 0.5f);
             farm.Till(cx, cy, Mathf.RadToDeg(Mathf.Atan(Mathf.Sqrt(dx * dx + dz * dz))));
         }
-        else if (plot.Crop == null) farm.Plant(cx, cy, "turnip", a.Bag);
+        else if (plot.Crop == null && seed.Length > 0 && !farm.Plant(cx, cy, seed, a.Bag, D.State.Rng)) Reject(a, "plant"); // tohum aktorun cantasindan
     }
 
     void HostWater(NetActor a, NetReader r)

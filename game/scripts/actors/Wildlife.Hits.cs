@@ -12,7 +12,8 @@ public partial class Wildlife
 {
     /// <summary>Mermi bu karede from->to dogrusunda bir yabaniye degdi mi; degdiyse hasar verir (ilk degen).</summary>
     public bool ProjectileHit(Vector3 from, Vector3 to, float radius, float damage, ISet<Node3D> already = null) =>
-        Strike(Creatures, Swarms, from, to, radius, damage, already) != null;
+        _d.Net?.ForwardWildHit(from, to, radius, damage, already) // ortak: istemcide vurus host'ta (NetSync.Spawns.cs)
+        ?? Strike(Creatures, Swarms, from, to, radius, damage, already) != null;
 
     /// <summary>Dunya dugumunden bagimsiz vurus: verilen listelerde ilk degeni bulur, vurur, cevresini urkutur.</summary>
     public static Node3D Strike(IList<WildCreature> creatures, IList<WildSwarm> swarms, Vector3 from, Vector3 to, float radius, float damage, ISet<Node3D> already = null)

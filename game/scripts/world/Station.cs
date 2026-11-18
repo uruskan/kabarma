@@ -1,12 +1,12 @@
-﻿using System.Linq;
+using System.Linq;
 using Godot;
 using Kabarma.Sim;
 
 namespace Kabarma.Game;
 
 /// <summary>
-/// Uretim istasyonu (GDD 11, ICERIK Â§11): Tezgah, Ocakbasi, Tas Firin, Paketleme Tezgahi. Malzeme ve yakit cantadan alinir,
-/// sira oyuncu uzaktayken de islenir; durum istasyonun ustunde yazar (menu yerine dunya, SANAT-SES Â§8.1).
+/// Uretim istasyonu (GDD 11, ICERIK §11): Tezgah, Ocakbasi, Tas Firin, Paketleme Tezgahi. Malzeme ve yakit cantadan alinir,
+/// sira oyuncu uzaktayken de islenir; durum istasyonun ustunde yazar (menu yerine dunya, SANAT-SES §8.1).
 /// Yuk urunu (El Arabasi, kargo kasasi) cantaya degil istasyonun onune cikar.
 /// </summary>
 public partial class Station : Node3D
@@ -81,11 +81,11 @@ public partial class Station : Node3D
         if (_oven != null) _oven.Working = working;
         if (_grill != null) _grill.Working = working;
         bool near = InReach(_d.Player.GlobalPosition);
-        string fuel = Def.FuelPerJob > 0 && Def.Fuel.Count > 0 ? $"  Â·  yakÄ±t: {ItemNames.Of(Def.Fuel[0])} {_d.State.Backpack.Count(Def.Fuel[0])}" : "";
-        string packing = Def.Station == "paketleme" && _d.State.Cargo.Open != null ? $"\nkasa: {_d.State.Cargo.Open.Items.UsedSlots}/{_d.State.Cargo.Open.Items.Slots} yÄ±ÄŸÄ±n Â· {_d.State.Cargo.Value(_d.State.Cargo.Open)} Kredi" : "";
+        string fuel = Def.FuelPerJob > 0 && Def.Fuel.Count > 0 ? $"  ·  yakıt: {ItemNames.Of(Def.Fuel[0])} {_d.State.Backpack.Count(Def.Fuel[0])}" : "";
+        string packing = Def.Station == "paketleme" && _d.State.Cargo.Open != null ? $"\nkasa: {_d.State.Cargo.Open.Items.UsedSlots}/{_d.State.Cargo.Open.Items.Slots} yığın · {_d.State.Cargo.Value(_d.State.Cargo.Open)} Kredi" : "";
         _label.Text = working
-            ? $"{Def.Name}\n{Queue.Active.Name} {(int)(Queue.Progress * 100)}%  Â·  sÄ±rada {Queue.Queued}{QueueTail()}"
-            : near ? $"{Def.Name}{fuel}\nE: {(Def.Station == _d.Data.Research.Table ? "araÅŸtÄ±rma" : "Ã¼retim")}{packing}" : Def.Name + packing;
+            ? $"{Def.Name}\n{Queue.Active.Name} {(int)(Queue.Progress * 100)}%  ·  sırada {Queue.Queued}{QueueTail()}"
+            : near ? $"{Def.Name}{fuel}\nE: {(Def.Station == _d.Data.Research.Table ? "araştırma" : "üretim")}{packing}" : Def.Name + packing;
         _label.Modulate = near ? Palette.Warning : Palette.OffWhite;
         if (_bounce > 0)
         {

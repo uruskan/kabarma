@@ -167,7 +167,7 @@ public partial class NetSync
 
     void WriteCraft(NetWriter w, int peer)
     {
-        var q = peer == 0 ? D.State.Craft : _hand.GetValueOrDefault((byte)peer);
+        var q = IsClient || peer == 0 ? D.State.Craft : _hand.GetValueOrDefault((byte)peer); // istemcide kendi (host'tan yuklenen) kuyrugu
         var s = q?.Save() ?? new CraftSave();
         w.U8(s.Blocked ? (byte)1 : (byte)0);
         w.VarU((uint)s.Jobs.Count);
