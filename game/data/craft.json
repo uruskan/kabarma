@@ -40,6 +40,26 @@
     "plank": { "text": "Bıçkı'da Odun'dan biçilir", "target": "station:bicki" },
     "cloth": { "text": "Dokuma Tezgâhı'nda Lif'ten dokunur", "target": "station:dokuma_tezgahi" },
     "maya_kesesi": { "text": "Kabarma gecesi kabarmış yaratıktan düşer", "target": "farm" },
-    "resin": { "text": "Sis Korusu ağaçlarındaki reçine yumruları, Kazma", "target": "rock:resin" }
+    "resin": { "text": "Sis Korusu ağaçlarındaki reçine yumruları, Kazma", "target": "rock:resin" },
+    "flour": { "text": "Değirmende Buğdaydan öğütülür", "target": "station:degirmen" },
+    "et": { "text": "avlanan ya da ağıldaki hayvanlardan; Kasap Tezgâhı", "target": "gidak" },
+    "sut": { "text": "ağıldaki Pofuduk ve Tosun, hayvana E", "target": "gidak" },
+    "bal": { "text": "Vızvız kovanından; Arı Kovanı", "target": "gidak" },
+    "bitkisel_yag": { "text": "Ayçiçeği, Fındık ya da Katran Fasulyesi; sıkma zinciri (geçici: tarlada yetiştir)", "target": "farm" },
+    "tomato": { "text": "tarlada yetiştir ve Biçme ile hasat et (kendi biyomunun ekini)", "target": "farm" },
+    "mushroom": { "text": "tarlada yetiştir ve Biçme ile hasat et (kendi biyomunun ekini)", "target": "farm" },
+    "blackberry": { "text": "tarlada yetiştir ve Biçme ile hasat et (kendi biyomunun ekini)", "target": "farm" },
+    "garlic": { "text": "tarlada yetiştir ve Biçme ile hasat et (kendi biyomunun ekini)", "target": "farm" },
+    "hazelnut": { "text": "tarlada yetiştir ve Biçme ile hasat et (kendi biyomunun ekini)", "target": "farm" },
+    "rice": { "text": "tarlada yetiştir ve Biçme ile hasat et (kendi biyomunun ekini)", "target": "farm" },
+    "chili": { "text": "tarlada yetiştir ve Biçme ile hasat et (kendi biyomunun ekini)", "target": "farm" },
+    "corn": { "text": "tarlada yetiştir ve Biçme ile hasat et (kendi biyomunun ekini)", "target": "farm" },
+    "watermelon": { "text": "tarlada yetiştir ve Biçme ile hasat et (kendi biyomunun ekini)", "target": "farm" },
+    "prickly_pear": { "text": "tarlada yetiştir ve Biçme ile hasat et (kendi biyomunun ekini)", "target": "farm" },
+    "snow_tea": { "text": "tarlada yetiştir ve Biçme ile hasat et (kendi biyomunun ekini)", "target": "farm" },
+    "frost_beet": { "text": "tarlada yetiştir ve Biçme ile hasat et (kendi biyomunun ekini)", "target": "farm" },
+    "ice_grape": { "text": "tarlada yetiştir ve Biçme ile hasat et (kendi biyomunun ekini)", "target": "farm" },
+    "maya_flower": { "text": "tarlada yetiştir ve Biçme ile hasat et (kendi biyomunun ekini)", "target": "farm" },
+    "leaven_mushroom": { "text": "tarlada yetiştir ve Biçme ile hasat et (kendi biyomunun ekini)", "target": "farm" }
   }
 }

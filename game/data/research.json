@@ -21,7 +21,7 @@
   "handFromStorage": false,
   "stationQueueMax": 8,
   "_not_watts": "Guc isteyen istasyonlar (ICERIK §11). guc akisinin tuketici arayuzu main'e girene kadar uygulanmaz; StationQueue.PowerOk null iken istasyon calisir.",
-  "watts": { "bicki": 20, "degirmen": 20, "kulucka": 40, "arac_atolyesi": 60 },
+  "watts": { "bicki": 20, "degirmen": 20, "kulucka": 40, "arac_atolyesi": 60, "asi_tezgahi": 200 },
   "_not_scan": "Tarayici (GDD §4, §12): bakilan turu ilk kez taramak Veri verir ve Ansiklopedi'ye yazar. kind: creature (dugum sinifi), plant (tutam/ekin/agac), mineral (kaya esyasi). range: oyuncudan en uzak (m); pick: nisan noktasina en uzak (m).",
   "scan": {
     "range": 14,
@@ -54,6 +54,26 @@
     { "id": "iron_ore", "tier": 2, "by": "dunya2" },
     { "id": "sourberry", "tier": 2, "by": "tarim" },
     { "id": "maya_kesesi", "tier": 2, "by": "gucler" },
-    { "id": "resin", "tier": 2, "by": "dunya2" }
+    { "id": "resin", "tier": 2, "by": "dunya2" },
+    { "id": "pumpkin", "tier": 1, "by": "tarim" },
+    { "id": "tomato", "tier": 1, "by": "tarim" },
+    { "id": "et", "tier": 1, "by": "hayvan" },
+    { "id": "sut", "tier": 2, "by": "hayvan" },
+    { "id": "bal", "tier": 2, "by": "hayvan" },
+    { "id": "mushroom", "tier": 2, "by": "tarim" },
+    { "id": "blackberry", "tier": 2, "by": "tarim" },
+    { "id": "garlic", "tier": 2, "by": "tarim" },
+    { "id": "hazelnut", "tier": 2, "by": "tarim" },
+    { "id": "bitkisel_yag", "tier": 2, "by": "tarim" },
+    { "id": "rice", "tier": 3, "by": "tarim" },
+    { "id": "chili", "tier": 3, "by": "tarim" },
+    { "id": "corn", "tier": 4, "by": "tarim" },
+    { "id": "watermelon", "tier": 4, "by": "tarim" },
+    { "id": "prickly_pear", "tier": 4, "by": "tarim" },
+    { "id": "snow_tea", "tier": 5, "by": "tarim" },
+    { "id": "frost_beet", "tier": 5, "by": "tarim" },
+    { "id": "ice_grape", "tier": 5, "by": "tarim" },
+    { "id": "maya_flower", "tier": 6, "by": "tarim" },
+    { "id": "leaven_mushroom", "tier": 6, "by": "tarim" }
   ]
 }

@@ -75,6 +75,9 @@ public sealed class FoodDef
     public float Stamina { get; set; }
     public float Regen { get; set; }
     public float Seconds { get; set; }
+    /// <summary>ICERIK 15 "Ozel etki": anahtar -> deger (foods.json _not_m4). Bos: etkisiz.</summary>
+    public Dictionary<string, float> Effects { get; set; } = new();
+    public float Effect(string key) => Effects.TryGetValue(key, out var v) ? v : 0f;
 }
 
 public sealed class PlayerDef

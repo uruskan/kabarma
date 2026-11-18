@@ -20,6 +20,7 @@
     { "id": "dokuma_tezgahi", "name": "Dokuma Tezgâhı", "station": "dokuma_tezgahi", "radius": 1.0 },
     { "id": "kasap_tezgahi", "name": "Kasap Tezgâhı", "station": "kasap_tezgahi", "radius": 1.0 },
     { "id": "kulucka", "name": "Kuluçka", "station": "kulucka", "radius": 0.9 },
+    { "id": "asi_tezgahi", "name": "Aşı Tezgâhı", "station": "asi_tezgahi", "radius": 1.0 },
     { "id": "arac_atolyesi", "name": "Araç Atölyesi", "station": "arac_atolyesi", "radius": 1.6 },
     { "id": "oyma_iskelesi", "name": "Oyma İskelesi", "station": "oyma_iskelesi", "radius": 1.4 },
     { "id": "suluk", "name": "Suluk", "model": "res://assets/models/yerlestirilebilir/suluk.glb", "radius": 0.8 },

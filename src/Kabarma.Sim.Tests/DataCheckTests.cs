@@ -35,6 +35,15 @@ public class DataCheckTests
     }
 
     [Fact]
+    public void Content_counts_match_plan_7_1_for_farm()
+    {
+        var d = TestData.Load();
+        Assert.Equal(24, d.Crops.Crops.Count);                                   // Ekin 24
+        Assert.Equal(32, d.Tool.Foods.Count);                                    // Yemek tarifi 32
+        Assert.Equal(32, d.Tool.Recipes.Count(r => r.Category == "yemek"));
+    }
+
+    [Fact]
     public void Checker_catches_a_misspelled_key()
     {
         var problems = new List<string>();
