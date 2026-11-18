@@ -19,7 +19,7 @@
         "ragdoll": { "hips": 0.16, "spine": 0.15, "head": 0.18, "thigh_l": 0.07, "calf_l": 0.06, "thigh_r": 0.07, "calf_r": 0.06 }
       },
       "swell": { "push": 0.04, "wobble": 0.02, "glow": 0.9, "veinScale": 4.0, "seconds": 0.6, "stepJiggle": 0.012, "hitJiggle": 0.03 },
-      "day": { "groups": 3, "groupMin": 2, "groupMax": 3, "spawnMin": 24, "spawnMax": 42, "wanderRadius": 5, "walkSpeedMult": 0.3, "fleeRadius": 7, "fleeSpeedMult": 1.0, "fleeSeconds": 2.5, "cropSense": 40, "cropStop": 1.4, "dayEats": false, "respawnSeconds": 45, "ragdollSeconds": 6, "retargetMin": 5, "retargetMax": 10, "pauseMin": 2.5, "pauseMax": 6, "idleShare": 0.45, "grazeShare": 0.35, "leaveSeconds": 3, "senseSeconds": 1 }
+      "day": { "groups": 3, "groupMin": 2, "groupMax": 3, "spawnMin": 24, "spawnMax": 42, "wanderRadius": 5, "walkSpeedMult": 0.3, "fleeRadius": 7, "fleeSpeedMult": 1.0, "fleeSeconds": 2.5, "cropSense": 40, "cropStop": 1.4, "dayEats": true, "respawnSeconds": 45, "ragdollSeconds": 6, "retargetMin": 5, "retargetMax": 10, "pauseMin": 2.5, "pauseMax": 6, "idleShare": 0.45, "grazeShare": 0.35, "leaveSeconds": 3, "senseSeconds": 1 }
     },
     {
       "id": "gidak", "name": "Gıdak", "archetype": "runner", "weight": 1, "hp": 60, "damage": 8, "speed": 2.2, "swollenScale": 2.8, "kickInterval": 2.4, "kickRange": 3.0, "swollenSpeedMult": 1.5,

@@ -29,6 +29,11 @@ uniform vec4 maya_b : source_color = vec4(0.831, 0.357, 1.0, 1.0);
 uniform float flash = 0.0;
 uniform float wobble_amp = 0.0; // MeshKit canli malzemesiyle uyum (kullanilmaz)
 uniform float rim = 0.0;
+// Biyom karisimi (dunya2, World.Biomes.cs): R = Sis Korusu agirligi; orman tabani + yosun.
+uniform sampler2D biome_tex : filter_linear, repeat_disable;
+uniform float biome_floor_mix = 0.0;
+uniform vec4 biome_floor : source_color = vec4(0.25, 0.35, 0.3, 1.0);
+uniform vec4 biome_moss : source_color = vec4(0.25, 0.45, 0.35, 1.0);
 
 varying vec3 v_world;
 varying vec3 v_nw;
@@ -97,6 +102,17 @@ void fragment() {
 		a.rgb *= 0.92 + 0.16 * m2;
 		float t = hblend(w_toprak, a.a, alb.a);
 		alb = mix(alb, a, t); nrm = mix(nrm, n, t);
+	}
+	// Sis Korusu tabani: toprak dokusu, palet zemin rengine boyanir; buyuk lekelerde yosun.
+	float kb = texture(biome_tex, (xz + world_size * 0.5) / world_size).r * biome_floor_mix;
+	if (kb > 0.003) {
+		vec4 a; vec4 n;
+		planar(L_TOPRAK, xz, tile_m.y, mixk, a, n);
+		float lum = dot(a.rgb, vec3(0.3, 0.59, 0.11));
+		float moss = smoothstep(0.35, 0.7, m1 + (m3 - 0.5) * 0.4);
+		vec3 fc = mix(biome_floor.rgb * (0.5 + lum * 1.4), biome_moss.rgb * (0.55 + lum * 1.1), moss);
+		alb.rgb = mix(alb.rgb, fc, kb);
+		nrm = mix(nrm, n, kb);
 	}
 	// Kum (gol kiyisi).
 	float w_kum = ctl.g;

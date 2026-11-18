@@ -231,18 +231,35 @@ public class HusbandryTests
     {
         var (_, r) = Fresh(3);
         var rng = new RanchRng { State = 12345 };
-        int[] counts = new int[5];
+        int[] counts = new int[11];
         for (int i = 0; i < 20000; i++)
         {
-            int g = r.Rules.InheritOne(4, 5, rng); // ortalama 4,5 -> 5
-            Assert.InRange(g, 4, 7);
-            counts[g - 4]++;
+            int g = r.Rules.InheritOne(4, 4, rng); // ortalama 4
+            Assert.InRange(g, 3, 6);
+            counts[g]++;
         }
-        Assert.InRange(counts[1] / 20000f, 0.66f, 0.74f); // %70 degismez
-        Assert.InRange(counts[2] / 20000f, 0.17f, 0.23f); // %20 +1
-        Assert.InRange(counts[0] / 20000f, 0.06f, 0.10f); // %8 -1
+        Assert.InRange(counts[4] / 20000f, 0.66f, 0.74f); // %70 degismez
+        Assert.InRange(counts[5] / 20000f, 0.17f, 0.23f); // %20 +1
+        Assert.InRange(counts[3] / 20000f, 0.06f, 0.10f); // %8 -1
+        // bucuk: tarimdaki gibi yari yariya asagi ya da yukari (GDD 9.3 = 8.3)
+        counts = new int[11];
+        for (int i = 0; i < 20000; i++) counts[r.Rules.InheritOne(4, 5, rng)]++;
+        Assert.InRange(counts[4] / 20000f, 0.30f, 0.42f);
+        Assert.InRange(counts[5] / 20000f, 0.40f, 0.52f);
         for (int i = 0; i < 2000; i++) Assert.InRange(r.Rules.InheritOne(10, 10, rng), 1, 10);
         for (int i = 0; i < 2000; i++) Assert.InRange(r.Rules.InheritOne(1, 1, rng), 1, 10);
+    }
+
+    [Fact]
+    public void Alaca_follows_the_farm_odds_and_passes_from_a_parent()
+    {
+        var (_, r) = Fresh(9);
+        var rng = new RanchRng { State = 777 };
+        int spotted = 0, kept = 0;
+        for (int i = 0; i < 40000; i++) if (r.Rules.Alaca("", "", rng) != "") spotted++;
+        Assert.InRange(spotted / 40000f, 0.02f, 0.035f); // 1/40 + 1/250 + 1/2000 ~ %2,9
+        for (int i = 0; i < 4000; i++) if (r.Rules.Alaca("altin", "", rng) == "altin") kept++;
+        Assert.InRange(kept / 4000f, 0.45f, 0.56f); // GDD 8.3: %50
     }
 
     static (Ranch r, GameState s, PenShape pen, PenAnimal a, PenAnimal b) HappyPair(ulong seed = 11, float size = 6)

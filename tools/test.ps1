@@ -29,6 +29,7 @@ if (-not $PSBoundParameters.ContainsKey('Only')) { $Only += 'gece' } # gecehud: 
 if (-not $PSBoundParameters.ContainsKey('Only')) { $Only += 'ilerleme' } # ilerleme: --test=ilerleme varsayilan adimlara eklenir
 $ErrorActionPreference = 'Continue'
 if (-not $PSBoundParameters.ContainsKey('Only')) { $Only += 'world' } # dunya sinamasi (--test=world), varsayilan listede
+if (-not $PSBoundParameters.ContainsKey('Only')) { $Only += 'explore' } # dunya2: kesif sinamasi (--test=explore), varsayilan listede
 $Only = @($Only | ForEach-Object { $_ -split ',' } | ForEach-Object { $_.Trim() } | Where-Object { $_ })
 if (-not $PSBoundParameters.ContainsKey('Only')) { $Only += 'audio' } # ses akisi: --test=audio varsayilan adimlarda
 if (-not $PSBoundParameters.ContainsKey('Only')) { $Only += 'creatures' }
@@ -38,6 +39,7 @@ if (-not $PSBoundParameters.ContainsKey('Only')) { $Only += 'zincir' } # zincir 
 if (-not $PSBoundParameters.ContainsKey('Only')) { $Only += 'ekonomi' }  # ekonomi sinamasi (--test=ekonomi) varsayilan kosuda
 if (-not $PSBoundParameters.ContainsKey('Only')) { $Only += 'save' } # kayit akisi: --test=save (bot bir gun, kaydet, bastan yukle, fark 0)
 if (-not $PSBoundParameters.ContainsKey('Only')) { $Only += 'menu' } # kayit akisi: --test=menu (ana menu, Esc, Devam, kapatma kaydi)
+if (-not $PSBoundParameters.ContainsKey('Only')) { $Only += 'hayvan' }   # hayvan akisi: zincir + Pofuduk evcillestir, sutunu al (--test=hayvan)
 if (-not $PSBoundParameters.ContainsKey('Only')) { $Only += 'borsa' }    # ekonomi2: Borsa, Katalog, Cark (--test=borsa)
 if (-not $PSBoundParameters.ContainsKey('Only')) { $Only += 'coop' }  # ortak: host + 3 istemci (ENet), senkron < 1 cm; steam yalniz -Only steam
 $Root = Split-Path -Parent $PSScriptRoot
@@ -162,6 +164,19 @@ if ($Only -contains 'bot') {
     }
 }
 
+if ($Only -contains 'hayvan') {
+    if (-not $G) { $G = Find-Godot }
+    Invoke-GodotTest 'hayvan' '--test=hayvan --fast=4 --quit_after=1300 --mute' ([Math]::Max($BotTimeout, 900)) {
+        param($r)
+        $lines = $r.Text -split "`r?`n"
+        $res = ($lines | Where-Object { $_ -match '^RESULT ' } | Select-Object -Last 1)
+        $hv = ($lines | Where-Object { $_ -match '^HAYVAN ok' } | Select-Object -Last 1)
+        if (-not $res) { $res = 'RESULT satiri yok' }
+        if (-not $hv) { $hv = 'HAYVAN satiri yok' }
+        [pscustomobject]@{ Ok = ($res -match '^RESULT ok') -and ($hv -match '^HAYVAN ok'); Detail = (($hv -replace ' t=[0-9.]+$', '') + ' | ' + ($res -replace ' t=[0-9.]+$', '')) }
+    }
+}
+
 if ($Only -contains 'buildtest') {
     $out = Join-Path $RunDir 'buildtest'
     New-Item -ItemType Directory -Force $out | Out-Null
@@ -198,6 +213,7 @@ if ($Only -contains 'world') {
     }
 }
 
+if ($Only -contains 'explore') { if (-not $G) { $G = Find-Godot }; Invoke-GodotTest 'explore' '--test=explore --mute' $BotTimeout { param($r) $res = ($r.Text -split "`r?`n" | Where-Object { $_ -match '^EXPLORE RESULT ' } | Select-Object -Last 1); if (-not $res) { $res = 'EXPLORE RESULT satiri yok' }; [pscustomobject]@{ Ok = ($res -match '^EXPLORE RESULT ok'); Detail = $res } } } # dunya2: kesif (--test=explore)
 if (-not $PSBoundParameters.ContainsKey('Only')) { $Only += 'boss' } # boss akisi: --test=boss varsayilan adimlarda
 if ($Only -contains 'boss') { if (-not $G) { $G = Find-Godot }; Invoke-GodotTest 'boss' '--test=boss' ([Math]::Max($BotTimeout, 900)) { param($r) $res = ($r.Text -split "`r?`n" | Where-Object { $_ -match '^RESULT ' } | Select-Object -Last 1); if (-not $res) { $res = 'RESULT satiri yok' }; [pscustomobject]@{ Ok = ($res -match '^RESULT ok'); Detail = ($res -replace ' t=[0-9.]+.*$', '') } } } # boss akisi: bot iki Ata'yi bulur ve yener (--test=boss)
 if ($Only -contains 'camera') { if (-not $G) { $G = Find-Godot }; Invoke-GodotTest 'camera' '--test=camera --mute' 300 { param($r) $res = ($r.Text -split "`r?`n" | Where-Object { $_ -match '^RESULT ' } | Select-Object -Last 1); if (-not $res) { $res = 'RESULT satiri yok' }; [pscustomobject]@{ Ok = ($res -match '^RESULT ok'); Detail = $res } } } # oyuncu akisi: kamera (--test=camera)

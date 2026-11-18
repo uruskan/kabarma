@@ -1,0 +1,519 @@
+Godot Engine v4.7.2.stable.mono.official.ed1daf0bf - https://godotengine.org
+
+TEST hayvan
+MUSIC ready day=yes layers=3/3 bar=2.00s
+PLAYER model anims: carry,cheer,crouch_walk,eat,getup_back_pose,getup_front_pose,hurt,idle,jump,jump_air,jump_land,jump_start,kneel,knockdown,plant,push,run,shock_fall,sleep,sprint,walk,walk_casual,wave
+AUDIO sounds=60 playable=60 variant_files=180 m0_only=0 silent=0 placeholder=0
+AUDIO ok 60/60
+POFUDUK anims: pose/attack1,pose/attack2,pose/eat,pose/hit,pose/idle,pose/rest,pose/run,pose/walk,preset_quadruped_walk
+BUILD kit pieces=28
+ATALAR arenas=koca_pofuduk@64,36/r18:ata_tasi_altin_cayir_0,boynuzlu_dede@-58,-72/r18:yedek
+BOOT Kabarma MVP
+TARIM wild=22
+HELD capa
+MUSIC Silence -> Day
+ZIPZIP herd size=2 at=32,-0 herds=1
+ZIPZIP herd size=3 at=-10,-35 herds=2
+ZIPZIP herd size=3 at=-30,-7 herds=3
+WILDLIFE spawn gidak herd=2 at=-125,-112
+WILDLIFE spawn homur herd=1 at=-15,9
+WILDLIFE spawn homur herd=1 at=-19,13
+WILDLIFE spawn dalli herd=1 at=35,15
+WILDLIFE spawn dalli herd=1 at=39,10
+WILDLIFE spawn vicik herd=1 at=-11,-35
+WILDLIFE spawn vicik herd=1 at=-8,-39
+WILDLIFE spawn bozuk herd=1 at=45,-39
+WILDLIFE spawn vizviz swarm at=27,21
+WILDLIFE spawn hu herd=1 at=-25,-17
+RANCH start animals=11 agents=11
+BOT step mine t=1.0
+WILDLIFE spawn pofuduk herd=3 at=89,112
+SUNA line=giris_1 voice=yes
+WILDLIFE spawn homur herd=2 at=-135,-75
+HATCH intro done
+WILDLIFE spawn sinsi herd=1 at=-77,11
+WILDLIFE spawn homur herd=1 at=120,90
+SUNA line=giris_2 voice=yes
+WILDLIFE spawn gidak herd=2 at=140,36
+STEP mine -> odun t=12.6
+BOT step odun t=11.0
+WILDLIFE spawn cekirge swarm at=-46,-78
+WILDLIFE spawn pofuduk herd=3 at=99,53
+SUNA line=tas_bitti voice=yes
+STEP odun -> ocak t=14.2
+BOT step ocak t=17.4
+HELD ocak
+STEP ocak -> tezgah t=15.5
+BOT step tezgah t=21.1
+HELD -
+SUNA line=odun_basla voice=yes
+QUEUED tezgah x1
+BOT craft tezgah row=0
+PRODUCED tezgah civi=40 ingot=0 soup=0
+HELD tezgah
+BOT place tezgah at (-2.5, 0, 4.5)
+PLACED tezgah at (-2.5, 0, 4.5)
+STEP tezgah -> tarla t=17.9
+BOT step tarla t=29.8
+HELD capa
+SUNA line=ocak_basla voice=yes
+ORDER ciraklik step=1 done (defter kapali)
+STEP tarla -> agil t=19.6
+BOT step agil t=36.6
+HELD insa_plani
+SUNA line=ocak_bitti voice=yes
+BOT aim cit err=1.44 valid=True reason= mode=ground
+BOT aim cit err=0.76 valid=True reason= mode=ground
+SUNA line=tezgah_basla voice=yes
+BOT aim cit err=0.46 valid=True reason= mode=ground
+BOT place cit at (-4.557762, 0, -9.293361)
+BUILT cit pieces=1
+BOT place cit at (-3.0577621, 0, -7.7933607)
+BUILT cit pieces=2
+SUNA line=tarla_basla voice=yes
+BOT aim bahce_kapisi err=2.12 valid=True reason= mode=snap
+BOT place bahce_kapisi at (-3.0577621, 0, -4.7933607)
+BUILT bahce_kapisi pieces=3
+BOT aim cit err=2.12 valid=True reason= mode=snap
+BOT place cit at (-4.557762, 0, -3.293361)
+BUILT cit pieces=4
+BOT place cit at (-6.057762, 0, -4.793361)
+BUILT cit pieces=5
+SUNA line=tarla_bitti voice=yes
+BOT aim cit err=2.12 valid=True reason= mode=snap
+BOT place cit at (-6.057762, 0, -7.793361)
+BUILT cit pieces=6
+PEN area=18.0 cells=2 walls=6 gate=True gidak=4
+STEP agil -> gidak t=25.2
+GIDAK appears at (0.4777707, 0, 1.5706006)
+BOT step gidak t=58.7
+HELD capa
+SUNA line=agil_basla voice=yes
+QUEUED folluk x1
+BOT craft folluk row=5
+PRODUCED folluk civi=40 ingot=0 soup=0
+HELD folluk
+SUNA line=agil_bitti voice=yes
+BOT place folluk at (-5.257762, 0, -6.893361)
+PLACED folluk at (-5.257762, 0, -6.893361)
+HELD capa
+SUNA line=gidak_basla voice=yes
+QUEUED yemlik x1
+BOT craft yemlik row=4
+PRODUCED yemlik civi=40 ingot=0 soup=0
+HELD yemlik
+BOT place yemlik at (-4.557762, 0, -8.393361)
+PLACED yemlik at (-4.557762, 0, -8.393361)
+HELD -
+FEEDER +10 wheat -> 10
+HELD capa
+GIDAK fed trust=1.00 tame=True
+GATE bahce_kapisi open
+GIDAK penned area=18.0 cells=2
+STEP gidak -> night t=36.2
+ORDER ciraklik step=2 done (defter kapali)
+EGG laid nest at (-2.8969915, 0, -3.0445957)
+MUSIC Day -> Silence
+SUNA line=gidak_bitti voice=yes
+BOT step night t=102.8
+NEST collected 1 eggs=1
+GATE bahce_kapisi closed
+NIGHT start n=1
+FIRSTNIGHT ripen=9
+MUSIC Silence -> Kabarma
+WILDLIFE leave creatures=22 swarms=2
+SUNA line=kabarma_basla voice=yes
+NIGHT swell crops=9
+WILDLIFE leave creatures=8 swarms=1
+SUNA line=gece_alarm voice=yes
+WILDLIFE leave creatures=8 swarms=1
+SUNA line=gece_kabarma voice=yes
+NIGHT wave 1 count=3
+WILDLIFE leave creatures=8 swarms=1
+WILDLIFE leave creatures=8 swarms=1
+SUNA line=gece_gidak voice=yes
+EATEN plot -26,-13
+EATEN plot -27,-12
+WILDLIFE leave creatures=8 swarms=1
+SUNA line=gece_dalga voice=yes
+WILDLIFE leave creatures=8 swarms=1
+EATEN plot -27,-27
+EATEN plot -15,-26
+WILDLIFE leave creatures=8 swarms=1
+EATEN plot -36,-24
+GIDAK kick to=-0.14,-0.99
+EATEN plot -8,-31
+WILDLIFE leave creatures=8 swarms=1
+GIDAK kick to=0.34,-0.94
+WILDLIFE leave creatures=8 swarms=1
+BOT fence watch done hits=0 t=40.1
+WILDLIFE leave creatures=8 swarms=1
+EATEN plot 8,-54
+EATEN plot -24,13
+WILDLIFE leave creatures=8 swarms=1
+EATEN plot -28,15
+EATEN plot 24,-49
+WILDLIFE leave creatures=8 swarms=1
+WILDLIFE leave creatures=8 swarms=1
+EATEN plot 25,-37
+EATEN plot -7,19
+WILDLIFE leave creatures=8 swarms=1
+EATEN plot 24,-32
+EATEN plot 8,22
+EATEN plot 27,-29
+WILDLIFE leave creatures=8 swarms=1
+NIGHT wave 2 count=7
+MUSIC layers=2 bar=8
+WILDLIFE leave creatures=8 swarms=1
+GIDAK kick to=-0.32,-0.95
+EATEN plot 22,29
+EATEN plot 41,-22
+WILDLIFE leave creatures=8 swarms=1
+GIDAK kick to=0.18,-0.98
+FENCE hit cit_1 hp=394/400 hits=1
+EATEN plot 40,-19
+EATEN plot 25,20
+GIDAK kick to=-0.28,-0.96
+WILDLIFE leave creatures=8 swarms=1
+EATEN plot 41,-18
+GIDAK kick to=-1.00,0.06
+WILDLIFE leave creatures=8 swarms=1
+EATEN plot 36,29
+EATEN plot 40,-7
+GIDAK kick to=-0.91,-0.41
+WILDLIFE leave creatures=8 swarms=1
+GIDAK kick to=-0.99,0.12
+WILDLIFE leave creatures=8 swarms=1
+GIDAK kick to=-0.36,0.93
+SUNA line=gece_kart voice=yes
+NIGHT card catal rank=1
+WILDLIFE leave creatures=8 swarms=1
+GIDAK kick to=-0.54,-0.84
+WILDLIFE leave creatures=8 swarms=1
+GIDAK kick to=-0.43,-0.90
+GIDAK kick to=-0.31,0.95
+WILDLIFE leave creatures=8 swarms=1
+WILDLIFE leave creatures=8 swarms=1
+EATEN plot -26,-13
+EATEN plot -27,-12
+WILDLIFE leave creatures=8 swarms=1
+WILDLIFE leave creatures=8 swarms=1
+EATEN plot -27,-27
+WILDLIFE leave creatures=8 swarms=1
+EATEN plot -36,-24
+WILDLIFE leave creatures=8 swarms=1
+WILDLIFE leave creatures=8 swarms=1
+EATEN plot -15,-26
+NIGHT wave 3 count=11
+WILDLIFE leave creatures=8 swarms=1
+NIGHT card kiragi rank=1
+GIDAK kick to=-0.95,0.32
+EATEN plot -8,-31
+WILDLIFE leave creatures=8 swarms=1
+GIDAK kick to=-0.50,-0.86
+MUSIC layers=3 bar=17
+GIDAK kick to=-1.00,0.09
+WILDLIFE leave creatures=8 swarms=1
+GIDAK kick to=0.98,-0.19
+EATEN plot -24,13
+EATEN plot 8,-54
+WILDLIFE leave creatures=8 swarms=1
+EATEN plot -28,15
+GIDAK kick to=-0.98,0.22
+WILDLIFE leave creatures=8 swarms=1
+EATEN plot 24,-49
+GIDAK kick to=-1.00,0.02
+WILDLIFE leave creatures=8 swarms=1
+GIDAK kick to=-0.76,-0.65
+EATEN plot -7,19
+EATEN plot 25,-37
+WILDLIFE leave creatures=8 swarms=1
+GIDAK kick to=-0.71,-0.70
+GIDAK kick to=-0.58,-0.82
+EATEN plot 24,-32
+EATEN plot 8,22
+WILDLIFE leave creatures=8 swarms=1
+GIDAK kick to=-0.81,-0.59
+FENCE hit cit_6 hp=358/400 hits=11
+EATEN plot 27,-29
+GIDAK kick to=-0.26,-0.96
+WILDLIFE leave creatures=8 swarms=1
+GIDAK kick to=-0.47,-0.89
+EATEN plot 22,29
+WILDLIFE leave creatures=8 swarms=1
+EATEN plot 41,-22
+GIDAK kick to=-0.23,-0.97
+EATEN plot 25,20
+EATEN plot 40,-19
+WILDLIFE leave creatures=8 swarms=1
+GIDAK kick to=0.07,-1.00
+EATEN plot 41,-18
+WILDLIFE leave creatures=8 swarms=1
+EATEN plot 36,29
+WILDLIFE leave creatures=8 swarms=1
+EATEN plot 40,-7
+WILDLIFE leave creatures=8 swarms=1
+ACHIEVEMENT ilk_gece
+ORDER ciraklik step=4 done (defter kapali)
+CALENDAR morning day=2
+NIGHT oz picked=1 auto=20
+NIGHT dawn kills=21 level=3 maya=48 cards=2 statsBase=True
+NIGHT swollenLeft=9
+FENCE night hits=11 lowest_hp=358/400 knocked_over=0
+STEP night -> sell t=84.7
+MUSIC Kabarma -> Day
+SUNA line=safak voice=yes
+BOT step sell t=288.8
+WILDLIFE spawn homur herd=2 at=132,-46
+ORDER ciraklik step=3 done (defter kapali)
+PAID turnip S +120 credits=120
+SOLD turnip S +120 credits=120 instant=True
+STEP sell -> hasat t=85.3
+BOT step hasat t=291.2
+WILDLIFE spawn homur herd=2 at=-51,59
+TARIM harvest crop=turnip item=turnip_aurora yield=7 seeds=2 wild=False crossed=False
+TARIM harvest crop=turnip item=turnip yield=7 seeds=2 wild=False crossed=False
+TARIM harvest crop=turnip item=turnip yield=7 seeds=2 wild=False crossed=False
+TARIM harvest crop=turnip item=turnip yield=7 seeds=2 wild=False crossed=False
+TARIM harvest crop=turnip item=turnip_benekli yield=7 seeds=2 wild=False crossed=False
+STEP hasat -> yemek t=85.6
+HARVEST 5 total=5 turnips=21
+BOT step yemek t=292.3
+SUNA line=kargo_basla voice=yes
+WILDLIFE spawn pofuduk herd=2 at=-77,-125
+ORDER PAID ciraklik 1 credits=100 veri=10
+ORDER PAID ciraklik 2 credits=400 veri=20
+ORDER PAID ciraklik 4 credits=6000 veri=70
+ORDER PAID ciraklik 3 credits=1500 veri=40
+REPORT shown night=1 kills=21 maya=48 level=3 cards=kiragi:1,catal:1 swollen=9 eaten=44 sold=120 defter=True
+WILDLIFE spawn pofuduk herd=2 at=-9,-128
+SUNA line=kargo_bitti voice=yes
+WILDLIFE spawn gidak herd=2 at=-127,76
+QUEUED ocakbasi x1
+WILDLIFE spawn cekirge swarm at=67,56
+SUNA line=siradaki_is voice=yes
+WILDLIFE spawn sinsi herd=1 at=128,92
+WILDLIFE spawn gidak herd=4 at=94,-31
+PRODUCED ocakbasi civi=40 ingot=0 soup=0
+HELD ocakbasi
+BOT place ocakbasi at (-9, 0, -1)
+PLACED ocakbasi at (-9, 0, -1)
+HELD -
+QUEUED sebze_corbasi x1
+SUNA line=yemek_basla voice=yes
+PRODUCED sebze_corbasi civi=40 ingot=0 soup=1
+HELD sebze_corbasi
+ATE sebze_corbasi
+STEP yemek -> bakir_kil t=91.4
+HELD -
+BOT step bakir_kil t=315.7
+HELD capa
+SUNA line=yemek_basla voice=yes
+SUNA line=bakir_kil_basla voice=yes
+ZIPZIP herd size=2 at=-40,-4 herds=1
+ZIPZIP herd size=2 at=-39,-12 herds=2
+ZIPZIP herd size=3 at=4,-25 herds=3
+STEP bakir_kil -> firin t=97.2
+SUNA line=firin_basla voice=yes
+BOT step firin t=338.8
+QUEUED tas_firin x1
+PRODUCED tas_firin civi=40 ingot=0 soup=0
+HELD tas_firin
+TAS_FIRIN parts: base,body,chimney,panel,door,door_handle door=True
+BOT place tas_firin at (-5, 0, 9)
+TAS_FIRIN parts: base,body,chimney,panel,door,door_handle door=True
+PLACED tas_firin at (-5, 0, 9)
+HELD capa
+QUEUED copper_ingot x1
+STEP firin -> civi t=112.5
+PRODUCED copper_ingot civi=40 ingot=1 soup=0
+SUNA line=civi_basla voice=yes
+BOT step civi t=398.4
+QUEUED copper_ingot x1
+PRODUCED copper_ingot civi=40 ingot=2 soup=0
+QUEUED civi_tabancasi x1
+PRODUCED civi_tabancasi civi=40 ingot=0 soup=0
+EGG laid nest egg
+QUEUED copper_ingot x1
+PRODUCED copper_ingot civi=40 ingot=1 soup=0
+QUEUED civi x1
+STEP civi -> kasa t=125.2
+PRODUCED civi civi=60 ingot=0 soup=0
+SUNA line=kasa_basla voice=yes
+BOT step kasa t=449.4
+QUEUED paketleme x1
+PRODUCED paketleme civi=60 ingot=0 soup=0
+HELD paketleme
+BOT place paketleme at (1.5, 0, 8)
+PLACED paketleme at (1.5, 0, 8)
+HELD -
+PACKED turnip x19
+QUEUED kargo_kasasi
+CRATE 1 value=276 stacks=1
+PRODUCED kargo_kasasi civi=60 ingot=0 soup=0
+HELD capa
+RAMP load crate 1 pad=1
+SOLD kargo_kasasi x1 +276 instant=False
+STEP kasa -> barinak t=131.6
+SUNA line=barinak_basla voice=yes
+BOT step barinak t=474.9
+QUEUED uyku_tulumu x1
+BOT craft uyku_tulumu row=2
+PRODUCED uyku_tulumu civi=60 ingot=0 soup=0
+HELD uyku_tulumu
+BOT place uyku_tulumu at (10.5, 0, 1)
+PLACED uyku_tulumu at (10.5, 0, 1.0000002)
+HELD capa
+HELD insa_plani
+BUILT kare_temel pieces=7
+HELD capa
+HELD insa_plani
+BOT built duvar (7) at (6.1976805, 0.35, 1.5971422) target=(6.1976805, 0.34919998, 0.54714227)
+BUILT duvar pieces=8
+PEN area=18.0 cells=2 walls=6 gate=True gidak=4
+HELD capa
+BOT built duvar (8) at (6.1976805, 0.35, 0.09714222) target=(7.2476807, 0.34919998, 1.5971422)
+HELD insa_plani
+BUILT duvar pieces=9
+PEN area=18.0 cells=2 walls=6 gate=True gidak=4
+HELD capa
+BOT built duvar (9) at (7.6976805, 0.35, 1.5971422) target=(5.1476803, 0.34919998, 1.5971422)
+HELD insa_plani
+BOT shelter wait duvar: valid=True reason= mode=snap
+BUILT duvar pieces=10
+PEN area=18.0 cells=2 walls=6 gate=True gidak=4
+HELD capa
+HELD insa_plani
+BOT built kapi_kasasi (10) at (4.6976805, 0.35, 1.5971422) target=(6.1976805, 0.34919998, 2.6471422)
+BUILT kapi_kasasi pieces=11
+PEN area=18.0 cells=2 walls=6 gate=True gidak=4
+PEN area=9.0 cells=1 walls=4 gate=True gidak=2
+HELD capa
+QUEUED ahsap_kapi x1
+BOT craft ahsap_kapi row=6
+PRODUCED ahsap_kapi civi=60 ingot=0 soup=0
+HELD ahsap_kapi
+BOT place ahsap_kapi at (6.1976805, 0, 3.0971422)
+PLACED ahsap_kapi at (6.1976805, 0.35, 3.0971422)
+HELD capa
+HELD insa_plani
+BOT built duz_cati (11) at (6.1976805, 0.35, 3.0971422) target=(6.1976805, 3.34, 1.5971422)
+BUILT duz_cati pieces=12
+STEP barinak -> katalog t=145.7
+BOT step katalog t=531.3
+CATALOG buy tohum_salgam -300 credits=7820 via=kapsul id=1
+BOT katalog: tohum_salgam (300 Kredi, cuzdan 7820)
+PAID kargo_kasasi x1 +276 credits=8096
+DELIVERY 1 tohum_salgam landing at (-2.6690834, 0, -2.1061802)
+DELIVERED 1 tohum_salgam +10 left=0
+STEP katalog -> yukselt t=152.1
+BOT step yukselt t=556.9
+HELD capa
+QUEUED brick x1
+PRODUCED brick civi=60 ingot=0 soup=0
+QUEUED brick x1
+PRODUCED brick civi=60 ingot=0 soup=0
+HELD insa_plani
+EGG laid nest egg
+UPGRADED duvar wood->kerpic_tas pay=2 Kerpiç + 2 Taş back=4 Odun hp=900/900
+STEP yukselt -> end t=165.5
+CHAIN done
+BOT upgrade duvar -> kerpic_tas
+BOT step end t=610.5
+BOT hayvan stage=0 trust=0.00 reg=False turnip=0 happy=50 pending=0 timer=0
+HELD capa
+TARIM harvest crop=turnip item=turnip yield=7 seeds=2 wild=False crossed=False
+TARIM harvest crop=turnip item=turnip yield=7 seeds=2 wild=False crossed=False
+HARVEST 2 total=7 turnips=14
+BOT hayvan stage=2 trust=0.00 reg=False turnip=14 happy=50 pending=0 timer=0
+RANCH fed pofuduk trust=0.33 tame=False
+RANCH fed pofuduk trust=0.67 tame=False
+RANCH fed pofuduk trust=1.00 tame=True
+BOT hayvan stage=3 trust=1.00 reg=False turnip=11 happy=50 pending=0 timer=0
+GATE bahce_kapisi open
+BOT hayvan stage=3 trust=1.00 reg=False turnip=11 happy=50 pending=0 timer=0
+BOT hayvan stage=3 trust=1.00 reg=False turnip=11 happy=50 pending=0 timer=0
+BOT hayvan stage=3 trust=1.00 reg=False turnip=11 happy=50 pending=0 timer=0
+RANCH registered pofuduk id=1 genes=B3 U3 V1 K3
+BOT hayvan stage=4 trust=1.00 reg=True turnip=11 happy=50 pending=0 timer=2
+BOT hayvan s4 p=(-3.589217, 0.0010000177, -6.408302) pof=(-4.2996597, 0, -5.7007294) pen=18 c=P2 { X = -4.557762, Z = -6.293361, Length = 7.7704306 } pens=18@-5,-6/9@6,2 yemlik=wheat:8@-5,-8 bag_yemlik=0 wood=4 gate=True vel=0.0
+BOT hayvan s4 p=(-3.589217, 0.0010000177, -6.408302) pof=(-4.3167605, 0, -5.727572) pen=18 c=P2 { X = -4.557762, Z = -6.293361, Length = 7.7704306 } pens=18@-5,-6/9@6,2 yemlik=wheat:8@-5,-8 bag_yemlik=0 wood=4 gate=True vel=0.0
+BOT hayvan s4 p=(-3.589217, 0.0010000177, -6.408302) pof=(-4.334039, 0, -5.756041) pen=18 c=P2 { X = -4.557762, Z = -6.293361, Length = 7.7704306 } pens=18@-5,-6/9@6,2 yemlik=wheat:8@-5,-8 bag_yemlik=0 wood=4 gate=True vel=0.0
+BOT hayvan s4 p=(-3.589217, 0.0001455255, -6.408302) pof=(-4.3513174, 0, -5.78451) pen=18 c=P2 { X = -4.557762, Z = -6.293361, Length = 7.7704306 } pens=18@-5,-6/9@6,2 yemlik=wheat:8@-5,-8 bag_yemlik=0 wood=4 gate=True vel=0.0
+BOT hayvan stage=4 trust=1.00 reg=True turnip=11 happy=50 pending=0 timer=6
+BOT hayvan s4 p=(-2.5418642, -0.19895118, -25.853075) pof=(-5.303434, 0, -8.049058) pen=18 c=P2 { X = -4.557762, Z = -6.293361, Length = 7.7704306 } pens=18@-5,-6/9@6,2 yemlik=wheat:8@-5,-8 bag_yemlik=0 wood=6 gate=True vel=0.0
+BOT hayvan s4 p=(-2.5418642, -0.19895118, -25.853075) pof=(-5.3395267, 0, -8.234424) pen=18 c=P2 { X = -4.557762, Z = -6.293361, Length = 7.7704306 } pens=18@-5,-6/9@6,2 yemlik=wheat:8@-5,-8 bag_yemlik=0 wood=6 gate=True vel=0.0
+QUEUED yemlik x1
+BOT craft yemlik row=4
+PRODUCED yemlik civi=60 ingot=0 soup=0
+HELD yemlik
+BOT hayvan stage=4 trust=1.00 reg=True turnip=11 happy=50 pending=0 timer=10
+BOT hayvan s4 p=(-2.3041694, -0.0155660715, -20.888123) pof=(-4.387538, 0, -3.7202966) pen=18 c=P2 { X = -4.557762, Z = -6.293361, Length = 7.7704306 } pens=18@-5,-6/9@6,2 yemlik=wheat:8@-5,-8 bag_yemlik=1 wood=0 gate=True vel=5.0
+BOT hayvan s4 p=(-2.2882864, -0.012076689, -20.555204) pof=(-4.373145, 0, -3.6933749) pen=18 c=P2 { X = -4.557762, Z = -6.293361, Length = 7.7704306 } pens=18@-5,-6/9@6,2 yemlik=wheat:8@-5,-8 bag_yemlik=1 wood=0 gate=True vel=5.0
+BOT hayvan s4 p=(-2.2882864, -0.012076689, -20.555204) pof=(-4.358752, 0, -3.666453) pen=18 c=P2 { X = -4.557762, Z = -6.293361, Length = 7.7704306 } pens=18@-5,-6/9@6,2 yemlik=wheat:8@-5,-8 bag_yemlik=1 wood=0 gate=True vel=5.0
+BOT hayvan s4 p=(-2.272405, -0.00852812, -20.22229) pof=(-4.344668, 0, -3.6387143) pen=18 c=P2 { X = -4.557762, Z = -6.293361, Length = 7.7704306 } pens=18@-5,-6/9@6,2 yemlik=wheat:8@-5,-8 bag_yemlik=1 wood=0 gate=True vel=5.0
+BOT hayvan stage=4 trust=1.00 reg=True turnip=11 happy=49 pending=0 timer=14
+BOT hayvan s4 p=(-5.3965735, 0.0009998882, -4.9121084) pof=(-4.9022584, 0, -5.1403213) pen=18 c=P2 { X = -4.557762, Z = -6.293361, Length = 7.7704306 } pens=18@-5,-6/9@6,2 yemlik=wheat:8@-5,-8 bag_yemlik=1 wood=0 gate=True vel=5.0
+BOT hayvan s4 p=(-5.3965735, 0.0009998882, -4.9121084) pof=(-4.9010196, 0, -5.14421) pen=18 c=P2 { X = -4.557762, Z = -6.293361, Length = 7.7704306 } pens=18@-5,-6/9@6,2 yemlik=wheat:8@-5,-8 bag_yemlik=1 wood=0 gate=True vel=5.0
+BOT hayvan s4 p=(-5.3965735, 0.0009998882, -4.9121084) pof=(-4.902733, 0, -5.138832) pen=18 c=P2 { X = -4.557762, Z = -6.293361, Length = 7.7704306 } pens=18@-5,-6/9@6,2 yemlik=wheat:8@-5,-8 bag_yemlik=1 wood=0 gate=True vel=5.0
+BOT hayvan s4 p=(-5.526803, 0.0010000519, -5.160104) pof=(-4.902733, 0, -5.138832) pen=18 c=P2 { X = -4.557762, Z = -6.293361, Length = 7.7704306 } pens=18@-5,-6/9@6,2 yemlik=wheat:8@-5,-8 bag_yemlik=1 wood=0 gate=True vel=3.7
+BOT place yemlik at (-3.857762, 0, -7.693361)
+PLACED yemlik at (-3.7599277, 0, -7.8423667)
+HELD -
+NEST collected 2 eggs=3
+BOT hayvan fill yemlik food=turnip
+BOT hayvan fill yemlik food=turnip
+BOT hayvan fill yemlik food=turnip
+BOT hayvan fill yemlik food=turnip
+BOT hayvan stage=4 trust=1.00 reg=True turnip=11 happy=49 pending=0 timer=18
+BOT hayvan fill yemlik food=turnip
+BOT hayvan fill yemlik food=turnip
+BOT hayvan fill yemlik food=turnip
+BOT hayvan fill yemlik food=turnip
+BOT hayvan stage=4 trust=1.00 reg=True turnip=11 happy=49 pending=0 timer=22
+BOT hayvan s4 p=(-4.16343, 0.0008874137, -6.5406194) pof=(-3.5347884, 0, -7.631379) pen=18 c=P2 { X = -4.557762, Z = -6.293361, Length = 7.7704306 } pens=18@-5,-6/9@6,2 yemlik=wheat:8@-5,-8/wheat:0@-4,-8 bag_yemlik=0 wood=0 gate=True vel=0.0
+BOT hayvan fill p=(-4.16343, 0.0008874137, -6.5406194) stand=(-4.3094006, 0, -6.7755585) yemlik=(-3.7599277, 0, -7.8423667) pen=18 inpen=True gate=True vel=0.0 menu=False
+BOT hayvan s4 p=(-4.16343, 0.0008874137, -6.5406194) pof=(-3.5347884, 0, -7.631379) pen=18 c=P2 { X = -4.557762, Z = -6.293361, Length = 7.7704306 } pens=18@-5,-6/9@6,2 yemlik=wheat:8@-5,-8/wheat:0@-4,-8 bag_yemlik=0 wood=0 gate=True vel=0.0
+BOT hayvan fill p=(-4.16343, 0.0008874137, -6.5406194) stand=(-4.3094006, 0, -6.7755585) yemlik=(-3.7599277, 0, -7.8423667) pen=18 inpen=True gate=True vel=0.0 menu=False
+BOT hayvan s4 p=(-4.16343, 0.0008874137, -6.5406194) pof=(-3.5347884, 0, -7.631379) pen=18 c=P2 { X = -4.557762, Z = -6.293361, Length = 7.7704306 } pens=18@-5,-6/9@6,2 yemlik=wheat:8@-5,-8/wheat:0@-4,-8 bag_yemlik=0 wood=0 gate=True vel=0.0
+BOT hayvan fill p=(-4.16343, 0.0008874137, -6.5406194) stand=(-4.3094006, 0, -6.7755585) yemlik=(-3.7599277, 0, -7.8423667) pen=18 inpen=True gate=True vel=0.0 menu=False
+BOT hayvan s4 p=(-4.16343, 0.0008874137, -6.5406194) pof=(-3.5367246, 0, -7.625769) pen=18 c=P2 { X = -4.557762, Z = -6.293361, Length = 7.7704306 } pens=18@-5,-6/9@6,2 yemlik=wheat:8@-5,-8/wheat:0@-4,-8 bag_yemlik=0 wood=0 gate=True vel=0.0
+BOT hayvan fill p=(-4.16343, 0.0008874137, -6.5406194) stand=(-4.3094006, 0, -6.7755585) yemlik=(-3.7599277, 0, -7.8423667) pen=18 inpen=True gate=True vel=0.0 menu=False
+BOT hayvan fill yemlik food=turnip
+BOT hayvan fill yemlik food=turnip
+BOT hayvan fill yemlik food=turnip
+BOT hayvan fill yemlik food=turnip
+BOT hayvan fill yemlik food=turnip
+BOT hayvan stage=4 trust=1.00 reg=True turnip=11 happy=49 pending=0 timer=26
+BOT hayvan fill yemlik food=turnip
+FEEDER +11 turnip -> 11
+BOT hayvan fill yemlik food=
+BOT hayvan stage=5 trust=1.00 reg=True turnip=0 happy=49 pending=0 timer=30
+BOT hayvan stage=5 trust=1.00 reg=True turnip=0 happy=49 pending=0 timer=34
+BOT hayvan stage=5 trust=1.00 reg=True turnip=0 happy=49 pending=0 timer=38
+BOT hayvan stage=5 trust=1.00 reg=True turnip=0 happy=49 pending=0 timer=42
+BOT hayvan stage=5 trust=1.00 reg=True turnip=0 happy=50 pending=0 timer=47
+BOT hayvan stage=5 trust=1.00 reg=True turnip=0 happy=50 pending=0 timer=51
+BOT hayvan stage=5 trust=1.00 reg=True turnip=0 happy=50 pending=0 timer=55
+BOT hayvan stage=5 trust=1.00 reg=True turnip=0 happy=50 pending=0 timer=60
+BOT hayvan stage=5 trust=1.00 reg=True turnip=0 happy=50 pending=0 timer=66
+BOT hayvan stage=5 trust=1.00 reg=True turnip=0 happy=50 pending=0 timer=71
+BOT hayvan stage=5 trust=1.00 reg=True turnip=0 happy=51 pending=0 timer=76
+BOT hayvan stage=5 trust=1.00 reg=True turnip=0 happy=51 pending=0 timer=82
+BOT hayvan stage=5 trust=1.00 reg=True turnip=0 happy=51 pending=0 timer=87
+BOT hayvan stage=5 trust=1.00 reg=True turnip=0 happy=51 pending=0 timer=92
+BOT hayvan stage=5 trust=1.00 reg=True turnip=0 happy=51 pending=0 timer=98
+BOT hayvan stage=5 trust=1.00 reg=True turnip=0 happy=51 pending=0 timer=103
+BOT hayvan stage=5 trust=1.00 reg=True turnip=0 happy=52 pending=0 timer=109
+BOT hayvan stage=5 trust=1.00 reg=True turnip=0 happy=52 pending=0 timer=114
+BOT hayvan stage=5 trust=1.00 reg=True turnip=0 happy=52 pending=0 timer=120
+BOT hayvan stage=5 trust=1.00 reg=True turnip=0 happy=52 pending=0 timer=125
+BOT hayvan stage=5 trust=1.00 reg=True turnip=0 happy=52 pending=0 timer=130
+EGG laid nest egg
+BOT hayvan stage=5 trust=1.00 reg=True turnip=0 happy=52 pending=0 timer=136
+BOT hayvan stage=5 trust=1.00 reg=True turnip=0 happy=53 pending=0 timer=141
+BOT hayvan stage=5 trust=1.00 reg=True turnip=0 happy=53 pending=0 timer=147
+RANCH product pofuduk sut x1
+RANCH collected pofuduk sutx1
+HAYVAN ok species=pofuduk sut=1 yun=0 happiness=53 genes=B3 U3 V1 K3 t=794.8
+RESULT ok ciraklik=4/5 veri=140 credits=8096 eggs=3 kills=21 cards=2 maya=48 stations=4 harvests=7 skipped=- t=794.9

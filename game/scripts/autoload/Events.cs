@@ -77,6 +77,18 @@ public static class Events
     public static void RaiseAnimalPenned(string species) => AnimalPenned?.Invoke(species);
     public static void RaiseLaid(string product, string where) => Laid?.Invoke(product, where);
     public static void RaiseSunaSaid(string lineId) => SunaSaid?.Invoke(lineId);
+    /// <summary>Hayvan evcillesti (tur kimligi). Yayan: HusbandryAgent (hayvan akisi, M2).</summary>
+    public static event Action<string> AnimalTamed;
+    /// <summary>Hayvanin ustundeki urun alindi (esya, adet). Yayan: RanchSystem.</summary>
+    public static event Action<string, int> AnimalCollected;
+    /// <summary>Agilda yavru dogdu ya da Kulucka'dan cikti (tur kimligi). Yayan: RanchSystem.</summary>
+    public static event Action<string> AnimalBorn;
+    /// <summary>Hayvan kacti (tur kimligi). Yayan: RanchSystem.</summary>
+    public static event Action<string> AnimalEscaped;
+    public static void RaiseAnimalTamed(string species) => AnimalTamed?.Invoke(species);
+    public static void RaiseAnimalCollected(string item, int n) => AnimalCollected?.Invoke(item, n);
+    public static void RaiseAnimalBorn(string species) => AnimalBorn?.Invoke(species);
+    public static void RaiseAnimalEscaped(string species) => AnimalEscaped?.Invoke(species);
     public static void RaisePieceUpgraded(string id, string material) => PieceUpgraded?.Invoke(id, material);
     public static void RaisePlanCompleted(string id) => PlanCompleted?.Invoke(id);
 
@@ -108,6 +120,7 @@ public static class Events
         Paid = null;
         Deconstructed = null;
         PenChanged = null; AnimalPenned = null; Laid = null; SunaSaid = null;
+        AnimalTamed = null; AnimalCollected = null; AnimalBorn = null; AnimalEscaped = null;
         PieceUpgraded = null; PlanCompleted = null;
         CatalogBought = null; Delivered = null; WheelSpun = null; // ekonomi2
         AtaDefeated = null; AtaPhase = null;

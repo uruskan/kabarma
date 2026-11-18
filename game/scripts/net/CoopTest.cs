@@ -1,4 +1,4 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 using System.Linq;
 using Godot;
 using Kabarma.Sim;
@@ -10,10 +10,10 @@ namespace Kabarma.Game;
 /// basliksiz host 3 istemciyi kendisi baslatir (ENet, bos bir port); 2'si hemen, 1'i sonradan katilir. Botlar kazar,
 /// odun bicer, temel kurar ve durur (Bot.Coop.cs). Hepsi bitince host "topla" der; her istemci kendi konumunu,
 /// gordugu avatarlarin konumunu ve bolum ozetlerini yollar. Olcutler:
-///  Â· her oyuncunun avatari, sahibinin kendi konumundan &lt; 1 cm (her surecte);
-///  Â· canta (host'taki kopyayla), yapi, yerlestirilebilir, kaya, tutam ozetleri host'unkiyle ayni;
-///  Â· her bot en az bir temel kurdu ve tas kazdi (istekler gercekten host'tan gecti);
-///  Â· sonradan katilan, katilmadan once kurulmus her seyi goruyor.
+///  · her oyuncunun avatari, sahibinin kendi konumundan &lt; 1 cm (her surecte);
+///  · canta (host'taki kopyayla), yapi, yerlestirilebilir, kaya, tutam ozetleri host'unkiyle ayni;
+///  · her bot en az bir temel kurdu ve tas kazdi (istekler gercekten host'tan gecti);
+///  · sonradan katilan, katilmadan once kurulmus her seyi goruyor.
 /// Cikti: "COOP RESULT ok|fail ..." (host). Istemci gunlukleri .tools/run/test/coop_client_N.log.
 /// </summary>
 public partial class CoopTest : Node
@@ -51,6 +51,7 @@ public partial class CoopTest : Node
     const float DrillTimeout = 25f;
     const int VoiceFrames = 25;
     bool _drill;
+    int _plots0;
     float _drillT;
 
     /// <summary>Main.Tests["coop"]: rol ve bos port; Director kurulmadan once.</summary>
@@ -97,6 +98,7 @@ public partial class CoopTest : Node
         if (Net == null) { Log("COOP RESULT fail no NetSync"); Quit(1); return; }
         if (_host)
         {
+            _plots0 = Tilled(); // botlarin surdugu kareler (tarim: yabani bitkiler sayilmaz)
             Net.TestMessageFrom += OnClientMessage;
             for (int k = 1; k <= Clients - 1; k++) Spawn(k);
         }
@@ -238,6 +240,8 @@ public partial class CoopTest : Node
         Log($"COOP report peer={peer} stone={rep.Stone} built={rep.Built} pieces={rep.PiecesSeen} applied={rep.Applied} mismatches={rep.Mismatches} save_sections={rep.SaveApplied.Count}/{Net.BridgedSections} voice_heard={rep.VoiceFrom2} voice_sent={rep.VoiceSent} creatures_spawned={rep.Dynamic} plots={rep.Plots}");
     }
 
+    int Tilled() => _d.State.Farm.Plots.Count(p => !p.Wild);
+
     void Judge()
     {
         _finished = true;
@@ -272,19 +276,21 @@ public partial class CoopTest : Node
             if (actor == null || actor.Bag.Count("stone") < 4) fails.Add($"peer{c} mined {actor?.Bag.Count("stone")}");
             if (rep.VoiceSent == 0 && rep.VoiceFrom2 < VoiceFrames * 4 / 5) fails.Add($"peer{c} heard {rep.VoiceFrom2}/{VoiceFrames} voice frames from peer2");
             if (System.Math.Abs(rep.Dynamic - Net.DynamicCount) > 3) fails.Add($"peer{c} has {rep.Dynamic} spawned creatures, host {Net.DynamicCount}");
-            if (rep.Plots < Clients + 1) fails.Add($"peer{c} sees {rep.Plots} plots");
+            if (System.Math.Abs(rep.Plots - _d.State.Farm.Plots.Count()) > 1) fails.Add($"peer{c} sees {rep.Plots} plots, host {_d.State.Farm.Plots.Count()}");
+            if (actor == null || actor.Bag.Count(Bot.CoopCraft) < 1) fails.Add($"peer{c} crafted no {Bot.CoopCraft} (host'taki canta)");
         }
         int hostVoice = Net.Voice?.Received.Values.Sum() ?? 0;
         if (hostVoice < VoiceFrames * 4 / 5) fails.Add($"host heard {hostVoice}/{VoiceFrames} voice frames");
         if (Net.Revives < 1 || _d.Player.Down) fails.Add($"slap revive failed (revives={Net.Revives} down={_d.Player.Down})");
-        int plots = _d.State.Farm.Plots.Count();
-        if (plots < Clients + 1) fails.Add($"host has {plots} plots, want {Clients + 1}");
+        int plots = _d.State.Farm.Plots.Count(), tilled = Tilled();
+        if (tilled < _plots0 + Clients + 1) fails.Add($"host has {tilled} tilled plots, want {_plots0} + {Clients + 1}");
+        if (_d.State.Backpack.Count(Bot.CoopCraft) < 1) fails.Add($"host crafted no {Bot.CoopCraft}");
         int pieces = _d.Build?.System.Pieces.Count ?? 0;
         int bases = _d.Build?.System.Pieces.Count(p => p.Def.Id == "kare_temel") ?? 0;
         if (bases < Clients + 1) fails.Add($"host has {bases} foundations, want {Clients + 1}");
         bool ok = fails.Count == 0 && maxDiff < 0.01;
         int rejected = Net.RequestsRejected, corr = Net.Corrections;
-        Log($"COOP RESULT {(ok ? "ok" : "fail")} players={Clients + 1} max_diff_mm={maxDiff * 1000:0.000} pieces={pieces} foundations={bases} late_join=1 plots={plots} revives={Net.Revives} voice_frames={hostVoice} creatures_spawned={Net.DynamicCount} rejected={rejected} corrections={corr} t={_t:0.0}" + (fails.Count > 0 ? " :: " + string.Join("; ", fails.Take(8)) : ""));
+        Log($"COOP RESULT {(ok ? "ok" : "fail")} players={Clients + 1} max_diff_mm={maxDiff * 1000:0.000} pieces={pieces} foundations={bases} late_join=1 plots={plots} tilled={tilled} crafted={Net.Actors.Values.Count(x => x.Bag.Count(Bot.CoopCraft) > 0) + (_d.State.Backpack.Count(Bot.CoopCraft) > 0 ? 1 : 0)} revives={Net.Revives} voice_frames={hostVoice} creatures_spawned={Net.DynamicCount} rejected={rejected} corrections={corr} t={_t:0.0}" + (fails.Count > 0 ? " :: " + string.Join("; ", fails.Take(8)) : ""));
         Finish(ok ? 0 : 1);
     }
 

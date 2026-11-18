@@ -41,6 +41,7 @@ public partial class GrassField : MultiMeshInstance3D
         mat.SetShaderParameter("lush_root", plant.Lerp(shadow, 0.35f).Darkened(0.6f));
         mat.SetShaderParameter("dry_tip", ground.Lerp(new Color(0.93f, 0.86f, 0.62f), 0.2f).Darkened(0.1f));
         mat.SetShaderParameter("dry_root", ground.Lerp(shadow, 0.45f).Darkened(0.6f));
+        w.SetGrassBiome(mat); // World.Biomes.cs: Koru otunun rengi (dunya2)
 
         var offs = new List<Vector3>();
         int n = Mathf.CeilToInt(rOut / spacing) + 1;

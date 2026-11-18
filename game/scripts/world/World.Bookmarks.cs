@@ -28,6 +28,7 @@ public partial class World
         cam.Fov = b.Fov;
         cam.GlobalTransform = BookmarkTransform(b, anchor);
         cam.MakeCurrent();
+        SnapBiomeMix(cam.GlobalPosition); // dunya2: Koru yer iminde Koru isigi hemen
         return cam;
     }
 }

@@ -208,16 +208,19 @@ public partial class World
     void ApplyTime()
     {
         if (_sky == null || _keys.Count == 0) return;
-        TimeLight L;
-        if (_forced != null) L = Key(_forced);
-        else
+        TimeLight Blend(System.Func<string, TimeLight> key)
         {
-            L = TimeLight.Lerp(Key("ogle"), Key("gunbatimi"), _dayMix);
-            L = TimeLight.Lerp(L, Key("kabarma_gecesi"), _nightMix);
-            L = TimeLight.Lerp(L, Key("sabah"), _dawnMix);
-            L = TimeLight.Lerp(L, Key("normal_gece"), _normalNightMix);
+            if (_forced != null) return key(_forced);
+            var l = TimeLight.Lerp(key("ogle"), key("gunbatimi"), _dayMix);
+            l = TimeLight.Lerp(l, key("kabarma_gecesi"), _nightMix);
+            l = TimeLight.Lerp(l, key("sabah"), _dawnMix);
+            return TimeLight.Lerp(l, key("normal_gece"), _normalNightMix);
         }
+        // Kamera Koru'daysa o biyomun saatlerine karisir (World.Biomes.cs CameraBiomeMix; dunya2).
+        var L = Blend(Key);
+        if (CameraBiomeMix > 0.001f && Map != null) L = TimeLight.Lerp(L, Blend(Key2), CameraBiomeMix);
         Light = L;
+        UpdateAtmosphere(L); // World.Fog.cs: Koru huzmeleri ve sis katmanlari (dunya2)
         var lightDir = Dir(L.Elev, L.Az);
         var moonDir = Dir(L.MoonElev, L.MoonAz);
         _sky.SetShaderParameter("top_color", L.Top);

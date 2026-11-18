@@ -237,7 +237,8 @@ Yemlik (türe göre yem), suluk, çatı, tür başına alan. Mutluluk (0–100) 
 
 Dört gen (1–10): **B** boyut (can, yük), **U** uysallık (komut dinleme, ürün sıklığı), **V** ürün verimi, **K** kabarma gücü (kabarık hâlin canı ve hasarı). Kalıtım ve Alaca kuralları tarımdakiyle aynı. İki yetişkin, 60 ve üstü mutluluk ve boş yer varsa 2–4 günde yavru gelir.
 
-- **Genin hesabı:** Yavrunun her geni ebeveyn ortalamasıdır, yarım yukarı yuvarlanır. Üstüne §8.3'teki mutasyon gelir. Sonuç 1–10'a kırpılır.
+- **Genin hesabı:** Tarımdaki çaprazlamayla aynıdır (§8.3). Her gen ebeveyn ortalamasıdır; buçuk yarı yarıya aşağı ya da yukarı yuvarlanır. Üstüne mutasyon gelir, sonuç 1–10'a kırpılır.
+- **Alaca:** Yavru doğarken ve Kuluçka'dan çıkarken §8.3'teki zar atılır. Alaca ebeveyn Alaca'sını aynı olasılıkla aktarır.
 - **Yavru:** Evcil ve kayıtlı doğar. Yetişkin olana kadar (gün sayısı veride) ürün vermez, üremez.
 - **Yer:** Ağıl alanı, içindeki hayvanların tür alanları toplamıdır; yavru da yer kaplar.
 
@@ -257,6 +258,11 @@ Her hayvana bir rol atanır:
 Komutlar: izle, bekle, işaretlediğime saldır, dön. Uysallığı düşük hayvan bazen dinlemez.
 
 - Türün alabileceği roller `husbandry.json`'da ([ICERIK.md](ICERIK.md) §3'ten).
+- **M2 ekleri** (hayvan akışının kararı, ICERIK §3'te yazmıyor):
+  - Homur, Dallı, Hu ve Bozuk'a Üretici rolü de verildi, çünkü ICERIK §2.2'deki Deri, Tüy ve Kürk onlardan gelir.
+  - Hayvan kalıcı ölmediği için (§9.5) Deri ve Kürk av yerine uzun aralıklı ürün olarak gelir.
+  - Bozuk'a Bekçi rolü de verildi.
+  - Vızvız kovanda Yemlik'siz ürün verir; çiçeği kendisi bulur.
 - Dinleme olasılığı U geniyle artar.
 - B geni can, heybe ve binek hızına eklenir.
 

@@ -130,6 +130,8 @@ Kendi ince mesaj katmanımız (`src/Kabarma.Sim/Net*.cs`: ikili, sürümlü; `ne
 | Araçlar | Sürücü istemci; host yansıtır |
 | `Sim`'deki her şey (tarım, güç, ekonomi, kartlar) | Host |
 | Efekt ve ses | Yerel |
+| Çanta ve el üretim kuyruğu | Host'ta oyuncu başına; istemcinin yalnız yerelde değişen çantası geri alınır |
+| İstasyon sırası | Host; işi başlatan oyuncu sırayı tutar, ürün onun çantasına girer; sıra boşalana dek başkası ekleyemez (ortak akışı kararı, 18 Kasım 2026; sahibin onayını bekliyor) |
 
 ### 5.3 Güncelleme sıklığı ve bütçe
 

@@ -1,4 +1,4 @@
-﻿namespace Kabarma.Sim;
+namespace Kabarma.Sim;
 
 // Genler, ıslah, Alaca, gunduz zararlisi: crops.json "genetics" (GDD 8.2, 8.3).
 
@@ -23,6 +23,10 @@ public sealed class WildRules
     public float RingMin { get; set; }
     public float RingMax { get; set; }
     public float RegrowDays { get; set; }
+    /// <summary>Agac ve ot tutamindan en az bu kadar uzakta (m): odun ve lif bicen yanlislikla yabani bitkiyi bicmez.</summary>
+    public float Clearance { get; set; }
+    /// <summary>Bicme yabani bitkiyi yalniz nisan bu kadar yakinsa alir (m): bilerek toplanir.</summary>
+    public float MowRadius { get; set; }
 }
 
 public sealed class GeneticsRules

@@ -1,0 +1,8 @@
+tools/test.ps1  2026-11-18 17:40  git 862c8a9
+
+[PASS] bot  exit=0 RESULT ok credits=120 eggs=1 kills=21 cards=2 maya=48 stations=4 harvests=5 skipped=-
+
+sinama     sonuc  sure(sn)  ayrinti
+------     -----  --------  -------
+bot        PASS      239.7  exit=0 RESULT ok credits=120 eggs=1 kills=21 cards=2 maya=48 stations=4 harvests=5 skipped=-
+TEST PASS

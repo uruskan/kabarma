@@ -41,6 +41,7 @@ public partial class Main : Node3D
         ["swarm"] = m => { m.AddChild(new SwarmTest()); return true; },
         ["audio"] = m => { m.AddChild(new AudioTest()); return true; }, // ses akisi: kanallar, 60 ses, muzik durumlari
         ["world"] = m => { m.AddChild(new WorldTest()); return true; },
+        ["explore"] = m => { Args["explore"] = "1"; Args["mute"] = "1"; Sfx.Muted = true; return false; }, // dunya2: Director + ExploreTest (kule, mancinik, yuva, enkaz, harita)
         ["shots"] = m => { Args.TryAdd("preset", "yuksek"); if (!Args.ContainsKey("shots_quick") && !Args.ContainsKey("shots_clip")) Args["bot"] = "1"; m.AddChild(new WorldShots()); return false; },
         ["perf"] = m => { Args.TryAdd("preset", "yuksek"); if (Args.GetValueOrDefault("perf") == "night") Args["bot"] = "1"; m.AddChild(new PerfProbe()); return false; },
         ["gfxab"] = m => { Args.TryAdd("preset", "yuksek"); m.AddChild(new GfxAb()); return false; },
@@ -55,6 +56,7 @@ public partial class Main : Node3D
         ["kemer"] = m => { Args["bot"] = "1"; if (m._quitAfter <= 0) m._quitAfter = 600; m.AddChild(new KemerShots()); return false; }, // karar 23 kaniti: progress/kemer/*.png
         ["save"] = m => { SaveTest.Prepare(); m.AddChild(new SaveTest(m)); return false; }, // kayit: bot bir gun oynar, kaydeder, sahne bastan yuklenir; fark 0 (save/SaveTest.cs)
         ["menu"] = m => { MenuFlowTest.Prepare(); m.AddChild(new MenuFlowTest(m)); return false; }, // kayit: ana menu -> yeni oyun -> Esc ana menu -> Devam -> kapatma kaydi (save/MenuFlowTest.cs)
+        ["hayvan"] = m => { Args["bot"] = "1"; Args["hayvanbot"] = "1"; if (m._quitAfter <= 0) m._quitAfter = 1300; return false; }, // hayvan akisi: zincir + ikinci tur (Bot.Hayvan.cs)
         ["borsa"] = m => { Args["borsatest"] = "1"; Args["mute"] = "1"; Sfx.Muted = true; return false; }, // ekonomi2: Borsa, Katalog, Cark (MarketTest.cs)
         ["boss"] = m => { Args.TryAdd("fast", "3"); Args.TryAdd("mute", "1"); Sfx.Muted = Args["mute"] == "1"; m.AddChild(new AtaTest()); return false; }, // boss akisi: bot iki Ata'yi bulur ve yener (boss/AtaTest.cs)
         ["zincir"] = m => { Args["bot"] = "1"; Args["mute"] = "1"; Sfx.Muted = true; m.AddChild(new ZincirTest()); return false; }, // zincir M2: bot T2 urununu arastirir ve uretir (ZincirTest.cs)

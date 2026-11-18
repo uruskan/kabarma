@@ -27,6 +27,7 @@ public partial class Director
             else Hud.Hint($"{ItemNames.Of(Data.Pen.Animals[0].Food)} yok", 1f);
             return true;
         }
+        if (Ranch != null && Ranch.Interact(Player.GlobalPosition)) return true; // RanchSystem: yem, okşama, urun, gubre, panel (agil nesnesinden yakinsa)
         if (Pens != null && Pens.Interact(Player.GlobalPosition)) return true;
         // Evcil Gidak yakinda: eski "bugday ver, hemen yumurtla" yoluna dusmesin.
         return Gidak.Visible && Gidak.Tame && Gidak.GlobalPosition.DistanceTo(Player.GlobalPosition) < 3f;
