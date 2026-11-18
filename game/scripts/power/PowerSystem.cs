@@ -87,7 +87,9 @@ public partial class PowerSystem : Node3D
         float w = F.ConsumerWatts(placeableId);
         if (w <= 0 || owner == null) return null;
         var s = owner.GlobalTransform * PowerVisuals.Socket(placeableId);
-        var n = Net.Add(F, placeableId, s.X, s.Y, s.Z);
+        // Kayittan donen istasyon: ayni yerdeki sahipsiz ucunu (kablolariyla) geri alir.
+        var n = Net.Nodes.FirstOrDefault(x => x.Def == placeableId && !_owners.ContainsKey(x.Id) && new Vector3(x.X, x.Y, x.Z).DistanceTo(s) < 0.6f)
+            ?? Net.Add(F, placeableId, s.X, s.Y, s.Z);
         _owners[n.Id] = owner;
         return new PowerPort(this, n.Id, w);
     }

@@ -14,6 +14,8 @@ public partial class Director
     {
         Power = new PowerSystem(this);
         AddChild(Power);
+        // Kayit (TEKNIK 9.1): durum Sim'in "power" bolumunde; yuklemeden sonra gorunus yeniden kurulur.
+        Save.Add(SaveSection.Json("power.view", 1, () => 0, _ => { }, SaveOrder.Spawn, afterRestore: Power.Rebuild));
         if (Main.Args.ContainsKey("power")) GD.Print("POWER test: bot zinciri bitince guc adimi (Bot.Power.cs)");
     }
 
