@@ -56,6 +56,12 @@ Sahibin varlık kitaplığından (`F:\Assets`, yalnız okundu) kopyalanıp `pipe
 | `kaya` (2K) | `F:\Assets\cracked_nordic_coastal_rock_ukohaj0mw_4k` (Megascans) | Fab Standart Lisans (Megascans) | Aynı not |
 | `kum` (1K) | `F:\Assets\beach_sand_uinladeo_4k` (Megascans) | Fab Standart Lisans (Megascans) | Aynı not |
 
+## Model yer tutucuları (dunya2, M2)
+
+| Tarih | Kaynak | Dosyalar | Not |
+|---|---|---|---|
+| 18 Kasım 2026 | `pipeline/gen_kesif.py` (kendi kodumuz, Blender 5.3 ilkel parçalar; kredi yok, üçüncü taraf varlık yok) | `game/assets/models/koru/{koru_agac,dev_mantar,kutuk,demir,recine,guhercile}.glb`, `game/assets/models/kesif/{seyir_kulesi,yabani_bahce,yuva,enkaz}.glb`, `game/assets/models/placeables/mancinik.glb` | Dokusuz düz renk; `biomes.json`'da `placeholder` işaretli. `F:\Assets`'teki orman varlıkları (Polyhaven, Fab köknar paketleri) fotogerçekçi olduğu için stile uymadı, kullanılmadı. Yerlerine Tripo üretim isteği raporda |
+
 ## Yapı kiti malzemeleri: Kerpiç-Taş, Çelik Sac, Mayalı Beton (M2, 18 Kasım 2026)
 
 `pipeline/build_kit_materials.py` kodla üretir; kredi harcanmadı (Genex, Tripo, ElevenLabs yok). Geometri ahşap kitinden (`pipeline/build_kit.py`, değiştirilmedi) modül olarak alınır; 28 parçanın sınırları, yuvaları, çarpışma kutuları ve üçgen sayıları ahşap `sockets.json` ile betikte birebir denetlenir. Doku yapısı (tuğla, blok, kiremit, oluk, perçin, panel, derz) numpy ile yordamsal. Yüzey tanesi ve pas deseni aşağıdaki taramalardan gelir: `F:\Assets`'ten yalnız okundu, 1024'lük atlasa küçültüldü ve yüksek geçiren ayrıntı olarak palet renklerinin üstüne karıştırıldı. Çıktı: `game/assets/models/build/{kerpic_tas,celik_sac,mayali_beton}/`. **Yer tutucu:** dokular sahip ve görsel akış onaylayana dek son kalite sayılmaz.

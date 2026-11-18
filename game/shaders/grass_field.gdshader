@@ -27,6 +27,10 @@ uniform vec4 lush_tip : source_color = vec4(0.45, 0.58, 0.22, 1.0);
 uniform vec4 dry_root : source_color = vec4(0.22, 0.18, 0.08, 1.0);
 uniform vec4 dry_tip : source_color = vec4(0.86, 0.72, 0.38, 1.0);
 uniform float translucency = 0.45;
+// Biyom karisimi (dunya2): R = Sis Korusu agirligi; Koru otu mavi-yesil.
+uniform sampler2D biome_tex : filter_linear, repeat_disable;
+uniform vec4 biome_tip : source_color = vec4(0.3, 0.5, 0.45, 1.0);
+uniform vec4 biome_root : source_color = vec4(0.05, 0.1, 0.1, 1.0);
 
 varying vec3 v_col;
 varying float v_t;
@@ -98,6 +102,8 @@ void vertex() {
 		tip_c = mix(tip_c, dry_tip.rgb * 0.9, dry * 0.6);
 		v_col = mix(root_c, tip_c, smoothstep(0.0, 1.0, t)) * mix(0.85, 1.12, r5) * (0.9 + 0.2 * m2);
 
+		float kb = textureLod(biome_tex, (root + world_size * 0.5) / world_size, 0.0).r;
+		if (kb > 0.003) v_col = mix(v_col, mix(biome_root.rgb, biome_tip.rgb, smoothstep(0.0, 1.0, t)) * mix(0.85, 1.12, r5), kb);
 		v_up = normalize((VIEW_MATRIX * vec4(0.0, 1.0, 0.0, 0.0)).xyz);
 		VERTEX = (VIEW_MATRIX * vec4(world, 1.0)).xyz;
 		NORMAL = normalize((VIEW_MATRIX * vec4(n, 0.0)).xyz);

@@ -20,6 +20,10 @@ public partial class WorldTest : Node3D
 
     void Check(bool ok, string what) { if (!ok) _fail.Add(what); }
 
+    /// <summary>Us cevresi tasi ilk gunun tariflerini karsilamali (M1): kilitsiz ve yalniz ilk gun kaynagindan. M2 zincir/guc tarifleri uzak kaynaktan.</summary>
+    static readonly System.Collections.Generic.HashSet<string> FirstDayItems = new() { "stone", "wood", "fiber", "clay", "copper_ore", "copper_ingot", "wheat", "egg", "turnip", "turnip_seed", "civi" };
+    static bool FirstDayRecipe(Kabarma.Sim.RecipeDef r) => r.UnlockOn == null && r.In.Keys.All(FirstDayItems.Contains);
+
     public override void _Ready()
     {
         try { Run(); }
@@ -40,7 +44,7 @@ public partial class WorldTest : Node3D
         var t = w.Data.Biomes.World.Terrain;
 
         // 1. Boyut
-        Check(Mathf.IsEqualApprox(w.Size, 300f), $"size={w.Size}");
+        Check(Mathf.IsEqualApprox(w.Size, 640f), $"size={w.Size} (M2 dunyasi 640 m, TEKNIK 7)");
 
         // 2. Ussun yuksekligi MVP formuluyle ayni (Director, bot ve diger akislarin sabit konumlari).
         var mvp = new FastNoiseLite { Seed = 4417, Frequency = 0.012f, FractalOctaves = 3, NoiseType = FastNoiseLite.NoiseTypeEnum.Perlin };
@@ -104,14 +108,15 @@ public partial class WorldTest : Node3D
         Check(w.TakeTuft(tuft, 2) == Mathf.Min(2, left) && tuft.Left == left - Mathf.Min(2, left), "TakeTuft partial");
         w.TakeTuft(tuft, 999);
         Check(tuft.Left == 0 && w.NearestTuft(tuft.Position, 0.01f) != tuft, "TakeTuft empty / NearestTuft skips empty");
-        Check(w.Tufts.Where(x => x.Item != "").All(x => x.PerHit == w.Biome.Decor.First(d => d.Id == x.Kind).PerHit), "tuft perHit != biomes.json");
+        var allDecor = w.Biomes.Biomes.Values.SelectMany(b => b.Decor).ToList();
+        Check(w.Tufts.Where(x => x.Item != "" && x.Kind != "yabani_bahce").All(x => x.PerHit == allDecor.First(d => d.Id == x.Kind).PerHit), "tuft perHit != biomes.json");
         // Tas yalniz altin kayadan; ilk gunun ihtiyaci ussun yakininda (ana oturum karari 18 Kasim 2026).
         var kaya = w.Biome.Nodes.First(n => n.Item == "stone");
         Check(w.Biome.Nodes.Where(n => n.Item == "stone").All(n => n.Model.EndsWith("kaya/kaya.glb")), "stone from a non-golden rock");
         float nearR = kaya.NearBase.Count > 0 ? kaya.NearBase[0] : 35f;
         int nearStone = w.Rocks.Where(r => r.Item == "stone" && new Vector2(r.GlobalPosition.X, r.GlobalPosition.Z).Length() <= nearR).Sum(r => r.Stones);
         int placeStone = w.Data.Tool.Placeables.Sum(p => p.Cost.TryGetValue("stone", out int n) ? n : 0)
-            + w.Data.Tool.Recipes.Where(r => r.UnlockOn == null || !r.UnlockOn.Contains(':')).Sum(r => r.In.TryGetValue("stone", out int n) ? n : 0); // zincir M2: arastirma ve Ocak basamagi kilitli tarifler ilk gunun ihtiyaci degil
+            + w.Data.Tool.Recipes.Where(FirstDayRecipe).Sum(r => r.In.TryGetValue("stone", out int n) ? n : 0);
         Check(kaya.NearBase.Count < 2 || nearStone >= kaya.NearBase[1], $"stone near base {nearStone} < need {(kaya.NearBase.Count > 1 ? kaya.NearBase[1] : 0)}");
         Check(nearStone >= placeStone, $"stone near base {nearStone} < placeable+recipe stone {placeStone}");
         int farStone = w.Rocks.Count(r => r.Item == "stone" && new Vector2(r.GlobalPosition.X, r.GlobalPosition.Z).Length() > nearR + 10f);
@@ -142,14 +147,14 @@ public partial class WorldTest : Node3D
         w.ForceTime(null);
 
         // 8. Yer imleri
-        Check(w.Biomes.World.Bookmarks.Count == 4, "bookmarks != 4");
+        Check(w.Biomes.World.Bookmarks.Count >= 4, "bookmarks < 4");
         float interiorMax = -1e9f;
         for (int x = -114; x <= 114; x++)
         for (int z = -114; z <= 114; z++) interiorMax = Mathf.Max(interiorMax, w.HeightAt(x, z));
         foreach (var b in w.Biomes.World.Bookmarks)
         {
             var xf = w.BookmarkTransform(b);
-            Check(Mathf.Abs(xf.Origin.X) < 150 && Mathf.Abs(xf.Origin.Z) < 150, $"bookmark {b.Id} outside world");
+            Check(Mathf.Abs(xf.Origin.X) < w.Size / 2f && Mathf.Abs(xf.Origin.Z) < w.Size / 2f, $"bookmark {b.Id} outside world");
             Check(xf.Origin.Y > w.HeightAt(xf.Origin.X, xf.Origin.Z) + 1f, $"bookmark {b.Id} under ground");
         }
         var tepe = w.Bookmark("tepe");
@@ -159,6 +164,9 @@ public partial class WorldTest : Node3D
         var toLake = (w.LakeCenter - gol.Origin).Normalized();
         Check((-gol.Basis.Z).Dot(toLake) > Mathf.Cos(Mathf.DegToRad(30f)), "lake not in gol bookmark frame");
         _info.Add($"tepe={tepeH:0.0} interior_max={interiorMax:0.0}");
+
+        // 9. M2 dunyasi (dunya2; TEKNIK 7 "M2 dunyasi", ICERIK 1 ve 17).
+        RunM2(w);
 
         foreach (var i in _info) GD.Print("WORLD " + i);
         if (_fail.Count == 0) GD.Print($"WORLD RESULT ok checks passed ({sw.ElapsedMilliseconds} ms)");

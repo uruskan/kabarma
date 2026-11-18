@@ -76,6 +76,7 @@
     "sprint": { "name": "Koş", "kb": ["Shift"], "pad": ["L3"] },
     "interact": { "name": "Etkileşim", "kb": ["E"], "pad": ["X"] },
     "bag": { "name": "Çanta", "kb": ["Tab", "I"], "pad": ["Y"] },
+    "map": { "name": "Harita", "kb": ["M"], "padVia": "bag" },
     "fire": { "name": "Çapa'yı kullan", "kb": ["Mouse:Left"], "pad": ["RT"] },
     "head_wheel": { "name": "Başlık çarkı (Çapa elde, basılı tut)", "kb": ["Q"], "pad": ["LB"] },
     "belt_next": { "name": "Kemer: sonraki yuva", "kb": ["Wheel:Down", "Period"], "pad": ["RB"] },
