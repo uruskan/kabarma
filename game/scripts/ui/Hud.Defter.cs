@@ -61,6 +61,7 @@ public partial class Hud
             var next = o.Chains.Count > 1 ? o.Chains[1] : null;
             if (next?.Current != null) _defterPage.AddChild(UL($"Sıradaki (Defter açılınca): {next.Def.Name} · {next.Current.Goal}", 15, T.Muted, true));
         }
+        DefterIslah(); // tarim (M2): Islah notlari, Hud.DefterIslah.cs
         IgnoreMouse(_defterPanel);
     }
 

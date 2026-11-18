@@ -194,6 +194,8 @@ if ($Only -contains 'world') {
 
 if ($Only -contains 'camera') { if (-not $G) { $G = Find-Godot }; Invoke-GodotTest 'camera' '--test=camera --mute' 300 { param($r) $res = ($r.Text -split "`r?`n" | Where-Object { $_ -match '^RESULT ' } | Select-Object -Last 1); if (-not $res) { $res = 'RESULT satiri yok' }; [pscustomobject]@{ Ok = ($res -match '^RESULT ok'); Detail = $res } } } # oyuncu akisi: kamera (--test=camera)
 if ($Only -contains 'grip') { if (-not $G) { $G = Find-Godot }; Invoke-GodotTest 'grip' '--test=grip --mute' 300 { param($r) $res = ($r.Text -split "`r?`n" | Where-Object { $_ -match '^RESULT ' } | Select-Object -Last 1); if (-not $res) { $res = 'RESULT satiri yok' }; [pscustomobject]@{ Ok = ($res -match '^RESULT ok'); Detail = $res } } } # oyuncu akisi: Capa elde, namlu nisanda, araba iki elle (--test=grip)
+if (-not $PSBoundParameters.ContainsKey('Only') -and -not ($Only -contains 'tarim')) { $Only += 'tarim' } # tarim (M2): --test=tarim varsayilan adimlarda
+if ($Only -contains 'tarim') { if (-not $G) { $G = Find-Godot }; Invoke-GodotTest 'tarim' "--test=tarim --fast=4 --mute" $BotTimeout { param($r) $res = ($r.Text -split "`r?`n" | Where-Object { $_ -match '^RESULT ' } | Select-Object -Last 1); if (-not $res) { $res = 'RESULT satiri yok' }; [pscustomobject]@{ Ok = ($res -match '^RESULT ok'); Detail = ($res -replace ' t=[0-9.]+$', '') } } } # tarim (M2): bot ikinci ekini (yabani tohumdan) eker, korur, hasat eder
 if ($Only -contains 'creatures') {
     Invoke-GodotTest 'creatures' '--test=creatures' 300 {
         param($r)

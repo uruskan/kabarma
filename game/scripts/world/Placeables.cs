@@ -20,6 +20,7 @@ public static class PlaceableVisuals
             case "tas_firin": return new TasFirin();
             case "ocakbasi": return new OcakbasiVisual();
             case "mesale": return new MesaleVisual(def.LightRange);
+            case "korkuluk": return KorkulukVisual.Make(); // tarim (M2), FarmView.Meshes.cs
         }
         var m = def.Model != null ? Assets.Load(def.Model) : null;
         m ??= Assets.Load($"{Dir}/{def.Id}.glb");
