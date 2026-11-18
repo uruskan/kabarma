@@ -181,7 +181,10 @@ public partial class OyukTest : Node
         for (int i = 0; i < 20 && !b.Scattered; i++) yield return 0.05;
         Check(b.Scattered, "isikla yumak dagildi");
         yield return 0.5;
-        foreach (var w in Shot("yarasa_dagildi", r1.Center + Vector3.Up * 4f)) yield return w;
+        // Kandilin karsi yaninda dur (kamera duvarin disina tasmasin), kandile ve ortadaki ana yarasaya bak.
+        var away = r1.Center - lamp.GlobalPosition; away.Y = 0;
+        Put(r1.Center + away.Normalized() * 3f);
+        foreach (var w in Shot("yarasa_dagildi", lamp.GlobalPosition + Vector3.Up * 2.5f)) yield return w;
         for (int i = 0; i < 300 && !b.Dead; i++)
         {
             var bt = _d.AtaTargetsNear(r1.Center + Vector3.Up * 5f, 12f).OfType<OyukTarget>().FirstOrDefault();
