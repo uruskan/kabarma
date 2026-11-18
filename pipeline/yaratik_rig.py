@@ -9,7 +9,8 @@ Adimlar:
   1. GLB'yi alir; kemikli ag (Armature altindaki tek mesh) ve iskelet bulunur.
   2. Ag --tris ucgene sadelestirilir (Decimate collapse, UV ve kemik agirliklari korunur: agirlik toplam 1'e yeniden normallenir,
      en fazla 4 kemik).
-  3. Dokular --tex piksele kucultulur (en uzun kenar), JPEG olarak gomulur.
+  3. Dokular --tex piksele kucultulur (en uzun kenar), JPEG olarak gomulur; Blender ana renk JPEG'ine ICC profili (APP2) koyar ve
+     Godot 4.7 bu JPEG'i cozemez (Homur pilotu: "Couldn't load image index 1 ... image/jpeg"): cikis sonrasi ICC bolumleri atilir.
   4. Yurume klibi --walk adindan "walk"a adlandirilir (creatures.json clips: "glb:walk"). Koşu ve bekleme klipleri yoktur;
      PoseLibrary poz kliplerini kodla uretir (poses.json plani), kosu yurumenin hiz olcegidir.
   5. Cikti GLB (iskelet, klip, doku gomulu) ve <out>.report.json (ucgen once/sonra, doku boyutu, kemik sayisi, agirlik denetimi).
@@ -134,6 +135,56 @@ if a.dump:
 os.makedirs(os.path.dirname(os.path.abspath(a.out)), exist_ok=True)
 bpy.ops.export_scene.gltf(filepath=a.out, export_format="GLB", export_image_format="JPEG", export_jpeg_quality=a.jpeg,
                           export_animations=True, export_skins=True, export_yup=True, use_selection=False)
+# ---- Godot uyumu: gomulu JPEG'lerden ICC profil bolumlerini (APP2) at, GLB'yi yeniden paketle ----
+def strip_icc(jpeg):
+    out = bytearray(jpeg[:2])
+    i = 2
+    while i < len(jpeg) - 4:
+        if jpeg[i] != 0xFF:
+            out += jpeg[i:]
+            break
+        m = jpeg[i + 1]
+        if m == 0xDA:  # tarama basladi: gerisi veri
+            out += jpeg[i:]
+            break
+        ln = int.from_bytes(jpeg[i + 2:i + 4], "big")
+        seg = jpeg[i:i + 2 + ln]
+        if not (m == 0xE2 and jpeg[i + 4:i + 15] == b"ICC_PROFILE"):
+            out += seg
+        i += 2 + ln
+    return bytes(out)
+
+
+def repack_glb_without_icc(path):
+    import struct
+    raw = open(path, "rb").read()
+    jl = struct.unpack("<I", raw[12:16])[0]
+    j = json.loads(raw[20:20 + jl])
+    bin_start = 20 + jl + 8
+    bin_data = raw[bin_start:]
+    img_views = {im["bufferView"] for im in j.get("images", []) if "bufferView" in im and im.get("mimeType") == "image/jpeg"}
+    new_bin = bytearray()
+    for bi, bv in enumerate(j["bufferViews"]):
+        off, ln = bv.get("byteOffset", 0), bv["byteLength"]
+        chunk = bin_data[off:off + ln]
+        if bi in img_views:
+            chunk = strip_icc(chunk)
+        while len(new_bin) % 4:
+            new_bin.append(0)
+        bv["byteOffset"] = len(new_bin)
+        bv["byteLength"] = len(chunk)
+        new_bin += chunk
+    while len(new_bin) % 4:
+        new_bin.append(0)
+    j["buffers"][0]["byteLength"] = len(new_bin)
+    js = json.dumps(j, separators=(",", ":")).encode()
+    js += b" " * ((4 - len(js) % 4) % 4)
+    total = 12 + 8 + len(js) + 8 + len(new_bin)
+    open(path, "wb").write(b"glTF" + struct.pack("<II", 2, total) + struct.pack("<I", len(js)) + b"JSON" + js + struct.pack("<I", len(new_bin)) + b"BIN\x00" + bytes(new_bin))
+
+
+repack_glb_without_icc(a.out)
+
 report["size_kb"] = os.path.getsize(a.out) // 1024
 json.dump(report, open(a.out + ".report.json", "w"), indent=1)
 print("YARATIK_RIG", json.dumps(report))
