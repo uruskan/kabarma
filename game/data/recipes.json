@@ -41,6 +41,15 @@
     { "id": "filtre_maskesi", "name": "Filtre Maskesi", "station": "tezgah", "category": "alet", "in": { "cloth": 4, "charcoal": 4, "iron_ingot": 2 }, "out": 1, "seconds": 6.0, "unlockOn": "arastirma:filtre_maskesi" },
     { "id": "suluk", "name": "Suluk", "station": "", "category": "yapi", "in": { "wood": 4, "stone": 2 }, "out": 1, "seconds": 3.0 },
     { "id": "kasinma_fircasi", "name": "Kaşınma Fırçası", "station": "", "category": "yapi", "in": { "wood": 3, "fiber": 3 }, "out": 1, "seconds": 3.0 },
-    { "id": "ari_kovani", "name": "Arı Kovanı", "station": "", "category": "yapi", "in": { "wood": 8, "fiber": 2 }, "out": 1, "seconds": 4.0 }
+    { "id": "korkuluk", "name": "Korkuluk", "station": "", "category": "yapi", "in": { "wood": 4, "fiber": 3 }, "out": 1, "seconds": 3.0 },
+    { "id": "ari_kovani", "name": "Arı Kovanı", "station": "", "category": "yapi", "in": { "wood": 8, "fiber": 2 }, "out": 1, "seconds": 4.0 },
+    { "id": "kablo", "name": "Kablo", "station": "tezgah", "category": "guc", "in": { "copper_wire": 1, "fiber": 1 }, "out": 2, "seconds": 2.0 },
+    { "id": "direk", "name": "Direk", "station": "", "category": "guc", "in": { "wood": 4, "copper_wire": 1 }, "out": 1, "seconds": 2.0 },
+    { "id": "salter", "name": "Şalter", "station": "tezgah", "category": "guc", "in": { "wood": 2, "copper_wire": 2 }, "out": 1, "seconds": 3.0 },
+    { "id": "ruzgar_gulu", "name": "Rüzgâr Gülü", "station": "tezgah", "category": "guc", "in": { "wood": 12, "copper_wire": 4 }, "out": 1, "seconds": 6.0 },
+    { "id": "hayvan_carki", "name": "Hayvan Çarkı", "station": "tezgah", "category": "guc", "in": { "wood": 16, "copper_wire": 2 }, "out": 1, "seconds": 6.0 },
+    { "id": "elektrik_lambasi", "name": "Elektrik Lambası", "station": "tezgah", "category": "guc", "in": { "wood": 2, "copper_wire": 1 }, "out": 1, "seconds": 3.0 },
+    { "id": "dugme", "name": "Düğme", "station": "tezgah", "category": "guc", "in": { "wood": 1, "copper_wire": 1 }, "out": 1, "seconds": 2.0 },
+    { "id": "basinc_plakasi", "name": "Basınç Plakası", "station": "tezgah", "category": "guc", "in": { "stone": 2, "copper_wire": 1 }, "out": 1, "seconds": 2.0 }
   ]
 }

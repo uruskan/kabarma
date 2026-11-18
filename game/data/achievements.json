@@ -1,0 +1,10 @@
+{
+  "_not": "Basarimlar (50): 48 zincirin tamamlanmasi (kimlik chain_<zincir>, ad ve metin zincirden) + Extras (ICERIK 18). Sayac OrderBook.Stats (genel, Defter acilmadan da sayar). Steam'e baglama M6: kimlik = Steam API adi olarak kullanilir.",
+  "total": 50,
+  "chainPrefix": "chain_",
+  "chainText": "Zinciri tamamla: bes adimi da bitir.",
+  "extras": [
+    { "id": "ilk_gece", "name": "İlk Gece", "text": "İlk Kabarma gecesini atlat.", "stat": "kabarma_survived", "target": 1 },
+    { "id": "maya_hakimi", "name": "Maya Hâkimi", "text": "Ana Maya'yı bul ve ele geçir.", "stat": "ana_maya", "target": 1 }
+  ]
+}

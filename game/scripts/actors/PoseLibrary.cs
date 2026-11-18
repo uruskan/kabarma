@@ -25,6 +25,9 @@ public sealed class PoseLibrary
 
     public PoseLibrary(GameData data) { _data = data; }
 
+    /// <summary>Veri (koddan govdeler icin: bodies.json).</summary>
+    public GameData Data => _data;
+
     /// <summary>Iskeletteki kemik adini bulur: aynen, ':' -> '_' ile, ya da harf/rakam karsilastirmasiyla (ice aktarma adi degistirebilir).</summary>
     public static int FindBone(Skeleton3D skel, string name)
     {
@@ -180,6 +183,8 @@ public sealed class CreatureRig
     public AnimationPlayer Player { get; private set; }
     public readonly Dictionary<string, string> SlotAnim = new();
     public string Slot { get; private set; }
+    /// <summary>Koddan govde ise tanimi (Maya kesesi, yer tutucu isareti); Tripo modelinde null.</summary>
+    public BodyDef Body { get; private set; }
 
     CreatureRig(CreatureDef def) { Def = def; }
 
@@ -187,7 +192,9 @@ public sealed class CreatureRig
     public static CreatureRig Load(CreatureDef def, PoseLibrary poses, Node3D frame, string fallbackModel = null)
     {
         var rig = def.Rig;
-        var model = rig != null ? Assets.Load(rig.Model) : null;
+        // "code:<kimlik>": koddan parca govde (bodies.json, CreatureBody); Tripo modeli gelene kadar yer tutucu.
+        var body = rig != null && CreatureBody.IsCode(rig.Model) ? poses?.Data.Body(rig.Model[CreatureBody.Prefix.Length..]) : null;
+        var model = rig == null ? null : CreatureBody.IsCode(rig.Model) ? (body != null ? CreatureBody.Build(body, def.Id) : null) : Assets.Load(rig.Model);
         bool fallback = false;
         if (model == null && fallbackModel != null) { model = Assets.Load(fallbackModel); fallback = true; }
         if (model == null) return null;
@@ -196,6 +203,7 @@ public sealed class CreatureRig
         frame.AddChild(r.Yaw);
         r.Yaw.AddChild(model);
         r.Model = model;
+        r.Body = body;
         r.Skeleton = model.FindChildren("*", "Skeleton3D", true, false).OfType<Skeleton3D>().FirstOrDefault();
         r.Player = model.FindChildren("*", "AnimationPlayer", true, false).OfType<AnimationPlayer>().FirstOrDefault();
         if (r.Skeleton == null || rig == null || poses == null || fallback) return r;

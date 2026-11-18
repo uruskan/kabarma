@@ -78,14 +78,14 @@
       "color": "#F4E6F0", "size": 1.1, "speed": 1.1
     },
     {
-      "id": "homur", "name": "Homur", "tame": "feed", "home": "pen", "food": "kabak", "foodToTrust": 4, "area": 9,
+      "id": "homur", "name": "Homur", "tame": "feed", "home": "pen", "food": "pumpkin", "foodToTrust": 4, "area": 9,
       "roles": ["isci", "binek", "uretici"],
       "products": [ { "item": "deri", "seconds": 1500, "food": 2, "amount": 1 } ],
       "work": { "kind": "dig", "seconds": 300, "yield": [ { "item": "copper_ore", "weight": 3 }, { "item": "truf", "weight": 1 } ] },
       "color": "#B07A5A", "size": 1.0, "speed": 1.4
     },
     {
-      "id": "dalli", "name": "Dallı", "tame": "feed", "home": "pen", "food": "bogurtlen", "foodToTrust": 4, "area": 9,
+      "id": "dalli", "name": "Dallı", "tame": "feed", "home": "pen", "food": "blackberry", "foodToTrust": 4, "area": 9,
       "roles": ["yuk", "uretici"],
       "products": [ { "item": "deri", "seconds": 1500, "food": 2, "amount": 1 } ],
       "pack": 16,
@@ -100,7 +100,7 @@
       "color": "#6B6F8A", "size": 0.6, "speed": 2.0
     },
     {
-      "id": "vicik", "name": "Vıcık", "tame": "feed", "home": "pen", "food": "mantar", "foodToTrust": 3, "area": 4,
+      "id": "vicik", "name": "Vıcık", "tame": "feed", "home": "pen", "food": "mushroom", "foodToTrust": 3, "area": 4,
       "roles": ["isci", "uretici"],
       "products": [ { "item": "sumuk", "seconds": 300, "food": 1, "amount": 1 } ],
       "work": { "kind": "compost", "seconds": 240, "in": "gubre", "out": "kompost" },
@@ -113,7 +113,7 @@
       "color": "#5A4632", "size": 1.8, "speed": 1.8
     },
     {
-      "id": "vizviz", "name": "Vızvız", "tame": "feed", "home": "hive", "food": "aycicegi", "foodToTrust": 2, "area": 0,
+      "id": "vizviz", "name": "Vızvız", "tame": "feed", "home": "hive", "food": "sunflower", "foodToTrust": 2, "area": 0,
       "roles": ["uretici"],
       "products": [
         { "item": "bal", "seconds": 400, "food": 0, "amount": 1 },
