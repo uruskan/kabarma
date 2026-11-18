@@ -1,0 +1,96 @@
+﻿OBJECTS skinned: ['char1'] rigid: [('Icosphere', 'OBJECT', '')]
+TRACKS carry          konum oynayan: []  olcek: []
+TRACKS cheer          konum oynayan: []  olcek: []
+TRACKS crouch_walk    konum oynayan: []  olcek: []
+TRACKS hurt           konum oynayan: []  olcek: []
+TRACKS idle           konum oynayan: []  olcek: []
+TRACKS jump           konum oynayan: []  olcek: []
+TRACKS kneel          konum oynayan: []  olcek: []
+TRACKS knockdown      konum oynayan: []  olcek: []
+TRACKS push           konum oynayan: []  olcek: []
+TRACKS run            konum oynayan: []  olcek: []
+TRACKS shock_fall     konum oynayan: []  olcek: []
+TRACKS sprint         konum oynayan: []  olcek: []
+TRACKS walk           konum oynayan: []  olcek: []
+TRACKS walk_casual    konum oynayan: []  olcek: []
+TRACKS wave           konum oynayan: []  olcek: []
+REGION sirt 2756 kose; canta rengi 586; govde rengi 2170
+BAG BOX x -0.241..0.245  y 0.034..0.282  z 0.761..1.318
+CLIP carry          kareler 1-157  canta(deri) max= 14.6 cm p95=  7.9 cm  kati nesne max=76.24 cm  Backpack olcek sapmasi=0.0000
+     kose  3907 (+0.18,+0.08,+0.94)  14.6 cm  [('LeftArm', 0.749), ('LeftUpLeg', 0.144), ('Hips', 0.09), ('LeftShoulder', 0.017)]
+     kose  3908 (+0.18,+0.08,+0.94)  14.6 cm  [('LeftArm', 0.749), ('LeftUpLeg', 0.144), ('Hips', 0.09), ('LeftShoulder', 0.017)]
+     kose  3837 (+0.22,+0.08,+0.96)  14.4 cm  [('LeftArm', 0.805), ('LeftUpLeg', 0.075), ('LeftShoulder', 0.062), ('Backpack', 0.058)]
+     kose  3814 (+0.20,+0.08,+0.98)  13.5 cm  [('LeftArm', 0.822), ('LeftShoulder', 0.083), ('Backpack', 0.049), ('LeftUpLeg', 0.046)]
+CLIP cheer          kareler 1-225  canta(deri) max= 37.6 cm p95= 23.9 cm  kati nesne max=139.94 cm  Backpack olcek sapmasi=0.0000
+     kose  5935 (-0.20,+0.08,+0.98)  37.6 cm  [('RightArm', 0.85), ('RightShoulder', 0.08), ('RightUpLeg', 0.035), ('Backpack', 0.035)]
+     kose  5938 (-0.20,+0.08,+0.98)  37.6 cm  [('RightArm', 0.85), ('RightShoulder', 0.08), ('RightUpLeg', 0.035), ('Backpack', 0.035)]
+     kose  5941 (-0.20,+0.08,+0.98)  37.6 cm  [('RightArm', 0.85), ('RightShoulder', 0.08), ('RightUpLeg', 0.035), ('Backpack', 0.035)]
+     kose  5942 (-0.20,+0.08,+0.98)  37.6 cm  [('RightArm', 0.85), ('RightShoulder', 0.08), ('RightUpLeg', 0.035), ('Backpack', 0.035)]
+CLIP crouch_walk    kareler 1-28  canta(deri) max= 22.6 cm p95= 18.1 cm  kati nesne max=174.19 cm  Backpack olcek sapmasi=0.0000
+     kose  3837 (+0.22,+0.08,+0.96)  22.6 cm  [('LeftArm', 0.805), ('LeftUpLeg', 0.075), ('LeftShoulder', 0.062), ('Backpack', 0.058)]
+     kose  4167 (+0.11,+0.08,+0.81)  22.1 cm  [('LeftUpLeg', 0.646), ('Hips', 0.177), ('RightUpLeg', 0.09), ('LeftArm', 0.088)]
+     kose  3816 (+0.20,+0.08,+0.98)  22.1 cm  [('LeftArm', 0.822), ('LeftShoulder', 0.083), ('Backpack', 0.049), ('LeftUpLeg', 0.046)]
+     kose  3817 (+0.20,+0.08,+0.98)  22.1 cm  [('LeftArm', 0.822), ('LeftShoulder', 0.083), ('Backpack', 0.049), ('LeftUpLeg', 0.046)]
+CLIP hurt           kareler 1-40  canta(deri) max= 28.0 cm p95= 17.3 cm  kati nesne max=150.72 cm  Backpack olcek sapmasi=0.0000
+     kose  5935 (-0.20,+0.08,+0.98)  28.0 cm  [('RightArm', 0.85), ('RightShoulder', 0.08), ('RightUpLeg', 0.035), ('Backpack', 0.035)]
+     kose  5941 (-0.20,+0.08,+0.98)  28.0 cm  [('RightArm', 0.85), ('RightShoulder', 0.08), ('RightUpLeg', 0.035), ('Backpack', 0.035)]
+     kose  5938 (-0.20,+0.08,+0.98)  28.0 cm  [('RightArm', 0.85), ('RightShoulder', 0.08), ('RightUpLeg', 0.035), ('Backpack', 0.035)]
+     kose  5936 (-0.20,+0.08,+0.98)  28.0 cm  [('RightArm', 0.85), ('RightShoulder', 0.08), ('RightUpLeg', 0.035), ('Backpack', 0.035)]
+CLIP idle           kareler 1-240  canta(deri) max= 10.5 cm p95=  7.0 cm  kati nesne max=33.79 cm  Backpack olcek sapmasi=0.0000
+     kose  2249 (-0.23,+0.11,+1.21)  10.5 cm  [('RightShoulder', 0.506), ('RightArm', 0.403), ('Head', 0.066), ('LeftShoulder', 0.025)]
+     kose  2140 (-0.23,+0.11,+1.23)  10.2 cm  [('RightShoulder', 0.51), ('RightArm', 0.369), ('Head', 0.091), ('LeftShoulder', 0.03)]
+     kose  5760 (-0.23,+0.08,+1.16)  10.0 cm  [('RightArm', 0.526), ('RightShoulder', 0.47)]
+     kose  2252 (-0.23,+0.08,+1.19)   9.9 cm  [('RightShoulder', 0.512), ('RightArm', 0.451), ('Head', 0.029)]
+CLIP jump           kareler 1-45  canta(deri) max= 30.5 cm p95= 21.0 cm  kati nesne max=117.53 cm  Backpack olcek sapmasi=0.0000
+     kose  3837 (+0.22,+0.08,+0.96)  30.5 cm  [('LeftArm', 0.805), ('LeftUpLeg', 0.075), ('LeftShoulder', 0.062), ('Backpack', 0.058)]
+     kose  3816 (+0.20,+0.08,+0.98)  28.8 cm  [('LeftArm', 0.822), ('LeftShoulder', 0.083), ('Backpack', 0.049), ('LeftUpLeg', 0.046)]
+     kose  3815 (+0.20,+0.08,+0.98)  28.8 cm  [('LeftArm', 0.822), ('LeftShoulder', 0.083), ('Backpack', 0.049), ('LeftUpLeg', 0.046)]
+     kose  3817 (+0.20,+0.08,+0.98)  28.8 cm  [('LeftArm', 0.822), ('LeftShoulder', 0.083), ('Backpack', 0.049), ('LeftUpLeg', 0.046)]
+CLIP kneel          kareler 1-229  canta(deri) max= 35.4 cm p95= 26.6 cm  kati nesne max=308.20 cm  Backpack olcek sapmasi=0.0000
+     kose  4167 (+0.11,+0.08,+0.81)  35.4 cm  [('LeftUpLeg', 0.646), ('Hips', 0.177), ('RightUpLeg', 0.09), ('LeftArm', 0.088)]
+     kose  5813 (-0.22,+0.08,+0.96)  33.7 cm  [('RightArm', 0.8), ('Backpack', 0.068), ('RightUpLeg', 0.067), ('RightShoulder', 0.065)]
+     kose  5814 (-0.22,+0.08,+0.96)  33.7 cm  [('RightArm', 0.8), ('Backpack', 0.068), ('RightUpLeg', 0.067), ('RightShoulder', 0.065)]
+     kose  5816 (-0.22,+0.08,+0.96)  33.7 cm  [('RightArm', 0.8), ('Backpack', 0.068), ('RightUpLeg', 0.067), ('RightShoulder', 0.065)]
+CLIP knockdown      kareler 1-61  canta(deri) max= 36.4 cm p95= 28.1 cm  kati nesne max=232.23 cm  Backpack olcek sapmasi=0.0000
+     kose  5940 (-0.20,+0.08,+0.98)  36.4 cm  [('RightArm', 0.85), ('RightShoulder', 0.08), ('RightUpLeg', 0.035), ('Backpack', 0.035)]
+     kose  5941 (-0.20,+0.08,+0.98)  36.4 cm  [('RightArm', 0.85), ('RightShoulder', 0.08), ('RightUpLeg', 0.035), ('Backpack', 0.035)]
+     kose  5935 (-0.20,+0.08,+0.98)  36.4 cm  [('RightArm', 0.85), ('RightShoulder', 0.08), ('RightUpLeg', 0.035), ('Backpack', 0.035)]
+     kose  5942 (-0.20,+0.08,+0.98)  36.4 cm  [('RightArm', 0.85), ('RightShoulder', 0.08), ('RightUpLeg', 0.035), ('Backpack', 0.035)]
+CLIP push           kareler 1-193  canta(deri) max= 29.4 cm p95= 18.2 cm  kati nesne max=124.81 cm  Backpack olcek sapmasi=0.0000
+     kose  5940 (-0.20,+0.08,+0.98)  29.4 cm  [('RightArm', 0.85), ('RightShoulder', 0.08), ('RightUpLeg', 0.035), ('Backpack', 0.035)]
+     kose  5941 (-0.20,+0.08,+0.98)  29.4 cm  [('RightArm', 0.85), ('RightShoulder', 0.08), ('RightUpLeg', 0.035), ('Backpack', 0.035)]
+     kose  5942 (-0.20,+0.08,+0.98)  29.4 cm  [('RightArm', 0.85), ('RightShoulder', 0.08), ('RightUpLeg', 0.035), ('Backpack', 0.035)]
+     kose  5935 (-0.20,+0.08,+0.98)  29.4 cm  [('RightArm', 0.85), ('RightShoulder', 0.08), ('RightUpLeg', 0.035), ('Backpack', 0.035)]
+CLIP run            kareler 1-16  canta(deri) max= 18.6 cm p95= 10.9 cm  kati nesne max=48.84 cm  Backpack olcek sapmasi=0.0000
+     kose  5813 (-0.22,+0.08,+0.96)  18.6 cm  [('RightArm', 0.8), ('Backpack', 0.068), ('RightUpLeg', 0.067), ('RightShoulder', 0.065)]
+     kose  5814 (-0.22,+0.08,+0.96)  18.6 cm  [('RightArm', 0.8), ('Backpack', 0.068), ('RightUpLeg', 0.067), ('RightShoulder', 0.065)]
+     kose  5815 (-0.22,+0.08,+0.96)  18.6 cm  [('RightArm', 0.8), ('Backpack', 0.068), ('RightUpLeg', 0.067), ('RightShoulder', 0.065)]
+     kose  5816 (-0.22,+0.08,+0.96)  18.6 cm  [('RightArm', 0.8), ('Backpack', 0.068), ('RightUpLeg', 0.067), ('RightShoulder', 0.065)]
+CLIP shock_fall     kareler 1-153  canta(deri) max= 24.2 cm p95= 18.1 cm  kati nesne max=251.70 cm  Backpack olcek sapmasi=0.0000
+     kose  5941 (-0.20,+0.08,+0.98)  24.2 cm  [('RightArm', 0.85), ('RightShoulder', 0.08), ('RightUpLeg', 0.035), ('Backpack', 0.035)]
+     kose  5936 (-0.20,+0.08,+0.98)  24.2 cm  [('RightArm', 0.85), ('RightShoulder', 0.08), ('RightUpLeg', 0.035), ('Backpack', 0.035)]
+     kose  5938 (-0.20,+0.08,+0.98)  24.2 cm  [('RightArm', 0.85), ('RightShoulder', 0.08), ('RightUpLeg', 0.035), ('Backpack', 0.035)]
+     kose  5937 (-0.20,+0.08,+0.98)  24.2 cm  [('RightArm', 0.85), ('RightShoulder', 0.08), ('RightUpLeg', 0.035), ('Backpack', 0.035)]
+CLIP sprint         kareler 1-20  canta(deri) max= 13.5 cm p95=  9.8 cm  kati nesne max=84.54 cm  Backpack olcek sapmasi=0.0000
+     kose  5942 (-0.20,+0.08,+0.98)  13.5 cm  [('RightArm', 0.85), ('RightShoulder', 0.08), ('RightUpLeg', 0.035), ('Backpack', 0.035)]
+     kose  5936 (-0.20,+0.08,+0.98)  13.5 cm  [('RightArm', 0.85), ('RightShoulder', 0.08), ('RightUpLeg', 0.035), ('Backpack', 0.035)]
+     kose  5938 (-0.20,+0.08,+0.98)  13.5 cm  [('RightArm', 0.85), ('RightShoulder', 0.08), ('RightUpLeg', 0.035), ('Backpack', 0.035)]
+     kose  5937 (-0.20,+0.08,+0.98)  13.5 cm  [('RightArm', 0.85), ('RightShoulder', 0.08), ('RightUpLeg', 0.035), ('Backpack', 0.035)]
+CLIP walk           kareler 1-25  canta(deri) max=  8.4 cm p95=  7.5 cm  kati nesne max=39.91 cm  Backpack olcek sapmasi=0.0000
+     kose  3815 (+0.20,+0.08,+0.98)   8.4 cm  [('LeftArm', 0.822), ('LeftShoulder', 0.083), ('Backpack', 0.049), ('LeftUpLeg', 0.046)]
+     kose  3814 (+0.20,+0.08,+0.98)   8.4 cm  [('LeftArm', 0.822), ('LeftShoulder', 0.083), ('Backpack', 0.049), ('LeftUpLeg', 0.046)]
+     kose  3817 (+0.20,+0.08,+0.98)   8.4 cm  [('LeftArm', 0.822), ('LeftShoulder', 0.083), ('Backpack', 0.049), ('LeftUpLeg', 0.046)]
+     kose  3816 (+0.20,+0.08,+0.98)   8.4 cm  [('LeftArm', 0.822), ('LeftShoulder', 0.083), ('Backpack', 0.049), ('LeftUpLeg', 0.046)]
+CLIP walk_casual    kareler 1-101  canta(deri) max= 12.3 cm p95= 10.1 cm  kati nesne max=41.59 cm  Backpack olcek sapmasi=0.0000
+     kose  2249 (-0.23,+0.11,+1.21)  12.3 cm  [('RightShoulder', 0.506), ('RightArm', 0.403), ('Head', 0.066), ('LeftShoulder', 0.025)]
+     kose  5760 (-0.23,+0.08,+1.16)  12.1 cm  [('RightArm', 0.526), ('RightShoulder', 0.47)]
+     kose  2140 (-0.23,+0.11,+1.23)  12.0 cm  [('RightShoulder', 0.51), ('RightArm', 0.369), ('Head', 0.091), ('LeftShoulder', 0.03)]
+     kose  2252 (-0.23,+0.08,+1.19)  11.8 cm  [('RightShoulder', 0.512), ('RightArm', 0.451), ('Head', 0.029)]
+CLIP wave           kareler 1-129  canta(deri) max= 28.7 cm p95= 14.2 cm  kati nesne max=161.43 cm  Backpack olcek sapmasi=0.0000
+     kose  5935 (-0.20,+0.08,+0.98)  28.7 cm  [('RightArm', 0.85), ('RightShoulder', 0.08), ('RightUpLeg', 0.035), ('Backpack', 0.035)]
+     kose  5938 (-0.20,+0.08,+0.98)  28.7 cm  [('RightArm', 0.85), ('RightShoulder', 0.08), ('RightUpLeg', 0.035), ('Backpack', 0.035)]
+     kose  5941 (-0.20,+0.08,+0.98)  28.7 cm  [('RightArm', 0.85), ('RightShoulder', 0.08), ('RightUpLeg', 0.035), ('Backpack', 0.035)]
+     kose  5942 (-0.20,+0.08,+0.98)  28.7 cm  [('RightArm', 0.85), ('RightShoulder', 0.08), ('RightUpLeg', 0.035), ('Backpack', 0.035)]
+BAG WEIGHTS (canta rengi koselerin agirlik toplami): [('Backpack', 417.1), ('RightArm', 32.1), ('LeftArm', 27.3), ('RightShoulder', 24.5), ('LeftShoulder', 22.7), ('RightUpLeg', 17.9), ('Head', 17.1), ('LeftUpLeg', 12.4), ('Hips', 11.1), ('Spine02', 3.5)]
+JSON progress/m1/oyuncu/log/canta_olcum_once.json
+WORST bag 308.20 cm

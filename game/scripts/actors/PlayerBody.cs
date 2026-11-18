@@ -13,7 +13,8 @@ namespace Kabarma.Game;
 ///  5. yurume ustune katmanlar: el arabasi itme (push_cart) ve suda yurume (wade),
 ///  6. ayaklarin zemine oturmasi: ayak altindan isin, kalca inisi ve bacak IK hedefleri (TwoBoneIK3D sonra cozer).
 /// Canta bilerek oynatilmaz (sahip, 18 Kasim: "canta sirta sabit dursun"): Backpack kemigine burada hic yazilmaz;
-/// canta merge_player.py'de gogse (Spine) kati agirliklanir ve sirtla birlikte tek parca hareket eder.
+/// canta merge_player.py'de govdeden ayrilmis, derisiz, kati bir mesh'tir (Backpack_Mesh); Godot onu iskelette
+/// BoneAttachment3D ile Backpack kemigine (gogus Spine02'nin cocugu) baglar. Hicbir klipte bicim degistirmez.
 /// Godot her karede degistirilmemis pozu geri yukler; buradaki donusler birikmez.
 /// Girdiler PlayerRig.Update'ten gelir (fizik karesi), uygulama iskeletin guncelleme karesinde.
 /// </summary>

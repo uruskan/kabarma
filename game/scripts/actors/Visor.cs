@@ -33,8 +33,11 @@ public partial class Visor : Node3D
     public static Visor Attach(Skeleton3D skel, VisorFile def)
     {
         int head = skel.FindBone("Head");
-        var mesh = skel.FindChildren("*", "MeshInstance3D", true, false).OfType<MeshInstance3D>().FirstOrDefault()
-                   ?? skel.GetParent()?.FindChildren("*", "MeshInstance3D", true, false).OfType<MeshInstance3D>().FirstOrDefault();
+        // Derili govde (kask onun parcasi); canta ayri, kemige bagli derisiz bir mesh oldugu icin ilk bulunan olmayabilir.
+        var all = skel.FindChildren("*", "MeshInstance3D", true, false).OfType<MeshInstance3D>()
+            .Concat(skel.GetParent()?.FindChildren("*", "MeshInstance3D", true, false).OfType<MeshInstance3D>() ?? Enumerable.Empty<MeshInstance3D>())
+            .Where(m => m.Mesh != null).ToList();
+        var mesh = all.FirstOrDefault(m => m.Skin != null) ?? all.FirstOrDefault();
         if (head < 0 || mesh == null) return null;
         var patch = BuildPatch(skel, mesh, head);
         if (patch == null) return null;

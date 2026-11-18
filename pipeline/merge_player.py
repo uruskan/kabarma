@@ -16,11 +16,12 @@ Asamalar:
     (0,04 sn) cikmasinin nedeni buydu. Bu yuzden animasyon kanallari dugum adina gore dogrudan derili tabana
     kopyalanir; Blender tek bir derili GLB acar ve her klip "OBArmature" yuvasina bagli eylem olur.
  B. Blender: olcegi uygula (Meshy iskeleti 0,01 olcekli, santimetre), yerinde kliplerde kalca kaymasini sil,
-    sirt cantasina "Backpack" kemigi ekle (Meshy cantayi kollara ve bacaklara agirliklamis; canta yuruyuste
-    bukuluyordu) ve cantanin koselerini tamamen ona ver (kati canta; yalniz sirta degdigi ince serit harmanli),
-    her eylemi NLA izi yapip disa aktar.
- C. Denetim: ciktidaki her beklenen klip var, 0,2 sn'den uzun ve kanalli; Backpack eklemi var; cantanin kati
-    cekirdegi disa aktarimda korunmus (B'deki kati koselerin en az %90'i ciktida yalniz Backpack'e bagli). Yoksa cikis 1.
+    gogse (Spine02) "Backpack" kemigi ekle, cantanin yuzlerini govde aginden ayri, derisiz bir mesh olarak ayir ve
+    o kemige bagla (Meshy cantayi kollara ve bacaklara agirliklamisti; canta kliplerde uzuyordu), her eylemi NLA izi
+    yapip disa aktar. Godot bunu iskelette BoneAttachment3D olarak acar: canta hicbir klipte bicim degistirmez.
+ C. Denetim: ciktidaki her beklenen klip var, 0,2 sn'den uzun ve kanalli; Backpack eklemi var; Backpack_Mesh derisiz
+    ve Backpack ekleminin cocugu; govdede Backpack'e agirlikli kose yok. Yoksa cikis 1.
+    Olcum: pipeline/measure_bag.py her klipte cantanin gogus kemigine gore sapmasini olcer.
 """
 import bpy, sys, os, json, struct, glob, argparse, tempfile
 
@@ -191,58 +192,179 @@ bpy.context.view_layer.objects.active = arm
 bpy.ops.object.transform_apply(location=False, rotation=False, scale=True)
 print("APPLIED scale", k, "-> armature scale", tuple(arm.scale))
 
-# --- Backpack kemigi: cantayi gogse (Spine) kati baglar. Kod bu kemigi oynatmaz; canta sirtta sabit durur. ---
-# Blender ekseninde govde -Y'ye bakar; canta arkada (+Y), y 0,07..0,26, z 0,78..1,30, |x| < 0,27 (olculdu).
+# --- Canta: ayri, derisiz, KATI bir mesh; gogse vidali "Backpack" kemigine bagli (sahip, 18 Kasim: "canta hicbir
+# klipte bicim degistirmez; gogse vidali kati bir kutu gibi govdeyle birlikte doner ve kayar"). ---
+# Olcum (pipeline/measure_bag.py, 18 Kasim): kliplerde kemik olcek ya da konum izi yok (Hips disinda); cantayi uzatan
+# sey Meshy'nin agirliklariydi. Eski agirlik kutusu (y 0,075..0,13 rampasi) cantanin sirta bakan yuzunu (y ~0,08),
+# yan panellerini ve ust koselerini disarida birakiyordu: bu koseler %80 kola, omza ya da uyluga bagliydi ve
+# kliplerde 8..37 cm oynuyordu. Simdi canta yuzleri govde aginden AYRILIR, derisi yoktur, kemige baglidir: Godot
+# glTF iceaktarimi bunu iskelette BoneAttachment3D + MeshInstance3D yapar. Kemik canlandirilmaz (kod da yazmaz).
+# Blender ekseninde govde -Y'ye bakar; canta arkada (+Y). Kesitlerle olculen kutu: |x| < 0,25, z 0,76..1,31,
+# sirta bakan yuzu y ~0,065..0,08; tulumun sirti y <= 0,06.
+BAG_PARENT = "Spine02"   # gogus: omuzlar ve boyun buna bagli
 bpy.ops.object.mode_set(mode="EDIT")
 eb = arm.data.edit_bones
 bag = eb.new("Backpack")
 bag.head = (0.0, 0.11, 1.22)   # askilarin sirta bindigi ust on kenar
 bag.tail = (0.0, 0.19, 0.86)   # cantanin alt merkezi
-bag.parent = eb["Spine"]
+bag.parent = eb[BAG_PARENT]
 bag.use_connect = False
+bag.use_deform = True          # derinin eklem listesinde kalsin (oyun kemigi bulur); hicbir kose ona agirlikli degil
 bpy.ops.object.mode_set(mode="OBJECT")
 
-
-def smooth(e0, e1, x):
-    t = max(0.0, min(1.0, (x - e0) / (e1 - e0)))
-    return t * t * (3 - 2 * t)
-
-
-def bag_region(p):
-    """Cantanin olculen kutusu icinde olma payi (0..1)."""
-    w = smooth(0.075, 0.13, p.y) * smooth(0.72, 0.80, p.z) * (1 - smooth(1.27, 1.33, p.z)) * (1 - smooth(0.25, 0.32, abs(p.x)))
-    if p.z > 1.20:
-        w *= smooth(0.11, 0.15, p.y)  # kask arkasi (y <= 0,11) cantaya girmez
-    return w
+BAG_X, BAG_Z0, BAG_Z1 = 0.265, 0.74, 1.315   # yuz merkezi bu kutuda
+BAG_Y_ANY, BAG_Y_GREY = 0.095, 0.03           # y > 0,095 her yuz (kayislar dahil); 0,03..0,095 arasi yalniz gri yuz
+GREY_SAT = 0.3                                # gri: doygunluk bundan az (tulum lacivert, seritler sari: doygun)
+HEAD_MAX, HEAD_Y = 0.3, 0.12                  # z > 1,20 ve y < 0,12'de basa bu kadar agirlikli kose kaskindir
 
 
-# Canta kati (sahip, 18 Kasim: "canta sirta sabit dursun; nefes, salinim, olcek degisimi yok"). Eskiden payin
-# kendisi kadar kismi agirlik veriliyordu: 788 kose kalca, uyluk, kol ve basla paylasiyordu, canta yururken de
-# beklerken de sisip iniyordu. Simdi pay >= BAG_CORE olan koseler (cantanin kendisi) yalniz Backpack'e (1,0) aittir.
-# Pay daha kucukse (cantanin sirta degdigi ince serit) Backpack payi BAG_CORE'a bolunerek surekli artar; ag tek
-# kaynakli yuzey oldugu icin sert sinir catlak ya da gerilme acardi. Backpack, Spine'in canlandirilmayan cocugudur:
-# derileme icin Spine ile ayni hareket eder, yani bu serit de yalniz govdeyle gogus arasinda harmanlanir.
-BAG_CORE = 0.5
+def base_pixels(o):
+    for slot in o.material_slots:
+        m = slot.material
+        if not m or not m.use_nodes:
+            continue
+        for n in m.node_tree.nodes:
+            if n.type == "BSDF_PRINCIPLED" and n.inputs["Base Color"].links:
+                fn = n.inputs["Base Color"].links[0].from_node
+                if fn.type == "TEX_IMAGE" and fn.image:
+                    w, h = fn.image.size
+                    return list(fn.image.pixels[:]), w, h, fn.image.channels
+    return None
+
+
+pix = base_pixels(mesh)
+uvl = mesh.data.uv_layers.active.data if mesh.data.uv_layers else None
+
+
+def texel(u, v):
+    px, w, h, ch = pix
+    x = min(w - 1, max(0, int((u % 1.0) * w)))
+    y = min(h - 1, max(0, int((v % 1.0) * h)))
+    i = (y * w + x) * ch
+    return px[i], px[i + 1], px[i + 2]
+
+
+def face_grey(poly):
+    """Yuzun dokusu gri mi (canta govdesi): UV merkezi ve koseleri ornegi; cogunluk."""
+    if pix is None or uvl is None:
+        return False
+    uvs = [tuple(uvl[li].uv) for li in poly.loop_indices]
+    cu = sum(u for u, _ in uvs) / len(uvs)
+    cv = sum(v for _, v in uvs) / len(uvs)
+    # koseler merkeze dogru biraz cekilir (komsu UV adasinin rengine tasmasin)
+    samples = [texel(cu, cv)] + [texel(cu + (u - cu) * 0.6, cv + (v - cv) * 0.6) for u, v in uvs]
+    grey = 0
+    for r, g, b in samples:
+        mx, mn = max(r, g, b), min(r, g, b)
+        grey += (mx - mn) / max(mx, 1e-4) < GREY_SAT
+    return grey * 2 > len(samples)
+
+
+head_g = mesh.vertex_groups.get("Head")
+neck_g = mesh.vertex_groups.get("neck")
+
+
+def head_weight(vi):
+    s = 0.0
+    for g in mesh.data.vertices[vi].groups:
+        if (head_g and g.group == head_g.index) or (neck_g and g.group == neck_g.index):
+            s += g.weight
+    return s
+
+
 mw = mesh.matrix_world
-vg = mesh.vertex_groups.get("Backpack") or mesh.vertex_groups.new(name="Backpack")
-rigid = fringe = 0
+n_bag = 0
+# Yuz secim kipi, koseler ve kenarlar secimsiz: duzenleme kipine girerken secim yuzlerden tasinir (kose kipinde
+# Blender secimi koselerden kurar ve yuz secimi kaybolurdu).
+bpy.context.tool_settings.mesh_select_mode = (False, False, True)
 for v in mesh.data.vertices:
-    w = bag_region(mw @ v.co)
-    if w <= 0.01:
+    v.select = False
+for e in mesh.data.edges:
+    e.select = False
+for poly in mesh.data.polygons:
+    c = mw @ poly.center
+    sel = abs(c.x) < BAG_X and BAG_Z0 < c.z < BAG_Z1 and c.y > BAG_Y_GREY
+    if sel and c.y <= BAG_Y_ANY:
+        sel = face_grey(poly)                     # lacivert tulum ve sari serit govdede kalir
+    if sel and c.z > 1.20 and c.y < HEAD_Y:
+        sel = all(head_weight(vi) < HEAD_MAX for vi in poly.vertices)  # kaskin arka alt kenari cantaya girmez
+    poly.select = sel
+    n_bag += sel
+print("BAG faces", n_bag, "/", len(mesh.data.polygons))
+if n_bag < 300:
+    fail(f"canta bolgesinde yalnizca {n_bag} yuz bulundu")
+
+# Ayir: secili yuzler yeni nesne olur. Derisi (Armature degistiricisi, kose gruplari) silinir, kemige baglanir.
+if arm.animation_data:
+    arm.animation_data.action = None
+arm.data.pose_position = "REST"
+bpy.context.view_layer.update()
+bpy.ops.object.select_all(action="DESELECT")
+mesh.select_set(True)
+bpy.context.view_layer.objects.active = mesh
+bpy.ops.object.mode_set(mode="EDIT")
+bpy.ops.mesh.separate(type="SELECTED")
+bpy.ops.object.mode_set(mode="OBJECT")
+bag_obj = next(o for o in bpy.context.selected_objects if o is not mesh)
+bag_obj.name = "Backpack_Mesh"
+bag_obj.data.name = "Backpack_Mesh"
+for m in list(bag_obj.modifiers):
+    bag_obj.modifiers.remove(m)
+bag_obj.vertex_groups.clear()
+keep = bag_obj.matrix_world.copy()
+bag_obj.parent = arm
+bag_obj.parent_type = "BONE"
+bag_obj.parent_bone = "Backpack"
+bpy.context.view_layer.update()
+bag_obj.matrix_world = keep
+bpy.context.view_layer.update()
+drift = max((bag_obj.matrix_world @ v.co - keep @ v.co).length for v in bag_obj.data.vertices)
+arm.data.pose_position = "POSE"
+rigid = len(bag_obj.data.vertices)
+
+# Dikis ve kopru: canta tulumla tek kaynakli yuzeydi. Govdede kalan (1) cantanin koseleriyle cakisan dikis koseleri ve
+# (2) cantayi sirta baglayan kopru ucgenlerinin gri (canta renkli) koseleri kola, omza, uyluga agirlikliydi; canta
+# katilasinca bunlar cantanin kenarindan disari uzardi. Bunlar gogse (BAG_PARENT, Backpack ile ayni hareket) tam
+# agirlikla sabitlenir: dikis acilmaz, canta kenari uzamaz. Lacivert tulum koseleri kendi agirliklarinda kalir.
+from mathutils import kdtree
+bag_world = [bag_obj.matrix_world @ v.co for v in bag_obj.data.vertices]
+kd = kdtree.KDTree(len(bag_world))
+for i, p in enumerate(bag_world):
+    kd.insert(p, i)
+kd.balance()
+vgrey, vnavy = {}, {}
+NEAR_BAG = 0.015   # cantanin bir kosesine bu kadar yakin, lacivert olmayan kose de kopru sayilir (alt on kenar)
+if pix is not None and uvl is not None:
+    acc = {}
+    for loop in mesh.data.loops:
+        r, g, b = texel(*uvl[loop.index].uv)
+        s = acc.setdefault(loop.vertex_index, [0.0, 0.0, 0.0, 0])
+        s[0] += r; s[1] += g; s[2] += b; s[3] += 1
+    for vi, s in acc.items():  # kosenin ortalama rengi gri mi (measure_bag.py ile ayni kural)
+        r, g, b = s[0] / s[3], s[1] / s[3], s[2] / s[3]
+        mx, mn = max(r, g, b), min(r, g, b)
+        vgrey[vi] = (mx - mn) / max(mx, 1e-4) < GREY_SAT
+        vnavy[vi] = r < 0.15 and b > 0.2
+chest = mesh.vertex_groups.get(BAG_PARENT) or mesh.vertex_groups.new(name=BAG_PARENT)
+seam = bridge = 0
+for v in mesh.data.vertices:
+    p = mw @ v.co
+    dist = kd.find(p)[2]
+    on_seam = dist < 0.0015
+    looks_bag = vgrey.get(v.index, False) or (dist < NEAR_BAG and not vnavy.get(v.index, True))
+    in_bag = (abs(p.x) < BAG_X and BAG_Z0 - 0.03 < p.z < BAG_Z1 and p.y > BAG_Y_GREY and looks_bag
+              and not (p.z > 1.20 and p.y < HEAD_Y and head_weight(v.index) >= HEAD_MAX))
+    if not (on_seam or in_bag):
         continue
-    b = min(1.0, w / BAG_CORE)
-    if b >= 1.0:
-        for gi in [g.group for g in v.groups]:
-            mesh.vertex_groups[gi].remove([v.index])
-        rigid += 1
-    else:
-        for g in v.groups:
-            g.weight *= (1 - b)
-        fringe += 1
-    vg.add([v.index], b, "REPLACE")
-print("BACKPACK vertices", rigid, "kati,", fringe, "temas seridi")
-if rigid < 100:
-    fail(f"canta bolgesinde yalnizca {rigid} kati kose bulundu")
+    for gi in [g.group for g in v.groups]:
+        mesh.vertex_groups[gi].remove([v.index])
+    chest.add([v.index], 1.0, "REPLACE")
+    seam += on_seam
+    bridge += (in_bag and not on_seam)
+print(f"BAG seam {seam} dikis kosesi, {bridge} kopru kosesi gogse ({BAG_PARENT}) sabitlendi")
+print(f"BACKPACK ayri kati mesh: {rigid} kose, {len(bag_obj.data.polygons)} yuz, kemik Backpack ({BAG_PARENT} cocugu), yer kaymasi {drift*1000:.2f} mm")
+if drift > 1e-3:
+    fail(f"canta kemige baglanirken yerinden kaydi ({drift*1000:.1f} mm)")
 
 # Tum eylemler NLA'ya: disa aktarim her birini ayri klip yapar. Eylem yuvasi acikca baglanir (Blender 4.4+).
 arm.animation_data_create()
@@ -320,9 +442,17 @@ for sk_i, sk in enumerate(out_js2.get("skins", [])):
                     full += 1
                 elif tot > 0 and bagw / tot > 0.01:
                     partial += 1
-print(f"RIGID BAG cikti: {full} kati, {partial} harmanli (B: {rigid} kati, {fringe} serit)")
-if full < 0.9 * rigid:
-    problems.append(f"cantanin kati cekirdegi disa aktarimda kayboldu ({full} < {rigid})")
+bag_nodes = [i for i, nd in enumerate(out_js2["nodes"]) if nd.get("name") == "Backpack_Mesh" and "mesh" in nd]
+bag_joint = [i for i, nd in enumerate(out_js2["nodes"]) if nd.get("name") == "Backpack"]
+if not bag_nodes:
+    problems.append("Backpack_Mesh dugumu ciktida yok")
+elif "skin" in out_js2["nodes"][bag_nodes[0]]:
+    problems.append("Backpack_Mesh derili (kati olmali)")
+elif not bag_joint or bag_nodes[0] not in out_js2["nodes"][bag_joint[0]].get("children", []):
+    problems.append("Backpack_Mesh Backpack ekleminin cocugu degil")
+if full or partial:
+    problems.append(f"govdede Backpack'e agirlikli kose kaldi ({full} tam, {partial} kismi)")
+print(f"RIGID BAG cikti: ayri mesh {'var' if bag_nodes else 'YOK'} ({rigid} kose), govdede Backpack agirligi {full}+{partial}")
 for n, (d, c) in sorted(durs.items()):
     print(f"OUT {n:12s} {d:6.2f} sn  {c} kanal")
 if problems:
