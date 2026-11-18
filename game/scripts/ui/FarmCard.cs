@@ -27,8 +27,9 @@ public partial class FarmCard : CanvasLayer
         _panel = new PanelContainer { MouseFilter = Control.MouseFilterEnum.Ignore };
         _panel.AnchorLeft = _panel.AnchorRight = 1f;
         _panel.AnchorTop = _panel.AnchorBottom = 0.5f;
-        var sb = new StyleBoxFlat { BgColor = T.A(T.Panel, 0.92f), ContentMarginLeft = 16, ContentMarginRight = 16, ContentMarginTop = 12, ContentMarginBottom = 12 };
-        sb.BorderColor = T.A(T.Muted, 0.5f); sb.BorderWidthLeft = 3;
+        // Defter ile ayni koyu diyalog zemini, sabit opaklik (T.Panel yari saydam: oyun icinde metin okunmuyordu)
+        var sb = new StyleBoxFlat { BgColor = new Color(T.Dialog.R, T.Dialog.G, T.Dialog.B, 0.9f), ContentMarginLeft = 16, ContentMarginRight = 16, ContentMarginTop = 12, ContentMarginBottom = 12 };
+        sb.BorderColor = T.Ivory; sb.BorderWidthLeft = 3;
         _panel.AddThemeStyleboxOverride("panel", sb);
         _box = new VBoxContainer { MouseFilter = Control.MouseFilterEnum.Ignore };
         _box.AddThemeConstantOverride("separation", 4);
@@ -146,7 +147,7 @@ public partial class FarmCard : CanvasLayer
             for (int k = 1; k <= 10; k++)
             {
                 var cell = new Panel { CustomMinimumSize = new Vector2(T.Px(13), T.Px(10)), SizeFlagsVertical = Control.SizeFlags.ShrinkCenter, MouseFilter = Control.MouseFilterEnum.Ignore };
-                var sb = new StyleBoxFlat { BgColor = k <= g[i] ? (g[i] >= 7 ? T.Green : T.Ivory) : T.A(T.Muted, 0.25f) };
+                var sb = new StyleBoxFlat { BgColor = k <= g[i] ? (g[i] >= 7 ? T.Green : T.Ivory) : new Color(1f, 1f, 1f, 0.12f) };
                 cell.AddThemeStyleboxOverride("panel", sb);
                 row.AddChild(cell);
             }

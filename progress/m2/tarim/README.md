@@ -32,6 +32,15 @@ Dal `claude/m2-tarim-66b764`. Kaynaklar: GDD §8.1–8.3, ICERIK §5 (#1–#11),
   - `FarmM2Tests`: 11 ekinin evreleri ve hasadı, zararlı, Korkuluk, Sarımsak, nöbet, nadas, kalıcı çalı, mantar, yabani bitki, D. Ayrıca 100 büyüme günlük tarla simülasyonu: kendi kendine yeter, gen toplamı seçilimle artar, Alaca bulunur, çaprazlama olur.
   - `GeneticsSaveTests`: bayt bayt aynı gidiş-dönüş.
 
+## Test sonuçları
+- Tam `tools/test.ps1 -BotTimeout 900`, birleşmiş main üzerinde (`full.log`): **20/20 PASS**. Gündüz zararlısı açıkken ilk gün botu, `input_kbm`, `input_pad` ve `tarim` dahil.
+  - `tarim`: `RESULT ok tarim crop=wheat item=16 alaca=5 seeds=4 ledger=4 best=V2 H3 D3 M2 korkuluk=1 protected=2`
+  - Bot gerçek yoldan oynar: Ocak'ı kurar; Odun ve Lif toplayıp Korkuluk üretir ve kurar; yabani Buğday'ı biçer; 2 kare sürer, tohumu seçer ve eker; sular, bekler, hasat eder. Bu tohumda bir bitki Altın Alaca çıktı.
+- Görüntüler (`shots/`):
+  - `tarim_030`: tohum kartı.
+  - `tarim_kart_120`: ekin kartı. Genler, Alaca Altın ve Korkuluk koruması görünür.
+  - `tarim_120`: kartın ilk hâli. Zemin saydam olduğu için düzeltildi.
+
 ## Üretim isteği (kredi harcanmadı)
 | Ne | Adet | Hat | İstem (özet) | Tahmin |
 |---|---|---|---|---|
