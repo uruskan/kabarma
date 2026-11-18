@@ -51,3 +51,15 @@ Sahibin varlık kitaplığından (`F:\Assets`, yalnız okundu) kopyalanıp `pipe
 | `toprak` (2K), `tarla` (1K, üstüne koddan eğatlar) | `F:\Assets\forest_floor_wgyhdgy_4k` (Megascans) | Fab Standart Lisans (Megascans) | Klasörde lisans alanı yok; ana oturumun bildirdiği lisans. Sahip doğrulamalı |
 | `kaya` (2K) | `F:\Assets\cracked_nordic_coastal_rock_ukohaj0mw_4k` (Megascans) | Fab Standart Lisans (Megascans) | Aynı not |
 | `kum` (1K) | `F:\Assets\beach_sand_uinladeo_4k` (Megascans) | Fab Standart Lisans (Megascans) | Aynı not |
+
+## Zincir istasyonları (M2, yer tutucu)
+
+Araştırma Masası, Kömür Ocağı, Demirci Ocağı, Bıçkı, Değirmen, Dokuma Tezgâhı, Kasap Tezgâhı, Kuluçka, Araç Atölyesi, Oyma İskelesi: **koddan** (`game/scripts/world/Station.Visuals.cs`, `MeshKit` yastık kutu ve silindir). Üçüncü taraf içerik yok, kredi harcanmadı. Gerçek model gelince `placeables.json` `model` alanı yer tutucunun yerini alır.
+
+## tarim (M2): ekin ve Korkuluk yer tutuculari
+
+| Varlik | Kaynak | Lisans | Not |
+|---|---|---|---|
+| Cayir ve Koru'nun 10 ekini (Bugday, Kabak, Aycicegi, Lifotu, Domates, Sapkali Mantar, Bogurtlen, Eksilik, Findik, Sarimsak) | Koddan: `game/scripts/world/FarmView.Meshes.cs` (`CropVisuals`, MeshKit ilkelleri) | Projenin kendi kodu | YER TUTUCU; uretim istegi: ekin basina 1 Tripo modeli |
+| Korkuluk | Koddan: `KorkulukVisual` (ayni dosya) | Projenin kendi kodu | YER TUTUCU |
+| Alaca gorunusu | Toon golgelendiricinin `tint` degeri | Projenin kendi kodu | Benekli, Altin, Aurora |

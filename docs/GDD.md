@@ -269,7 +269,8 @@ Sekiz dal: **Kazı, Hasat, Çiftçilik, Hayvancılık, Mühendislik, Aşçılık
 - Yaparak gelişir. `n. seviye eşiği = 100 × n^1,6`.
 - Her seviye ilgili işe +%1 hız ya da verim.
 - 10, 20, 30, 40 ve 50. seviyelerde iki özellikten biri seçilir. Toplam 80 özellik: [ICERIK.md](ICERIK.md) §19.
-- Seçimler kredi karşılığı sıfırlanır.
+- **Eşik toplam XP'dir:** 1. seviye 100 XP, 10. seviye ~3.981, 50. seviye ~52.300 (`100 × n^1,6`, aşağı yuvarlanır). XP kaynakları ve miktarları `mastery.json`.
+- Seçimler kredi karşılığı sıfırlanır: dalın seçimleri `1.000 × (dalın seviyesi / 10)` Kredi; XP ve seviye kalır. Defter'in Ustalık sekmesinde yapılır.
 - Ustalık karaktere aittir ve dünyalar arasında taşınır.
 
 ## 11. Mühendislik

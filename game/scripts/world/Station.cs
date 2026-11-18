@@ -1,12 +1,12 @@
-using System.Linq;
+﻿using System.Linq;
 using Godot;
 using Kabarma.Sim;
 
 namespace Kabarma.Game;
 
 /// <summary>
-/// Uretim istasyonu (GDD 11, ICERIK §11): Tezgah, Ocakbasi, Tas Firin, Paketleme Tezgahi. Malzeme ve yakit cantadan alinir,
-/// sira oyuncu uzaktayken de islenir; durum istasyonun ustunde yazar (menu yerine dunya, SANAT-SES §8.1).
+/// Uretim istasyonu (GDD 11, ICERIK Â§11): Tezgah, Ocakbasi, Tas Firin, Paketleme Tezgahi. Malzeme ve yakit cantadan alinir,
+/// sira oyuncu uzaktayken de islenir; durum istasyonun ustunde yazar (menu yerine dunya, SANAT-SES Â§8.1).
 /// Yuk urunu (El Arabasi, kargo kasasi) cantaya degil istasyonun onune cikar.
 /// </summary>
 public partial class Station : Node3D
@@ -27,7 +27,7 @@ public partial class Station : Node3D
     }
 
     /// <summary>Gorunus: Tas Firin ve Ocakbasi kendi siniflari (kodla hareket eden parcalar), digerleri model (PlaceableVisuals).</summary>
-    public static Node3D MakeVisual(PlaceableDef def) => PlaceableVisuals.Make(def);
+    public static Node3D MakeVisual(PlaceableDef def) => ZincirVisuals.Make(def) ?? PlaceableVisuals.Make(def); // zincir istasyonlari: koddan yer tutucu (Station.Visuals.cs)
 
     /// <summary>Yuk urununun cikacagi nokta: istasyonun onu (+Z), yere oturmus.</summary>
     public Vector3 OutputPoint => _d.World.Ground(GlobalPosition + GlobalBasis.Z * 1.9f);
@@ -76,16 +76,16 @@ public partial class Station : Node3D
     public override void _Process(double delta)
     {
         float dt = (float)delta;
-        if (_d.Stations.FirstOrDefault(s => s.Queue == Queue) == this && _d.Net?.TickStation(Queue, dt) != true) Queue.Tick(dt, _d.State.Backpack);
+        if (_d.Stations.FirstOrDefault(s => s.Queue == Queue) == this && _d.Net?.TickStation(Queue, dt) != true) Queue.Tick(dt, _d.StationStore()); // ambardan uretim: urun cantaya, dolarsa tapudaki Sandiklara (GDD 5); ortak: NetSync.Stations
         bool working = Queue.Active != null;
         if (_oven != null) _oven.Working = working;
         if (_grill != null) _grill.Working = working;
         bool near = InReach(_d.Player.GlobalPosition);
-        string fuel = Def.FuelPerJob > 0 && Def.Fuel.Count > 0 ? $"  ·  yakıt: {ItemNames.Of(Def.Fuel[0])} {_d.State.Backpack.Count(Def.Fuel[0])}" : "";
-        string packing = Def.Station == "paketleme" && _d.State.Cargo.Open != null ? $"\nkasa: {_d.State.Cargo.Open.Items.UsedSlots}/{_d.State.Cargo.Open.Items.Slots} yığın · {_d.State.Cargo.Value(_d.State.Cargo.Open)} Kredi" : "";
+        string fuel = Def.FuelPerJob > 0 && Def.Fuel.Count > 0 ? $"  Â·  yakÄ±t: {ItemNames.Of(Def.Fuel[0])} {_d.State.Backpack.Count(Def.Fuel[0])}" : "";
+        string packing = Def.Station == "paketleme" && _d.State.Cargo.Open != null ? $"\nkasa: {_d.State.Cargo.Open.Items.UsedSlots}/{_d.State.Cargo.Open.Items.Slots} yÄ±ÄŸÄ±n Â· {_d.State.Cargo.Value(_d.State.Cargo.Open)} Kredi" : "";
         _label.Text = working
-            ? $"{Def.Name}\n{Queue.Active.Name} {(int)(Queue.Progress * 100)}%  ·  sırada {Queue.Queued}"
-            : near ? $"{Def.Name}{fuel}\nE: üretim{packing}" : Def.Name + packing;
+            ? $"{Def.Name}\n{Queue.Active.Name} {(int)(Queue.Progress * 100)}%  Â·  sÄ±rada {Queue.Queued}{QueueTail()}"
+            : near ? $"{Def.Name}{fuel}\nE: {(Def.Station == _d.Data.Research.Table ? "araÅŸtÄ±rma" : "Ã¼retim")}{packing}" : Def.Name + packing;
         _label.Modulate = near ? Palette.Warning : Palette.OffWhite;
         if (_bounce > 0)
         {

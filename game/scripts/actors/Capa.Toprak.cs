@@ -37,7 +37,8 @@ public partial class Capa
         }
         if (plot.Crop == null)
         {
-            if (!farm.Plant(x, y, "turnip", _d.State.Backpack)) { _d.Hud.Hint("Tohum kalmadı"); return false; }
+            string seed = _d.FarmView.PlantableSeed(); // tarim: secili tohum (T / DPad asagi), yoksa elde olan ilk tohum
+            if (seed == null || !farm.Plant(x, y, seed, _d.State.Backpack, _d.State.Rng)) { _d.Hud.Hint("Tohum kalmadı"); return false; }
             FeelHit("toprak_ekim", center + Vector3.Up * 0.2f, Palette.Plant, squash: _d.FarmView.View(x, y));
             _d.State.Scenario.SetProgress("plant", farm.Plots.Count(q => q.Crop != null));
             return true;
