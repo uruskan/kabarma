@@ -5,7 +5,7 @@ namespace Kabarma.Sim;
 /// sure dolunca urunu verir. Yuk urunu (tarif "load") cantaya girmez: Produced olayi dunyaya cikarir.
 /// Kilitli tarif (UnlockOn) o esya ilk alinana kadar siraya girmez (GDD 12 Kesif). Ambardan uretim M2'de.
 /// </summary>
-public sealed class StationQueue
+public sealed partial class StationQueue
 {
     readonly GameData _data;
     public string Station { get; }
@@ -103,7 +103,7 @@ public sealed class StationQueue
 /// Yemek guclendirmesi (GDD 3.3): aclik yok; yemek suresince azami Can ve Dayaniklilik ekler, bazilari can yeniler.
 /// Uc yemek yuvasi; ayni yemek iki yuvaya konmaz (yeniden yenirse suresi tazelenir).
 /// </summary>
-public sealed class FoodBuffs
+public sealed partial class FoodBuffs
 {
     readonly List<(FoodDef food, float left)> _active = new();
     public int Slots { get; }

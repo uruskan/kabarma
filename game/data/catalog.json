@@ -1,0 +1,10 @@
+{
+  "_not": "Katalog (GDD §12-13, ICERIK §18). Fiyat: price verilmisse o; seedPackOf verilmisse o urunun taban fiyati × seedPackMult. via: kapsul (Ocak'in yanina gokten iner) ya da rampa (Kargo Rampasi'na iner). items: teslimatin icindekiler (kimlik -> adet); load: rampaya inen yuk urunu (tarif kimligi, ornegin el_arabasi). requires: bu kimliklerin hepsi veride yoksa kalem gizlenir (yumurta, plan, kozmetik akislari satir ekleyerek getirir). ekonomi2 akisi.",
+  "seedPackMult": 20,
+  "capsuleSeconds": 20,
+  "rampSeconds": 40,
+  "entries": [
+    { "id": "tohum_salgam", "name": "Şalgam Tohumu paketi", "kind": "tohum", "seedPackOf": "turnip", "items": { "turnip_seed": 10 }, "via": "kapsul" },
+    { "id": "govde_el_arabasi", "name": "El Arabası gövdesi", "kind": "arac", "price": 400, "load": "el_arabasi", "via": "rampa" }
+  ]
+}

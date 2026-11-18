@@ -291,9 +291,12 @@ Hasat Robotu, Ekim Robotu, otomatik yemlik, Sağım-Kırkım Kolu, Yumurta Topla
 - **Kredi kaynakları:** kargo satışı, iş emri ödülü, Holding silosu, enkaz kasaları.
 - **Kargo:** Ürünler Paketleme Tezgâhı'nda kargo kasasına konur (20 yığın). Kasa yük nesnesidir (25 kg); değeri içindekilerin satış değerinin toplamıdır. Kargo Rampası 1–6 kasa ya da bir kabarık ürün alır ve fırlatır; ödeme 60 saniye sonra gelir.
 - **Fiyat:** `taban × kalite (1,0 / 1,3 / 1,7) × Alaca (3 / 10 / 50) × Borsa × doygunluk`. Taban fiyat, katalog fiyatı ve ödül kuralları: [ICERIK.md](ICERIK.md) §18.
-- **Borsa:** 12 kategori. Her kategorinin çarpanı günde ±0,15 oynar, 0,6 ile 1,6 arasında kalır. Her gün bir kategori "sıcak"tır (×2).
-- **Doygunluk:** Aynı kategoriden satılan her kasa o kategoriyi %3 düşürür (taban %40); günde %15 geri gelir. Tek ürüne yüklenmek cezalanır.
-- **Tohum Çarkı:** Bir çevirme 500 Kredi ya da 3 Alaca ürün; günün ilk çevirmesi bedava. Ödüller: nadir tohum, yumurta, çip, kart jetonu, kozmetik, kredi. Beklenen değer harcananın %85'i.
+- **Borsa:** 12 kategori. Her kategorinin çarpanı günde ±0,15 oynar (artı 1,0'a doğru %10 çekim), 0,6 ile 1,6 arasında kalır. Her gün bir kategori "sıcak"tır (×2); ×2 bu sınırın üstüne biner, yani Borsa çarpanı 0,6 ile 3,2 arasındadır. Borsa Kargo Rampası'nın terminalindedir; her kategorinin son 30 günlük çarpanı görünür.
+- **Borsanın açılışı:** İlk Kabarma'nın şafağına kadar bütün çarpanlar 1,0, sıcak kategori yok, doygunluk tam; öğretici satışlar (ilk kabarık şalgam 120 Kredi) nötr fiyattandır. Fiyatlar takvimin ilk gün değişiminde (ilk şafaktan sonraki sabah) oynamaya başlar.
+- **Doygunluk:** Aynı kategoriden satılan her kasa o kategoriyi %3 düşürür (taban %40); her sabah 0,15 eklenerek geri gelir (en fazla 1,0). Karışık kasa içindeki her kategoriyi bir kez düşürür; kabarık ürün kendi kategorisini bir kez düşürür. Tek ürüne yüklenmek cezalanır.
+- **Fiyat kilidi:** Kasanın ve kabarık ürünün değeri fırlatma anındaki fiyatla belirlenir; 60 saniyelik ödeme gecikmesinde fiyat değişmez.
+- **Katalog:** Kargo Rampası terminalinden Krediyle alınır. Küçük kalemler (tohum, yumurta, süs) gökten kapsülle Ocak'ın yanına iner (20 sn); araç gövdesi Kargo Rampası'na iner (40 sn). Kapsül E ile açılır, içi çantaya geçer; sığmayan kapsülde kalır.
+- **Tohum Çarkı:** Bir çevirme 500 Kredi ya da 3 Alaca ürün; günün ilk çevirmesi bedava (takvim günü başına bir). Ödüller: nadir tohum, yumurta, çip, kart jetonu, kozmetik, kredi. Beklenen değer harcananın %85'i (ödüllerin Kredi karşılığı ICERIK §18). Sistemi henüz olmayan ödüller (çip, kart jetonu, kozmetik, yumurta, Alaca tohum) Kooperatif deposunda sayılır ve sistemleri gelince oradan alınır.
 - **Cüzdan ekipçe ortaktır.**
 - **İş emirleri:** 48 zincir, her biri 5 adım. Suna okur, Defter'de durur.
 
@@ -404,6 +407,24 @@ Yabani yaratıklar, açık arazideki Holding ekipleri ve kervanları, Oyuk koruy
 - **Ödül:** Çekirdek (Ocak basamağı), Mühür (kalıcı ekip bonusu), bir ulti ya da özel ödül, ganimet.
 - **Kabarık Ata:** Yenilen Ata aynı adak ve `KS × 50` Maya ile yeniden çağrılır; gücü seçilen KS'ye göre ölçeklenir, üst basamak çip malzemesi verir.
 - Ayrıntılar: [ICERIK.md](ICERIK.md) §4.
+
+### 18.1 M2 uygulaması (Koca Pofuduk, Boynuzlu Dede)
+
+Sayılar `data/atalar.json`'da; kural `src/Kabarma.Sim/Ata*.cs`, Godot katmanı `game/scripts/boss/`.
+
+- **Bulunma ve çağırma:** Ata Taşı ve sunağı arenanın kenarında durur; haritada açıklıktır (`biomes.json` `clearings`). Adak sunağa tek tek konur. Çanta eşyası etkileşimle sunulur; kabarık ürün Çekim'le sunağa bırakılır. Adak tamamlanınca Ata arenanın ortasına iner. Yenilen Ata aynı adakla yeniden çağrılmaz; Kabarık Ata M4'te gelir.
+- **Aşamalar:** Can oranı aşama eşiğinin altına inince sonraki aşama başlar. Geçişte Ata 1,5 saniye hasar almaz ve kabarır.
+- **Koca Pofuduk:**
+  - **Aşama 1:** Sezdirip hücum eder; yün yumağı atar. Yumak oyuncuyu sektirir.
+  - **Aşama 2:** Yün zırhı hasarı azaltır. Biçme vuruşu zırhı kırkar; yanık da zırhı yer. Yumaklardan küçük Pofuduklar çıkar.
+  - **Aşama 3:** Çıplak ve hızlıdır. Hücumda arenanın taş sütununa toslarsa sersemler; sersemken aldığı hasar artar.
+- **Boynuzlu Dede:**
+  - **Aşama 1:** Dallardan koruyucular düşer; sis koyulaşır.
+  - **Aşama 2:** Yerden kök dalgası halkaları yayılır; zıplayan oyuncuya değmez. Boynuzdaki iki ışıyan kovan zayıf noktadır: kırılan kovan Dede'yi sersemletir.
+  - **Aşama 3:** Boynuz kırılır ve parçaları yere düşer. Parçalar Çekim'le alınıp Dede'ye fırlatılınca büyük hasar verir. Silah hasarı azalır.
+- **Kural:** Özel mekanikler dövüşü hızlandırır, kapı değildir. Her aşama Tırpan Işını ya da Çivi Tabancası ile tek başına bitirilebilir.
+- **Ödül:** Çekirdek ve ganimet çantaya girer. Mühür, ulti ve açılan içerik Sim'deki Ata ilerlemesine yazılır. Mühür etkisinin oranını tarım ve yapı kuralları buradan okur.
+- **M2 sınaması:** Adak bileşenlerinin çoğu henüz başka akışlarda: Yün, Demir Külçe, Reçine, kabarık mantar. Bu yüzden `--test=boss` botu Ata Taşı'na yürür ve Ata'yı F1 geliştirici çağırmasıyla indirir. Adak kuralı Sim testlerinde sınanır. Dövüşte eşya, can ya da hasar verilmez.
 
 ## 19. Bereket Holding (rakipler)
 

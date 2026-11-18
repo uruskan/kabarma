@@ -165,11 +165,11 @@ public class EconomyTests
         Assert.Equal(120, s.Credits);
         Assert.Equal(180, c.Tick(1.01f));
         Assert.Equal(300, s.Credits);
-        // Bos rampaya kabarik urun: 60 sn sonra
-        Assert.Equal(120, s.Sell("turnip", size));
+        // Bos rampaya kabarik urun: 60 sn sonra. Ilk kabarik satis Kok kategorisini %3 doyurdu (GDD 13 doygunluk): 120 × 0,97.
+        Assert.Equal(116, s.Sell("turnip", size));
         Assert.Equal(300, s.Credits);
         c.Tick(60.5f);
-        Assert.Equal(420, s.Credits);
+        Assert.Equal(416, s.Credits);
         Assert.Equal(0, c.LaunchCrates()); // bos rampa firlatmaz
     }
 

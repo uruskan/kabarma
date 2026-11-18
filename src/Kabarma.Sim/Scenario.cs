@@ -1,7 +1,7 @@
 namespace Kabarma.Sim;
 
 /// <summary>Ilk 10 dakikanin adim zinciri (PLAN 1.4). Godot katmani olaylari bildirir, senaryo ilerler.</summary>
-public sealed class Scenario
+public sealed partial class Scenario
 {
     readonly List<StepDef> _steps;
     public int StepIndex { get; private set; }
@@ -100,6 +100,7 @@ public sealed partial class GameState
         Cargo = new Cargo(data, Credit);
         Coop = new Coop(data.Pen);
         InitNightAndDay(); // GameState.Night.cs: takvim, Defter (is emirleri), gece sayaclari
+        InitMarket(); // GameState.Market.cs: Borsa, Katalog, Tohum Carki (ekonomi2)
     }
 
     /// <summary>Odeme hesaba gecer (Kargo Rampasi; ilk satis aninda, sonrakiler 60 sn sonra).</summary>
@@ -123,7 +124,9 @@ public sealed partial class GameState
     /// </summary>
     public int Sell(string cropId, SizeClassDef size)
     {
-        int v = Farm.SellValue(cropId, size);
-        return Cargo.ShipSwollen(v, $"{cropId} {size.Id}");
+        int v = SwollenPrice(cropId, Farm.SellValue(cropId, size)); // Borsa × doygunluk (GameState.Market.cs)
+        int shipped = Cargo.ShipSwollen(v, $"{cropId} {size.Id}");
+        if (shipped >= 0) SwollenSold(cropId);
+        return shipped;
     }
 }
