@@ -1,0 +1,93 @@
+tools/test.ps1  2026-11-18 18:02  git 9fa5a1a
+
+[PASS] build  exit=0 warnings=1 errors=0
+[PASS] sim  exit=0 Passed!  - Failed:     0, Passed:   371, Skipped:     0, Total:   371, Duration: 13 s - Kabarma.Sim.Tests.dll (net8.0)
+[PASS] bench  exit=0 1000 gun 2.660 sn, ayrilan 49.1 MB, tepe 86.6 MB (Release, 3x3)
+[PASS] bot  exit=0 RESULT ok credits=120 eggs=1 kills=21 cards=2 maya=48 stations=4 harvests=5 skipped=-
+[PASS] buildtest  exit=0 placed=75 failed=0 pieces=71
+[PASS] audio  exit=0 ok sounds=60 playable=60 variant_files=180 buses=6 layers_loaded=3/3 day_music=yes
+[FAIL] world  exit=1 WORLD RESULT fail 1
+      --- son satirlar: C:\Users\uruskan\Documents\GitHub\kabarma\.claude\worktrees\ikon-749239\.tools\run\test\world.log
+      Godot Engine v4.7.2.stable.mono.official.ed1daf0bf - https://godotengine.org
+      TEST world
+      WORLD build_ms=5488
+      WORLD base_diff=0.00000
+      WORLD farm_slope_max=0.0
+      WORLD lake_cells=445 ocak_dist=63.5-87.2 depth=0.90 level=-0.59
+      WORLD stone=31 near_stone=76 need=82 far_stone_rocks=16 clay=4 copper=3 fiber=379 wheat=74
+      WORLD decor=agac:98,turuncu_agac:28,cali:153,ot:226,bugday:74,cicek:240,egrelti:156,kaya_duz:36,kaya_dik:17 grass=30901
+      WORLD tepe=33.3 interior_max=33.4
+      WORLD FAIL stone near base 76 < placeable+recipe stone 82
+      WORLD RESULT fail 1
+[PASS] camera  exit=0 RESULT ok camera checks=73
+[PASS] grip  exit=0 RESULT ok grip checks=67 cart=sag 1.0cm sol 0.1cm
+[PASS] save  exit=0 RESULT ok save round-trip diff=0
+[PASS] menu  exit=0 RESULT ok menu new->esc->menu->devam->close
+[PASS] creatures  exit=0 RESULT ok creatures=10 wild=11 clips=80 posed=74
+[PASS] latency  exit=0 RESULT ok heads=7/7 budget_max_ms=33.3 wall_med_ms=37.2 wall_max_ms=89.0 hitstop=ok
+[FAIL] ekonomi  exit=1 ok=81 fail=1
+      --- son satirlar: C:\Users\uruskan\Documents\GitHub\kabarma\.claude\worktrees\ikon-749239\.tools\run\test\ekonomi.log
+      ECON OK   kalite: nem hic dusmedi (en az ★2, GDD 8.2)
+      HARVEST 1 total=1 turnips=12
+      ECON OK   Biçme hasadi yildizla cantada (★2 +5, ★3 +0)
+      ECON OK   kalite kasaya gecti
+      ECON FAIL kasa degeri taban × kalite (89 = 98)
+      ECON ECONOMY RESULT ok=81 fail=1
+      ECONOMY RESULT ok=81 fail=1
+      ERROR: 1 RID allocations of type 'N13RendererDummy15MaterialStorage13DummyMaterialE' were leaked at exit.
+      ERROR: 1 RID allocations of type 'N13RendererDummy15MaterialStorage11DummyShaderE' were leaked at exit.
+      ERROR: 8 RID allocations of type 'N13RendererDummy9DummyMeshE' were leaked at exit.
+      ERROR: 3 RID allocations of type 'PN13RendererDummy14TextureStorage12DummyTextureE' were leaked at exit.
+      ERROR: 4 RID allocations of type 'N17RendererSceneCull8InstanceE' were leaked at exit.
+[PASS] gece  exit=0 GECE RESULT ok checks=2376 nights=2 day=3
+[PASS] coop  exit=0 ok players=4 max_diff_mm=1.865 pieces=4 foundations=4 late_join=1 rejected=2 corrections=27
+[FAIL] input_kbm  exit=1 RESULT fail input stuck step=civi age=240 device=Kbm op=- queue=0 aimErr=0.1deg miss=0.01m aim=(-5.7528996, 1, 6.5245037) hit=(-5.0882864, 1.1689982, 6.215661) node=@StaticBody3D@2040 muzzle->hit=1.5 pos=(-3.2779922, 0.0009999475, 6.1782913) move=(0, 0, 0) fire=False/False pressed=False head=Kazma menu=False wheel=False lock=False look=(0, 0) sent= bag=11/20 events=6255
+      --- son satirlar: C:\Users\uruskan\Documents\GitHub\kabarma\.claude\worktrees\ikon-749239\.tools\run\test\input_kbm.log
+      PLACED tas_firin at (-5.7528996, 0, 6.5245037)
+      HELD capa
+      QUEUED copper_ingot x1
+      STEP firin -> civi t=106.9
+      PRODUCED copper_ingot civi=40 ingot=1 soup=0
+      SUNA line=civi_basla voice=yes
+      BOT step civi t=368.3
+      QUEUED civi x1
+      PRODUCED civi civi=60 ingot=0 soup=0
+      EGG laid nest at (-4.148226, 0, -7.080252)
+      EGG laid nest at (-4.9566417, 0, -5.9892006)
+      RESULT fail input stuck step=civi age=240 device=Kbm op=- queue=0 aimErr=0.1deg miss=0.01m aim=(-5.7528996, 1, 6.5245037) hit=(-5.0882864, 1.1689982, 6.215661) node=@StaticBody3D@2040 muzzle->hit=1.5 pos=(-3.2779922, 0.0009999475, 6.1782913) move=(0, 0, 0) fire=False/False pressed=False head=Kazma menu=False wheel=False lock=False look=(0, 0) sent= bag=11/20 events=6255
+[FAIL] input_pad  exit=1 RESULT fail input stuck step=bakir_kil age=240 device=Pad op=- queue=0 aimErr=1.6deg miss=1.07m aim=(27, 0.8198211, -21) hit=(8.101507, 1.2730029, -10.007563) node=@StaticBody3D@502 muzzle->hit=13.4 pos=(-3.5637052, 0.0009855963, -4.3085995) move=(1.0669173, 0, 1.0543659) fire=False/False pressed=False head=Kazma menu=False wheel=False lock=False look=(-0.09349598, -0.0029217494) sent=axis:RightY=-0.01,axis:RightX=-0.32,axis:LeftX=0.95,axis:LeftY=-0.31,btn:L3=1 bag=7/20 events=20589
+      --- son satirlar: C:\Users\uruskan\Documents\GitHub\kabarma\.claude\worktrees\ikon-749239\.tools\run\test\input_pad.log
+      SUNA line=yemek_basla voice=yes
+      ATE sebze_corbasi
+      STEP yemek -> bakir_kil t=81.4
+      BOT step bakir_kil t=289.2
+      HELD -
+      HELD capa
+      SUNA line=bakir_kil_basla voice=yes
+      ZIPZIP herd size=3 at=8,-26 herds=1
+      ZIPZIP herd size=3 at=30,-16 herds=2
+      ZIPZIP herd size=2 at=8,28 herds=3
+      EGG laid nest at (-4.1899633, 0, -4.682402)
+      RESULT fail input stuck step=bakir_kil age=240 device=Pad op=- queue=0 aimErr=1.6deg miss=1.07m aim=(27, 0.8198211, -21) hit=(8.101507, 1.2730029, -10.007563) node=@StaticBody3D@502 muzzle->hit=13.4 pos=(-3.5637052, 0.0009855963, -4.3085995) move=(1.0669173, 0, 1.0543659) fire=False/False pressed=False head=Kazma menu=False wheel=False lock=False look=(-0.09349598, -0.0029217494) sent=axis:RightY=-0.01,axis:RightX=-0.32,axis:LeftX=0.95,axis:LeftY=-0.31,btn:L3=1 bag=7/20 events=20589
+
+sinama     sonuc  sure(sn)  ayrinti
+------     -----  --------  -------
+build      PASS        4.2  exit=0 warnings=1 errors=0
+sim        PASS       17.2  exit=0 Passed!  - Failed:     0, Passed:   371, Skipped:     0, Total:   371, Duration: 13 s - Kabarma.Sim.Tests.dll (net8.0)
+bench      PASS        7.3  exit=0 1000 gun 2.660 sn, ayrilan 49.1 MB, tepe 86.6 MB (Release, 3x3)
+bot        PASS      236.8  exit=0 RESULT ok credits=120 eggs=1 kills=21 cards=2 maya=48 stations=4 harvests=5 skipped=-
+buildtest  PASS        9.1  exit=0 placed=75 failed=0 pieces=71
+audio      PASS        6.9  exit=0 ok sounds=60 playable=60 variant_files=180 buses=6 layers_loaded=3/3 day_music=yes
+world      FAIL        6.4  exit=1 WORLD RESULT fail 1
+camera     PASS       29.5  exit=0 RESULT ok camera checks=73
+grip       PASS       37.2  exit=0 RESULT ok grip checks=67 cart=sag 1.0cm sol 0.1cm
+save       PASS      144.5  exit=0 RESULT ok save round-trip diff=0
+menu       PASS         23  exit=0 RESULT ok menu new->esc->menu->devam->close
+creatures  PASS        2.8  exit=0 RESULT ok creatures=10 wild=11 clips=80 posed=74
+latency    PASS       52.3  exit=0 RESULT ok heads=7/7 budget_max_ms=33.3 wall_med_ms=37.2 wall_max_ms=89.0 hitstop=ok
+ekonomi    FAIL       75.2  exit=1 ok=81 fail=1
+gece       PASS       53.2  exit=0 GECE RESULT ok checks=2376 nights=2 day=3
+coop       PASS       88.8  exit=0 ok players=4 max_diff_mm=1.865 pieces=4 foundations=4 late_join=1 rejected=2 corrections=27
+input_kbm  FAIL      167.2  exit=1 RESULT fail input stuck step=civi age=240 device=Kbm op=- queue=0 aimErr=0.1deg miss=0.01m aim=(-5.7528996, 1, 6.5245037) hit=(-5.0882864, 1.1689982, 6.215661) node=@StaticBody3D@2040 muzzle->hit=1.5 pos=(-3.2779922, 0.0009999475, 6.1782913) move=(0, 0, 0) fire=False/False pressed=False head=Kazma menu=False wheel=False lock=False look=(0, 0) sent= bag=11/20 events=6255
+input_pad  FAIL      141.8  exit=1 RESULT fail input stuck step=bakir_kil age=240 device=Pad op=- queue=0 aimErr=1.6deg miss=1.07m aim=(27, 0.8198211, -21) hit=(8.101507, 1.2730029, -10.007563) node=@StaticBody3D@502 muzzle->hit=13.4 pos=(-3.5637052, 0.0009855963, -4.3085995) move=(1.0669173, 0, 1.0543659) fire=False/False pressed=False head=Kazma menu=False wheel=False lock=False look=(-0.09349598, -0.0029217494) sent=axis:RightY=-0.01,axis:RightX=-0.32,axis:LeftX=0.95,axis:LeftY=-0.31,btn:L3=1 bag=7/20 events=20589
+TEST FAIL (4)

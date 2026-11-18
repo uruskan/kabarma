@@ -16,6 +16,7 @@ public partial class Pod
 
     public void BeginHatchIntro(Director d)
     {
+        if (d.SkipIntro) return; // kayittan acilan oyun: kapsul acilisi oynatilmaz (save/Director.Save.cs)
         var h = d.Data.Scenario.Hatch;
         var p = d.Player;
         IntroDone = false;
