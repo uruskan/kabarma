@@ -64,6 +64,8 @@ public partial class PenSystem
             p.QueueFree();
         }
         _props.Clear();
+        // Silinen Ahsap Kapi'lar kasalarini birakir: kayittakiler yeniden oturur (FreeKasaNear).
+        foreach (var g in _gates.Values.Where(g => g.Door != null).ToList()) { g.Door = null; SyncDoor(g.Piece); }
         foreach (var r in list ?? new())
         {
             var def = _d.Data.Tool.Placeables.FirstOrDefault(x => x.Id == r.Content);

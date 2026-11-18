@@ -73,6 +73,7 @@ public partial class TameablePlaceholder : Node3D, IHusbandryHost
         _to = _homePos;
         GlobalPosition = _d.World.Ground(_homePos);
         AddToGroup("tameable");
+        AddToGroup(NetSync.CreatureGroup); // ortak oyun: host yetkili konum (NetSync.Creatures.cs)
     }
 
     public void HusbandrySteer(Vector3 goal, float speed, bool driven)

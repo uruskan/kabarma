@@ -76,11 +76,12 @@ public sealed class Ranch
     public int NextId { get; set; } = 1;
     public RanchRng Rng { get; set; } = new();
 
-    public Ranch(Coop coop, PenFile pen, HusbandryFile def, CalendarFile cal, ulong seed)
+    public Ranch(Coop coop, PenFile pen, HusbandryFile def, CalendarFile cal, ulong seed, GeneticsRules? cropGenetics = null)
     {
         _coop = coop;
         _pen = pen;
         Rules = new HusbandryRules(def, cal);
+        if (cropGenetics != null && cropGenetics.Mutation.Count > 0) Rules.UseCropGenetics(cropGenetics);
         Rng.State = seed == 0 ? 0x9E3779B97F4A7C15UL : seed * 2654435761UL + 0x5851F42D4C957F2DUL;
     }
 
@@ -345,6 +346,7 @@ public sealed class Ranch
                 Species = a.Species, Id = NewId(), Genes = Rules.Inherit(a.Genes, mate.Genes, Rng), Trust = 1f, Registered = true,
                 AgeDays = 0, Happiness = (a.Happiness + mate.Happiness) * 0.5f, MotherId = a.Id, FatherId = mate.Id,
                 Role = s.Roles.FirstOrDefault() ?? "", X = a.X + 0.3f, Z = a.Z + 0.3f,
+                Alaca = Rules.Alaca(a.Alaca, mate.Alaca, Rng),
             };
             Animals.Add(child);
             ev.Add(new RanchEvent(RanchEventKind.Born, child.Id, a.Species, 1, a.Id));
@@ -416,6 +418,7 @@ public sealed class Ranch
             Species = inc.Species, Id = NewId(), Genes = Rules.Wild(Rng), Trust = 1f, AgeDays = 0,
             Happiness = Rules.Def.Happiness.Start, X = inc.X + 0.8f, Z = inc.Z,
             Role = Rules.Species(inc.Species).Roles.FirstOrDefault() ?? "",
+            Alaca = Rules.Alaca("", "", Rng),
         };
         Animals.Add(a);
         inc.Species = "";

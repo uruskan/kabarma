@@ -52,6 +52,8 @@ public sealed class PenAnimal
     /// <summary>Konum (Godot her kare yazar; agil uyeligi buradan turetilir).</summary>
     public float X { get; set; }
     public float Z { get; set; }
+    /// <summary>Alaca (GDD 9.3 = 8.3): "" ya da benekli, altin, aurora (crops.json genetics.alaca).</summary>
+    public string Alaca { get; set; } = "";
     public bool Adult(float adultDays) => AgeDays >= adultDays;
 }
 

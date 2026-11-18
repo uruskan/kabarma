@@ -23,8 +23,11 @@ public partial class Gidak
     {
         get
         {
-            if (_animal != null) return _animal;
             var coop = _dir.State.Coop;
+            // Kayit yukleme ve ortak oyun esitlemesi PenAnimal nesnelerini yeniler: ogretici hayvani yeniden bul.
+            if (_animal != null && !coop.Animals.Contains(_animal))
+                _animal = coop.Animals.FirstOrDefault(a => a.Species == Def.Id && a.Tutorial);
+            if (_animal != null) return _animal;
             _animal = new PenAnimal { Species = Def.Id, Tutorial = coop.Animals.Count(a => a.Species == Def.Id) == 0 };
             coop.Animals.Add(_animal);
             return _animal;

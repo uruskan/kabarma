@@ -151,8 +151,9 @@ public partial class Bot
         Aim(ag.Host.GlobalPosition + Vector3.Up * 0.5f);
         if (_hayvanShot == 0)
         {
+            _d.Ranch.Card.Pin = ag; // kart ikinci ture (Pofuduk) sabit
             if (!MoveTo(ag.Host.GlobalPosition, 2.0f, false) || _hayvanShotT < 1.5f) return;
-            Shot("kart"); _hayvanShot = 1; _hayvanShotT = 0; return;
+            Shot("kart"); _d.Ranch.Card.Pin = null; _hayvanShot = 1; _hayvanShotT = 0; return;
         }
         if (_hayvanShot == 1)
         {

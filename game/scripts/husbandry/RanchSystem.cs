@@ -97,6 +97,7 @@ public partial class RanchSystem : Node
     {
         if (!_started) { if (_d.World != null && _d.Pens != null) Start(); else return; }
         _agents.RemoveAll(a => !IsInstanceValid(a));
+        Rebind();
         _acc += (float)delta;
         if (_acc >= 0.25f)
         {
@@ -115,8 +116,23 @@ public partial class RanchSystem : Node
         if (PanelAgent != null && !_d.Hud.MenuOpen) PanelAgent = null;
     }
 
+    /// <summary>
+    /// Kayit yukleme ve ortak oyun esitlemesi ("pen.animals" yeni PenAnimal nesneleri kurar): bilesenleri ayni kimlikli
+    /// hayvana bagla. Ilk gunun Gidak'i kendi Animal ozelliginde yeniden bulunur (Gidak.Pen.cs).
+    /// </summary>
+    void Rebind()
+    {
+        var set = new HashSet<PenAnimal>(Ranch.Animals);
+        foreach (var ag in _agents)
+        {
+            if (set.Contains(ag.Animal)) continue;
+            if (ag.Passive && _d.Gidak != null && ag.Host == _d.Gidak) { ag.Rebind(_d.Gidak.Animal); continue; }
+            ag.Rebind(Ranch.ById(ag.Animal.Id));
+        }
+    }
+
     /// <summary>Agilin ustunde cati var mi (GDD 9.2): yapi setinin cati parcalari agil cokgeninin icinde.</summary>
-    bool RoofOver(PenShape pen)
+    public bool RoofOver(PenShape pen)
     {
         var sys = _d.Build?.System;
         if (sys == null) return false;
@@ -192,7 +208,7 @@ public partial class RanchSystem : Node
         };
         _d.AddChild(actor);
         actor.GlobalPosition = at;
-        if (!a.Adult(Ranch.Rules.Def.Breeding.AdultDays)) actor.Scale = Vector3.One * 0.6f;
+        actor.AddToGroup(NetSync.CreatureGroup); // ortak oyun: host yetkili konum (NetSync.Creatures.cs)
         Attach(actor, a);
     }
 

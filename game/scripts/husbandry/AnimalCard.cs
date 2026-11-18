@@ -28,10 +28,13 @@ public partial class AnimalCard : Control
 
     /// <summary>Kartta gosterilen hayvan (sinama).</summary>
     public HusbandryAgent Target => _target;
+    /// <summary>Sinama goruntusu: karti bu hayvana sabitler (null: en yakin).</summary>
+    public HusbandryAgent Pin { get; set; }
 
     public override void _Process(double delta)
     {
         var p = _d.Player.GlobalPosition;
+        if (Pin != null && IsInstanceValid(Pin)) { _target = Pin; QueueRedraw(); return; }
         _target = _r.Agents.Where(a => IsInstanceValid(a) && IsInstanceValid(a.Host) && a.Host.Visible && a.Host.GlobalPosition.DistanceTo(p) < 4f)
             .OrderBy(a => a.Host.GlobalPosition.DistanceTo(p)).FirstOrDefault();
         QueueRedraw();
@@ -44,8 +47,8 @@ public partial class AnimalCard : Control
     {
         var a = ag.Animal;
         var pen = r.Ranch.PenOf(a, d.Pens.Pens);
-        var n = r.Ranch.NeedsOf(a, pen, false);
-        string needs = a.HiveId != 0 ? "Kovanda" : pen == null ? "Ağılda değil" : $"Yem {Mark(n.Food)}  Su {Mark(n.Water)}  Alan {Mark(n.Space)}  Fırça {Mark(n.Brush)}  Gübre {n.Manure}";
+        var n = r.Ranch.NeedsOf(a, pen, pen != null && r.RoofOver(pen));
+        string needs = a.HiveId != 0 ? "Kovanda" : pen == null ? "Ağılda değil" : $"Yem {Mark(n.Food)}  Su {Mark(n.Water)}  Çatı {Mark(n.Roof)}  Alan {Mark(n.Space)}  Fırça {Mark(n.Brush)}  Gübre {n.Manure}";
         return $"♥ {a.Happiness:0}  ★{r.Ranch.Rules.Tier(a.Happiness).Stars}  ·  B{a.Genes.B} U{a.Genes.U} V{a.Genes.V} K{a.Genes.K}  ·  {needs}";
     }
 
@@ -101,9 +104,9 @@ public partial class AnimalCard : Control
         Txt($"Mutluluk  {a.Happiness:0}", cx, cy, 17, T.Ink); Bar(cx + S(130), cy + S(6), w - S(200), S(10), a.Happiness / 100f, a.Happiness >= rules.Def.Breeding.MinHappiness ? T.Green : a.Happiness < rules.Def.Escape.Below ? T.Red : Palette.Warning);
         Txt(new string('★', tier.Stars), x + w - S(62), cy, 17, Palette.Warning, true); cy += line;
         var pen = _r.Ranch.PenOf(a, _d.Pens.Pens);
-        var n = _r.Ranch.NeedsOf(a, pen, false);
-        Txt(a.HiveId != 0 ? "Kovanda" : pen == null ? "Ağılda değil" : $"Yem {Mark(n.Food)}  Su {Mark(n.Water)}  Alan {Mark(n.Space)}  Fırça {Mark(n.Brush)}  Okşama {Mark(n.Petted)}", cx, cy, 16, T.Ink); cy += line;
-        Txt($"Gen  B{a.Genes.B}  U{a.Genes.U}  V{a.Genes.V}  K{a.Genes.K}", cx, cy, 16, T.Ink); cy += line;
+        var n = _r.Ranch.NeedsOf(a, pen, pen != null && _r.RoofOver(pen));
+        Txt(a.HiveId != 0 ? "Kovanda" : pen == null ? "Ağılda değil" : $"Yem {Mark(n.Food)}  Su {Mark(n.Water)}  Çatı {Mark(n.Roof)}  Alan {Mark(n.Space)}  Fırça {Mark(n.Brush)}  Okşama {Mark(n.Petted)}", cx, cy, 16, T.Ink); cy += line;
+        Txt($"Gen  B{a.Genes.B}  U{a.Genes.U}  V{a.Genes.V}  K{a.Genes.K}{(a.Alaca == "" ? "" : "  · Alaca: " + a.Alaca)}", cx, cy, 16, a.Alaca == "" ? T.Ink : Palette.Warning); cy += line;
         var roleName = rules.Def.Roles.FirstOrDefault(r => r.Id == a.Role)?.Name ?? a.Role;
         var cmdName = rules.Def.Commands.FirstOrDefault(c => c.Id == a.Command)?.Name ?? a.Command;
         Txt($"Rol {roleName}  ·  Komut {cmdName}", cx, cy, 16, T.Muted); cy += line;

@@ -17,7 +17,9 @@ namespace Kabarma.Game;
 public partial class HusbandryAgent : Node
 {
     public Node3D Host { get; }
-    public PenAnimal Animal { get; }
+    public PenAnimal Animal { get; private set; }
+    /// <summary>Kayit yukleme ya da ortak oyun esitlemesi PenAnimal nesnelerini yeniledi: ayni kimlikli yenisine baglan.</summary>
+    public void Rebind(PenAnimal a) { if (a != null && a.Species == Species.Id) Animal = a; }
     public SpeciesDef Species { get; }
     /// <summary>Yalniz kart, panel ve E icin: aktor kendi agil yolunu yurur (ilk gunun Gidak'i, Gidak.Pen.cs).</summary>
     public bool Passive { get; set; }
@@ -51,6 +53,9 @@ public partial class HusbandryAgent : Node
         _t += dt;
         var ps = _d.Pens;
         if (Passive) { Animal.X = Host.GlobalPosition.X; Animal.Z = Host.GlobalPosition.Z; return; }
+        // Yavru buyur: 0,6 boydan yetiskinlige (GDD 9.3)
+        float grow = Mathf.Clamp(Animal.AgeDays / Mathf.Max(0.01f, _r.Ranch.Rules.Def.Breeding.AdultDays), 0f, 1f);
+        Host.Scale = Vector3.One * Mathf.Lerp(0.6f, 1f, grow);
         if (!_posSet || !Driven) { _pos = Host.GlobalPosition; _posSet = true; }
         // Duvar: bu karede gecilmez duvari kestiyse onunde durur (acik kapi gecilir).
         var now = Driven && _iface == null ? _pos : Host.GlobalPosition;

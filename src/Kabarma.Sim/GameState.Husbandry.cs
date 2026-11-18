@@ -38,6 +38,7 @@ public sealed class AnimalExtraSave
     public SortedDictionary<string, int> Pack { get; set; } = new(StringComparer.Ordinal);
     public float X { get; set; }
     public float Z { get; set; }
+    public string Alaca { get; set; } = "";
 }
 
 public sealed partial class GameState
@@ -48,7 +49,7 @@ public sealed partial class GameState
     /// Hayvancilik (GDD 9.1-9.4): Coop'un hayvanlari, Yemlik ve Folluk'u uzerine ihtiyac, mutluluk, gen, ureme, rol,
     /// kacma; Suluk, Kasinma Fircasi, Ari Kovani, Kulucka. Kurucuya dokunmamak icin ilk eriste kurulur.
     /// </summary>
-    public Ranch Ranch => _ranch ??= new Ranch(Coop, Data.Pen, Data.Husbandry, Data.Calendar, Seed);
+    public Ranch Ranch => _ranch ??= new Ranch(Coop, Data.Pen, Data.Husbandry, Data.Calendar, Seed, Data.Crops.Genetics);
 
     [SaveSection("ranch", 1, Order = SaveOrder.Progress, Covers = new[] { nameof(Ranch) })]
     RanchSave RanchSection
@@ -67,7 +68,7 @@ public sealed partial class GameState
                 Pending = a.Pending.Select(p => new ProductStack { Item = p.Item, Count = p.Count, Stars = p.Stars }).ToList(),
                 LastPetDay = a.LastPetDay, LowSeconds = a.LowSeconds, WantsOut = a.WantsOut, BreedTimer = a.BreedTimer,
                 MateId = a.MateId, MotherId = a.MotherId, FatherId = a.FatherId, Bound = a.Bound, HiveId = a.HiveId,
-                Pack = new SortedDictionary<string, int>(a.Pack, StringComparer.Ordinal), X = a.X, Z = a.Z,
+                Pack = new SortedDictionary<string, int>(a.Pack, StringComparer.Ordinal), X = a.X, Z = a.Z, Alaca = a.Alaca,
             }).ToList(),
         };
         set
@@ -90,7 +91,7 @@ public sealed partial class GameState
                 a.Command = e.Command ?? "izle"; a.Timers = new Dictionary<string, float>(e.Timers ?? new());
                 a.Pending = e.Pending ?? new(); a.LastPetDay = e.LastPetDay; a.LowSeconds = e.LowSeconds; a.WantsOut = e.WantsOut;
                 a.BreedTimer = e.BreedTimer; a.MateId = e.MateId; a.MotherId = e.MotherId; a.FatherId = e.FatherId; a.Bound = e.Bound;
-                a.HiveId = e.HiveId; a.Pack = new Dictionary<string, int>(e.Pack ?? new()); a.X = e.X; a.Z = e.Z;
+                a.HiveId = e.HiveId; a.Pack = new Dictionary<string, int>(e.Pack ?? new()); a.X = e.X; a.Z = e.Z; a.Alaca = e.Alaca ?? "";
             }
         }
     }
