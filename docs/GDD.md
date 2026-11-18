@@ -398,6 +398,35 @@ Ocak'tan başlatılır. Seçilen KS'nin dalgaları hayalet olarak gelir; hasar g
 - **Nişan:** Bir kartı geceyi 5. rütbede bitirmek 1 Nişan puanı verir. 3, 8, 15, 25, 40 puanda Nişan 1–5 olur: her seviye kartın etkisini %4 artırır; Nişan 5'te kart geceye 2. rütbeden başlar.
 - **Açılma:** 20 kart baştan açıktır. 40 kart iş emri zincirleri, üye tipleri, Atalar ve kart jetonlarıyla açılır ([ICERIK.md](ICERIK.md) §8.3). 12 aşı kartı, iki ebeveyni açık olunca kendiliğinden açılır.
 
+### 15.1 Kural ayrıntıları (M3)
+
+**Havuz ve teklif**
+- Teklif yalnız açık kartlardan gelir. Şunlar teklife girmez: aşılar, o gece sürgün edilen kartlar, rütbe tavanındaki kartlar.
+- 12 farklı kart taşınıyorsa teklife yalnız elde olup tavanda olmayanlar girer. Teklif edilecek kart kalmadıysa seviye boşa gider; sayaç işler ama teklif açılmaz.
+- **Aşı teklifi:** İki ebeveyn de 5. rütbedeyse ve aşı açıksa, aşı bir sonraki teklifin ilk kartı olur.
+  - Aşı tek rütbelidir.
+  - Alınınca iki ebeveynin yuvası tek yuvaya iner: 12'lik sınırda ikisi bir sayılır.
+  - Ebeveynlerin etkisi sürer; aşının etkisi onlara eklenir.
+
+**Yenileme ve sürgün**
+- **Yenileme:** Açık teklifin üç kartını yeniden çeker. İlk gecenin zorunlu Çatal'ı yeniden zorlanmaz. Aşı teklifteyse kalır. 20 saniyelik süre baştan başlar.
+- **Sürgün:** Teklifteki bir kartı o gecelik havuzdan çıkarır; yerine yeni bir kart çekilir. Elde olan kart sürgün edilemez.
+
+**Rütbe**
+- Etkiler rütbe başınadır. Her kartın rütbe tavanı `cards.json` `maxRank`'tır: varsayılan 5, aşılar 1.
+- Tavanı 1 olan kartlar: Borç, Alaca Şansı, Yem.
+
+**Nişan**
+- Nişan'ın %4'lük artışı sayı ve aç/kapa etkilerine uygulanmaz: mermi, sekme, delme, zıplama, kalkma, yörünge silahının sayısı. Geri kalan bütün etkiler (yüzde, olasılık, can, kalkan, yörünge hasarı) artar.
+- Nişan 5'te kart ilk alınışta 2. rütbeden başlar.
+- Puan, şafakta tavan rütbesindeki her kart için verilir. Nişan puanı, açılan kartlar ve kart jetonları karakter dosyasında durur.
+
+**Risk kartları**
+- **Kumarbaz:** Her dalga başında eldeki rastgele bir kartın rütbesi +1 olur (tavanda olmayan), başka birininki −1 (rütbesi 1'den büyük olan). Kumarbaz'ın kendisi bu seçime girmez.
+- **Borç:** Alınınca 3 seviye hemen sıraya girer; bu seviyeler gecenin seviye sınırına sayılmaz. Şafakta o gecenin Maya'sının %20'si Kooperatif'e gider.
+
+**Ekip kartları:** Çiftlik sınıfının kartlarıdır. Kuleler, hayvanlar, Kazan, yapılar ve korkuluklar bu kartları ekibin en yüksek rütbesiyle okur. Değiştirici adları `cards.json`'dadır.
+
 ## 16. Savaş
 
 ### 16.1 Hasar ve durumlar

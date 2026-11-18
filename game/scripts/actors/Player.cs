@@ -188,6 +188,7 @@ public partial class Player : CharacterBody3D
     public void Hurt(float dmg, Vector3 from)
     {
         if (Down) return;
+        if (GetParent() is Director cd) { dmg = cd.CardGuard(dmg, from); if (dmg <= 0) return; } // kartlar: Kabuk, Dikenli, Ufak Tefek
         Hp -= dmg;
         _shake = Mathf.Max(_shake, 0.35f);
         var k = (GlobalPosition - from); k.Y = 0;

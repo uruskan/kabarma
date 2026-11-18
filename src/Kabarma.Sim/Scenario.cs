@@ -113,7 +113,7 @@ public sealed partial class GameState
 
     public KabarmaNight StartNight(string? memberCard = null)
     {
-        Night = new KabarmaNight(Data, Data.Kabarma.FirstNight, Seed * 31 + 7 + (ulong)NightsStarted, memberCard);
+        Night = new KabarmaNight(Data, Data.Kabarma.FirstNight, Seed * 31 + 7 + (ulong)NightsStarted, memberCard, CardBook);
         OnNightStarted(Night); // GameState.Night.cs: gece sayaci, tarla olaylari
         return Night;
     }
