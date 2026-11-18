@@ -276,7 +276,7 @@ public partial class AzmanActor : Node3D, IAtaTarget
             // Agaca don ve yuru (sokme yerinde olur); agac yoksa yeri kazar.
             var to = _hasTree ? _treeAt : GlobalPosition;
             var d = (to - GlobalPosition) with { Y = 0 };
-            if (d.Length() > Def.Radius + 1.2f) { Step(d.Normalized() * Mathf.Min(d.Length(), Def.MoveSpeed * 1.6f * dt)); Face(d.Normalized(), dt * 4f); }
+            if (d.Length() > Def.Radius + 1.2f) { Step(d.Normalized() * Mathf.Min(d.Length(), Def.MoveSpeed * dt)); Face(d.Normalized(), dt * 4f); }
             if ((int)(_t * 4) != (int)((_t - dt) * 4)) Fx.Burst(GlobalPosition + Vector3.Up * 0.2f, Palette.Soil, 4, 3f, 0.12f, 0.4f);
         }
     }
