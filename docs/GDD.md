@@ -192,15 +192,27 @@ Cam parçalarla kapatılmış hacme Sera Kontrol Ünitesi konunca içerideki sı
 - **Otçullar ve küçükler:** Sevdiği yem atılır. Her yiyişte güven çubuğu dolar; koşmak ve ateş etmek çubuğu sıfırlar. Dolunca oyuncuyu izler; ağıla girince kayıt olur.
 - **Ağıl:** Çit, bahçe kapısı, duvar ya da kapı parçalarından kapalı bir halka; en az 1 hücre (9 m²), çatı gerekmez. Kapılar E ile açılıp kapanır; açık kapı geçilir. Halkanın içindeki hayvan kayıt olur. Tür başına gereken alan veridedir (Gıdak 4 m²).
 - **Yırtıcılar ve büyükler:** Önce canı %25'in altına indirilip Çekim ya da Zıpkın ile tutulur, sonra beslenir.
-- **Yumurtadan:** Hu, Koşar, Paytak ve Kızgın yuvadan alınan yumurtayla Kuluçka'da çıkar.
+- **Yumurtadan:** Hu, Koşar, Paytak ve Kızgın yuvadan alınan yumurtayla Kuluçka'da çıkar. Yavru evcil doğar.
+- **Kovan:** Vızvız ağıla girmez. Sevdiği yemle güvenen sürü bir Arı Kovanı'na yerleşir ve orada kayıt olur.
+- Tür başına yol, yem sayısı ve alan `husbandry.json`'da. Homur, Dallı ve Vıcık otçul yolundan evcilleşir; Bozuk yırtıcı yolundan.
+- **Kaçma:** Mutluluğu eşiğin altında kalan hayvan, bir süre sonra açık kapıdan ağılı terk eder. Kaydı düşer, güveni yarıya iner; yeniden yemle kazanılır. Eşik ve süre veride.
 
 ### 9.2 İhtiyaçlar ve mutluluk
 
 Yemlik (türe göre yem), suluk, çatı, tür başına alan. Mutluluk (0–100) karşılanan ihtiyaçlardan, okşamaktan ve gübreyi toplamaktan gelir. Mutluluk ürün kalitesini ve üremeyi belirler.
 
+- Mutluluk bir hedefe doğru günde belli bir hızla kayar. Hedef, karşılanan ihtiyaçların ağırlıkları toplamıdır.
+- Okşama günde bir kez ek puan verir. Ağılda biriken her toplanmamış gübre puan düşürür.
+- Ürün yalnız Yemlik'te türün yemi varken çıkar; ihtiyaçlar ürünü durdurmaz. Mutluluk miktarı (kalite çarpanı) ve sıklığı değiştirir, U geni de sıklığı.
+- Ağırlıklar, aralıklar ve eşikler `husbandry.json`'da.
+
 ### 9.3 Genler ve üreme
 
 Dört gen (1–10): **B** boyut (can, yük), **U** uysallık (komut dinleme, ürün sıklığı), **V** ürün verimi, **K** kabarma gücü (kabarık hâlin canı ve hasarı). Kalıtım ve Alaca kuralları tarımdakiyle aynı. İki yetişkin, 60 ve üstü mutluluk ve boş yer varsa 2–4 günde yavru gelir.
+
+- **Genin hesabı:** Yavrunun her geni ebeveyn ortalamasıdır, yarım yukarı yuvarlanır. Üstüne §8.3'teki mutasyon gelir. Sonuç 1–10'a kırpılır.
+- **Yavru:** Evcil ve kayıtlı doğar. Yetişkin olana kadar (gün sayısı veride) ürün vermez, üremez.
+- **Yer:** Ağıl alanı, içindeki hayvanların tür alanları toplamıdır; yavru da yer kaplar.
 
 ### 9.4 Roller
 
@@ -216,6 +228,10 @@ Her hayvana bir rol atanır:
 | Savaşçı | Savaş Ağılı'nda bekler; Kabarma'da kabarıp savaşır |
 
 Komutlar: izle, bekle, işaretlediğime saldır, dön. Uysallığı düşük hayvan bazen dinlemez.
+
+- Türün alabileceği roller `husbandry.json`'da ([ICERIK.md](ICERIK.md) §3'ten).
+- Dinleme olasılığı U geniyle artar.
+- B geni can, heybe ve binek hızına eklenir.
 
 ### 9.5 Kabarma'da hayvanlar
 

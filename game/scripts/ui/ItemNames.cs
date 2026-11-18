@@ -40,6 +40,28 @@ public static class ItemNames
         ["tezgah"] = "Tezgâh",
         ["tas_firin"] = "Taş Fırın",
         ["paketleme"] = "Paketleme Tezgâhı",
+        // M2 hayvan akisi (ICERIK 2.2 hayvansal, ICERIK 3 sevdigi yemler, ICERIK 10.2 hayvan yerlestirilebilirleri).
+        ["tuy"] = "Tüy",
+        ["yun"] = "Yün",
+        ["sut"] = "Süt",
+        ["deri"] = "Deri",
+        ["kurk"] = "Kürk",
+        ["bal"] = "Bal",
+        ["balmumu"] = "Balmumu",
+        ["gubre"] = "Gübre",
+        ["sumuk"] = "Sümük",
+        ["kompost"] = "Kompost",
+        ["truf"] = "Trüf",
+        ["et"] = "Et",
+        ["kabak"] = "Kabak",
+        ["bogurtlen"] = "Böğürtlen",
+        ["mantar"] = "Mantar",
+        ["aycicegi"] = "Ayçiçeği",
+        ["hu_yumurtasi"] = "Hu Yumurtası",
+        ["suluk"] = "Suluk",
+        ["kasinma_fircasi"] = "Kaşınma Fırçası",
+        ["ari_kovani"] = "Arı Kovanı",
+        ["kulucka"] = "Kuluçka",
     };
 
     public static string Of(string id) => Names.TryGetValue(id, out var n) ? n : id;
