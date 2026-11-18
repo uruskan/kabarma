@@ -96,7 +96,9 @@ Oyuncunun ana aleti. Bütün işler ve silahlar başlık olarak takılır. Çapa
 - **Yerleştirilebilirler** (Tezgâh, Taş Fırın, Ocakbaşı, Paketleme, Sandık, Uyku Tulumu, Meşale, Yemlik, Folluk, Ahşap Kapı, Kargo Rampası) üretilince envantere eşya olarak girer; kemerden seçilip kurulur. M1'de elde: Tezgâh 5 sn, Meşale 1 sn, Uyku Tulumu, Sandık, Yemlik, Folluk, Ahşap Kapı 3'er sn; Tezgâh'ta: Taş Fırın 6 sn, Ocakbaşı ve Paketleme Tezgâhı 5'er sn. Bedeller ICERIK §10.2 ve §20'deki gibi. Ocak kapsülden gelir (başlangıçta çantada, kemerden kurulur). Kargo Rampası üretilmez: ilk günden kapsül rampaya döner.
 - Yığın: kaynak 50, ara ürün 20, yemek 10.
 - **Yük nesneleri** çantaya girmez; dünyada fiziksel durur: kabarık ürün, kargo kasası, büyük leş, kuluçkalık yumurta (yuvadan alınan; Gıdak yumurtası sıradan eşyadır, çantaya girer), paketlenmiş makine ve araç, Ata ganimeti. Çekim başlığıyla, birkaç kişiyle, hayvanla, vinçle ya da araçla taşınır.
-- **Ambardan üretim:** Tapu içinde Ocak'a bağlı bütün depolardaki malzeme tezgâhlarda doğrudan kullanılır.
+- **Ambardan üretim:** Tapu içinde Ocak'a bağlı bütün depolardaki malzeme tezgâhlarda doğrudan kullanılır. Kural (M2): istasyon tarifinin malzemesi ve yakıtı önce çantadan, eksik kalan tapu yarıçapındaki (§6) Sandıklardan alınır; ürün çantaya, çanta doluysa aynı Sandıklara girer, ikisi de doluysa iş bekler. El tarifleri yalnız çantadan. İptal edilen işin malzemesi aynı yolla geri döner.
+- **İstasyon kuyruğu:** Her istasyonun kendi kuyruğu vardır (en çok 8 iş, farklı tarifler sıra bekler); oyuncu uzaklaşsa da işler.
+- **Envanter düzeni:** Sandık menüsünde "Çantayı sırala" (aynı eşyanın yarım yığınlarını birleştirir, türe göre dizer) ve "Aynılarını koy" (Sandık'ta zaten bulunan eşyaların hepsini çantadan Sandık'a taşır, Rust'taki hızlı yığma).
 
 ## 6. Ocak ve tapu
 
@@ -269,6 +271,8 @@ Hasat Robotu, Ekim Robotu, otomatik yemlik, Sağım-Kırkım Kolu, Yumurta Topla
 | Araştırma | Tarama, iş emirleri ve enkaz veri küplerinden gelen **Veri** ile Araştırma Masası'nda makine, başlık, parça ve araç tarifleri. Her kalemin Veri bedeli ICERIK'te yazıyor. |
 | Katalog | **Kredi** ile tohum, yumurta, araç gövdesi, süs, kozmetik |
 | Ganimet | Çipler, kart jetonları, güçler (Kadim Taş), Holding planları |
+
+**Araştırma kuralı (M2):** Araştırma Araştırma Masası'nın yanında yapılır: Üretim panelinde araştırmayla kilitli satırın düğmesi "ARAŞTIR · n VERİ" olur. Bedel kalemin basamağına göre sabittir ([ICERIK.md](ICERIK.md) §0). Ağaçta önceki düğüm gerekir ([ICERIK.md](ICERIK.md) §11.1); Ocak basamağı gerekmez, ilerlemeyi malzeme (ör. Koru'nun demiri) ve Veri sınırlar. Açılma sütunu "Ata" olan istasyon Ocak o basamağa çıkınca açılır. **Tarayıcı** (§4): bakılan yaratık, bitki ya da maden türü ilk kez taranınca Veri verir (yaratık 15, bitki 8, maden 6, ağaç 5); Ansiklopedi'ye yazılır.
 
 ## 13. Ekonomi
 

@@ -34,8 +34,8 @@ public class PowerTests
         Assert.Equal(80f, f.Def("ruzgar_gulu")!.Watts);
         Assert.Equal(40f, f.Def("hayvan_carki")!.Watts);
         Assert.Equal(500f, f.Def("aku_mk1")!.CapacityWh);
-        Assert.Equal(new[] { "wood", "bakir_tel" }, d.Tool.RecipeFor("ruzgar_gulu")!.In.Keys);
-        Assert.Equal(2, d.Tool.RecipeFor("bakir_tel")!.Out);
+        Assert.Equal(new[] { "wood", "copper_wire" }, d.Tool.RecipeFor("ruzgar_gulu")!.In.Keys); // Bakir Tel: zincir'in copper_wire tarifi
+        Assert.Equal(2, d.Tool.RecipeFor("kablo")!.Out);
         // her yerlestirilebilir guc parcasinin tarifi ve tanimi var; tarifi olmayan Aku Mk1 yerlestirilebilir degil (Demir yok)
         foreach (var dev in f.Devices.Where(x => x.Id != "aku_mk1"))
         {

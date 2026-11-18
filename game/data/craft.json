@@ -14,6 +14,7 @@
     { "id": "malzeme", "name": "Malzeme" },
     { "id": "yemek", "name": "Yemek" },
     { "id": "yuk", "name": "Yük" },
+    { "id": "arastirma", "name": "Araştırma" },
     { "id": "guc", "name": "Güç ve sinyal" }
   ],
   "_not_sources": "Eksik malzeme satiri: '<Ad>: <text>'. target: pusulanin isaretledigi en yakin kaynak (Director.Compass.cs): rock:<esya> (kaya, kil yatagi, bakir damari), tree (agac), tuft:<esya> (ot, cali, yabani bugday), farm (tarla), station:<istasyon>, gidak.",
@@ -27,6 +28,11 @@
     "turnip": { "text": "tarlan, olgun şalgamı Biçme ile hasat et", "target": "farm" },
     "egg": { "text": "ağıldaki Gıdak, Folluk'tan E ile", "target": "gidak" },
     "copper_ingot": { "text": "Taş Fırın'da Bakır Cevheri'nden eritilir", "target": "station:tas_firin" },
-    "bakir_tel": { "text": "Tezgâh'ta Bakır Külçe'den çekilir", "target": "station:tezgah" }
+    "copper_wire": { "text": "Tezgâh'ta Bakır Külçe'den çekilir", "target": "station:tezgah" },
+    "charcoal": { "text": "Kömür Ocağı'nda Odun'dan yakılır", "target": "station:komur_ocagi" },
+    "iron_ore": { "text": "Sis Korusu'ndaki demir damarı, Kazma", "target": "rock:iron_ore" },
+    "iron_ingot": { "text": "Demirci Ocağı'nda Demir Cevheri'nden eritilir", "target": "station:demirci_ocagi" },
+    "plank": { "text": "Bıçkı'da Odun'dan biçilir", "target": "station:bicki" },
+    "cloth": { "text": "Dokuma Tezgâhı'nda Lif'ten dokunur", "target": "station:dokuma_tezgahi" }
   }
 }

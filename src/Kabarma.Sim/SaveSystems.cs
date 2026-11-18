@@ -78,25 +78,49 @@ public sealed partial class FoodBuffs
     }
 }
 
+/// <summary>Istasyon kuyrugunun bir isi (zincir M2: istasyon basina cok is).</summary>
+public sealed class StationJobSave
+{
+    public string Recipe { get; set; } = "";
+    public int Left { get; set; }
+    public List<string?> Fuel { get; set; } = new();
+}
+
 public sealed class StationQueueSave
 {
     public string Station { get; set; } = "";
+    /// <summary>Ilk isin tarifi (M1 bicimi; Jobs bossa tek is olarak okunur).</summary>
     public string? Active { get; set; }
     public float Progress { get; set; }
     public int Queued { get; set; }
     public List<string?> Fuel { get; set; } = new();
+    /// <summary>Butun isler, sirasiyla (zincir M2).</summary>
+    public List<StationJobSave> Jobs { get; set; } = new();
 }
 
 public sealed partial class StationQueue
 {
-    public StationQueueSave Save() => new() { Station = Station, Active = Active?.Id, Progress = Progress, Queued = Queued, Fuel = _fuel.ToList() };
+    public StationQueueSave Save() => new()
+    {
+        Station = Station, Active = Active?.Id, Progress = Progress, Queued = Queued, Fuel = _jobs.Count > 0 ? _jobs[0].Fuel.ToList() : new(),
+        Jobs = _jobs.Select(j => new StationJobSave { Recipe = j.Recipe.Id, Left = j.Left, Fuel = j.Fuel.ToList() }).ToList(),
+    };
+
     public void Load(StationQueueSave s)
     {
-        Active = s.Active == null ? null : _data.Tool.Recipes.FirstOrDefault(r => r.Id == s.Active && r.Station == Station);
-        Queued = Active == null ? 0 : s.Queued;
-        Progress = Active == null ? 0 : s.Progress;
-        _fuel.Clear();
-        if (Active != null) _fuel.AddRange(s.Fuel);
+        _jobs.Clear();
+        Blocked = false;
+        var jobs = s.Jobs.Count > 0 ? s.Jobs
+            : s.Active != null ? new List<StationJobSave> { new() { Recipe = s.Active, Left = s.Queued, Fuel = s.Fuel } } : new();
+        foreach (var j in jobs)
+        {
+            var r = _data.Tool.Recipes.FirstOrDefault(x => x.Id == j.Recipe && x.Station == Station);
+            if (r == null || j.Left <= 0) continue;
+            var job = new Job { Recipe = r, Left = j.Left };
+            job.Fuel.AddRange(j.Fuel);
+            _jobs.Add(job);
+        }
+        Progress = _jobs.Count == 0 ? 0 : s.Progress;
     }
 }
 

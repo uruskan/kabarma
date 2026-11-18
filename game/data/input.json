@@ -97,7 +97,8 @@
     "camera_mode": { "name": "Kamera: normal / yakın omuz", "kb": ["V"], "pad": ["R3"] },
     "camera_zoom_in": { "name": "Kamerayı yakınlaştır (normal kip; Ctrl ya da Alt + tekerlek)", "kb": ["Wheel:Up"], "padVia": "camera_mode" },
     "camera_zoom_out": { "name": "Kamerayı uzaklaştır (normal kip; Ctrl ya da Alt + tekerlek)", "kb": ["Wheel:Down"], "padVia": "camera_mode" },
-    "controls_panel": { "name": "Tuş atamaları", "kb": ["F2"], "pad": ["Back"] }
+    "controls_panel": { "name": "Tuş atamaları", "kb": ["F2"], "pad": ["Back"] },
+    "scan": { "name": "Tarayıcı: baktığını tara (Veri)", "kb": ["T"], "pad": ["DPad:Up"] }
   },
   "hints": {
     "menu_pick": { "name": "Menüden seç", "kb": "1–9", "pad": "✚ + Ⓐ" },

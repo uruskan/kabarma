@@ -34,12 +34,15 @@ public class DataSplitTests
         // recipes.json
         // (ekonomi M1: tarifler, bedeller, yemekler ve fiyatlar ICERIK §15, §18, §20'ye uyduruldu; ayrintisi CraftingTests, EconomyTests)
         // karar 23: el tarifleri (yerlestirilebilirler) basta, istasyon tarifleri sonra; Tezgah'ta yapilan istasyonlar en sonda
-        Assert.Equal(new[] { "tezgah", "mesale", "uyku_tulumu", "sandik", "yemlik", "folluk", "ahsap_kapi", "civi", "civi_tabancasi", "el_arabasi", "copper_ingot", "kozde_salgam", "haslanmis_yumurta", "sebze_corbasi", "kargo_kasasi", "tas_firin", "ocakbasi", "paketleme" }, t.Recipes.Select(r => r.Id).Take(18)); // M2 akislari arkaya satir ekler (guc: bakir_tel, kablo...)
+        // M2 akislari tarifleri arkaya ekler (istasyon menusundeki sira bozulmasin): yalniz bastaki M1 sirasi sinanir.
+        var m1Recipes = new[] { "tezgah", "mesale", "uyku_tulumu", "sandik", "yemlik", "folluk", "ahsap_kapi", "civi", "civi_tabancasi", "el_arabasi", "copper_ingot", "kozde_salgam", "haslanmis_yumurta", "sebze_corbasi", "kargo_kasasi", "tas_firin", "ocakbasi", "paketleme" };
+        Assert.Equal(m1Recipes, t.Recipes.Select(r => r.Id).Take(m1Recipes.Length));
         Assert.Equal(20, t.RecipeFor("civi")!.Out);
         Assert.Equal(2, t.RecipeFor("sebze_corbasi")!.In["turnip"]);
         // placeables.json
         // ekonomi M1 yerlestirilebilirleri, ardindan ilkgun'unkiler (Ahsap Kapi, Yemlik, Folluk) arkaya eklenir
-        Assert.Equal(new[] { "ocak", "tezgah", "tas_firin", "ocakbasi", "paketleme", "sandik", "uyku_tulumu", "mesale", "ahsap_kapi", "yemlik", "folluk" }, t.Placeables.Select(p => p.Id).Take(11)); // M2 akislari arkaya satir ekler
+        var m1Placeables = new[] { "ocak", "tezgah", "tas_firin", "ocakbasi", "paketleme", "sandik", "uyku_tulumu", "mesale", "ahsap_kapi", "yemlik", "folluk" };
+        Assert.Equal(m1Placeables, t.Placeables.Select(p => p.Id).Take(m1Placeables.Length));
         Assert.True(t.Placeables[0].Once);
         Assert.Equal(15, t.CostOf(t.Placeables[2].Id)["stone"]);
         Assert.Equal(28, t.BuildCosts.Count);

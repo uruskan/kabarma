@@ -31,8 +31,7 @@ public static class ItemNames
         ["mesale"] = "Meşale",
         ["yemlik"] = "Yemlik",
         ["folluk"] = "Folluk",
-        ["bakir_tel"] = "Bakır Tel", // guc akisi (ICERIK 12 M2)
-        ["kablo"] = "Kablo",
+        ["kablo"] = "Kablo", // guc akisi (ICERIK 12 M2)
         ["direk"] = "Direk",
         ["salter"] = "Şalter",
         ["ruzgar_gulu"] = "Rüzgâr Gülü",
