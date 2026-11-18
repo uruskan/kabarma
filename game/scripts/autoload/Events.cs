@@ -110,6 +110,13 @@ public static class Events
     public static void RaiseSlept() => Slept?.Invoke();
     public static void RaisePaid(int credits, string what) => Paid?.Invoke(credits, what);
     public static void RaiseDeconstructed(string id) => Deconstructed?.Invoke(id);
+    /// <summary>Bereket Holding (holding, M3): kervan pususu (kamp), oyuncu baskini bir binayi yikti (kamp, bina), cekirdek dustu (kamp). Yayan: HoldingWorld.</summary>
+    public static event Action<int> HoldingAmbushed;
+    public static event Action<int, string> HoldingRaided;
+    public static event Action<int> HoldingCoreDestroyed;
+    public static void RaiseHoldingAmbushed(int camp) => HoldingAmbushed?.Invoke(camp);
+    public static void RaiseHoldingRaided(int camp, string structure) => HoldingRaided?.Invoke(camp, structure);
+    public static void RaiseHoldingCoreDestroyed(int camp) => HoldingCoreDestroyed?.Invoke(camp);
 
     /// <summary>Butun aboneleri birakir.</summary>
     public static void Clear()
@@ -127,5 +134,6 @@ public static class Events
         PieceUpgraded = null; PlanCompleted = null;
         CatalogBought = null; Delivered = null; WheelSpun = null; // ekonomi2
         AtaDefeated = null; AtaPhase = null;
+        HoldingAmbushed = null; HoldingRaided = null; HoldingCoreDestroyed = null; // holding
     }
 }

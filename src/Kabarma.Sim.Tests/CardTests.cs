@@ -36,10 +36,11 @@ public class CardTests
     }
 
     [Fact]
-    public void M1_pool_is_exactly_the_ten_cards()
+    public void M1_ten_cards_are_still_in_the_open_pool()
     {
-        var ids = Data().Cards.Cards.Select(c => c.Id).OrderBy(x => x).ToArray();
-        Assert.Equal(new[] { "catal", "cevik", "iri_tane", "keskin_goz", "kiragi", "kivilcim", "miknatis", "seken", "tez_el", "tokmak" }, ids);
+        var open = new CardBook(Data().Cards).Open.Select(c => c.Id).ToHashSet();
+        foreach (var id in new[] { "catal", "cevik", "iri_tane", "keskin_goz", "kiragi", "kivilcim", "miknatis", "seken", "tez_el", "tokmak" })
+            Assert.Contains(id, open);
     }
 
     /// <summary>Her kart iki rutbeyle: silah ve bedenin kullandigi sonuc deger ICERIK'teki gibi degisir.</summary>
@@ -67,7 +68,7 @@ public class CardTests
     public void Cards_do_not_touch_other_stats()
     {
         var d = Data();
-        foreach (var c in d.Cards.Cards)
+        foreach (var c in d.Cards.Cards.Where(c => Icerik.Any(row => (string)row[0] == c.Id)))
         {
             var n = new GameState(d).StartNight();
             n.Grant(c.Id);
@@ -171,7 +172,7 @@ public class CardTests
             var o = n.RollOffer();
             firsts[o[0].Id] = firsts.GetValueOrDefault(o[0].Id) + 1;
         }
-        Assert.Equal(d.Cards.Cards.Count, firsts.Count);
+        Assert.Equal(n0Pool(d), firsts.Count);
         Assert.True(firsts.Values.Max() < 70, "ilk sira tek karta yigiliyor: " + string.Join(", ", firsts.Select(kv => $"{kv.Key}={kv.Value}")));
     }
 
@@ -207,6 +208,8 @@ public class CardTests
         Assert.Equal("catal", n.Choose(0)!.Id);
         Assert.Equal(2, n.Stats.Projectiles);
     }
+
+    static int n0Pool(GameData d) => new KabarmaNight(d, d.Kabarma.FirstNight, 1).Hand.Pool().Count;
 
     /// <summary>Bir seviye atlatacak kadar Oz verir (oyuncunun ayaginda oldurup toplayarak).</summary>
     internal static void LevelUp(KabarmaNight n, GameData d)

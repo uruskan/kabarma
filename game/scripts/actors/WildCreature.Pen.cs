@@ -1,4 +1,5 @@
 using Godot;
+using Kabarma.Sim;
 
 namespace Kabarma.Game;
 
@@ -12,6 +13,8 @@ public partial class WildCreature : IHusbandryHost
     Vector3 _hGoal;
     float _hSpeed;
     bool _hDriven;
+    /// <summary>Agil duvarlari (RanchSystem atar; yabani yaratik bilmez).</summary>
+    public PenSystem HusbandryPens;
 
     public string SpeciesId => Def.Id;
     public float HpFraction => Def.Hp > 0 ? Mathf.Clamp(State.Hp / Def.Hp, 0f, 1f) : 1f;
@@ -27,6 +30,15 @@ public partial class WildCreature : IHusbandryHost
         handled = true;
         goal = _hGoal with { Y = GlobalPosition.Y };
         speed = _hSpeed;
+        // Agil duvari: bu karenin adimi gecilmez duvari keserse duvarin onunde durur (acik kapi gecilir).
+        var pos = GlobalPosition;
+        var d = goal - pos; d.Y = 0;
+        if (d.Length() > 0.01f)
+        {
+            var next = pos + d.Normalized() * Mathf.Min(d.Length(), speed * dt + 0.05f);
+            if (HusbandryPens?.FirstHit(pos, next, 0.3f * (Def.Rig?.Height ?? 0.8f)) is WallHit h)
+                goal = new Vector3(h.Point.X, pos.Y, h.Point.Z);
+        }
         float walk = Def.Speed * (Def.Wild?.WalkSpeedMult ?? 0.5f);
         clip = speed > walk * 1.3f ? "run" : speed > 0.01f ? "walk" : "idle";
     }

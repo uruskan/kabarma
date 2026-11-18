@@ -1,0 +1,17 @@
+{
+  "_not": "Savunma yapilari M3 (GDD §16.4 'M3 kurallari', ICERIK §13). Bedeller recipes.json'da (tarifin kimligi yapinin kimligi, Tezgah), gorunus placeables.json + game/assets/models/defense/ (pipeline/build_defense.py, YER TUTUCU). Hasar turu ve zirh savas akisinin Combat sozlesmesine baglanana dek yerel (DefenseHit, GECICI). range/minRange m; interval sn; damage hasar; magazine depodaki en fazla cephane; wearPerShot / wearPerTrigger can kaybi; repairFraction tarifin bu orani onarim bedeli. kind: single (tek hedef, one nisanli), arc (kavis, alan), cone (koni, sacma). Sapan cephanesi listedeki ilk bulunan.",
+  "priorities": ["nearest", "strongest", "flying", "thief", "off"],
+  "repairFraction": 0.25,
+  "interactHoldSeconds": 0.45,
+  "towers": [
+    { "id": "civi_kulesi", "name": "Çivi Kulesi", "tier": 1, "kind": "single", "ammo": ["civi"], "magazine": 80, "range": 13.0, "minRange": 0.0, "interval": 0.32, "damage": 7.0, "damageType": "kesme", "speed": 45.0, "hp": 300.0, "wearPerShot": 0.6, "headHeight": 2.0 },
+    { "id": "sapan_kulesi", "name": "Sapan Kulesi", "tier": 1, "kind": "arc", "ammo": ["stone", "turnip", "pumpkin", "tomato"], "magazine": 30, "range": 17.0, "minRange": 3.5, "interval": 1.6, "damage": 16.0, "damageType": "darbe", "splash": 2.4, "flightSeconds": 0.9, "gravity": 14.0, "hp": 360.0, "wearPerShot": 1.5, "headHeight": 2.3 },
+    { "id": "sacma_kulesi", "name": "Saçma Kulesi", "tier": 2, "kind": "cone", "ammo": ["sacma"], "magazine": 60, "range": 8.0, "minRange": 0.0, "interval": 1.1, "damage": 4.0, "damageType": "kesme", "pellets": 7, "coneDegrees": 40.0, "hp": 500.0, "wearPerShot": 1.2, "headHeight": 1.9 }
+  ],
+  "traps": [
+    { "id": "diken_tarlasi", "name": "Diken Tarlası", "tier": 1, "kind": "spikes", "halfSize": 0.95, "dps": 9.0, "slow": 0.5, "slowSeconds": 0.6, "hp": 250.0, "wearPerTrigger": 0.5, "triggerEvery": 0.5 },
+    { "id": "yapiskan_zemin", "name": "Yapışkan Zemin", "tier": 2, "kind": "sticky", "halfSize": 0.95, "holdSeconds": 2.5, "immuneSeconds": 2.0, "hp": 300.0, "wearPerTrigger": 2.0 },
+    { "id": "firlatma_pedi", "name": "Fırlatma Pedi", "tier": 2, "kind": "launch", "halfSize": 0.8, "distance": 7.0, "apex": 3.2, "flightSeconds": 0.9, "damage": 5.0, "rearmSeconds": 1.6, "affectsPlayers": true, "playerUpSpeed": 11.0, "playerForwardSpeed": 8.0, "hp": 300.0, "wearPerTrigger": 3.0 },
+    { "id": "cukur_kapagi", "name": "Çukur Kapağı", "tier": 2, "kind": "pit", "halfSize": 0.9, "capacity": 3, "depth": 1.0, "hp": 400.0, "wearPerTrigger": 4.0 }
+  ]
+}

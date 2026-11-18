@@ -2,7 +2,7 @@ namespace Kabarma.Sim;
 
 // Kabarma gecesi: cards.json (GDD 15) ve kabarma.json (GDD 14-15).
 
-public sealed class CardDef
+public sealed partial class CardDef
 {
     public string Id { get; set; } = "";
     public string Name { get; set; } = "";
@@ -12,7 +12,7 @@ public sealed class CardDef
     public float PerRank { get; set; }
 }
 
-public sealed class CardsFile
+public sealed partial class CardsFile
 {
     public Dictionary<string, int> RarityWeights { get; set; } = new();
     public int MaxRank { get; set; }
@@ -51,6 +51,8 @@ public sealed class GosteriDef
     public float StreakWindow { get; set; }
     public float StreakBonus { get; set; }
     public float DecayPerSecond { get; set; }
+    /// <summary>GDD 14.5: GosteriEvent adi -> artis (kabarma3).</summary>
+    public Dictionary<string, float> Events { get; set; } = new();
 }
 
 public sealed class KabarmaFile
@@ -66,6 +68,8 @@ public sealed class KabarmaFile
     public float MayaKsFactor { get; set; }
     public float HpGrowth { get; set; }
     public float DamageGrowth { get; set; }
+    /// <summary>Tam Kabarma (GDD 14.1-14.6): GameData.Wave.cs.</summary>
+    public FullKabarmaDef Full { get; set; } = new();
 }
 
 public sealed partial class GameData

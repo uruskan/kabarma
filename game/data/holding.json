@@ -1,0 +1,74 @@
+{
+  "_not": "Bereket Holding (GDD §19, §19.4.1 M3 netlestirmeleri; ICERIK §3.7). Kamp, birimler, kervan, baskinlar, Husumet, ganimet. holding akisi (M3). Birim modelleri YER TUTUCU: oyuncu modeli kirmizi tulumla (Holding.Unit.cs); uretim istegi raporda.",
+  "camp": {
+    "_not": "anchor [x, z]: 1. kampin yeri (Sis Korusu kenari, Ocak'tan >= minDistance). levelEveryDays: baskin yemeden kac gunde seviye. capPerOcakTier × Ocak basamagi, en fazla maxLevel. M3: Ocak T2 -> 4. firstRealNight: kacinci gece ilk gercek Kabarma (1. gece Kucuk Kabarma). GECICI: kabarma3 gercek geceyi isaretleyince ona baglanir.",
+    "anchor": [160, 200],
+    "minDistance": 250,
+    "perdeRadius": 26,
+    "perdePush": 7,
+    "levelEveryDays": 5,
+    "capPerOcakTier": 2,
+    "maxLevel": 10,
+    "firstRealNight": 2,
+    "rebuildDays": 3,
+    "veinRadius": 150,
+    "veinHitsPerWorkerDay": 2,
+    "provokeSeconds": 30,
+    "composition": { "guardsBase": 2, "guardsPerLevel": 1, "workersBase": 2, "workersPerLevel": 0.5, "towersPerLevel": 0.5, "wallsPerLevel": 0.3334 },
+    "structures": [
+      { "id": "silo", "name": "Silo", "hp": 260, "hpPerLevel": 60, "offset": [-9, 4] },
+      { "id": "atolye", "name": "Atölye", "hp": 300, "hpPerLevel": 70, "offset": [8, 6] },
+      { "id": "ahir", "name": "Ahır", "hp": 220, "hpPerLevel": 50, "offset": [0, -10] },
+      { "id": "cekirdek", "name": "Şube Çekirdeği", "hp": 600, "hpPerLevel": 150, "offset": [0, 2], "core": true }
+    ]
+  },
+  "units": [
+    { "id": "isci", "name": "İşçi", "role": "worker", "hp": 40, "speed": 3.0, "damage": 0, "range": 0, "fireSeconds": 0, "aggroRange": 0, "flees": true, "weapon": "kazma", "tint": "C8452F" },
+    { "id": "bekci", "name": "Bekçi", "role": "guard", "hp": 80, "speed": 3.6, "damage": 6, "range": 18, "fireSeconds": 1.1, "aggroRange": 24, "weapon": "civi_tabancasi", "tint": "B83A2A" },
+    { "id": "ustabasi", "name": "Ustabaşı", "role": "elite", "hp": 220, "speed": 3.2, "damage": 14, "range": 22, "fireSeconds": 2.2, "aggroRange": 28, "armor": 0.3, "weapon": "havan", "tint": "8E2A20" },
+    { "id": "mekanik", "name": "Mekanik", "role": "mechanic", "hp": 70, "speed": 3.4, "damage": 4, "range": 10, "fireSeconds": 0.8, "aggroRange": 16, "weapon": "ark", "tint": "D06A3A" },
+    { "id": "mudur", "name": "Müdür", "role": "boss", "hp": 4000, "speed": 2.6, "damage": 30, "range": 26, "fireSeconds": 1.5, "aggroRange": 40, "armor": 0.5, "weapon": "zirhli_arac", "tint": "5E1A14", "milestone": "M5" }
+  ],
+  "caravan": {
+    "_not": "Her sabah departTime (gun orani) cikar, depot [x, z]'ye gider, bekler, doner. Bekci sayisi guardsBase + L/2 (en fazla guardsMax). Yuk: cargo esyalari + creditsPerLevel × L Kredi.",
+    "departTime": 0.27,
+    "depot": [236, 246],
+    "speed": 3.4,
+    "waitSeconds": 20,
+    "guardsBase": 2,
+    "guardsMax": 4,
+    "vehicleHp": 300,
+    "cargo": { "copper_ore": 6, "stone": 10 },
+    "creditsPerLevel": 120
+  },
+  "raid": {
+    "_not": "Onlarin baskini (Husumet >= threshold, Kabarma gecesi): baseCount + L/2 birim; ustabasi ve mekanik birer, gerisi bekci. Kamyonet truckFromLevel'den sonra. carryers: kabarik urunu tasiyan; carrySpeedMult.",
+    "threshold": 50,
+    "baseCount": 2,
+    "truckFromLevel": 5,
+    "carriers": 2,
+    "carrySpeedMult": 0.5,
+    "entryOffset": 8,
+    "claimRadius": 30,
+    "spawnDistance": 70
+  },
+  "husumet": {
+    "_not": "GDD §19.3. Kamp basina 0-100, baslangic start.",
+    "start": 0,
+    "max": 100,
+    "daily": 2,
+    "exportPerThousand": 1,
+    "exportMax": 3,
+    "ambush": 15,
+    "nightRaid": 25,
+    "theyRaided": -40
+  },
+  "_loot": "Senin baskinin ganimeti (GDD §19.4). items cantaya; credits Kredi (× L); token: sistemi olmayan odul Kooperatif deposunda sayilir. cekirdek: Sube Cekirdegi yikilinca; caravan: pusu (yuk caravan.cargo ve Kredi).",
+  "loot": {
+    "silo": { "credits": 150, "items": {} },
+    "atolye": { "credits": 0, "items": { "holding_parcasi": 2, "holding_plani": 1 } },
+    "ahir": { "credits": 0, "items": {}, "token": "nadir_hayvan" },
+    "cekirdek": { "credits": 600, "items": { "holding_parcasi": 4 } },
+    "caravan": { "credits": 0, "items": {} }
+  }
+}

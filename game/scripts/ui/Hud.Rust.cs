@@ -142,6 +142,7 @@ void fragment() {
         {
             PaintFeed();      // Hud.Feed.cs
             PaintOffer();     // Hud.Night.cs
+            PaintCardExtras(); // Hud.Cards.cs (kartlar M3)
         }
         PaintSuna();
         if (inv && _hintT > 0 && !string.IsNullOrEmpty(_hint.Text))

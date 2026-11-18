@@ -99,7 +99,7 @@ public partial class Bot
     void StepTarla()
     {
         var f = _d.State.Farm;
-        if (_cells.Count < 9 || f.Plots.Count(p => p.Planted) < 9) { StepTillPlant(); return; }
+        if (_cells.Count < 9 || f.Plots.Count(p => p.Planted && !p.Wild) < 9) { StepTillPlant(); return; }
         StepWater();
     }
 

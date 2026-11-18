@@ -359,10 +359,15 @@ Tapudaki olgun ekinler; Savaş Ağılı'ndaki hayvanlar; çevredeki yabani yarat
 - **Bileşim:** %50 ekili ailelerin çektiği türler (ekili alan oranında), %30 biyomun yerlileri, %20 komşu biyom. Tapuda hiç olgun ekin yoksa tamamı yerli gelir, sayı ×0,6 olur ve Maya kazancı yarıya iner.
 - **Hedef önceliği:** kendi ailesinin ekini → Maya Kazanı → kendisine saldıran. Yoldaki yapıyı kırarlar.
 - **Sürüler** (Çekirge, Sülük, Hamurcuk öbekleri) tek varlık sayılır ve tek can havuzu taşır.
+- **Taşma:** 220 sınırı yüzünden dalga süresinde giremeyen düşmanlar bir sonraki dalganın kuyruğuna, son dalgadan sonra Doruk'a devreder; Şafak'ta hâlâ girmemiş olanlar düşer (Maya vermez).
+- **Boş pay:** ekili ailenin bu taşın biyomlarında çektiği tür yoksa (M3'te Lif ve Baharat) o pay yerlilere gider. Komşu biyom, haritada tapunun biyomuna bitişik biyomdur (`biomes.json` `biomeMap.order` sırası); komşusu yoksa o pay da yerlilere gider. Ağırlık bir düşmandan fazla sayılır: dalga sayısı ağırlıkla doldurulur (Bozuk 6 yer tutar).
+- **Doruk:** her 5. KS'de Azman (savaş akışı); öteki KS'lerde ve Azman yokken son dalganın yarısı kadar, hepsi elit bir dalga.
+- **Sayılar:** sürelerin, elit öneklerinin, Kazan canının ve aile–tür eşleşmesinin sayıları `data/kabarma.json` `full` bölümünde.
 
 ### 14.4 Kazanç ve kayıp
 
 - **Maya** = öldürülen her düşmanın Maya değeri × `(1 + 0,15 × KS)` × Gösteri çarpanı. Kazan'da birikir.
+- **Kazan'ın canı** Ocak basamağıyla büyür (`kabarma.json` `full.kazan`); düşman ona ikinci öncelikle saldırır.
 - **Kazan devrilirse** Kabarma o an biter ve o gecenin Maya'sının yarısı gider. Ekinler kabarık kalır. Kazan sabah kendini onarır.
 - **Bozgun:** Bütün oyuncular aynı anda yerdeyse Kazan %25 hasar alır, herkes yatağında doğar.
 - **Yenen ekin** kaybedilir. Yıkılan yapı onarılır.
@@ -379,6 +384,15 @@ Maya Feneri (T2, günde bir kez kullanılır) 40 m yarıçapta 4 dakikalık bir 
 ### 14.7 Tatbikat
 
 Ocak'tan başlatılır. Seçilen KS'nin dalgaları hayalet olarak gelir; hasar gerçektir ama onarım bedavadır ve ödül yoktur. Savunma düzenini sınamak için.
+
+**M3 kuralı (Fener ve Tatbikat):**
+
+- **Maya Feneri** kurulan bir yerleştirilebilirdir. Her fener oyun gününde bir kez yakılır. KS, açılmış en yüksek KS'nin yarısıdır (aşağı yuvarlanır, en az 1).
+- **Tatbikat** Ocak'ın E menüsünden, açılmış bir KS seçilerek başlar.
+  - Tatbikat gece sayacını, iş emirlerini, Öz'ü, kartları, Maya'yı ve ganimeti ilerletmez.
+  - Ekinler kabarmaz.
+  - Bittiğinde Tatbikat süresince hasar alan yapılar başlangıçtaki canlarına bedavaya döner.
+- **Gece akışı:** İkisi de Kabarma'yı `kabarma3` akışının dalga arayüzüyle başlatır. Gece akışı o akışındır; burada yalnız başlatma kuralı ve sınırlar vardır.
 
 ### 14.8 Tüzük maddeleri (KS 26 ve üstü)
 
@@ -398,6 +412,35 @@ Ocak'tan başlatılır. Seçilen KS'nin dalgaları hayalet olarak gelir; hasar g
 - **Nişan:** Bir kartı geceyi 5. rütbede bitirmek 1 Nişan puanı verir. 3, 8, 15, 25, 40 puanda Nişan 1–5 olur: her seviye kartın etkisini %4 artırır; Nişan 5'te kart geceye 2. rütbeden başlar.
 - **Açılma:** 20 kart baştan açıktır. 40 kart iş emri zincirleri, üye tipleri, Atalar ve kart jetonlarıyla açılır ([ICERIK.md](ICERIK.md) §8.3). 12 aşı kartı, iki ebeveyni açık olunca kendiliğinden açılır.
 
+### 15.1 Kural ayrıntıları (M3)
+
+**Havuz ve teklif**
+- Teklif yalnız açık kartlardan gelir. Şunlar teklife girmez: aşılar, o gece sürgün edilen kartlar, rütbe tavanındaki kartlar.
+- 12 farklı kart taşınıyorsa teklife yalnız elde olup tavanda olmayanlar girer. Teklif edilecek kart kalmadıysa seviye boşa gider; sayaç işler ama teklif açılmaz.
+- **Aşı teklifi:** İki ebeveyn de 5. rütbedeyse ve aşı açıksa, aşı bir sonraki teklifin ilk kartı olur.
+  - Aşı tek rütbelidir.
+  - Alınınca iki ebeveynin yuvası tek yuvaya iner: 12'lik sınırda ikisi bir sayılır.
+  - Ebeveynlerin etkisi sürer; aşının etkisi onlara eklenir.
+
+**Yenileme ve sürgün**
+- **Yenileme:** Açık teklifin üç kartını yeniden çeker. İlk gecenin zorunlu Çatal'ı yeniden zorlanmaz. Aşı teklifteyse kalır. 20 saniyelik süre baştan başlar.
+- **Sürgün:** Teklifteki bir kartı o gecelik havuzdan çıkarır; yerine yeni bir kart çekilir. Elde olan kart sürgün edilemez.
+
+**Rütbe**
+- Etkiler rütbe başınadır. Her kartın rütbe tavanı `cards.json` `maxRank`'tır: varsayılan 5, aşılar 1.
+- Tavanı 1 olan kartlar: Borç, Alaca Şansı, Yem.
+
+**Nişan**
+- Nişan'ın %4'lük artışı sayı ve aç/kapa etkilerine uygulanmaz: mermi, sekme, delme, zıplama, kalkma, yörünge silahının sayısı. Geri kalan bütün etkiler (yüzde, olasılık, can, kalkan, yörünge hasarı) artar.
+- Nişan 5'te kart ilk alınışta 2. rütbeden başlar.
+- Puan, şafakta tavan rütbesindeki her kart için verilir. Nişan puanı, açılan kartlar ve kart jetonları karakter dosyasında durur.
+
+**Risk kartları**
+- **Kumarbaz:** Her dalga başında eldeki rastgele bir kartın rütbesi +1 olur (tavanda olmayan), başka birininki −1 (rütbesi 1'den büyük olan). Kumarbaz'ın kendisi bu seçime girmez.
+- **Borç:** Alınınca 3 seviye hemen sıraya girer; bu seviyeler gecenin seviye sınırına sayılmaz. Şafakta o gecenin Maya'sının %20'si Kooperatif'e gider.
+
+**Ekip kartları:** Çiftlik sınıfının kartlarıdır. Kuleler, hayvanlar, Kazan, yapılar ve korkuluklar bu kartları ekibin en yüksek rütbesiyle okur. Değiştirici adları `cards.json`'dadır.
+
 ## 16. Savaş
 
 ### 16.1 Hasar ve durumlar
@@ -416,6 +459,14 @@ Hasar türleri: Darbe, Kesme, Ateş, Buz, Şok, Zehir, Maya. Her yaratığın za
 - **Zırh:** `azaltma = zırh / (zırh + 100)`.
 - **Zayıf nokta:** Kabarmış yaratıklarda parlayan maya kesesi; vuruş ×2.
 - **Dost ateşi** kapalıdır (dünya ayarı). İtme, fırlatma ve ezilme her zaman açıktır.
+- **M3 uygulaması:** Sayılar `data/combat.json`'da, kural `src/Kabarma.Sim/Combat.cs` ve `Status.cs`'te; bağlanma [TEKNIK.md](TEKNIK.md) §3.1'de.
+  - Azaltma sırası: türün zayıflık ya da direnç çarpanı → zırh → kalkan ve dost ateşi.
+  - Yanık ve zehir hasarını zırh azaltmaz.
+  - Donma 3 yığında 2 saniye kilitler.
+  - Şok zinciri en çok iki hedefe sıçrar, hasarın %60'ını taşır ve yeniden sıçramaz.
+  - Zehir yığılır.
+  - Kabarık, azami canın üçte biri kadar Maya hasarıyla %200 boya varır ve patlar: çevreye azami canın yarısı kadar Darbe hasarı verir, kendi de o kadar hasar alır.
+  - Çapa başlıklarında Tırpan Işını Kesme, Çivi Tabancası Darbe hasarı verir.
 
 ### 16.2 Düşman davranışları
 
@@ -431,12 +482,31 @@ Yabani yaratıklar, açık arazideki Holding ekipleri ve kervanları, Oyuk koruy
 
 8 kule ve 8 tuzak ([ICERIK.md](ICERIK.md) §13). Kuleler güç ya da cephane ister; sinyalle açılıp kapanır ve hedef önceliği seçilir (en yakın, en güçlü, uçan, hırsız).
 
+**M3 kuralları (T1–T2: Çivi, Sapan, Saçma; Diken Tarlası, Yapışkan Zemin, Fırlatma Pedi, Çukur Kapağı).** Sayılar `data/defense.json`'da.
+- **Kurulum:** Kule ve tuzak Tezgâh'ta üretilen bir eşyadır; kemerden seçilip hayaletle kurulur, İnşa Planı'nın Sök kipiyle sökülür (eşya ve içindeki cephane geri döner). Tapu dışında da kurulur.
+- **Cephane:** Kulenin bir deposu var. Kuleye bakıp {act:interact} basınca çantadaki uygun cephane depo dolana dek aktarılır. Atış başına bir cephane gider; depo boşalınca kule durur. Sapan Taş ya da ürün atar; kabarık ürünün özelliği M4'te.
+- **Hedef:** Kule menzilindeki canlı düşmanlardan önceliğe göre seçer: en yakın, en güçlü (canı en yüksek), uçan, hırsız. Aradığı tür yoksa en yakına döner. {act:interact} basılı tutulunca öncelik sırayla değişir; sıranın sonu "kapalı"dır (sinyal bağlantısı M4'te güç ağıyla). Çivi tek hedefe hızlı ve öne nişanlı atar, Sapan kavisle alana düşürür, Saçma yakın bir koniye saçar.
+- **Bakım:** Her atış ve her tetiklenme aşınma yazar. Can sıfırlanınca yapı durur ve "bakım ister" der. Can yarının altındaysa {act:interact} önce onarır (tuzakta her zaman onarır; Çukur Kapağı'nda yalnız bozuksa): bedel tarifin %25'i (yapı onarımıyla aynı oran), can tamamlanır. Gece dalgasının yapılara saldırısı kabarma3 akışında.
+- **Tuzaklar:** Diken Tarlası üstündekine saniyede hasar verir ve yavaşlatır. Yapışkan Zemin girene yapışır, birkaç saniye tutar; aynı hedef kısa süre yeniden tutulmaz. Fırlatma Pedi basanı (oyuncu dahil) bakış yönünde fırlatır, sonra kurulması için bekler. Çukur Kapağı {act:interact} ile açılır ve kapanır (sinyal M4); açıkken üstüne gelen düşman çukura düşer, çıkamaz ve kapak kapanana dek tutulur. Çukurun sığası vardır.
+
 ## 17. Güçler
 
 - İki etkin güç yuvası ve bir ulti yuvası. İkinci etkin yuva Kurbağa Ağa'nın ödülüdür.
 - Etkin güçler Şarj harcar (25–50) ve 8–30 saniye bekleme süresi vardır.
 - **Ulti** Maya ölçeriyle çalışır. Ölçer yalnızca Kabarma'da ve Ata dövüşünde dolar.
 - 12 etkin güç Kadim Taş denemelerinden, 4 ulti Atalardan gelir ([ICERIK.md](ICERIK.md) §7).
+
+### 17.1 M3 uygulaması (ilk beş güç, iki ulti)
+
+Sayılar `data/abilities.json`'da; kural `src/Kabarma.Sim/Ability*.cs`, `KadimTas*.cs`; Godot katmanı `game/scripts/abilities/`.
+
+- **Yuvalar:** M3'te bir etkin yuva açıktır; ikincisi Kurbağa Ağa ile (M4) açılır. İkinci yuvanın tuşu bağlıdır ama kilitlidir. Ulti yuvası birdir.
+- **Takma:** Kazanılan güç boş yuvaya kendiliğinden girer. Değiştirmek için tamamlanmış bir Kadim Taş'ta E'ye basılır; menüde açık güçler ve açık ultiler listelenir.
+- **Kime açılır:** Kadim Taş denemesi ve Ata'dan gelen ulti dünyaya yazılır; ekipteki herkes kullanır. Yuva, Şarj, bekleme ve ulti ölçeri oyuncu başınadır.
+- **Şarj:** 100 puandır. Son harcamadan 1,5 saniye sonra saniyede 5 dolar; boştan dolması 20 saniye sürer.
+- **Ulti ölçeri:** 100 puandır. Kabarma'da her öldürme 2, elit 6 puan verir. Ata dövüşünde Ata'nın canının her %1'i 2 puan verir. Ölçer başka zaman dolmaz ve boşalmaz. Dolunca ulti kullanılır, ölçer sıfırlanır.
+- **Kadim Taş denemesi:** Taşta E'ye basılınca deneme başlar. Başarısız olursa 10 saniye sonra yeniden denenir. Deneme düşmanları hayalettir: ganimet, Öz ya da Maya vermezler. M3'te beş taş vardır: Çayır'da Atılma ve Kalkan Balonu, Koru'da Şok Dalgası, Yem Hologramı ve Şifa Sisi. Taşların yeri `abilities.json`'dadır.
+- **Atılma'nın hasarsız anı:** Atılma'nın ilk 0,35 saniyesinde oyuncu hasar almaz.
 
 ## 18. Atalar
 
@@ -510,6 +580,21 @@ Kabarma gecesi Perde iner. Hedefler:
 | Şube Çekirdeği | Yok edilirse büyük ödül; kamp 3 gün sonra 1. seviyeden yeniden kurulur, Husumet sıfırlanır |
 
 Şafakta Perde geri gelir ve içeride kalan oyuncu dışarı fırlatılır; elindeki ganimet onda kalır. Evde kalmak ile baskına gitmek arasındaki seçim, ekibi bölmenin ya da savunmayı otomatikleştirmenin gerekçesidir.
+
+### 19.4.1 M3 netleştirmeleri (holding akışı, 18 Kasım 2026)
+
+Yukarıdaki kuralların belgede açık kalan yerleri; sayılar `game/data/holding.json`'da.
+
+- **Yer:** M2–M3 haritası ±320 m olduğundan 600 m sığmaz. 1. kamp Sis Korusu kenarında, Ocak'tan en az 250 m uzakta sabit bir yerdedir (veride `anchor`). 600 m kuralı büyük harita (M4) gelince geri döner.
+- **"İlk gerçek Kabarma":** Küçük Kabarma (ilk gece, öğretici) sayılmaz. Kamp ilk gerçek Kabarma'nın ertesi sabahı kurulur.
+- **Seviye:** Kamp 1. seviyede kurulur. Baskın yemediği her 5 günde bir seviye atlar; oyuncunun gece baskını (kampa en az bir isabet) bu sayacı sıfırlar. Tavan `min(10, Ocak basamağı × 2)`; M3'te Ocak T2, yani en fazla 4. Bölmeler aşağı yuvarlanır: `L/2`, `L/3`, `L/2 + 2`.
+- **Kervan:** Her sabah saat 8'de (gün oranı 0,27) kamptan yola çıkar, Holding'in harita kenarındaki teslim noktasına gider ve geri döner. Bir araç ve `2 + L/2` bekçi (2–4). Yükü işçilerin topladığı cevher ve bir kredi kasasıdır. Araç ve bütün bekçiler düşerse pusu başarılıdır; yük son vuranın çantasına geçer (sığmayan Kooperatif deposuna gider). Yıkılan binanın ganimeti de aynı yoldan gelir.
+- **Husumet:** Kamp başınadır ve 0'dan başlar. "İhracat geliri" o günkü kargo satışının bin Kredisi başına +1'dir (en fazla +3), ertesi sabah eklenir. −40 onların baskın ekibi oyuncunun tapusuna girdiği anda uygulanır.
+- **Onların baskını:** Husumet 50 ve üstündeyse Kabarma'nın ilk dalgasıyla birlikte kamp yönünden, tapu sınırından girer. Baskın ekibi ustabaşının yönettiği bekçiler ve bir mekaniktir. 1–4. seviyelerde yayadır: iki taşıyıcı birer kabarık ürün kapar (tarladakini söker), taşırken yürüme hızları yarıya iner. Taşıyan düşerse ürün yerde kalır. Ürün kampa varırsa kaybolur. Kule yoksa sabotaj yapılmaz.
+- **Senin baskının:** Ganimet hedef yıkılınca düşer. Silo: kabarık ürün yerine (M3) Kredi kasası. Atölye: Holding Parçası ve bir plan. Ahır: nadir cins hayvan (hayvan akışının arayüzü gelene kadar Kooperatif deposunda sayılır). Şube Çekirdeği: Silo, Atölye ve Ahır yıkılmadan vurulamaz.
+- **Perde:** kamp tapusu (`perdeRadius`) içinde gündüz kimse hasar alamaz; içeri giren oyuncu kibarca dışarı itilir. Kabarma gecesi kalkar, şafakta iner; içeride kalan oyuncu dışarı fırlatılır.
+- **Birimler:** M3'te İşçi, Bekçi, Ustabaşı ve Mekanik oynar. Müdür ve Genel Merkez yalnız tanımdır (M5).
+- **Davranış (M3):** Gündüz bekçiler Perde içinde ateş etmez; kampa ya da kervana vurulursa 30 sn kışkırırlar (`provokeSeconds`). Gece kamp bekçileri `aggroRange` içindeki oyuncuya ateş eder. İşçiler kampla damar arasında gidip gelir, oyuncu yaklaşınca kaçar. M3'te damarı gerçekten tüketmezler. Baskın ekibi Ocak'tan 70 m uzakta, kamp yönünde doğar (`spawnDistance`). Ocak'a 30 m yaklaşınca "tapuya girdi" sayılır (`claimRadius`).
 
 ### 19.5 Genel Merkez
 

@@ -17,6 +17,7 @@ public partial class Director
     void WireNightAndDay()
     {
         var cal = State.Calendar;
+        InitKabarma(); // Director.Kabarma.cs: takvim/Can tetigi, --kabarma (kabarma3)
         cal.Morning += day =>
         {
             Hud.Big($"GÜN {day}", Palette.Warning, 2.5f);

@@ -46,6 +46,7 @@ public partial class Director
     /// <summary>Istasyon olmayan yerlestirilebilir (Sandik, Uyku Tulumu, Mesale).</summary>
     public Furniture PlaceFurniture(PlaceableDef def, Vector3 at, float yaw)
     {
+        if (Defense?.Handles(def.Id) == true) return Defense.Place(def, at, yaw); // savunma M3: kule ve tuzak (ortak "placed" istemcisi)
         var f = new Furniture(this, def);
         AddChild(f);
         f.GlobalPosition = at;
