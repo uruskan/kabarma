@@ -46,8 +46,8 @@ public sealed class HeldItemDef
     public float[] ModelRotDeg { get; set; } = { 0f, 0f, 0f };
     /// <summary>Namlu ucu, nesne uzayinda (isinlar ve mermiler buradan cikar).</summary>
     public float[] Muzzle { get; set; } = { 0f, 0f, 0f };
-    public GripFrameDef Right { get; set; }
-    public GripFrameDef Left { get; set; }
+    public GripFrameDef? Right { get; set; }
+    public GripFrameDef? Left { get; set; }
     /// <summary>Nisanda yumruk omzun bu kadar onunde (m), nisan yonunde.</summary>
     public float AimReach { get; set; } = 0.45f;
     /// <summary>Nisanda yumruk omuz-nisan cizgisinin bu kadar altinda (m).</summary>
@@ -57,7 +57,7 @@ public sealed class HeldItemDef
     public float CarryPitchDeg { get; set; } = -35f;
     /// <summary>Alcak hazir tutusun agirligi (0: el animasyondaki yonunde kalir, 1: tam).</summary>
     public float CarryAlign { get; set; } = 1f;
-    public BackMountDef Back { get; set; }
+    public BackMountDef? Back { get; set; }
 }
 
 public sealed class GripsFile

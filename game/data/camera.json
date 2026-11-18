@@ -1,0 +1,13 @@
+{
+  "_not": "Oyuncu kamerasi (PLAN §4 Kamera, URETIM §6 karar 21). Birinci sahis yok. V (kolda R3) iki kip arasinda gecer: normal (karakterin arkasinda ve ustunde; fare tekerlegi yakinlastirir) ve yakin omuz (Astroneer tarzi: kamera omzun hemen arkasinda ve yaninda, kafa ve omuz ekranin kenarinda). Karakter hic gizlenmez. Uzunluklar metre, acilar derece, sureler saniye. Kamera duvar ve kayanin arkasina gecmez, one cekilir (collisionRadius). Secilen kip ve yakinlastirma user://camera_settings.cfg'de (sinamalarda okunmaz, yazilmaz). Player.Camera.cs.",
+  "normal": { "height": 1.55, "side": 0.7, "distance": 4.2, "fov": 68 },
+  "shoulder": { "height": 1.62, "side": 0.62, "distance": 1.15, "fov": 70 },
+  "zoomMin": 2.2,
+  "zoomMax": 7.5,
+  "wheelStep": 0.5,
+  "zoomSmooth": 12,
+  "transitionSeconds": 0.35,
+  "collisionRadius": 0.2,
+  "returnRate": 8,
+  "startPitchDeg": -12.6
+}

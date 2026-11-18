@@ -5,7 +5,8 @@ namespace Kabarma.Game;
 
 /// <summary>
 /// Omuz ustu ucuncu sahis oyuncu (PLAN §4). Govde: uretilen kemikli model, yoksa koddan tulumlu govde.
-/// Parcalar: Player.Anim.cs (model, klip secimi), Player.Grip.cs (tutulan nesneler: el soketi, nisan, araba), Player.Stamina.cs
+/// Parcalar: Player.Anim.cs (model, klip secimi), Player.Grip.cs (tutulan nesneler: el soketi, nisan, araba),
+/// Player.Camera.cs (kamera: normal ve yakin omuz kipi, carpisma, ayar dosyasi), Player.Stamina.cs
 /// (depar ve dayaniklilik), Player.Hooks.cs (olaylar -> vizor ve pozlar), PlayerRig/PlayerBody/PlayerPoses (kodla
 /// katmanlar), Visor.cs. Burada: hareket, kamera, nisan, hasar, yere serilme.
 /// </summary>
@@ -13,7 +14,7 @@ public partial class Player : CharacterBody3D
 {
     public Node3D Yaw { get; private set; }
     public Node3D Pitch { get; private set; }
-    public SpringArm3D Arm { get; private set; }
+    public Node3D Arm { get; private set; }
     public Camera3D Cam { get; private set; }
     public Node3D Visual { get; private set; }
     public Node3D Muzzle { get; private set; }
@@ -59,17 +60,7 @@ public partial class Player : CharacterBody3D
         BackpackPoint = new Node3D { Position = new Vector3(0, 1.1f, -0.4f) };
         Visual.AddChild(BackpackPoint);
 
-        Yaw = new Node3D { Name = "CamYaw", TopLevel = true };
-        AddChild(Yaw);
-        Pitch = new Node3D { Position = new Vector3(0, 1.55f, 0) };
-        Yaw.AddChild(Pitch);
-        Arm = new SpringArm3D { SpringLength = 4.2f, Margin = 0.3f, Position = new Vector3(0.7f, 0, 0) };
-        Arm.AddExcludedObject(GetRid());
-        Pitch.AddChild(Arm);
-        Cam = new Camera3D { Fov = 68f, Current = true };
-        Cam.AddToGroup("genex_shot");
-        Arm.AddChild(Cam);
-        Pitch.Rotation = new Vector3(-0.22f, 0, 0);
+        BuildCamera(); // Player.Camera.cs: iki kip (normal, yakin omuz), carpisma, camera.json
         // Oyun acilinca fare dogrudan kilitlenir; Esc birakir, tiklama geri kilitler.
         if (!Main.Args.ContainsKey("bot")) Input.MouseMode = Input.MouseModeEnum.Captured;
         HookEvents(); // Player.Hooks.cs
@@ -153,6 +144,8 @@ public partial class Player : CharacterBody3D
         if (AimOverride is Vector3 o) return o;
         var from = Cam.GlobalPosition;
         var dir = -Cam.GlobalBasis.Z;
+        // Isin oyuncunun derinliginden baslar: kamera ile oyuncu arasindaki bir govde (yaratik, cit) nisani arkaya cekmez.
+        from += dir * Mathf.Max(0f, (Pitch.GlobalPosition - from).Dot(dir));
         var q = PhysicsRayQueryParameters3D.Create(from, from + dir * maxDist);
         q.Exclude = new Godot.Collections.Array<Rid> { GetRid() };
         q.CollideWithAreas = true;
@@ -272,6 +265,7 @@ public partial class Player : CharacterBody3D
             if (_downT <= 0) EndDown();
             Velocity = new Vector3(0, Velocity.Y - _gravity * dt, 0);
             MoveAndSlide();
+            UpdateCamera(dt);
             return;
         }
 
@@ -353,5 +347,6 @@ public partial class Player : CharacterBody3D
             float pitch = Mathf.Atan2(d.Y, new Vector2(d.X, d.Z).Length());
             Pitch.Rotation = new Vector3(Mathf.Lerp(Pitch.Rotation.X, Mathf.Clamp(pitch - 0.12f, -0.9f, 0.4f), Mathf.Min(1f, dt * 6f)), 0, 0);
         }
+        UpdateCamera(dt); // Player.Camera.cs
     }
 }

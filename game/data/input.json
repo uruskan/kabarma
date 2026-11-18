@@ -91,6 +91,9 @@
     "ui_cancel": { "name": "Kapat", "kb": ["Escape"], "pad": ["B"] },
     "ui_up": { "name": "Menüde yukarı", "kb": ["Up"], "pad": ["DPad:Up"] },
     "ui_down": { "name": "Menüde aşağı", "kb": ["Down"], "pad": ["DPad:Down"] },
+    "camera_mode": { "name": "Kamera: normal / yakın omuz", "kb": ["V"], "pad": ["R3"] },
+    "camera_zoom_in": { "name": "Kamerayı yakınlaştır (normal kip; İnşa'da tekerlek parçayı değiştirir)", "kb": ["Wheel:Up"], "padVia": "camera_mode" },
+    "camera_zoom_out": { "name": "Kamerayı uzaklaştır (normal kip; İnşa'da tekerlek parçayı değiştirir)", "kb": ["Wheel:Down"], "padVia": "camera_mode" },
     "controls_panel": { "name": "Tuş atamaları", "kb": ["F2"], "pad": ["Back"] }
   },
   "hints": {
@@ -113,6 +116,6 @@
     "stepTimeoutSeconds": 240,
     "probeAction": "interact",
     "probeKb": "F",
-    "probePad": "R3"
+    "probePad": "Start"
   }
 }

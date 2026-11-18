@@ -80,6 +80,7 @@ public partial class Director
             if (Input.IsActionJustPressed("card_1")) ChooseCard(0);
             if (Input.IsActionJustPressed("card_2")) ChooseCard(1);
             if (Input.IsActionJustPressed("card_3")) ChooseCard(2);
+            Player.CameraInput(Capa.Current == Capa.Head.Insa || Hud.WheelOpen); // oyuncu akisi: V / R3 kip, tekerlek yakinlastirir (Insa'da parca)
         }
         _menuWasOpen = Hud.MenuOpen;
         if (Input.IsActionJustPressed("interact") && !Hud.MenuOpen && !_menuClosedThisFrame) Interact();
