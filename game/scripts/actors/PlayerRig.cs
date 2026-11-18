@@ -6,27 +6,42 @@ namespace Kabarma.Game;
 
 /// <summary>
 /// Oyuncunun kodla ve fizikle animasyon katmanlari (SANAT-SES §3.1). Iskeletin degistirici sirasi:
-///  1. PlayerBody: egilme, govde donusu, geri tepme, itme ve suda yurume katmanlari, canta yayi, ayak IK hedefleri.
+///  1. PlayerBody: egilme, govde donusu, geri tepme, itme ve suda yurume katmanlari, ayak IK hedefleri.
 ///  2. LegIK (TwoBoneIK3D, iki ayak): ayaklar zemine oturur.
-///  3. ArmIK (TwoBoneIK3D): sag kol Capa'yi nisan noktasina tutar.
-///  4. HeadLook (LookAtModifier3D): bas nisan yonune doner, acisi sinirli.
-///  5. Ragdoll (PhysicalBoneSimulator3D): yere serilme; kalkista PlayerBody ragdoll pozundan kalkis klibine harmanlar.
+///  3. ArmIK + AlignR: sag bilek RightGoal'a gider, el RightGoal'in yonune doner (nisanda Capa'nin kabzasi).
+///  4. ArmIKL + AlignL: sol el LeftGoal'a (iki elle tutulan nesnenin ikinci tutamagi; El Arabasi).
+///  5. HeadLook (LookAtModifier3D): bas nisan yonune doner, acisi sinirli.
+///  6. Ragdoll (PhysicalBoneSimulator3D): yere serilme; kalkista PlayerBody ragdoll pozundan kalkis klibine harmanlar.
 /// Godot degistirilmis pozu her karede geri yukler; son poz yalnizca SkeletonUpdated sinyalinde okunur.
-/// Capa ve vizor bu yuzden orada yerlestirilir (PoseReady).
+/// Tutulan nesne ve vizor bu yuzden orada yerlestirilir (PoseReady, Player.Grip.cs).
 /// </summary>
 public sealed class PlayerRig
 {
     readonly Skeleton3D _skel;
-    readonly TwoBoneIK3D _arm, _legs;
+    readonly TwoBoneIK3D _arm, _armL, _legs;
+    readonly HandAlign _alignR, _alignL;
     readonly LookAtModifier3D _look;
     readonly PhysicalBoneSimulator3D _rag;
     public readonly PlayerBody Body;
-    public readonly Node3D HandTarget, ElbowPole, LookTarget;
+    public readonly Node3D HandTarget, ElbowPole, HandTargetL, ElbowPoleL, LookTarget;
     readonly Node3D[] _footTargets = new Node3D[2], _kneePoles = new Node3D[2];
     readonly Dictionary<string, PhysicalBone3D> _bones = new();
     readonly int _hips, _hand;
-    float _armW, _lookW;
+    float _armW, _armLW, _lookW;
     public bool Ragdolling { get; private set; }
+
+    /// <summary>Bileklerin istenen dunya donusumu (Player.Grip.cs her fizik karesinde verir); null: el animasyondan.</summary>
+    public Transform3D? RightGoal, LeftGoal;
+    /// <summary>Hedef yokken sag elin istenen dunya yonu (alcak hazir tutus: kol animasyondan, yalniz bilek doner).</summary>
+    public Basis? RightCarry;
+    public float CarryWeight = 1f;
+    float _carryW;
+    Basis _alignBasis = Basis.Identity;
+    /// <summary>Kol IK'sinin acilip kapanma hizi (grips.json armBlend).</summary>
+    public float ArmBlend = 6f;
+    /// <summary>Sag kol IK'sinin su anki agirligi (0 animasyon, 1 tam hedefte).</summary>
+    public float RightWeight => _armW;
+    public float LeftWeight => _armLW;
 
     /// <summary>Iskeletin son pozu hazir (degistiriciler uygulandi): Capa ve vizor burada yerlesir.</summary>
     public event System.Action PoseReady;
@@ -46,6 +61,8 @@ public sealed class PlayerRig
         _head = skel.FindBone("Head");
         HandTarget = Marker(owner, "HandTarget");
         ElbowPole = Marker(owner, "ElbowPole");
+        HandTargetL = Marker(owner, "HandTargetL");
+        ElbowPoleL = Marker(owner, "ElbowPoleL");
         LookTarget = Marker(owner, "LookTarget");
         for (int i = 0; i < 2; i++) { _footTargets[i] = Marker(owner, $"FootTarget{i}"); _kneePoles[i] = Marker(owner, $"KneePole{i}"); }
 
@@ -77,8 +94,22 @@ public sealed class PlayerRig
         _arm.SetEndBoneName(0, "RightHand");
         _arm.SetTargetNode(0, _arm.GetPathTo(HandTarget));
         _arm.SetPoleNode(0, _arm.GetPathTo(ElbowPole));
+        _alignR = new HandAlign { Name = "AlignR", BoneName = "RightHand" };
+        skel.AddChild(_alignR);
 
-        // 4. Bakis
+        // 4. Sol kol IK'si (ikinci tutamak)
+        _armL = new TwoBoneIK3D { Name = "ArmIKL", Influence = 0f };
+        skel.AddChild(_armL);
+        _armL.SettingCount = 1;
+        _armL.SetRootBoneName(0, "LeftArm");
+        _armL.SetMiddleBoneName(0, "LeftForeArm");
+        _armL.SetEndBoneName(0, "LeftHand");
+        _armL.SetTargetNode(0, _armL.GetPathTo(HandTargetL));
+        _armL.SetPoleNode(0, _armL.GetPathTo(ElbowPoleL));
+        _alignL = new HandAlign { Name = "AlignL", BoneName = "LeftHand" };
+        skel.AddChild(_alignL);
+
+        // 5. Bakis
         _look = new LookAtModifier3D
         {
             Name = "HeadLook", Influence = 0f, BoneName = "Head",
@@ -90,7 +121,7 @@ public sealed class PlayerRig
         skel.AddChild(_look);
         _look.TargetNode = _look.GetPathTo(LookTarget);
 
-        // 5. Ragdoll
+        // 6. Ragdoll
         _rag = new PhysicalBoneSimulator3D { Name = "Ragdoll" };
         skel.AddChild(_rag);
         // Iskelet metre biriminde (merge_player.py olcegi uygular); sekil boyutlari cm, asagida /100.
@@ -165,26 +196,51 @@ public sealed class PlayerRig
         return b >= 0 ? _skel.GlobalTransform * _skel.GetBoneGlobalPose(b) : _skel.GlobalTransform;
     }
 
-    /// <summary>Fizik karesinde katman girdileri. aiming: Capa kullaniliyor ya da silah takili gece.</summary>
+    /// <summary>Kemigin dunya konumu (fizik karesinde: onceki karenin pozu).</summary>
+    public Vector3 BoneOrigin(string bone) => BoneWorld(bone).Origin;
+
+    /// <summary>Iskeletin dunya olcegi (model 1,6 m'ye olceklenir; el soketi uzunluklari bununla carpilir).</summary>
+    public float Scale => _skel.GlobalBasis.Scale.X;
+
+    /// <summary>Fizik karesinde katman girdileri. aiming: Capa kullaniliyor ya da silah takili gece (govde donusu icin).
+    /// Kollar RightGoal/LeftGoal'dan gelir (Player.Grip.cs).</summary>
     public void Update(float dt, bool aiming, Vector3 aimPoint, Node3D visual, in BodyState st)
     {
         if (Ragdolling)
         {
-            _arm.Influence = 0; _look.Influence = 0;
+            _arm.Influence = 0; _armL.Influence = 0; _alignR.Weight = 0; _alignL.Weight = 0; _look.Influence = 0;
+            _armW = _armLW = _carryW = 0;
             Body.FootIkWanted = false; Body.Speed = 0; Body.PushTarget = 0; Body.WadeTarget = 0;
             return;
         }
         bool posed = st.Posed;
-        _armW = Mathf.MoveToward(_armW, aiming && !posed ? 1f : 0f, dt * 6f);
+        _armW = Mathf.MoveToward(_armW, RightGoal != null && !posed ? 1f : 0f, dt * ArmBlend);
+        _armLW = Mathf.MoveToward(_armLW, LeftGoal != null && !posed ? 1f : 0f, dt * ArmBlend);
         _lookW = Mathf.MoveToward(_lookW, posed ? 0f : 1f, dt * 3f);
-        _arm.Influence = _armW;
+        _carryW = Mathf.MoveToward(_carryW, RightCarry != null && !posed ? CarryWeight : 0f, dt * ArmBlend);
+        _arm.Influence = _armW; _alignR.Weight = Mathf.Max(_armW, _carryW);
+        _armL.Influence = _armLW; _alignL.Weight = _armLW;
         _look.Influence = _lookW * 0.9f;
-        var shoulder = _skel.GlobalTransform * _skel.GetBoneGlobalPose(_skel.FindBone("RightArm")).Origin;
-        var dir = (aimPoint - shoulder).Normalized();
-        // El omzun 0,45 m onunde, nisan yonunde; dirsek asagi ve disari.
-        HandTarget.GlobalPosition = shoulder + dir * 0.45f + Vector3.Down * 0.05f;
-        HandTarget.GlobalBasis = Basis.LookingAt(dir, Vector3.Up);
-        ElbowPole.GlobalPosition = shoulder + visual.GlobalBasis.X * -0.35f + Vector3.Down * 0.5f;
+        // Dirsekler asagi ve disari (sag kolda modelin -X'i, solda +X'i).
+        var side = visual.GlobalBasis.X;
+        // Elin yonu: nisan hedefinden, yoksa alcak hazir tutustan; gecis IK agirligiyla harmanlanir.
+        if (RightCarry is Basis c) _alignBasis = c.Orthonormalized();
+        if (RightGoal is Transform3D r)
+        {
+            HandTarget.GlobalTransform = r;
+            var gq = r.Basis.Orthonormalized().GetRotationQuaternion();
+            _alignBasis = RightCarry is Basis c2
+                ? new Basis(c2.Orthonormalized().GetRotationQuaternion().Slerp(gq, _armW))
+                : new Basis(gq);
+        }
+        _alignR.Target = _alignBasis;
+        ElbowPole.GlobalPosition = BoneOrigin("RightArm") - side * 0.35f + Vector3.Down * 0.5f;
+        if (LeftGoal is Transform3D l)
+        {
+            HandTargetL.GlobalTransform = l;
+            _alignL.Target = l.Basis.Orthonormalized();
+        }
+        ElbowPoleL.GlobalPosition = BoneOrigin("LeftArm") + side * 0.35f + Vector3.Down * 0.5f;
         LookTarget.GlobalPosition = aimPoint;
 
         // Govde katmani girdileri, model uzayinda.

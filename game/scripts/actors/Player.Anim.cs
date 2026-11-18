@@ -186,8 +186,7 @@ public partial class Player
         _mode = AnimMode.Pose; _modeT = 0f; _poseLocks = lockMove;
         bool loop = _clips.Clip(id)?.Loop ?? false;
         _modeLen = seconds > 0 ? seconds : loop ? 0f : ClipSeconds(id);
-        CaptureCapaGrip();
-        if (id == "sleep") _capaOnBack = true;
+        if (id == "sleep") _capaOnBack = true; // pozlarda Capa elde kalir (Player.Grip.cs), uykuda sirta gecer
     }
 
     /// <summary>Ziplama basladi (Player._PhysicsProcess).</summary>

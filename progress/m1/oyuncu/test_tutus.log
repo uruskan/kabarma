@@ -1,0 +1,71 @@
+tools/test.ps1  2026-11-18 03:03  git 04e45a8
+
+[PASS] build  exit=0 warnings=0 errors=0
+[PASS] sim  exit=0 Passed!  - Failed:     0, Passed:   168, Skipped:     0, Total:   168, Duration: 846 ms - Kabarma.Sim.Tests.dll (net8.0)
+[PASS] bench  exit=0 1000 gun 2.708 sn, ayrilan 3462.7 MB, tepe 77.5 MB (Release, 3x3)
+[FAIL] bot  exit=1 RESULT fail bot did not reach end step=barinak
+      --- son satirlar: C:\Users\uruskan\Documents\GitHub\kabarma\.claude\worktrees\m1-oyuncu-7059e8\.tools\run\test\bot.log
+      PACKED turnip x33
+      EGG laid nest at (-3.466585, 0, -5.0266604)
+      QUEUED kargo_kasasi
+      CRATE 1 value=495 stacks=1
+      PRODUCED kargo_kasasi civi=60 ingot=0 soup=0
+      RAMP load crate 1 pad=1
+      SOLD kargo_kasasi x1 +495 instant=False
+      STEP kasa -> barinak t=105.6
+      SUNA line=barinak_basla voice=no
+      BOT step barinak t=398.5
+      RESULT fail bot did not reach end step=barinak t=400.0
+      QUIT t=400.0
+[PASS] buildtest  exit=0 placed=75 failed=0 pieces=71
+[PASS] audio  exit=0 ok sounds=60 playable=17 variant_files=15 buses=6 layers_loaded=1/3 day_music=no
+[PASS] world  exit=0 WORLD RESULT ok checks passed (1184 ms)
+[PASS] creatures  exit=0 RESULT ok creatures=3 clips=24 posed=18
+[PASS] latency  exit=0 RESULT ok heads=8/8 budget_max_ms=33.3 wall_med_ms=33.9 wall_max_ms=57.0 hitstop=ok
+[PASS] ekonomi  exit=0 ok=82 fail=0
+[PASS] gece  exit=0 GECE RESULT ok checks=2279 nights=2 day=3
+[FAIL] input_kbm  exit=1 RESULT fail input stuck step=firin age=240 device=Kbm op=- queue=0 aimErr=0.1deg miss=0.06m aim=(-5.5354548, 1, 6.232712) hit=(-4.8708415, 1.1649823, 6.09705) node=@StaticBody3D@3188 muzzle->hit=1.5 pos=(-3.0408866, 0.0007123649, 6.4392548) move=(0, 0, 0) fire=False/False pressed=False head=Bicme menu=False wheel=False lock=False look=(0, 0) sent= bag=10/20 events=8087
+      --- son satirlar: C:\Users\uruskan\Documents\GitHub\kabarma\.claude\worktrees\m1-oyuncu-7059e8\.tools\run\test\input_kbm.log
+      SUNA line=bakir_kil_basla voice=no
+      ZIPZIP herd size=2 at=13,32 herds=1
+      ZIPZIP herd size=2 at=-22,-11 herds=2
+      ZIPZIP herd size=2 at=-2,29 herds=3
+      STEP bakir_kil -> firin t=85.3
+      SUNA line=firin_basla voice=no
+      BOT step firin t=315.7
+      TAS_FIRIN parts: base,body,chimney,panel,door,door_handle door=True
+      TAS_FIRIN parts: base,body,chimney,panel,door,door_handle door=True
+      PLACED tas_firin at (-5.5354548, 0, 6.232712)
+      EGG laid nest at (-5.135432, 0, -3.8906517)
+      RESULT fail input stuck step=firin age=240 device=Kbm op=- queue=0 aimErr=0.1deg miss=0.06m aim=(-5.5354548, 1, 6.232712) hit=(-4.8708415, 1.1649823, 6.09705) node=@StaticBody3D@3188 muzzle->hit=1.5 pos=(-3.0408866, 0.0007123649, 6.4392548) move=(0, 0, 0) fire=False/False pressed=False head=Bicme menu=False wheel=False lock=False look=(0, 0) sent= bag=10/20 events=8087
+[FAIL] input_pad  exit=1 RESULT fail input stuck step=bakir_kil age=240 device=Pad op=- queue=0 aimErr=1.1deg miss=0.73m aim=(27, 0.8198211, -21) hit=(26.162277, 0.8389932, -21.37628) node=@StaticBody3D@499 muzzle->hit=33.0 pos=(-3.915835, 0.0010000534, -6.70877) move=(-0.23375472, 0, -1.4816743) fire=False/False pressed=False head=Kazma menu=False wheel=False lock=False look=(0.120000005, 0) sent=axis:RightX=0.34,axis:LeftX=-0.94,axis:LeftY=-0.32999998,btn:L3=1 bag=6/20 events=21257
+      --- son satirlar: C:\Users\uruskan\Documents\GitHub\kabarma\.claude\worktrees\m1-oyuncu-7059e8\.tools\run\test\input_pad.log
+      PLACED ocakbasi at (-9.20382, 0, -0.8609762)
+      QUEUED sebze_corbasi
+      PRODUCED sebze_corbasi civi=40 ingot=0 soup=1
+      ZIPZIP herd size=2 at=21,-22 herds=1
+      ZIPZIP herd size=2 at=-26,18 herds=2
+      ZIPZIP herd size=2 at=29,30 herds=3
+      ATE sebze_corbasi
+      STEP yemek -> bakir_kil t=80.0
+      BOT step bakir_kil t=300.9
+      SUNA line=bakir_kil_basla voice=no
+      EGG laid nest at (-4.846761, 0, -4.1741548)
+      RESULT fail input stuck step=bakir_kil age=240 device=Pad op=- queue=0 aimErr=1.1deg miss=0.73m aim=(27, 0.8198211, -21) hit=(26.162277, 0.8389932, -21.37628) node=@StaticBody3D@499 muzzle->hit=33.0 pos=(-3.915835, 0.0010000534, -6.70877) move=(-0.23375472, 0, -1.4816743) fire=False/False pressed=False head=Kazma menu=False wheel=False lock=False look=(0.120000005, 0) sent=axis:RightX=0.34,axis:LeftX=-0.94,axis:LeftY=-0.32999998,btn:L3=1 bag=6/20 events=21257
+
+sinama     sonuc  sure(sn)  ayrinti
+------     -----  --------  -------
+build      PASS        1.4  exit=0 warnings=0 errors=0
+sim        PASS        2.9  exit=0 Passed!  - Failed:     0, Passed:   168, Skipped:     0, Total:   168, Duration: 846 ms - Kabarma.Sim.Tests.dll (net8.0)
+bench      PASS        5.8  exit=0 1000 gun 2.708 sn, ayrilan 3462.7 MB, tepe 77.5 MB (Release, 3x3)
+bot        FAIL      106.2  exit=1 RESULT fail bot did not reach end step=barinak
+buildtest  PASS        4.1  exit=0 placed=75 failed=0 pieces=71
+audio      PASS        6.3  exit=0 ok sounds=60 playable=17 variant_files=15 buses=6 layers_loaded=1/3 day_music=no
+world      PASS        1.8  exit=0 WORLD RESULT ok checks passed (1184 ms)
+creatures  PASS          1  exit=0 RESULT ok creatures=3 clips=24 posed=18
+latency    PASS         41  exit=0 RESULT ok heads=8/8 budget_max_ms=33.3 wall_med_ms=33.9 wall_max_ms=57.0 hitstop=ok
+ekonomi    PASS       63.2  exit=0 ok=82 fail=0
+gece       PASS       45.6  exit=0 GECE RESULT ok checks=2279 nights=2 day=3
+input_kbm  FAIL      145.5  exit=1 RESULT fail input stuck step=firin age=240 device=Kbm op=- queue=0 aimErr=0.1deg miss=0.06m aim=(-5.5354548, 1, 6.232712) hit=(-4.8708415, 1.1649823, 6.09705) node=@StaticBody3D@3188 muzzle->hit=1.5 pos=(-3.0408866, 0.0007123649, 6.4392548) move=(0, 0, 0) fire=False/False pressed=False head=Bicme menu=False wheel=False lock=False look=(0, 0) sent= bag=10/20 events=8087
+input_pad  FAIL      140.1  exit=1 RESULT fail input stuck step=bakir_kil age=240 device=Pad op=- queue=0 aimErr=1.1deg miss=0.73m aim=(27, 0.8198211, -21) hit=(26.162277, 0.8389932, -21.37628) node=@StaticBody3D@499 muzzle->hit=33.0 pos=(-3.915835, 0.0010000534, -6.70877) move=(-0.23375472, 0, -1.4816743) fire=False/False pressed=False head=Kazma menu=False wheel=False lock=False look=(0.120000005, 0) sent=axis:RightX=0.34,axis:LeftX=-0.94,axis:LeftY=-0.32999998,btn:L3=1 bag=6/20 events=21257
+TEST FAIL (3)

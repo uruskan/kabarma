@@ -5,7 +5,7 @@ namespace Kabarma.Game;
 
 /// <summary>
 /// Omuz ustu ucuncu sahis oyuncu (PLAN §4). Govde: uretilen kemikli model, yoksa koddan tulumlu govde.
-/// Parcalar: Player.Anim.cs (model, klip secimi), Player.Grip.cs (Capa'nin elde durusu), Player.Stamina.cs
+/// Parcalar: Player.Anim.cs (model, klip secimi), Player.Grip.cs (tutulan nesneler: el soketi, nisan, araba), Player.Stamina.cs
 /// (depar ve dayaniklilik), Player.Hooks.cs (olaylar -> vizor ve pozlar), PlayerRig/PlayerBody/PlayerPoses (kodla
 /// katmanlar), Visor.cs. Burada: hareket, kamera, nisan, hasar, yere serilme.
 /// </summary>
@@ -54,6 +54,7 @@ public partial class Player : CharacterBody3D
         Visual = new Node3D { Name = "Visual" };
         AddChild(Visual);
         if (!TryLoadModel()) BuildProceduralBody();
+        LoadGrips(); // Player.Grip.cs
         BuildCapa();
         BackpackPoint = new Node3D { Position = new Vector3(0, 1.1f, -0.4f) };
         Visual.AddChild(BackpackPoint);
@@ -113,16 +114,17 @@ public partial class Player : CharacterBody3D
         kit.Pillow(new Vector3(0.24f, 0.12f, 0.3f), MeshKit.At(0, 0.15f, 0.05f), Palette.CoopBlue, 0.4f);
         kit.Cylinder(0.11f, 0.13f, 0.18f, MeshKit.At(new Vector3(0, 0, 0.55f), new Vector3(Mathf.Pi / 2, 0, 0)), Palette.Warning, 10);
         kit.Pillow(new Vector3(0.1f, 0.24f, 0.12f), MeshKit.At(new Vector3(0, -0.18f, -0.02f), new Vector3(0.3f, 0, 0)), Palette.DarkGrey, 0.4f);
-        var golden = Assets.Load("res://assets/models/capa/capa.glb");
+        // Model, yeri ve namlu grips.json "capa"da (Capa dugumunde namlu +Z, ust +Y; Tripo modeli +X'e bakar).
+        var def = _capaDef;
+        var golden = def != null && !string.IsNullOrEmpty(def.Model) ? Assets.Load(def.Model) : null;
         if (golden != null)
         {
-            // Tripo modeli +X'e bakar; Capa dugumunde namlu +Z. Model 0,56 m.
-            golden.RotationDegrees = new Vector3(0, -90, 0);
-            golden.Position = new Vector3(0, -0.08f, 0.12f);
+            golden.RotationDegrees = V(def.ModelRotDeg);
+            golden.Position = V(def.ModelPos);
             _capa.AddChild(golden);
         }
         else _capa.AddChild(kit.Instance());
-        Muzzle = new Node3D { Position = new Vector3(0, 0, golden != null ? 0.42f : 0.68f) };
+        Muzzle = new Node3D { Position = golden != null ? V(def.Muzzle) : new Vector3(0, 0, 0.68f) }; // 0,68: yedek modelin namlusu
         _capa.AddChild(Muzzle);
         Visual.AddChild(_capa);
     }
@@ -203,8 +205,7 @@ public partial class Player : CharacterBody3D
         Down = true;
         _downT = seconds;
         _mode = AnimMode.Move;
-        CaptureCapaGrip(); // Capa ele bagli serilir
-        _capaOnBack = false;
+        _capaOnBack = false; // Capa elde serilir (Player.Grip.cs: nesne hep elden yerlesir)
         if (Rig != null) Rig.StartRagdoll(impulse);
         else Visual.Rotation = new Vector3(-1.4f, Visual.Rotation.Y, 0);
         Visor?.SetDown(true);
@@ -323,10 +324,12 @@ public partial class Player : CharacterBody3D
         _prevYaw = Visual.Rotation.Y;
         var accelW = (Velocity - _prevVel) / dt; accelW.Y = 0;
         _prevVel = Velocity;
-        Rig?.Update(dt, Facing || AimOverride != null, _aimCache, Visual, new PlayerRig.BodyState
+        UpdateGrips(); // Player.Grip.cs: ellerin hedefleri
+        if (Rig != null) Rig.ArmBlend = _grips.ArmBlend;
+        Rig?.Update(dt, Facing || AimOverride != null || _cart != null, _aimCache, Visual, new PlayerRig.BodyState // araba iterken govde burulmaz
         {
             Speed = flat.Length(), Sprint = _sprinting, OnFloor = IsOnFloor(), YawRate = yawRate, Accel = accelW,
-            Recoil = _recoil, FloorY = GlobalPosition.Y, Push = PushingCart ? 1f : 0f, Wade = Mathf.Clamp(WadeDepth, 0f, 1f),
+            Recoil = _recoil, FloorY = GlobalPosition.Y, Push = PushingCart || _cart != null ? 1f : 0f, Wade = Mathf.Clamp(WadeDepth, 0f, 1f),
             FootIk = _mode is AnimMode.Move or AnimMode.Land or AnimMode.Action, Posed = Posed,
         });
         Visor?.Tick(dt, this);

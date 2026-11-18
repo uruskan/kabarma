@@ -7,11 +7,12 @@ namespace Kabarma.Game;
 /// yakindan tohum ekilince plant. Ayrica goruntu kaniti icin sinama bayraklari:
 ///   --pose=plant|eat|sleep|getup_front|getup_back|push_cart|wade|ID   2 sn sonra pozu/katmani acar
 ///   --expr=mutlu|saskin|yorgun|korkmus|...                            vizor ifadesini sabitler
-///   --knocktest                                                       1,5 sn sonra hasarsiz yere serilme (GDD §3.2)
+///   --knocktest                                                       6 sn sonra hasarsiz yere serilme (GDD §3.2)
 ///   --drive=f|b|l|r[s][a]                                             kameraya gore surekli yuru (s: depar, a: ileri nisan)
 ///   --expr=cycle                                                      her ifade 1,5 sn (1,0 sn'den), EXPR satiri yazar
 ///   --jumptest                                                        2 sn'de bir gercek "jump" eylemiyle zipla
-///   --rigtest                                                         0,5 sn'de bir RIG satiri (klip, hiz, dayaniklilik, Capa, vizor)
+///   --rigtest                                                         0,5 sn'de bir RIG satiri (klip, hiz, dayaniklilik, tutus, vizor)
+///   --aim, --closeup=ACI, --headcycle, --cartpush                     tutulan nesne sinamalari (Player.GripDebug.cs)
 /// </summary>
 public partial class Player
 {
@@ -73,10 +74,11 @@ public partial class Player
         {
             var tm = new Timer { WaitTime = 0.5, Autostart = true };
             AddChild(tm);
-            tm.Timeout += () => GD.Print($"RIG t={Time.GetTicksMsec() / 1000f:0.0} clip={_curId}->{_cur} mode={_mode} sp={new Vector3(Velocity.X, 0, Velocity.Z).Length():0.0} sprint={_sprinting} stam={Stamina?.Value:0} ex={Stamina?.Exhausted} capaFromHand={_capaFromHand:0.00} handY={_handHeight:0.00} capaY={_capa.GlobalPosition.Y - GlobalPosition.Y:0.00} down={Down} visor={Visor?.Expression}");
+            tm.Timeout += () => GD.Print($"RIG t={Time.GetTicksMsec() / 1000f:0.0} clip={_curId}->{_cur} mode={_mode} sp={new Vector3(Velocity.X, 0, Velocity.Z).Length():0.0} sprint={_sprinting} stam={Stamina?.Value:0} ex={Stamina?.Exhausted} {GripReport()} down={Down} visor={Visor?.Expression}");
         }
-        if (a.TryGetValue("knocktest", out var kt)) // --knocktest: geriye (sirtustu), --knocktest=front: one (yuzustu)
-            GetTree().CreateTimer(1.5).Timeout += () => Knockdown(Visual.GlobalBasis.Z * (kt == "front" ? 4f : -3f) + Vector3.Up * 2f);
+        DebugGrips(); // Player.GripDebug.cs
+        if (a.TryGetValue("knocktest", out var kt)) // --knocktest: geriye (sirtustu), --knocktest=front: one (yuzustu); kapsul acilisindan (~5,1 sn) sonra
+            GetTree().CreateTimer(6.0).Timeout += () => Knockdown(Visual.GlobalBasis.Z * (kt == "front" ? 4f : -3f) + Vector3.Up * 2f);
         if (a.TryGetValue("drive", out var drive))
             GetTree().CreateTimer(1.0).Timeout += () => _drive = drive;
     }
@@ -93,6 +95,7 @@ public partial class Player
             _jumpT += (float)delta;
             if (_jumpT >= 2f) { _jumpT = 0f; Input.ActionPress("jump"); }
         }
+        TickGripDebug(); // Player.GripDebug.cs
         if (_drive == null) return;
         var b = Yaw.GlobalBasis;
         var dir = _drive[0] switch { 'b' => b.Z, 'l' => -b.X, 'r' => b.X, _ => -b.Z };
