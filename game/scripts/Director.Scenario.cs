@@ -35,7 +35,7 @@ public partial class Director
         Events.Gathered += (item, _) => { if (item == "wood") sc.SetProgress("odun", State.Backpack.Count("wood")); };     // 2 odun
         Events.StationPlaced += id => { if (id == "ocak") sc.Report("ocak"); };                                            // 3 ocak
         Events.StationPlaced += id => { if (id == "tezgah") sc.Report("tezgah"); };                                        // 4 tezgah
-        State.Farm.Watered += p => { if (p.Planted) { _wateredPlots.Add((p.X, p.Y)); sc.SetProgress("tarla", _wateredPlots.Count); } }; // 5 tarla
+        State.Farm.Watered += p => { if (p.Planted && !p.Wild) { _wateredPlots.Add((p.X, p.Y)); sc.SetProgress("tarla", _wateredPlots.Count); } }; // 5 tarla
         Events.PenChanged += cells => sc.SetProgress("agil", cells);                                                       // 6 agil
         Events.AnimalPenned += species => { if (species == "gidak") sc.Report("gidak"); };                                 // 7 gidak
         Events.Dawn += () => sc.Report("night");                                                                           // 8 night (Kucuk Kabarma)
