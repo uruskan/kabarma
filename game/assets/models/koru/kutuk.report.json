@@ -1,0 +1,38 @@
+{
+  "name": "kutuk",
+  "label": "Yosunlu kutuk (Tripo web H3.1)",
+  "kind": "tripo_prop",
+  "source": {
+    "dir": "{main}/.tools/tripo_web/dalga1",
+    "file": "kabarma_kutuk.glb"
+  },
+  "license": "Tripo web (sahibin hesabi; uretilen varlik sahibin)",
+  "height_target": 3.0,
+  "lods": [
+    {
+      "path": "res://assets/models/koru/kutuk.glb",
+      "tris": 4999,
+      "tex": 1024,
+      "surfaces": 1
+    },
+    {
+      "path": "res://assets/models/koru/kutuk_lod1.glb",
+      "tris": 1999,
+      "tex": 512,
+      "surfaces": 1
+    },
+    {
+      "path": "res://assets/models/koru/kutuk_lod2.glb",
+      "tris": 699,
+      "tex": 256,
+      "surfaces": 1
+    }
+  ],
+  "size_m": [
+    1.177,
+    3.004,
+    1.043
+  ],
+  "hull_points": 64,
+  "tris": 4999
+}

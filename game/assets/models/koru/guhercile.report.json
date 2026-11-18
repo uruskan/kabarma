@@ -1,0 +1,26 @@
+{
+  "name": "guhercile",
+  "label": "Guhercile (Tripo web H3.1)",
+  "kind": "tripo_prop",
+  "source": {
+    "dir": "{main}/.tools/tripo_web/dalga1",
+    "file": "kabarma_guhercile.glb"
+  },
+  "license": "Tripo web (sahibin hesabi; uretilen varlik sahibin)",
+  "height_target": 0.8,
+  "lods": [
+    {
+      "path": "res://assets/models/koru/guhercile.glb",
+      "tris": 2998,
+      "tex": 1024,
+      "surfaces": 1
+    }
+  ],
+  "size_m": [
+    0.788,
+    0.737,
+    0.788
+  ],
+  "hull_points": 64,
+  "tris": 2998
+}

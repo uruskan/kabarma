@@ -1,0 +1,26 @@
+{
+  "name": "yuva",
+  "label": "Yuva (Tripo web H3.1)",
+  "kind": "tripo_prop",
+  "source": {
+    "dir": "{main}/.tools/tripo_web/dalga1",
+    "file": "kabarma_yuva.glb"
+  },
+  "license": "Tripo web (sahibin hesabi; uretilen varlik sahibin)",
+  "height_target": 1.0,
+  "lods": [
+    {
+      "path": "res://assets/models/kesif/yuva.glb",
+      "tris": 3499,
+      "tex": 1024,
+      "surfaces": 1
+    }
+  ],
+  "size_m": [
+    1.001,
+    0.918,
+    0.466
+  ],
+  "hull_points": 64,
+  "tris": 3499
+}

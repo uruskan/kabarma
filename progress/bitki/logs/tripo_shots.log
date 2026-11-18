@@ -1,0 +1,53 @@
+﻿Godot Engine v4.7.2.stable.mono.official.ed1daf0bf - https://godotengine.org
+Vulkan 1.4.357 - Forward+ - Using Device #0: NVIDIA - NVIDIA GeForce RTX 2070 SUPER
+
+TEST shots
+MUSIC ready day=yes layers=3/3 bar=2.00s
+WORLD decor agac box=98 outside=285
+WORLD decor turuncu_agac box=28 outside=84
+WORLD decor cali box=153 outside=450
+WORLD decor ot box=226 outside=660
+WORLD decor bugday box=74 outside=210
+WORLD decor cicek box=240 outside=720
+WORLD decor egrelti box=156 outside=450
+WORLD decor kaya_duz box=36 outside=108
+WORLD decor kaya_dik box=17 outside=42
+WORLD decor agac_hus box=40 outside=120
+WORLD pois 22: seyir_kulesi_altin_cayir_0@105,40 ata_tasi_altin_cayir_0@64,36 yabani_bahce_altin_cayir_0@-145,2 yuva_altin_cayir_0@143,192 yuva_altin_cayir_1@-231,-56 enkaz_altin_cayir_0@-69,179 enkaz_altin_cayir_1@84,195 enkaz_altin_cayir_2@-139,-84 oyuk_altin_cayir_0@-202,-106 oyuk_altin_cayir_1@-45,-226 oyuk_altin_cayir_2@165,215 seyir_kulesi_sis_korusu_0@-46,287 ata_tasi_sis_korusu_0@-212,219 yabani_bahce_sis_korusu_0@-53,256 yuva_sis_korusu_0@-200,189 yuva_sis_korusu_1@-88,230 enkaz_sis_korusu_0@-257,293 enkaz_sis_korusu_1@-151,238 enkaz_sis_korusu_2@-235,110 oyuk_sis_korusu_0@-172,215 oyuk_sis_korusu_1@-280,237 oyuk_sis_korusu_2@-276,130
+PLAYER model anims: carry,cheer,crouch_walk,eat,getup_back_pose,getup_front_pose,hurt,idle,jump,jump_air,jump_land,jump_start,kneel,knockdown,plant,push,run,shock_fall,sleep,sprint,walk,walk_casual,wave
+AUDIO sounds=60 playable=60 variant_files=180 m0_only=0 silent=0 placeholder=0
+AUDIO ok 60/60
+POFUDUK anims: pose/attack1,pose/attack2,pose/eat,pose/hit,pose/idle,pose/rest,pose/run,pose/walk,preset_quadruped_walk
+BUILD kit pieces=28
+ATALAR arenas=koca_pofuduk@64,36/r18:ata_tasi_altin_cayir_0,boynuzlu_dede@-212,219/r20:ata_tasi_sis_korusu_0
+OYUK rooms 6: oyuk_altin_cayir_0(kostebek_bey t0)@1000 oyuk_altin_cayir_1(kostebek_bey t1)@1120 oyuk_altin_cayir_2(kostebek_bey t2)@1240 oyuk_sis_korusu_0(yarasa_yumagi t0)@1360 oyuk_sis_korusu_1(yarasa_yumagi t1)@1480 oyuk_sis_korusu_2(yarasa_yumagi t2)@1600
+BOOT Kabarma MVP
+TARIM wild=22
+KADIM stones kadim_atilma@-10,40,y1.1 kadim_kalkan@48,-62,y20.7 kadim_sok@-150,170,y13.7 kadim_yem@-175,140,y12.6 kadim_sifa@-130,205,y14.0
+HELD capa
+MUSIC Silence -> Day
+ZIPZIP herd size=2 at=-10,23 herds=1
+ZIPZIP herd size=2 at=49,-16 herds=2
+ZIPZIP herd size=2 at=-6,23 herds=3
+WILDLIFE spawn homur herd=1 at=-15,9
+WILDLIFE spawn homur herd=1 at=-19,13
+WILDLIFE spawn dalli herd=1 at=35,15
+WILDLIFE spawn dalli herd=1 at=39,10
+WILDLIFE spawn vicik herd=1 at=-11,-35
+WILDLIFE spawn vicik herd=1 at=-8,-39
+WILDLIFE spawn bozuk herd=1 at=45,-39
+WILDLIFE spawn vizviz swarm at=27,21
+WILDLIFE spawn hu herd=1 at=-25,-17
+RANCH start animals=11 agents=11
+SUNA line=giris_1 voice=yes
+SHOTS saved C:/Users/uruskan/Documents/GitHub/kabarma/.claude/worktrees/m1-varlik-72a21b/game/../progress/bitki/tripo/kapsul_ogle.png 1920x1080 gpu_ms=164.09 frames=6
+SHOTS saved C:/Users/uruskan/Documents/GitHub/kabarma/.claude/worktrees/m1-varlik-72a21b/game/../progress/bitki/tripo/us_ogle.png 1920x1080 gpu_ms=159.62 frames=6
+SHOTS saved C:/Users/uruskan/Documents/GitHub/kabarma/.claude/worktrees/m1-varlik-72a21b/game/../progress/bitki/tripo/gol_ogle.png 1920x1080 gpu_ms=481.30 frames=6
+SHOTS saved C:/Users/uruskan/Documents/GitHub/kabarma/.claude/worktrees/m1-varlik-72a21b/game/../progress/bitki/tripo/tepe_ogle.png 1920x1080 gpu_ms=148.05 frames=6
+SHOTS saved C:/Users/uruskan/Documents/GitHub/kabarma/.claude/worktrees/m1-varlik-72a21b/game/../progress/bitki/tripo/koru_ogle.png 1920x1080 gpu_ms=160.59 frames=6
+SHOTS saved C:/Users/uruskan/Documents/GitHub/kabarma/.claude/worktrees/m1-varlik-72a21b/game/../progress/bitki/tripo/kapsul_gunbatimi.png 1920x1080 gpu_ms=147.20 frames=6
+SHOTS saved C:/Users/uruskan/Documents/GitHub/kabarma/.claude/worktrees/m1-varlik-72a21b/game/../progress/bitki/tripo/us_gunbatimi.png 1920x1080 gpu_ms=161.23 frames=6
+SHOTS saved C:/Users/uruskan/Documents/GitHub/kabarma/.claude/worktrees/m1-varlik-72a21b/game/../progress/bitki/tripo/gol_gunbatimi.png 1920x1080 gpu_ms=144.84 frames=6
+SHOTS saved C:/Users/uruskan/Documents/GitHub/kabarma/.claude/worktrees/m1-varlik-72a21b/game/../progress/bitki/tripo/tepe_gunbatimi.png 1920x1080 gpu_ms=131.77 frames=6
+SHOTS saved C:/Users/uruskan/Documents/GitHub/kabarma/.claude/worktrees/m1-varlik-72a21b/game/../progress/bitki/tripo/koru_gunbatimi.png 1920x1080 gpu_ms=121.49 frames=6
+SHOTS RESULT fail main=10 deck=0 quick=True

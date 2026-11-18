@@ -1,0 +1,26 @@
+{
+  "name": "demir",
+  "label": "Demir cevheri (Tripo web H3.1)",
+  "kind": "tripo_prop",
+  "source": {
+    "dir": "{main}/.tools/tripo_web/dalga1",
+    "file": "kabarma_demir.glb"
+  },
+  "license": "Tripo web (sahibin hesabi; uretilen varlik sahibin)",
+  "height_target": 1.0,
+  "lods": [
+    {
+      "path": "res://assets/models/koru/demir.glb",
+      "tris": 3498,
+      "tex": 1024,
+      "surfaces": 1
+    }
+  ],
+  "size_m": [
+    1.003,
+    0.827,
+    0.839
+  ],
+  "hull_points": 64,
+  "tris": 3498
+}

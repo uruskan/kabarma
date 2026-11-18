@@ -1,0 +1,26 @@
+{
+  "name": "oyuk_agzi",
+  "label": "Oyuk agzi (Tripo web H3.1)",
+  "kind": "tripo_prop",
+  "source": {
+    "dir": "{main}/.tools/tripo_web/dalga1",
+    "file": "kabarma_oyuk_agzi.glb"
+  },
+  "license": "Tripo web (sahibin hesabi; uretilen varlik sahibin)",
+  "height_target": 4.0,
+  "lods": [
+    {
+      "path": "res://assets/models/kesif/oyuk_agzi.glb",
+      "tris": 6000,
+      "tex": 1024,
+      "surfaces": 1
+    }
+  ],
+  "size_m": [
+    4.004,
+    3.391,
+    3.323
+  ],
+  "hull_points": 64,
+  "tris": 6000
+}

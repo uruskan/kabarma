@@ -1,0 +1,41 @@
+{
+  "name": "koru_agac",
+  "label": "Sis Korusu kadim agaci (Tripo web H3.1; yesil yaprakli yeniden dokunmus surum; camgobegi asil yedek)",
+  "kind": "tripo_tree",
+  "source": {
+    "dir": "{main}/.tools/tripo_web/agaclar",
+    "file": "kabarma_koru_agac_yesil.glb"
+  },
+  "license": "Tripo web (sahibin hesabi; uretilen varlik sahibin)",
+  "height_target": 8.0,
+  "lods": [
+    {
+      "path": "res://assets/models/koru/koru_agac.glb",
+      "tris": 5399,
+      "tex": 2048,
+      "surfaces": 2
+    },
+    {
+      "path": "res://assets/models/koru/koru_agac_lod1.glb",
+      "tris": 3100,
+      "tex": 1024,
+      "surfaces": 2
+    },
+    {
+      "path": "res://assets/models/koru/koru_agac_lod2.glb",
+      "tris": 1100,
+      "tex": 512,
+      "surfaces": 2
+    }
+  ],
+  "size_m": [
+    8.253,
+    7.498,
+    8.119
+  ],
+  "hull_points": 64,
+  "trunk_radius_m": 1.185,
+  "clusters": 900,
+  "leaf_faces": 1619990,
+  "tris": 5399
+}

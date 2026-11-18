@@ -1,0 +1,12 @@
+tools/test.ps1  2026-11-18 22:33  git 697fc92
+
+[PASS] build  exit=0 warnings=0 errors=0
+[PASS] sim  exit=0 Passed!  - Failed:     0, Passed:   607, Skipped:     0, Total:   607, Duration: 19 s - Kabarma.Sim.Tests.dll (net8.0)
+[PASS] world  exit=0 WORLD RESULT ok checks passed (10358 ms)
+
+sinama     sonuc  sure(sn)  ayrinti
+------     -----  --------  -------
+build      PASS        1.7  exit=0 warnings=0 errors=0
+sim        PASS         22  exit=0 Passed!  - Failed:     0, Passed:   607, Skipped:     0, Total:   607, Duration: 19 s - Kabarma.Sim.Tests.dll (net8.0)
+world      PASS       11.4  exit=0 WORLD RESULT ok checks passed (10358 ms)
+TEST PASS

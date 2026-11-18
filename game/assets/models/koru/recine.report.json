@@ -1,0 +1,26 @@
+{
+  "name": "recine",
+  "label": "Recine damari (Tripo web H3.1)",
+  "kind": "tripo_prop",
+  "source": {
+    "dir": "{main}/.tools/tripo_web/dalga1",
+    "file": "kabarma_recine.glb"
+  },
+  "license": "Tripo web (sahibin hesabi; uretilen varlik sahibin)",
+  "height_target": 0.9,
+  "lods": [
+    {
+      "path": "res://assets/models/koru/recine.glb",
+      "tris": 2999,
+      "tex": 1024,
+      "surfaces": 1
+    }
+  ],
+  "size_m": [
+    1.07,
+    1.015,
+    0.906
+  ],
+  "hull_points": 51,
+  "tris": 2999
+}

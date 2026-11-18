@@ -19,18 +19,25 @@
       "goldenClass": "Bitki 1",
       "stream": "varlik",
       "inGame": true,
-      "usedBy": "World.Decor.cs: Cayir decor \"agac\" (tac + govde, ruzgar; LOD parcalari World.DecorLod.cs); Bicme Odun",
+      "usedBy": "World.Decor.cs: Cayir decor \"agac\" (mese; tac + govde, ruzgar; LOD parcalari World.DecorLod.cs); Bicme Odun",
       "status": "yer_tutucu",
-      "statusNote": "dokulu PBR bitki (bitki-pbr); olcut 3-4 kart icin olculmez, 6-8 sahibin onayini bekliyor",
+      "statusNote": "Tripo web agaci, yapraklar karta pisirildi (tripo_tree); olcut 3-4 kart icin olculmez, 6-8 sahibin onayini bekliyor",
       "ownerApproved": false,
-      "source": {"pool": "kutuphane", "service": "F:\\Assets; pipeline/build_bitki.py (tree)", "credits": 0, "retries": 0, "taskId": "", "date": "2026-11-18"},
-      "license": "Poly Haven CC0 (jacaranda_tree, Rico Cilliers ve Rob Tuytel) (pipeline/licenses.md, Bitkiler)",
+      "source": {
+        "pool": "tripo_web",
+        "service": "Tripo web H3.1 (kredi ana oturumun kaydinda, web havuzu) -> pipeline/build_bitki.py (tripo_tree)",
+        "credits": 0,
+        "retries": 0,
+        "taskId": "",
+        "date": "2026-11-18"
+      },
+      "license": "Tripo web (sahibin hesabi; uretilen varlik sahibin) (pipeline/licenses.md, Bitkiler)",
       "criteria": [
-        {"id": 1, "name": "doku", "pass": true, "value": "albedo+alfa, normal; en buyuk 1024 px (sinir 1024)", "note": ""},
-        {"id": 2, "name": "poligon", "pass": true, "value": "7999 / 8000 ucgen", "note": ""},
+        {"id": 1, "name": "doku", "pass": false, "value": "albedo+alfa, normal, puruzluluk; en buyuk 2048 px (sinir 1024)", "note": ""},
+        {"id": 2, "name": "poligon", "pass": true, "value": "5400 / 8000 ucgen", "note": ""},
         {"id": 3, "name": "kalinlik", "pass": null, "value": "", "note": "olculmedi: yaprak karti / ince yaprak tasarim geregi levha (alfa makasli)"},
         {"id": 4, "name": "butunluk", "pass": null, "value": "", "note": "olculmedi: kart dortgenleri acik levha (manifold degil) tasarim geregi"},
-        {"id": 5, "name": "olcek_eksen", "pass": false, "value": "boy 5.032 m (hedef 5.0), taban z 0, orta [0, 0]", "note": ""},
+        {"id": 5, "name": "olcek_eksen", "pass": false, "value": "boy 5.104 m (hedef 5.0), taban z 0, orta [0, 0]", "note": ""},
         {
           "id": 6,
           "name": "siluet",
@@ -56,16 +63,16 @@
           "note": "sahibin onayini bekliyor (progress/bitki/once ve sonra goruntuleri)"
         }
       ],
-      "notes": "kaynak: Cayir agaci (Jacaranda Tree, yesil yaprak)",
+      "notes": "kaynak: Cayir agaci: mese (Tripo web H3.1, stilize yari gercekci)",
       "model": "res://assets/models/agac/agac.glb",
       "budgetClass": "agac",
       "forward": "",
-      "tris": 7999,
-      "sizeM": [6.476, 5.04, 5.032],
+      "tris": 5400,
+      "sizeM": [5.086, 3.969, 5.104],
       "lods": [
-        {"tris": 7999, "tex": 1024, "path": "res://assets/models/agac/agac.glb"},
-        {"tris": 3799, "tex": 512, "path": "res://assets/models/agac/agac_lod1.glb"},
-        {"tris": 1399, "tex": 256, "path": "res://assets/models/agac/agac_lod2.glb"}
+        {"tris": 5400, "tex": 2048, "path": "res://assets/models/agac/agac.glb"},
+        {"tris": 3099, "tex": 1024, "path": "res://assets/models/agac/agac_lod1.glb"},
+        {"tris": 1100, "tex": 512, "path": "res://assets/models/agac/agac_lod2.glb"}
       ],
       "hull": "res://assets/models/agac/agac_hull.tres",
       "icon": "res://assets/models/agac/agac_icon.png",
@@ -1165,17 +1172,24 @@
       "inGame": true,
       "usedBy": "World.Decor.cs + World.Resources.cs: Cayir decor \"cali\" (Bicme Lif tutami)",
       "status": "yer_tutucu",
-      "statusNote": "dokulu PBR bitki (bitki-pbr); olcut 3-4 kart icin olculmez, 6-8 sahibin onayini bekliyor",
+      "statusNote": "Tripo web agaci, yapraklar karta pisirildi (tripo_tree); olcut 3-4 kart icin olculmez, 6-8 sahibin onayini bekliyor",
       "ownerApproved": false,
-      "source": {"pool": "kutuphane", "service": "F:\\Assets; pipeline/build_bitki.py (plant)", "credits": 0, "retries": 0, "taskId": "", "date": "2026-11-18"},
-      "license": "Quixel Megascans (Fab), sahip dogrulamali (pipeline/licenses.md, Bitkiler)",
-      "tris": 2800,
+      "source": {
+        "pool": "tripo_web",
+        "service": "Tripo web H3.1 (kredi ana oturumun kaydinda, web havuzu) -> pipeline/build_bitki.py (tripo_tree)",
+        "credits": 0,
+        "retries": 0,
+        "taskId": "",
+        "date": "2026-11-18"
+      },
+      "license": "Tripo web (sahibin hesabi; uretilen varlik sahibin) (pipeline/licenses.md, Bitkiler)",
+      "tris": 1900,
       "criteria": [
-        {"id": 1, "name": "doku", "pass": true, "value": "albedo+alfa, normal, puruzluluk; en buyuk 1024 px (sinir 1024)", "note": ""},
-        {"id": 2, "name": "poligon", "pass": true, "value": "2800 / 6000 ucgen", "note": ""},
+        {"id": 1, "name": "doku", "pass": false, "value": "albedo+alfa, normal, puruzluluk; en buyuk 2048 px (sinir 1024)", "note": ""},
+        {"id": 2, "name": "poligon", "pass": true, "value": "1900 / 6000 ucgen (sinif alt sinirinin altinda)", "note": ""},
         {"id": 3, "name": "kalinlik", "pass": null, "value": "", "note": "olculmedi: yaprak karti / ince yaprak tasarim geregi levha (alfa makasli)"},
         {"id": 4, "name": "butunluk", "pass": null, "value": "", "note": "olculmedi: kart dortgenleri acik levha (manifold degil) tasarim geregi"},
-        {"id": 5, "name": "olcek_eksen", "pass": true, "value": "boy 1.1 m (hedef 1.1), taban z 0, orta [0, 0]", "note": ""},
+        {"id": 5, "name": "olcek_eksen", "pass": true, "value": "boy 1.211 m (hedef 1.2), taban z 0, orta [0, 0]", "note": ""},
         {
           "id": 6,
           "name": "siluet",
@@ -1201,13 +1215,13 @@
           "note": "sahibin onayini bekliyor (progress/bitki/once ve sonra goruntuleri)"
         }
       ],
-      "notes": "kaynak: Cali (Megascans Downy Willow VarF)",
+      "notes": "kaynak: Cali (Tripo web H3.1; Bicme Lif tutami)",
       "forward": "",
-      "sizeM": [1.73, 1.631, 1.1],
+      "sizeM": [1.368, 1.143, 1.211],
       "lods": [
-        {"tris": 2800, "tex": 1024, "path": "res://assets/models/cali/cali.glb"},
-        {"tris": 1400, "tex": 512, "path": "res://assets/models/cali/cali_lod1.glb"},
-        {"tris": 798, "tex": 256, "path": "res://assets/models/cali/cali_lod2.glb"}
+        {"tris": 1900, "tex": 2048, "path": "res://assets/models/cali/cali.glb"},
+        {"tris": 1500, "tex": 1024, "path": "res://assets/models/cali/cali_lod1.glb"},
+        {"tris": 600, "tex": 512, "path": "res://assets/models/cali/cali_lod2.glb"}
       ],
       "hull": "res://assets/models/cali/cali_hull.tres",
       "icon": "res://assets/models/cali/cali_icon.png",
@@ -1405,17 +1419,24 @@
       "inGame": true,
       "usedBy": "World.Decor.cs: Cayir decor \"turuncu_agac\"; Bicme Odun",
       "status": "yer_tutucu",
-      "statusNote": "dokulu PBR bitki (bitki-pbr); olcut 3-4 kart icin olculmez, 6-8 sahibin onayini bekliyor",
+      "statusNote": "Tripo web agaci, yapraklar karta pisirildi (tripo_tree); olcut 3-4 kart icin olculmez, 6-8 sahibin onayini bekliyor",
       "ownerApproved": false,
-      "source": {"pool": "kutuphane", "service": "F:\\Assets; pipeline/build_bitki.py (tree)", "credits": 0, "retries": 0, "taskId": "", "date": "2026-11-18"},
-      "license": "Poly Haven CC0 (island_tree_01, Rico Cilliers ve Rob Tuytel) (pipeline/licenses.md, Bitkiler)",
-      "tris": 3668,
+      "source": {
+        "pool": "tripo_web",
+        "service": "Tripo web H3.1 (kredi ana oturumun kaydinda, web havuzu) -> pipeline/build_bitki.py (tripo_tree)",
+        "credits": 0,
+        "retries": 0,
+        "taskId": "",
+        "date": "2026-11-18"
+      },
+      "license": "Tripo web (sahibin hesabi; uretilen varlik sahibin) (pipeline/licenses.md, Bitkiler)",
+      "tris": 5399,
       "criteria": [
-        {"id": 1, "name": "doku", "pass": true, "value": "albedo+alfa, normal; en buyuk 1024 px (sinir 1024)", "note": ""},
-        {"id": 2, "name": "poligon", "pass": true, "value": "3668 / 8000 ucgen (sinif alt sinirinin altinda)", "note": ""},
+        {"id": 1, "name": "doku", "pass": false, "value": "albedo+alfa, normal, puruzluluk; en buyuk 2048 px (sinir 1024)", "note": ""},
+        {"id": 2, "name": "poligon", "pass": true, "value": "5399 / 8000 ucgen", "note": ""},
         {"id": 3, "name": "kalinlik", "pass": null, "value": "", "note": "olculmedi: yaprak karti / ince yaprak tasarim geregi levha (alfa makasli)"},
         {"id": 4, "name": "butunluk", "pass": null, "value": "", "note": "olculmedi: kart dortgenleri acik levha (manifold degil) tasarim geregi"},
-        {"id": 5, "name": "olcek_eksen", "pass": false, "value": "boy 4.853 m (hedef 4.8), taban z 0, orta [0, 0]", "note": ""},
+        {"id": 5, "name": "olcek_eksen", "pass": false, "value": "boy 4.882 m (hedef 4.8), taban z 0, orta [0, 0]", "note": ""},
         {
           "id": 6,
           "name": "siluet",
@@ -1441,13 +1462,13 @@
           "note": "sahibin onayini bekliyor (progress/bitki/once ve sonra goruntuleri)"
         }
       ],
-      "notes": "kaynak: Turuncu agac (Island Tree 01, sonbahar tonu)",
+      "notes": "kaynak: Turuncu agac (Tripo web H3.1)",
       "forward": "",
-      "sizeM": [4.942, 4.777, 4.853],
+      "sizeM": [5.129, 4.669, 4.882],
       "lods": [
-        {"tris": 3668, "tex": 1024, "path": "res://assets/models/turuncu_agac/turuncu_agac.glb"},
-        {"tris": 2567, "tex": 512, "path": "res://assets/models/turuncu_agac/turuncu_agac_lod1.glb"},
-        {"tris": 1299, "tex": 256, "path": "res://assets/models/turuncu_agac/turuncu_agac_lod2.glb"}
+        {"tris": 5399, "tex": 2048, "path": "res://assets/models/turuncu_agac/turuncu_agac.glb"},
+        {"tris": 3099, "tex": 1024, "path": "res://assets/models/turuncu_agac/turuncu_agac_lod1.glb"},
+        {"tris": 1099, "tex": 512, "path": "res://assets/models/turuncu_agac/turuncu_agac_lod2.glb"}
       ],
       "hull": "res://assets/models/turuncu_agac/turuncu_agac_hull.tres",
       "icon": "res://assets/models/turuncu_agac/turuncu_agac_icon.png",
@@ -1600,19 +1621,26 @@
       "id": "kutuk",
       "name": "Kutuk (Poly Haven Tree Stump 02; Sis Korusu ve kesim artigi icin)",
       "goldenClass": "",
-      "budgetClass": "esya_kaya",
+      "budgetClass": "agac",
       "stream": "varlik",
-      "inGame": false,
-      "usedBy": "henuz yok: Sis Korusu icin hazir (dunya2 satir ekleyerek kullanir; progress/bitki/NOT.md)",
+      "inGame": true,
+      "usedBy": "World.Decor.cs: Sis Korusu decor \"kutuk\"",
       "ownerApproved": false,
-      "source": {"pool": "kutuphane", "service": "F:\\Assets; pipeline/build_bitki.py (plant)", "credits": 0, "retries": 0, "taskId": "", "date": "2026-11-18"},
-      "license": "Poly Haven CC0 (tree_stump_02, Rob Tuytel) (pipeline/licenses.md, Bitkiler)",
+      "source": {
+        "pool": "tripo_web",
+        "service": "Tripo web H3.1, 18 Kasim (kredi ana oturumun kaydinda, web havuzu) -> pipeline/build_bitki.py (tripo_prop)",
+        "credits": 0,
+        "retries": 0,
+        "taskId": "",
+        "date": "2026-11-18"
+      },
+      "license": "Tripo web (sahibin hesabi; uretilen varlik sahibin) (pipeline/licenses.md, Bitkiler)",
       "criteria": [
         {"id": 1, "name": "doku", "pass": true, "value": "albedo+alfa, normal, puruzluluk; en buyuk 1024 px (sinir 1024)", "note": ""},
-        {"id": 2, "name": "poligon", "pass": true, "value": "2399 / 6000 ucgen", "note": ""},
+        {"id": 2, "name": "poligon", "pass": true, "value": "4999 / 8000 ucgen (sinif alt sinirinin altinda)", "note": ""},
         {"id": 3, "name": "kalinlik", "pass": null, "value": "", "note": "olculmedi (bitki hatti)"},
         {"id": 4, "name": "butunluk", "pass": null, "value": "", "note": "olculmedi (bitki hatti)"},
-        {"id": 5, "name": "olcek_eksen", "pass": true, "value": "boy 0.597 m (hedef 0.6), taban z 0, orta [0, 0]", "note": ""},
+        {"id": 5, "name": "olcek_eksen", "pass": true, "value": "en uzun kenar 3.004 m (hedef 3.0), taban z 0, orta [0, 0]", "note": ""},
         {
           "id": 6,
           "name": "siluet",
@@ -1640,18 +1668,18 @@
       ],
       "status": "yer_tutucu",
       "statusNote": "dokulu PBR bitki (bitki-pbr); olcut 3-4 kart icin olculmez, 6-8 sahibin onayini bekliyor",
-      "notes": "kaynak: Kutuk (Poly Haven Tree Stump 02; Sis Korusu ve kesim artigi icin)",
-      "model": "res://assets/models/kutuk/kutuk.glb",
+      "notes": "kaynak: Yosunlu kutuk (Tripo web H3.1)",
+      "model": "res://assets/models/koru/kutuk.glb",
       "forward": "",
-      "tris": 2399,
-      "sizeM": [1.75, 1.601, 0.597],
+      "tris": 4999,
+      "sizeM": [1.177, 3.004, 1.043],
       "lods": [
-        {"tris": 2399, "tex": 1024, "path": "res://assets/models/kutuk/kutuk.glb"},
-        {"tris": 900, "tex": 512, "path": "res://assets/models/kutuk/kutuk_lod1.glb"},
-        {"tris": 299, "tex": 256, "path": "res://assets/models/kutuk/kutuk_lod2.glb"}
+        {"tris": 4999, "tex": 1024, "path": "res://assets/models/koru/kutuk.glb"},
+        {"tris": 1999, "tex": 512, "path": "res://assets/models/koru/kutuk_lod1.glb"},
+        {"tris": 699, "tex": 256, "path": "res://assets/models/koru/kutuk_lod2.glb"}
       ],
-      "hull": "res://assets/models/kutuk/kutuk_hull.tres",
-      "icon": "res://assets/models/kutuk/kutuk_icon.png",
+      "hull": "res://assets/models/koru/kutuk_hull.tres",
+      "icon": "res://assets/models/koru/kutuk_icon.png",
       "card": "progress/bitki/render/kutuk.png",
       "parts": [],
       "sockets": []
@@ -1773,6 +1801,652 @@
       "hull": "res://assets/models/koknar_genc/koknar_genc_hull.tres",
       "icon": "res://assets/models/koknar_genc/koknar_genc_icon.png",
       "card": "progress/bitki/render/koknar_genc.png",
+      "parts": [],
+      "sockets": []
+    },
+    {
+      "id": "agac_hus",
+      "name": "Cayir agaci 2: hus (Tripo web H3.1)",
+      "goldenClass": "",
+      "budgetClass": "agac",
+      "stream": "varlik",
+      "inGame": true,
+      "usedBy": "World.Decor.cs: Cayir decor \"agac_hus\" (agac havuzunun ikinci turu); Bicme Odun",
+      "ownerApproved": false,
+      "source": {
+        "pool": "tripo_web",
+        "service": "Tripo web H3.1 (kredi ana oturumun kaydinda, web havuzu) -> pipeline/build_bitki.py (tripo_tree)",
+        "credits": 0,
+        "retries": 0,
+        "taskId": "",
+        "date": "2026-11-18"
+      },
+      "license": "Tripo web (sahibin hesabi; uretilen varlik sahibin) (pipeline/licenses.md, Bitkiler)",
+      "criteria": [
+        {"id": 1, "name": "doku", "pass": false, "value": "albedo+alfa, normal, puruzluluk; en buyuk 2048 px (sinir 1024)", "note": ""},
+        {"id": 2, "name": "poligon", "pass": true, "value": "5400 / 8000 ucgen", "note": ""},
+        {"id": 3, "name": "kalinlik", "pass": null, "value": "", "note": "olculmedi: yaprak karti / ince yaprak tasarim geregi levha (alfa makasli)"},
+        {"id": 4, "name": "butunluk", "pass": null, "value": "", "note": "olculmedi: kart dortgenleri acik levha (manifold degil) tasarim geregi"},
+        {"id": 5, "name": "olcek_eksen", "pass": false, "value": "boy 5.232 m (hedef 5.2), taban z 0, orta [0, 0]", "note": ""},
+        {
+          "id": 6,
+          "name": "siluet",
+          "pass": null,
+          "value": "",
+          "score": null,
+          "note": "sahibin onayini bekliyor (progress/bitki/once ve sonra goruntuleri)"
+        },
+        {
+          "id": 7,
+          "name": "dil_uyumu",
+          "pass": null,
+          "value": "",
+          "score": null,
+          "note": "sahibin onayini bekliyor (progress/bitki/once ve sonra goruntuleri)"
+        },
+        {
+          "id": 8,
+          "name": "okunaklilik",
+          "pass": null,
+          "value": "",
+          "score": null,
+          "note": "sahibin onayini bekliyor (progress/bitki/once ve sonra goruntuleri)"
+        }
+      ],
+      "status": "yer_tutucu",
+      "statusNote": "Tripo web agaci, yapraklar karta pisirildi (tripo_tree); olcut 3-4 kart icin olculmez, 6-8 sahibin onayini bekliyor",
+      "notes": "kaynak: Cayir agaci 2: hus (Tripo web H3.1)",
+      "model": "res://assets/models/agac_hus/agac_hus.glb",
+      "forward": "",
+      "tris": 5400,
+      "sizeM": [4.76, 4.179, 5.232],
+      "lods": [
+        {"tris": 5400, "tex": 2048, "path": "res://assets/models/agac_hus/agac_hus.glb"},
+        {"tris": 3100, "tex": 1024, "path": "res://assets/models/agac_hus/agac_hus_lod1.glb"},
+        {"tris": 1100, "tex": 512, "path": "res://assets/models/agac_hus/agac_hus_lod2.glb"}
+      ],
+      "hull": "res://assets/models/agac_hus/agac_hus_hull.tres",
+      "icon": "res://assets/models/agac_hus/agac_hus_icon.png",
+      "card": "progress/bitki/render/agac_hus.png",
+      "parts": [],
+      "sockets": []
+    },
+    {
+      "id": "koru_agac",
+      "name": "Sis Korusu kadim agaci (Tripo web H3.1; camgobegi yaprak orman yesiline)",
+      "goldenClass": "",
+      "budgetClass": "agac",
+      "stream": "varlik",
+      "inGame": true,
+      "usedBy": "World.Decor.cs: Sis Korusu decor \"koru_agac\" (kadim agac); Bicme Sert Odun",
+      "ownerApproved": false,
+      "source": {
+        "pool": "tripo_web",
+        "service": "Tripo web H3.1 (kredi ana oturumun kaydinda, web havuzu) -> pipeline/build_bitki.py (tripo_tree)",
+        "credits": 0,
+        "retries": 0,
+        "taskId": "",
+        "date": "2026-11-18"
+      },
+      "license": "Tripo web (sahibin hesabi; uretilen varlik sahibin) (pipeline/licenses.md, Bitkiler)",
+      "criteria": [
+        {"id": 1, "name": "doku", "pass": false, "value": "albedo+alfa, normal, puruzluluk; en buyuk 2048 px (sinir 1024)", "note": ""},
+        {"id": 2, "name": "poligon", "pass": true, "value": "5399 / 8000 ucgen", "note": ""},
+        {"id": 3, "name": "kalinlik", "pass": null, "value": "", "note": "olculmedi: yaprak karti / ince yaprak tasarim geregi levha (alfa makasli)"},
+        {"id": 4, "name": "butunluk", "pass": null, "value": "", "note": "olculmedi: kart dortgenleri acik levha (manifold degil) tasarim geregi"},
+        {"id": 5, "name": "olcek_eksen", "pass": false, "value": "boy 8.119 m (hedef 8.0), taban z 0, orta [0, 0]", "note": ""},
+        {
+          "id": 6,
+          "name": "siluet",
+          "pass": null,
+          "value": "",
+          "score": null,
+          "note": "sahibin onayini bekliyor (progress/bitki/once ve sonra goruntuleri)"
+        },
+        {
+          "id": 7,
+          "name": "dil_uyumu",
+          "pass": null,
+          "value": "",
+          "score": null,
+          "note": "sahibin onayini bekliyor (progress/bitki/once ve sonra goruntuleri)"
+        },
+        {
+          "id": 8,
+          "name": "okunaklilik",
+          "pass": null,
+          "value": "",
+          "score": null,
+          "note": "sahibin onayini bekliyor (progress/bitki/once ve sonra goruntuleri)"
+        }
+      ],
+      "status": "yer_tutucu",
+      "statusNote": "Tripo web agaci, yapraklar karta pisirildi (tripo_tree); olcut 3-4 kart icin olculmez, 6-8 sahibin onayini bekliyor",
+      "notes": "kaynak: Sis Korusu kadim agaci (Tripo web H3.1; yesil yaprakli yeniden dokunmus surum; camgobegi asil yedek)",
+      "model": "res://assets/models/koru/koru_agac.glb",
+      "forward": "",
+      "tris": 5399,
+      "sizeM": [8.253, 7.498, 8.119],
+      "lods": [
+        {"tris": 5399, "tex": 2048, "path": "res://assets/models/koru/koru_agac.glb"},
+        {"tris": 3100, "tex": 1024, "path": "res://assets/models/koru/koru_agac_lod1.glb"},
+        {"tris": 1100, "tex": 512, "path": "res://assets/models/koru/koru_agac_lod2.glb"}
+      ],
+      "hull": "res://assets/models/koru/koru_agac_hull.tres",
+      "icon": "res://assets/models/koru/koru_agac_icon.png",
+      "card": "progress/bitki/render/koru_agac.png",
+      "parts": [],
+      "sockets": []
+    },
+    {
+      "id": "koru_ladin",
+      "name": "Sis Korusu uzun ladini (Tripo web H3.1)",
+      "goldenClass": "",
+      "budgetClass": "agac",
+      "stream": "varlik",
+      "inGame": true,
+      "usedBy": "World.Decor.cs: Sis Korusu decor \"koru_ladin\" (uzun ladin, koru havuzunun ikinci turu); Bicme Sert Odun",
+      "ownerApproved": false,
+      "source": {
+        "pool": "tripo_web",
+        "service": "Tripo web H3.1 (kredi ana oturumun kaydinda, web havuzu) -> pipeline/build_bitki.py (tripo_tree)",
+        "credits": 0,
+        "retries": 0,
+        "taskId": "",
+        "date": "2026-11-18"
+      },
+      "license": "Tripo web (sahibin hesabi; uretilen varlik sahibin) (pipeline/licenses.md, Bitkiler)",
+      "criteria": [
+        {"id": 1, "name": "doku", "pass": false, "value": "albedo+alfa, normal, puruzluluk; en buyuk 2048 px (sinir 1024)", "note": ""},
+        {"id": 2, "name": "poligon", "pass": true, "value": "4800 / 8000 ucgen (sinif alt sinirinin altinda)", "note": ""},
+        {"id": 3, "name": "kalinlik", "pass": null, "value": "", "note": "olculmedi: yaprak karti / ince yaprak tasarim geregi levha (alfa makasli)"},
+        {"id": 4, "name": "butunluk", "pass": null, "value": "", "note": "olculmedi: kart dortgenleri acik levha (manifold degil) tasarim geregi"},
+        {"id": 5, "name": "olcek_eksen", "pass": false, "value": "boy 12.109 m (hedef 12.0), taban z 0, orta [0, 0]", "note": ""},
+        {
+          "id": 6,
+          "name": "siluet",
+          "pass": null,
+          "value": "",
+          "score": null,
+          "note": "sahibin onayini bekliyor (progress/bitki/once ve sonra goruntuleri)"
+        },
+        {
+          "id": 7,
+          "name": "dil_uyumu",
+          "pass": null,
+          "value": "",
+          "score": null,
+          "note": "sahibin onayini bekliyor (progress/bitki/once ve sonra goruntuleri)"
+        },
+        {
+          "id": 8,
+          "name": "okunaklilik",
+          "pass": null,
+          "value": "",
+          "score": null,
+          "note": "sahibin onayini bekliyor (progress/bitki/once ve sonra goruntuleri)"
+        }
+      ],
+      "status": "yer_tutucu",
+      "statusNote": "Tripo web agaci, yapraklar karta pisirildi (tripo_tree); olcut 3-4 kart icin olculmez, 6-8 sahibin onayini bekliyor",
+      "notes": "kaynak: Sis Korusu uzun ladini (Tripo web H3.1)",
+      "model": "res://assets/models/koru_ladin/koru_ladin.glb",
+      "forward": "",
+      "tris": 4800,
+      "sizeM": [7.592, 7.175, 12.109],
+      "lods": [
+        {"tris": 4800, "tex": 2048, "path": "res://assets/models/koru_ladin/koru_ladin.glb"},
+        {"tris": 2899, "tex": 1024, "path": "res://assets/models/koru_ladin/koru_ladin_lod1.glb"},
+        {"tris": 1100, "tex": 512, "path": "res://assets/models/koru_ladin/koru_ladin_lod2.glb"}
+      ],
+      "hull": "res://assets/models/koru_ladin/koru_ladin_hull.tres",
+      "icon": "res://assets/models/koru_ladin/koru_ladin_icon.png",
+      "card": "progress/bitki/render/koru_ladin.png",
+      "parts": [],
+      "sockets": []
+    },
+    {
+      "id": "dev_mantar",
+      "name": "Dev mantar (Tripo web H3.1)",
+      "goldenClass": "",
+      "budgetClass": "esya_kaya",
+      "stream": "varlik",
+      "inGame": true,
+      "usedBy": "World.Decor.cs: Sis Korusu decor \"dev_mantar\"",
+      "ownerApproved": false,
+      "source": {
+        "pool": "tripo_web",
+        "service": "Tripo web H3.1, 18 Kasim (kredi ana oturumun kaydinda, web havuzu) -> pipeline/build_bitki.py (tripo_prop)",
+        "credits": 0,
+        "retries": 0,
+        "taskId": "",
+        "date": "2026-11-18"
+      },
+      "license": "Tripo web (sahibin hesabi; uretilen varlik sahibin) (pipeline/licenses.md, Bitkiler)",
+      "criteria": [
+        {"id": 1, "name": "doku", "pass": true, "value": "albedo+alfa, normal, puruzluluk; en buyuk 1024 px (sinir 1024)", "note": ""},
+        {"id": 2, "name": "poligon", "pass": true, "value": "5000 / 6000 ucgen", "note": ""},
+        {"id": 3, "name": "kalinlik", "pass": null, "value": "", "note": "olculmedi (bitki hatti)"},
+        {"id": 4, "name": "butunluk", "pass": null, "value": "", "note": "olculmedi (bitki hatti)"},
+        {"id": 5, "name": "olcek_eksen", "pass": true, "value": "boy 2.499 m (hedef 2.5), taban z 0, orta [0, 0]", "note": ""},
+        {
+          "id": 6,
+          "name": "siluet",
+          "pass": null,
+          "value": "",
+          "score": null,
+          "note": "sahibin onayini bekliyor (progress/bitki/once ve sonra goruntuleri)"
+        },
+        {
+          "id": 7,
+          "name": "dil_uyumu",
+          "pass": null,
+          "value": "",
+          "score": null,
+          "note": "sahibin onayini bekliyor (progress/bitki/once ve sonra goruntuleri)"
+        },
+        {
+          "id": 8,
+          "name": "okunaklilik",
+          "pass": null,
+          "value": "",
+          "score": null,
+          "note": "sahibin onayini bekliyor (progress/bitki/once ve sonra goruntuleri)"
+        }
+      ],
+      "status": "yer_tutucu",
+      "statusNote": "dokulu PBR bitki (bitki-pbr); olcut 3-4 kart icin olculmez, 6-8 sahibin onayini bekliyor",
+      "notes": "kaynak: Dev mantar (Tripo web H3.1)",
+      "model": "res://assets/models/koru/dev_mantar.glb",
+      "forward": "",
+      "tris": 5000,
+      "sizeM": [2.118, 2.02, 2.499],
+      "lods": [
+        {"tris": 5000, "tex": 1024, "path": "res://assets/models/koru/dev_mantar.glb"},
+        {"tris": 2000, "tex": 512, "path": "res://assets/models/koru/dev_mantar_lod1.glb"},
+        {"tris": 772, "tex": 256, "path": "res://assets/models/koru/dev_mantar_lod2.glb"}
+      ],
+      "hull": "res://assets/models/koru/dev_mantar_hull.tres",
+      "icon": "res://assets/models/koru/dev_mantar_icon.png",
+      "card": "progress/bitki/render/dev_mantar.png",
+      "parts": [],
+      "sockets": []
+    },
+    {
+      "id": "recine",
+      "name": "Recine damari (Tripo web H3.1)",
+      "goldenClass": "",
+      "budgetClass": "esya_kaya",
+      "stream": "varlik",
+      "inGame": true,
+      "usedBy": "World.Resources.cs: Sis Korusu kaynak dugumu \"recine\" (Recine)",
+      "ownerApproved": false,
+      "source": {
+        "pool": "tripo_web",
+        "service": "Tripo web H3.1, 18 Kasim (kredi ana oturumun kaydinda, web havuzu) -> pipeline/build_bitki.py (tripo_prop)",
+        "credits": 0,
+        "retries": 0,
+        "taskId": "",
+        "date": "2026-11-18"
+      },
+      "license": "Tripo web (sahibin hesabi; uretilen varlik sahibin) (pipeline/licenses.md, Bitkiler)",
+      "criteria": [
+        {"id": 1, "name": "doku", "pass": true, "value": "albedo+alfa, normal, puruzluluk; en buyuk 1024 px (sinir 1024)", "note": ""},
+        {"id": 2, "name": "poligon", "pass": true, "value": "2999 / 6000 ucgen", "note": ""},
+        {"id": 3, "name": "kalinlik", "pass": null, "value": "", "note": "olculmedi (bitki hatti)"},
+        {"id": 4, "name": "butunluk", "pass": null, "value": "", "note": "olculmedi (bitki hatti)"},
+        {"id": 5, "name": "olcek_eksen", "pass": true, "value": "boy 0.906 m (hedef 0.9), taban z 0, orta [0, 0]", "note": ""},
+        {
+          "id": 6,
+          "name": "siluet",
+          "pass": null,
+          "value": "",
+          "score": null,
+          "note": "sahibin onayini bekliyor (progress/bitki/once ve sonra goruntuleri)"
+        },
+        {
+          "id": 7,
+          "name": "dil_uyumu",
+          "pass": null,
+          "value": "",
+          "score": null,
+          "note": "sahibin onayini bekliyor (progress/bitki/once ve sonra goruntuleri)"
+        },
+        {
+          "id": 8,
+          "name": "okunaklilik",
+          "pass": null,
+          "value": "",
+          "score": null,
+          "note": "sahibin onayini bekliyor (progress/bitki/once ve sonra goruntuleri)"
+        }
+      ],
+      "status": "yer_tutucu",
+      "statusNote": "dokulu PBR bitki (bitki-pbr); olcut 3-4 kart icin olculmez, 6-8 sahibin onayini bekliyor",
+      "notes": "kaynak: Recine damari (Tripo web H3.1)",
+      "model": "res://assets/models/koru/recine.glb",
+      "forward": "",
+      "tris": 2999,
+      "sizeM": [1.07, 1.015, 0.906],
+      "lods": [{"tris": 2999, "tex": 1024, "path": "res://assets/models/koru/recine.glb"}],
+      "hull": "res://assets/models/koru/recine_hull.tres",
+      "icon": "res://assets/models/koru/recine_icon.png",
+      "card": "progress/bitki/render/recine.png",
+      "parts": [],
+      "sockets": []
+    },
+    {
+      "id": "guhercile",
+      "name": "Guhercile (Tripo web H3.1)",
+      "goldenClass": "",
+      "budgetClass": "esya_kaya",
+      "stream": "varlik",
+      "inGame": true,
+      "usedBy": "World.Resources.cs: Sis Korusu kaynak dugumu \"guhercile\" (Guhercile)",
+      "ownerApproved": false,
+      "source": {
+        "pool": "tripo_web",
+        "service": "Tripo web H3.1, 18 Kasim (kredi ana oturumun kaydinda, web havuzu) -> pipeline/build_bitki.py (tripo_prop)",
+        "credits": 0,
+        "retries": 0,
+        "taskId": "",
+        "date": "2026-11-18"
+      },
+      "license": "Tripo web (sahibin hesabi; uretilen varlik sahibin) (pipeline/licenses.md, Bitkiler)",
+      "criteria": [
+        {"id": 1, "name": "doku", "pass": true, "value": "albedo+alfa, normal, puruzluluk; en buyuk 1024 px (sinir 1024)", "note": ""},
+        {"id": 2, "name": "poligon", "pass": true, "value": "2998 / 6000 ucgen", "note": ""},
+        {"id": 3, "name": "kalinlik", "pass": null, "value": "", "note": "olculmedi (bitki hatti)"},
+        {"id": 4, "name": "butunluk", "pass": null, "value": "", "note": "olculmedi (bitki hatti)"},
+        {"id": 5, "name": "olcek_eksen", "pass": true, "value": "boy 0.788 m (hedef 0.8), taban z 0, orta [0, 0]", "note": ""},
+        {
+          "id": 6,
+          "name": "siluet",
+          "pass": null,
+          "value": "",
+          "score": null,
+          "note": "sahibin onayini bekliyor (progress/bitki/once ve sonra goruntuleri)"
+        },
+        {
+          "id": 7,
+          "name": "dil_uyumu",
+          "pass": null,
+          "value": "",
+          "score": null,
+          "note": "sahibin onayini bekliyor (progress/bitki/once ve sonra goruntuleri)"
+        },
+        {
+          "id": 8,
+          "name": "okunaklilik",
+          "pass": null,
+          "value": "",
+          "score": null,
+          "note": "sahibin onayini bekliyor (progress/bitki/once ve sonra goruntuleri)"
+        }
+      ],
+      "status": "yer_tutucu",
+      "statusNote": "dokulu PBR bitki (bitki-pbr); olcut 3-4 kart icin olculmez, 6-8 sahibin onayini bekliyor",
+      "notes": "kaynak: Guhercile (Tripo web H3.1)",
+      "model": "res://assets/models/koru/guhercile.glb",
+      "forward": "",
+      "tris": 2998,
+      "sizeM": [0.788, 0.737, 0.788],
+      "lods": [{"tris": 2998, "tex": 1024, "path": "res://assets/models/koru/guhercile.glb"}],
+      "hull": "res://assets/models/koru/guhercile_hull.tres",
+      "icon": "res://assets/models/koru/guhercile_icon.png",
+      "card": "progress/bitki/render/guhercile.png",
+      "parts": [],
+      "sockets": []
+    },
+    {
+      "id": "yuva",
+      "name": "Yuva (Tripo web H3.1)",
+      "goldenClass": "",
+      "budgetClass": "esya_kaya",
+      "stream": "varlik",
+      "inGame": true,
+      "usedBy": "Kesif noktasi \"yuva\" (biomes.json landmarks)",
+      "ownerApproved": false,
+      "source": {
+        "pool": "tripo_web",
+        "service": "Tripo web H3.1, 18 Kasim (kredi ana oturumun kaydinda, web havuzu) -> pipeline/build_bitki.py (tripo_prop)",
+        "credits": 0,
+        "retries": 0,
+        "taskId": "",
+        "date": "2026-11-18"
+      },
+      "license": "Tripo web (sahibin hesabi; uretilen varlik sahibin) (pipeline/licenses.md, Bitkiler)",
+      "criteria": [
+        {"id": 1, "name": "doku", "pass": true, "value": "albedo+alfa, normal, puruzluluk; en buyuk 1024 px (sinir 1024)", "note": ""},
+        {"id": 2, "name": "poligon", "pass": true, "value": "3499 / 6000 ucgen", "note": ""},
+        {"id": 3, "name": "kalinlik", "pass": null, "value": "", "note": "olculmedi (bitki hatti)"},
+        {"id": 4, "name": "butunluk", "pass": null, "value": "", "note": "olculmedi (bitki hatti)"},
+        {"id": 5, "name": "olcek_eksen", "pass": true, "value": "en uzun kenar 1.001 m (hedef 1.0), taban z 0, orta [0, 0]", "note": ""},
+        {
+          "id": 6,
+          "name": "siluet",
+          "pass": null,
+          "value": "",
+          "score": null,
+          "note": "sahibin onayini bekliyor (progress/bitki/once ve sonra goruntuleri)"
+        },
+        {
+          "id": 7,
+          "name": "dil_uyumu",
+          "pass": null,
+          "value": "",
+          "score": null,
+          "note": "sahibin onayini bekliyor (progress/bitki/once ve sonra goruntuleri)"
+        },
+        {
+          "id": 8,
+          "name": "okunaklilik",
+          "pass": null,
+          "value": "",
+          "score": null,
+          "note": "sahibin onayini bekliyor (progress/bitki/once ve sonra goruntuleri)"
+        }
+      ],
+      "status": "yer_tutucu",
+      "statusNote": "dokulu PBR bitki (bitki-pbr); olcut 3-4 kart icin olculmez, 6-8 sahibin onayini bekliyor",
+      "notes": "kaynak: Yuva (Tripo web H3.1)",
+      "model": "res://assets/models/kesif/yuva.glb",
+      "forward": "",
+      "tris": 3499,
+      "sizeM": [1.001, 0.918, 0.466],
+      "lods": [{"tris": 3499, "tex": 1024, "path": "res://assets/models/kesif/yuva.glb"}],
+      "hull": "res://assets/models/kesif/yuva_hull.tres",
+      "icon": "res://assets/models/kesif/yuva_icon.png",
+      "card": "progress/bitki/render/yuva.png",
+      "parts": [],
+      "sockets": []
+    },
+    {
+      "id": "enkaz",
+      "name": "Enkaz (Tripo web H3.1)",
+      "goldenClass": "",
+      "budgetClass": "esya_kaya",
+      "stream": "varlik",
+      "inGame": true,
+      "usedBy": "Kesif noktasi \"enkaz\" (biomes.json landmarks)",
+      "ownerApproved": false,
+      "source": {
+        "pool": "tripo_web",
+        "service": "Tripo web H3.1, 18 Kasim (kredi ana oturumun kaydinda, web havuzu) -> pipeline/build_bitki.py (tripo_prop)",
+        "credits": 0,
+        "retries": 0,
+        "taskId": "",
+        "date": "2026-11-18"
+      },
+      "license": "Tripo web (sahibin hesabi; uretilen varlik sahibin) (pipeline/licenses.md, Bitkiler)",
+      "criteria": [
+        {"id": 1, "name": "doku", "pass": true, "value": "albedo+alfa, normal, puruzluluk; en buyuk 1024 px (sinir 1024)", "note": ""},
+        {"id": 2, "name": "poligon", "pass": true, "value": "5499 / 6000 ucgen", "note": ""},
+        {"id": 3, "name": "kalinlik", "pass": null, "value": "", "note": "olculmedi (bitki hatti)"},
+        {"id": 4, "name": "butunluk", "pass": null, "value": "", "note": "olculmedi (bitki hatti)"},
+        {"id": 5, "name": "olcek_eksen", "pass": true, "value": "en uzun kenar 2.5 m (hedef 2.5), taban z 0, orta [0, 0]", "note": ""},
+        {
+          "id": 6,
+          "name": "siluet",
+          "pass": null,
+          "value": "",
+          "score": null,
+          "note": "sahibin onayini bekliyor (progress/bitki/once ve sonra goruntuleri)"
+        },
+        {
+          "id": 7,
+          "name": "dil_uyumu",
+          "pass": null,
+          "value": "",
+          "score": null,
+          "note": "sahibin onayini bekliyor (progress/bitki/once ve sonra goruntuleri)"
+        },
+        {
+          "id": 8,
+          "name": "okunaklilik",
+          "pass": null,
+          "value": "",
+          "score": null,
+          "note": "sahibin onayini bekliyor (progress/bitki/once ve sonra goruntuleri)"
+        }
+      ],
+      "status": "yer_tutucu",
+      "statusNote": "dokulu PBR bitki (bitki-pbr); olcut 3-4 kart icin olculmez, 6-8 sahibin onayini bekliyor",
+      "notes": "kaynak: Enkaz (Tripo web H3.1)",
+      "model": "res://assets/models/kesif/enkaz.glb",
+      "forward": "",
+      "tris": 5499,
+      "sizeM": [2.5, 1.06, 0.865],
+      "lods": [{"tris": 5499, "tex": 1024, "path": "res://assets/models/kesif/enkaz.glb"}],
+      "hull": "res://assets/models/kesif/enkaz_hull.tres",
+      "icon": "res://assets/models/kesif/enkaz_icon.png",
+      "card": "progress/bitki/render/enkaz.png",
+      "parts": [],
+      "sockets": []
+    },
+    {
+      "id": "oyuk_agzi",
+      "name": "Oyuk agzi (Tripo web H3.1)",
+      "goldenClass": "",
+      "budgetClass": "agac",
+      "stream": "varlik",
+      "inGame": true,
+      "usedBy": "Kesif noktasi \"oyuk\" agzi (biomes.json landmarks)",
+      "ownerApproved": false,
+      "source": {
+        "pool": "tripo_web",
+        "service": "Tripo web H3.1, 18 Kasim (kredi ana oturumun kaydinda, web havuzu) -> pipeline/build_bitki.py (tripo_prop)",
+        "credits": 0,
+        "retries": 0,
+        "taskId": "",
+        "date": "2026-11-18"
+      },
+      "license": "Tripo web (sahibin hesabi; uretilen varlik sahibin) (pipeline/licenses.md, Bitkiler)",
+      "criteria": [
+        {"id": 1, "name": "doku", "pass": true, "value": "albedo+alfa, normal, puruzluluk; en buyuk 1024 px (sinir 1024)", "note": ""},
+        {"id": 2, "name": "poligon", "pass": true, "value": "6000 / 8000 ucgen", "note": ""},
+        {"id": 3, "name": "kalinlik", "pass": null, "value": "", "note": "olculmedi (bitki hatti)"},
+        {"id": 4, "name": "butunluk", "pass": null, "value": "", "note": "olculmedi (bitki hatti)"},
+        {"id": 5, "name": "olcek_eksen", "pass": true, "value": "en uzun kenar 4.004 m (hedef 4.0), taban z 0, orta [0, 0]", "note": ""},
+        {
+          "id": 6,
+          "name": "siluet",
+          "pass": null,
+          "value": "",
+          "score": null,
+          "note": "sahibin onayini bekliyor (progress/bitki/once ve sonra goruntuleri)"
+        },
+        {
+          "id": 7,
+          "name": "dil_uyumu",
+          "pass": null,
+          "value": "",
+          "score": null,
+          "note": "sahibin onayini bekliyor (progress/bitki/once ve sonra goruntuleri)"
+        },
+        {
+          "id": 8,
+          "name": "okunaklilik",
+          "pass": null,
+          "value": "",
+          "score": null,
+          "note": "sahibin onayini bekliyor (progress/bitki/once ve sonra goruntuleri)"
+        }
+      ],
+      "status": "yer_tutucu",
+      "statusNote": "dokulu PBR bitki (bitki-pbr); olcut 3-4 kart icin olculmez, 6-8 sahibin onayini bekliyor",
+      "notes": "kaynak: Oyuk agzi (Tripo web H3.1)",
+      "model": "res://assets/models/kesif/oyuk_agzi.glb",
+      "forward": "",
+      "tris": 6000,
+      "sizeM": [4.004, 3.391, 3.323],
+      "lods": [{"tris": 6000, "tex": 1024, "path": "res://assets/models/kesif/oyuk_agzi.glb"}],
+      "hull": "res://assets/models/kesif/oyuk_agzi_hull.tres",
+      "icon": "res://assets/models/kesif/oyuk_agzi_icon.png",
+      "card": "progress/bitki/render/oyuk_agzi.png",
+      "parts": [],
+      "sockets": []
+    },
+    {
+      "id": "demir",
+      "name": "Demir cevheri (Tripo web H3.1)",
+      "goldenClass": "",
+      "budgetClass": "esya_kaya",
+      "stream": "varlik",
+      "inGame": true,
+      "usedBy": "World.Resources.cs: Sis Korusu kaynak dugumu \"demir\" (Demir cevheri)",
+      "ownerApproved": false,
+      "source": {
+        "pool": "tripo_web",
+        "service": "Tripo web H3.1, 18 Kasim (kredi ana oturumun kaydinda, web havuzu) -> pipeline/build_bitki.py (tripo_prop)",
+        "credits": 0,
+        "retries": 0,
+        "taskId": "",
+        "date": "2026-11-18"
+      },
+      "license": "Tripo web (sahibin hesabi; uretilen varlik sahibin) (pipeline/licenses.md, Bitkiler)",
+      "criteria": [
+        {"id": 1, "name": "doku", "pass": true, "value": "albedo+alfa, normal, puruzluluk; en buyuk 1024 px (sinir 1024)", "note": ""},
+        {"id": 2, "name": "poligon", "pass": true, "value": "3498 / 6000 ucgen", "note": ""},
+        {"id": 3, "name": "kalinlik", "pass": null, "value": "", "note": "olculmedi (bitki hatti)"},
+        {"id": 4, "name": "butunluk", "pass": null, "value": "", "note": "olculmedi (bitki hatti)"},
+        {"id": 5, "name": "olcek_eksen", "pass": true, "value": "en uzun kenar 1.003 m (hedef 1.0), taban z 0, orta [0, 0]", "note": ""},
+        {
+          "id": 6,
+          "name": "siluet",
+          "pass": null,
+          "value": "",
+          "score": null,
+          "note": "sahibin onayini bekliyor (progress/bitki/once ve sonra goruntuleri)"
+        },
+        {
+          "id": 7,
+          "name": "dil_uyumu",
+          "pass": null,
+          "value": "",
+          "score": null,
+          "note": "sahibin onayini bekliyor (progress/bitki/once ve sonra goruntuleri)"
+        },
+        {
+          "id": 8,
+          "name": "okunaklilik",
+          "pass": null,
+          "value": "",
+          "score": null,
+          "note": "sahibin onayini bekliyor (progress/bitki/once ve sonra goruntuleri)"
+        }
+      ],
+      "status": "yer_tutucu",
+      "statusNote": "dokulu PBR bitki (bitki-pbr); olcut 3-4 kart icin olculmez, 6-8 sahibin onayini bekliyor",
+      "notes": "kaynak: Demir cevheri (Tripo web H3.1)",
+      "model": "res://assets/models/koru/demir.glb",
+      "forward": "",
+      "tris": 3498,
+      "sizeM": [1.003, 0.827, 0.839],
+      "lods": [{"tris": 3498, "tex": 1024, "path": "res://assets/models/koru/demir.glb"}],
+      "hull": "res://assets/models/koru/demir_hull.tres",
+      "icon": "res://assets/models/koru/demir_icon.png",
+      "card": "progress/bitki/render/demir.png",
       "parts": [],
       "sockets": []
     }

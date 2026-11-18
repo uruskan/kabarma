@@ -1,0 +1,41 @@
+{
+  "name": "koru_ladin",
+  "label": "Sis Korusu uzun ladini (Tripo web H3.1)",
+  "kind": "tripo_tree",
+  "source": {
+    "dir": "{main}/.tools/tripo_web/agaclar",
+    "file": "kabarma_koru_ladin.glb"
+  },
+  "license": "Tripo web (sahibin hesabi; uretilen varlik sahibin)",
+  "height_target": 12.0,
+  "lods": [
+    {
+      "path": "res://assets/models/koru_ladin/koru_ladin.glb",
+      "tris": 4800,
+      "tex": 2048,
+      "surfaces": 2
+    },
+    {
+      "path": "res://assets/models/koru_ladin/koru_ladin_lod1.glb",
+      "tris": 2899,
+      "tex": 1024,
+      "surfaces": 2
+    },
+    {
+      "path": "res://assets/models/koru_ladin/koru_ladin_lod2.glb",
+      "tris": 1100,
+      "tex": 512,
+      "surfaces": 2
+    }
+  ],
+  "size_m": [
+    7.592,
+    7.175,
+    12.109
+  ],
+  "hull_points": 64,
+  "trunk_radius_m": 1.04,
+  "clusters": 900,
+  "leaf_faces": 1808597,
+  "tris": 4800
+}

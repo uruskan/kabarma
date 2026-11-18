@@ -37,3 +37,21 @@ VRAM 840 → 979 MB. Hepsi TEKNIK §10 bütçesinde (≤ 8,3 ms sınırda: tepe 
 
 ## Sahip kararı (18 Kasım 2026)
 Sahip bu gerçekçi ağaçları beğenmedi (oyunun stilize kaya ve arazisine uymuyor). Ana oturum Tripo web ile stilize ama ayrıntılı ağaçlar üretecek; o zamana dek bu modeller kalır. Hat hazır: `bitki_manifest.json` `kind: "stylized"` (şablon `ornek_tripo_agac`), isteğe bağlı yaprak kartı kabuğu (`leaf_shell`). Ayrıntı `pipeline/README.md` "Bitkiler".
+
+## Tripo ağaçları (18 Kasım 2026, ikinci tur)
+Sahip PBR kütüphane ağaçlarını beğenmedi; ana oturum Tripo web (H3.1) ile altı ağaç üretti (ham GLB ~1,9 M üçgen, 4K, yapraklar ve gövde tek kaynaşmış mesh). Hat `pipeline/build_bitki.py` `kind: "tripo_tree"`:
+- Yüzler doku rengine göre yaprak / odun ayrılır (`leaf_rule`: varsayılan yeşil kuralı ya da ton aralığı + doygunluk).
+- Odun (gövde, dallar, kökler) seyreltilir, yeni UV açılır, albedo + normal + pürüzlülük yüksek poligondan pişirilir.
+- Yapraklar konum + yönle 900 kümeye ayrılır; her küme kendi düzleminden tek bir 4K atlasa pişirilir ve o düzlemde alfa makaslı bir kart olur. Kalın, yuvarlak Tripo yaprak görünüşü dokuda kalır (erimiş topak ya da delik yok). LOD2'de en büyük kümeler büyütülerek kalır.
+- Seçici ton kaydırma (`hue_map`): koru ağacının camgöbeği yaprakları (165–215°) orman yeşiline (≈132°), doygunluk ×0,62; yosun ve kabuk aynı.
+
+| Satır (biomes.json) | Kaynak | LOD0 / LOD1 / LOD2 üçgen | Boy |
+|---|---|---|---|
+| `agac` | meşe | 5.400 / 3.100 / 1.100 | 5,0 m |
+| `agac_hus` (yeni, Çayır listesinin sonunda) | huş, yaprak meşeye yaklaştırıldı | 5.400 / 3.100 / 1.100 | 5,2 m |
+| `turuncu_agac` | turuncu ağaç | NOT sonrası rapora bakın | 4,8 m |
+| `cali` | çalı (Biçme Lif) | rapora bakın | 1,2 m |
+| `koru_agac` | yosunlu kadim ağaç, ton düzeltildi | 5.400 / 3.100 / 1.100 | 8,0 m |
+| `koru_ladin` (yeni, Koru listesinin sonunda) | uzun ladin | rapora bakın | 12 m |
+
+Yeni satırlar listelerin sonunda: öncekilerin yerleşimi (tohumlu RNG) değişmez. Önceki kütüphane ağaçlarının ayarları manifestte `disabled` (`agac_jakaranda`, `turuncu_agac_pbr`, `cali_pbr`).
