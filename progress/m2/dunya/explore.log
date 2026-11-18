@@ -1,0 +1,8 @@
+tools/test.ps1  2026-11-18 17:41  git 862c8a9
+
+[PASS] explore  exit=0 EXPLORE RESULT ok
+
+sinama     sonuc  sure(sn)  ayrinti
+------     -----  --------  -------
+explore    PASS       35.9  exit=0 EXPLORE RESULT ok
+TEST PASS

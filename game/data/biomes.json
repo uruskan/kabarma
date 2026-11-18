@@ -39,8 +39,8 @@
     "heightFog": [1, 0.01],
     "_clearings": "Bitki ve ot konmayan aciklik [x, z, yaricap]: inis kapsulu (Director.PodPos), Ocak cevresi (tarla, istasyonlar, agil).",
     "clearings": [[9, -9, 6], [0, 1, 9],
-      [64, 36, 18], [-58, -72, 20]],
-    "_clearings_atalar": "Son iki satir boss akisinin Ata arenalaridir (atalar.json arena.center/radius + 2 m): Koca Pofuduk (Altin Cayir) ve Boynuzlu Dede (Sis Korusu gelene dek yer tutucu yer; dunya2 tasir).",
+      [64, 36, 18], [-212, 219, 20]],
+    "_clearings_atalar": "Son iki satir boss akisinin Ata arenalaridir (atalar.json arena.center/radius + 2 m): Koca Pofuduk (Altin Cayir) ve Boynuzlu Dede (Sis Korusu Ata Tasi; dunya2 tasidi).",
     "_paths": "Cignenmis patikalar [x, z] (gorsel-dunya): us-kapsul, us-gol, us-bakir-tepe, us-kuzey. Zemin toprak katmani, ot yok.",
     "paths": [
       [[0, -3], [4, -6], [8, -8]],
@@ -202,7 +202,7 @@
       },
       "pois": [
         { "type": "seyir_kulesi", "count": 1, "minSpacing": 200, "baseDistance": [230, 420], "minWeight": 0.9 },
-        { "type": "ata_tasi", "count": 1, "minSpacing": 200, "baseDistance": [260, 440], "minWeight": 0.95 },
+        { "type": "ata_tasi", "count": 1, "minSpacing": 200, "baseDistance": [260, 440], "minWeight": 0.95, "fixed": [[-212, 219]], "_fixed": "boss akisinin Boynuzlu Dede arenasi (atalar.json arena.center)" },
         { "type": "yabani_bahce", "count": 1, "minSpacing": 120, "baseDistance": [210, 440], "minWeight": 0.85 },
         { "type": "yuva", "count": 2, "minSpacing": 70, "baseDistance": [210, 440], "minWeight": 0.8 },
         { "type": "enkaz", "count": 3, "minSpacing": 70, "baseDistance": [210, 440], "minWeight": 0.75 }

@@ -161,7 +161,7 @@ public partial class PerfProbe : Node
             ["date"] = Time.GetDatetimeStringFromSystem(),
             ["results"] = _results,
         };
-        var dir = ProjectSettings.GlobalizePath("res://").TrimEnd('/') + "/../progress/m1/dunya/perf";
+        var dir = ProjectSettings.GlobalizePath("res://").TrimEnd('/') + "/../" + (Main.Args.TryGetValue("perf_out", out var po) && !string.IsNullOrEmpty(po) ? po.TrimEnd('/') : "progress/m1/dunya/perf"); // dunya2: --perf_out
         DirAccess.MakeDirRecursiveAbsolute(dir);
         var path = $"{dir}/perf_{_mode}{(_only != null ? "_" + _only : "")}.json";
         System.IO.File.WriteAllText(path, JsonSerializer.Serialize(doc, new JsonSerializerOptions { WriteIndented = true }));

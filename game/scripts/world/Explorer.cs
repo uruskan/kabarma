@@ -31,9 +31,12 @@ public partial class Explorer : Node
 
     public Explorer(Director d) { _d = d; Name = "Explorer"; }
 
+    Exploration _seen;
+
     public override void _Ready()
     {
         _d.State.Calendar.Morning += _ => Refill();
+        _seen = X;
         Restore();
     }
 
@@ -46,8 +49,11 @@ public partial class Explorer : Node
         {
             var type = W.PoiType(poi.Type);
             int left = X.Left(poi, type, Day);
-            int full = Exploration.Loot(poi, type).Values.Sum();
-            if (poi.Type == "enkaz" && left != full) W.SpawnPoiRock(poi, left);
+            if (poi.Type == "enkaz")
+            {
+                int cur = W.PoiRocks.TryGetValue(poi.Id, out var r) && IsInstanceValid(r) ? r.Stones : 0;
+                if (cur != left) W.SpawnPoiRock(poi, left);
+            }
             if (poi.Type == "yabani_bahce") W.RefillTufts(poi.Id, Exploration.Split(poi, type, left));
         }
         Bump();
@@ -60,7 +66,7 @@ public partial class Explorer : Node
         {
             var type = W.PoiType(poi.Type);
             if (type.RespawnDays <= 0) continue;
-            int before = X.Uses.TryGetValue(poi.Id, out var u) ? u.Left : -1;
+            int before = X.Uses.TryGetValue(poi.Id, out var u) ? u.Left : Exploration.Loot(poi, type).Values.Sum();
             int left = X.Left(poi, type, Day);
             if (before == left) continue;
             if (poi.Type == "enkaz") W.SpawnPoiRock(poi, left);
@@ -74,6 +80,8 @@ public partial class Explorer : Node
     public override void _Process(double delta)
     {
         float dt = (float)delta;
+        // Kayit yuklenince Sim'deki Exploration nesnesi degisir (kayit bolumu "explore"): dunyadaki noktalar yeniden kurulur.
+        if (!ReferenceEquals(_seen, X)) { _seen = X; Restore(); }
         if (_move != null) { StepMove(dt); return; }
         _tick -= dt;
         if (_tick > 0) return;

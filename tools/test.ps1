@@ -28,6 +28,7 @@ param(
 if (-not $PSBoundParameters.ContainsKey('Only')) { $Only += 'gece' } # gecehud: --test=gece varsayilan adimlara eklenir
 $ErrorActionPreference = 'Continue'
 if (-not $PSBoundParameters.ContainsKey('Only')) { $Only += 'world' } # dunya sinamasi (--test=world), varsayilan listede
+if (-not $PSBoundParameters.ContainsKey('Only')) { $Only += 'explore' } # dunya2: kesif sinamasi (--test=explore), varsayilan listede
 $Only = @($Only | ForEach-Object { $_ -split ',' } | ForEach-Object { $_.Trim() } | Where-Object { $_ })
 if (-not $PSBoundParameters.ContainsKey('Only')) { $Only += 'audio' } # ses akisi: --test=audio varsayilan adimlarda
 if (-not $PSBoundParameters.ContainsKey('Only')) { $Only += 'creatures' }
@@ -192,6 +193,7 @@ if ($Only -contains 'world') {
     }
 }
 
+if ($Only -contains 'explore') { if (-not $G) { $G = Find-Godot }; Invoke-GodotTest 'explore' '--test=explore --mute' $BotTimeout { param($r) $res = ($r.Text -split "`r?`n" | Where-Object { $_ -match '^EXPLORE RESULT ' } | Select-Object -Last 1); if (-not $res) { $res = 'EXPLORE RESULT satiri yok' }; [pscustomobject]@{ Ok = ($res -match '^EXPLORE RESULT ok'); Detail = $res } } } # dunya2: kesif (--test=explore)
 if ($Only -contains 'camera') { if (-not $G) { $G = Find-Godot }; Invoke-GodotTest 'camera' '--test=camera --mute' 300 { param($r) $res = ($r.Text -split "`r?`n" | Where-Object { $_ -match '^RESULT ' } | Select-Object -Last 1); if (-not $res) { $res = 'RESULT satiri yok' }; [pscustomobject]@{ Ok = ($res -match '^RESULT ok'); Detail = $res } } } # oyuncu akisi: kamera (--test=camera)
 if ($Only -contains 'grip') { if (-not $G) { $G = Find-Godot }; Invoke-GodotTest 'grip' '--test=grip --mute' 300 { param($r) $res = ($r.Text -split "`r?`n" | Where-Object { $_ -match '^RESULT ' } | Select-Object -Last 1); if (-not $res) { $res = 'RESULT satiri yok' }; [pscustomobject]@{ Ok = ($res -match '^RESULT ok'); Detail = $res } } } # oyuncu akisi: Capa elde, namlu nisanda, araba iki elle (--test=grip)
 if ($Only -contains 'creatures') {

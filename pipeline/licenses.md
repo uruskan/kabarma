@@ -51,3 +51,9 @@ Sahibin varlık kitaplığından (`F:\Assets`, yalnız okundu) kopyalanıp `pipe
 | `toprak` (2K), `tarla` (1K, üstüne koddan eğatlar) | `F:\Assets\forest_floor_wgyhdgy_4k` (Megascans) | Fab Standart Lisans (Megascans) | Klasörde lisans alanı yok; ana oturumun bildirdiği lisans. Sahip doğrulamalı |
 | `kaya` (2K) | `F:\Assets\cracked_nordic_coastal_rock_ukohaj0mw_4k` (Megascans) | Fab Standart Lisans (Megascans) | Aynı not |
 | `kum` (1K) | `F:\Assets\beach_sand_uinladeo_4k` (Megascans) | Fab Standart Lisans (Megascans) | Aynı not |
+
+## Model yer tutucuları (dunya2, M2)
+
+| Tarih | Kaynak | Dosyalar | Not |
+|---|---|---|---|
+| 18 Kasım 2026 | `pipeline/gen_kesif.py` (kendi kodumuz, Blender 5.3 ilkel parçalar; kredi yok, üçüncü taraf varlık yok) | `game/assets/models/koru/{koru_agac,dev_mantar,kutuk,demir,recine,guhercile}.glb`, `game/assets/models/kesif/{seyir_kulesi,yabani_bahce,yuva,enkaz}.glb`, `game/assets/models/placeables/mancinik.glb` | Dokusuz düz renk; `biomes.json`'da `placeholder` işaretli. `F:\Assets`'teki orman varlıkları (Polyhaven, Fab köknar paketleri) fotogerçekçi olduğu için stile uymadı, kullanılmadı. Yerlerine Tripo üretim isteği raporda |
