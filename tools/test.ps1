@@ -26,6 +26,7 @@ param(
 )
 
 if (-not $PSBoundParameters.ContainsKey('Only')) { $Only += 'gece' } # gecehud: --test=gece varsayilan adimlara eklenir
+if (-not $PSBoundParameters.ContainsKey('Only')) { $Only += 'ilerleme' } # ilerleme: --test=ilerleme varsayilan adimlara eklenir
 $ErrorActionPreference = 'Continue'
 if (-not $PSBoundParameters.ContainsKey('Only')) { $Only += 'world' } # dunya sinamasi (--test=world), varsayilan listede
 $Only = @($Only | ForEach-Object { $_ -split ',' } | ForEach-Object { $_.Trim() } | Where-Object { $_ })
@@ -237,6 +238,17 @@ if ($Only -contains 'gece') {
         $res = ($r.Text -split "`r?`n" | Where-Object { $_ -match '^GECE RESULT ' } | Select-Object -Last 1)
         if (-not $res) { $res = 'GECE RESULT satiri yok' }
         [pscustomobject]@{ Ok = ($res -match '^GECE RESULT ok'); Detail = ($res -replace ' t=[0-9.]+$', '') }
+    }
+}
+
+if ($Only -contains 'ilerleme') {
+    # ilerleme: is emri odemesi, Defter alt sekmeleri, Ustalik secimi, basarim (game/scripts/IlerlemeTest.cs)
+    if (-not $G) { $G = Find-Godot }
+    Invoke-GodotTest 'ilerleme' "--test=ilerleme --mute" $BotTimeout {
+        param($r)
+        $res = ($r.Text -split "`r?`n" | Where-Object { $_ -match '^ILERLEME RESULT ' } | Select-Object -Last 1)
+        if (-not $res) { $res = 'ILERLEME RESULT satiri yok' }
+        [pscustomobject]@{ Ok = ($res -match '^ILERLEME RESULT ok'); Detail = ($res -replace ' t=[0-9.]+$', '') }
     }
 }
 

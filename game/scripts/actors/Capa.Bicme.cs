@@ -30,6 +30,7 @@ public partial class Capa
             if (h == null) continue;
             n++;
             var (yield, stars, seeds) = h.Value;
+            yield = _d.State.Mastery.Scale("crop_yield", yield, _d.State.MasteryRng); // Ustalik: Ciftcilik seviyesi ve Bol Hasat
             FeelHit("bicme_ekin", c + Vector3.Up * 0.4f, Palette.Plant);
             Fx.Text3D(c + Vector3.Up * 1.0f, $"+{yield} Şalgam {new string('★', stars)}", Palette.Warning, 48, 1.2f, 1.3f);
             for (int i = 0; i < Math.Min(yield, 4); i++)
