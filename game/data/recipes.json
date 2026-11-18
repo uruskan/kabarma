@@ -50,6 +50,7 @@
     { "id": "hayvan_carki", "name": "Hayvan Çarkı", "station": "tezgah", "category": "guc", "in": { "wood": 16, "copper_wire": 2 }, "out": 1, "seconds": 6.0 },
     { "id": "elektrik_lambasi", "name": "Elektrik Lambası", "station": "tezgah", "category": "guc", "in": { "wood": 2, "copper_wire": 1 }, "out": 1, "seconds": 3.0 },
     { "id": "dugme", "name": "Düğme", "station": "tezgah", "category": "guc", "in": { "wood": 1, "copper_wire": 1 }, "out": 1, "seconds": 2.0 },
-    { "id": "basinc_plakasi", "name": "Basınç Plakası", "station": "tezgah", "category": "guc", "in": { "stone": 2, "copper_wire": 1 }, "out": 1, "seconds": 2.0 }
+    { "id": "basinc_plakasi", "name": "Basınç Plakası", "station": "tezgah", "category": "guc", "in": { "stone": 2, "copper_wire": 1 }, "out": 1, "seconds": 2.0 },
+    { "id": "kerpic", "name": "Kerpiç", "station": "tas_firin", "category": "malzeme", "in": { "clay": 2, "fiber": 1 }, "out": 1, "seconds": 4.0 }
   ]
 }

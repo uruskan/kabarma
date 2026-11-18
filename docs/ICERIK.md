@@ -553,7 +553,7 @@ Kare Temel · Üçgen Temel · Kazık Temel · Duvar · Yarım Duvar · Alçak D
 | Sur Duvarı · Sur Kapısı · Kule Tabanı | 8 · 10 · 12 |
 | Makine Platformu | Hücre başına 6 (küçük 6, orta 24, büyük 54) |
 
-Öbür malzemeler aynı adette kendi ana girdisini ister: Kerpiç-Taş yarı Kerpiç yarı Taş, Çelik Sac Çelik, Mayalı Beton Mayalı Beton, cam seti Cam. Sayılar o malzemenin geldiği taşta veriyle ayarlanır.
+Öbür malzemeler aynı adette kendi ana girdisini ister: Kerpiç-Taş yarı Kerpiç yarı Taş, Çelik Sac Çelik, Mayalı Beton Mayalı Beton, cam seti Cam. Sayılar o malzemenin geldiği taşta veriyle ayarlanır (`data/build.json`: malzeme başına oran, can, açıklık, ağırlık ve taşıma sınırı; M2'de 4 malzemenin hepsi yazıldı, Kerpiç-Taş 4 birimlik duvar = 2 Kerpiç + 2 Taş). Cam seti M4'te (T4).
 
 ### 10.2 Yerleştirilebilirler (72)
 
