@@ -1,0 +1,12 @@
+﻿[PASS] build  exit=0 warnings=0 errors=0
+[PASS] sim  exit=0 Passed!  - Failed:     0, Passed:   607, Skipped:     0, Total:   607, Duration: 22 s - Kabarma.Sim.Tests.dll (net8.0)
+[PASS] oyuk  exit=0 OYUK RESULT ok checks=passed hurt=6 rooms=6
+[PASS] coop  exit=0 ok players=4 max_diff_mm=1.892 pieces=4 foundations=4 late_join=1 plots=4 tilled=4 crafted=4 revives=1 voice_frames=25 creatures_spawned=32 rejected=4 corrections=66
+
+sinama     sonuc  sure(sn)  ayrinti
+------     -----  --------  -------
+build      PASS        6.4  exit=0 warnings=0 errors=0
+sim        PASS       26.9  exit=0 Passed!  - Failed:     0, Passed:   607, Skipped:     0, Total:   607, Duration: 22 s - Kabarma.Sim.Tests.dll (net8.0)
+oyuk       PASS       23.9  exit=0 OYUK RESULT ok checks=passed hurt=6 rooms=6
+coop       PASS      110.4  exit=0 ok players=4 max_diff_mm=1.892 pieces=4 foundations=4 late_join=1 plots=4 tilled=4 crafted=4 revives=1 voice_frames=25 creatures_spawned=32 rejected=4 corrections=66
+TEST PASS
