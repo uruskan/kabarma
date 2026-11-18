@@ -52,6 +52,7 @@ public partial class Hud
             case 2: BuildAchievementsPage(); break;
             default: BuildOrdersPage(); break;
         }
+        DefterIslah(); // tarim (M2): Islah notlari, Hud.DefterIslah.cs
         IgnoreMouse(_defterPanel);
     }
 

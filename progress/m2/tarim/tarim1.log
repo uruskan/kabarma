@@ -1,0 +1,8 @@
+tools/test.ps1  2026-11-18 17:44  git b90cff9
+
+[PASS] tarim  exit=0 RESULT ok tarim crop=wheat item=16 seeds=4 ledger=4 best=V2 H2 D3 M2 korkuluk=1 protected=2
+
+sinama     sonuc  sure(sn)  ayrinti
+------     -----  --------  -------
+tarim      PASS         44  exit=0 RESULT ok tarim crop=wheat item=16 seeds=4 ledger=4 best=V2 H2 D3 M2 korkuluk=1 protected=2
+TEST PASS

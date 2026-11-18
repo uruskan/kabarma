@@ -10,4 +10,9 @@
   <ItemGroup>
     <ProjectReference Include="..\src\Kabarma.Sim\Kabarma.Sim.csproj" />
   </ItemGroup>
+  <!-- Ortak oyun (ortak akisi): Steamworks.NET 2025.165.0 Standalone (SDK 1.65), M0 adim 3. Steam yoksa oyun ENet ile surer. -->
+  <ItemGroup>
+    <Reference Include="Steamworks.NET"><HintPath>..\lib\steamworks-2025.165.0\win-x64\Steamworks.NET.dll</HintPath></Reference>
+    <None Include="..\lib\steamworks-2025.165.0\win-x64\steam_api64.dll" CopyToOutputDirectory="PreserveNewest" Link="steam_api64.dll" />
+  </ItemGroup>
 </Project>

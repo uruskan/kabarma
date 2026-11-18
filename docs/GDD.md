@@ -166,6 +166,14 @@ Ocak üssün kalbidir. İşlevleri: tapu alanı, doğma noktası, Çan, Maya Kaz
 - **Bereket:** Her hasat −8 (kök ekinleri −10, Katran Fasulyesi +5). Kompost +30, gübre +20, kimyasal gübre +50. Boş kare günde +3. Bir karede art arda farklı aile ekmek +%10 verim.
 - **Su:** Hortum, yağmur, yağmurlama (4 m yarıçap, boru ve su kaynağı ister), damla hattı.
 - **Gündüz zararlıları:** Zıpzıp, Fındıkçı ve küçük Çekirge grupları olgun ekine gelir. Korkuluk (10 m), çit, bekçi hayvan ya da kule önler.
+  - Zararlı ekini bir lokmada yemez. Her ısırık Zarar'ı `0,10 × (1 − 0,05 × D)` artırır. Zarar 1'e varınca ekin yenmiş olur. Hasat verimi `× (1 − Zarar)` olur.
+  - Sarımsak, kendi karesine ve 8 komşu kareye zararlı getirmez.
+- **Özel ekinler** ([ICERIK.md](ICERIK.md) §5):
+  - Mantar yalnız karanlıkta büyür (gece ya da çatı altı).
+  - Böğürtlen ve Fındık kalıcı çalıdır. Hasattan sonra Genç evreye döner ve "sonra günde bir / iki günde bir" kuralıyla yeniden olgunlaşır.
+  - Buğdayın ürünü `wheat`, Lifotu'nun ürünü `fiber` kaynağıdır.
+- **Gün birimi:** Ekin süreleri (olgunlaşma, kalıcı çalının yenilenmesi, boş karenin +3 Bereketi, yabani bitkinin yeniden bitmesi) **büyüme günü** ile sayılır. Büyüme günü `crops.json growDaySeconds` değeridir (şimdilik 37,5 sn; Şalgam'ın 2 günü 75 sn). Kabarık ürünün sönmesi takvim gününe bağlıdır (§2).
+- **Yabani bitki:** Tapu dışında kendiliğinden biten olgun ekindir. Biçmeyle ürün ve yabani tohum verir. Kabarmaz. Hasattan 2 büyüme günü sonra yeniden biter.
 
 ### 8.3 Genler ve ıslah
 
@@ -174,6 +182,19 @@ Her tohumun dört geni var (1–10): **V** verim, **H** hız, **D** dayanıklıl
 - **Çaprazlama:** Aynı aileden iki bitki en fazla 2 m arayla ekiliyse ve 12 m içinde Vızvız kovanı varsa, hasat edilen tohumun her geni ebeveyn ortalamasıdır, üstüne mutasyon: %70 değişmez, %20 +1, %8 −1, %2 +2.
 - **Aşı Tezgâhı (T5):** Bir tohumdaki seçilen tek geni başka tohuma aktarır; kaynak tohum harcanır.
 - **Alaca:** Her hasatta Benekli 1/40, Altın 1/250, Aurora 1/2.000. Alaca tohum %50 olasılıkla Alaca verir. Satışta ×3, ×10, ×50; kabarık hâlinin kendine özgü görünüşü olur.
+  - Zar ekimde atılır. Böylece bitki büyürken ve kabarıkken Alaca olduğu görünür; olasılık her yetişen bitki için aynıdır.
+  - Alaca hasadın ürünü ayrı eşyadır (`<ekin>_benekli`, `_altin`, `_aurora`). Tohumları Alaca tohumdur.
+- **Kalıtım (çaprazlama yokken):** Hasat edilen her tohum, bitkinin genlerini alır ve üstüne aynı mutasyon zarı atılır.
+- **Yuvarlama ve sınır:** Ebeveyn ortalaması buçukluysa (ör. 2,5) yarı yarıya aşağı ya da yukarı yuvarlanır. Mutasyondan sonra gen 1–10 arasında kalır.
+- **D'nin etkisi:**
+  - Nem eşikleri (20 ve 40) `0,5 × (D − 1)` aşağı iner. Kalite yıldızı için 20 eşiği değişmez.
+  - Bant dışı hız `0,25 + 0,03 × (D − 1)` olur.
+  - Zararlı ısırığı yukarıdaki gibidir.
+- **Tohum soyu:** Çantada tohum yalnız adet ve kimlikle durur. Genleri ve Alaca'sı tapunun **Tohum Kaydı**'nda tutulur.
+  - Ekerken o türün en iyi kaydı kullanılır. Alaca kayıt önce gelir, sonra gen toplamı en yüksek olan.
+  - Kaydı olmayan tohum (kapsülden, satın alınmış ya da başka yoldan gelen) ekinin taban genleriyle ekilir.
+  - Tohumu olmayan kayıt bekler; ilk tohum geldiğinde kullanılır.
+- **Islah notları:** Defter'in Islah sayfası her türün en iyi genlerini, son mutasyonları ve Alaca buluşlarını yazar.
 
 ### 8.4 Kabarma'da tarla
 
@@ -362,6 +383,7 @@ Ocak'tan başlatılır. Seçilen KS'nin dalgaları hayalet olarak gelir; hasar g
 - **Aşı:** İki belirli kart 5. rütbeye gelince birleşik aşı kartı sunulur; iki yuvayı tek yuvaya indirir.
 - **Yenileme ve sürgün:** Gecede 2 yenileme, 2 sürgün.
 - **Ekip kartları** (Çiftlik sınıfı) bütün ekibi etkiler; aynı kart farklı oyunculardan yığılmaz, en yüksek rütbe geçerlidir.
+- **Ortak oyunda** her oyuncu kendi Öz'ünü toplar, kendi seviyesini atlar ve kendi üç kartından seçer; seçim sırasında zaman yavaşlamaz.
 - Şafakta bütün kartlar söner.
 - **Nişan:** Bir kartı geceyi 5. rütbede bitirmek 1 Nişan puanı verir. 3, 8, 15, 25, 40 puanda Nişan 1–5 olur: her seviye kartın etkisini %4 artırır; Nişan 5'te kart geceye 2. rütbeden başlar.
 - **Açılma:** 20 kart baştan açıktır. 40 kart iş emri zincirleri, üye tipleri, Atalar ve kart jetonlarıyla açılır ([ICERIK.md](ICERIK.md) §8.3). 12 aşı kartı, iki ebeveyni açık olunca kendiliğinden açılır.
@@ -388,6 +410,8 @@ Hasar türleri: Darbe, Kesme, Ateş, Buz, Şok, Zehir, Maya. Her yaratığın za
 ### 16.2 Düşman davranışları
 
 Dokuz arketip: Koşucu, Tank, Sıçrayan, Menzilli, Uçan, Sürü, Kazıcı, Hırsız (ürünü kapıp kaçar), Yıkıcı (yapıya öncelik verir). Her tür bir ya da iki arketip taşır.
+
+**Gündüz tavrı:** Kabarmamış yabani yaratık arketipini gündüz bir tavırla taşır: ürkek (yaklaşınca kaçar), sakin (otlar, vurulunca kaçar), yağmacı (ekine ya da tohuma gider, kovulunca kaçar), yırtıcı (yakına geleni uyarır, sonra saldırır), gececi (gündüz uyur), sürü (tek varlık, hedefe akar). Tür başına tavır ve eşikler [ICERIK.md](ICERIK.md) §3.8'de ve `data/creatures.json` `wild` alanında. Gündüz saldırısı M2'de uyarı ve küçük hasardır; tam savaş M3.
 
 ### 16.3 Gündüz savaşı
 
@@ -483,7 +507,7 @@ Kabarma gecesi Perde iner. Hedefler:
 ## 20. Araçlar
 
 - Araç Atölyesi'nde gövde basılır, eklentiler gövdenin yuvalarına takılır.
-- Yakıt: biyoyakıt ya da akü. Dolu depo yaklaşık bir saat sürüş verir.
+- Yakıt: T2'de Bitkisel Yağ (Çekirge), T3'ten biyoyakıt (iki kat verim), T4'ten akü ([ICERIK.md](ICERIK.md) §14). Dolu depo yaklaşık bir saat sürüş verir.
 - Araç hasar alır ve onarılır; devrilen araç E ile düzeltilir.
 - Kabarma'da araç silahtır: ezme ve biçme Gösteri çarpanını artırır.
 - Liste: [ICERIK.md](ICERIK.md) §14.

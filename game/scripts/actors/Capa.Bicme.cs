@@ -19,6 +19,7 @@ public partial class Capa
         var muzzle = _d.Player.Muzzle.GlobalPosition;
         if (muzzle.DistanceTo(aim) > _t.MowRange) return 0;
         FeelFire("bicme", muzzle, HeadColors[1]); // supurme: geri tepme, sarsinti
+        if (_d.Net?.ForwardMow(aim) == true) return 0; // ortak: istemcide hasat host'ta
 
         // Olgun ekin
         int n = 0;
@@ -26,17 +27,14 @@ public partial class Capa
         {
             var c = _d.FarmView.CellCenter(plot.X, plot.Y);
             if (new Vector2(c.X - aim.X, c.Z - aim.Z).Length() > _t.MowRadius) continue;
-            var h = _d.State.Farm.Harvest(plot.X, plot.Y, _d.State.Rng);
+            // tarim (M2): urun ekine gore, tohumlar soyuyla Tohum Kaydi'na (FarmView.Harvest.cs: yazi, renk, olay)
+            var h = _d.State.Farm.HarvestFull(plot.X, plot.Y, _d.State.Rng);
             if (h == null) continue;
-            n++;
-            var (yield, stars, seeds) = h.Value;
-            yield = _d.State.Mastery.Scale("crop_yield", yield, _d.State.MasteryRng); // Ustalik: Ciftcilik seviyesi ve Bol Hasat
+            if (!h.Wild) n++;
             FeelHit("bicme_ekin", c + Vector3.Up * 0.4f, Palette.Plant);
-            Fx.Text3D(c + Vector3.Up * 1.0f, $"+{yield} Şalgam {new string('★', stars)}", Palette.Warning, 48, 1.2f, 1.3f);
-            for (int i = 0; i < Math.Min(yield, 4); i++)
-                Fx.FlyTo(c + Vector3.Up * 0.3f, () => _d.Player.BackpackPoint.GlobalPosition, Palette.TurnipBody, 0.12f);
-            _d.State.Backpack.Add("turnip", yield, stars); // kalite cantada tasinir (GDD 13: fiyat = taban × kalite)
-            _d.State.Backpack.Add("turnip_seed", seeds);
+            _d.FarmView.OnHarvestedBy(h, c);
+            _d.State.Backpack.Add(h.Item, _d.State.Mastery.Scale("crop_yield", h.Yield, _d.State.MasteryRng), h.Stars); // Ustalik: Ciftcilik seviyesi, Bol Hasat // kalite cantada tasinir (GDD 13: fiyat = taban × kalite)
+            _d.State.Backpack.Add(h.SeedItem, h.Seeds);
         }
         if (n > 0) _d.OnHarvest(n);
 
