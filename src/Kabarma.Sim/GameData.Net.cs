@@ -50,6 +50,23 @@ public sealed class NetSteamDef
     public string LobbyType { get; set; } = "friends";
 }
 
+/// <summary>--test=stress (URETIM 6 M3 kabulu; TEKNIK 5.3, 10): sahne ve butceler.</summary>
+public sealed class NetStressDef
+{
+    public int Players { get; set; } = 8;
+    public int Enemies { get; set; } = 220;
+    public int Ks { get; set; } = 30;
+    public float ClientDownKBps { get; set; } = 35f;
+    public float HostUpKbps { get; set; } = 2000f;
+    public float HostUpTargetKbps { get; set; } = 1500f;
+    public float SimTickMs { get; set; } = 4f;
+    public float KabarmaFrameMs { get; set; } = 11f;
+    public float MeasureSeconds { get; set; } = 45f;
+    public float SpawnRadius { get; set; } = 44f;
+    public int SpawnPerFrame { get; set; } = 20;
+    public float WallToggleSeconds { get; set; } = 2f;
+}
+
 public sealed class NetFile
 {
     public int Protocol { get; set; } = 1;
@@ -72,6 +89,7 @@ public sealed class NetFile
     public NetDownedDef Downed { get; set; } = new();
     public NetVoiceDef Voice { get; set; } = new();
     public NetSteamDef Steam { get; set; } = new();
+    public NetStressDef Stress { get; set; } = new();
     /// <summary>Kayit koprusune girmeyen dunya bolumleri (kisisel ya da set'i canli oyunda nesne sifirlayan).</summary>
     public List<string> SaveBridgeSkip { get; set; } = new();
 }

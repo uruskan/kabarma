@@ -1,0 +1,12 @@
+0.72 STRESS client port=29755 bot=5
+36.44 STRESS client measure begin
+86.19 STRESS client report down_kBps=18.1 proc_ms med=72.06 p95=301.73 seen=255 avatars=7
+86.45 STRESS final code=1
+0.77 STRESS client port=29340 bot=5
+34.46 STRESS client measure begin
+81.92 STRESS client report down_kBps=19.1 frame_ms med=54.14 p95=152.03 seen=237 avatars=7
+82.10 STRESS final code=1
+0.73 STRESS client port=29594 bot=5
+21.18 STRESS client measure begin
+66.21 STRESS client report down_kBps=19.7 frame_ms med=23.41 p95=36.48 seen=251 avatars=7
+66.35 STRESS final code=1

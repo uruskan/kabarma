@@ -25,26 +25,34 @@ public readonly struct FlowSample
 /// 8 komsu, capraz adim x1,4, koseden capraz gecis yok: iki dik komsudan biri gecilmez ya da izliyse capraz kapali).
 /// Degisimden sonra artimli onarilir: degisen hucreden gecen en kisa yollarin alt agaci sifirlanip sinirindan yeniden
 /// yayilir; iyilesme degisen hucrelerin cevresinden yayilir. Sonuc tam hesapla ayni maliyeti verir (FlowFieldTests).
+/// Hesap arka tamponda yapilir ve hucre butcesiyle karelere bolunebilir (Step); bitince on tamponla takas edilir.
+/// Is surerken sorgular eski (on) alani okur. Is sirasinda gelen degisim bir sonraki ise kalir.
 /// </summary>
 public sealed class FlowField
 {
     public const int Inf = int.MaxValue;
     readonly FlowGrid _g;
-    readonly int[] _dist;
-    readonly int[] _parent;
+    int[] _dist, _parent;   // on tampon: sorgular
+    int[] _bd, _bp;         // arka tampon: suren is
     readonly HashSet<int> _goals = new();
     readonly int[] _mark;
     int _markGen;
     readonly PriorityQueue<int, int> _pq = new();
+    readonly Stack<int> _stack = new();
+    readonly List<int> _affected = new();
     long _seen;
     bool _full = true;
+    bool _job, _jobFull;
+    int _jobTouched;
     readonly List<int> _goalsRemoved = new(), _goalsAdded = new();
 
     public string Key { get; }
-    /// <summary>Son hesapta dokunulan hucre sayisi (olcum).</summary>
+    /// <summary>Son biten iste dokunulan hucre sayisi (olcum).</summary>
     public int LastTouched { get; private set; }
     public int Recomputes { get; private set; }
     public int Repairs { get; private set; }
+    /// <summary>Karelere bolunmus bir is suruyor (sorgular eski alani okur).</summary>
+    public bool Busy => _job;
     public IReadOnlyCollection<int> Goals => _goals;
 
     public FlowField(FlowGrid grid, string key)
@@ -53,6 +61,8 @@ public sealed class FlowField
         Key = key;
         _dist = new int[grid.Count];
         _parent = new int[grid.Count];
+        _bd = new int[grid.Count];
+        _bp = new int[grid.Count];
         _mark = new int[grid.Count];
         Array.Fill(_dist, Inf);
         Array.Fill(_parent, -1);
@@ -61,6 +71,7 @@ public sealed class FlowField
 
     public int Dist(int i) => _dist[i];
     public int Parent(int i) => _parent[i];
+    /// <summary>Gunlukte bu alanin okudugu yer (suren is baslarken okunanlar dahil).</summary>
     public long Seen => _seen;
 
     /// <summary>Hedef kumesini degistirir (hesap bir sonraki Update'te).</summary>
@@ -73,120 +84,175 @@ public sealed class FlowField
         _goals.UnionWith(want);
     }
 
-    /// <summary>Izgara ya da hedef degisti mi (Update bir sey yapacak mi).</summary>
-    public bool Dirty => _full || _seen < _g.LogEnd || _goalsRemoved.Count > 0 || _goalsAdded.Count > 0;
+    /// <summary>Izgara ya da hedef degisti mi ya da is suruyor mu (Update bir sey yapacak mi).</summary>
+    public bool Dirty => _job || _full || _seen < _g.LogEnd || _goalsRemoved.Count > 0 || _goalsAdded.Count > 0;
 
-    /// <summary>Bekleyen degisimi uygular. Gunluk cok gerideyse ya da ilk kezse tam hesap. Donen: bir sey yapildi mi.</summary>
+    /// <summary>Bekleyen degisimi butcesiz, sonuna kadar uygular. Donen: bir sey yapildi mi.</summary>
     public bool Update(int maxRepairCells = 4096)
     {
         if (!Dirty) return false;
-        if (_full || _seen < _g.LogStart || _g.LogEnd - _seen > maxRepairCells) Recompute();
-        else Repair();
+        while (Dirty) Step(int.MaxValue, maxRepairCells);
         return true;
     }
 
-    /// <summary>Bastan hesap.</summary>
+    /// <summary>
+    /// En cok budget hucre kadar is yapar (en az bir adim). Is yoksa ve kirliyse yeni is baslar: ilk kez, gunluk
+    /// cok gerideyse ya da kirpildiysa tam hesap, yoksa onarim. Donen: islenen hucre (0: is yoktu).
+    /// </summary>
+    public int Step(int budget, int maxRepairCells = 4096)
+    {
+        int used = 0;
+        if (!_job)
+        {
+            if (!Dirty) return 0;
+            if (_full || _seen < _g.LogStart || _g.LogEnd - _seen > maxRepairCells) BeginFull();
+            else used += BeginRepair();
+        }
+        used += Run(Math.Max(1, budget - used));
+        if (_pq.Count == 0) Finish();
+        return Math.Max(1, used);
+    }
+
+    /// <summary>Bastan hesap, hemen ve sonuna kadar (suren is birakilir).</summary>
     public void Recompute()
     {
-        Array.Fill(_dist, Inf);
-        Array.Fill(_parent, -1);
+        BeginFull();
+        Run(int.MaxValue);
+        Finish();
+    }
+
+    void BeginFull()
+    {
+        Array.Fill(_bd, Inf);
+        Array.Fill(_bp, -1);
         _pq.Clear();
-        foreach (int g in _goals) { _dist[g] = 0; _pq.Enqueue(g, 0); }
-        LastTouched = Run();
+        foreach (int g in _goals) { _bd[g] = 0; _pq.Enqueue(g, 0); }
         _seen = _g.LogEnd;
         _full = false;
         _goalsRemoved.Clear();
         _goalsAdded.Clear();
-        Recomputes++;
+        _job = true; _jobFull = true; _jobTouched = 0;
     }
 
-    /// <summary>Gunlukteki degisen hucrelerden ve hedef farkindan artimli onarim.</summary>
-    void Repair()
+    void Finish()
     {
-        var changed = _g.ChangesSince(_seen).Distinct().ToList();
+        (_dist, _bd) = (_bd, _dist);
+        (_parent, _bp) = (_bp, _parent);
+        _job = false;
+        LastTouched = _jobTouched;
+        if (_jobFull) Recomputes++; else Repairs++;
+    }
+
+    /// <summary>Gunlukteki degisen hucrelerden ve hedef farkindan artimli onarimi kurar (arka tamponda). Donen: etkilenen.</summary>
+    int BeginRepair()
+    {
+        Array.Copy(_dist, _bd, _dist.Length);
+        Array.Copy(_parent, _bp, _parent.Length);
+        var changed = new HashSet<int>(_g.ChangesSince(_seen));
         _seen = _g.LogEnd;
         int gen = ++_markGen;
+        int S = _g.Size;
         // 1. Kokler: degisen hucre, cevresinde capraz geldigi yolu o hucrenin kosesinden gecenler, kalkan hedefler.
-        var stack = new Stack<int>();
-        void Root(int i) { if (_mark[i] != gen) { _mark[i] = gen; stack.Push(i); } }
+        _stack.Clear();
+        void Root(int i) { if (_mark[i] != gen) { _mark[i] = gen; _stack.Push(i); } }
         foreach (int c in changed)
         {
             Root(c);
-            ForNeighbours(c, n => { int p = _parent[n]; if (p >= 0 && _g.X(p) != _g.X(n) && _g.Z(p) != _g.Z(n)) Root(n); });
+            int cx = c % S, cz = c / S;
+            for (int k = 0; k < 8; k++)
+            {
+                int nx = cx + FlowGrid.DX[k], nz = cz + FlowGrid.DZ[k];
+                if (nx < 0 || nz < 0 || nx >= S || nz >= S) continue;
+                int n = nz * S + nx, p = _bp[n];
+                if (p >= 0 && p % S != nx && p / S != nz) Root(n);
+            }
         }
         foreach (int g in _goalsRemoved) Root(g);
         // 2. Alt agac: ebeveyni etkilenen olan her hucre etkilenir.
-        var affected = new List<int>();
-        while (stack.Count > 0)
+        _affected.Clear();
+        while (_stack.Count > 0)
         {
-            int u = stack.Pop();
-            affected.Add(u);
-            ForNeighbours(u, n => { if (_parent[n] == u && _mark[n] != gen) { _mark[n] = gen; stack.Push(n); } });
+            int u = _stack.Pop();
+            _affected.Add(u);
+            int ux = u % S, uz = u / S;
+            for (int k = 0; k < 8; k++)
+            {
+                int nx = ux + FlowGrid.DX[k], nz = uz + FlowGrid.DZ[k];
+                if (nx < 0 || nz < 0 || nx >= S || nz >= S) continue;
+                int n = nz * S + nx;
+                if (_bp[n] == u && _mark[n] != gen) { _mark[n] = gen; _stack.Push(n); }
+            }
         }
-        foreach (int a in affected) { _dist[a] = Inf; _parent[a] = -1; }
+        foreach (int a in _affected) { _bd[a] = Inf; _bp[a] = -1; }
         // 3. Tohumlar: etkilenenlerin etkilenmemis komsulari, degisen hucrelerin cevresi, hedefler.
         _pq.Clear();
-        foreach (int a in affected)
+        foreach (int a in _affected)
         {
-            if (_goals.Contains(a)) { _dist[a] = 0; _pq.Enqueue(a, 0); continue; }
-            ForNeighbours(a, n => { if (_mark[n] != gen && _dist[n] != Inf) _pq.Enqueue(n, _dist[n]); });
+            if (_goals.Contains(a)) { _bd[a] = 0; _pq.Enqueue(a, 0); continue; }
+            int ax = a % S, az = a / S;
+            for (int k = 0; k < 8; k++)
+            {
+                int nx = ax + FlowGrid.DX[k], nz = az + FlowGrid.DZ[k];
+                if (nx < 0 || nz < 0 || nx >= S || nz >= S) continue;
+                int n = nz * S + nx;
+                if (_mark[n] != gen && _bd[n] != Inf) _pq.Enqueue(n, _bd[n]);
+            }
         }
         foreach (int c in changed)
         {
-            if (_dist[c] != Inf) _pq.Enqueue(c, _dist[c]);
-            ForNeighbours(c, n => { if (_dist[n] != Inf) _pq.Enqueue(n, _dist[n]); });
+            if (_bd[c] != Inf) _pq.Enqueue(c, _bd[c]);
+            int cx = c % S, cz = c / S;
+            for (int k = 0; k < 8; k++)
+            {
+                int nx = cx + FlowGrid.DX[k], nz = cz + FlowGrid.DZ[k];
+                if (nx < 0 || nz < 0 || nx >= S || nz >= S) continue;
+                int n = nz * S + nx;
+                if (_bd[n] != Inf) _pq.Enqueue(n, _bd[n]);
+            }
         }
-        foreach (int g in _goalsAdded) { if (_goals.Contains(g)) { _dist[g] = 0; _parent[g] = -1; _pq.Enqueue(g, 0); } }
+        foreach (int g in _goalsAdded) { if (_goals.Contains(g)) { _bd[g] = 0; _bp[g] = -1; _pq.Enqueue(g, 0); } }
         _goalsRemoved.Clear();
         _goalsAdded.Clear();
-        LastTouched = affected.Count + Run();
-        Repairs++;
-    }
-
-    void ForNeighbours(int i, Action<int> f)
-    {
-        int x = _g.X(i), z = _g.Z(i);
-        for (int k = 0; k < 8; k++)
-        {
-            int nx = x + FlowGrid.DX[k], nz = z + FlowGrid.DZ[k];
-            if (_g.In(nx, nz)) f(_g.Index(nx, nz));
-        }
+        _job = true; _jobFull = false; _jobTouched = _affected.Count;
+        return _affected.Count;
     }
 
     /// <summary>
-    /// Kuyruktan Dijkstra. Akis alani hedeften disa yayilir; u'dan n'ye adim, n'den u'ya yurumenin maliyetidir, yani
-    /// u'ya girmenin maliyeti (n zaten oradadir). Bu yuzden kenar agirligi hedef yonundeki hucre (u) uzerinden okunur.
+    /// Kuyruktan Dijkstra (arka tampon), en cok budget hucre. Akis alani hedeften disa yayilir; u'dan n'ye adim, n'den
+    /// u'ya yurumenin maliyetidir, yani u'ya girmenin maliyeti (n zaten oradadir). Bu yuzden kenar agirligi hedef
+    /// yonundeki hucre (u) uzerinden okunur.
     /// </summary>
-    int Run()
+    int Run(int budget)
     {
-        int touched = 0;
-        while (_pq.TryDequeue(out int u, out int d))
+        int touched = 0, S = _g.Size;
+        while (touched < budget && _pq.TryDequeue(out int u, out int d))
         {
-            if (d != _dist[u]) continue;
+            if (d != _bd[u]) continue;
             touched++;
-            int ux = _g.X(u), uz = _g.Z(u);
+            int ux = u % S, uz = u / S;
             int enter = _g.Cost(u);
             if (enter < 0) { if (!_goals.Contains(u)) continue; enter = _g.OpenCost; } // hedef gecilmez zeminde olabilir (kazan, ekin)
+            int diag = enter * 14 / 10;
             for (int k = 0; k < 8; k++)
             {
                 // n -> u yurume: u'ya girme maliyeti; capraz kurali ayni kose hucreleri icin simetrik.
                 int nx = ux + FlowGrid.DX[k], nz = uz + FlowGrid.DZ[k];
-                if (!_g.In(nx, nz)) continue;
-                int n = _g.Index(nx, nz);
+                if (nx < 0 || nz < 0 || nx >= S || nz >= S) continue;
+                int n = nz * S + nx;
                 if (!_g.Passable(n)) continue;
                 if ((k & 1) == 1)
                 {
-                    int a = _g.Index(nx, uz), b = _g.Index(ux, nz);
+                    int a = uz * S + nx, b = nz * S + ux;
                     if (!_g.Passable(a) || !_g.Passable(b) || _g.Stamped(a) || _g.Stamped(b)) continue;
                 }
-                int w = (k & 1) == 1 ? enter * 14 / 10 : enter;
-                long nd = (long)d + w;
-                if (nd >= _dist[n]) continue;
-                _dist[n] = (int)nd;
-                _parent[n] = u;
+                long nd = (long)d + ((k & 1) == 1 ? diag : enter);
+                if (nd >= _bd[n]) continue;
+                _bd[n] = (int)nd;
+                _bp[n] = u;
                 _pq.Enqueue(n, (int)nd);
             }
         }
+        _jobTouched += touched;
         return touched;
     }
 
@@ -212,8 +278,8 @@ public sealed class FlowField
 
 /// <summary>
 /// Pencere basina alan kumesi (TEKNIK 8.1): ortak maliyet izgarasi, hedef anahtari basina bir alan (yalniz sorgulanan
-/// anahtarlar). Tick'te en cok MaxRecomputesPerTick alan guncellenir; guncellenmeyen eski haliyle gecerli kalir.
-/// Holding icin ayni izgarada kirma maliyetli A* (FindPath).
+/// anahtarlar). Tick'te en cok MaxRecomputesPerTick alan, toplam en cok MaxCellsPerTick hucre islenir; yarim kalan is
+/// sonraki tike surer, o arada eski alan gecerli kalir. Holding icin ayni izgarada kirma maliyetli A* (FindPath).
 /// </summary>
 public sealed class FlowFieldSet
 {
@@ -242,19 +308,23 @@ public sealed class FlowFieldSet
     public FlowSample Sample(string key, float x, float z)
     {
         if (!_fields.TryGetValue(key, out var f)) return default;
-        if (f.Recomputes == 0) f.Update(); // ilk sorgu: hemen hesapla
+        if (f.Recomputes == 0) f.Update(); // ilk sorgu: hemen, sonuna kadar hesapla (anahtar basina bir kez)
         return f.Sample(x, z);
     }
 
-    /// <summary>Kirli alanlari sirayla gunceller (en cok max tane). Donen: guncellenen sayisi.</summary>
-    public int Tick(int? max = null)
+    /// <summary>
+    /// Kirli alanlari sirayla ilerletir: en cok max alan, toplam en cok cells hucre. Donen: is yapilan alan sayisi.
+    /// </summary>
+    public int Tick(int? max = null, int? cells = null)
     {
-        int budget = max ?? Grid.Def.MaxRecomputesPerTick, done = 0;
+        int fieldsMax = max ?? Grid.Def.MaxRecomputesPerTick, budget = cells ?? Grid.Def.MaxCellsPerTick, done = 0;
         var keys = _fields.Keys.ToList();
-        for (int k = 0; k < keys.Count && done < budget; k++)
+        for (int k = 0; k < keys.Count && done < fieldsMax && budget > 0; k++)
         {
             var f = _fields[keys[(_rr + k) % keys.Count]];
-            if (f.Update()) done++;
+            if (!f.Dirty) continue;
+            budget -= f.Step(budget);
+            done++;
         }
         if (keys.Count > 0) _rr = (_rr + 1) % keys.Count;
         // Butun alanlarin okudugu gunluk kismi atilir.

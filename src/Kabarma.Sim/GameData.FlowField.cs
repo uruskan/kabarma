@@ -17,6 +17,8 @@ public sealed class FlowFieldFile
     public Dictionary<string, string> PieceKinds { get; set; } = new();
     public float BlockHeight { get; set; } = 1.5f;
     public int MaxRecomputesPerTick { get; set; } = 2;
+    /// <summary>Tik basina en cok islenen hucre (butun alanlar toplami); is karelere bolunur, bitene kadar eski alan gecerli.</summary>
+    public int MaxCellsPerTick { get; set; } = 1500;
     public float RescanSeconds { get; set; } = 0.5f;
 
     public const string Walk = "walk", Ignore = "ignore";

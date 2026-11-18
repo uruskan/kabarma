@@ -31,6 +31,8 @@ public partial class FlowFieldSystem : Node
     /// <summary>Son taramanin ve son Tick'in suresi (ms; olcum).</summary>
     public double LastScanMs { get; private set; }
     public double LastTickMs { get; private set; }
+    /// <summary>Son Tick'te guncellenen alan sayisi (0: is yoktu; olcum).</summary>
+    public int LastTickWork { get; private set; }
 
     public FlowFieldSystem(Director d) { _d = d; Name = "FlowField"; }
 
@@ -80,7 +82,7 @@ public partial class FlowFieldSystem : Node
             Scans++;
         }
         ulong t1 = Time.GetTicksUsec();
-        Fields.Tick();
+        LastTickWork = Fields.Tick();
         LastTickMs = (Time.GetTicksUsec() - t1) / 1000.0;
     }
 
