@@ -99,6 +99,9 @@ public static class ItemNames
         ["iron_ore"] = "Demir Cevheri",
         ["saltpeter"] = "Güherçile",
         ["scrap"] = "Hurda",
+        // cip (M3): cip uretim malzemeleri (ICERIK 27, 36); tur ve nadirlik adlari chips.json
+        ["maya_kesesi"] = "Maya Kesesi",
+        ["holding_parcasi"] = "Holding Parçası",
         ["mancinik"] = "Mancınık",
         // tarim (M2): Cayir ve Koru'nun ekinleri, tohumlari, Alaca urunleri (GDD 8.3), Korkuluk
         ["pumpkin"] = "Kabak",
