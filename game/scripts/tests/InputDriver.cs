@@ -104,11 +104,13 @@ public sealed class InputDriver
 
     public void SelectHead(int head) { var op = HeadOp(head, false); if (op != null) Enqueue(op); }
 
-    /// <summary>Baslik secen islem: dogrudan tusu varsa o (klavye 1-8), yoksa ya da istenirse cark (Q / LB + fare / sag cubuk).</summary>
+    /// <summary>
+    /// Baslik secen islem: her aygitta cark (Q / LB + fare / sag cubuk). M1 karari 20: 1-8 kemer yuvasini secer, baslik
+    /// secmez; <paramref name="wheel"/> eski cagrilar icin kaldi.
+    /// </summary>
     Op HeadOp(int head, bool wheel)
     {
         string a = $"head_{head + 1}";
-        if (!wheel && _c.Bindings(a, Device).Count > 0) return new TapOp(a);
         if (_c.Bindings("head_wheel", Device).Count > 0) return new WheelOp(head);
         Error ??= $"no_binding action={a} device={Device}";
         return null;
