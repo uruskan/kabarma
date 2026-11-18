@@ -31,7 +31,7 @@ public partial class Director
     {
         Phase = Act.Night;
         _actT = 0;
-        var n = State.StartNight();
+        var n = StartNightFor(); // Director.Kabarma.cs: bekleyen tanim varsa planli gece, yoksa ilk gece
         n.SwellNow += () =>
         {
             int count = State.Farm.SwellMature(n.Ks, 0).Count;
@@ -78,6 +78,7 @@ public partial class Director
         // Kalan dusmanlar soner ve kacar.
         foreach (var z in Zipzip.All.ToArray()) { Fx.Burst(z.Center, Palette.MayaTeal, 10, 3f, 0.1f, 0.6f, true, -1f); z.QueueFree(); }
         Zipzip.All.Clear();
+        EndKabarmaView(); // Director.Kabarma.cs: gece suruleri, Kabaran kaydi, Kazan etiketi
         Gidak.Swell(false);
         Pofuduk.Swell(false);
         ClearOzViews(); // Sim safakta yerde kalan Oz'u saydi; ucuslar zaten basladi
@@ -86,6 +87,7 @@ public partial class Director
         _shownOffer = null;
         _slowMo = 1f;
         Player.SpeedMult = 1f; // GDD 15: kartlar safakta soner (Cevik dahil)
+        CardsDawn(); // Director.Cards.cs
         Hud.Big("ŞAFAK", Palette.Warning, 3f);
         GD.Print($"NIGHT dawn kills={Night.Kills} level={Night.Level} maya={Night.Maya:0} cards={Night.CardsCount} statsBase={Night.Stats.IsBase}{(_replay ? " replay" : "")}");
         if (_replay) { Events.RaiseDawn(); return; }
@@ -107,6 +109,8 @@ public partial class Director
         if (Night == null || Night.Phase == NightPhase.Dawn) return;
         var oz = Night.OnKill(z.Def, z.GlobalPosition.X, z.GlobalPosition.Z); // Oz yere duser (M1 karari 19)
         DropOz(oz, z.Center);
+        if (z.Planned) OnKabaranKilled(z); // Director.Kabarma.cs: oldurenin kaydi, Bolunen/Patlayan
+        OnCardKill(z); // Director.Cards.cs: Geri Sayim, Maya Bombasi
         RefreshOffer();
     }
 
@@ -127,6 +131,7 @@ public partial class Director
     public void ChooseCard(int i)
     {
         if (Night?.Offer == null) return;
+        if (TryBanishInstead(i)) return; // Director.Cards.cs: surgun kipi
         Night.Choose(i);
         RefreshOffer();
     }
@@ -191,18 +196,23 @@ public partial class Director
                 break;
             case Act.Night:
                 var n = Night;
-                World.SetNight(Mathf.Clamp(_actT / Data.Kabarma.FirstNight.AlarmSeconds, 0, 1));
+                World.SetNight(Mathf.Clamp(_actT / Mathf.Min(Night.Def.AlarmSeconds, Data.Kabarma.FirstNight.AlarmSeconds), 0, 1));
                 n.Tick(dt);
                 if (n.Phase == NightPhase.Dawn) break;
                 Player.SpeedMult = n.Stats.MoveSpeed(1f); // Cevik: hiz +%8 / rutbe (ICERIK 8.1)
                 n.CollectNear(Player.GlobalPosition.X, Player.GlobalPosition.Z); // Miknatis yaricapi buyutur (M1 karari 19)
                 if (Player.Down && !_wasDown) n.RecordPlayerDown();
                 _wasDown = Player.Down;
-                int due = n.SpawnDue();
-                for (int i = 0; i < due; i++) SpawnZipzip();
-                if (due == 0 && Zipzip.All.Count(z => !z.Dead) == 0) n.WaveCleared();
+                if (n.Plan != null) TickKabarma(n, dt); // Director.Kabarma.cs: planli gece (tam/kucuk/tatbikat)
+                else
+                {
+                    int due = n.SpawnDue();
+                    for (int i = 0; i < due; i++) SpawnZipzip();
+                    if (due == 0 && Zipzip.All.Count(z => !z.Dead) == 0) n.WaveCleared();
+                }
                 if (n.ShouldAutoPick) ChooseCard(0);
                 RefreshOffer();
+                TickCards(dt); // Director.Cards.cs (kartlar M3)
                 break;
             case Act.Dawn:
             case Act.Report:

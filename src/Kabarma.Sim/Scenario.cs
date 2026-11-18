@@ -101,6 +101,7 @@ public sealed partial class GameState
         Coop = new Coop(data.Pen);
         InitNightAndDay(); // GameState.Night.cs: takvim, Defter (is emirleri), gece sayaclari
         InitMarket(); // GameState.Market.cs: Borsa, Katalog, Tohum Carki (ekonomi2)
+        InitHolding(); // GameState.Holding.cs: Bereket Holding (holding, M3)
     }
 
     /// <summary>Odeme hesaba gecer (Kargo Rampasi; ilk satis aninda, sonrakiler 60 sn sonra).</summary>
@@ -113,7 +114,7 @@ public sealed partial class GameState
 
     public KabarmaNight StartNight(string? memberCard = null)
     {
-        Night = new KabarmaNight(Data, Data.Kabarma.FirstNight, Seed * 31 + 7 + (ulong)NightsStarted, memberCard);
+        Night = new KabarmaNight(Data, Data.Kabarma.FirstNight, Seed * 31 + 7 + (ulong)NightsStarted, memberCard, CardBook);
         OnNightStarted(Night); // GameState.Night.cs: gece sayaci, tarla olaylari
         return Night;
     }

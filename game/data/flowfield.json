@@ -1,0 +1,40 @@
+{
+  "_not": "Akis alanli yol bulma (TEKNIK 8, 8.1; yolbulma akisi, M3). Belgede sayisi olmayanlar '_belgesiz' ile isaretli.",
+  "gridSize": 160,
+  "_gridSize": "_belgesiz: pencere kenari, m (1 m hucre). Tapu yaricapi 40 m + dalga girisi payi; merkez ana ustte Ocak, karakolda Maya Feneri.",
+  "openCost": 10,
+  "_openCost": "Duz, acik hucreye girmenin maliyeti (birim). Capraz adim x1,4. Diger maliyetler bu birimle yazilir.",
+  "slopeCostPerDegree": 0.25,
+  "maxSlopeDegrees": 42,
+  "_slope": "_belgesiz: egim derecesi basina ek maliyet (openCost'un katlari degil, dogrudan birim); maxSlopeDegrees ustu gecilmez (ucurum).",
+  "waterCost": 40,
+  "_waterCost": "_belgesiz: su yuzeyindeki hucre (yuzerek/ziplayarak gecer ama kacinir).",
+  "_breakCost": "TEKNIK 8: duvar hucresi kapali degil, kirma maliyetli. Deger: o hucreye girmek icin acik hucre maliyetine eklenen birim (10 birim = 1 m dolanma). _belgesiz.",
+  "breakCost": {
+    "wall": 400,
+    "fence": 250,
+    "door": 300,
+    "doorOpen": 0,
+    "trap": 30,
+    "station": 300
+  },
+  "_pieceKinds": "Yapi parcasi turu (BuildKit kind) -> iz turu. 'walk': yurunur, iz yok; 'ignore': zemine degmez (kiris, cati). Bilinmeyen tur 'wall' sayilir.",
+  "pieceKinds": {
+    "foundation": "walk",
+    "platform": "walk",
+    "floor": "walk",
+    "stairs": "walk",
+    "pillar": "wall",
+    "wall": "wall",
+    "fence": "fence",
+    "door": "door",
+    "beam": "ignore",
+    "roof": "ignore"
+  },
+  "blockHeight": 1.5,
+  "_blockHeight": "_belgesiz: parcanin alt kenari zeminden bu kadar yuksekse engel degildir, m (ust kat duvari).",
+  "maxRecomputesPerTick": 2,
+  "_maxRecomputesPerTick": "_belgesiz: bir tikte en cok kac alan yeniden hesaplanir (gerisi sonraki tike kalir; eski alan gecerli kalir).",
+  "rescanSeconds": 0.5,
+  "_rescanSeconds": "_belgesiz: Godot tarafi yapi ve hedef farkini bu aralikla tarar."
+}

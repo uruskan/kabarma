@@ -16,10 +16,12 @@
     { "id": "yemek", "name": "Yemek" },
     { "id": "yuk", "name": "Yük" },
     { "id": "arastirma", "name": "Araştırma" },
-    { "id": "guc", "name": "Güç ve sinyal" }
+    { "id": "guc", "name": "Güç ve sinyal" },
+    { "id": "savunma", "name": "Kule ve tuzak" }
   ],
   "_not_sources": "Eksik malzeme satiri: '<Ad>: <text>'. target: pusulanin isaretledigi en yakin kaynak (Director.Compass.cs): rock:<esya> (kaya, kil yatagi, bakir damari), tree (agac), tuft:<esya> (ot, cali, yabani bugday), farm (tarla), station:<istasyon>, gidak.",
   "sources": {
+    "civi": { "text": "Tezgâh'ta Bakır Külçe'den", "target": "station:tezgah" },
     "stone": { "text": "kayalar, Kazma", "target": "rock:stone" },
     "clay": { "text": "göl kıyısındaki kil yatakları, Kazma", "target": "rock:clay" },
     "copper_ore": { "text": "bakır damarı, Kazma", "target": "rock:copper_ore" },

@@ -342,6 +342,14 @@ Nadirlik etkiyi belirler: Sıradan +%8, Nadir +%15, Destansı +%25, Efsane +%40 
 | Silah (12) | Çift Namlu · Kritik · Delici · Seken · Yakıcı · Ayaz · Akım · Zehirli · Vampir · Otomatik Nişan · İtici · Patlayıcı Uç |
 | İş (4) | Damar Gören (Kazma) · Nazik El (Biçme, tohum şansı) · Uzun Hortum (Sulama) · Usta Eli (İnşa, uzaktan ve hızlı kurma) |
 
+#### 6.3.1 Çip kuralları (M3; ``chips.json``)
+
+- **Yuva:** başlık başına yuva sayısı GDD §4 tablosundadır (Mk.I–II 1, Mk.III–IV 2, Mk.V 3, Mk.VI 4); Çapa Mk'si Ocak basamağıdır. Yuvalar başlığa özgüdür; Çapa yükselince yeni yuvalar açılır, takılı çipler kalır.
+- **Uyum:** Genel çipler her başlığa, Silah çipleri yalnız silah başlıklarına, İş çipleri yalnız kendi başlığına takılır (Damar Gören Kazma, Nazik El Biçme, Uzun Hortum Sulama, Usta Eli İnşa Planı). Aynı çip türü bir başlığa bir kez takılır (nadirliği farklı olsa bile).
+- **Etki:** nadirlik çarpanı (Sıradan 0,08 · Nadir 0,15 · Destansı 0,25 · Efsane 0,40) × çipin ``scale`` değeri, çipin ``stat`` kimliğine eklenir. Aynı ``stat``'ı veren çipler toplanır. Efsane, çipe özgü ek etkiyi (``legendary``) de verir. Stat kimlikleri çarpan ya da olasılıktır (0,08 = +%8); sistemler ``ChipBook.Stat(başlık, stat)`` ile sorar.
+- **Değiştirme:** takma ve çıkarma gündüz ve Alet Askısı'nda; Kabarma gecesi kilitlidir. Çıkarılan çip Çip Deposu'na döner (M3'te sınır 200).
+- **Düşme kaynakları:** Atalar (Koca Pofuduk Sıradan/Nadir, Boynuzlu Dede Nadir/Destansı; Kabarık Ata üst nadirlik), Köstebek Bey ve Yarasa Yumağı (Nadir), Kabarma ödülü (KS'ye göre Sıradan'dan Destansı'ya), Holding kampı ve Genel Merkez (Nadir–Destansı), Tohum Çarkı (Sıradan/Nadir ve Destansı). Efsane düşmez, yalnız üretilir. Tablolar ``chips.json`` ``sources``; yeni kaynak = bir satır.
+- **Üretim:** her çip Maya Kesesi ile üretilir; Efsane ayrıca Holding Parçası ister (bedeller ``chips.json`` ``craft``). Üretimde tür seçilir, nadirlik bedele göre belirlenir.
 ## 7. Güçler (12) ve ultiler (4)
 
 Her etkin güç bir Kadim Taş denemesinin ödülüdür.
@@ -729,6 +737,8 @@ Soket: üretici, akü ve şalter 2, tüketici 1, Direk 4; sinyal teli soket saym
 | Mayın | 3 | Alan patlaması |
 | Yağ Hendeği | 3 | Tutuşturulunca alev duvarı |
 | Dondurucu Püskürtücü | 5 | Alan Donma; güç ister |
+
+M3'te gelenler: Çivi, Sapan ve Saçma Kulesi; Diken Tarlası, Yapışkan Zemin, Fırlatma Pedi ve Çukur Kapağı. Bedelleri `recipes.json`'da (Tezgâh), menzil, hasar, cephane, aşınma ve tuzak sayıları `data/defense.json`'da (GDD §16.4 M3 kuralları). Saçma Kulesi'nin cephanesi Demirci Ocağı'nın Saçma'sı (`sacma`). Kalan dört kule ve dört tuzak M4'te.
 
 ## 14. Araçlar (7) ve eklentiler (10)
 
