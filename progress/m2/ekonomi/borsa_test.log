@@ -1,0 +1,31 @@
+OK   Borsa ilk Kabarma'ya kadar notr
+OK   ilk kasa notr fiyattan, aninda (40 × 15 = 600)
+OK   kasa Kok'u %3 doyurdu (0.97)
+OK   gun degisti: sicak kategori kok
+OK   ikinci kasa Borsa fiyatindan: 30 × 15 × 1.09 = 492
+OK   odeme firlatma anindaki fiyat (kilit): +492
+OK   E: rampa paneli
+OK   rampa panelinde Borsa/Katalog/Cark satirlari (1..3)
+OK   rampa panelinin sol sutunu Borsa
+SHOT borsa_rampa.png
+OK   Borsa paneli: 12 kategori + Geri
+OK   satir secimi kategorinin gecmisini acar
+SHOT borsa.png
+OK   Geri: rampa paneli
+OK   Katalog paneli
+OK   katalogda tohum paketi ve El Arabasi govdesi
+OK   tohum paketi alindi: -300 Kredi (792)
+SHOT katalog.png
+OK   El Arabasi govdesi alindi: -400 Kredi
+OK   kapsul gokten indi
+OK   kapsul Ocak'in yaninda (3.4 m)
+SHOT kapsul.png
+OK   E: kapsul acildi, +10 Salgam Tohumu (22)
+OK   bos kapsul kalkar
+OK   El Arabasi rampaya indi (1)
+OK   Tohum Carki paneli
+OK   gunun ilk cevirmesi bedava
+OK   bedava cevirme: kredi (+175 Kredi)
+SHOT cark.png
+OK   ikinci cevirme 500 Kredi: cip
+BORSA RESULT ok=25 fail=0

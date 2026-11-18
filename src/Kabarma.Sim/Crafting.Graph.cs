@@ -54,6 +54,9 @@ public sealed class RecipeGraph
     bool CanMake(GameData d, RecipeDef r)
     {
         if (!string.IsNullOrEmpty(r.Station) && !Stations.Contains(r.Station)) return false;
+        // Guc isteyen istasyon (research.json watts) ancak bir ureteci (power.json kind generator) elde edilebiliyorsa calisir.
+        if (!string.IsNullOrEmpty(r.Station) && d.Research.Watts.GetValueOrDefault(r.Station) > 0
+            && !d.Power.Devices.Any(g => g.Kind == "generator" && Items.Contains(g.Id))) return false;
         if (r.UnlockOn != null && !Tokens.Contains(r.UnlockOn) && !Items.Contains(r.UnlockOn)) return false;
         if (r.In.Keys.Any(k => !Items.Contains(k))) return false;
         var st = string.IsNullOrEmpty(r.Station) ? null : d.Tool.Placeables.FirstOrDefault(p => p.Station == r.Station);

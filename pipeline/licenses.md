@@ -64,6 +64,18 @@ Sahibin varlık kitaplığından (`F:\Assets`, yalnız okundu) kopyalanıp `pipe
 | Mayalı Beton (beton yüzey tanesi) | `PSG_Compound_Utilities_R01\Textures\Source\concrete_wall_001\concrete_wall_001_diff_4k.jpg` (Poly Haven "Concrete Wall 001") | CC0 1.0 | Lisans: `PSG_Compound_Utilities_R01\Reports\Texture_sources.json` |
 
 Demir karoları (cıvata, kayış) ahşap kitinin yordamsal `metal_tile` işlevinden gelir. Megascans ve lisansı yazılı olmayan klasörler kullanılmadı.
+
+## Atalar: koddan yer tutucular (boss akışı, M2)
+
+18 Kasım 2026. Kredi harcanmadı; dış kaynak kullanılmadı. Hepsi `atalar.json` içinde `placeholder` alanıyla işaretli (URETIM §3).
+
+| Oyundaki varlık | Kaynak | Lisans | Not |
+|---|---|---|---|
+| Koca Pofuduk (`game/scripts/boss/KocaPofuduk.cs`) | Projenin `pofuduk.glb` modeli (M0, Tripo; iskelet ve klipler) Ata boyuna ölçeklenir, üstüne koddan süs (yün taç, bakır çıngıraklı tasma, ışıyan göz, yün zırhı) | Pofuduk satırıyla aynı (Tripo, sahibin hesabı) | Üretim isteği: Ata sınıfı model (30.000 üçgen), dört ayak iskeleti, 6 klip |
+| Boynuzlu Dede (`game/scripts/boss/BoynuzluDede.cs`) | Koddan parça model (`MeshKit`: gövde, bacaklar, boyun, baş, sakal, dallı boynuz, fidanlar, iki kovan) | Projenin kendi eseri | Üretim isteği: Ata sınıfı model, dört ayak iskeleti, 6 klip |
+| Ata Taşı ve sunak, arena sütunları, yardımcılar (Yün Yumağı = ölçekli Pofuduk; Koru Bekçisi = koddan fındık), boynuz parçası, yün yumağı, kök halkası (`game/scripts/boss/`) | Koddan (`MeshKit`, Godot ilkel şekilleri) | Projenin kendi eseri | Ata Taşı ICERIK §17 keşif noktası modeli olarak yeniden üretilebilir |
+| Ata sesleri | `audio.json`'daki mevcut sesler (sisme, kabarik_gumleme, firlatma, kaya_kemirme, parca_darbe, kabarmis_patlama, gokyuzu_dalga ...) düşük perdeyle | Yukarıdaki ElevenLabs satırı | Üretim isteği: her Ata'ya kendi teması (SANAT-SES §5 "Atalar 6") ve 6–8 kendi sesi |
+
 ## Zincir istasyonları (M2, yer tutucu)
 
 Araştırma Masası, Kömür Ocağı, Demirci Ocağı, Bıçkı, Değirmen, Dokuma Tezgâhı, Kasap Tezgâhı, Kuluçka, Araç Atölyesi, Oyma İskelesi: **koddan** (`game/scripts/world/Station.Visuals.cs`, `MeshKit` yastık kutu ve silindir). Üçüncü taraf içerik yok, kredi harcanmadı. Gerçek model gelince `placeables.json` `model` alanı yer tutucunun yerini alır.

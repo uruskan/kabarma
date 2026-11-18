@@ -9,8 +9,8 @@ public class ScenarioTests
 {
     static GameData Data() => TestData.Load();
 
-    /// <summary>GDD 24 sirasi: 9 adim (ilk 10 dakika) + 8 adim (ilk 10 dakikadan sonra; 17. M2 yapi).</summary>
-    static readonly string[] Order = { "mine", "odun", "ocak", "tezgah", "tarla", "agil", "gidak", "night", "sell", "hasat", "yemek", "bakir_kil", "firin", "civi", "kasa", "barinak", "yukselt" };
+    /// <summary>GDD 24 sirasi: 9 adim (ilk 10 dakika) + 7 adim (ilk 10 dakikadan sonra).</summary>
+    static readonly string[] Order = { "mine", "odun", "ocak", "tezgah", "tarla", "agil", "gidak", "night", "sell", "hasat", "yemek", "bakir_kil", "firin", "civi", "kasa", "barinak", "katalog", "yukselt" }; // 17 katalog: ekonomi2, 18 yukselt: yapi (GDD 24)
 
     [Fact]
     public void Steps_follow_gdd_24_order_and_targets()
@@ -18,7 +18,7 @@ public class ScenarioTests
         var steps = Data().Scenario.Steps;
         Assert.Equal(Order, steps.Select(s => s.Id));
         Assert.Equal(9, steps.Count(s => !s.AfterTen));
-        Assert.Equal(8, steps.Count(s => s.AfterTen)); // 17: yukselt (M2 yapi)
+        Assert.Equal(Order.Length - 9, steps.Count(s => s.AfterTen)); // 7 + katalog (ekonomi2) + yukselt (yapi)
         int T(string id) => steps.Single(s => s.Id == id).Target;
         Assert.Equal(10, T("mine"));   // Kazma ile 10 Tas
         Assert.Equal(25, T("odun"));   // Tezgah 10 + agil 13 + 2
@@ -138,7 +138,7 @@ public class ScenarioTests
         Assert.Equal(sc.Steps.Count - 10, sc.Steps.Skip(10).Count());
         while (sc.Current is StepDef cur) { int at = sc.StepIndex; sc.SetProgress(cur.Id, cur.Target); Assert.Equal(at + 1, sc.StepIndex); }
         Assert.True(sc.Finished);
-        Assert.Equal(17, sc.Steps.Count + sc.Skipped.Count);
+        Assert.Equal(Order.Length, sc.Steps.Count + sc.Skipped.Count); // 16 + katalog (ekonomi2) + yukselt (yapi)
     }
 
     /// <summary>GDD 24: ilk gece ekinin olgun olmasi gerekmez; Kucuk Kabarma evreye bakmadan butun ekinleri kabartir.</summary>

@@ -22,6 +22,7 @@
     { "id": "civi", "target": 2, "goal": "Tezgâh'ta {act:interact} Bakır Külçe'den Çivi Tabancası ve Çivi yap", "start": "civi_basla", "afterTen": true, "requires": ["civi_tabancasi", "civi"] },
     { "id": "kasa", "target": 1, "goal": "Tezgâh'ta Paketleme Tezgâhı üret, kemerden kur; kasa doldur, El Arabası ile rampaya götür, sat", "start": "kasa_basla", "afterTen": true, "requires": ["paketleme", "kargo_kasasi", "el_arabasi"] },
     { "id": "barinak", "target": 6, "goal": "Barınak: İnşa Planı ile temel, duvar, kapı kasası, çatı; Ahşap Kapı ve Uyku Tulumu {act:bag} → Üretim, kemerden kur", "start": "barinak_basla", "afterTen": true, "requires": ["ahsap_kapi", "uyku_tulumu"] },
+    { "id": "katalog", "target": 1, "goal": "Kargo Rampası'nda {act:interact} → Katalog: Şalgam Tohumu paketi al; kapsül Ocak'ın yanına iner, {act:interact} ile aç", "afterTen": true },
     { "id": "yukselt", "target": 1, "goal": "Yükselt: Taş Fırın'da Kerpiç yap; İnşa Planı elde bir duvara bak, {act:interact} basılı → Yükselt (Kerpiç-Taş: 2 Kerpiç + 2 Taş)", "afterTen": true }
   ],
   "nightLineIds": { "alarm": "gece_alarm", "swell": "gece_kabarma", "wave": "gece_dalga", "level": "gece_kart", "gidak": "gece_gidak" },

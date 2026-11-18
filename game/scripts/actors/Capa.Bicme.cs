@@ -37,6 +37,7 @@ public partial class Capa
             _d.State.Backpack.Add(h.SeedItem, h.Seeds);
         }
         if (n > 0) _d.OnHarvest(n);
+        MowAta(aim); // boss akisi: Koca Pofuduk'un yunu kirkilir (boss/Capa.Ata.cs)
 
         // Agaclar: her vurusta Odun, agac yerinde kalir (devrilme, kutuk, yenilenme M2).
         // Agaclar dunya akisinda parca parca MultiMesh (World.Decor.cs); esneme agacin kendi parcasinda.
