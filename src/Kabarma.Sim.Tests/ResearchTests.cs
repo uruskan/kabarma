@@ -49,6 +49,22 @@ public class ResearchTests
         Assert.Contains(g.Unreached, r => r.Id == "plank");
     }
 
+    [Fact]
+    public void Powered_stations_need_a_reachable_generator()
+    {
+        var d = Data();
+        Assert.Contains(d.Power.Devices, g => g.Kind == "generator");
+        // Ureteclerin tarifi olmasaydi Bicki ve Degirmen calismazdi: Kereste ve Un hic yapilamazdi.
+        var gens = d.Power.Devices.Where(g => g.Kind == "generator").Select(g => g.Id).ToHashSet();
+        var noGen = d.Tool.Recipes.Where(r => !gens.Contains(r.Id)).ToList();
+        var g = RecipeGraph.Walk(d, 2, noGen);
+        Assert.True(g.Has("bicki"));     // kurulur,
+        Assert.False(g.Has("plank"));    // ama gucsuz calismaz (20 W)
+        Assert.False(g.Has("flour"));
+        Assert.True(g.Has("cloth"));     // Dokuma guc istemez
+        Assert.True(RecipeGraph.Walk(d, 2).Has("plank"));
+    }
+
     // ---------- Veri ve agac ----------
 
     [Fact]

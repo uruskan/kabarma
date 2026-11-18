@@ -96,6 +96,8 @@ public partial class Director
             Player.CameraInput(!zoomMod || Hud.WheelOpen); // oyuncu akisi: V / R3 kip; Ctrl / Alt + tekerlek yakinlastirir
         }
         _menuWasOpen = Hud.MenuOpen;
+        // Panel acikken (ya da bu kare kapandiysa) yon tuslari / sol cubuk ve Ⓐ paneli surer, oyuncuyu degil.
+        Player.UiCapture = Hud.MenuOpen || Hud.CraftTyping || _menuClosedThisFrame;
         if (!PlanInteract()) // Insa Plani: E basili yukselt / onar / sok carki (kisa basis olagan E)
             if (Input.IsActionJustPressed("interact") && !Hud.MenuOpen && !_menuClosedThisFrame) Interact();
         _menuClosedThisFrame = false;
@@ -196,12 +198,33 @@ public partial class Director
         ControlsPanel.Toggle();
     }
 
+    /// <summary>
+    /// E'nin istasyonu: erisimdeki istasyonlardan nisangahin baktigi (kamera yonune en dar aciyla; tool.json
+    /// stationFocusDegrees icinde), yoksa en yakini. Yan yana iki istasyonda (Tezgah ile Tas Firin 3,5 m) oyuncu baktigini acar.
+    /// </summary>
+    Station StationInFocus()
+    {
+        var p = Player.GlobalPosition;
+        var near = Stations.Where(s => IsInstanceValid(s) && s.InReach(p)).ToList();
+        if (near.Count <= 1) return near.FirstOrDefault();
+        var cam = Player.Cam.GlobalPosition;
+        var fwd = -Player.Cam.GlobalBasis.Z;
+        float limit = Mathf.DegToRad(Data.Tool.StationFocusDegrees);
+        var looked = near.Select(s => (s, a: fwd.AngleTo(s.GlobalPosition + Vector3.Up * 0.8f - cam)))
+            .Where(x => x.a <= limit).OrderBy(x => x.a).Select(x => x.s).FirstOrDefault();
+        return looked ?? near.OrderBy(s => s.GlobalPosition.DistanceTo(p)).First();
+    }
+
     public void Interact()
     {
+<<<<<<< HEAD
         if (ExploreInteract()) return; // Director.Explore.cs: Seyir Kulesi, mancinik, yuva (dunya2)
+=======
+        if (InteractVehicle()) return; // Director.Vehicles.cs: Cekirge ATV'ye bin / in (yaratik2)
+>>>>>>> refs/heads/main
         if (InteractEconomy()) return; // Director.Economy.cs: El Arabasi, Sandik, Uyku Tulumu
         if (InteractPower()) return; // power/Director.Power.cs: guc parcasi ayari, Dugme
-        var st = Stations.Where(s => s.InReach(Player.GlobalPosition)).OrderBy(s => s.GlobalPosition.DistanceTo(Player.GlobalPosition)).FirstOrDefault();
+        var st = StationInFocus();
         // Gidak istasyondan yakinsa E Gidak'a gider (istasyonun dibinde dolasan Gidak beslenebilsin).
         bool gidakFirst = st != null && Gidak.Visible && !Gidak.Tame
             && Gidak.GlobalPosition.DistanceTo(Player.GlobalPosition) < st.GlobalPosition.DistanceTo(Player.GlobalPosition);

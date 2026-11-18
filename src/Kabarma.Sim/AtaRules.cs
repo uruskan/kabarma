@@ -27,7 +27,7 @@ public static class AtaRules
     /// </summary>
     public static int OfferFromBag(AtaProgress p, AtaDef def, Inventory bag)
     {
-        if (p.Active != null) return 0;
+        if (p.Active != null || p.IsDefeated(def.Id)) return 0; // M2: yenilen Ata yeniden cagrilmaz (Kabarik Ata M4)
         int moved = 0;
         var rec = p.Record(def.Id);
         foreach (var o in def.Offering.Where(o => !o.Swollen))
@@ -43,7 +43,7 @@ public static class AtaRules
     /// <summary>Kabarik urun sunaga birakildi (Cekim). Adakta bu urun eksikse kabul eder.</summary>
     public static bool OfferSwollen(AtaProgress p, AtaDef def, string crop)
     {
-        if (p.Active != null) return false;
+        if (p.Active != null || p.IsDefeated(def.Id)) return false;
         var o = def.Offering.FirstOrDefault(x => x.Swollen && x.Item == crop);
         if (o == null || Missing(p, def, o) == 0) return false;
         var rec = p.Record(def.Id);
@@ -57,7 +57,7 @@ public static class AtaRules
     /// </summary>
     public static AtaFight? Summon(AtaProgress p, AtalarFile data, AtaDef def, int teamSize, bool force = false)
     {
-        if (p.Active != null) return null;
+        if (p.Active != null || p.IsDefeated(def.Id)) return null; // Kabarik Ata (KS ile yeniden cagirma) M4
         if (!force && !OfferingComplete(p, def)) return null;
         p.Record(def.Id).Offered.Clear();
         float hp = def.Hp * TeamHpMult(data, teamSize);
@@ -76,6 +76,7 @@ public static class AtaRules
         f.Armor = ph.Armor;
         f.WeakPoints = Enumerable.Repeat(ph.WeakPointHp, ph.WeakPoints).ToList();
         f.ShardsDropped = ph.Shards;
+        f.WeakOpenT = 0;
         f.AttackIndex = 0;
         f.TelegraphT = 0;
         f.Pending = "";
@@ -159,6 +160,7 @@ public static class AtaRules
     public static bool HitWeakPoint(AtaFight f, AtalarFile data, AtaDef def, int index, float amount, List<AtaCommand>? cmds = null)
     {
         if (f.Defeated || index < 0 || index >= f.WeakPoints.Count || f.WeakPoints[index] <= 0) return false;
+        if (!WeakOpen(f, def)) return false;
         f.WeakPoints[index] = Math.Max(0, f.WeakPoints[index] - amount);
         bool broke = f.WeakPoints[index] <= 0;
         if (broke)
@@ -170,8 +172,16 @@ public static class AtaRules
         return broke;
     }
 
+    /// <summary>Zayif noktalar vurulabilir mi: asamada varsa ve (pencere tanimliysa) pencere aciksa.</summary>
+    public static bool WeakOpen(AtaFight f, AtaDef def)
+    {
+        var ph = PhaseOf(f, def);
+        return ph.WeakPoints > 0 && (ph.WeakWindow <= 0 || f.WeakOpenT > 0);
+    }
+
     /// <summary>
     /// Zaman: kalkan ve sersemleme azalir; saldiri sirasi ve sezdirme; yardimci dalgasi. Sersemken saldiri ve yardimci yok.
+    /// Zayif nokta penceresi (Dede: kok dalgasindan sonra kovanlar isir) sersemken de akar.
     /// </summary>
     public static List<AtaCommand> Tick(AtaFight f, AtaDef def, float dt)
     {
@@ -179,6 +189,7 @@ public static class AtaRules
         if (f.Defeated) return cmds;
         f.Time += dt;
         var ph = PhaseOf(f, def);
+        if (f.WeakOpenT > 0) f.WeakOpenT = Math.Max(0, f.WeakOpenT - dt);
         if (f.ShieldT > 0) { f.ShieldT = Math.Max(0, f.ShieldT - dt); return cmds; }
         if (f.StunT > 0) { f.StunT = Math.Max(0, f.StunT - dt); return cmds; }
 
@@ -188,6 +199,7 @@ public static class AtaRules
             if (f.TelegraphT <= 0)
             {
                 cmds.Add(new AtaCommand(AtaCue.Attack, f.Pending, ph.VolleyCount, f.Phase));
+                if (ph.WeakWindow > 0) f.WeakOpenT = ph.WeakWindow;
                 f.Pending = "";
                 f.TelegraphT = 0;
             }

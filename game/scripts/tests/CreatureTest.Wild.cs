@@ -155,7 +155,7 @@ public partial class CreatureTest
         AddChild(s);
         Run(s.Tick, 20f);
         if (s.Travelled < 2f) Fail(def.Id, $"suru dolasmiyor ({s.Travelled:0.0} m)");
-        int n0 = s.Visible;
+        int n0 = s.MembersShown;
         if (n0 != Swarms.Count(d, false)) Fail(def.Id, $"uye {n0} != {Swarms.Count(d, false)}");
         var notes = new List<string> { $"dolasma={s.Travelled:0}m uye={n0}" };
 
@@ -186,7 +186,7 @@ public partial class CreatureTest
         // Kabarma: uye sayisi ve isima
         s.Swell(true);
         Run(s.Tick, def.Swell.Seconds * 2f);
-        int n1 = s.Visible;
+        int n1 = s.MembersShown;
         if (n1 < Swarms.Count(d, true) - 1) Fail(def.Id, $"kabarinca uye {n1} < {Swarms.Count(d, true)}");
         if (Mathf.Abs(s.Look.Amount - 1f) > 0.03f) Fail(def.Id, $"suru kabarmiyor ({s.Look.Amount:0.00})");
         notes.Add($"kabarma uye={n1}");

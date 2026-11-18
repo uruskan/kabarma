@@ -1,0 +1,5159 @@
+{
+ "version": 1,
+ "material": "kerpic_tas",
+ "grid": 3.0,
+ "storey": 3.0,
+ "axes": "Godot: +Y yukari, -Z ileri; parcanin +Z yuzu 'on/dis' yuzdur. Birim metre.",
+ "support": {
+  "max_span": 3,
+  "hp": 400,
+  "horizontal_kinds": [
+   "floor",
+   "roof",
+   "beam"
+  ]
+ },
+ "socket_types": {
+  "edge": "Temel/zemin/platform ust yuzunun kenar orta noktasi (her 3 m); dir = disa dogru",
+  "corner": "Ust yuz kosesi; dir = parcanin +Z'si",
+  "cell": "3x3 hucre merkezi (ust yuz); merdiven, rampa, kule, makine",
+  "wall_bottom": "Duvar turu parcanin alt kenar merkezi (orijin); dir = duvarin on yuzu",
+  "wall_top": "Duvarin mantiksal ust kenar merkezi (kat cizgisi); dir = on yuz",
+  "wall_end": "Cit/sur ucu (alt); uc uca ekleme",
+  "pillar_bottom": "Sutun alti",
+  "pillar_top": "Sutun tepesi (y=3)",
+  "beam_end": "Kiris ucu, sutun tepesine oturur",
+  "cell_bottom": "Merdiven/rampa/kule taban merkezi",
+  "stair_bottom": "Merdiven/rampa alt kenari",
+  "stair_top": "Merdiven/rampa ust kenari",
+  "roof_eave": "Catinin sacak cizgisi (duvar ust ekseninde)",
+  "roof_top": "Mahya noktasi (+3 m, 3 m iceride)",
+  "roof_side": "Cati yan kenari",
+  "ridge": "Mahya kapaginin orijini",
+  "ridge_end": "Mahya kapagi ucu"
+ },
+ "rules": [
+  {
+   "attach": "edge",
+   "target": "edge",
+   "align": "opposite",
+   "kinds": [
+    "foundation",
+    "floor",
+    "platform",
+    "roof"
+   ]
+  },
+  {
+   "attach": "edge",
+   "target": "wall_top",
+   "align": "either",
+   "kinds": [
+    "floor",
+    "roof"
+   ]
+  },
+  {
+   "attach": "corner",
+   "target": "pillar_top",
+   "align": "any4",
+   "kinds": [
+    "floor",
+    "roof"
+   ]
+  },
+  {
+   "attach": "wall_bottom",
+   "target": "edge",
+   "align": "either"
+  },
+  {
+   "attach": "wall_bottom",
+   "target": "wall_top",
+   "align": "either"
+  },
+  {
+   "attach": "wall_end",
+   "target": "wall_end",
+   "align": "opposite",
+   "kinds": [
+    "fence"
+   ]
+  },
+  {
+   "attach": "wall_end",
+   "target": "wall_end",
+   "align": "any4",
+   "kinds": [
+    "fence"
+   ]
+  },
+  {
+   "attach": "pillar_bottom",
+   "target": "corner",
+   "align": "any4"
+  },
+  {
+   "attach": "pillar_bottom",
+   "target": "pillar_top",
+   "align": "any4"
+  },
+  {
+   "attach": "beam_end",
+   "target": "pillar_top",
+   "align": "any4"
+  },
+  {
+   "attach": "cell_bottom",
+   "target": "cell",
+   "align": "any4"
+  },
+  {
+   "attach": "stair_top",
+   "target": "edge",
+   "align": "opposite"
+  },
+  {
+   "attach": "stair_bottom",
+   "target": "stair_top",
+   "align": "opposite"
+  },
+  {
+   "attach": "roof_eave",
+   "target": "wall_top",
+   "align": "either"
+  },
+  {
+   "attach": "roof_side",
+   "target": "roof_side",
+   "align": "opposite"
+  },
+  {
+   "attach": "ridge",
+   "target": "roof_top",
+   "align": "either"
+  },
+  {
+   "attach": "ridge_end",
+   "target": "ridge_end",
+   "align": "opposite"
+  }
+ ],
+ "pieces": {
+  "kare_temel": {
+   "kind": "foundation",
+   "name": "Kare Temel",
+   "origin": "top_center",
+   "ground": {
+    "mode": "top",
+    "clearance": 0.35,
+    "depth": 1.45
+   },
+   "id": "kare_temel",
+   "glb": "kare_temel.glb",
+   "tris": 910,
+   "bounds": {
+    "min": [
+     -1.535,
+     -1.5,
+     -1.535
+    ],
+    "max": [
+     1.535,
+     -0.0008,
+     1.535
+    ]
+   },
+   "center": [
+    0.0,
+    -0.7504,
+    0.0
+   ],
+   "sockets": [
+    {
+     "name": "edge_0",
+     "type": "edge",
+     "pos": [
+      0.0,
+      0.0,
+      1.5
+     ],
+     "dir": [
+      0.0,
+      0.0,
+      1.0
+     ]
+    },
+    {
+     "name": "edge_1",
+     "type": "edge",
+     "pos": [
+      0.0,
+      0.0,
+      -1.5
+     ],
+     "dir": [
+      0.0,
+      0.0,
+      -1.0
+     ]
+    },
+    {
+     "name": "edge_2",
+     "type": "edge",
+     "pos": [
+      1.5,
+      0.0,
+      0.0
+     ],
+     "dir": [
+      1.0,
+      0.0,
+      0.0
+     ]
+    },
+    {
+     "name": "edge_3",
+     "type": "edge",
+     "pos": [
+      -1.5,
+      0.0,
+      0.0
+     ],
+     "dir": [
+      -1.0,
+      0.0,
+      0.0
+     ]
+    },
+    {
+     "name": "corner_4",
+     "type": "corner",
+     "pos": [
+      -1.5,
+      0.0,
+      -1.5
+     ],
+     "dir": [
+      0.0,
+      0.0,
+      1.0
+     ]
+    },
+    {
+     "name": "corner_5",
+     "type": "corner",
+     "pos": [
+      -1.5,
+      0.0,
+      1.5
+     ],
+     "dir": [
+      0.0,
+      0.0,
+      1.0
+     ]
+    },
+    {
+     "name": "corner_6",
+     "type": "corner",
+     "pos": [
+      1.5,
+      0.0,
+      -1.5
+     ],
+     "dir": [
+      0.0,
+      0.0,
+      1.0
+     ]
+    },
+    {
+     "name": "corner_7",
+     "type": "corner",
+     "pos": [
+      1.5,
+      0.0,
+      1.5
+     ],
+     "dir": [
+      0.0,
+      0.0,
+      1.0
+     ]
+    },
+    {
+     "name": "cell_8",
+     "type": "cell",
+     "pos": [
+      0.0,
+      0.0,
+      0.0
+     ],
+     "dir": [
+      0.0,
+      0.0,
+      1.0
+     ]
+    }
+   ],
+   "colliders": [
+    {
+     "type": "box",
+     "center": [
+      0.0,
+      -0.75,
+      0.0
+     ],
+     "size": [
+      3.0,
+      1.5,
+      3.0
+     ],
+     "basis": [
+      [
+       1,
+       0,
+       0
+      ],
+      [
+       0,
+       1,
+       0
+      ],
+      [
+       0,
+       0,
+       1
+      ]
+     ]
+    }
+   ],
+   "size": [
+    3.07,
+    1.499,
+    3.07
+   ],
+   "footprint": [
+    3.0,
+    3.0
+   ]
+  },
+  "ucgen_temel": {
+   "kind": "foundation",
+   "name": "Üçgen Temel",
+   "origin": "top_center",
+   "ground": {
+    "mode": "top",
+    "clearance": 0.35,
+    "depth": 1.45
+   },
+   "id": "ucgen_temel",
+   "glb": "ucgen_temel.glb",
+   "tris": 662,
+   "bounds": {
+    "min": [
+     -1.4833,
+     -1.5,
+     -1.7291
+    ],
+    "max": [
+     1.4833,
+     -0.0007,
+     0.901
+    ]
+   },
+   "center": [
+    0.0,
+    -0.7503,
+    -0.414
+   ],
+   "sockets": [
+    {
+     "name": "edge_0",
+     "type": "edge",
+     "pos": [
+      -0.75,
+      0.0,
+      -0.433
+     ],
+     "dir": [
+      -0.866,
+      0.0,
+      -0.5
+     ]
+    },
+    {
+     "name": "corner_1",
+     "type": "corner",
+     "pos": [
+      -1.5,
+      0.0,
+      0.866
+     ],
+     "dir": [
+      0.0,
+      0.0,
+      1.0
+     ]
+    },
+    {
+     "name": "edge_2",
+     "type": "edge",
+     "pos": [
+      0.75,
+      0.0,
+      -0.433
+     ],
+     "dir": [
+      0.866,
+      0.0,
+      -0.5
+     ]
+    },
+    {
+     "name": "corner_3",
+     "type": "corner",
+     "pos": [
+      0.0,
+      0.0,
+      -1.7321
+     ],
+     "dir": [
+      0.0,
+      0.0,
+      1.0
+     ]
+    },
+    {
+     "name": "edge_4",
+     "type": "edge",
+     "pos": [
+      0.0,
+      0.0,
+      0.866
+     ],
+     "dir": [
+      0.0,
+      0.0,
+      1.0
+     ]
+    },
+    {
+     "name": "corner_5",
+     "type": "corner",
+     "pos": [
+      1.5,
+      0.0,
+      0.866
+     ],
+     "dir": [
+      0.0,
+      0.0,
+      1.0
+     ]
+    }
+   ],
+   "colliders": [
+    {
+     "type": "convex",
+     "points": [
+      [
+       -1.5,
+       0.0,
+       0.866
+      ],
+      [
+       -1.5,
+       -1.5,
+       0.866
+      ],
+      [
+       0.0,
+       0.0,
+       -1.7321
+      ],
+      [
+       0.0,
+       -1.5,
+       -1.7321
+      ],
+      [
+       1.5,
+       0.0,
+       0.866
+      ],
+      [
+       1.5,
+       -1.5,
+       0.866
+      ]
+     ]
+    }
+   ],
+   "size": [
+    2.967,
+    1.499,
+    2.63
+   ],
+   "footprint": [
+    3.0,
+    2.5981
+   ]
+  },
+  "kazik_temel": {
+   "kind": "foundation",
+   "name": "Kazık Temel",
+   "origin": "top_center",
+   "ground": {
+    "mode": "top",
+    "clearance": 0.6,
+    "depth": 3.4
+   },
+   "id": "kazik_temel",
+   "glb": "kazik_temel.glb",
+   "tris": 1172,
+   "bounds": {
+    "min": [
+     -1.56,
+     -3.5,
+     -1.56
+    ],
+    "max": [
+     1.56,
+     -0.0024,
+     1.56
+    ]
+   },
+   "center": [
+    0.0,
+    -1.7512,
+    0.0
+   ],
+   "sockets": [
+    {
+     "name": "edge_0",
+     "type": "edge",
+     "pos": [
+      0.0,
+      0.0,
+      1.5
+     ],
+     "dir": [
+      0.0,
+      0.0,
+      1.0
+     ]
+    },
+    {
+     "name": "edge_1",
+     "type": "edge",
+     "pos": [
+      0.0,
+      0.0,
+      -1.5
+     ],
+     "dir": [
+      0.0,
+      0.0,
+      -1.0
+     ]
+    },
+    {
+     "name": "edge_2",
+     "type": "edge",
+     "pos": [
+      1.5,
+      0.0,
+      0.0
+     ],
+     "dir": [
+      1.0,
+      0.0,
+      0.0
+     ]
+    },
+    {
+     "name": "edge_3",
+     "type": "edge",
+     "pos": [
+      -1.5,
+      0.0,
+      0.0
+     ],
+     "dir": [
+      -1.0,
+      0.0,
+      0.0
+     ]
+    },
+    {
+     "name": "corner_4",
+     "type": "corner",
+     "pos": [
+      -1.5,
+      0.0,
+      -1.5
+     ],
+     "dir": [
+      0.0,
+      0.0,
+      1.0
+     ]
+    },
+    {
+     "name": "corner_5",
+     "type": "corner",
+     "pos": [
+      -1.5,
+      0.0,
+      1.5
+     ],
+     "dir": [
+      0.0,
+      0.0,
+      1.0
+     ]
+    },
+    {
+     "name": "corner_6",
+     "type": "corner",
+     "pos": [
+      1.5,
+      0.0,
+      -1.5
+     ],
+     "dir": [
+      0.0,
+      0.0,
+      1.0
+     ]
+    },
+    {
+     "name": "corner_7",
+     "type": "corner",
+     "pos": [
+      1.5,
+      0.0,
+      1.5
+     ],
+     "dir": [
+      0.0,
+      0.0,
+      1.0
+     ]
+    },
+    {
+     "name": "cell_8",
+     "type": "cell",
+     "pos": [
+      0.0,
+      0.0,
+      0.0
+     ],
+     "dir": [
+      0.0,
+      0.0,
+      1.0
+     ]
+    }
+   ],
+   "colliders": [
+    {
+     "type": "box",
+     "center": [
+      0.0,
+      -1.75,
+      0.0
+     ],
+     "size": [
+      3.0,
+      3.5,
+      3.0
+     ],
+     "basis": [
+      [
+       1,
+       0,
+       0
+      ],
+      [
+       0,
+       1,
+       0
+      ],
+      [
+       0,
+       0,
+       1
+      ]
+     ]
+    }
+   ],
+   "size": [
+    3.12,
+    3.498,
+    3.12
+   ],
+   "footprint": [
+    3.0,
+    3.0
+   ]
+  },
+  "duvar": {
+   "kind": "wall",
+   "name": "Duvar",
+   "origin": "bottom_center",
+   "id": "duvar",
+   "glb": "duvar.glb",
+   "tris": 700,
+   "bounds": {
+    "min": [
+     -1.5,
+     -0.02,
+     -0.175
+    ],
+    "max": [
+     1.5,
+     2.99,
+     0.175
+    ]
+   },
+   "center": [
+    0.0,
+    1.485,
+    0.0
+   ],
+   "sockets": [
+    {
+     "name": "bottom",
+     "type": "wall_bottom",
+     "pos": [
+      0,
+      0,
+      0
+     ],
+     "dir": [
+      0.0,
+      0.0,
+      1.0
+     ]
+    },
+    {
+     "name": "top",
+     "type": "wall_top",
+     "pos": [
+      0,
+      3.0,
+      0
+     ],
+     "dir": [
+      0.0,
+      0.0,
+      1.0
+     ]
+    },
+    {
+     "name": "end_l",
+     "type": "wall_end",
+     "pos": [
+      -1.5,
+      0,
+      0
+     ],
+     "dir": [
+      -1.0,
+      0.0,
+      0.0
+     ]
+    },
+    {
+     "name": "end_r",
+     "type": "wall_end",
+     "pos": [
+      1.5,
+      0,
+      0
+     ],
+     "dir": [
+      1.0,
+      0.0,
+      0.0
+     ]
+    }
+   ],
+   "colliders": [
+    {
+     "type": "box",
+     "center": [
+      0.0,
+      1.5,
+      0.0
+     ],
+     "size": [
+      3.0,
+      3.0,
+      0.32
+     ],
+     "basis": [
+      [
+       1,
+       0,
+       0
+      ],
+      [
+       0,
+       1,
+       0
+      ],
+      [
+       0,
+       0,
+       1
+      ]
+     ]
+    }
+   ],
+   "size": [
+    3.0,
+    3.01,
+    0.35
+   ]
+  },
+  "yarim_duvar": {
+   "kind": "wall",
+   "name": "Yarım Duvar",
+   "origin": "bottom_center",
+   "id": "yarim_duvar",
+   "glb": "yarim_duvar.glb",
+   "tris": 416,
+   "bounds": {
+    "min": [
+     -1.5,
+     -0.02,
+     -0.16
+    ],
+    "max": [
+     1.5,
+     1.49,
+     0.16
+    ]
+   },
+   "center": [
+    0.0,
+    0.735,
+    0.0
+   ],
+   "sockets": [
+    {
+     "name": "bottom",
+     "type": "wall_bottom",
+     "pos": [
+      0,
+      0,
+      0
+     ],
+     "dir": [
+      0.0,
+      0.0,
+      1.0
+     ]
+    },
+    {
+     "name": "top",
+     "type": "wall_top",
+     "pos": [
+      0,
+      1.5,
+      0
+     ],
+     "dir": [
+      0.0,
+      0.0,
+      1.0
+     ]
+    },
+    {
+     "name": "end_l",
+     "type": "wall_end",
+     "pos": [
+      -1.5,
+      0,
+      0
+     ],
+     "dir": [
+      -1.0,
+      0.0,
+      0.0
+     ]
+    },
+    {
+     "name": "end_r",
+     "type": "wall_end",
+     "pos": [
+      1.5,
+      0,
+      0
+     ],
+     "dir": [
+      1.0,
+      0.0,
+      0.0
+     ]
+    }
+   ],
+   "colliders": [
+    {
+     "type": "box",
+     "center": [
+      0.0,
+      0.75,
+      0.0
+     ],
+     "size": [
+      3.0,
+      1.5,
+      0.32
+     ],
+     "basis": [
+      [
+       1,
+       0,
+       0
+      ],
+      [
+       0,
+       1,
+       0
+      ],
+      [
+       0,
+       0,
+       1
+      ]
+     ]
+    }
+   ],
+   "size": [
+    3.0,
+    1.51,
+    0.32
+   ]
+  },
+  "alcak_duvar": {
+   "kind": "wall",
+   "name": "Alçak Duvar",
+   "origin": "bottom_center",
+   "id": "alcak_duvar",
+   "glb": "alcak_duvar.glb",
+   "tris": 328,
+   "bounds": {
+    "min": [
+     -1.5,
+     -0.02,
+     -0.195
+    ],
+    "max": [
+     1.5,
+     0.99,
+     0.195
+    ]
+   },
+   "center": [
+    0.0,
+    0.485,
+    0.0
+   ],
+   "sockets": [
+    {
+     "name": "bottom",
+     "type": "wall_bottom",
+     "pos": [
+      0,
+      0,
+      0
+     ],
+     "dir": [
+      0.0,
+      0.0,
+      1.0
+     ]
+    },
+    {
+     "name": "top",
+     "type": "wall_top",
+     "pos": [
+      0,
+      1.0,
+      0
+     ],
+     "dir": [
+      0.0,
+      0.0,
+      1.0
+     ]
+    },
+    {
+     "name": "end_l",
+     "type": "wall_end",
+     "pos": [
+      -1.5,
+      0,
+      0
+     ],
+     "dir": [
+      -1.0,
+      0.0,
+      0.0
+     ]
+    },
+    {
+     "name": "end_r",
+     "type": "wall_end",
+     "pos": [
+      1.5,
+      0,
+      0
+     ],
+     "dir": [
+      1.0,
+      0.0,
+      0.0
+     ]
+    }
+   ],
+   "colliders": [
+    {
+     "type": "box",
+     "center": [
+      0.0,
+      0.5,
+      0.0
+     ],
+     "size": [
+      3.0,
+      1.0,
+      0.38
+     ],
+     "basis": [
+      [
+       1,
+       0,
+       0
+      ],
+      [
+       0,
+       1,
+       0
+      ],
+      [
+       0,
+       0,
+       1
+      ]
+     ]
+    }
+   ],
+   "size": [
+    3.0,
+    1.01,
+    0.39
+   ]
+  },
+  "kapi_kasasi": {
+   "kind": "wall",
+   "name": "Kapı Kasası",
+   "origin": "bottom_center",
+   "opening": {
+    "width": 1.5,
+    "height": 2.3
+   },
+   "id": "kapi_kasasi",
+   "glb": "kapi_kasasi.glb",
+   "tris": 1008,
+   "bounds": {
+    "min": [
+     -1.5,
+     -0.02,
+     -0.185
+    ],
+    "max": [
+     1.5,
+     2.99,
+     0.185
+    ]
+   },
+   "center": [
+    0.0,
+    1.485,
+    0.0
+   ],
+   "sockets": [
+    {
+     "name": "bottom",
+     "type": "wall_bottom",
+     "pos": [
+      0,
+      0,
+      0
+     ],
+     "dir": [
+      0.0,
+      0.0,
+      1.0
+     ]
+    },
+    {
+     "name": "top",
+     "type": "wall_top",
+     "pos": [
+      0,
+      3.0,
+      0
+     ],
+     "dir": [
+      0.0,
+      0.0,
+      1.0
+     ]
+    },
+    {
+     "name": "end_l",
+     "type": "wall_end",
+     "pos": [
+      -1.5,
+      0,
+      0
+     ],
+     "dir": [
+      -1.0,
+      0.0,
+      0.0
+     ]
+    },
+    {
+     "name": "end_r",
+     "type": "wall_end",
+     "pos": [
+      1.5,
+      0,
+      0
+     ],
+     "dir": [
+      1.0,
+      0.0,
+      0.0
+     ]
+    }
+   ],
+   "colliders": [
+    {
+     "type": "box",
+     "center": [
+      -1.125,
+      1.5,
+      0.0
+     ],
+     "size": [
+      0.75,
+      3.0,
+      0.32
+     ],
+     "basis": [
+      [
+       1,
+       0,
+       0
+      ],
+      [
+       0,
+       1,
+       0
+      ],
+      [
+       0,
+       0,
+       1
+      ]
+     ]
+    },
+    {
+     "type": "box",
+     "center": [
+      1.125,
+      1.5,
+      0.0
+     ],
+     "size": [
+      0.75,
+      3.0,
+      0.32
+     ],
+     "basis": [
+      [
+       1,
+       0,
+       0
+      ],
+      [
+       0,
+       1,
+       0
+      ],
+      [
+       0,
+       0,
+       1
+      ]
+     ]
+    },
+    {
+     "type": "box",
+     "center": [
+      0.0,
+      2.65,
+      0.0
+     ],
+     "size": [
+      1.5,
+      0.7,
+      0.32
+     ],
+     "basis": [
+      [
+       1,
+       0,
+       0
+      ],
+      [
+       0,
+       1,
+       0
+      ],
+      [
+       0,
+       0,
+       1
+      ]
+     ]
+    }
+   ],
+   "size": [
+    3.0,
+    3.01,
+    0.37
+   ]
+  },
+  "pencereli_duvar": {
+   "kind": "wall",
+   "name": "Pencereli Duvar",
+   "origin": "bottom_center",
+   "opening": {
+    "width": 1.3,
+    "height": 1.1,
+    "sill": 1.0
+   },
+   "id": "pencereli_duvar",
+   "glb": "pencereli_duvar.glb",
+   "tris": 1164,
+   "bounds": {
+    "min": [
+     -1.5,
+     -0.02,
+     -0.21
+    ],
+    "max": [
+     1.5,
+     2.99,
+     0.21
+    ]
+   },
+   "center": [
+    0.0,
+    1.485,
+    0.0
+   ],
+   "sockets": [
+    {
+     "name": "bottom",
+     "type": "wall_bottom",
+     "pos": [
+      0,
+      0,
+      0
+     ],
+     "dir": [
+      0.0,
+      0.0,
+      1.0
+     ]
+    },
+    {
+     "name": "top",
+     "type": "wall_top",
+     "pos": [
+      0,
+      3.0,
+      0
+     ],
+     "dir": [
+      0.0,
+      0.0,
+      1.0
+     ]
+    },
+    {
+     "name": "end_l",
+     "type": "wall_end",
+     "pos": [
+      -1.5,
+      0,
+      0
+     ],
+     "dir": [
+      -1.0,
+      0.0,
+      0.0
+     ]
+    },
+    {
+     "name": "end_r",
+     "type": "wall_end",
+     "pos": [
+      1.5,
+      0,
+      0
+     ],
+     "dir": [
+      1.0,
+      0.0,
+      0.0
+     ]
+    }
+   ],
+   "colliders": [
+    {
+     "type": "box",
+     "center": [
+      0.0,
+      0.5,
+      0.0
+     ],
+     "size": [
+      3.0,
+      1.0,
+      0.32
+     ],
+     "basis": [
+      [
+       1,
+       0,
+       0
+      ],
+      [
+       0,
+       1,
+       0
+      ],
+      [
+       0,
+       0,
+       1
+      ]
+     ]
+    },
+    {
+     "type": "box",
+     "center": [
+      0.0,
+      2.55,
+      0.0
+     ],
+     "size": [
+      3.0,
+      0.9,
+      0.32
+     ],
+     "basis": [
+      [
+       1,
+       0,
+       0
+      ],
+      [
+       0,
+       1,
+       0
+      ],
+      [
+       0,
+       0,
+       1
+      ]
+     ]
+    },
+    {
+     "type": "box",
+     "center": [
+      -1.075,
+      1.55,
+      0.0
+     ],
+     "size": [
+      0.85,
+      1.1,
+      0.32
+     ],
+     "basis": [
+      [
+       1,
+       0,
+       0
+      ],
+      [
+       0,
+       1,
+       0
+      ],
+      [
+       0,
+       0,
+       1
+      ]
+     ]
+    },
+    {
+     "type": "box",
+     "center": [
+      1.075,
+      1.55,
+      0.0
+     ],
+     "size": [
+      0.85,
+      1.1,
+      0.32
+     ],
+     "basis": [
+      [
+       1,
+       0,
+       0
+      ],
+      [
+       0,
+       1,
+       0
+      ],
+      [
+       0,
+       0,
+       1
+      ]
+     ]
+    }
+   ],
+   "size": [
+    3.0,
+    3.01,
+    0.42
+   ]
+  },
+  "ucgen_duvar": {
+   "kind": "wall",
+   "name": "Üçgen Duvar",
+   "origin": "bottom_center",
+   "note": "Beşik çatının alın üçgeni: yüksek ucu (+X) mahyaya bakar; karşı taraf için 180° döndürülür.",
+   "id": "ucgen_duvar",
+   "glb": "ucgen_duvar.glb",
+   "tris": 428,
+   "bounds": {
+    "min": [
+     -1.5,
+     -0.02,
+     -0.175
+    ],
+    "max": [
+     1.5,
+     3.0898,
+     0.175
+    ]
+   },
+   "center": [
+    0.0,
+    1.5349,
+    0.0
+   ],
+   "sockets": [
+    {
+     "name": "bottom",
+     "type": "wall_bottom",
+     "pos": [
+      0,
+      0,
+      0
+     ],
+     "dir": [
+      0.0,
+      0.0,
+      1.0
+     ]
+    },
+    {
+     "name": "end_l",
+     "type": "wall_end",
+     "pos": [
+      -1.5,
+      0,
+      0
+     ],
+     "dir": [
+      -1.0,
+      0.0,
+      0.0
+     ]
+    },
+    {
+     "name": "end_r",
+     "type": "wall_end",
+     "pos": [
+      1.5,
+      0,
+      0
+     ],
+     "dir": [
+      1.0,
+      0.0,
+      0.0
+     ]
+    }
+   ],
+   "colliders": [
+    {
+     "type": "convex",
+     "points": [
+      [
+       -1.5,
+       0,
+       -0.16
+      ],
+      [
+       -1.5,
+       0,
+       0.16
+      ],
+      [
+       1.5,
+       0,
+       -0.16
+      ],
+      [
+       1.5,
+       0,
+       0.16
+      ],
+      [
+       1.5,
+       3.1,
+       -0.16
+      ],
+      [
+       1.5,
+       3.1,
+       0.16
+      ],
+      [
+       -1.5,
+       0.1,
+       -0.16
+      ],
+      [
+       -1.5,
+       0.1,
+       0.16
+      ]
+     ]
+    }
+   ],
+   "size": [
+    3.0,
+    3.11,
+    0.35
+   ]
+  },
+  "kare_zemin": {
+   "kind": "floor",
+   "name": "Kare Zemin",
+   "origin": "top_center",
+   "id": "kare_zemin",
+   "glb": "kare_zemin.glb",
+   "tris": 668,
+   "bounds": {
+    "min": [
+     -1.5,
+     -0.38,
+     -1.535
+    ],
+    "max": [
+     1.5,
+     -0.0017,
+     1.535
+    ]
+   },
+   "center": [
+    0.0,
+    -0.1909,
+    0.0
+   ],
+   "sockets": [
+    {
+     "name": "edge_0",
+     "type": "edge",
+     "pos": [
+      0.0,
+      0.0,
+      1.5
+     ],
+     "dir": [
+      0.0,
+      0.0,
+      1.0
+     ]
+    },
+    {
+     "name": "edge_1",
+     "type": "edge",
+     "pos": [
+      0.0,
+      0.0,
+      -1.5
+     ],
+     "dir": [
+      0.0,
+      0.0,
+      -1.0
+     ]
+    },
+    {
+     "name": "edge_2",
+     "type": "edge",
+     "pos": [
+      1.5,
+      0.0,
+      0.0
+     ],
+     "dir": [
+      1.0,
+      0.0,
+      0.0
+     ]
+    },
+    {
+     "name": "edge_3",
+     "type": "edge",
+     "pos": [
+      -1.5,
+      0.0,
+      0.0
+     ],
+     "dir": [
+      -1.0,
+      0.0,
+      0.0
+     ]
+    },
+    {
+     "name": "corner_4",
+     "type": "corner",
+     "pos": [
+      -1.5,
+      0.0,
+      -1.5
+     ],
+     "dir": [
+      0.0,
+      0.0,
+      1.0
+     ]
+    },
+    {
+     "name": "corner_5",
+     "type": "corner",
+     "pos": [
+      -1.5,
+      0.0,
+      1.5
+     ],
+     "dir": [
+      0.0,
+      0.0,
+      1.0
+     ]
+    },
+    {
+     "name": "corner_6",
+     "type": "corner",
+     "pos": [
+      1.5,
+      0.0,
+      -1.5
+     ],
+     "dir": [
+      0.0,
+      0.0,
+      1.0
+     ]
+    },
+    {
+     "name": "corner_7",
+     "type": "corner",
+     "pos": [
+      1.5,
+      0.0,
+      1.5
+     ],
+     "dir": [
+      0.0,
+      0.0,
+      1.0
+     ]
+    },
+    {
+     "name": "cell_8",
+     "type": "cell",
+     "pos": [
+      0.0,
+      0.0,
+      0.0
+     ],
+     "dir": [
+      0.0,
+      0.0,
+      1.0
+     ]
+    }
+   ],
+   "colliders": [
+    {
+     "type": "box",
+     "center": [
+      0.0,
+      -0.19,
+      0.0
+     ],
+     "size": [
+      3.0,
+      0.38,
+      3.0
+     ],
+     "basis": [
+      [
+       1,
+       0,
+       0
+      ],
+      [
+       0,
+       1,
+       0
+      ],
+      [
+       0,
+       0,
+       1
+      ]
+     ]
+    }
+   ],
+   "size": [
+    3.0,
+    0.378,
+    3.07
+   ],
+   "footprint": [
+    3.0,
+    3.0
+   ]
+  },
+  "ucgen_zemin": {
+   "kind": "floor",
+   "name": "Üçgen Zemin",
+   "origin": "top_center",
+   "id": "ucgen_zemin",
+   "glb": "ucgen_zemin.glb",
+   "tris": 532,
+   "bounds": {
+    "min": [
+     -1.4833,
+     -0.38,
+     -1.7291
+    ],
+    "max": [
+     1.4833,
+     -0.003,
+     0.901
+    ]
+   },
+   "center": [
+    0.0,
+    -0.1915,
+    -0.414
+   ],
+   "sockets": [
+    {
+     "name": "edge_0",
+     "type": "edge",
+     "pos": [
+      -0.75,
+      0.0,
+      -0.433
+     ],
+     "dir": [
+      -0.866,
+      0.0,
+      -0.5
+     ]
+    },
+    {
+     "name": "corner_1",
+     "type": "corner",
+     "pos": [
+      -1.5,
+      0.0,
+      0.866
+     ],
+     "dir": [
+      0.0,
+      0.0,
+      1.0
+     ]
+    },
+    {
+     "name": "edge_2",
+     "type": "edge",
+     "pos": [
+      0.75,
+      0.0,
+      -0.433
+     ],
+     "dir": [
+      0.866,
+      0.0,
+      -0.5
+     ]
+    },
+    {
+     "name": "corner_3",
+     "type": "corner",
+     "pos": [
+      0.0,
+      0.0,
+      -1.7321
+     ],
+     "dir": [
+      0.0,
+      0.0,
+      1.0
+     ]
+    },
+    {
+     "name": "edge_4",
+     "type": "edge",
+     "pos": [
+      0.0,
+      0.0,
+      0.866
+     ],
+     "dir": [
+      0.0,
+      0.0,
+      1.0
+     ]
+    },
+    {
+     "name": "corner_5",
+     "type": "corner",
+     "pos": [
+      1.5,
+      0.0,
+      0.866
+     ],
+     "dir": [
+      0.0,
+      0.0,
+      1.0
+     ]
+    }
+   ],
+   "colliders": [
+    {
+     "type": "convex",
+     "points": [
+      [
+       -1.5,
+       0.0,
+       0.866
+      ],
+      [
+       -1.5,
+       -0.38,
+       0.866
+      ],
+      [
+       0.0,
+       0.0,
+       -1.7321
+      ],
+      [
+       0.0,
+       -0.38,
+       -1.7321
+      ],
+      [
+       1.5,
+       0.0,
+       0.866
+      ],
+      [
+       1.5,
+       -0.38,
+       0.866
+      ]
+     ]
+    }
+   ],
+   "size": [
+    2.967,
+    0.377,
+    2.63
+   ],
+   "footprint": [
+    3.0,
+    2.5981
+   ]
+  },
+  "merdiven": {
+   "kind": "stairs",
+   "name": "Merdiven",
+   "origin": "bottom_center",
+   "note": "45°: oyuncunun floor_max_angle'ı ≥ 46° olmalı.",
+   "id": "merdiven",
+   "glb": "merdiven.glb",
+   "tris": 716,
+   "bounds": {
+    "min": [
+     -1.335,
+     -0.02,
+     -1.5
+    ],
+    "max": [
+     1.335,
+     2.9975,
+     1.5
+    ]
+   },
+   "center": [
+    0.0,
+    1.4887,
+    0.0
+   ],
+   "sockets": [
+    {
+     "name": "bottom",
+     "type": "cell_bottom",
+     "pos": [
+      0,
+      0,
+      0
+     ],
+     "dir": [
+      0.0,
+      0.0,
+      1.0
+     ]
+    },
+    {
+     "name": "low_edge",
+     "type": "stair_bottom",
+     "pos": [
+      0,
+      0,
+      1.5
+     ],
+     "dir": [
+      0.0,
+      0.0,
+      1.0
+     ]
+    },
+    {
+     "name": "high_edge",
+     "type": "stair_top",
+     "pos": [
+      0,
+      3.0,
+      -1.5
+     ],
+     "dir": [
+      0.0,
+      0.0,
+      -1.0
+     ]
+    }
+   ],
+   "colliders": [
+    {
+     "type": "box",
+     "center": [
+      0.0,
+      1.3727,
+      -0.1273
+     ],
+     "size": [
+      2.6,
+      0.36,
+      4.2426
+     ],
+     "basis": [
+      [
+       -1.0,
+       0.0,
+       0.0
+      ],
+      [
+       0.0,
+       0.70711,
+       0.70711
+      ],
+      [
+       0.0,
+       0.70711,
+       -0.70711
+      ]
+     ]
+    }
+   ],
+   "size": [
+    2.67,
+    3.017,
+    3.0
+   ],
+   "footprint": [
+    3.0,
+    3.0
+   ]
+  },
+  "rampa": {
+   "kind": "stairs",
+   "name": "Rampa",
+   "origin": "bottom_center",
+   "id": "rampa",
+   "glb": "rampa.glb",
+   "tris": 816,
+   "bounds": {
+    "min": [
+     -1.535,
+     -0.5,
+     -1.5939
+    ],
+    "max": [
+     1.535,
+     1.4957,
+     1.4812
+    ]
+   },
+   "center": [
+    0.0,
+    0.4978,
+    -0.0563
+   ],
+   "sockets": [
+    {
+     "name": "bottom",
+     "type": "cell_bottom",
+     "pos": [
+      0,
+      0,
+      0
+     ],
+     "dir": [
+      0.0,
+      0.0,
+      1.0
+     ]
+    },
+    {
+     "name": "low_edge",
+     "type": "stair_bottom",
+     "pos": [
+      0,
+      0,
+      1.5
+     ],
+     "dir": [
+      0.0,
+      0.0,
+      1.0
+     ]
+    },
+    {
+     "name": "high_edge",
+     "type": "stair_top",
+     "pos": [
+      0,
+      1.5,
+      -1.5
+     ],
+     "dir": [
+      0.0,
+      0.0,
+      -1.0
+     ]
+    }
+   ],
+   "colliders": [
+    {
+     "type": "box",
+     "center": [
+      0.0,
+      0.6158,
+      -0.0671
+     ],
+     "size": [
+      3.0,
+      0.3,
+      3.3541
+     ],
+     "basis": [
+      [
+       -1.0,
+       0.0,
+       0.0
+      ],
+      [
+       0.0,
+       0.89443,
+       0.44721
+      ],
+      [
+       0.0,
+       0.44721,
+       -0.89443
+      ]
+     ]
+    }
+   ],
+   "size": [
+    3.07,
+    1.996,
+    3.075
+   ],
+   "footprint": [
+    3.0,
+    3.0
+   ]
+  },
+  "egimli_cati": {
+   "kind": "roof",
+   "name": "Eğimli Çatı",
+   "origin": "eave_center",
+   "note": "45°; saçak +Z, mahya -Z'de 3 m içeride ve 3 m yukarıda.",
+   "id": "egimli_cati",
+   "glb": "egimli_cati.glb",
+   "tris": 1044,
+   "bounds": {
+    "min": [
+     -1.5,
+     -0.41,
+     -3.0
+    ],
+    "max": [
+     1.5,
+     3.5869,
+     0.595
+    ]
+   },
+   "center": [
+    0.0,
+    1.5885,
+    -1.2025
+   ],
+   "sockets": [
+    {
+     "name": "eave",
+     "type": "roof_eave",
+     "pos": [
+      0,
+      0,
+      0
+     ],
+     "dir": [
+      0.0,
+      0.0,
+      1.0
+     ]
+    },
+    {
+     "name": "ridge",
+     "type": "roof_top",
+     "pos": [
+      0,
+      3.0,
+      -3.0
+     ],
+     "dir": [
+      0.0,
+      0.0,
+      -1.0
+     ]
+    },
+    {
+     "name": "side_l",
+     "type": "roof_side",
+     "pos": [
+      -1.5,
+      0,
+      0
+     ],
+     "dir": [
+      -1.0,
+      0.0,
+      0.0
+     ]
+    },
+    {
+     "name": "side_r",
+     "type": "roof_side",
+     "pos": [
+      1.5,
+      0,
+      0
+     ],
+     "dir": [
+      1.0,
+      0.0,
+      0.0
+     ]
+    }
+   ],
+   "colliders": [
+    {
+     "type": "box",
+     "center": [
+      0.0,
+      1.6404,
+      -1.3207
+     ],
+     "size": [
+      3.0,
+      0.42,
+      4.9497
+     ],
+     "basis": [
+      [
+       -1.0,
+       0.0,
+       0.0
+      ],
+      [
+       0.0,
+       0.70711,
+       0.70711
+      ],
+      [
+       0.0,
+       0.70711,
+       -0.70711
+      ]
+     ]
+    }
+   ],
+   "size": [
+    3.0,
+    3.997,
+    3.595
+   ]
+  },
+  "cati_kosesi": {
+   "kind": "roof",
+   "name": "Çatı Köşesi",
+   "origin": "eave_center",
+   "note": "Kırma çatı dış köşesi: ön saçak +Z, yan saçak +X; kalça çizgisi (1.5,0)->(-1.5,-3).",
+   "id": "cati_kosesi",
+   "glb": "cati_kosesi.glb",
+   "tris": 1068,
+   "bounds": {
+    "min": [
+     -1.6058,
+     -0.41,
+     -3.1001
+    ],
+    "max": [
+     2.1058,
+     3.8254,
+     0.6001
+    ]
+   },
+   "center": [
+    0.25,
+    1.7077,
+    -1.25
+   ],
+   "sockets": [
+    {
+     "name": "eave_front",
+     "type": "roof_eave",
+     "pos": [
+      0,
+      0,
+      0
+     ],
+     "dir": [
+      0.0,
+      0.0,
+      1.0
+     ]
+    },
+    {
+     "name": "eave_side",
+     "type": "roof_eave",
+     "pos": [
+      1.5,
+      0,
+      -1.5
+     ],
+     "dir": [
+      1.0,
+      0.0,
+      0.0
+     ]
+    }
+   ],
+   "colliders": [
+    {
+     "type": "box",
+     "center": [
+      0.0,
+      1.6404,
+      -1.3207
+     ],
+     "size": [
+      3.0,
+      0.42,
+      4.9497
+     ],
+     "basis": [
+      [
+       -1.0,
+       0.0,
+       0.0
+      ],
+      [
+       0.0,
+       0.70711,
+       0.70711
+      ],
+      [
+       0.0,
+       0.70711,
+       -0.70711
+      ]
+     ]
+    },
+    {
+     "type": "box",
+     "center": [
+      0.1793,
+      1.6404,
+      -1.5
+     ],
+     "size": [
+      3.0,
+      0.42,
+      4.9497
+     ],
+     "basis": [
+      [
+       0.0,
+       -0.0,
+       1.0
+      ],
+      [
+       0.70711,
+       0.70711,
+       0.0
+      ],
+      [
+       -0.70711,
+       0.70711,
+       0.0
+      ]
+     ]
+    }
+   ],
+   "size": [
+    3.712,
+    4.235,
+    3.7
+   ]
+  },
+  "cati_tepesi": {
+   "kind": "roof",
+   "name": "Çatı Tepesi",
+   "origin": "ridge_center",
+   "id": "cati_tepesi",
+   "glb": "cati_tepesi.glb",
+   "tris": 260,
+   "bounds": {
+    "min": [
+     -1.5,
+     0.3455,
+     -0.3783
+    ],
+    "max": [
+     1.5,
+     0.9681,
+     0.3783
+    ]
+   },
+   "center": [
+    0.0,
+    0.6568,
+    0.0
+   ],
+   "sockets": [
+    {
+     "name": "ridge",
+     "type": "ridge",
+     "pos": [
+      0,
+      0,
+      0
+     ],
+     "dir": [
+      0.0,
+      0.0,
+      1.0
+     ]
+    },
+    {
+     "name": "end_l",
+     "type": "ridge_end",
+     "pos": [
+      -1.5,
+      0,
+      0
+     ],
+     "dir": [
+      -1.0,
+      0.0,
+      0.0
+     ]
+    },
+    {
+     "name": "end_r",
+     "type": "ridge_end",
+     "pos": [
+      1.5,
+      0,
+      0
+     ],
+     "dir": [
+      1.0,
+      0.0,
+      0.0
+     ]
+    }
+   ],
+   "colliders": [
+    {
+     "type": "box",
+     "center": [
+      0.0,
+      0.7031,
+      0.0
+     ],
+     "size": [
+      3.0,
+      0.5,
+      0.6
+     ],
+     "basis": [
+      [
+       1,
+       0,
+       0
+      ],
+      [
+       0,
+       1,
+       0
+      ],
+      [
+       0,
+       0,
+       1
+      ]
+     ]
+    }
+   ],
+   "size": [
+    3.0,
+    0.623,
+    0.757
+   ]
+  },
+  "duz_cati": {
+   "kind": "roof",
+   "name": "Düz Çatı",
+   "origin": "top_center",
+   "id": "duz_cati",
+   "glb": "duz_cati.glb",
+   "tris": 708,
+   "bounds": {
+    "min": [
+     -1.5,
+     -0.36,
+     -1.5
+    ],
+    "max": [
+     1.5,
+     0.115,
+     1.5
+    ]
+   },
+   "center": [
+    0.0,
+    -0.1225,
+    0.0
+   ],
+   "sockets": [
+    {
+     "name": "edge_0",
+     "type": "edge",
+     "pos": [
+      0.0,
+      0.0,
+      1.5
+     ],
+     "dir": [
+      0.0,
+      0.0,
+      1.0
+     ]
+    },
+    {
+     "name": "edge_1",
+     "type": "edge",
+     "pos": [
+      0.0,
+      0.0,
+      -1.5
+     ],
+     "dir": [
+      0.0,
+      0.0,
+      -1.0
+     ]
+    },
+    {
+     "name": "edge_2",
+     "type": "edge",
+     "pos": [
+      1.5,
+      0.0,
+      0.0
+     ],
+     "dir": [
+      1.0,
+      0.0,
+      0.0
+     ]
+    },
+    {
+     "name": "edge_3",
+     "type": "edge",
+     "pos": [
+      -1.5,
+      0.0,
+      0.0
+     ],
+     "dir": [
+      -1.0,
+      0.0,
+      0.0
+     ]
+    },
+    {
+     "name": "corner_4",
+     "type": "corner",
+     "pos": [
+      -1.5,
+      0.0,
+      -1.5
+     ],
+     "dir": [
+      0.0,
+      0.0,
+      1.0
+     ]
+    },
+    {
+     "name": "corner_5",
+     "type": "corner",
+     "pos": [
+      -1.5,
+      0.0,
+      1.5
+     ],
+     "dir": [
+      0.0,
+      0.0,
+      1.0
+     ]
+    },
+    {
+     "name": "corner_6",
+     "type": "corner",
+     "pos": [
+      1.5,
+      0.0,
+      -1.5
+     ],
+     "dir": [
+      0.0,
+      0.0,
+      1.0
+     ]
+    },
+    {
+     "name": "corner_7",
+     "type": "corner",
+     "pos": [
+      1.5,
+      0.0,
+      1.5
+     ],
+     "dir": [
+      0.0,
+      0.0,
+      1.0
+     ]
+    },
+    {
+     "name": "cell_8",
+     "type": "cell",
+     "pos": [
+      0.0,
+      0.0,
+      0.0
+     ],
+     "dir": [
+      0.0,
+      0.0,
+      1.0
+     ]
+    }
+   ],
+   "colliders": [
+    {
+     "type": "box",
+     "center": [
+      0.0,
+      -0.135,
+      0.0
+     ],
+     "size": [
+      3.0,
+      0.45,
+      3.0
+     ],
+     "basis": [
+      [
+       1,
+       0,
+       0
+      ],
+      [
+       0,
+       1,
+       0
+      ],
+      [
+       0,
+       0,
+       1
+      ]
+     ]
+    }
+   ],
+   "size": [
+    3.0,
+    0.475,
+    3.0
+   ]
+  },
+  "sutun": {
+   "kind": "pillar",
+   "name": "Sütun",
+   "origin": "bottom_center",
+   "id": "sutun",
+   "glb": "sutun.glb",
+   "tris": 284,
+   "bounds": {
+    "min": [
+     -0.23,
+     -0.02,
+     -0.23
+    ],
+    "max": [
+     0.23,
+     2.99,
+     0.23
+    ]
+   },
+   "center": [
+    0.0,
+    1.485,
+    0.0
+   ],
+   "sockets": [
+    {
+     "name": "bottom",
+     "type": "pillar_bottom",
+     "pos": [
+      0,
+      0,
+      0
+     ],
+     "dir": [
+      0.0,
+      0.0,
+      1.0
+     ]
+    },
+    {
+     "name": "top",
+     "type": "pillar_top",
+     "pos": [
+      0,
+      3.0,
+      0
+     ],
+     "dir": [
+      0.0,
+      0.0,
+      1.0
+     ]
+    }
+   ],
+   "colliders": [
+    {
+     "type": "box",
+     "center": [
+      0.0,
+      1.5,
+      0.0
+     ],
+     "size": [
+      0.46,
+      3.0,
+      0.46
+     ],
+     "basis": [
+      [
+       1,
+       0,
+       0
+      ],
+      [
+       0,
+       1,
+       0
+      ],
+      [
+       0,
+       0,
+       1
+      ]
+     ]
+    }
+   ],
+   "size": [
+    0.46,
+    3.01,
+    0.46
+   ]
+  },
+  "kiris": {
+   "kind": "beam",
+   "name": "Kiriş",
+   "origin": "bottom_center",
+   "note": "Kat üstünde (2.62–2.99 m) yatay kiriş + köşebentler; sütun tepelerine ya da kenar yuvasına oturur.",
+   "id": "kiris",
+   "glb": "kiris.glb",
+   "tris": 228,
+   "bounds": {
+    "min": [
+     -1.5,
+     1.9111,
+     -0.205
+    ],
+    "max": [
+     1.5,
+     2.99,
+     0.205
+    ]
+   },
+   "center": [
+    0.0,
+    2.4506,
+    0.0
+   ],
+   "sockets": [
+    {
+     "name": "bottom",
+     "type": "wall_bottom",
+     "pos": [
+      0,
+      0,
+      0
+     ],
+     "dir": [
+      0.0,
+      0.0,
+      1.0
+     ]
+    },
+    {
+     "name": "top",
+     "type": "wall_top",
+     "pos": [
+      0,
+      3.0,
+      0
+     ],
+     "dir": [
+      0.0,
+      0.0,
+      1.0
+     ]
+    },
+    {
+     "name": "end_l",
+     "type": "beam_end",
+     "pos": [
+      -1.5,
+      3.0,
+      0
+     ],
+     "dir": [
+      -1.0,
+      0.0,
+      0.0
+     ]
+    },
+    {
+     "name": "end_r",
+     "type": "beam_end",
+     "pos": [
+      1.5,
+      3.0,
+      0
+     ],
+     "dir": [
+      1.0,
+      0.0,
+      0.0
+     ]
+    }
+   ],
+   "colliders": [
+    {
+     "type": "box",
+     "center": [
+      0.0,
+      2.81,
+      0.0
+     ],
+     "size": [
+      3.0,
+      0.38,
+      0.34
+     ],
+     "basis": [
+      [
+       1,
+       0,
+       0
+      ],
+      [
+       0,
+       1,
+       0
+      ],
+      [
+       0,
+       0,
+       1
+      ]
+     ]
+    }
+   ],
+   "size": [
+    3.0,
+    1.079,
+    0.41
+   ]
+  },
+  "parmaklik": {
+   "kind": "fence",
+   "name": "Parmaklık",
+   "origin": "bottom_center",
+   "id": "parmaklik",
+   "glb": "parmaklik.glb",
+   "tris": 472,
+   "bounds": {
+    "min": [
+     -1.5,
+     -0.02,
+     -0.11
+    ],
+    "max": [
+     1.5,
+     1.12,
+     0.145
+    ]
+   },
+   "center": [
+    0.0,
+    0.55,
+    0.0175
+   ],
+   "sockets": [
+    {
+     "name": "bottom",
+     "type": "wall_bottom",
+     "pos": [
+      0,
+      0,
+      0
+     ],
+     "dir": [
+      0.0,
+      0.0,
+      1.0
+     ]
+    },
+    {
+     "name": "end_l",
+     "type": "wall_end",
+     "pos": [
+      -1.5,
+      0,
+      0
+     ],
+     "dir": [
+      -1.0,
+      0.0,
+      0.0
+     ]
+    },
+    {
+     "name": "end_r",
+     "type": "wall_end",
+     "pos": [
+      1.5,
+      0,
+      0
+     ],
+     "dir": [
+      1.0,
+      0.0,
+      0.0
+     ]
+    }
+   ],
+   "colliders": [
+    {
+     "type": "box",
+     "center": [
+      0.0,
+      0.56,
+      0.0
+     ],
+     "size": [
+      3.0,
+      1.12,
+      0.22
+     ],
+     "basis": [
+      [
+       1,
+       0,
+       0
+      ],
+      [
+       0,
+       1,
+       0
+      ],
+      [
+       0,
+       0,
+       1
+      ]
+     ]
+    }
+   ],
+   "size": [
+    3.0,
+    1.14,
+    0.255
+   ]
+  },
+  "cit": {
+   "kind": "fence",
+   "name": "Çit",
+   "origin": "bottom_center",
+   "ground": {
+    "mode": "bottom",
+    "spread": 0.8
+   },
+   "id": "cit",
+   "glb": "cit.glb",
+   "tris": 864,
+   "bounds": {
+    "min": [
+     -1.5,
+     -0.4,
+     -0.15
+    ],
+    "max": [
+     1.5,
+     1.38,
+     0.11
+    ]
+   },
+   "center": [
+    0.0,
+    0.49,
+    -0.02
+   ],
+   "sockets": [
+    {
+     "name": "bottom",
+     "type": "wall_bottom",
+     "pos": [
+      0,
+      0,
+      0
+     ],
+     "dir": [
+      0.0,
+      0.0,
+      1.0
+     ]
+    },
+    {
+     "name": "end_l",
+     "type": "wall_end",
+     "pos": [
+      -1.5,
+      0,
+      0
+     ],
+     "dir": [
+      -1.0,
+      0.0,
+      0.0
+     ]
+    },
+    {
+     "name": "end_r",
+     "type": "wall_end",
+     "pos": [
+      1.5,
+      0,
+      0
+     ],
+     "dir": [
+      1.0,
+      0.0,
+      0.0
+     ]
+    }
+   ],
+   "colliders": [
+    {
+     "type": "box",
+     "center": [
+      0.0,
+      0.65,
+      -0.02
+     ],
+     "size": [
+      3.0,
+      1.3,
+      0.26
+     ],
+     "basis": [
+      [
+       1,
+       0,
+       0
+      ],
+      [
+       0,
+       1,
+       0
+      ],
+      [
+       0,
+       0,
+       1
+      ]
+     ]
+    }
+   ],
+   "size": [
+    3.0,
+    1.78,
+    0.26
+   ]
+  },
+  "bahce_kapisi": {
+   "kind": "fence",
+   "name": "Bahçe Kapısı",
+   "origin": "bottom_center",
+   "ground": {
+    "mode": "bottom",
+    "spread": 0.8
+   },
+   "note": "'Kanat' düğümü menteşe ekseninde (x=-0.8); Y ekseninde döndürülerek açılır.",
+   "id": "bahce_kapisi",
+   "glb": "bahce_kapisi.glb",
+   "tris": 1188,
+   "bounds": {
+    "min": [
+     -1.5,
+     -0.4,
+     -0.15
+    ],
+    "max": [
+     1.5,
+     1.6,
+     0.13
+    ]
+   },
+   "center": [
+    0.0,
+    0.6,
+    -0.01
+   ],
+   "sockets": [
+    {
+     "name": "bottom",
+     "type": "wall_bottom",
+     "pos": [
+      0,
+      0,
+      0
+     ],
+     "dir": [
+      0.0,
+      0.0,
+      1.0
+     ]
+    },
+    {
+     "name": "end_l",
+     "type": "wall_end",
+     "pos": [
+      -1.5,
+      0,
+      0
+     ],
+     "dir": [
+      -1.0,
+      0.0,
+      0.0
+     ]
+    },
+    {
+     "name": "end_r",
+     "type": "wall_end",
+     "pos": [
+      1.5,
+      0,
+      0
+     ],
+     "dir": [
+      1.0,
+      0.0,
+      0.0
+     ]
+    }
+   ],
+   "colliders": [
+    {
+     "type": "box",
+     "center": [
+      -1.15,
+      0.7,
+      -0.01
+     ],
+     "size": [
+      0.7,
+      1.4,
+      0.28
+     ],
+     "basis": [
+      [
+       1,
+       0,
+       0
+      ],
+      [
+       0,
+       1,
+       0
+      ],
+      [
+       0,
+       0,
+       1
+      ]
+     ]
+    },
+    {
+     "type": "box",
+     "center": [
+      1.15,
+      0.7,
+      -0.01
+     ],
+     "size": [
+      0.7,
+      1.4,
+      0.28
+     ],
+     "basis": [
+      [
+       1,
+       0,
+       0
+      ],
+      [
+       0,
+       1,
+       0
+      ],
+      [
+       0,
+       0,
+       1
+      ]
+     ]
+    },
+    {
+     "type": "box",
+     "center": [
+      0.0,
+      0.7,
+      -0.03
+     ],
+     "size": [
+      1.6,
+      1.4,
+      0.2
+     ],
+     "basis": [
+      [
+       1,
+       0,
+       0
+      ],
+      [
+       0,
+       1,
+       0
+      ],
+      [
+       0,
+       0,
+       1
+      ]
+     ],
+     "node": "Kanat"
+    }
+   ],
+   "nodes": {
+    "Kanat": {
+     "pivot": [
+      -0.8,
+      0.0,
+      0.0
+     ]
+    }
+   },
+   "size": [
+    3.0,
+    2.0,
+    0.28
+   ]
+  },
+  "sur_duvari": {
+   "kind": "fence",
+   "name": "Sur Duvarı",
+   "origin": "bottom_center",
+   "ground": {
+    "mode": "bottom",
+    "spread": 0.8
+   },
+   "id": "sur_duvari",
+   "glb": "sur_duvari.glb",
+   "tris": 488,
+   "bounds": {
+    "min": [
+     -1.483,
+     -0.4009,
+     -0.4225
+    ],
+    "max": [
+     1.4925,
+     3.5819,
+     0.1877
+    ]
+   },
+   "center": [
+    0.0047,
+    1.5905,
+    -0.1174
+   ],
+   "sockets": [
+    {
+     "name": "bottom",
+     "type": "wall_bottom",
+     "pos": [
+      0,
+      0,
+      0
+     ],
+     "dir": [
+      0.0,
+      0.0,
+      1.0
+     ]
+    },
+    {
+     "name": "end_l",
+     "type": "wall_end",
+     "pos": [
+      -1.5,
+      0,
+      0
+     ],
+     "dir": [
+      -1.0,
+      0.0,
+      0.0
+     ]
+    },
+    {
+     "name": "end_r",
+     "type": "wall_end",
+     "pos": [
+      1.5,
+      0,
+      0
+     ],
+     "dir": [
+      1.0,
+      0.0,
+      0.0
+     ]
+    }
+   ],
+   "colliders": [
+    {
+     "type": "box",
+     "center": [
+      0.0,
+      1.75,
+      -0.1
+     ],
+     "size": [
+      3.0,
+      3.5,
+      0.575
+     ],
+     "basis": [
+      [
+       1,
+       0,
+       0
+      ],
+      [
+       0,
+       1,
+       0
+      ],
+      [
+       0,
+       0,
+       1
+      ]
+     ]
+    }
+   ],
+   "size": [
+    2.975,
+    3.983,
+    0.61
+   ]
+  },
+  "sur_kapisi": {
+   "kind": "fence",
+   "name": "Sur Kapısı",
+   "origin": "bottom_center",
+   "ground": {
+    "mode": "bottom",
+    "spread": 0.8
+   },
+   "note": "'KanatSol' (x=-0.98) ve 'KanatSag' (x=+0.98) düğümleri menteşe ekseninde.",
+   "id": "sur_kapisi",
+   "glb": "sur_kapisi.glb",
+   "tris": 1276,
+   "bounds": {
+    "min": [
+     -1.5,
+     -0.4,
+     -0.2575
+    ],
+    "max": [
+     1.5,
+     4.25,
+     0.2575
+    ]
+   },
+   "center": [
+    0.0,
+    1.925,
+    0.0
+   ],
+   "sockets": [
+    {
+     "name": "bottom",
+     "type": "wall_bottom",
+     "pos": [
+      0,
+      0,
+      0
+     ],
+     "dir": [
+      0.0,
+      0.0,
+      1.0
+     ]
+    },
+    {
+     "name": "end_l",
+     "type": "wall_end",
+     "pos": [
+      -1.5,
+      0,
+      0
+     ],
+     "dir": [
+      -1.0,
+      0.0,
+      0.0
+     ]
+    },
+    {
+     "name": "end_r",
+     "type": "wall_end",
+     "pos": [
+      1.5,
+      0,
+      0
+     ],
+     "dir": [
+      1.0,
+      0.0,
+      0.0
+     ]
+    }
+   ],
+   "colliders": [
+    {
+     "type": "box",
+     "center": [
+      -1.24,
+      2.1,
+      0.0
+     ],
+     "size": [
+      0.52,
+      4.2,
+      0.52
+     ],
+     "basis": [
+      [
+       1,
+       0,
+       0
+      ],
+      [
+       0,
+       1,
+       0
+      ],
+      [
+       0,
+       0,
+       1
+      ]
+     ]
+    },
+    {
+     "type": "box",
+     "center": [
+      1.24,
+      2.1,
+      0.0
+     ],
+     "size": [
+      0.52,
+      4.2,
+      0.52
+     ],
+     "basis": [
+      [
+       1,
+       0,
+       0
+      ],
+      [
+       0,
+       1,
+       0
+      ],
+      [
+       0,
+       0,
+       1
+      ]
+     ]
+    },
+    {
+     "type": "box",
+     "center": [
+      0.0,
+      3.735,
+      0.0
+     ],
+     "size": [
+      3.0,
+      0.37,
+      0.4
+     ],
+     "basis": [
+      [
+       1,
+       0,
+       0
+      ],
+      [
+       0,
+       1,
+       0
+      ],
+      [
+       0,
+       0,
+       1
+      ]
+     ]
+    },
+    {
+     "type": "box",
+     "center": [
+      -0.49,
+      1.68,
+      -0.04
+     ],
+     "size": [
+      0.98,
+      3.36,
+      0.28
+     ],
+     "basis": [
+      [
+       1,
+       0,
+       0
+      ],
+      [
+       0,
+       1,
+       0
+      ],
+      [
+       0,
+       0,
+       1
+      ]
+     ],
+     "node": "KanatSol"
+    },
+    {
+     "type": "box",
+     "center": [
+      0.49,
+      1.68,
+      -0.04
+     ],
+     "size": [
+      0.98,
+      3.36,
+      0.28
+     ],
+     "basis": [
+      [
+       1,
+       0,
+       0
+      ],
+      [
+       0,
+       1,
+       0
+      ],
+      [
+       0,
+       0,
+       1
+      ]
+     ],
+     "node": "KanatSag"
+    }
+   ],
+   "nodes": {
+    "KanatSol": {
+     "pivot": [
+      -0.98,
+      0.0,
+      0.0
+     ]
+    },
+    "KanatSag": {
+     "pivot": [
+      0.98,
+      0.0,
+      0.0
+     ]
+    }
+   },
+   "size": [
+    3.0,
+    4.65,
+    0.515
+   ]
+  },
+  "kule_tabani": {
+   "kind": "platform",
+   "name": "Kule Tabanı",
+   "origin": "bottom_center",
+   "ground": {
+    "mode": "bottom",
+    "spread": 0.7
+   },
+   "note": "Üst güverte y=3: kenar/köşe/hücre yuvaları orada (parmaklık, duvar, ikinci kat).",
+   "id": "kule_tabani",
+   "glb": "kule_tabani.glb",
+   "tris": 1244,
+   "bounds": {
+    "min": [
+     -1.5,
+     -0.5163,
+     -1.5
+    ],
+    "max": [
+     1.5,
+     2.9982,
+     1.5
+    ]
+   },
+   "center": [
+    0.0,
+    1.241,
+    0.0
+   ],
+   "sockets": [
+    {
+     "name": "bottom",
+     "type": "cell_bottom",
+     "pos": [
+      0,
+      0,
+      0
+     ],
+     "dir": [
+      0.0,
+      0.0,
+      1.0
+     ]
+    },
+    {
+     "name": "edge_1",
+     "type": "edge",
+     "pos": [
+      0.0,
+      3.0,
+      1.5
+     ],
+     "dir": [
+      0.0,
+      0.0,
+      1.0
+     ]
+    },
+    {
+     "name": "edge_2",
+     "type": "edge",
+     "pos": [
+      0.0,
+      3.0,
+      -1.5
+     ],
+     "dir": [
+      0.0,
+      0.0,
+      -1.0
+     ]
+    },
+    {
+     "name": "edge_3",
+     "type": "edge",
+     "pos": [
+      1.5,
+      3.0,
+      0.0
+     ],
+     "dir": [
+      1.0,
+      0.0,
+      0.0
+     ]
+    },
+    {
+     "name": "edge_4",
+     "type": "edge",
+     "pos": [
+      -1.5,
+      3.0,
+      0.0
+     ],
+     "dir": [
+      -1.0,
+      0.0,
+      0.0
+     ]
+    },
+    {
+     "name": "corner_5",
+     "type": "corner",
+     "pos": [
+      -1.5,
+      3.0,
+      -1.5
+     ],
+     "dir": [
+      0.0,
+      0.0,
+      1.0
+     ]
+    },
+    {
+     "name": "corner_6",
+     "type": "corner",
+     "pos": [
+      -1.5,
+      3.0,
+      1.5
+     ],
+     "dir": [
+      0.0,
+      0.0,
+      1.0
+     ]
+    },
+    {
+     "name": "corner_7",
+     "type": "corner",
+     "pos": [
+      1.5,
+      3.0,
+      -1.5
+     ],
+     "dir": [
+      0.0,
+      0.0,
+      1.0
+     ]
+    },
+    {
+     "name": "corner_8",
+     "type": "corner",
+     "pos": [
+      1.5,
+      3.0,
+      1.5
+     ],
+     "dir": [
+      0.0,
+      0.0,
+      1.0
+     ]
+    },
+    {
+     "name": "cell_9",
+     "type": "cell",
+     "pos": [
+      0.0,
+      3.0,
+      0.0
+     ],
+     "dir": [
+      0.0,
+      0.0,
+      1.0
+     ]
+    }
+   ],
+   "colliders": [
+    {
+     "type": "box",
+     "center": [
+      0.0,
+      2.79,
+      0.0
+     ],
+     "size": [
+      3.0,
+      0.42,
+      3.0
+     ],
+     "basis": [
+      [
+       1,
+       0,
+       0
+      ],
+      [
+       0,
+       1,
+       0
+      ],
+      [
+       0,
+       0,
+       1
+      ]
+     ]
+    },
+    {
+     "type": "box",
+     "center": [
+      -1.21,
+      1.29,
+      -1.21
+     ],
+     "size": [
+      0.4,
+      2.58,
+      0.4
+     ],
+     "basis": [
+      [
+       1,
+       0,
+       0
+      ],
+      [
+       0,
+       1,
+       0
+      ],
+      [
+       0,
+       0,
+       1
+      ]
+     ]
+    },
+    {
+     "type": "box",
+     "center": [
+      -1.21,
+      1.29,
+      1.21
+     ],
+     "size": [
+      0.4,
+      2.58,
+      0.4
+     ],
+     "basis": [
+      [
+       1,
+       0,
+       0
+      ],
+      [
+       0,
+       1,
+       0
+      ],
+      [
+       0,
+       0,
+       1
+      ]
+     ]
+    },
+    {
+     "type": "box",
+     "center": [
+      1.21,
+      1.29,
+      -1.21
+     ],
+     "size": [
+      0.4,
+      2.58,
+      0.4
+     ],
+     "basis": [
+      [
+       1,
+       0,
+       0
+      ],
+      [
+       0,
+       1,
+       0
+      ],
+      [
+       0,
+       0,
+       1
+      ]
+     ]
+    },
+    {
+     "type": "box",
+     "center": [
+      1.21,
+      1.29,
+      1.21
+     ],
+     "size": [
+      0.4,
+      2.58,
+      0.4
+     ],
+     "basis": [
+      [
+       1,
+       0,
+       0
+      ],
+      [
+       0,
+       1,
+       0
+      ],
+      [
+       0,
+       0,
+       1
+      ]
+     ]
+    }
+   ],
+   "size": [
+    3.0,
+    3.515,
+    3.0
+   ],
+   "footprint": [
+    3.0,
+    3.0
+   ]
+  },
+  "makine_platformu_kucuk": {
+   "kind": "platform",
+   "name": "Makine Platformu (küçük)",
+   "origin": "top_center",
+   "ground": {
+    "mode": "top",
+    "clearance": 0.3,
+    "depth": 1.15
+   },
+   "cells": 1,
+   "id": "makine_platformu_kucuk",
+   "glb": "makine_platformu_kucuk.glb",
+   "tris": 936,
+   "bounds": {
+    "min": [
+     -1.5,
+     -1.2,
+     -1.535
+    ],
+    "max": [
+     1.5,
+     0.04,
+     1.535
+    ]
+   },
+   "center": [
+    0.0,
+    -0.58,
+    0.0
+   ],
+   "sockets": [
+    {
+     "name": "edge_0",
+     "type": "edge",
+     "pos": [
+      0.0,
+      0.0,
+      1.5
+     ],
+     "dir": [
+      0.0,
+      0.0,
+      1.0
+     ]
+    },
+    {
+     "name": "edge_1",
+     "type": "edge",
+     "pos": [
+      0.0,
+      0.0,
+      -1.5
+     ],
+     "dir": [
+      0.0,
+      0.0,
+      -1.0
+     ]
+    },
+    {
+     "name": "edge_2",
+     "type": "edge",
+     "pos": [
+      1.5,
+      0.0,
+      0.0
+     ],
+     "dir": [
+      1.0,
+      0.0,
+      0.0
+     ]
+    },
+    {
+     "name": "edge_3",
+     "type": "edge",
+     "pos": [
+      -1.5,
+      0.0,
+      0.0
+     ],
+     "dir": [
+      -1.0,
+      0.0,
+      0.0
+     ]
+    },
+    {
+     "name": "corner_4",
+     "type": "corner",
+     "pos": [
+      -1.5,
+      0.0,
+      -1.5
+     ],
+     "dir": [
+      0.0,
+      0.0,
+      1.0
+     ]
+    },
+    {
+     "name": "corner_5",
+     "type": "corner",
+     "pos": [
+      -1.5,
+      0.0,
+      1.5
+     ],
+     "dir": [
+      0.0,
+      0.0,
+      1.0
+     ]
+    },
+    {
+     "name": "corner_6",
+     "type": "corner",
+     "pos": [
+      1.5,
+      0.0,
+      -1.5
+     ],
+     "dir": [
+      0.0,
+      0.0,
+      1.0
+     ]
+    },
+    {
+     "name": "corner_7",
+     "type": "corner",
+     "pos": [
+      1.5,
+      0.0,
+      1.5
+     ],
+     "dir": [
+      0.0,
+      0.0,
+      1.0
+     ]
+    },
+    {
+     "name": "cell_8",
+     "type": "cell",
+     "pos": [
+      0.0,
+      0.0,
+      0.0
+     ],
+     "dir": [
+      0.0,
+      0.0,
+      1.0
+     ]
+    }
+   ],
+   "colliders": [
+    {
+     "type": "box",
+     "center": [
+      0.0,
+      -0.59,
+      0.0
+     ],
+     "size": [
+      3.0,
+      1.22,
+      3.0
+     ],
+     "basis": [
+      [
+       1,
+       0,
+       0
+      ],
+      [
+       0,
+       1,
+       0
+      ],
+      [
+       0,
+       0,
+       1
+      ]
+     ]
+    }
+   ],
+   "size": [
+    3.0,
+    1.24,
+    3.07
+   ],
+   "footprint": [
+    3.0,
+    3.0
+   ]
+  },
+  "makine_platformu_orta": {
+   "kind": "platform",
+   "name": "Makine Platformu (orta)",
+   "origin": "top_center",
+   "ground": {
+    "mode": "top",
+    "clearance": 0.3,
+    "depth": 1.15
+   },
+   "cells": 2,
+   "id": "makine_platformu_orta",
+   "glb": "makine_platformu_orta.glb",
+   "tris": 1076,
+   "bounds": {
+    "min": [
+     -3.0,
+     -1.2,
+     -3.035
+    ],
+    "max": [
+     3.0,
+     0.04,
+     3.035
+    ]
+   },
+   "center": [
+    0.0,
+    -0.58,
+    0.0
+   ],
+   "sockets": [
+    {
+     "name": "edge_0",
+     "type": "edge",
+     "pos": [
+      -1.5,
+      0.0,
+      3.0
+     ],
+     "dir": [
+      0.0,
+      0.0,
+      1.0
+     ]
+    },
+    {
+     "name": "edge_1",
+     "type": "edge",
+     "pos": [
+      -1.5,
+      0.0,
+      -3.0
+     ],
+     "dir": [
+      0.0,
+      0.0,
+      -1.0
+     ]
+    },
+    {
+     "name": "edge_2",
+     "type": "edge",
+     "pos": [
+      3.0,
+      0.0,
+      -1.5
+     ],
+     "dir": [
+      1.0,
+      0.0,
+      0.0
+     ]
+    },
+    {
+     "name": "edge_3",
+     "type": "edge",
+     "pos": [
+      -3.0,
+      0.0,
+      -1.5
+     ],
+     "dir": [
+      -1.0,
+      0.0,
+      0.0
+     ]
+    },
+    {
+     "name": "edge_4",
+     "type": "edge",
+     "pos": [
+      1.5,
+      0.0,
+      3.0
+     ],
+     "dir": [
+      0.0,
+      0.0,
+      1.0
+     ]
+    },
+    {
+     "name": "edge_5",
+     "type": "edge",
+     "pos": [
+      1.5,
+      0.0,
+      -3.0
+     ],
+     "dir": [
+      0.0,
+      0.0,
+      -1.0
+     ]
+    },
+    {
+     "name": "edge_6",
+     "type": "edge",
+     "pos": [
+      3.0,
+      0.0,
+      1.5
+     ],
+     "dir": [
+      1.0,
+      0.0,
+      0.0
+     ]
+    },
+    {
+     "name": "edge_7",
+     "type": "edge",
+     "pos": [
+      -3.0,
+      0.0,
+      1.5
+     ],
+     "dir": [
+      -1.0,
+      0.0,
+      0.0
+     ]
+    },
+    {
+     "name": "corner_8",
+     "type": "corner",
+     "pos": [
+      -3.0,
+      0.0,
+      -3.0
+     ],
+     "dir": [
+      0.0,
+      0.0,
+      1.0
+     ]
+    },
+    {
+     "name": "corner_9",
+     "type": "corner",
+     "pos": [
+      -3.0,
+      0.0,
+      0.0
+     ],
+     "dir": [
+      0.0,
+      0.0,
+      1.0
+     ]
+    },
+    {
+     "name": "corner_10",
+     "type": "corner",
+     "pos": [
+      -3.0,
+      0.0,
+      3.0
+     ],
+     "dir": [
+      0.0,
+      0.0,
+      1.0
+     ]
+    },
+    {
+     "name": "corner_11",
+     "type": "corner",
+     "pos": [
+      0.0,
+      0.0,
+      -3.0
+     ],
+     "dir": [
+      0.0,
+      0.0,
+      1.0
+     ]
+    },
+    {
+     "name": "corner_12",
+     "type": "corner",
+     "pos": [
+      0.0,
+      0.0,
+      0.0
+     ],
+     "dir": [
+      0.0,
+      0.0,
+      1.0
+     ]
+    },
+    {
+     "name": "corner_13",
+     "type": "corner",
+     "pos": [
+      0.0,
+      0.0,
+      3.0
+     ],
+     "dir": [
+      0.0,
+      0.0,
+      1.0
+     ]
+    },
+    {
+     "name": "corner_14",
+     "type": "corner",
+     "pos": [
+      3.0,
+      0.0,
+      -3.0
+     ],
+     "dir": [
+      0.0,
+      0.0,
+      1.0
+     ]
+    },
+    {
+     "name": "corner_15",
+     "type": "corner",
+     "pos": [
+      3.0,
+      0.0,
+      0.0
+     ],
+     "dir": [
+      0.0,
+      0.0,
+      1.0
+     ]
+    },
+    {
+     "name": "corner_16",
+     "type": "corner",
+     "pos": [
+      3.0,
+      0.0,
+      3.0
+     ],
+     "dir": [
+      0.0,
+      0.0,
+      1.0
+     ]
+    },
+    {
+     "name": "cell_17",
+     "type": "cell",
+     "pos": [
+      -1.5,
+      0.0,
+      -1.5
+     ],
+     "dir": [
+      0.0,
+      0.0,
+      1.0
+     ]
+    },
+    {
+     "name": "cell_18",
+     "type": "cell",
+     "pos": [
+      -1.5,
+      0.0,
+      1.5
+     ],
+     "dir": [
+      0.0,
+      0.0,
+      1.0
+     ]
+    },
+    {
+     "name": "cell_19",
+     "type": "cell",
+     "pos": [
+      1.5,
+      0.0,
+      -1.5
+     ],
+     "dir": [
+      0.0,
+      0.0,
+      1.0
+     ]
+    },
+    {
+     "name": "cell_20",
+     "type": "cell",
+     "pos": [
+      1.5,
+      0.0,
+      1.5
+     ],
+     "dir": [
+      0.0,
+      0.0,
+      1.0
+     ]
+    }
+   ],
+   "colliders": [
+    {
+     "type": "box",
+     "center": [
+      0.0,
+      -0.59,
+      0.0
+     ],
+     "size": [
+      6.0,
+      1.22,
+      6.0
+     ],
+     "basis": [
+      [
+       1,
+       0,
+       0
+      ],
+      [
+       0,
+       1,
+       0
+      ],
+      [
+       0,
+       0,
+       1
+      ]
+     ]
+    }
+   ],
+   "size": [
+    6.0,
+    1.24,
+    6.07
+   ],
+   "footprint": [
+    6.0,
+    6.0
+   ]
+  },
+  "makine_platformu_buyuk": {
+   "kind": "platform",
+   "name": "Makine Platformu (büyük)",
+   "origin": "top_center",
+   "ground": {
+    "mode": "top",
+    "clearance": 0.3,
+    "depth": 1.15
+   },
+   "cells": 3,
+   "id": "makine_platformu_buyuk",
+   "glb": "makine_platformu_buyuk.glb",
+   "tris": 1498,
+   "bounds": {
+    "min": [
+     -4.5,
+     -1.2,
+     -4.535
+    ],
+    "max": [
+     4.5,
+     0.04,
+     4.535
+    ]
+   },
+   "center": [
+    0.0,
+    -0.58,
+    0.0
+   ],
+   "sockets": [
+    {
+     "name": "edge_0",
+     "type": "edge",
+     "pos": [
+      -3.0,
+      0.0,
+      4.5
+     ],
+     "dir": [
+      0.0,
+      0.0,
+      1.0
+     ]
+    },
+    {
+     "name": "edge_1",
+     "type": "edge",
+     "pos": [
+      -3.0,
+      0.0,
+      -4.5
+     ],
+     "dir": [
+      0.0,
+      0.0,
+      -1.0
+     ]
+    },
+    {
+     "name": "edge_2",
+     "type": "edge",
+     "pos": [
+      4.5,
+      0.0,
+      -3.0
+     ],
+     "dir": [
+      1.0,
+      0.0,
+      0.0
+     ]
+    },
+    {
+     "name": "edge_3",
+     "type": "edge",
+     "pos": [
+      -4.5,
+      0.0,
+      -3.0
+     ],
+     "dir": [
+      -1.0,
+      0.0,
+      0.0
+     ]
+    },
+    {
+     "name": "edge_4",
+     "type": "edge",
+     "pos": [
+      0.0,
+      0.0,
+      4.5
+     ],
+     "dir": [
+      0.0,
+      0.0,
+      1.0
+     ]
+    },
+    {
+     "name": "edge_5",
+     "type": "edge",
+     "pos": [
+      0.0,
+      0.0,
+      -4.5
+     ],
+     "dir": [
+      0.0,
+      0.0,
+      -1.0
+     ]
+    },
+    {
+     "name": "edge_6",
+     "type": "edge",
+     "pos": [
+      4.5,
+      0.0,
+      0.0
+     ],
+     "dir": [
+      1.0,
+      0.0,
+      0.0
+     ]
+    },
+    {
+     "name": "edge_7",
+     "type": "edge",
+     "pos": [
+      -4.5,
+      0.0,
+      0.0
+     ],
+     "dir": [
+      -1.0,
+      0.0,
+      0.0
+     ]
+    },
+    {
+     "name": "edge_8",
+     "type": "edge",
+     "pos": [
+      3.0,
+      0.0,
+      4.5
+     ],
+     "dir": [
+      0.0,
+      0.0,
+      1.0
+     ]
+    },
+    {
+     "name": "edge_9",
+     "type": "edge",
+     "pos": [
+      3.0,
+      0.0,
+      -4.5
+     ],
+     "dir": [
+      0.0,
+      0.0,
+      -1.0
+     ]
+    },
+    {
+     "name": "edge_10",
+     "type": "edge",
+     "pos": [
+      4.5,
+      0.0,
+      3.0
+     ],
+     "dir": [
+      1.0,
+      0.0,
+      0.0
+     ]
+    },
+    {
+     "name": "edge_11",
+     "type": "edge",
+     "pos": [
+      -4.5,
+      0.0,
+      3.0
+     ],
+     "dir": [
+      -1.0,
+      0.0,
+      0.0
+     ]
+    },
+    {
+     "name": "corner_12",
+     "type": "corner",
+     "pos": [
+      -4.5,
+      0.0,
+      -4.5
+     ],
+     "dir": [
+      0.0,
+      0.0,
+      1.0
+     ]
+    },
+    {
+     "name": "corner_13",
+     "type": "corner",
+     "pos": [
+      -4.5,
+      0.0,
+      -1.5
+     ],
+     "dir": [
+      0.0,
+      0.0,
+      1.0
+     ]
+    },
+    {
+     "name": "corner_14",
+     "type": "corner",
+     "pos": [
+      -4.5,
+      0.0,
+      1.5
+     ],
+     "dir": [
+      0.0,
+      0.0,
+      1.0
+     ]
+    },
+    {
+     "name": "corner_15",
+     "type": "corner",
+     "pos": [
+      -4.5,
+      0.0,
+      4.5
+     ],
+     "dir": [
+      0.0,
+      0.0,
+      1.0
+     ]
+    },
+    {
+     "name": "corner_16",
+     "type": "corner",
+     "pos": [
+      -1.5,
+      0.0,
+      -4.5
+     ],
+     "dir": [
+      0.0,
+      0.0,
+      1.0
+     ]
+    },
+    {
+     "name": "corner_17",
+     "type": "corner",
+     "pos": [
+      -1.5,
+      0.0,
+      -1.5
+     ],
+     "dir": [
+      0.0,
+      0.0,
+      1.0
+     ]
+    },
+    {
+     "name": "corner_18",
+     "type": "corner",
+     "pos": [
+      -1.5,
+      0.0,
+      1.5
+     ],
+     "dir": [
+      0.0,
+      0.0,
+      1.0
+     ]
+    },
+    {
+     "name": "corner_19",
+     "type": "corner",
+     "pos": [
+      -1.5,
+      0.0,
+      4.5
+     ],
+     "dir": [
+      0.0,
+      0.0,
+      1.0
+     ]
+    },
+    {
+     "name": "corner_20",
+     "type": "corner",
+     "pos": [
+      1.5,
+      0.0,
+      -4.5
+     ],
+     "dir": [
+      0.0,
+      0.0,
+      1.0
+     ]
+    },
+    {
+     "name": "corner_21",
+     "type": "corner",
+     "pos": [
+      1.5,
+      0.0,
+      -1.5
+     ],
+     "dir": [
+      0.0,
+      0.0,
+      1.0
+     ]
+    },
+    {
+     "name": "corner_22",
+     "type": "corner",
+     "pos": [
+      1.5,
+      0.0,
+      1.5
+     ],
+     "dir": [
+      0.0,
+      0.0,
+      1.0
+     ]
+    },
+    {
+     "name": "corner_23",
+     "type": "corner",
+     "pos": [
+      1.5,
+      0.0,
+      4.5
+     ],
+     "dir": [
+      0.0,
+      0.0,
+      1.0
+     ]
+    },
+    {
+     "name": "corner_24",
+     "type": "corner",
+     "pos": [
+      4.5,
+      0.0,
+      -4.5
+     ],
+     "dir": [
+      0.0,
+      0.0,
+      1.0
+     ]
+    },
+    {
+     "name": "corner_25",
+     "type": "corner",
+     "pos": [
+      4.5,
+      0.0,
+      -1.5
+     ],
+     "dir": [
+      0.0,
+      0.0,
+      1.0
+     ]
+    },
+    {
+     "name": "corner_26",
+     "type": "corner",
+     "pos": [
+      4.5,
+      0.0,
+      1.5
+     ],
+     "dir": [
+      0.0,
+      0.0,
+      1.0
+     ]
+    },
+    {
+     "name": "corner_27",
+     "type": "corner",
+     "pos": [
+      4.5,
+      0.0,
+      4.5
+     ],
+     "dir": [
+      0.0,
+      0.0,
+      1.0
+     ]
+    },
+    {
+     "name": "cell_28",
+     "type": "cell",
+     "pos": [
+      -3.0,
+      0.0,
+      -3.0
+     ],
+     "dir": [
+      0.0,
+      0.0,
+      1.0
+     ]
+    },
+    {
+     "name": "cell_29",
+     "type": "cell",
+     "pos": [
+      -3.0,
+      0.0,
+      0.0
+     ],
+     "dir": [
+      0.0,
+      0.0,
+      1.0
+     ]
+    },
+    {
+     "name": "cell_30",
+     "type": "cell",
+     "pos": [
+      -3.0,
+      0.0,
+      3.0
+     ],
+     "dir": [
+      0.0,
+      0.0,
+      1.0
+     ]
+    },
+    {
+     "name": "cell_31",
+     "type": "cell",
+     "pos": [
+      0.0,
+      0.0,
+      -3.0
+     ],
+     "dir": [
+      0.0,
+      0.0,
+      1.0
+     ]
+    },
+    {
+     "name": "cell_32",
+     "type": "cell",
+     "pos": [
+      0.0,
+      0.0,
+      0.0
+     ],
+     "dir": [
+      0.0,
+      0.0,
+      1.0
+     ]
+    },
+    {
+     "name": "cell_33",
+     "type": "cell",
+     "pos": [
+      0.0,
+      0.0,
+      3.0
+     ],
+     "dir": [
+      0.0,
+      0.0,
+      1.0
+     ]
+    },
+    {
+     "name": "cell_34",
+     "type": "cell",
+     "pos": [
+      3.0,
+      0.0,
+      -3.0
+     ],
+     "dir": [
+      0.0,
+      0.0,
+      1.0
+     ]
+    },
+    {
+     "name": "cell_35",
+     "type": "cell",
+     "pos": [
+      3.0,
+      0.0,
+      0.0
+     ],
+     "dir": [
+      0.0,
+      0.0,
+      1.0
+     ]
+    },
+    {
+     "name": "cell_36",
+     "type": "cell",
+     "pos": [
+      3.0,
+      0.0,
+      3.0
+     ],
+     "dir": [
+      0.0,
+      0.0,
+      1.0
+     ]
+    }
+   ],
+   "colliders": [
+    {
+     "type": "box",
+     "center": [
+      0.0,
+      -0.59,
+      0.0
+     ],
+     "size": [
+      9.0,
+      1.22,
+      9.0
+     ],
+     "basis": [
+      [
+       1,
+       0,
+       0
+      ],
+      [
+       0,
+       1,
+       0
+      ],
+      [
+       0,
+       0,
+       1
+      ]
+     ]
+    }
+   ],
+   "size": [
+    9.0,
+    1.24,
+    9.07
+   ],
+   "footprint": [
+    9.0,
+    9.0
+   ]
+  }
+ }
+}

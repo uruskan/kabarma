@@ -14,7 +14,7 @@ namespace Kabarma.Game;
 /// </summary>
 public partial class Hud
 {
-    public enum WheelKind { Heads, Pieces, Plan }
+    public enum WheelKind { Heads, Pieces, Plan, Book }
     /// <summary>Carkin bir dilimi: glif (ya da esya ikonu), baslik, aciklama, secilebilir mi.</summary>
     public sealed record WheelSlice(string Glyph, string Icon, string Title, string Text, bool Enabled = true);
 
@@ -140,6 +140,7 @@ public partial class Hud
         {
             WheelKind.Pieces => $"{KeyText("build_wheel", PadDevice ? "LB" : "SAĞ TIK")} BIRAKILINCA SEÇİLİR   ·   ESC: VAZGEÇ",
             WheelKind.Plan => $"{KeyText("interact", PadDevice ? "X" : "E")} BIRAKILINCA YAPILIR   ·   ESC / SAĞ TIK: VAZGEÇ",
+            WheelKind.Book => $"{KeyText("plan_book", PadDevice ? "→" : "B")} BIRAKILINCA: BOŞ YUVA KAYDEDER, DOLU YUVA YERLEŞTİRİR   ·   ESC: VAZGEÇ",
             _ => $"{KeyText("head_wheel", PadDevice ? "LB" : "Q")} BIRAKILINCA TAKILIR   ·   ESC / SAĞ TIK: VAZGEÇ",
         };
         CentreText(foot, T.DesignH - 108, 17, T.Ivory, false, false, true);

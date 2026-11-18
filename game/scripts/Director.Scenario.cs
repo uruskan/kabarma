@@ -49,6 +49,8 @@ public partial class Director
         Events.Sold += (item, _, _) => { if (item == "kargo_kasasi") sc.Report("kasa"); };                                // 15 kasa
         Events.PiecePlaced += _ => sc.SetProgress("barinak", ShelterParts());                                              // 16 barinak
         Events.StationPlaced += id => { _placedIds.Add(id); sc.SetProgress("barinak", ShelterParts()); };                  // 16 barinak
+        Events.Delivered += (_, n) => { if (n > 0) sc.Report("katalog"); };                                                // 17 katalog (ekonomi2)
+        Events.PieceUpgraded += (_, mat) => { if (mat == "kerpic_tas") sc.Report("yukselt"); };                            // 18 yukselt (M2 yapi)
 
         // GDD 24: ilk gece ekin evresine bakmadan butun ekinleri kabartir (Kabarma ani gecenin icinde gelir).
         Events.NightStarted += () => { if (sc.Is("night") && Data.Scenario.FirstNightSwellsAll) GD.Print($"FIRSTNIGHT ripen={FirstDayRules.RipenForFirstNight(State.Farm)}"); };

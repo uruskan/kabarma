@@ -1,12 +1,32 @@
 {
-  "_not": "Is emirleri: GDD 13 (48 zincir x 5 adim, Suna okur, Defter'de durur), GDD 24 (Ciraklik zinciri ilk iki saati tasir), ICERIK 18 (zincir tablosu ve adim odulleri), PLAN 1.4 (ilk safakta Defter acilir, siradaki: 5 kabarik urun). M1: Defter'in ilk sayfasi; veride yalniz Ciraklik ve siradaki is emri (Salgam Baronu). Kalan 46 zincir ve is emri altyapisi M2.",
-  "_odul": "stepRewards ICERIK 18'den (1.-5. adim). M1'de odenmez: odeme is emri altyapisiyla M2'de gelir.",
-  "_olcu": "Adim olculeri oyun olaylarindan sayilir: planted (ekilen kare), animal_registered (agila kayitli hayvan; ilkgun akisinin agil olayi baglanacak), cargo_sold (Kargo Rampasi satisi), kabarma_survived (Kabarma safagi), ata_defeated (M4), swollen_crop (kabaran ekin). 'Ilk tarla' hedefi 9: GDD 24 adim 5 (3x3 sur, 9 Salgam ek).",
+  "_not": "Is emirleri: GDD 13 (48 zincir x 5 adim, Suna okur, Defter'de durur), GDD 24 (Ciraklik zinciri ilk iki saati tasir), ICERIK 18 (zincir tablosu ve adim odulleri), PLAN 1.4 (ilk safakta Defter acilir, siradaki: 5 kabarik urun). M2: ilk 12 zincir (Ciftcilik 6 + Hayvancilik 6); kalan 36 zincir M3-M5'te ICERIK 18 sirasiyla eklenir (chainsTotal 48 kalir).",
+  "_odul": "stepRewards ICERIK 18'den (1.-5. adim). Defter acikken adim biter bitmez odenir; Defter'den once biten adimlarin odulu Defter acilinca toplu odenir (sessiz sayim, GDD 24). grants: adim ya da zincir sonunda acilan sey (plan, kart, uye, kozmetik, esya); sahibi sistem OrderBook.Granted listesini okur. Kind: plan | card | member | cosmetic | item.",
+  "_olcu": "measures: olcu kimligi -> kip. sum: her olay toplanir. distinct: farkli anahtar sayisi (Report anahtari: ekin, tur). peak: en yuksek deger (Level cagrisi; gen puani, ayni anda hayvan). Hangi sistem hangi olcuyu bildirir: docs/ICERIK.md 18 'M2 olcu kaynaklari'. Bildirilmeyen olcu zinciri ilerletmez, hata vermez.",
   "chainsTotal": 48,
   "stepsPerChain": 5,
   "stepRewards": {
     "credits": [100, 400, 1500, 6000, 25000],
     "veri": [10, 20, 40, 70, 100]
+  },
+  "measures": {
+    "planted": "sum",
+    "animal_registered": "sum",
+    "cargo_sold": "sum",
+    "kabarma_survived": "sum",
+    "ata_defeated": "sum",
+    "swollen_crop": "sum",
+    "crop_kind": "distinct",
+    "plant_gene": "peak",
+    "alaca_crop": "sum",
+    "swollen_m": "sum",
+    "swollen_l": "sum",
+    "swollen_xl": "sum",
+    "tamed_species": "distinct",
+    "herd_size": "peak",
+    "animal_product": "sum",
+    "animal_gene": "peak",
+    "mount_m": "sum",
+    "animal_kills": "sum"
   },
   "chains": [
     {
@@ -16,6 +36,7 @@
       "measure": "Öğretici",
       "opensAt": "start",
       "reward": "Maya Feneri planı",
+      "grants": [ { "step": 5, "kind": "plan", "id": "maya_feneri", "name": "Maya Feneri planı" } ],
       "steps": [
         { "goal": "İlk tarla: dokuz şalgam ek", "measure": "planted", "target": 9 },
         { "goal": "İlk hayvan: bir Gıdak'ı ağıla kaydet", "measure": "animal_registered", "target": 1 },
@@ -31,12 +52,176 @@
       "measure": "Kabarık ürün",
       "opensAt": "defter",
       "reward": "Kart: Bereket",
+      "grants": [ { "step": 5, "kind": "card", "id": "bereket", "name": "Kart: Bereket" } ],
       "steps": [
         { "goal": "5 kabarık ürün yetiştir", "measure": "swollen_crop", "target": 5 },
         { "goal": "25 kabarık ürün yetiştir", "measure": "swollen_crop", "target": 25 },
         { "goal": "100 kabarık ürün yetiştir", "measure": "swollen_crop", "target": 100 },
         { "goal": "400 kabarık ürün yetiştir", "measure": "swollen_crop", "target": 400 },
         { "goal": "1.500 kabarık ürün yetiştir", "measure": "swollen_crop", "target": 1500 }
+      ]
+    },
+    {
+      "id": "yesil_parmak",
+      "name": "Yeşil Parmak",
+      "group": "Çiftçilik",
+      "measure": "Farklı ekin",
+      "opensAt": "defter",
+      "reward": "Kask: Sera Camı",
+      "grants": [ { "step": 5, "kind": "cosmetic", "id": "kask_sera_cami", "name": "Kask: Sera Camı" } ],
+      "steps": [
+        { "goal": "4 farklı ekin hasat et", "measure": "crop_kind", "target": 4 },
+        { "goal": "8 farklı ekin hasat et", "measure": "crop_kind", "target": 8 },
+        { "goal": "12 farklı ekin hasat et", "measure": "crop_kind", "target": 12 },
+        { "goal": "18 farklı ekin hasat et", "measure": "crop_kind", "target": 18 },
+        { "goal": "24 farklı ekin hasat et", "measure": "crop_kind", "target": 24 }
+      ]
+    },
+    {
+      "id": "islahci",
+      "name": "Islahçı",
+      "group": "Çiftçilik",
+      "measure": "Bir bitki geni",
+      "opensAt": "defter",
+      "reward": "Üye: Arıcı",
+      "grants": [ { "step": 5, "kind": "member", "id": "arici", "name": "Üye: Arıcı" } ],
+      "steps": [
+        { "goal": "Bir bitki genini 4'e çıkar", "measure": "plant_gene", "target": 4 },
+        { "goal": "Bir bitki genini 6'ya çıkar", "measure": "plant_gene", "target": 6 },
+        { "goal": "Bir bitki genini 8'e çıkar", "measure": "plant_gene", "target": 8 },
+        { "goal": "Bir bitki genini 9'a çıkar", "measure": "plant_gene", "target": 9 },
+        { "goal": "Bir bitki genini 10'a çıkar", "measure": "plant_gene", "target": 10 }
+      ]
+    },
+    {
+      "id": "alaca_bahce",
+      "name": "Alaca Bahçe",
+      "group": "Çiftçilik",
+      "measure": "Alaca ürün",
+      "opensAt": "defter",
+      "reward": "Kart: Alaca Şansı",
+      "grants": [ { "step": 5, "kind": "card", "id": "alaca_sansi", "name": "Kart: Alaca Şansı" } ],
+      "steps": [
+        { "goal": "1 Alaca ürün yetiştir", "measure": "alaca_crop", "target": 1 },
+        { "goal": "5 Alaca ürün yetiştir", "measure": "alaca_crop", "target": 5 },
+        { "goal": "20 Alaca ürün yetiştir", "measure": "alaca_crop", "target": 20 },
+        { "goal": "60 Alaca ürün yetiştir", "measure": "alaca_crop", "target": 60 },
+        { "goal": "150 Alaca ürün yetiştir", "measure": "alaca_crop", "target": 150 }
+      ]
+    },
+    {
+      "id": "devler_ligi",
+      "name": "Devler Ligi",
+      "group": "Çiftçilik",
+      "measure": "Boy",
+      "opensAt": "defter",
+      "reward": "Kart: Hasat Şenliği",
+      "grants": [ { "step": 5, "kind": "card", "id": "hasat_senligi", "name": "Kart: Hasat Şenliği" } ],
+      "steps": [
+        { "goal": "İlk M boy kabarık ürün", "measure": "swollen_m", "target": 1 },
+        { "goal": "İlk L boy kabarık ürün", "measure": "swollen_l", "target": 1 },
+        { "goal": "İlk XL boy kabarık ürün", "measure": "swollen_xl", "target": 1 },
+        { "goal": "10 XL boy kabarık ürün", "measure": "swollen_xl", "target": 10 },
+        { "goal": "50 XL boy kabarık ürün", "measure": "swollen_xl", "target": 50 }
+      ]
+    },
+    {
+      "id": "coban",
+      "name": "Çoban",
+      "group": "Hayvancılık",
+      "measure": "Evcilleşen tür",
+      "opensAt": "defter",
+      "reward": "Üye: Çoban (2. adımda) · Düdük kaplaması",
+      "grants": [
+        { "step": 2, "kind": "member", "id": "coban", "name": "Üye: Çoban" },
+        { "step": 5, "kind": "cosmetic", "id": "duduk_kaplama", "name": "Düdük kaplaması" }
+      ],
+      "steps": [
+        { "goal": "2 tür hayvanı evcilleştir", "measure": "tamed_species", "target": 2 },
+        { "goal": "5 tür hayvanı evcilleştir", "measure": "tamed_species", "target": 5 },
+        { "goal": "8 tür hayvanı evcilleştir", "measure": "tamed_species", "target": 8 },
+        { "goal": "12 tür hayvanı evcilleştir", "measure": "tamed_species", "target": 12 },
+        { "goal": "16 tür hayvanı evcilleştir", "measure": "tamed_species", "target": 16 }
+      ]
+    },
+    {
+      "id": "suru_sahibi",
+      "name": "Sürü Sahibi",
+      "group": "Hayvancılık",
+      "measure": "Aynı anda hayvan",
+      "opensAt": "defter",
+      "reward": "Kart: Gece Vardiyası",
+      "grants": [ { "step": 5, "kind": "card", "id": "gece_vardiyasi", "name": "Kart: Gece Vardiyası" } ],
+      "steps": [
+        { "goal": "Aynı anda 4 hayvan besle", "measure": "herd_size", "target": 4 },
+        { "goal": "Aynı anda 10 hayvan besle", "measure": "herd_size", "target": 10 },
+        { "goal": "Aynı anda 20 hayvan besle", "measure": "herd_size", "target": 20 },
+        { "goal": "Aynı anda 32 hayvan besle", "measure": "herd_size", "target": 32 },
+        { "goal": "Aynı anda 48 hayvan besle", "measure": "herd_size", "target": 48 }
+      ]
+    },
+    {
+      "id": "mandira",
+      "name": "Mandıra",
+      "group": "Hayvancılık",
+      "measure": "Hayvansal ürün",
+      "opensAt": "defter",
+      "reward": "Semaver",
+      "grants": [ { "step": 5, "kind": "item", "id": "semaver", "name": "Semaver" } ],
+      "steps": [
+        { "goal": "20 hayvansal ürün topla", "measure": "animal_product", "target": 20 },
+        { "goal": "100 hayvansal ürün topla", "measure": "animal_product", "target": 100 },
+        { "goal": "500 hayvansal ürün topla", "measure": "animal_product", "target": 500 },
+        { "goal": "2.000 hayvansal ürün topla", "measure": "animal_product", "target": 2000 },
+        { "goal": "8.000 hayvansal ürün topla", "measure": "animal_product", "target": 8000 }
+      ]
+    },
+    {
+      "id": "cins_hayvan",
+      "name": "Cins Hayvan",
+      "group": "Hayvancılık",
+      "measure": "Bir hayvan geni",
+      "opensAt": "defter",
+      "reward": "Üye: Gıdak Kostümlü",
+      "grants": [ { "step": 5, "kind": "member", "id": "gidak_kostumlu", "name": "Üye: Gıdak Kostümlü" } ],
+      "steps": [
+        { "goal": "Bir hayvan genini 4'e çıkar", "measure": "animal_gene", "target": 4 },
+        { "goal": "Bir hayvan genini 6'ya çıkar", "measure": "animal_gene", "target": 6 },
+        { "goal": "Bir hayvan genini 8'e çıkar", "measure": "animal_gene", "target": 8 },
+        { "goal": "Bir hayvan genini 9'a çıkar", "measure": "animal_gene", "target": 9 },
+        { "goal": "Bir hayvan genini 10'a çıkar", "measure": "animal_gene", "target": 10 }
+      ]
+    },
+    {
+      "id": "suvari",
+      "name": "Süvari",
+      "group": "Hayvancılık",
+      "measure": "Binekle yol (km)",
+      "opensAt": "defter",
+      "reward": "Altın eyer",
+      "grants": [ { "step": 5, "kind": "cosmetic", "id": "altin_eyer", "name": "Altın eyer" } ],
+      "steps": [
+        { "goal": "Binekle 1 km yol git", "measure": "mount_m", "target": 1000 },
+        { "goal": "Binekle 10 km yol git", "measure": "mount_m", "target": 10000 },
+        { "goal": "Binekle 50 km yol git", "measure": "mount_m", "target": 50000 },
+        { "goal": "Binekle 200 km yol git", "measure": "mount_m", "target": 200000 },
+        { "goal": "Binekle 1.000 km yol git", "measure": "mount_m", "target": 1000000 }
+      ]
+    },
+    {
+      "id": "savas_agili",
+      "name": "Savaş Ağılı",
+      "group": "Hayvancılık",
+      "measure": "Hayvanların öldürdüğü",
+      "opensAt": "defter",
+      "reward": "Kart: Korkuluk Ordusu",
+      "grants": [ { "step": 5, "kind": "card", "id": "korkuluk_ordusu", "name": "Kart: Korkuluk Ordusu" } ],
+      "steps": [
+        { "goal": "Hayvanların 10 yaratık öldürsün", "measure": "animal_kills", "target": 10 },
+        { "goal": "Hayvanların 100 yaratık öldürsün", "measure": "animal_kills", "target": 100 },
+        { "goal": "Hayvanların 1.000 yaratık öldürsün", "measure": "animal_kills", "target": 1000 },
+        { "goal": "Hayvanların 5.000 yaratık öldürsün", "measure": "animal_kills", "target": 5000 },
+        { "goal": "Hayvanların 20.000 yaratık öldürsün", "measure": "animal_kills", "target": 20000 }
       ]
     }
   ]

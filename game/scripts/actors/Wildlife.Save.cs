@@ -29,7 +29,7 @@ public partial class Wildlife
         {
             var key = RowKey(row).Split(':');
             var g = new WildGroupSave { Biome = key[0], Creature = row.Creature };
-            foreach (var m in members.Where(IsInstanceValid))
+            foreach (var m in members.Where(m => IsInstanceValid(m) && !m.IsQueuedForDeletion() && m is not WildCreature { Dead: true } && m is not WildSwarm { Dead: true }))
             {
                 if (m is WildSwarm sw) g.Swarm = sw.State;
                 else if (m is WildCreature c)
