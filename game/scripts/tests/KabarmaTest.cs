@@ -76,7 +76,7 @@ public partial class KabarmaTest : Node
                     if (_d.NightActive && n?.Plan == null)
                         foreach (var z in Zipzip.All.ToArray()) if (!z.Dead && z.IsInsideTree()) z.Hit(99999, false, Vector3.Zero, 0, false);
                     if (_d.Phase == Director.Act.Dawn && _stageT > 4f) _d.State.Scenario.Report("sell");
-                    if (_d.Hud.ReportOpen) _d.Hud.HideReport();
+                    if (_d.Hud.ReportOpen) _d.CloseReport();
                     if ((int)_stageT % 30 == 0) GD.Print($"KABARMA wait phase={_d.Phase} night={_d.NightActive} report={_d.Hud.ReportOpen}");
                 }
                 if (_d.Phase != Director.Act.Free || _stageT < 2f) return;
@@ -113,7 +113,7 @@ public partial class KabarmaTest : Node
                 return;
             case 3: // rapor kapanip serbest kalinca KS 2, savunmasiz
                 if (_stageT < 8f) return;
-                if (_d.Hud.ReportOpen) { _d.Hud.HideReport(); return; }
+                if (_d.Hud.ReportOpen) { _d.CloseReport(); return; }
                 if (_d.Phase != Director.Act.Free && _d.Phase != Director.Act.Report) return;
                 _end = KabarmaEnd.None;
                 Check(_d.StartKabarma(KabarmaKind.Full, 2), "KS 2 baslamadi");
@@ -133,7 +133,7 @@ public partial class KabarmaTest : Node
                 return;
             case 6:
                 if (_stageT < 8f) return;
-                if (_d.Hud.ReportOpen) { _d.Hud.HideReport(); return; }
+                if (_d.Hud.ReportOpen) { _d.CloseReport(); return; }
                 if (_d.Phase != Director.Act.Free && _d.Phase != Director.Act.Report) return;
                 if (_d.Player.Down) return;
                 Check(_d.StartKabarma(KabarmaKind.Small, 4, _d.OcakPos), "Kucuk Kabarma baslamadi");
@@ -153,7 +153,7 @@ public partial class KabarmaTest : Node
                 return;
             case 9:
                 if (_stageT < 8f) return;
-                if (_d.Hud.ReportOpen) { _d.Hud.HideReport(); return; }
+                if (_d.Hud.ReportOpen) { _d.CloseReport(); return; }
                 if (_d.Phase != Director.Act.Free && _d.Phase != Director.Act.Report) return;
                 Check(_d.StartKabarma(KabarmaKind.Drill, 1), "Tatbikat baslamadi");
                 Next();
