@@ -1,0 +1,72 @@
+﻿BOT step end t=484.8
+BOT power state t=0 ore=1 ingot=0 wire=0 kablo=0 fiber=0 wood=1 gen=False lamp=False btn=False links=0 lit=False sig=False held=insa_plani menu=False belt=[capa,insa_plani,,,,,,]
+HELD capa
+BOT power state t=10 ore=3 ingot=0 wire=0 kablo=0 fiber=0 wood=1 gen=False lamp=False btn=False links=0 lit=False sig=False held=capa menu=False belt=[capa,insa_plani,,,,,,]
+QUEUED copper_ingot x1
+PRODUCED copper_ingot civi=60 ingot=1 soup=0
+QUEUED copper_wire x1
+BOT power state t=20 ore=1 ingot=0 wire=0 kablo=0 fiber=0 wood=0 gen=False lamp=False btn=False links=0 lit=False sig=False held=capa menu=False belt=[capa,insa_plani,,,,,,]
+PRODUCED copper_wire civi=60 ingot=0 soup=0
+BOT power state t=30 ore=2 ingot=0 wire=2 kablo=0 fiber=0 wood=2 gen=False lamp=False btn=False links=0 lit=False sig=False held=capa menu=False belt=[capa,insa_plani,,,,,,]
+QUEUED copper_ingot x1
+PRODUCED copper_ingot civi=60 ingot=1 soup=0
+QUEUED copper_wire x1
+BOT power state t=40 ore=0 ingot=0 wire=2 kablo=0 fiber=0 wood=1 gen=False lamp=False btn=False links=0 lit=False sig=False held=capa menu=False belt=[capa,insa_plani,,,,,,]
+PRODUCED copper_wire civi=60 ingot=0 soup=0
+BOT power state t=50 ore=3 ingot=0 wire=4 kablo=0 fiber=0 wood=1 gen=False lamp=False btn=False links=0 lit=False sig=False held=capa menu=False belt=[capa,insa_plani,,,,,,]
+QUEUED copper_ingot x1
+BOT power state t=60 ore=1 ingot=0 wire=4 kablo=0 fiber=0 wood=0 gen=False lamp=False btn=False links=0 lit=False sig=False held=capa menu=False belt=[capa,insa_plani,,,,,,]
+PRODUCED copper_ingot civi=60 ingot=1 soup=0
+QUEUED copper_wire x1
+PRODUCED copper_wire civi=60 ingot=0 soup=0
+BOT power state t=70 ore=3 ingot=0 wire=6 kablo=0 fiber=0 wood=0 gen=False lamp=False btn=False links=0 lit=False sig=False held=capa menu=False belt=[capa,insa_plani,,,,,,]
+BOT power state t=80 ore=3 ingot=0 wire=6 kablo=0 fiber=0 wood=2 gen=False lamp=False btn=False links=0 lit=False sig=False held=capa menu=True belt=[capa,insa_plani,,,,,,]
+QUEUED copper_ingot x1
+PRODUCED copper_ingot civi=60 ingot=1 soup=0
+QUEUED copper_wire x1
+PRODUCED copper_wire civi=60 ingot=0 soup=0
+BOT power state t=90 ore=1 ingot=0 wire=8 kablo=0 fiber=0 wood=1 gen=False lamp=False btn=False links=0 lit=False sig=False held=capa menu=False belt=[capa,insa_plani,,,,,,]
+QUEUED ruzgar_gulu x1
+BOT power state t=100 ore=1 ingot=0 wire=4 kablo=0 fiber=0 wood=1 gen=False lamp=False btn=False links=0 lit=False sig=False held=capa menu=False belt=[capa,insa_plani,,,,,,]
+PRODUCED ruzgar_gulu civi=60 ingot=0 soup=0
+HELD ruzgar_gulu
+BOT power state t=110 ore=1 ingot=0 wire=4 kablo=0 fiber=0 wood=1 gen=False lamp=False btn=False links=0 lit=False sig=False held=ruzgar_gulu menu=False belt=[capa,insa_plani,ruzgar_gulu,,,,,]
+BOT place ruzgar_gulu at (-2, 0, -14)
+PLACED ruzgar_gulu at (-2, 0, -14) power=1
+HELD capa
+BOT power state t=120 ore=1 ingot=0 wire=4 kablo=0 fiber=0 wood=3 gen=True lamp=False btn=False links=0 lit=False sig=False held=capa menu=True belt=[capa,insa_plani,,,,,,]
+QUEUED elektrik_lambasi x1
+PRODUCED elektrik_lambasi civi=60 ingot=0 soup=0
+HELD elektrik_lambasi
+BOT place elektrik_lambasi at (2.5, 0, -14)
+PLACED elektrik_lambasi at (2.5, 0, -14) power=2
+HELD -
+BOT power state t=130 ore=1 ingot=0 wire=3 kablo=0 fiber=0 wood=1 gen=True lamp=True btn=False links=0 lit=False sig=False held= menu=False belt=[capa,insa_plani,,,,,,]
+QUEUED dugme x1
+PRODUCED dugme civi=60 ingot=0 soup=0
+HELD dugme
+BOT place dugme at (2.5, 0, -11.5)
+PLACED dugme at (2.5, 0, -11.5) power=3
+HELD capa
+BOT power state t=140 ore=1 ingot=0 wire=2 kablo=0 fiber=0 wood=0 gen=True lamp=True btn=True links=0 lit=False sig=False held=capa menu=False belt=[capa,insa_plani,,,,,,]
+QUEUED kablo x1
+PRODUCED kablo civi=60 ingot=0 soup=0
+HELD kablo
+BOT power state t=150 ore=1 ingot=0 wire=1 kablo=2 fiber=1 wood=0 gen=True lamp=True btn=True links=0 lit=False sig=False held=kablo menu=False belt=[capa,insa_plani,kablo,,,,,]
+BOT power click ruzgar_gulu picked=-1 signal=False last=
+POWER pick ruzgar_gulu (1) signal=False
+BOT power click elektrik_lambasi picked=1 signal=False last=
+POWER connect ruzgar_gulu(1) -> elektrik_lambasi(2) signal=False len=4.2
+POWER lit by wind gen=53W stats=5W
+BOT power click dugme picked=-1 signal=True last=
+POWER pick dugme (3) signal=True
+BOT power click elektrik_lambasi picked=3 signal=True last=
+POWER connect dugme(3) -> elektrik_lambasi(2) signal=True len=2.4
+POWER signal wired: lamp waits for signal
+HELD -
+HELD capa
+POWER press 3
+BOT power press
+POWER lit by button signal=100
+POWER RESULT ok lit=True signal=True pressed=True nodes=3 links=2 t=155.5
+RESULT ok credits=600 eggs=1 kills=21 cards=2 maya=48 stations=4 harvests=5 skipped=- t=640.2

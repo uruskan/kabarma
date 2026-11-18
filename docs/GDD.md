@@ -135,12 +135,16 @@ Ocak üssün kalbidir. İşlevleri: tapu alanı, doğma noktası, Çan, Maya Kaz
 | Cam (ışık geçirir) | T4 | 300 | 3 parça |
 
 - **Taşıma dengesi:** Her parça en yakın temele olan destek mesafesini hesaplar. Açıklık aşılırsa parça yerleşmez. Desteği yıkılan parçalar fizik nesnesi olarak düşer ve altındakini yere serer.
-- **Yerinde yükseltme:** İnşa Planı eldeyken parçaya bakıp E basılı tutulur (yükselt, onar, sök çarkı); aradaki malzeme farkı ödenir.
-- **Onarım:** Hasar oranında malzemenin %25'i. **Söküm:** tapu içinde %100, dışında %50 iade. M1: sökülen yerleştirilebilir (Tezgâh, Sandık vb.) eşyanın kendisi olarak çantaya döner; tapu dışı %50 kuralı yerleştirilebilirde M2'de (sahibin onayını bekliyor).
+  - **Açıklık:** Araziye oturan parça 0. Alttaki parçanın üstüne dikilen düşey parça (duvar, sütun) aynı açıklıkta kalır; yatay parça (zemin, çatı, kiriş) ve yandan ya da üstten asılan düşey parça +1. Açıklık parçanın kendi malzemesinin sınırını (tablo) aşamaz.
+  - **Yük:** Her parçanın ağırlığı = şekil birimi (ICERIK §10.1 Odun adedi) × malzemenin birim ağırlığı. Parça kendi ağırlığını ve üstündekilerin payını taşır; pay, onu en kısa yoldan taşıyan parçalara eşit bölünür. Araziye oturan parça yükü toprağa verir (sınırsız). Yük malzemenin taşıma sınırını aşamaz.
+  - Açıklığı ya da yükü aşacak parça yerleşmez ve ağırlığı alttakini aşacak yükseltme yapılmaz. Söküm ya da yükseltme sonrası desteği kalmayan ya da aşırı yüklenen parça çöker; üstündekiler zincirle düşer. Sayılar `data/build.json`'da.
+  - **Hayalet rengi:** yeşilden sarıya parçanın zorlanması (açıklık ve yük oranının büyüğü); kırmızı yerleşmez.
+- **Yerinde yükseltme:** İnşa Planı eldeyken parçaya bakıp E basılı tutulur (yükselt, onar, sök çarkı). Yükselt bir üst malzemeye geçer (Ahşap → Kerpiç-Taş → Çelik Sac → Mayalı Beton; geri yok). "Aradaki fark" şöyle ödenir: yeni malzemenin bedeli çantadan düşer, eski malzemenin söküm iadesi (aşağıdaki oranla) çantaya döner. Can, yeni malzemenin canına hasar oranı korunarak geçer. Malzemeye basamak kilidi yok: kilit malzemenin kendisidir (Kerpiç Taş Fırın'da, Çelik Yüksek Fırın'da).
+- **Onarım:** Hasar oranında malzemenin %25'i (parçanın şu anki malzemesiyle). **Söküm:** tapu içinde %100, dışında %50 iade (M2'den itibaren kurma tapu dışında da açık). Söküm yüzünden çöken parçaların iadesi de aynı kuralla döner. M1: sökülen yerleştirilebilir (Tezgâh, Sandık vb.) eşyanın kendisi olarak çantaya döner; tapu dışı %50 kuralı yerleştirilebilirde M2'de (sahibin onayını bekliyor).
 - **Boyama:** 16 renk, parça başına.
 - **Kapalı alan:** Üstü ve çevresi kapalı hacim ısıyı, konforu ve yağmuru etkiler.
-- **Plan modu:** Parçalar hayalet olarak bırakılır; ekip üyeleri malzemeyi getirince tamamlanır.
-- **Plan Defteri:** Kurulu bir bölge plan olarak kaydedilir ve başka yere hayalet olarak konur. 12 yuva.
+- **Plan modu:** Parçalar hayalet olarak bırakılır; ekip üyeleri malzemeyi getirince tamamlanır. İnşa Planı eldeyken G plan modunu açar ve kapatır. Plan kipinde sol tık bedel ödemeden mavi bir plan hayaleti bırakır (açıklık, plan parçaları kurulmuş sayılarak denetlenir). Plan hayaletine bakıp sol tık çantadaki uygun malzemeyi koyar; bedel dolunca parça kurulur. Altı henüz kurulmamış plan "önce altını bitir" der ve malzemeyi bekletir. Plan hayaletini Sök çarkı iz bırakmadan kaldırır, konan malzeme geri döner. Plan hayaleti çarpışmaz (oyuncu ve yaratık geçer).
+- **Plan Defteri:** Kurulu bir bölge plan olarak kaydedilir ve başka yere hayalet olarak konur. 12 yuva. İnşa Planı eldeyken B defteri açar. "Kaydet" bakılan parçanın bağlı yapısını (kurulu ve plan, en fazla 200 parça) seçili yuvaya yazar. Bir yuva seçilince yapının tamamı hayalet olarak nişanı izler, R döndürür, sol tık plan olarak bırakır. Yerine oturamayan parça atlanır ve sayısı yazılır. Kayıt şekli, malzemeyi, ilk temele göre yeri ve yönü tutar.
 - **Dev ürün oyma:** L ve XL kabarık Kabak, Karpuz ve Mantar, yanına kurulan Oyma İskelesi ile kalıcı yapıya dönüşür (Kabak Ev, Karpuz Havuz, Mantar Kule). Konfor puanı verir.
 
 ## 8. Tarım
@@ -441,15 +445,16 @@ Yabani yaratıklar, açık arazideki Holding ekipleri ve kervanları, Oyuk koruy
 
 Sayılar `data/atalar.json`'da; kural `src/Kabarma.Sim/Ata*.cs`, Godot katmanı `game/scripts/boss/`.
 
-- **Bulunma ve çağırma:** Ata Taşı ve sunağı arenanın kenarında durur; haritada açıklıktır (`biomes.json` `clearings`). Adak sunağa tek tek konur. Çanta eşyası etkileşimle sunulur; kabarık ürün Çekim'le sunağa bırakılır. Adak tamamlanınca Ata arenanın ortasına iner. Yenilen Ata aynı adakla yeniden çağrılmaz; Kabarık Ata M4'te gelir.
+- **Bulunma ve çağırma:** Arena, biyomun Ata Taşı keşif noktasındadır (`biomes.json` `pois` ve `spawns.atalar`). Nokta henüz arazinin dışındaysa `atalar.json` yedek yeri kullanılır; Sis Korusu'nun noktası bu durumdadır. Ata Taşı ve sunağı arenanın kenarında durur. Adak sunağa tek tek konur. Çanta eşyası etkileşimle sunulur; kabarık ürün Çekim'le sunağa bırakılır. Adak tamamlanınca Ata arenanın ortasına iner. Yenilen Ata aynı adakla yeniden çağrılmaz; Kabarık Ata M4'te gelir.
 - **Aşamalar:** Can oranı aşama eşiğinin altına inince sonraki aşama başlar. Geçişte Ata 1,5 saniye hasar almaz ve kabarır.
+- **Kaçış:** Oyuncu arenadan 20 saniye uzak kalırsa Ata çekilir ve dövüş biter. Adak geri gelmez.
 - **Koca Pofuduk:**
   - **Aşama 1:** Sezdirip hücum eder; yün yumağı atar. Yumak oyuncuyu sektirir.
   - **Aşama 2:** Yün zırhı hasarı azaltır. Biçme vuruşu zırhı kırkar; yanık da zırhı yer. Yumaklardan küçük Pofuduklar çıkar.
   - **Aşama 3:** Çıplak ve hızlıdır. Hücumda arenanın taş sütununa toslarsa sersemler; sersemken aldığı hasar artar.
 - **Boynuzlu Dede:**
   - **Aşama 1:** Dallardan koruyucular düşer; sis koyulaşır.
-  - **Aşama 2:** Yerden kök dalgası halkaları yayılır; zıplayan oyuncuya değmez. Boynuzdaki iki ışıyan kovan zayıf noktadır: kırılan kovan Dede'yi sersemletir.
+  - **Aşama 2:** Yerden kök dalgası halkaları yayılır; zıplayan oyuncuya değmez. Her dalgadan sonra boynuzdaki iki kovan birkaç saniye ışır. Işıyan kovan zayıf noktadır: kırılan kovan Dede'yi sersemletir.
   - **Aşama 3:** Boynuz kırılır ve parçaları yere düşer. Parçalar Çekim'le alınıp Dede'ye fırlatılınca büyük hasar verir. Silah hasarı azalır.
 - **Kural:** Özel mekanikler dövüşü hızlandırır, kapı değildir. Her aşama Tırpan Işını ya da Çivi Tabancası ile tek başına bitirilebilir.
 - **Ödül:** Çekirdek ve ganimet çantaya girer. Mühür, ulti ve açılan içerik Sim'deki Ata ilerlemesine yazılır. Mühür etkisinin oranını tarım ve yapı kuralları buradan okur.
@@ -589,6 +594,8 @@ Ayrı bir dünya türüdür; ortak oyun dünyalarında PvP yoktur.
 | 14 | Çivi | Tezgâh'ta Çivi Tabancası ve Çivi yap |
 | 15 | Kasa | Paketleme Tezgâhı kur, kasa doldur; Tezgâh'ta El Arabası yap, kasayı onunla rampaya götür, sat |
 | 16 | Barınak | Temel, duvar, kapı kasası ve Ahşap Kapı, çatı; içine Uyku Tulumu |
+| 17 | Katalog | Kargo Rampası terminalinden Katalog'u aç, satıştan gelen Krediyle Şalgam Tohumu paketi al; kapsül Ocak'ın yanına iner, E ile aç (M2, §13) |
+| 18 | Yükseltme (M2) | Taş Fırın'da Kerpiç (2 Kil + 1 Lif) yap; İnşa Planı eldeyken barınağın bir duvarına bakıp E basılı → Yükselt: Kerpiç-Taş (2 Kerpiç + 2 Taş, Odun iadesi). Suna repliği yok, yalnız Defter satırı. |
 
 - **Suna'nın seslendirilen replikleri tuş adı içermez.** Tuşlar değiştirilebilir; yönlendirme ekrandaki adım satırında son kullanılan aygıtın glifiyle yazılır ([SANAT-SES.md](SANAT-SES.md) §10.3).
 - **Çıraklık zinciri:** Defter'deki ilk zincir ilk iki saati taşır.

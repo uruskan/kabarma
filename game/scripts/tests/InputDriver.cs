@@ -106,6 +106,8 @@ public sealed class InputDriver
 
     /// <summary>Insa Plani'nin parca carki (karar 23): sag tik / LB basili, dilime yonel, birak.</summary>
     public void SelectPiece(int index, int count) => Enqueue(new WheelOp(index, "build_wheel", count));
+    /// <summary>Insa Plani E basili carki (yapi akisi, M2): E basili, cark acilinca dilim index'e, birak.</summary>
+    public void SelectPlanAction(int index, int count) => Enqueue(new PlanWheelOp(index, count));
 
     /// <summary>
     /// Baslik secen islem: her aygitta cark (Q / LB + fare / sag cubuk). M1 karari 20: 1-8 kemer yuvasini secer, baslik
@@ -408,6 +410,51 @@ public sealed class InputDriver
             }
             _sub = d.HeadOp(_i % n, d.Device == InputDevice.Pad || _i >= n);
             return _sub == null;
+        }
+    }
+
+    /// <summary>
+    /// Insa Plani E basili cark (yapi akisi, M2): E basili tutulur (cark planHoldSeconds sonra acilir), acilinca fare ya da
+    /// sag cubuk dilime gider, E birakilir (Director.PlanInteract secili eylemi yapar). Cark acilmazsa bir sure sonra birakir.
+    /// </summary>
+    sealed class PlanWheelOp : Op
+    {
+        readonly int _slice, _count;
+        int _openF = -1;
+        public PlanWheelOp(int slice, int count) { _slice = slice; _count = count; }
+        public override bool OwnsLook => true;
+        protected override bool Run(InputDriver d)
+        {
+            var tok = d.Token("interact");
+            if (tok == null) return true;
+            if (F == 0)
+            {
+                if (d.Device == InputDevice.Pad) { d.Pair("look_left", "look_right", 0); d.Pair("look_up", "look_down", 0); }
+                d.Button(tok, true); d.Wheels++; return false;
+            }
+            bool open = d._d.Hud.WheelOpen && d._d.Hud.OpenWheelKind == Hud.WheelKind.Plan;
+            if (_openF < 0)
+            {
+                if (open) _openF = F;
+                else if (F > 120) { d.Button(tok, false); return true; }
+                return false;
+            }
+            int k = F - _openF;
+            if (k <= d.Config.WheelHoldFrames)
+            {
+                float a = _slice * Mathf.Tau / _count;
+                var dir = new Vector2(Mathf.Sin(a), -Mathf.Cos(a));
+                if (d.Device == InputDevice.Kbm) { if (k > 0) { d.Emit(new InputEventMouseMotion { Relative = dir * 60f, Device = 0 }); d.MouseMoves++; } }
+                else { d.Pair("look_left", "look_right", dir.X); d.Pair("look_up", "look_down", dir.Y); }
+                return false;
+            }
+            if (k == d.Config.WheelHoldFrames + 1)
+            {
+                if (d.Device == InputDevice.Pad) { d.Pair("look_left", "look_right", 0); d.Pair("look_up", "look_down", 0); }
+                d.Button(tok, false);
+                return false;
+            }
+            return k >= d.Config.WheelHoldFrames + 1 + d.Config.GapFrames;
         }
     }
 
