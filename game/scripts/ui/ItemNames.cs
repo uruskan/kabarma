@@ -40,6 +40,13 @@ public static class ItemNames
         ["tezgah"] = "Tezgâh",
         ["tas_firin"] = "Taş Fırın",
         ["paketleme"] = "Paketleme Tezgâhı",
+        // M2 dunya2: Koru kaynaklari ve Enkaz (ICERIK 2.1, 17), mancinik (ICERIK 10.2).
+        ["hard_wood"] = "Sert Odun",
+        ["resin"] = "Reçine",
+        ["iron_ore"] = "Demir Cevheri",
+        ["saltpeter"] = "Güherçile",
+        ["scrap"] = "Hurda",
+        ["mancinik"] = "Mancınık",
     };
 
     public static string Of(string id) => Names.TryGetValue(id, out var n) ? n : id;

@@ -75,6 +75,11 @@ public sealed class WorldDef
     public List<List<List<float>>> Paths { get; set; } = new();
     public float PathWidth { get; set; } = 1.6f;
     public List<BookmarkDef> Bookmarks { get; set; } = new();
+    /// <summary>M2: biyom haritasi, kesif noktasi turleri, harita, mancinik (GameData.Explore.cs).</summary>
+    public BiomeMapDef BiomeMap { get; set; } = new();
+    public Dictionary<string, PoiTypeDef> PoiTypes { get; set; } = new();
+    public MapDef Map { get; set; } = new();
+    public CatapultDef Catapult { get; set; } = new();
 }
 
 /// <summary>Gun saati isigi (SANAT-SES §2 tablosu). Aci derece; azimut 0 kuzey (+Z), 90 dogu (-X) (World.Dir).</summary>
@@ -117,6 +122,8 @@ public sealed class DecorDef
     /// <summary>Bu uzakliktan sonra cizilmez (m); 0 = sinirsiz. Sis zaten ortuyor.</summary>
     public float ViewDistance { get; set; }
     public bool Tree { get; set; }
+    /// <summary>Agac vurulunca verilen odun kimligi (bos = "wood"; Koru agaci "hard_wood").</summary>
+    public string Wood { get; set; } = "";
     public bool Shadow { get; set; } = true;
     public float Sink { get; set; }
     public float CollideRadius { get; set; }
@@ -193,6 +200,52 @@ public sealed class BiomeDef
     public List<PatchDef> Patches { get; set; } = new();
     public List<NodeDef> Nodes { get; set; } = new();
     public GrassDef Grass { get; set; } = new();
+    /// <summary>Yaratik ve Ata dogma tablolari (yaratik2, hayvan ve boss akislari satir ekler).</summary>
+    public SpawnsDef Spawns { get; set; } = new();
+    /// <summary>Kesif noktasi kurallari (ICERIK §17 M2 tablosu).</summary>
+    public List<PoiRuleDef> Pois { get; set; } = new();
+    /// <summary>Bitki ve dugum serpme kutusu [minX, minZ, maxX, maxZ] (m); bos = butun dunya. Cayir'in M1 kutusu ±146.</summary>
+    public List<float> Area { get; set; } = new();
+    /// <summary>Kutunun disinda kalan biyom alanina ayni siklikla ek serpme (ayri tohum: kutunun ici M1 ile ayni kalir).</summary>
+    public bool FillOutside { get; set; }
+    /// <summary>Biyomun kendi tohumu (serpme ve gurultu).</summary>
+    public int Seed { get; set; }
+    /// <summary>Biyomun yukseklik terimleri (biyom agirligiyla karisir); bos = ek terim yok.</summary>
+    public BiomeTerrainDef Terrain { get; set; } = new();
+    /// <summary>Sis katmanlari ve isik huzmeleri (Sis Korusu).</summary>
+    public AtmosphereDef Atmosphere { get; set; } = new();
+}
+
+/// <summary>Biyoma ozgu yukseklik terimi: sirtli gurultu, taban yukseltmesi. Biyom agirligiyla carpilir.</summary>
+public sealed class BiomeTerrainDef
+{
+    public float Amp { get; set; }
+    public float Frequency { get; set; } = 0.01f;
+    /// <summary>0 duz gurultu, 1 tam sirtli (keskin tepeler).</summary>
+    public float Ridge { get; set; }
+    public float Offset { get; set; }
+    /// <summary>Zemin: orman tabani rengi (paletin "ground"u) bu oranda karisir; ot sikligi carpani.</summary>
+    public float FloorMix { get; set; }
+    public float GrassDensity { get; set; } = 1f;
+}
+
+/// <summary>Biyomun havasi: yere yakin sis katmanlari, isik huzmeleri; oyuncu biyoma girince sis ve isik karisir.</summary>
+public sealed class AtmosphereDef
+{
+    /// <summary>Sis katmanlarinin zeminden yuksekligi (m).</summary>
+    public List<float> FogLayers { get; set; } = new();
+    public string FogColor { get; set; } = "";
+    public float FogAlpha { get; set; }
+    /// <summary>Sis katmani agi hucresi (m).</summary>
+    public float FogCell { get; set; } = 8f;
+    /// <summary>Isik huzmesi adedi, [genislik, boy] (m), rengi ve saydamligi.</summary>
+    public int Shafts { get; set; }
+    public List<float> ShaftSize { get; set; } = new() { 3f, 22f };
+    public string ShaftColor { get; set; } = "";
+    public float ShaftAlpha { get; set; }
+    /// <summary>Oyuncu bu biyomdayken ortam sisinin yogunluk carpani ve rengi (gun saati sisinin ustune karisir).</summary>
+    public float FogDensityMult { get; set; } = 1f;
+    public string AmbientFog { get; set; } = "";
 }
 
 public sealed class BiomesFile
