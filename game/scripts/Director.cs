@@ -114,6 +114,7 @@ public partial class Director : Node3D
         State.Farm.Eaten += p => { GD.Print($"EATEN plot {p.X},{p.Y}"); Sfx.Play("pop", FarmView.CellCenter(p.X, p.Y), -2f); };
         Pod.BeginHatchIntro(this); // Pod.Hatch.cs: kapak acilir, Suna giris repliklerini soyler (PLAN 1.4, 0:00)
         InitNet(); // Director.Net.cs (ortak): --coop varsa NetSync; tek oyuncuda null
+        InitFlow(); // ai/Director.Flow.cs (yolbulma): akis alani; Ocak kurulunca pencere acilir
 
         if (Main.Args.ContainsKey("bot")) { Bot = new Bot(this); AddChild(Bot); }
         // Sinama: --look=x,y,z:tx,ty,tz sabit bir kameradan bakar (varlik denetimi goruntuleri icin).

@@ -195,6 +195,16 @@ Host ya da sunucu yetkilidir. İstemci istekleri mesafe, bekleme süresi ve enva
 - **Evcil hayvan işleri:** basit görev kuyruğu (yeme git, işe git, ahıra dön).
 - **Botlar:** oyuncuyla aynı giriş arayüzünü kullanır; testler gerçek kod yolundan geçer.
 
+### 8.1 Akış alanı sözleşmesi (M3, `yolbulma` akışı)
+
+- **Pencere:** ızgara bütün dünyayı değil, bir Kabarma alanını kaplar: kenarı `flowfield.json` `gridSize` (160 m, tapu 40 m + dalga girişi payı), merkezi parametre (ana üste Ocak, karakolda Maya Feneri, GDD §14.6). Pencere dışındaki yaratık doğrudan hedefe yürür.
+- **Maliyet:** hücre maliyeti = zemin (eğim derecesi başına artış, `maxSlopeDegrees` üstü geçilmez; su yüzeyi `waterCost`) + engel. Engel bir **iz**dir: sahip kimliği (`ulong`, yapı parçası ya da yerleştirilebilir), tür (`wall`, `fence`, `door`, `doorOpen`, `trap`, `station`) ve kapladığı hücreler. Türün kırma maliyeti `breakCost` tablosundadır; duvar kapalı değildir, "o kadar metre dolanmaya bedel"dir. Döndürülmüş parça hücrelere taşkın (her değen hücre) işlenir; köşeden çapraz geçiş yoktur, böylece eğik duvar halkası sızdırmaz. Parça türünün izi `pieceKinds` tablosundan gelir (temel, döşeme, merdiven yürünür; duvar, çit, direk engel; kiriş ve çatı yok sayılır); zeminden `blockHeight`'tan yüksekteki parça engel değildir.
+- **Alanlar:** hedef anahtarı başına bir alan (`crop:<aile>`, `crop` her ekin, `kazan`). Alan yalnız sorgulanan anahtar için ve yalnız iz ya da hedef kümesi değişince yeniden hesaplanır (yenen ekin de hedef kaldırır); tikte en çok `maxRecomputesPerTick` alan. Sorgu O(1)'dir; yaratık sayısı maliyeti artırmaz.
+- **Sorgu (`FlowFieldSet.Sample`):** dünya konumunda yön, hedefe kalan maliyet, hedefte mi, ve sıradaki hücre bir engel izinin içindeyse onun sahip kimliği ve türü. Kırmaya karar veren ve hasarı veren yaratık (`savas`, `savunma`); alan yalnız söyler.
+- **Holding** aynı maliyet ızgarasında noktadan noktaya kırma maliyetli A* (`FindPath`) kullanır; sürüler ve Kabaranlar akış alanını.
+- **Durum:** alan türetilmiş veridir (arazi + izler + hedefler): kayda yazılmaz, yüklemeden ve sonradan katılmadan sonra yeniden kurulur; yalnız host'ta tutulur (istemcide yaratık kukladır, §5.2). `GameState`'e ve statiklere girmez.
+- **Güncelleme:** iz eklenince ya da hedef kalkınca etkilenen alt ağaç (bu hücreden geçen en kısa yollar) sıfırlanıp sınırından yeniden yayılır; iz kalkınca ya da hedef eklenince değişen hücrelerden iyileşme yayılır. Sonuç tam yeniden hesapla aynıdır (birim testi).
+
 ## 9. Kayıt
 
 - **Biçim:** JSON bildirim dosyası (sürüm, tohum, oyun günü, ekip) + ikili bölümler (arazi farkları, tarla, yapılar, varlıklar).
