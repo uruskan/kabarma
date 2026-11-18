@@ -24,7 +24,8 @@ public partial class BuildTest
     void ShotM2(string file)
     {
         if (DisplayServer.GetName() == "headless") { Log($"SHOT {file} (basliksiz: atlandi)"); return; }
-        _m2Dir ??= Main.Args.TryGetValue("test_out", out var o) ? o.TrimEnd('/', '\\') + "/" : ProjectSettings.GlobalizePath("res://").TrimEnd('/', '\\') + "/../progress/m2/yapi/";
+        // --m2_out=KLASOR: M2 kaniti ayri yere (M1 goruntuleri --test_out'a gider, progress/m1 bozulmaz).
+        _m2Dir ??= Main.Args.TryGetValue("m2_out", out var m2) ? m2.TrimEnd('/', '\\') + "/" : Main.Args.TryGetValue("test_out", out var o) ? o.TrimEnd('/', '\\') + "/" : ProjectSettings.GlobalizePath("res://").TrimEnd('/', '\\') + "/../progress/m2/yapi/";
         DirAccess.MakeDirRecursiveAbsolute(_m2Dir);
         GetViewport().GetTexture().GetImage().SavePng(_m2Dir + file);
         Log($"SHOT {file}");

@@ -42,8 +42,10 @@ public partial class Bot
         if (!MoveTo(_d.World.Ground(wall.GlobalPosition + outward * 3.2f), 0.6f, false)) { _upT = 0; return; }
         _upT += (float)GetProcessDeltaTime();
         if (_upT < 0.8f) return;
+        // Oyuncu gibi: kameranin baktigi ahsap duvar hangisiyse o yukseltilir (barinagin duvarlari ayni bedelde).
         var t = b.TargetAt(P, P.AimPoint(out _, 60f));
-        if (t != wall) { if (_stepT > 4f) { GD.Print($"BOT yukselt: nisan {(t as BuildPiece)?.Def.Id ?? t?.Name ?? "bos"} (duvar degil)"); _stepT = 0; } return; }
+        if (t is BuildPiece { Material: "wood", Planned: false } tw && tw.Def.Id == "duvar") wall = tw;
+        else { if (_stepT > 4f) { GD.Print($"BOT yukselt: nisan {(t as BuildPiece)?.Def.Id ?? t?.Name ?? "bos"} (ahsap duvar degil)"); _stepT = 0; } return; }
         b.UpgradePreview(wall, out bool ok);
         if (!ok) { if (_stepT > 4f) { GD.Print($"BOT yukselt bekliyor: {b.UpgradePreview(wall, out _)}"); _stepT = 0; } return; }
         if (_stepT > 1.5f) { PlanAction(wall, 0); _stepT = 0; GD.Print($"BOT upgrade {wall.Def.Id} -> {up.Value.To.Id}"); }
