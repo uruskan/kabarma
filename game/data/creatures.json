@@ -46,6 +46,74 @@
         "clips": { "idle": "pose", "walk": "glb:walk", "run": "pose", "attack1": "pose", "attack2": "pose", "hit": "pose", "eat": "pose", "rest": "pose" }
       },
       "swell": { "push": 0.05, "wobble": 0.03, "glow": 0.7, "veinScale": 3.0, "seconds": 1.6, "stepJiggle": 0.015, "hitJiggle": 0.03 }
+    },
+    {
+      "id": "homur", "name": "Homur", "archetype": "destroyer", "weight": 3, "hp": 120, "damage": 10, "speed": 3.2, "swollenScale": 2.6, "weakPointMult": 2.0, "biome": "altin_cayir",
+      "rig": { "plan": "quadruped", "model": "code:homur", "height": 0.95, "yaw": 0, "triBudget": 8000,
+        "bones": { "root": "root", "spine": "spine", "head": "head", "top": "top", "ear_l": "ear_l", "ear_r": "ear_r", "tail": "tail", "front_l": "front_l", "frontlow_l": "frontlow_l", "front_r": "front_r", "frontlow_r": "frontlow_r", "back_l": "back_l", "backlow_l": "backlow_l", "back_r": "back_r", "backlow_r": "backlow_r" },
+        "placeholder": ["walk"] },
+      "swell": { "push": 0.05, "wobble": 0.03, "glow": 0.8, "veinScale": 3.5, "seconds": 1.4, "stepJiggle": 0.014, "hitJiggle": 0.03 },
+      "wild": { "stance": "raider", "active": "day", "herdMin": 1, "herdMax": 2, "wanderRadius": 8, "walkSpeedMult": 0.35, "runSpeedMult": 1.0, "alertRadius": 11, "fleeRadius": 4.5, "fleeSeconds": 3, "target": "crop", "targetSense": 32, "targetStop": 1.4, "targetSeconds": 8, "pauseMin": 2.5, "pauseMax": 6, "idleShare": 0.35, "grazeShare": 0.5, "retargetMin": 5, "retargetMax": 10 }
+    },
+    {
+      "id": "cekirge", "name": "Çekirge Sürüsü", "archetype": "swarm", "weight": 4, "hp": 80, "damage": 4, "speed": 2.6, "swollenScale": 1.7, "biome": "altin_cayir",
+      "swell": { "push": 0.004, "wobble": 0.004, "glow": 1.2, "veinScale": 30.0, "seconds": 1.0, "stepJiggle": 0.0, "hitJiggle": 0.01 },
+      "wild": { "stance": "swarm", "active": "day", "wanderRadius": 14, "walkSpeedMult": 0.6, "runSpeedMult": 1.5, "target": "grain", "targetSense": 40, "targetSeconds": 10, "retargetMin": 4, "retargetMax": 8 },
+      "swarm": { "members": 36, "radius": 1.8, "memberSize": 0.2, "height": 0.5, "orbit": 0.35, "bob": 0.2, "hpPool": 80, "scatterSeconds": 3, "scatterMult": 2.5, "swollenMembers": 3, "swollenRadius": 2.5 }
+    },
+    {
+      "id": "sinsi", "name": "Sinsi", "archetype": "thief", "weight": 2, "hp": 50, "damage": 6, "speed": 4.0, "swollenScale": 2.6, "weakPointMult": 2.0, "biome": "altin_cayir",
+      "rig": { "plan": "quadruped", "model": "code:sinsi", "height": 0.62, "yaw": 0, "triBudget": 8000,
+        "bones": { "root": "root", "spine": "spine", "head": "head", "top": "top", "ear_l": "ear_l", "ear_r": "ear_r", "tail": "tail", "front_l": "front_l", "frontlow_l": "frontlow_l", "front_r": "front_r", "frontlow_r": "frontlow_r", "back_l": "back_l", "backlow_l": "backlow_l", "back_r": "back_r", "backlow_r": "backlow_r" },
+        "placeholder": ["walk"] },
+      "swell": { "push": 0.03, "wobble": 0.02, "glow": 0.9, "veinScale": 5.0, "seconds": 1.2, "stepJiggle": 0.01, "hitJiggle": 0.025 },
+      "wild": { "stance": "nocturnal", "active": "night", "herdMin": 1, "herdMax": 1, "wanderRadius": 10, "walkSpeedMult": 0.35, "runSpeedMult": 1.0, "fleeRadius": 7, "fleeSeconds": 3, "target": "coop", "targetSense": 40, "targetStop": 1.2, "targetSeconds": 5, "roost": "bush", "pauseMin": 2, "pauseMax": 5 }
+    },
+    {
+      "id": "dalli", "name": "Dallı", "archetype": "runner", "weight": 2, "hp": 70, "damage": 6, "speed": 5.5, "swollenScale": 2.4, "weakPointMult": 2.0, "biome": "sis_korusu",
+      "rig": { "plan": "quadruped", "model": "code:dalli", "height": 2.1, "yaw": 0, "triBudget": 8000,
+        "bones": { "root": "root", "spine": "spine", "head": "head", "top": "top", "ear_l": "ear_l", "ear_r": "ear_r", "tail": "tail", "front_l": "front_l", "frontlow_l": "frontlow_l", "front_r": "front_r", "frontlow_r": "frontlow_r", "back_l": "back_l", "backlow_l": "backlow_l", "back_r": "back_r", "backlow_r": "backlow_r" },
+        "placeholder": ["walk"] },
+      "swell": { "push": 0.04, "wobble": 0.025, "glow": 0.8, "veinScale": 3.5, "seconds": 1.4, "stepJiggle": 0.012, "hitJiggle": 0.03 },
+      "wild": { "stance": "shy", "active": "day", "herdMin": 2, "herdMax": 4, "wanderRadius": 10, "walkSpeedMult": 0.22, "runSpeedMult": 1.0, "alertRadius": 13, "fleeRadius": 9, "fleeSeconds": 4, "pauseMin": 2.5, "pauseMax": 6, "idleShare": 0.3, "grazeShare": 0.6 }
+    },
+    {
+      "id": "hu", "name": "Hu", "archetype": "flyer", "weight": 2, "hp": 40, "damage": 5, "speed": 4.5, "swollenScale": 2.6, "weakPointMult": 2.0, "biome": "sis_korusu",
+      "rig": { "plan": "bird", "model": "code:hu", "height": 0.95, "yaw": 0, "triBudget": 8000,
+        "bones": { "root": "root", "body": "body", "head": "head", "comb": "comb", "tail": "tail", "wing_l": "wing_l", "wing_r": "wing_r", "thigh_l": "thigh_l", "shin_l": "shin_l", "foot_l": "foot_l", "thigh_r": "thigh_r", "shin_r": "shin_r", "foot_r": "foot_r" },
+        "placeholder": ["walk"] },
+      "swell": { "push": 0.03, "wobble": 0.02, "glow": 0.9, "veinScale": 5.0, "seconds": 1.2, "stepJiggle": 0.01, "hitJiggle": 0.03 },
+      "wild": { "stance": "nocturnal", "active": "night", "herdMin": 1, "herdMax": 1, "wanderRadius": 14, "walkSpeedMult": 0.4, "runSpeedMult": 1.0, "fleeRadius": 5, "fleeSeconds": 3, "roost": "tree", "flyHeight": 2.2, "pauseMin": 2, "pauseMax": 4, "idleShare": 0.7, "grazeShare": 0.1 }
+    },
+    {
+      "id": "vicik", "name": "Vıcık", "archetype": "tank", "weight": 2, "hp": 90, "damage": 5, "speed": 1.2, "swollenScale": 2.6, "weakPointMult": 2.0, "biome": "sis_korusu",
+      "rig": { "plan": "reptile", "model": "code:vicik", "height": 0.4, "yaw": 0, "triBudget": 8000,
+        "bones": { "root": "root", "spine": "spine", "head": "head", "tail": "tail", "tail2": "tail2", "front_l": "front_l", "frontlow_l": "frontlow_l", "front_r": "front_r", "frontlow_r": "frontlow_r", "back_l": "back_l", "backlow_l": "backlow_l", "back_r": "back_r", "backlow_r": "backlow_r" },
+        "placeholder": ["walk"] },
+      "swell": { "push": 0.04, "wobble": 0.035, "glow": 0.8, "veinScale": 4.0, "seconds": 1.6, "stepJiggle": 0.015, "hitJiggle": 0.035 },
+      "wild": { "stance": "calm", "active": "always", "herdMin": 1, "herdMax": 2, "wanderRadius": 6, "walkSpeedMult": 0.6, "runSpeedMult": 1.4, "fleeRadius": 0, "fleeSeconds": 2, "trailSeconds": 12, "pauseMin": 3, "pauseMax": 7, "idleShare": 0.35, "grazeShare": 0.5 }
+    },
+    {
+      "id": "bozuk", "name": "Bozuk", "archetype": "tank", "weight": 6, "hp": 300, "damage": 20, "speed": 5.0, "swollenScale": 2.3, "weakPointMult": 2.0, "biome": "sis_korusu",
+      "rig": { "plan": "quadruped", "model": "code:bozuk", "height": 1.7, "yaw": 0, "triBudget": 12000,
+        "bones": { "root": "root", "spine": "spine", "head": "head", "top": "top", "ear_l": "ear_l", "ear_r": "ear_r", "tail": "tail", "front_l": "front_l", "frontlow_l": "frontlow_l", "front_r": "front_r", "frontlow_r": "frontlow_r", "back_l": "back_l", "backlow_l": "backlow_l", "back_r": "back_r", "backlow_r": "backlow_r" },
+        "placeholder": ["walk"] },
+      "swell": { "push": 0.06, "wobble": 0.03, "glow": 0.7, "veinScale": 2.5, "seconds": 1.8, "stepJiggle": 0.018, "hitJiggle": 0.03 },
+      "wild": { "stance": "predator", "active": "always", "herdMin": 1, "herdMax": 1, "wanderRadius": 14, "walkSpeedMult": 0.25, "runSpeedMult": 1.0, "alertRadius": 14, "chargeRadius": 8, "attackRange": 2.2, "attackInterval": 1.8, "attackDamage": 8, "warnSeconds": 1.5, "giveUpRadius": 24, "pauseMin": 3, "pauseMax": 7 }
+    },
+    {
+      "id": "vizviz", "name": "Vızvız", "archetype": "swarm", "weight": 3, "hp": 60, "damage": 3, "speed": 2.0, "swollenScale": 1.7, "biome": "sis_korusu",
+      "swell": { "push": 0.004, "wobble": 0.004, "glow": 1.2, "veinScale": 30.0, "seconds": 1.2, "stepJiggle": 0.0, "hitJiggle": 0.01 },
+      "wild": { "stance": "swarm", "active": "day", "wanderRadius": 10, "walkSpeedMult": 0.8, "runSpeedMult": 2.0, "target": "flower", "targetSense": 14, "targetSeconds": 6, "retargetMin": 3, "retargetMax": 7 },
+      "swarm": { "members": 18, "radius": 1.0, "memberSize": 0.15, "height": 1.0, "orbit": 0.5, "bob": 0.25, "hpPool": 60, "scatterSeconds": 3, "scatterMult": 2.0, "swollenMembers": 3, "swollenRadius": 2.0, "hive": true, "hiveRange": 12, "guardRadius": 4, "stingDamage": 3, "stingInterval": 1.5 }
+    },
+    {
+      "id": "findikci", "name": "Fındıkçı", "archetype": "thief", "weight": 1, "hp": 25, "damage": 3, "speed": 4.2, "swollenScale": 2.8, "weakPointMult": 2.0, "biome": "sis_korusu",
+      "rig": { "plan": "biped", "model": "code:findikci", "height": 0.7, "yaw": 0, "triBudget": 5000,
+        "bones": { "hips": "hips", "spine": "spine", "chest": "chest", "neck": "neck", "head": "head", "upperarm_l": "upperarm_l", "forearm_l": "forearm_l", "upperarm_r": "upperarm_r", "forearm_r": "forearm_r", "thigh_l": "thigh_l", "calf_l": "calf_l", "foot_l": "foot_l", "thigh_r": "thigh_r", "calf_r": "calf_r", "foot_r": "foot_r" },
+        "placeholder": ["walk"] },
+      "swell": { "push": 0.02, "wobble": 0.015, "glow": 0.9, "veinScale": 7.0, "seconds": 1.0, "stepJiggle": 0.008, "hitJiggle": 0.02 },
+      "wild": { "stance": "raider", "active": "day", "herdMin": 1, "herdMax": 2, "wanderRadius": 6, "walkSpeedMult": 0.35, "runSpeedMult": 1.0, "alertRadius": 8, "fleeRadius": 5, "fleeSeconds": 3, "target": "seed", "targetSense": 28, "targetStop": 0.8, "targetSeconds": 4, "pauseMin": 1.5, "pauseMax": 4 }
     }
   ]
 }

@@ -193,6 +193,8 @@ public sealed class BiomeDef
     public List<PatchDef> Patches { get; set; } = new();
     public List<NodeDef> Nodes { get; set; } = new();
     public GrassDef Grass { get; set; } = new();
+    /// <summary>Yabani yaratik dogma satirlari (yaratik2 akisi, GameData.Wild.cs SpawnDef).</summary>
+    public List<SpawnDef> Spawns { get; set; } = new();
 }
 
 public sealed class BiomesFile
