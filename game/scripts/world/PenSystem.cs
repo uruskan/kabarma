@@ -140,7 +140,9 @@ public partial class PenSystem : Node
         get
         {
             foreach (var k in _gates.Keys.Where(k => !IsInstanceValid(k) || k.IsQueuedForDeletion()).ToList()) { _gates.Remove(k); _dirty = true; }
-            return _gates.Values;
+            if (_dirty) Rebuild();
+            // Agil halkasina ait kapilar once: halkanin disinda kalmis basi bos kapi (kaymis yerlestirme) ilk sayilmaz.
+            return _gates.Values.OrderBy(g => _wallOf.TryGetValue(g.Piece, out var w) && Pens.Any(p => p.Walls.Contains(w.Id)) ? 0 : 1).ToList();
         }
     }
 
