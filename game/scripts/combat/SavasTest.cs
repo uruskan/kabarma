@@ -34,6 +34,7 @@ public partial class SavasTest : Node
     AzmanLog _logItem;
     Vector3 _site, _spot, _tree;
     int _walls, _hurts;
+    readonly HashSet<string> _wildFights = new(); // dovuse karisan yabaniler (rapor)
     bool _dayDown;
 
     Player P => _d.Player;
@@ -211,15 +212,20 @@ public partial class SavasTest : Node
         // Sirttan dusen Homurlar yakindaysa once onlar.
         var rider = GetTree().GetNodesInGroup("azman_rider").OfType<AzmanRider>().Where(r => r.Alive).OrderBy(r => r.GlobalPosition.DistanceTo(me)).FirstOrDefault();
         bool riderNear = rider != null && rider.GlobalPosition.DistanceTo(me) < 7f;
+        // Dovuse karisan yabani yirtici (gunduz savasi): saldiriyorsa once o.
+        var wild = _d.Wildlife?.Creatures.Where(c => IsInstanceValid(c) && !c.Dead && !c.Display && c.GlobalPosition.DistanceTo(me) < 10f
+                && c.Last.Mode is WildMode.Charge or WildMode.Attack or WildMode.Warn)
+            .OrderBy(c => c.GlobalPosition.DistanceTo(me)).FirstOrDefault();
 
         // Bozuk: yerde kutuk varsa Cekim'le al ve firlat.
         bool logFlying = GetTree().GetNodesInGroup("azman_flying").Count > 0;
         bool tooClose = dist < a.Def.Radius + 4.5f; // Azman dibindeyse once uzaklas (govde degmesi)
-        if (id == "azman_bozuk" && !riderNear && !logFlying && !tooClose && !(a.Telegraphing || a.Acting != "") && ThrowLog(a)) return;
+        if (id == "azman_bozuk" && !riderNear && wild == null && !logFlying && !tooClose && !(a.Telegraphing || a.Acting != "") && ThrowLog(a)) return;
         if (_d.Capa.Held != null) { Release(); _d.Capa.Drop(); }
 
         Head(Capa.Head.Tirpan);
-        ICombatTarget target = riderNear ? rider : a;
+        ICombatTarget target = riderNear ? rider : wild != null ? wild : a;
+        if (wild != null) _wildFights.Add(wild.Def.Id);
         P.AimOverride = target.Center;
 
         bool charge = a.Pending == "charge" && a.Telegraphing || a.Acting == "charge";
@@ -306,7 +312,7 @@ public partial class SavasTest : Node
         ok = ok && _fails.Count == 0;
         _s = S.Done;
         string times = string.Join(",", _fightTime.Select(kv => $"{kv.Key}:{(kv.Value > 9999 ? "ok" : kv.Value.ToString("0"))}"));
-        Say($"RESULT {(ok ? "ok" : "fail")} savas day_down={_dayDown} defeated={string.Join(",", _sys?.DefeatedLog ?? new())} fights={times} player_hp={P?.Hp:0} hurts={_hurts} walls_placed={_walls} wall_hits={_sys?.WallHits} riders={_sys?.RidersDropped} uproots={_sys?.Uproots} log_landings={_sys?.LogLandings} log_hits={_sys?.LogHits} spreads={_d?.Savas?.Spreads} chains={_d?.Savas?.Chains} t={_total:0}" + (_fails.Count > 0 ? " :: " + string.Join(" | ", _fails) : ""));
+        Say($"RESULT {(ok ? "ok" : "fail")} savas day_down={_dayDown} defeated={string.Join(",", _sys?.DefeatedLog ?? new())} fights={times} player_hp={P?.Hp:0} hurts={_hurts} walls_placed={_walls} wall_hits={_sys?.WallHits} riders={_sys?.RidersDropped} uproots={_sys?.Uproots} log_landings={_sys?.LogLandings} log_hits={_sys?.LogHits} spreads={_d?.Savas?.Spreads} chains={_d?.Savas?.Chains} wild_mixed={string.Join(",", _wildFights)} t={_total:0}" + (_fails.Count > 0 ? " :: " + string.Join(" | ", _fails) : ""));
         if (Main.Args.TryGetValue("test_out", out var dir))
         {
             DirAccess.MakeDirRecursiveAbsolute(dir);
