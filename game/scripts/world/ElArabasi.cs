@@ -193,7 +193,9 @@ public partial class ElArabasi : RigidBody3D
             if (p.Down) { Release(); return; }
             float yaw = p.Visual.Rotation.Y;
             var fwd = new Vector3(Mathf.Sin(yaw), 0, Mathf.Cos(yaw));
-            var center = p.GlobalPosition + fwd * (_size.Z * 0.5f + 0.8f);
+            // 0,1 m bosluk: tutamaklar kalcalarin yaninda, govdenin ~0,25 m onunde; kisa kollar iki tutamaga da yetisir
+            // (oyuncu akisi; eskiden 0,8: tutamaklar ~0,95 m otedeydi). Oyuncu itilen arabaya carpmaz (Player.Grip.cs).
+            var center = p.GlobalPosition + fwd * (_size.Z * 0.5f + 0.1f);
             var front = center + fwd * (_size.Z * 0.45f);
             var back = center - fwd * (_size.Z * 0.45f);
             float hf = _d.World.HeightAt(front.X, front.Z), hb = _d.World.HeightAt(back.X, back.Z);

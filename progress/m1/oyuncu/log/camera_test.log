@@ -1,0 +1,29 @@
+Godot Engine v4.7.2.stable.mono.official.ed1daf0bf - https://godotengine.org
+
+TEST camera
+MUSIC ready day=yes layers=3/3 bar=2.00s
+PLAYER model anims: carry,cheer,crouch_walk,eat,getup_back_pose,getup_front_pose,hurt,idle,jump,jump_air,jump_land,jump_start,kneel,knockdown,plant,push,run,shock_fall,sleep,sprint,walk,walk_casual,wave
+AUDIO sounds=60 playable=60 variant_files=180 m0_only=0 silent=0 placeholder=0
+AUDIO ok 60/60
+POFUDUK anims: pose/attack1,pose/attack2,pose/eat,pose/hit,pose/idle,pose/rest,pose/run,pose/walk,preset_quadruped_walk
+BUILD kit pieces=28
+BOOT Kabarma MVP
+MUSIC Silence -> Day
+ZIPZIP herd size=3 at=30,-41 herds=1
+ZIPZIP herd size=2 at=7,28 herds=2
+ZIPZIP herd size=3 at=-26,-20 herds=3
+SUNA line=giris_1 voice=yes
+HATCH intro done
+CAMERA normal boom=4.20 side=0.70 fov=68.0 cam_local=(0.7000122, 0, 4.200012)
+SUNA line=giris_2 voice=yes
+CAMERA yakin omuz boom=1.15 side=0.62 fov=70.0 cam_local=(0.6199951, 0, 1.1499939)
+CAMERA aim yakin omuz/Kazma hit=@StaticBody3D@719 muzzleErr=0.2deg aim=(400.62, 221.62, 388.2)
+CAMERA aim yakin omuz/Civi hit=@StaticBody3D@719 muzzleErr=0.2deg aim=(400.62, 221.62, 388.2)
+CAMERA wall yakin omuz at=0.75 boom=0.40 limit=0.42
+CAMERA normal (geri) boom=4.20 side=0.70 fov=68.0 cam_local=(0.7000122, 0, 4.200012)
+CAMERA aim normal/Kazma hit=@StaticBody3D@731 muzzleErr=0.2deg aim=(400.7, 221.55, 388.2)
+CAMERA aim normal/Civi hit=@StaticBody3D@731 muzzleErr=0.2deg aim=(400.7, 221.55, 388.2)
+CAMERA wall normal at=2.10 boom=1.75 limit=1.77
+CAMERA aim normal en uzak/Kazma hit=@StaticBody3D@743 muzzleErr=0.2deg aim=(400.7, 221.55, 388.2)
+CAMERA aim normal en uzak/Civi hit=@StaticBody3D@743 muzzleErr=0.2deg aim=(400.7, 221.55, 388.2)
+RESULT ok camera checks=70

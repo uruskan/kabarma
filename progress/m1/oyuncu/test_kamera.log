@@ -1,0 +1,60 @@
+tools/test.ps1  2026-11-18 03:31  git 0f8561d
+
+[PASS] build  exit=0 warnings=0 errors=0
+[PASS] sim  exit=0 Passed!  - Failed:     0, Passed:   184, Skipped:     0, Total:   184, Duration: 715 ms - Kabarma.Sim.Tests.dll (net8.0)
+[PASS] bench  exit=0 1000 gun 2.176 sn, ayrilan 3462.7 MB, tepe 80.1 MB (Release, 3x3)
+[PASS] bot  exit=0 RESULT ok credits=120 eggs=1 kills=21 cards=2 maya=48 stations=4 harvests=5 skipped=-
+[PASS] buildtest  exit=0 placed=75 failed=0 pieces=71
+[PASS] audio  exit=0 ok sounds=60 playable=60 variant_files=180 buses=6 layers_loaded=3/3 day_music=yes
+[PASS] world  exit=0 WORLD RESULT ok checks passed (1144 ms)
+[PASS] camera  exit=0 RESULT ok camera checks=70
+[PASS] creatures  exit=0 RESULT ok creatures=3 clips=24 posed=18
+[PASS] latency  exit=0 RESULT ok heads=8/8 budget_max_ms=33.3 wall_med_ms=33.7 wall_max_ms=49.6 hitstop=ok
+[PASS] ekonomi  exit=0 ok=82 fail=0
+[PASS] gece  exit=0 GECE RESULT ok checks=2226 nights=2 day=3
+[FAIL] input_kbm  exit=1 RESULT fail input head sweep tus:Biçme->Kazma tus:Toprak->Kazma tus:Sulama->Kazma tus:Çekim->Kazma tus:İnşa->Kazma tus:Tırpan Işını->Kazma tus:Çivi Tab.->Kazma step=mine device=Kbm (INPUT probe ok / INPUT heads ok yok)
+      --- son satirlar: C:\Users\uruskan\Documents\GitHub\kabarma\.claude\worktrees\m1-oyuncu-7059e8\.tools\run\test\input_kbm.log
+      INPUT driver device=Kbm problems=0 user=C:\Users\uruskan\Documents\GitHub\kabarma\.claude\worktrees\m1-oyuncu-7059e8\.tools\run\test\input_user_kbm.json
+      BOOT Kabarma MVP
+      MUSIC Silence -> Day
+      ZIPZIP herd size=3 at=-25,-25 herds=1
+      ZIPZIP herd size=2 at=47,-21 herds=2
+      ZIPZIP herd size=2 at=-17,22 herds=3
+      BOT step mine t=1.0
+      INPUT rebind interact Kbm -> F
+      INPUT probe ok device=Kbm interact: E->F->E glyph [F]->[E] last=Kbm user=C:\Users\uruskan\Documents\GitHub\kabarma\.claude\worktrees\m1-oyuncu-7059e8\.tools\run\test\input_user_kbm.json
+      SUNA line=giris_1 voice=yes
+      HATCH intro done
+      RESULT fail input head sweep tus:Biçme->Kazma tus:Toprak->Kazma tus:Sulama->Kazma tus:Çekim->Kazma tus:İnşa->Kazma tus:Tırpan Işını->Kazma tus:Çivi Tab.->Kazma step=mine device=Kbm
+[FAIL] input_pad  exit=1 RESULT fail input stuck step=firin age=240 device=Pad op=- queue=0 aimErr=3.9deg miss=1.20m aim=(-5.731039, 1, 6.639676) hit=(-5.2055883, 0.91627437, 5.9791403) node=@StaticBody3D@2102 muzzle->hit=1.7 pos=(-3.817831, 0.0011563301, 5.3592987) move=(0, 0, 0) fire=False/False pressed=False head=Bicme menu=True wheel=False lock=True look=(0, -0.38666663) sent=axis:RightY=-0.53999996 bag=10/20 events=16015
+      --- son satirlar: C:\Users\uruskan\Documents\GitHub\kabarma\.claude\worktrees\m1-oyuncu-7059e8\.tools\run\test\input_pad.log
+      ZIPZIP herd size=2 at=-21,26 herds=1
+      ZIPZIP herd size=2 at=28,12 herds=2
+      ZIPZIP herd size=3 at=-8,30 herds=3
+      STEP bakir_kil -> firin t=86.5
+      SUNA line=firin_basla voice=yes
+      BOT step firin t=330.2
+      TAS_FIRIN parts: base,body,chimney,panel,door,door_handle door=True
+      TAS_FIRIN parts: base,body,chimney,panel,door,door_handle door=True
+      PLACED tas_firin at (-5.731039, 0, 6.639676)
+      TAS_FIRIN parts: base,body,chimney,panel,door,door_handle door=True
+      EGG laid nest at (-4.646243, 0, -6.651334)
+      RESULT fail input stuck step=firin age=240 device=Pad op=- queue=0 aimErr=3.9deg miss=1.20m aim=(-5.731039, 1, 6.639676) hit=(-5.2055883, 0.91627437, 5.9791403) node=@StaticBody3D@2102 muzzle->hit=1.7 pos=(-3.817831, 0.0011563301, 5.3592987) move=(0, 0, 0) fire=False/False pressed=False head=Bicme menu=True wheel=False lock=True look=(0, -0.38666663) sent=axis:RightY=-0.53999996 bag=10/20 events=16015
+
+sinama     sonuc  sure(sn)  ayrinti
+------     -----  --------  -------
+build      PASS        1.2  exit=0 warnings=0 errors=0
+sim        PASS        2.6  exit=0 Passed!  - Failed:     0, Passed:   184, Skipped:     0, Total:   184, Duration: 715 ms - Kabarma.Sim.Tests.dll (net8.0)
+bench      PASS        4.8  exit=0 1000 gun 2.176 sn, ayrilan 3462.7 MB, tepe 80.1 MB (Release, 3x3)
+bot        PASS      228.8  exit=0 RESULT ok credits=120 eggs=1 kills=21 cards=2 maya=48 stations=4 harvests=5 skipped=-
+buildtest  PASS        4.2  exit=0 placed=75 failed=0 pieces=71
+audio      PASS        6.5  exit=0 ok sounds=60 playable=60 variant_files=180 buses=6 layers_loaded=3/3 day_music=yes
+world      PASS        1.7  exit=0 WORLD RESULT ok checks passed (1144 ms)
+camera     PASS       24.1  exit=0 RESULT ok camera checks=70
+creatures  PASS          1  exit=0 RESULT ok creatures=3 clips=24 posed=18
+latency    PASS       40.8  exit=0 RESULT ok heads=8/8 budget_max_ms=33.3 wall_med_ms=33.7 wall_max_ms=49.6 hitstop=ok
+ekonomi    PASS         63  exit=0 ok=82 fail=0
+gece       PASS       46.9  exit=0 GECE RESULT ok checks=2226 nights=2 day=3
+input_kbm  FAIL        4.1  exit=1 RESULT fail input head sweep tus:Biçme->Kazma tus:Toprak->Kazma tus:Sulama->Kazma tus:Çekim->Kazma tus:İnşa->Kazma tus:Tırpan Işını->Kazma tus:Çivi Tab.->Kazma step=mine device=Kbm (INPUT probe ok / INPUT heads ok yok)
+input_pad  FAIL      146.2  exit=1 RESULT fail input stuck step=firin age=240 device=Pad op=- queue=0 aimErr=3.9deg miss=1.20m aim=(-5.731039, 1, 6.639676) hit=(-5.2055883, 0.91627437, 5.9791403) node=@StaticBody3D@2102 muzzle->hit=1.7 pos=(-3.817831, 0.0011563301, 5.3592987) move=(0, 0, 0) fire=False/False pressed=False head=Bicme menu=True wheel=False lock=True look=(0, -0.38666663) sent=axis:RightY=-0.53999996 bag=10/20 events=16015
+TEST FAIL (2)
