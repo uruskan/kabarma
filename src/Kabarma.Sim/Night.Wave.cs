@@ -54,8 +54,9 @@ public sealed partial class KabarmaNight
     {
         _queue.Clear(); // GDD 14.3: safakta girmemis olanlar duser
         if (EndReason == KabarmaEnd.None) EndReason = KabarmaEnd.Dawn;
-        if (Kazan != null && _data.Kabarma.Full.Kazan.RepairAtDawn) { Kazan.Hp = Kazan.MaxHp; }
-        Ended?.Invoke(EndReason);
+        Ended?.Invoke(EndReason); // dinleyenler Kazan'in son canini gorur
+        // GDD 14.4: Kazan sabah kendini onarir (devrik bayragi rapor icin kalir, canı dolar).
+        if (Kazan != null && _data.Kabarma.Full.Kazan.RepairAtDawn) Kazan.Hp = Kazan.MaxHp;
     }
 
     /// <summary>
