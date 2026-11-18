@@ -1,7 +1,7 @@
 ﻿Godot Engine v4.7.2.stable.mono.official.ed1daf0bf - https://godotengine.org
 
 TEST stress
-STRESS host port=30830 bot=0
+STRESS host port=29272 bot=0
 MUSIC ready day=yes layers=3/3 bar=2.00s
 WORLD decor agac box=98 outside=285
 WORLD decor turuncu_agac box=28 outside=84
@@ -12,25 +12,28 @@ WORLD decor cicek box=240 outside=720
 WORLD decor egrelti box=156 outside=450
 WORLD decor kaya_duz box=36 outside=108
 WORLD decor kaya_dik box=17 outside=42
-WORLD pois 16: seyir_kulesi_altin_cayir_0@105,40 ata_tasi_altin_cayir_0@64,36 yabani_bahce_altin_cayir_0@-145,2 yuva_altin_cayir_0@143,192 yuva_altin_cayir_1@-231,-56 enkaz_altin_cayir_0@-69,179 enkaz_altin_cayir_1@84,195 enkaz_altin_cayir_2@-139,-84 seyir_kulesi_sis_korusu_0@-46,287 ata_tasi_sis_korusu_0@-212,219 yabani_bahce_sis_korusu_0@-53,256 yuva_sis_korusu_0@-200,189 yuva_sis_korusu_1@-88,230 enkaz_sis_korusu_0@-257,293 enkaz_sis_korusu_1@-151,238 enkaz_sis_korusu_2@-235,110
+WORLD pois 22: seyir_kulesi_altin_cayir_0@105,40 ata_tasi_altin_cayir_0@64,36 yabani_bahce_altin_cayir_0@-145,2 yuva_altin_cayir_0@143,192 yuva_altin_cayir_1@-231,-56 enkaz_altin_cayir_0@-69,179 enkaz_altin_cayir_1@84,195 enkaz_altin_cayir_2@-139,-84 oyuk_altin_cayir_0@-202,-106 oyuk_altin_cayir_1@-45,-226 oyuk_altin_cayir_2@165,215 seyir_kulesi_sis_korusu_0@-46,287 ata_tasi_sis_korusu_0@-212,219 yabani_bahce_sis_korusu_0@-53,256 yuva_sis_korusu_0@-200,189 yuva_sis_korusu_1@-88,230 enkaz_sis_korusu_0@-257,293 enkaz_sis_korusu_1@-151,238 enkaz_sis_korusu_2@-235,110 oyuk_sis_korusu_0@-172,215 oyuk_sis_korusu_1@-280,237 oyuk_sis_korusu_2@-276,130
 PLAYER model anims: carry,cheer,crouch_walk,eat,getup_back_pose,getup_front_pose,hurt,idle,jump,jump_air,jump_land,jump_start,kneel,knockdown,plant,push,run,shock_fall,sleep,sprint,walk,walk_casual,wave
 AUDIO sounds=60 playable=60 variant_files=180 m0_only=0 silent=0 placeholder=0
 AUDIO ok 60/60
 POFUDUK anims: pose/attack1,pose/attack2,pose/eat,pose/hit,pose/idle,pose/rest,pose/run,pose/walk,preset_quadruped_walk
 BUILD kit pieces=28
 ATALAR arenas=koca_pofuduk@64,36/r18:ata_tasi_altin_cayir_0,boynuzlu_dede@-212,219/r20:ata_tasi_sis_korusu_0
-NET host enet 0.0.0.0:30830 name=Host
+OYUK rooms 6: oyuk_altin_cayir_0(kostebek_bey t0)@1000 oyuk_altin_cayir_1(kostebek_bey t1)@1120 oyuk_altin_cayir_2(kostebek_bey t2)@1240 oyuk_sis_korusu_0(yarasa_yumagi t0)@1360 oyuk_sis_korusu_1(yarasa_yumagi t1)@1480 oyuk_sis_korusu_2(yarasa_yumagi t2)@1600
+NET host enet 0.0.0.0:29272 name=Host
 BOOT Kabarma MVP
 TARIM wild=22
 POWER net bound host=True
 DEFENSE net bound host=True
-NET save bridge: save:calendar,save:cargo,save:chips,save:farm,save:holding,save:market,save:pen.animals,save:power,save:stations,save:farm.genetics,save:player,save:creatures,save:atalar,save:core,save:explore,save:kabarma,save:orders,save:progress,save:ranch,save:research,save:scenario,save:director
+KADIM stones kadim_atilma@-10,40,y1.1 kadim_kalkan@48,-62,y20.7 kadim_sok@-150,170,y13.7 kadim_yem@-175,140,y12.6 kadim_sifa@-130,205,y14.0
+ABILITY net bound host=True
+OYUK net bound host=True
+NET save bridge: save:calendar,save:cargo,save:chips,save:farm,save:holding,save:market,save:pen.animals,save:power,save:stations,save:farm.genetics,save:player,save:creatures,save:abilities,save:atalar,save:azman,save:core,save:explore,save:kabarma,save:orders,save:oyuk,save:progress,save:ranch,save:research,save:scenario,save:director
 HELD capa
 MUSIC Silence -> Day
-ZIPZIP herd size=3 at=-14,-22 herds=1
-ZIPZIP herd size=2 at=-30,-0 herds=2
-ZIPZIP herd size=3 at=37,-9 herds=3
-WILDLIFE spawn gidak herd=4 at=-90,-13
+ZIPZIP herd size=3 at=40,13 herds=1
+ZIPZIP herd size=2 at=39,-21 herds=2
+ZIPZIP herd size=3 at=32,5 herds=3
 WILDLIFE spawn homur herd=1 at=-15,9
 WILDLIFE spawn homur herd=1 at=-19,13
 WILDLIFE spawn dalli herd=1 at=35,15
@@ -42,58 +45,62 @@ WILDLIFE spawn vizviz swarm at=27,21
 WILDLIFE spawn hu herd=1 at=-25,-17
 RANCH start animals=11 agents=11
 BOT step mine t=1.0
+WILDLIFE spawn cekirge swarm at=114,-137
 SUNA line=giris_1 voice=yes
 HELD ocak
-WILDLIFE spawn homur herd=2 at=-2,68
 FLOW window center=0,0 size=160
 BOT coop phase 0 ok (ocak var) t=4.3
 HELD -
 HELD capa
 HATCH intro done
-WILDLIFE spawn homur herd=2 at=-77,-57
+WILDLIFE spawn sinsi herd=1 at=-93,-24
 SUNA line=giris_2 voice=yes
-BOT coop phase 1 ok (tas 4) t=9.3
-BOT coop phase 2 ok (odun 6) t=13.3
+BOT coop phase 1 ok (tas 4) t=9.2
+WILDLIFE spawn pofuduk herd=3 at=-11,150
+WILDLIFE spawn pofuduk herd=2 at=-78,120
+BOT coop phase 2 ok (odun 6) t=13.1
 HELD insa_plani
+WILDLIFE spawn homur herd=1 at=-114,-64
 BUILT kare_temel pieces=1
-BOT coop phase 3 ok (temel (7.368488, 0, 3.1153467)) t=15.0
+BOT coop phase 3 ok (temel (7.368488, 0, 3.1153467)) t=14.8
 HELD capa
-WILDLIFE spawn gidak herd=2 at=-44,-154
-NET join peer=1 name=Bot 1 players=2
-WILDLIFE spawn sinsi herd=1 at=101,-134
-NET peer 1 ready (Bot 1)
-NET join peer=2 name=Bot 5 players=3
-NET join peer=3 name=Bot 3 players=4
-NET peer 2 ready (Bot 5)
-NET peer 3 ready (Bot 3)
-NET join peer=4 name=Bot 7 players=5
-NET peer 4 ready (Bot 7)
-NET join peer=5 name=Bot 6 players=6
-NET peer 5 ready (Bot 6)
-NET join peer=6 name=Bot 2 players=7
-NET peer 6 ready (Bot 2)
-NET join peer=7 name=Bot 4 players=8
-BOT coop phase 4 ok (tarla (4.5, 0, 1.5)) t=19.3
-NET peer 7 ready (Bot 4)
-STRESS start players=8 ks=30 target=220 t=19.5
-STRESS measure begin active=220 t=24.0
+WILDLIFE spawn homur herd=2 at=-94,-16
+NET join peer=1 name=Bot 6 players=2
+NET join peer=2 name=Bot 4 players=3
+NET peer 1 ready (Bot 6)
+NET peer 2 ready (Bot 4)
+NET join peer=3 name=Bot 2 players=4
+NET join peer=4 name=Bot 3 players=5
+NET join peer=5 name=Bot 5 players=6
+NET peer 3 ready (Bot 2)
+NET peer 4 ready (Bot 3)
+NET peer 5 ready (Bot 5)
+NET join peer=6 name=Bot 1 players=7
+NET join peer=7 name=Bot 7 players=8
+NET peer 6 ready (Bot 1)
+NET peer 7 ready (Bot 7)
+STRESS start players=8 ks=30 target=220 t=17.0
+WILDLIFE spawn gidak herd=3 at=42,-97
+BOT coop phase 4 ok (tarla (4.5, 0, 1.5)) t=19.4
+WILDLIFE spawn gidak herd=2 at=80,71
+STRESS measure begin active=220 t=21.6
 QUEUED mesale x1
 PRODUCED mesale civi=40 ingot=0 soup=0
-BOT coop phase 5 ok (uretim mesale 1) t=25.5
-WILDLIFE spawn pofuduk herd=2 at=106,-67
-EXPLORE found yabani_bahce_altin_cayir_0 at=-145,2
-WILDLIFE spawn pofuduk herd=2 at=-224,-22
+BOT coop phase 5 ok (uretim mesale 1) t=24.1
+EXPLORE found ata_tasi_altin_cayir_0 at=64,36
+EXPLORE found seyir_kulesi_altin_cayir_0 at=105,40
+EXPLORE found oyuk_altin_cayir_2 at=165,215
+WILDLIFE spawn dalli herd=2 at=85,295
 BUILT kare_temel pieces=2
-WILDLIFE spawn cekirge swarm at=-99,79
+EXPLORE found yuva_altin_cayir_0 at=143,192
 BUILT kare_temel pieces=3
 BUILT kare_temel pieces=4
-BUILT kare_temel pieces=5
-STRESS measure end t=69.0
-STRESS RESULT fail players=8 ks=30 enemies_min=220 host_up_kbps=1080 (hedef 1500, sinir 2000) client_down_kBps_max=20.3 (sinir 35) flow_tick_ms work_ticks=150 p95=2.24 max=21.30 (sinir 4) flow_scan_p95=0.15 repairs=22 recomputes=0 creature_packets=5152 frame=over host_frame_ms med=43.44 p95=177.75 (sinir 11, basliksiz CPU) frames=795 over16ms=100% client_frame_p95_max=184.48 window=45s :: akis alani tiki en kotu 21.30 ms > 4
+STRESS measure end t=66.6
+STRESS RESULT fail players=8 ks=30 enemies_min=220 host_up_kbps=1086 (hedef 1500, sinir 2000) client_down_kBps_max=19.0 (sinir 35) flow_tick_ms work_ticks=145 p95=8.01 max=18.17 (sinir 4, p95) cells_max=1792 (butce 1500) flow_scan_p95=0.12 repairs=21 recomputes=0 creature_packets=5180 frame=over host_frame_ms med=122.56 p95=231.81 (sinir 11, basliksiz CPU) frames=406 over16ms=100% client_frame_p95_max=258.23 window=45s :: akis alani tiki p95 8.01 ms > 4
 NET leave peer=1 ayrıldı
-NET leave peer=3 ayrıldı
-NET leave peer=2 ayrıldı
 NET leave peer=4 ayrıldı
-NET leave peer=5 ayrıldı
+NET leave peer=2 ayrıldı
 NET leave peer=6 ayrıldı
+NET leave peer=3 ayrıldı
+NET leave peer=5 ayrıldı
 NET leave peer=7 ayrıldı

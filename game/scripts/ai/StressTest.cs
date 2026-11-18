@@ -40,6 +40,7 @@ public partial class StressTest : Node
     readonly System.Diagnostics.Stopwatch _clock = System.Diagnostics.Stopwatch.StartNew();
     double _lastMs = -1;
     float _startT;
+    int _cellsMax;
     readonly List<int> _active = new();
     long _sent0, _recv0;
     float _window;
@@ -144,7 +145,7 @@ public partial class StressTest : Node
         ToggleWall(dt);
         if (_measuring)
         {
-            if (_d.Flow.LastTickWork > 0) _flowWork.Add((float)_d.Flow.LastTickMs);
+            if (_d.Flow.LastTickWork > 0) { _flowWork.Add((float)_d.Flow.LastTickMs); _cellsMax = Mathf.Max(_cellsMax, _d.Flow.Fields.LastCells); }
             _scan.Add((float)_d.Flow.LastScanMs);
             _active.Add(_enemies.Count);
             _measureT -= dt;
@@ -288,7 +289,14 @@ public partial class StressTest : Node
         // Bu akisin sinirlari (sert): ag butcesi, kuklalar, akis alani tiki (yalniz is yapilan kareler, p95). Tik isi
         // maxCellsPerTick ile sinirli; en kotu ornek ayni makinedeki 8 surecte isletim sistemi duraklamasini da tasir
         // (ayni kosuda host karesi p95 ~180 ms goruldu), bu yuzden satira yazilir ama yargi p95'tedir.
-        if (flowP95 > S.SimTickMs) fails.Add($"akis alani tiki p95 {flowP95:0.00} ms > {S.SimTickMs}");
+        // Sure yargisi yalniz tek surecte (--solo): ayni makinedeki 8 surecte duvar saati baska sureclerin CPU'sunu da
+        // olcer (host karesi medyani kosudan kosuya 31-123 ms). 8 surecte is, asagidaki hucre siniriyla yargilanir.
+        bool solo = Players == 1;
+        if (solo && flowP95 > S.SimTickMs) fails.Add($"akis alani tiki p95 {flowP95:0.00} ms > {S.SimTickMs}");
+        // Tik isi butceyle sinirli mi (en kotu ms'nin is mi duraklama mi oldugunu ayirir). Asim payi: asamalarin
+        // bolunmeyen kuyrugu (degisen hucrelerin cevresi, etkilenen silme); bir butce kadar pay.
+        int cellsCap = 2 * _d.Data.FlowField.MaxCellsPerTick;
+        if (_cellsMax > cellsCap) fails.Add($"akis alani tik isi en cok {_cellsMax} hucre > {cellsCap}");
         if (repairs < 3 && Enemies > 0) fails.Add($"artimli onarim {repairs}"); // --enemies=0: alan sorgulanmaz, onarim yok
         bool ok = fails.Count == 0;
         // Kare butcesi (TEKNIK 10, RTX 2070S'te cizimli kare) burada yalniz basliksiz CPU karesiyle olculur: asarsa
@@ -297,7 +305,7 @@ public partial class StressTest : Node
         string verdict = !ok ? "fail" : frameOk ? "ok" : "partial";
         float downMax = _reports.Values.Select(x => x.DownKBps).DefaultIfEmpty(0).Max();
         float cliP95 = _reports.Values.Select(x => x.ProcP95).DefaultIfEmpty(0).Max();
-        Log($"STRESS RESULT {verdict} players={Net.PlayerCount} ks={S.Ks} enemies_min={minActive} host_up_kbps={upKbps:0} (hedef {S.HostUpTargetKbps:0}, sinir {S.HostUpKbps:0}) client_down_kBps_max={downMax:0.0} (sinir {S.ClientDownKBps}) flow_tick_ms work_ticks={_flowWork.Count} p95={flowP95:0.00} max={flowMax:0.00} (sinir {S.SimTickMs}) flow_scan_p95={Pct(_scan, 0.95f):0.00} repairs={repairs} recomputes={recomputes} creature_packets={Net.CreaturePackets} frame={(frameOk ? "ok" : "over")} host_frame_ms med={frameMed:0.00} p95={frameP95:0.00} (sinir {S.KabarmaFrameMs}, basliksiz CPU) frames={_frame.Count} over16ms={over16:P0} client_frame_p95_max={cliP95:0.00} window={_window:0}s" + (fails.Count > 0 ? " :: " + string.Join("; ", fails.Take(8)) : ""));
+        Log($"STRESS RESULT {verdict} players={Net.PlayerCount} ks={S.Ks} enemies_min={minActive} host_up_kbps={upKbps:0} (hedef {S.HostUpTargetKbps:0}, sinir {S.HostUpKbps:0}) client_down_kBps_max={downMax:0.0} (sinir {S.ClientDownKBps}) flow_tick_ms work_ticks={_flowWork.Count} p95={flowP95:0.00} max={flowMax:0.00} (sinir {S.SimTickMs}, p95{(Players == 1 ? "" : ", yalniz --solo'da yargilanir")}) cells_max={_cellsMax} (butce {_d.Data.FlowField.MaxCellsPerTick}) flow_scan_p95={Pct(_scan, 0.95f):0.00} repairs={repairs} recomputes={recomputes} creature_packets={Net.CreaturePackets} frame={(frameOk ? "ok" : "over")} host_frame_ms med={frameMed:0.00} p95={frameP95:0.00} (sinir {S.KabarmaFrameMs}, basliksiz CPU) frames={_frame.Count} over16ms={over16:P0} client_frame_p95_max={cliP95:0.00} window={_window:0}s" + (fails.Count > 0 ? " :: " + string.Join("; ", fails.Take(8)) : ""));
         Finish(ok ? 0 : 1);
     }
 

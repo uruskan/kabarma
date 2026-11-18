@@ -348,10 +348,16 @@ public sealed class FlowFieldSet
     public void SetGoals(string key, IEnumerable<(float x, float z)> world) =>
         Field(key).SetGoals(world.Select(p => Grid.CellAt(p.x, p.z)).Where(i => i >= 0));
 
+    /// <summary>Ilk sorguda alan hic hesaplanmadiysa hemen, sonuna kadar hesaplanir mi (Sim ve testler). Oyun katmani
+    /// kapatir: ilk hesap da Tick butcesiyle yapilir, o arada sorgu gecersiz doner (yaratik dogrudan yurur).</summary>
+    public bool EagerFirstQuery { get; set; } = true;
+    /// <summary>Son Tick'te islenen hucre (olcum).</summary>
+    public int LastCells { get; private set; }
+
     public FlowSample Sample(string key, float x, float z)
     {
         if (!_fields.TryGetValue(key, out var f)) return default;
-        if (f.Recomputes == 0) f.Update(); // ilk sorgu: hemen, sonuna kadar hesapla (anahtar basina bir kez)
+        if (EagerFirstQuery && f.Recomputes == 0) f.Update(); // ilk sorgu: hemen, sonuna kadar hesapla (anahtar basina bir kez)
         return f.Sample(x, z);
     }
 
@@ -360,15 +366,17 @@ public sealed class FlowFieldSet
     /// </summary>
     public int Tick(int? max = null, int? cells = null)
     {
-        int fieldsMax = max ?? Grid.Def.MaxRecomputesPerTick, budget = cells ?? Grid.Def.MaxCellsPerTick, done = 0;
+        int fieldsMax = max ?? Grid.Def.MaxRecomputesPerTick, budget = cells ?? Grid.Def.MaxCellsPerTick, done = 0, spent = 0;
         var keys = _fields.Keys.ToList();
         for (int k = 0; k < keys.Count && done < fieldsMax && budget > 0; k++)
         {
             var f = _fields[keys[(_rr + k) % keys.Count]];
             if (!f.Dirty) continue;
-            budget -= f.Step(budget);
+            int used = f.Step(budget);
+            budget -= used; spent += used;
             done++;
         }
+        LastCells = spent;
         if (keys.Count > 0) _rr = (_rr + 1) % keys.Count;
         // Butun alanlarin okudugu gunluk kismi atilir.
         if (_fields.Count > 0) Grid.TrimLog(_fields.Values.Min(f => f.Seen));
