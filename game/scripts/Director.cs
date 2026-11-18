@@ -101,6 +101,7 @@ public partial class Director : Node3D
         // Tas Firin artik Insa basligiyla kurulan bir istasyon (M1).
         Build = BuildBridge.TryCreate(this);
         SetupPens(); // Director.Pen.cs: agil, kapilar, Yemlik, Folluk (yapi setinden sonra)
+        SetupRanch(); // Director.Ranch.cs: hayvancilik (M2 hayvan akisi)
         InitAtalar(); // boss/Director.Ata.cs: Ata Taslari, arenalar, Ata dovusu (GDD §18.1)
 
         State.Scenario.StepChanged += OnStepChanged;

@@ -56,6 +56,16 @@ Sahibin varlık kitaplığından (`F:\Assets`, yalnız okundu) kopyalanıp `pipe
 | `kaya` (2K) | `F:\Assets\cracked_nordic_coastal_rock_ukohaj0mw_4k` (Megascans) | Fab Standart Lisans (Megascans) | Aynı not |
 | `kum` (1K) | `F:\Assets\beach_sand_uinladeo_4k` (Megascans) | Fab Standart Lisans (Megascans) | Aynı not |
 
+## Hayvan akışı (M2) yer tutucuları
+
+Hepsi koddan, kredisiz ve lisans sorunu yok. Gerçekleri yaratik2 akışının aktörleri ve modelleri; onlar gelince yer tutucular kalkar.
+
+| Varlık | Kaynak | Lisans | Not |
+|---|---|---|---|
+| Vızvız gövdesi ve modeli olmayan tür | `game/scripts/husbandry/TameablePlaceholder.cs` (MeshKit küre/yastık) | Proje kodu | YER TUTUCU; diğer türler yaratik2'nin WildCreature aktörüyle gelir |
+| Suluk, Kaşınma Fırçası, Arı Kovanı | `pipeline/hayvan_props_kit.py` (Blender, yapı kitinin kalas dili, ortak ahşap atlası) | Proje kodu | Kredisiz; 396–660 üçgen |
+| Gübre yığını | `RanchSystem.PilesSync` (MeshKit küre) | Proje kodu | YER TUTUCU |
+
 ## Model yer tutucuları (dunya2, M2)
 
 | Tarih | Kaynak | Dosyalar | Not |
