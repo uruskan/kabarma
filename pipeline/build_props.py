@@ -759,7 +759,94 @@ def build_roket(o):
     preview("kargo_roketi", 3.6, 1.0)
 
 
-BUILDERS = {"ocakbasi": build_ocakbasi, "rampa_pisti": build_rampa, "kargo_roketi": build_roket}
+def build_kapak(o):
+    """Kapsul kapagi = rampa (data/kapsul.json hatch). Yatik: boy X (1,6 m), en Y (1,3 m), kalinlik Z; mentese kenari -X,
+    orta x=y=0, taban z=0. Ust yuz (+Z) ic yuz: baklava sac rampa ve kaymaz citalar (acilinca yukari bakar); alt yuz dis
+    yuz: boyali sac, kobalt bant, uyari seridi kenarlari. Dugum: 'hatch'."""
+    reset()
+    L, W, T = 1.6, 1.3, 0.11
+    outer = make_mat(painted_metal, "kpk_dis", (0.8, 0.78, 0.73), chips=0.9, rough=0.45, dirt=0.5)
+    coop = make_mat(painted_metal, "kpk_kooperatif", (0.2, 0.33, 0.48), chips=1.0, rough=0.48, dirt=0.4)
+    hz = make_mat(painted_metal, "kpk_serit", (0.85, 0.62, 0.12), chips=1.0, rough=0.5, dirt=0.45,
+                  stripes=((0.86, 0.63, 0.12), (0.07, 0.07, 0.075)), stripe_scale=3.0)
+    tread = make_mat(bare_metal, "kpk_sac", base=(0.34, 0.345, 0.35), rough=0.42, rust=0.3, tread=True)
+    steel = make_mat(bare_metal, "kpk_celik", base=(0.24, 0.24, 0.25), rough=0.4, rust=0.25, soot=0.15)
+    objs = [box("govde", (L, W, T * 0.7), (0, 0, T * 0.35), bevel=0.02, mat=outer)]
+    # dis yuz (alt): kobalt bant ve iki uyari seridi
+    objs.append(box("bant", (0.3, W * 0.98, 0.012), (0.15, 0, 0.004), bevel=0.004, mat=coop))
+    for s in (-1, 1):
+        objs.append(box("serit", (L * 0.96, 0.1, 0.012), (0, s * (W / 2 - 0.07), 0.004), bevel=0.004, mat=hz))
+    # ic yuz (ust): kenarlikli baklava sac ve kaymaz citalar
+    objs.append(box("cerceve", (L, W, 0.035), (0, 0, T * 0.7 + 0.0175), bevel=0.012, mat=steel))
+    objs.append(box("sac", (L - 0.12, W - 0.14, 0.03), (0.02, 0, T * 0.7 + 0.03), bevel=0.006, mat=tread))
+    for i in range(6):
+        x = -L / 2 + 0.22 + i * 0.25
+        objs.append(box("cita", (0.035, W - 0.24, 0.025), (x, 0, T * 0.7 + 0.055), bevel=0.006, mat=hz))
+    # mentese kollari (-X kenari): iki buyuk pim yuvasi
+    for s in (-1, 1):
+        objs.append(cyl("mentese", 0.07, 0.24, (-L / 2 - 0.02, s * 0.42, T * 0.45), rot=(math.pi / 2, 0, 0), verts=16, bevel=0.008, mat=steel))
+        objs.append(box("kol", (0.2, 0.2, 0.06), (-L / 2 + 0.08, s * 0.42, T * 0.45), bevel=0.01, mat=steel))
+    objs.append(cyl("pim", 0.025, W * 0.86, (-L / 2 - 0.02, 0, T * 0.45), rot=(math.pi / 2, 0, 0), verts=10, bevel=0.004, mat=steel))
+    # kilit dili (+X kenari) ve civata sirasi
+    for s in (-1, 0, 1):
+        objs.append(box("kilit", (0.1, 0.12, 0.05), (L / 2 + 0.02, s * 0.4, T * 0.4), bevel=0.01, mat=steel))
+    for i in range(-5, 6):
+        for s in (-1, 1):
+            objs.append(cyl("civata", 0.016, 0.012, (i * 0.14, s * (W / 2 - 0.035), T * 0.7 + 0.04), verts=6, bevel=0.003, mat=steel))
+    # Pod.Model'in kapali donusu (kapsul.json) yatik modelin ALT yuzunu disari, acikken yukari getirir (lineup denemesi):
+    # rampa yuzu alta gelsin diye X ekseninde 180 derece cevir, tabani z=0'a indir (mentese -X'te kalir).
+    flip = Matrix.Rotation(math.pi, 4, "X")
+    for ob in objs:
+        ob.data.transform(ob.matrix_world)
+        ob.matrix_world = Matrix.Identity(4)
+        ob.data.transform(flip)
+    zmin = min(v.co.z for ob in objs for v in ob.data.vertices)
+    for ob in objs:
+        ob.data.transform(Matrix.Translation((0, 0, -zmin)))
+    bake_and_export("kapsul_kapak", objs, o["tex"], o["samples"], parts={"hatch": objs})
+    preview("kapsul_kapak", 2.6, 0.1)
+
+
+def build_ayak(o):
+    """Kapsul inis ayagi (dik, taban z=0, baglanti catali ustte; 1,4 m, kapsul.json legLength'e olceklenir): genis taban
+    tabla + mafsal, alt boru, krom piston ve toz koruk, ust kovan, hidrolik hortum, ust catal. Dugum: 'leg'."""
+    reset()
+    paint = make_mat(painted_metal, "ayk_boya", (0.36, 0.4, 0.45), chips=0.9, rough=0.48, dirt=0.65)
+    chrome = make_mat(bare_metal, "ayk_krom", base=(0.62, 0.63, 0.64), rough=0.16, rust=0.05)
+    steel = make_mat(bare_metal, "ayk_celik", base=(0.22, 0.22, 0.23), rough=0.45, rust=0.35, soot=0.2)
+    rubber = make_mat(bare_metal, "ayk_lastik", base=(0.05, 0.05, 0.05), rough=0.85, rust=0.0)
+    hz = make_mat(painted_metal, "ayk_serit", (0.85, 0.62, 0.12), chips=1.0, rough=0.5, dirt=0.5,
+                  stripes=((0.86, 0.63, 0.12), (0.07, 0.07, 0.075)), stripe_scale=9.0)
+    objs = []
+    # taban tablasi: donel profil, cevresinde civatalar
+    objs.append(lathe("tabla", [(0.0, 0.0), (0.24, 0.0), (0.25, 0.025), (0.22, 0.06), (0.1, 0.09), (0.06, 0.12), (0.0, 0.12)], 28, steel))
+    for i in range(8):
+        a = i * math.tau / 8
+        objs.append(cyl("civata", 0.016, 0.02, (math.cos(a) * 0.2, math.sin(a) * 0.2, 0.045), verts=6, bevel=0.003, mat=steel))
+    bpy.ops.mesh.primitive_uv_sphere_add(radius=0.065, segments=16, ring_count=10, location=(0, 0, 0.14))
+    ball = bpy.context.object; ball.name = "mafsal"; finish(ball); ball.data.materials.append(steel); objs.append(ball)
+    # alt boru, piston, koruk, ust kovan
+    objs.append(cyl("alt_boru", 0.05, 0.48, (0, 0, 0.42), verts=16, bevel=0.006, mat=paint))
+    objs.append(cyl("serit", 0.053, 0.08, (0, 0, 0.3), verts=16, bevel=0.004, mat=hz))
+    objs.append(cyl("piston", 0.03, 0.3, (0, 0, 0.78), verts=16, bevel=0.004, mat=chrome))
+    for i in range(4):
+        objs.append(cyl("koruk", 0.045 if i % 2 == 0 else 0.038, 0.035, (0, 0, 0.67 + i * 0.03), verts=16, bevel=0.006, mat=rubber))
+    objs.append(cyl("ust_kovan", 0.06, 0.42, (0, 0, 1.12), verts=16, bevel=0.008, mat=paint))
+    objs.append(cyl("bilezik", 0.067, 0.04, (0, 0, 0.93), verts=16, bevel=0.006, mat=steel))
+    # hortum: yan tarafta iki kelepceyle
+    objs.append(cyl("hortum", 0.013, 0.7, (0.075, 0, 0.82), verts=8, bevel=0, mat=rubber))
+    for z in (0.55, 1.05):
+        objs.append(box("kelepce", (0.05, 0.03, 0.025), (0.065, 0, z), bevel=0.004, mat=steel))
+    # ust catal ve pim
+    for s in (-1, 1):
+        objs.append(box("catal", (0.11, 0.025, 0.14), (0, s * 0.045, 1.38), bevel=0.008, mat=steel))
+    objs.append(cyl("pim", 0.02, 0.13, (0, 0, 1.39), rot=(math.pi / 2, 0, 0), verts=10, bevel=0.003, mat=chrome))
+    bake_and_export("kapsul_ayak", objs, o["tex"], o["samples"], parts={"leg": objs})
+    preview("kapsul_ayak", 2.2, 0.7)
+
+
+BUILDERS = {"ocakbasi": build_ocakbasi, "rampa_pisti": build_rampa, "kargo_roketi": build_roket,
+            "kapsul_kapak": build_kapak, "kapsul_ayak": build_ayak}
 
 if __name__ == "__main__":
     opts = argv()

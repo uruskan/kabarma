@@ -1,0 +1,3 @@
+1.1 kapsul
+1.2 kapak_deneme_kapali
+1.3 kapak_deneme_acik

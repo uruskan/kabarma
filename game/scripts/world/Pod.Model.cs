@@ -49,7 +49,8 @@ public partial class Pod
                 holder.RotationDegrees = new Vector3(k.HatchClosedRotation[0], k.HatchClosedRotation[1], k.HatchClosedRotation[2]);
             _hatch.AddChild(holder);
         }
-        if (_golden != null && Assets.Load(k.Leg) is Node3D legProto)
+        // Eski govdenin kendi kisa ayaklari var: ayri ayaklar da yalniz yeni (kapaksiz) govdeyle takilir.
+        if (_golden != null && !bodyHasHatch && Assets.Load(k.Leg) is Node3D legProto)
         {
             Fit(legProto, k.LegLength);
             foreach (var l in k.Legs.Where(l => l.Pos.Length == 3))
