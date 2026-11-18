@@ -15,8 +15,13 @@ public partial class Director
 
     void InitNet()
     {
+        // Steam daveti oyunu kapaliyken kabul edilirse Steam oyunu "+connect_lobby <no>" ile baslatir.
+        var cmd = OS.GetCmdlineArgs();
+        int i = System.Array.IndexOf(cmd, "+connect_lobby");
+        if (i >= 0 && i + 1 < cmd.Length && !Main.Args.ContainsKey("coop")) { Main.Args["coop"] = "client"; Main.Args["transport"] = "steam"; Main.Args["connect_lobby"] = cmd[i + 1]; }
         Net = NetSync.TryCreate(this);
         if (Net != null) AddChild(new PlayerList(this) { Name = "PlayerList" });
+        AddChild(new NetHotkeys(this) { Name = "NetHotkeys" });
     }
 
     /// <summary>Ortak oyunda zaman yavaslamaz: vurus duraklamasi ve kart secimi yalniz tek oyuncuda (GDD 15; NetCards).</summary>

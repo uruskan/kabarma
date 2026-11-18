@@ -64,6 +64,9 @@ public sealed class NetSectionSet
         return true;
     }
 
+    /// <summary>Bu ese en az bir kez gonderildi mi (katilmada her bolum hemen gider).</summary>
+    public bool WasSent(INetSection s, int peer) => _sent.ContainsKey((s.Id, peer));
+
     /// <summary>Esin bolumlerini "gonderilmedi" sayar (katilma, yeniden esleme).</summary>
     public void Forget(int peer, string? id = null)
     {

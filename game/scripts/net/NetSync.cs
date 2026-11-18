@@ -84,6 +84,7 @@ public partial class NetSync : Node
         RegisterDowned();   // NetSync.Downed.cs
         RegisterCreatures(); // NetSync.Creatures.cs
         RegisterVoice();    // NetSync.Voice.cs
+        CallDeferred(nameof(RegisterSaveBridge)); // NetSync.Save.cs: butun _Ready'lerden sonra (kayit bolumleri eklenmis olsun)
         if (_tx == null) { Fail(err ?? "taşıma kurulamadı"); return; }
         Status = host ? $"host · {_tx.Address}" : $"bağlanıyor · {_tx.Address}";
         if (host) RebuildRoster();
@@ -174,7 +175,8 @@ public partial class NetSync : Node
         TickWorld(dt);                       // NetSync.World.cs: istemci kazma birikimi
         TickDowned(dt, now);                 // NetSync.Downed.cs
         TickVoice(dt);                       // NetSync.Voice.cs
-        if (IsHost && _sectionAcc >= 1.0 / Cfg.SectionHz) { _sectionAcc = 0; SendSections(); }
+        TickSaveBridge(dt);                  // NetSync.Save.cs: kayit bolumleri saniyede bir
+        if (IsHost && (_sectionAcc >= 1.0 / Cfg.SectionHz || _saveTick)) { _sectionAcc = 0; SendSections(); }
         if (IsHost && _digestAcc >= Cfg.DigestSeconds) { _digestAcc = 0; SendDigests(); }
     }
 
@@ -315,14 +317,14 @@ public partial class NetSync : Node
         {
             if (!a.Ready) continue;
             foreach (var s in Sections.All)
-                if (Sections.Changed(s, peer, out var payload, out var hash))
+                if ((_saveTick || !_volatile.Contains(s.Id) || !Sections.WasSent(s, peer)) && Sections.Changed(s, peer, out var payload, out var hash))
                     SendTo(peer, NetPackets.Section(s.Id, hash, payload));
         }
     }
 
     void SendDigests()
     {
-        foreach (var (peer, a) in Actors) if (a.Ready) SendTo(peer, NetPackets.Digest(Sections.Digest(peer)));
+        foreach (var (peer, a) in Actors) if (a.Ready) SendTo(peer, NetPackets.Digest(Sections.Digest(peer).Where(d => !_volatile.Contains(d.id))));
     }
 
     /// <summary>Host: bir bolumun hemen gonderilmesini ister (olay aninda, 5 Hz'i beklemeden).</summary>

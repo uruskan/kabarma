@@ -72,6 +72,8 @@ public sealed class NetFile
     public NetDownedDef Downed { get; set; } = new();
     public NetVoiceDef Voice { get; set; } = new();
     public NetSteamDef Steam { get; set; } = new();
+    /// <summary>Kayit koprusune girmeyen dunya bolumleri (kisisel ya da set'i canli oyunda nesne sifirlayan).</summary>
+    public List<string> SaveBridgeSkip { get; set; } = new();
 }
 
 public sealed partial class GameData

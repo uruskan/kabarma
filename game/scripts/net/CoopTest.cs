@@ -43,6 +43,7 @@ public partial class CoopTest : Node
         public Dictionary<string, ulong> Hashes = new();
         public int Stone, Built, Mismatches, Applied;
         public int PiecesSeen;
+        public HashSet<string> SaveApplied = new();
     }
 
     /// <summary>Main.Tests["coop"]: rol ve bos port; Director kurulmadan once.</summary>
@@ -184,6 +185,8 @@ public partial class CoopTest : Node
         w.VarU((uint)Net.SectionMismatches);
         w.VarU((uint)Net.SectionsApplied);
         w.VarU((uint)(_d.Build?.System.Pieces.Count ?? 0));
+        w.U8((byte)Net.Applied.Count);
+        foreach (var id in Net.Applied.Keys) w.Str(id);
     }
 
     // ---------- host ----------
@@ -199,8 +202,10 @@ public partial class CoopTest : Node
         int m = r.U8();
         for (int i = 0; i < m; i++) rep.Hashes[r.Str()] = r.U64();
         rep.Stone = (int)r.VarU(); rep.Built = (int)r.VarU(); rep.Mismatches = (int)r.VarU(); rep.Applied = (int)r.VarU(); rep.PiecesSeen = (int)r.VarU();
+        int k = r.U8();
+        for (int i = 0; i < k; i++) rep.SaveApplied.Add(r.Str());
         _reports[peer] = rep;
-        Log($"COOP report peer={peer} stone={rep.Stone} built={rep.Built} pieces={rep.PiecesSeen} applied={rep.Applied} mismatches={rep.Mismatches}");
+        Log($"COOP report peer={peer} stone={rep.Stone} built={rep.Built} pieces={rep.PiecesSeen} applied={rep.Applied} mismatches={rep.Mismatches} save_sections={rep.SaveApplied.Count}/{Net.BridgedSections}");
     }
 
     void Judge()
@@ -227,8 +232,9 @@ public partial class CoopTest : Node
             if (rep.Seen.Count != Clients) fails.Add($"peer{c} sees {rep.Seen.Count} players");
             foreach (var s in Net.Sections.All)
             {
-                ulong want = Net.Sections.Hash(s, c);
-                if (!rep.Hashes.TryGetValue(s.Id, out var got) || got != want) fails.Add($"peer{c} section {s.Id} differs");
+                if (!rep.Hashes.TryGetValue(s.Id, out var got)) { fails.Add($"peer{c} section {s.Id} missing"); continue; }
+                if (Net.IsVolatile(s.Id)) { if (!rep.SaveApplied.Contains(s.Id)) fails.Add($"peer{c} never applied {s.Id}"); continue; } // istemcide de isler: yalniz uygulandi mi
+                if (got != Net.Sections.Hash(s, c)) fails.Add($"peer{c} section {s.Id} differs");
             }
             if (rep.Built < 1) fails.Add($"peer{c} built nothing");
             var actor = Net.Actors.GetValueOrDefault(c);
