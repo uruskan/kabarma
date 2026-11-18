@@ -1,0 +1,125 @@
+{
+  "_not": "Hayvancilik (GDD 9.1-9.4; ICERIK 3.1-3.2 evcil rol, urun ve sevdigi yem; ICERIK 2.2 hayvansal kaynaklar; ICERIK 10.2 Suluk, Kasinma Fircasi, Ari Kovani; ICERIK 11 Kulucka). Cayir ve Koru'nun 8 evcil turu. Gidak'in ilk gun kurallari (ogretici guven, ilk yumurta, Folluk) pen.json'da; buradaki gidak satiri onunla ayni alan, yem ve urunu tasir (DataTests denetler). Sureler oyun saniyesi; bir oyun gunu calendar.json'dan (30 dk).",
+  "_belgesiz": "Belgede sayisi olmayanlar (hayvan akisi, M2): mutluluk agirliklari, hizi, okşama ve gubre puani, kalite basamaklari; urun ve is araliklari (Gidak yumurtasi haric: 180 sn URETIM 6 M1); tur basina guven yemi, alan (Gidak 4 haric), heybe (Dalli 16 haric); kacma esigi ve suresi; yetiskinlik gunu; komut dinleme; B geninin can, heybe ve hiz katkisi; Kulucka suresi; Suluk sigasi. Sahip oynayinca ayarlanir.",
+  "happiness": {
+    "start": 50,
+    "base": 10,
+    "ratePerDay": 60,
+    "weights": { "food": 30, "water": 20, "roof": 10, "space": 20, "brush": 10 },
+    "petBonus": 15,
+    "petsPerDay": 1,
+    "manurePenalty": 4,
+    "manurePenaltyMax": 24,
+    "tiers": [
+      { "min": 0, "stars": 1, "yield": 1.0, "speed": 0.75 },
+      { "min": 50, "stars": 2, "yield": 1.0, "speed": 1.0 },
+      { "min": 80, "stars": 3, "yield": 1.5, "speed": 1.2 }
+    ]
+  },
+  "genes": {
+    "min": 1,
+    "max": 10,
+    "wildMin": 1,
+    "wildMax": 3,
+    "mutation": [
+      { "p": 0.70, "delta": 0 },
+      { "p": 0.20, "delta": 1 },
+      { "p": 0.08, "delta": -1 },
+      { "p": 0.02, "delta": 2 }
+    ],
+    "uSpeedPerPoint": 0.04,
+    "vYieldPerPoint": 0.1,
+    "bHpPerPoint": 0.1,
+    "bPackPerPoint": 1,
+    "bSpeedPerPoint": 0.03,
+    "obeyBase": 0.55,
+    "obeyPerPoint": 0.05
+  },
+  "breeding": { "minHappiness": 60, "minDays": 2, "maxDays": 4, "adultDays": 3 },
+  "escape": { "below": 20, "seconds": 240, "trustAfter": 0.5 },
+  "manure": { "item": "gubre", "seconds": 600, "pileRadius": 2.0 },
+  "subdue": { "hpFraction": 0.25, "tools": ["cekim", "zipkin"] },
+  "trough": { "capacity": 20, "perAnimalPerDay": 2, "refillAtDawn": true },
+  "incubator": { "seconds": 600 },
+  "brushRadius": 6,
+  "petRange": 2.2,
+  "roles": [
+    { "id": "uretici", "name": "Üretici" },
+    { "id": "bekci", "name": "Bekçi" },
+    { "id": "binek", "name": "Binek" },
+    { "id": "yuk", "name": "Yük" },
+    { "id": "isci", "name": "İşçi" },
+    { "id": "savasci", "name": "Savaşçı" }
+  ],
+  "commands": [
+    { "id": "izle", "name": "İzle" },
+    { "id": "bekle", "name": "Bekle" },
+    { "id": "saldir", "name": "Saldır" },
+    { "id": "don", "name": "Dön" }
+  ],
+  "species": [
+    {
+      "id": "gidak", "name": "Gıdak", "tame": "feed", "home": "pen", "food": "wheat", "foodToTrust": 3, "area": 4,
+      "roles": ["uretici", "binek"],
+      "products": [
+        { "item": "egg", "seconds": 180, "food": 1, "amount": 1, "nest": true },
+        { "item": "tuy", "seconds": 900, "food": 0, "amount": 1 }
+      ],
+      "color": "#F2EBDD", "size": 0.75, "speed": 1.6
+    },
+    {
+      "id": "pofuduk", "name": "Pofuduk", "tame": "feed", "home": "pen", "food": "turnip", "foodToTrust": 3, "area": 9,
+      "roles": ["uretici", "savasci"],
+      "products": [
+        { "item": "sut", "seconds": 150, "food": 1, "amount": 1 },
+        { "item": "yun", "seconds": 420, "food": 1, "amount": 2 }
+      ],
+      "color": "#F4E6F0", "size": 1.1, "speed": 1.1
+    },
+    {
+      "id": "homur", "name": "Homur", "tame": "feed", "home": "pen", "food": "kabak", "foodToTrust": 4, "area": 9,
+      "roles": ["isci", "binek", "uretici"],
+      "products": [ { "item": "deri", "seconds": 1500, "food": 2, "amount": 1 } ],
+      "work": { "kind": "dig", "seconds": 300, "yield": [ { "item": "copper_ore", "weight": 3 }, { "item": "truf", "weight": 1 } ] },
+      "color": "#B07A5A", "size": 1.0, "speed": 1.4
+    },
+    {
+      "id": "dalli", "name": "Dallı", "tame": "feed", "home": "pen", "food": "bogurtlen", "foodToTrust": 4, "area": 9,
+      "roles": ["yuk", "uretici"],
+      "products": [ { "item": "deri", "seconds": 1500, "food": 2, "amount": 1 } ],
+      "pack": 16,
+      "color": "#8C6A44", "size": 1.4, "speed": 2.2
+    },
+    {
+      "id": "hu", "name": "Hu", "tame": "egg", "home": "pen", "food": "et", "foodToTrust": 0, "area": 4,
+      "egg": "hu_yumurtasi",
+      "roles": ["isci", "uretici"],
+      "products": [ { "item": "tuy", "seconds": 600, "food": 1, "amount": 2 } ],
+      "work": { "kind": "scout", "seconds": 60, "radius": 30 },
+      "color": "#6B6F8A", "size": 0.6, "speed": 2.0
+    },
+    {
+      "id": "vicik", "name": "Vıcık", "tame": "feed", "home": "pen", "food": "mantar", "foodToTrust": 3, "area": 4,
+      "roles": ["isci", "uretici"],
+      "products": [ { "item": "sumuk", "seconds": 300, "food": 1, "amount": 1 } ],
+      "work": { "kind": "compost", "seconds": 240, "in": "gubre", "out": "kompost" },
+      "color": "#7FBF6A", "size": 0.6, "speed": 0.8
+    },
+    {
+      "id": "bozuk", "name": "Bozuk", "tame": "subdue", "home": "pen", "food": "bal", "foodToTrust": 2, "area": 16,
+      "roles": ["savasci", "bekci", "uretici"],
+      "products": [ { "item": "kurk", "seconds": 1200, "food": 1, "amount": 1 } ],
+      "color": "#5A4632", "size": 1.8, "speed": 1.8
+    },
+    {
+      "id": "vizviz", "name": "Vızvız", "tame": "feed", "home": "hive", "food": "aycicegi", "foodToTrust": 2, "area": 0,
+      "roles": ["uretici"],
+      "products": [
+        { "item": "bal", "seconds": 400, "food": 0, "amount": 1 },
+        { "item": "balmumu", "seconds": 900, "food": 0, "amount": 1 }
+      ],
+      "pollinateRadius": 12,
+      "color": "#F2C230", "size": 0.5, "speed": 1.2
+    }
+  ]
+}

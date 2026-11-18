@@ -557,6 +557,9 @@ Kare Temel · Üçgen Temel · Kazık Temel · Duvar · Yarım Duvar · Alçak D
 | Meşale | 2 Odun | 6 m gece ışığı |
 | Yemlik | 6 Odun | Ağılda; içine yem konur |
 | Folluk | 4 Odun + 4 Lif | Ağıldaki Gıdak buraya yumurtlar (6 yuva); Folluk yoksa yere |
+| Suluk (M2) | 4 Odun + 2 Taş | Ağılın su ihtiyacı; Sulama başlığıyla ya da kendiliğinden yağmurla dolar (şimdilik her şafakta dolu) |
+| Kaşınma Fırçası (M2) | 3 Odun + 3 Lif | Ağıldakilerin mutluluğuna sürekli ek |
+| Arı Kovanı (M2) | 8 Odun + 2 Lif | Vızvız sürüsü yerleşir, kayıt olur; bal ve balmumu birikir |
 
 ## 11. İstasyonlar ve makineler (43)
 
