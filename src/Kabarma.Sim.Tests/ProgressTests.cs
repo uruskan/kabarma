@@ -109,13 +109,13 @@ public class ProgressTests
         s.OrderPaidCheck(out var paid);
         s.Orders.OpenDefter();
         s.Orders.Report("swollen_crop", 5);            // Salgam Baronu adim 1
-        Assert.Equal((100, 10), (s.OrderCredits, s.Veri));
+        Assert.Equal((100, 10), (s.Orders.CreditsPaid, s.Research.Veri));
         Assert.Equal(100, s.Credits);
         Assert.Empty(s.Sales);                          // Hasat Raporu'nu ve Sold'u etkilemez
         Assert.Equal(0, s.Orders.Chain("ciraklik")!.Count("cargo_sold"));
         s.Orders.Report("swollen_crop", 100);          // adim 2 (400) ve 3 (1500) birden
         Assert.Equal(100 + 400 + 1500, s.Credits);
-        Assert.Equal(10 + 20 + 40, s.Veri);
+        Assert.Equal(10 + 20 + 40, s.Research.Veri);
         Assert.Equal(3, paid.Count);
     }
 
@@ -130,7 +130,7 @@ public class ProgressTests
         Assert.Single(s.Orders.PendingRewards);
         s.Orders.OpenDefter();
         Assert.Equal(100, s.Credits);
-        Assert.Equal(10, s.Veri);
+        Assert.Equal(10, s.Research.Veri);
         Assert.Empty(s.Orders.PendingRewards);
     }
 
@@ -174,7 +174,7 @@ public class ProgressTests
     }
 
     [Fact]
-    public void Order_book_state_round_trips_through_json()
+    public void Order_book_save_round_trips_through_json()
     {
         var s = New();
         s.Orders.Report("planted", 3);
@@ -183,16 +183,16 @@ public class ProgressTests
         s.Orders.Level("herd_size", 7);
         s.Orders.Report("swollen_crop", 30);
         s.Orders.Pin("devler_ligi");
-        var json = JsonSerializer.Serialize(s.Orders.Export());
+        var json = JsonSerializer.Serialize(s.Orders.Save());
 
         var t = New();
-        t.Orders.Import(JsonSerializer.Deserialize<OrderBookState>(json)!);
+        t.Orders.Load(JsonSerializer.Deserialize<OrdersSave>(json)!);
         Assert.True(t.Orders.DefterOpen);
         Assert.Equal("devler_ligi", t.Orders.PinnedId);
         Assert.Equal(2, t.Orders.Chain("yesil_parmak")!.Count("crop_kind"));
         Assert.Equal(7, t.Orders.Chain("suru_sahibi")!.Count("herd_size"));
         Assert.True(t.Orders.Chain("salgam_baronu")!.StepDone(0) && t.Orders.Chain("salgam_baronu")!.StepDone(1) && !t.Orders.Chain("salgam_baronu")!.StepDone(2));
-        Assert.Equal(JsonSerializer.Serialize(s.Orders.Export()), JsonSerializer.Serialize(t.Orders.Export()));
+        Assert.Equal(JsonSerializer.Serialize(s.Orders.Save()), JsonSerializer.Serialize(t.Orders.Save()));
         t.Orders.ReportKey("crop_kind", "a");           // yuklenen anahtar kumesi korunur: tekrar sayilmaz
         Assert.Equal(2, t.Orders.Chain("yesil_parmak")!.Count("crop_kind"));
     }
@@ -313,6 +313,50 @@ public class ProgressTests
         Assert.Equal(Data().Mastery.Xp["plant"].Xp, s.Mastery.Xp("ciftcilik"));
     }
 
+    // ---------- Kayit (TEKNIK 9.1) ----------
+
+    [Fact]
+    public void Orders_mastery_and_achievements_survive_capture_restore_with_character_scope_apart()
+    {
+        var a = New();
+        a.Orders.Report("planted", 3);
+        a.Orders.OpenDefter();
+        a.Orders.ReportKey("crop_kind", "a"); a.Orders.ReportKey("crop_kind", "b");
+        a.Orders.Level("herd_size", 7);
+        a.Orders.Report("swollen_crop", 30);
+        a.Orders.Report("kabarma_survived");
+        a.Orders.Pin("devler_ligi");
+        a.Mastery.AddXp("ciftcilik", a.Mastery.Threshold(10));
+        a.Mastery.Choose("ciftcilik", 10, 'B');
+        a.Mastery.Scale("crop_yield", 3, a.MasteryRng);
+
+        var ra = new SaveRegistry().AddRange(a.SaveSections());
+        var world = SaveCodec.Decode(SaveCodec.Encode(ra.Capture(SaveScope.World, a.Manifest("w"))));
+        var character = SaveCodec.Decode(SaveCodec.Encode(ra.Capture(SaveScope.Character, a.Manifest("c"))));
+        Assert.Contains("mastery", character.Sections.Keys);
+        Assert.Contains("achievements", character.Sections.Keys);
+        Assert.DoesNotContain("mastery", world.Sections.Keys);
+        Assert.Contains("orders", world.Sections.Keys);
+
+        var b = New();
+        var rb = new SaveRegistry().AddRange(b.SaveSections());
+        int paid = 0;
+        b.OrderPaid += (_, _, _) => paid++;
+        rb.Restore(world);
+        rb.Restore(character, SaveScope.Character);
+        Assert.Equal(0, paid);                                    // yukleme odeme yapmaz
+        Assert.Equal(JsonSerializer.Serialize(a.Orders.Save()), JsonSerializer.Serialize(b.Orders.Save()));
+        Assert.True(b.Orders.DefterOpen);
+        Assert.Equal("devler_ligi", b.Orders.PinnedId);
+        Assert.Equal(2, b.Orders.Chain("yesil_parmak")!.Count("crop_kind"));
+        Assert.True(b.Mastery.Has("ciftcilik_10b_cabuk_filiz"));
+        Assert.Equal(a.Mastery.Xp("ciftcilik"), b.Mastery.Xp("ciftcilik"));
+        Assert.True(b.Achievements.IsUnlocked("ilk_gece"));
+        // ayni komut, ayni sonuc: sans akisi da yuklendi
+        for (int i = 0; i < 6; i++) Assert.Equal(a.Mastery.Scale("crop_yield", 3, a.MasteryRng), b.Mastery.Scale("crop_yield", 3, b.MasteryRng));
+        b.Orders.ReportKey("crop_kind", "a");                     // yuklenen anahtar kumesi: tekrar sayilmaz
+        Assert.Equal(2, b.Orders.Chain("yesil_parmak")!.Count("crop_kind"));
+    }
     // ---------- Basarimlar ----------
 
     [Fact]

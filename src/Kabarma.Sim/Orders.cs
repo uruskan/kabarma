@@ -74,6 +74,9 @@ public sealed partial class OrderBook
     public Dictionary<string, HashSet<string>> StatKeys { get; } = new();
     /// <summary>Acilan seyler ("kind:id"): sahibi sistem (kart, uye, kozmetik, plan, esya) buradan okur.</summary>
     public HashSet<string> Granted { get; } = new();
+    /// <summary>Is emri odemelerinin toplami (Kredi, Veri).</summary>
+    public int CreditsPaid { get; private set; }
+    public int VeriPaid { get; private set; }
     /// <summary>Defter kapaliyken biten, odulu bekleyen adimlar ("zincir:adim").</summary>
     public IReadOnlyList<string> PendingRewards => _pending;
 
@@ -186,6 +189,7 @@ public sealed partial class OrderBook
     {
         int cr = i < _def.StepRewards.Credits.Count ? _def.StepRewards.Credits[i] : 0;
         int veri = i < _def.StepRewards.Veri.Count ? _def.StepRewards.Veri[i] : 0;
+        CreditsPaid += cr; VeriPaid += veri;
         _pay?.Invoke(cr, veri, $"{c.Def.Id} {i + 1}");
         RewardPaid?.Invoke(c, i, cr, veri);
         foreach (var g in c.Def.Grants.Where(g => g.Step == i + 1))
@@ -214,61 +218,4 @@ public sealed partial class OrderBook
         PinnedId = id;
         return true;
     }
-
-    // ---- Kayit: duz, serilestirilebilir (TEKNIK 9) ----
-
-    public OrderBookState Export() => new()
-    {
-        DefterOpen = DefterOpen,
-        PinnedId = PinnedId,
-        Pending = _pending.ToList(),
-        Granted = Granted.OrderBy(x => x, StringComparer.Ordinal).ToList(),
-        Stats = new(Stats),
-        StatKeys = StatKeys.ToDictionary(k => k.Key, k => k.Value.OrderBy(x => x, StringComparer.Ordinal).ToList()),
-        Chains = _chains.Select(c => new ChainSave
-        {
-            Id = c.Def.Id, Opened = c.Opened, Done = c.DoneFlags().ToList(), Counts = new(c.Counts),
-            Keys = c.Keys.ToDictionary(k => k.Key, k => k.Value.OrderBy(x => x, StringComparer.Ordinal).ToList()),
-        }).ToList(),
-    };
-
-    /// <summary>Kaydi yukler (olay tetiklemez, odeme yapmaz). Tanimsiz zincir yok sayilir.</summary>
-    public void Import(OrderBookState s)
-    {
-        DefterOpen = s.DefterOpen;
-        PinnedId = s.PinnedId;
-        _pending.Clear(); _pending.AddRange(s.Pending);
-        Granted.Clear(); foreach (var g in s.Granted) Granted.Add(g);
-        Stats.Clear(); foreach (var (k, v) in s.Stats) Stats[k] = v;
-        StatKeys.Clear(); foreach (var (k, v) in s.StatKeys) StatKeys[k] = new(v);
-        foreach (var cs in s.Chains)
-        {
-            var c = Chain(cs.Id);
-            if (c == null) continue;
-            c.Opened = cs.Opened;
-            c.SetDone(cs.Done);
-            c.Counts.Clear(); foreach (var (k, v) in cs.Counts) c.Counts[k] = v;
-            c.Keys.Clear(); foreach (var (k, v) in cs.Keys) c.Keys[k] = new(v);
-        }
-    }
-}
-
-public sealed class ChainSave
-{
-    public string Id { get; set; } = "";
-    public bool Opened { get; set; }
-    public List<bool> Done { get; set; } = new();
-    public Dictionary<string, int> Counts { get; set; } = new();
-    public Dictionary<string, List<string>> Keys { get; set; } = new();
-}
-
-public sealed class OrderBookState
-{
-    public bool DefterOpen { get; set; }
-    public string PinnedId { get; set; } = "";
-    public List<string> Pending { get; set; } = new();
-    public List<string> Granted { get; set; } = new();
-    public Dictionary<string, int> Stats { get; set; } = new();
-    public Dictionary<string, List<string>> StatKeys { get; set; } = new();
-    public List<ChainSave> Chains { get; set; } = new();
 }

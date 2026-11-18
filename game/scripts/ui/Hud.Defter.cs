@@ -64,7 +64,7 @@ public partial class Hud
         var opened = o.Chains.Where(c => c.Opened).ToList();
         _defterSel = Mathf.Clamp(_defterSel, 0, Mathf.Max(0, opened.Count - 1));
         _defterPage.AddChild(UL(o.DefterOpen
-            ? $"{opened.Count}/{o.ChainsTotal} zincir açık · {o.OrdersTotal} iş emri. Suna okur, Defter tutar. Kredi {s.Credits} · Veri {s.Veri}"
+            ? $"{opened.Count}/{o.ChainsTotal} zincir açık · {o.OrdersTotal} iş emri. Suna okur, Defter tutar. Kredi {s.Credits} · Veri {s.Research.Veri}"
             : "Defter ilk Kabarma'dan sonra açılır. Şimdilik Çıraklık.", 16, T.Muted));
 
         // Ogretici adimi (GDD 24): senaryo surerken

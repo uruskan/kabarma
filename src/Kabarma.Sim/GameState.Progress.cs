@@ -1,16 +1,12 @@
 namespace Kabarma.Sim;
 
 /// <summary>
-/// GameState'in ilerleme parcasi (M2 ilerleme akisi): is emri odulleri (Kredi, Veri), Ustalik ve basarimlar.
+/// GameState'in ilerleme parcasi (M2 ilerleme akisi): is emri odulleri (Kredi, Veri: Research.AddVeri), Ustalik ve basarimlar.
 /// Ustalik ve basarimlar karakter durumudur (dunyalar arasinda tasinir, TEKNIK 9); is emirleri dunya durumudur.
 /// Hepsi duz siniflarda: Orders.Export / Mastery.Export / Achievements.Export.
 /// </summary>
 public sealed partial class GameState
 {
-    /// <summary>Araştırma Veri'si (iş emirleri, tarama ve enkaz verir; ICERIK 12). Harcama araştırma akışının (zincir).</summary>
-    public int Veri { get; private set; }
-    /// <summary>Is emri odemelerinden gelen toplam Kredi (Sales'e girmez: Hasat Raporu'nu ve "cargo_sold"u etkilemez).</summary>
-    public int OrderCredits { get; private set; }
     public Mastery Mastery { get; private set; } = null!;
     public AchievementBook Achievements { get; private set; } = null!;
     /// <summary>Ustalik sansi (kesir yuvarlama) icin ayri akis: oyunun Rng'ini kaydirmaz.</summary>
@@ -42,17 +38,8 @@ public sealed partial class GameState
     void GrantOrderReward(int credits, int veri, string what)
     {
         Credits += credits;
-        Veri += veri;
-        OrderCredits += credits;
+        Research.AddVeri(veri, "is_emri"); // Veri'nin sahibi Arastirma (Research.cs)
         OrderPaid?.Invoke(credits, veri, what);
-    }
-
-    /// <summary>Veri harcar (araştırma). Yetmiyorsa false.</summary>
-    public bool SpendVeri(int amount)
-    {
-        if (amount < 0 || Veri < amount) return false;
-        Veri -= amount;
-        return true;
     }
 
     /// <summary>Kredi harcar (katalog, Ustalik sifirlama). Yetmiyorsa false.</summary>

@@ -67,9 +67,9 @@ public partial class IlerlemeTest : Node
                 Check(s.Achievements.Count == 14, "basarimlar: 12 zincir + 2");
                 // Is emri odemesi: Defter acilinca adim biter bitmez Kredi ve Veri
                 s.Orders.OpenDefter();
-                int c0 = s.Credits, v0 = s.Veri;
+                int c0 = s.Credits, v0 = s.Research.Veri;
                 s.Orders.Report("swollen_crop", 5);
-                Check(s.Credits == c0 + 100 && s.Veri == v0 + 10, $"adim odulu: kredi {s.Credits - c0} veri {s.Veri - v0}");
+                Check(s.Credits == c0 + 100 && s.Research.Veri == v0 + 10, $"adim odulu: kredi {s.Credits - c0} veri {s.Research.Veri - v0}");
                 Check(s.Orders.Tracked?.Def.Id == "salgam_baronu", "takip: Salgam Baronu");
                 // Ustalik: ciftcilik 10. seviye, secim bekliyor
                 s.Mastery.AddXp("ciftcilik", s.Mastery.Threshold(10));
@@ -124,7 +124,7 @@ public partial class IlerlemeTest : Node
                 s.Orders.Report("kabarma_survived");
                 Check(s.Achievements.IsUnlocked("ilk_gece"), "ilk_gece basarimi");
                 hud.CloseInventory();
-                GD.Print($"ILERLEME RESULT ok checks={_checks} credits={s.Credits} veri={s.Veri} t={_t:0.0}");
+                GD.Print($"ILERLEME RESULT ok checks={_checks} credits={s.Credits} veri={s.Research.Veri} t={_t:0.0}");
                 GetTree().Quit(0);
                 SetProcess(false);
                 break;

@@ -147,8 +147,8 @@ public sealed class Mastery
 
     public MasteryState Export() => new()
     {
-        Xp = _xp.ToDictionary(k => k.Key, k => k.Value),
-        Choices = new(_choices),
+        Xp = new SortedDictionary<string, double>(_xp, StringComparer.Ordinal),
+        Choices = new SortedDictionary<string, string>(_choices, StringComparer.Ordinal),
     };
 
     public void Import(MasteryState s)
@@ -161,6 +161,6 @@ public sealed class Mastery
 
 public sealed class MasteryState
 {
-    public Dictionary<string, double> Xp { get; set; } = new();
-    public Dictionary<string, string> Choices { get; set; } = new();
+    public SortedDictionary<string, double> Xp { get; set; } = new(StringComparer.Ordinal);
+    public SortedDictionary<string, string> Choices { get; set; } = new(StringComparer.Ordinal);
 }

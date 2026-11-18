@@ -99,7 +99,7 @@ public partial class Bot : Node
             _done = true;
             var s = _d.State;
             if (OrdersCheck() is string orderWhy) { GD.Print($"RESULT fail orders {orderWhy} t={_t:0.0}"); GetTree().Quit(1); return; } // Bot.Ilerleme.cs: ilk is emri zinciri
-            GD.Print($"RESULT ok ciraklik={s.Orders.Chain("ciraklik")!.DoneCount}/5 veri={s.Veri} credits={s.Credits} eggs={s.Eggs} kills={_d.Night?.Kills} cards={_d.Night?.CardsCount} maya={_d.Night?.Maya:0} stations={_d.Stations.Count} harvests={_d.Harvests} skipped={_d.SkippedIds} t={_t:0.0}");
+            GD.Print($"RESULT ok ciraklik={s.Orders.Chain("ciraklik")!.DoneCount}/5 veri={s.Research.Veri} credits={s.Credits} eggs={s.Eggs} kills={_d.Night?.Kills} cards={_d.Night?.CardsCount} maya={_d.Night?.Maya:0} stations={_d.Stations.Count} harvests={_d.Harvests} skipped={_d.SkippedIds} t={_t:0.0}");
         }
     }
 
