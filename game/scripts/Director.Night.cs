@@ -86,6 +86,7 @@ public partial class Director
         _shownOffer = null;
         _slowMo = 1f;
         Player.SpeedMult = 1f; // GDD 15: kartlar safakta soner (Cevik dahil)
+        CardsDawn(); // Director.Cards.cs
         Hud.Big("ŞAFAK", Palette.Warning, 3f);
         GD.Print($"NIGHT dawn kills={Night.Kills} level={Night.Level} maya={Night.Maya:0} cards={Night.CardsCount} statsBase={Night.Stats.IsBase}{(_replay ? " replay" : "")}");
         if (_replay) { Events.RaiseDawn(); return; }
@@ -107,6 +108,7 @@ public partial class Director
         if (Night == null || Night.Phase == NightPhase.Dawn) return;
         var oz = Night.OnKill(z.Def, z.GlobalPosition.X, z.GlobalPosition.Z); // Oz yere duser (M1 karari 19)
         DropOz(oz, z.Center);
+        OnCardKill(z); // Director.Cards.cs: Geri Sayim, Maya Bombasi
         RefreshOffer();
     }
 
@@ -127,6 +129,7 @@ public partial class Director
     public void ChooseCard(int i)
     {
         if (Night?.Offer == null) return;
+        if (TryBanishInstead(i)) return; // Director.Cards.cs: surgun kipi
         Night.Choose(i);
         RefreshOffer();
     }
@@ -203,6 +206,7 @@ public partial class Director
                 if (due == 0 && Zipzip.All.Count(z => !z.Dead) == 0) n.WaveCleared();
                 if (n.ShouldAutoPick) ChooseCard(0);
                 RefreshOffer();
+                TickCards(dt); // Director.Cards.cs (kartlar M3)
                 break;
             case Act.Dawn:
             case Act.Report:

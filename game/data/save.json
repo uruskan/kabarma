@@ -10,5 +10,12 @@
   "maxWorldBytes": 31457280,
   "autosaveMinutes": 5,
   "slots": 6,
-  "defaultSlot": "yuva1"
+  "defaultSlot": "yuva1",
+  "_worldPresets": "GDD 25 Dunya ayarlari: yeni oyunda secilir, dunya kaydinda saklanir (world.settings). Etkileri ilgili sistemler State.Settings.Preset ile okur.",
+  "defaultPreset": "kooperatif",
+  "worldPresets": [
+    { "id": "sakin", "name": "Sakin Ay", "note": "Kabarma yalnızca çanla; düşman hasarı %60; Holding kapalı" },
+    { "id": "kooperatif", "name": "Kooperatif Standardı", "note": "Varsayılan" },
+    { "id": "sert", "name": "Sert Ay", "note": "Hayvan ölümü kalıcı; emanet kasası 20 dakikada kaybolur; Husumet ×1,5" }
+  ]
 }
