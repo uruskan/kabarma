@@ -110,6 +110,7 @@ public partial class Director : Node3D
         InitPower();    // power/Director.Power.cs: guc agi, Kablo, sinyal (guc akisi)
         WireNightAndDay(); // Director.Calendar.cs: takvim, uyku, Defter olaylari
         InitExplore();     // Director.Explore.cs: harita, kesif noktalari, Seyir Kulesi, mancinik (dunya2)
+        InitOyuk();        // Director.Oyuk.cs: Oyuklar, Kostebek Bey, Yarasa Yumagi (oyuk, M3)
         WireProgress();    // Director.Progress.cs: Ustalik XP'si, is emri olculeri, basarim ve odul bildirimleri
         State.Farm.Eaten += p => { GD.Print($"EATEN plot {p.X},{p.Y}"); Sfx.Play("pop", FarmView.CellCenter(p.X, p.Y), -2f); };
         Pod.BeginHatchIntro(this); // Pod.Hatch.cs: kapak acilir, Suna giris repliklerini soyler (PLAN 1.4, 0:00)

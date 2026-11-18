@@ -68,7 +68,7 @@
       "yuva": { "name": "Yuva", "milestone": "M2", "discoverRadius": 25, "flatten": 3, "use": "e", "respawnDays": 3, "color": "F2E3B0", "loot": { "egg": 1 }, "model": "res://assets/models/kesif/yuva.glb", "placeholder": "Blender betigi, dokusuz." },
       "enkaz": { "name": "Enkaz", "milestone": "M2", "discoverRadius": 35, "flatten": 5, "use": "kazma", "perHit": 2, "respawnDays": 5, "color": "B0B6BF", "loot": { "scrap": 12 }, "model": "res://assets/models/kesif/enkaz.glb", "placeholder": "Blender betigi, dokusuz." },
       "kadim_tas": { "name": "Kadim Taş", "milestone": "M3" },
-      "oyuk": { "name": "Oyuk", "milestone": "M3" },
+      "oyuk": { "name": "Oyuk", "milestone": "M3", "discoverRadius": 40, "flatten": 7, "use": "oyuk", "color": "7A5A3A", "model": "res://assets/models/kesif/oyuk_agzi.glb", "placeholder": "Blender betigi (pipeline/gen_oyuk.py), dokusuz. Ic oda ve koruyucu oyuk.json (oyuk akisi)." },
       "holding_kampi": { "name": "Holding Kampı", "milestone": "M3" },
       "zengin_yatak": { "name": "Zengin Yatak", "milestone": "M4" }
     },
@@ -145,7 +145,8 @@
         { "type": "ata_tasi", "count": 1, "minSpacing": 200, "baseDistance": [60, 280], "minWeight": 0.85, "fixed": [[64, 36]], "_fixed": "boss akisinin Koca Pofuduk arenasi (atalar.json arena.center)" },
         { "type": "yabani_bahce", "count": 1, "minSpacing": 120, "baseDistance": [60, 220], "minWeight": 0.8 },
         { "type": "yuva", "count": 2, "minSpacing": 70, "baseDistance": [60, 260], "minWeight": 0.8 },
-        { "type": "enkaz", "count": 3, "minSpacing": 70, "baseDistance": [70, 290], "minWeight": 0.7 }
+        { "type": "enkaz", "count": 3, "minSpacing": 70, "baseDistance": [70, 290], "minWeight": 0.7 },
+        { "type": "oyuk", "count": 3, "minSpacing": 90, "baseDistance": [215, 300], "minWeight": 0.9, "_not": "M3 oyuk akisi: M1 kutusunun (±146) disinda, Kostebek Bey (oyuk.json)" }
       ]
     },
     "sis_korusu": {
@@ -207,7 +208,8 @@
         { "type": "ata_tasi", "count": 1, "minSpacing": 200, "baseDistance": [260, 440], "minWeight": 0.95, "fixed": [[-212, 219]], "_fixed": "boss akisinin Boynuzlu Dede arenasi (atalar.json arena.center)" },
         { "type": "yabani_bahce", "count": 1, "minSpacing": 120, "baseDistance": [210, 440], "minWeight": 0.85 },
         { "type": "yuva", "count": 2, "minSpacing": 70, "baseDistance": [210, 440], "minWeight": 0.8 },
-        { "type": "enkaz", "count": 3, "minSpacing": 70, "baseDistance": [210, 440], "minWeight": 0.75 }
+        { "type": "enkaz", "count": 3, "minSpacing": 70, "baseDistance": [210, 440], "minWeight": 0.75 },
+        { "type": "oyuk", "count": 3, "minSpacing": 80, "baseDistance": [240, 440], "minWeight": 0.92, "_not": "M3 oyuk akisi: Yarasa Yumagi (oyuk.json)" }
       ]
     }
   }

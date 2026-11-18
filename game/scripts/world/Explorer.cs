@@ -86,6 +86,7 @@ public partial class Explorer : Node
         _tick -= dt;
         if (_tick > 0) return;
         _tick = 0.25f;
+        if (W.Indoor) return; // Oyuk odasi haritanin disinda (World.Oyuk.cs): acilma yok
         var p = _d.Player.GlobalPosition;
         bool changed = X.Reveal(p.X, p.Z, MapDef.WalkReveal) > 0;
         foreach (var poi in W.Pois)

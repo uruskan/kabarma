@@ -818,7 +818,16 @@ Can ve Dayanıklılık değerleri yemeğin süresi boyunca eklenir.
 
 **Mancınık** bir yerleştirilebilirdir (§10.2 Hizmet). Ocak'ın tapusuna ve karakollara kurulur; her Seyir Kulesi'nin dibinde hazır bir durak vardır ve kule tırmanılınca açılır. Açık bir duraktan açık bir durağa fırlatır. El arabası iterken ya da yük nesnesi taşırken kullanılmaz.
 
-**Koru kaynak kimlikleri** (§2.1): `hard_wood` Sert Odun (Koru ağaçları, Kesme), `resin` Reçine (Koru ağaçlarındaki reçine yumruları, Kazma), `iron_ore` Demir Cevheri (Koru damarları, Kazma), `saltpeter` Güherçile (Oyuk'a kadar Koru'daki kaya çatlaklarında küçük damarlar, Kazma), `scrap` Hurda (Enkaz, Kazma).
+**Koru kaynak kimlikleri** (§2.1): `hard_wood` Sert Odun (Koru ağaçları, Kesme), `resin` Reçine (Koru ağaçlarındaki reçine yumruları, Kazma), `iron_ore` Demir Cevheri (Koru damarları, Kazma), `saltpeter` Güherçile (Koru'daki kaya çatlaklarında küçük damarlar, Kazma; asıl kaynak Oyuk: Yarasa Yumağı yenilince açılan damar), `scrap` Hurda (Enkaz, Kazma).
+
+**M3: Oyuklar** (URETIM §6 M3, §4.3). Altın Çayır ve Sis Korusu'nda üçer Oyuk; ağzı yüzeyde keşif noktasıdır, içi arazinin 500 m altındaki hazır odadır ([TEKNIK.md](TEKNIK.md) §7.5). Aynı biyomun üç Oyuğunu aynı koruyucu tutar; birinci, ikinci, üçüncü Oyukta daha dayanıklı ve hızlıdır (sayılar `game/data/oyuk.json`). Koruyucu yenilince Oyuk "temizlendi" sayılır (Mağaracı ustalığı, §18), sandıklar bir kez açılır; koruyucu bir daha doğmaz. Dövüş içeride sürer; Oyuktan çıkılırsa dövüş baştan başlar.
+
+| Koruyucu | Oda | Kural (M3) | Ödül sandıkları |
+|---|---|---|---|
+| Köstebek Bey | Çayır Oyuğu: düz toprak taban, çevrede 5–7 delik, köşelerde tıkaç kayaları | Saklıyken vurulmaz; açık bir delikten çıkar, birkaç saniye üstte kalır, çıkarken yakındaki oyuncuya çarpar, sonra dalar. Sulama ile ıslatılan delikten çıkarsa ya da üstteyken deliği ıslatılırsa sersemler (sersemken hasar iki kat). Çekim'le taşınıp deliğin üstüne bırakılan kaya deliği kalıcı tıkar. Bütün delikler tıkanınca dalamaz: odanın ortasında sıkışır, sersemler ve üstte kalır | Bakır Külçe, Hurda, nadir çip |
+| Yarasa Yumağı | Koru Oyuğu: yüksek tavan, tavanda asılı yumak, duvarlarda yakılabilen üç kandil | Yumak toplanmışken vurulmaz ve aralıkla oyuncuya dalış yapar. Yakınında ışık olunca (yakılan kandil, kurulan ya da elde tutulan Meşale) dağılır; ortadaki ana yarasa görünür ve vurulur. Işık sönünce ya da uzaklaşınca birkaç saniyede yeniden toplanır | Güherçile, nadir çip |
+
+Nadir çip, çip akışı gelene dek `nadir_cip` adlı yer tutucu eşyadır.
 
 ## 18. İş emirleri (48 zincir × 5 adım), başarımlar, katalog, çark
 

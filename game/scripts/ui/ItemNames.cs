@@ -100,6 +100,7 @@ public static class ItemNames
         ["saltpeter"] = "Güherçile",
         ["scrap"] = "Hurda",
         ["mancinik"] = "Mancınık",
+        ["nadir_cip"] = "Nadir Çip", // oyuk (M3): cip akisi gelene dek yer tutucu odul (ICERIK 4.3)
         // tarim (M2): Cayir ve Koru'nun ekinleri, tohumlari, Alaca urunleri (GDD 8.3), Korkuluk
         ["pumpkin"] = "Kabak",
         ["sunflower"] = "Ayçiçeği",

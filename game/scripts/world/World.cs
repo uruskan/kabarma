@@ -87,6 +87,7 @@ public partial class World : Node3D
 
     public float HeightAt(float wx, float wz)
     {
+        if (InteriorFloor(wx, wz, out float inside)) return inside; // World.Oyuk.cs: Oyuk odasi tabani (M3)
         float fx = Mathf.Clamp(wx + Cells / 2f, 0, Cells - 0.001f);
         float fz = Mathf.Clamp(wz + Cells / 2f, 0, Cells - 0.001f);
         int ix = (int)fx, iz = (int)fz;

@@ -218,6 +218,7 @@ public partial class Director
     public void Interact()
     {
         if (ExploreInteract()) return; // Director.Explore.cs: Seyir Kulesi, mancinik, yuva (dunya2)
+        if (OyukInteract()) return; // Director.Oyuk.cs: Oyuk agzi, kapi, sandik, kandil (oyuk, M3)
         if (InteractVehicle()) return; // Director.Vehicles.cs: Cekirge ATV'ye bin / in (yaratik2)
         if (InteractEconomy()) return; // Director.Economy.cs: El Arabasi, Sandik, Uyku Tulumu
         if (InteractPower()) return; // power/Director.Power.cs: guc parcasi ayari, Dugme
