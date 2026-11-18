@@ -1,0 +1,111 @@
+tools/test.ps1  2026-11-19 00:42  git 5053817
+
+[PASS] build  exit=0 warnings=0 errors=0
+[PASS] sim  exit=0 Passed!  - Failed:     0, Passed:   643, Skipped:     0, Total:   643, Duration: 48 s - Kabarma.Sim.Tests.dll (net8.0)
+[PASS] bench  exit=0 1000 gun 2.331 sn, ayrilan 107.4 MB, tepe 92.9 MB (Release, 3x3)
+[PASS] bot  exit=0 RESULT ok ciraklik=4/5 veri=140 credits=8096 eggs=1 kills=21 cards=2 maya=48 stations=4 harvests=5 skipped=-
+[FAIL] hayvan  exit=1 HAYVAN satiri yok | RESULT fail bot did not reach end step=end
+      --- son satirlar: C:\Users\uruskan\Documents\GitHub\kabarma\.claude\worktrees\m1-varlik-72a21b\.tools\run\test\hayvan.log
+      BOT hayvan stage=4 trust=1.00 reg=True turnip=11 happy=26 pending=0 timer=150
+      BOT hayvan s4 p=(-3.0282757, 0.00088900723, -5.1142397) pof=(-3.9702067, 0, -7.925315) pen=18 c=P2 { X = -4.557783, Z = -6.294315, Length = 7.7712154 } pens=18@-5,-6/9@6,2 yemlik=wheat:4@-5,-8 bag_yemlik=0 wood=5 gate=True vel=4.7
+      BOT hayvan s4 p=(-3.0282757, 0.00088900723, -5.1142397) pof=(-3.9702067, 0, -7.925315) pen=18 c=P2 { X = -4.557783, Z = -6.294315, Length = 7.7712154 } pens=18@-5,-6/9@6,2 yemlik=wheat:4@-5,-8 bag_yemlik=0 wood=5 gate=True vel=4.7
+      BOT hayvan s4 p=(-3.0282326, 0.00088900723, -5.172687) pof=(-3.9706237, 0, -7.924548) pen=18 c=P2 { X = -4.557783, Z = -6.294315, Length = 7.7712154 } pens=18@-5,-6/9@6,2 yemlik=wheat:4@-5,-8 bag_yemlik=0 wood=5 gate=True vel=0.0
+      BOT hayvan s4 p=(-3.0282326, 0.00088900723, -5.172687) pof=(-3.9706237, 0, -7.924548) pen=18 c=P2 { X = -4.557783, Z = -6.294315, Length = 7.7712154 } pens=18@-5,-6/9@6,2 yemlik=wheat:4@-5,-8 bag_yemlik=0 wood=5 gate=True vel=0.0
+      BOT hayvan stage=4 trust=1.00 reg=True turnip=11 happy=26 pending=0 timer=150
+      BOT hayvan s4 p=(-2.865901, 0.0008892744, -5.112837) pof=(-3.8052323, 0, -8.699244) pen=18 c=P2 { X = -4.557783, Z = -6.294315, Length = 7.7712154 } pens=18@-5,-6/9@6,2 yemlik=wheat:4@-5,-8 bag_yemlik=0 wood=5 gate=True vel=5.0
+      BOT hayvan s4 p=(-2.865901, 0.0008892744, -5.112837) pof=(-3.7987032, 0, -8.711675) pen=18 c=P2 { X = -4.557783, Z = -6.294315, Length = 7.7712154 } pens=18@-5,-6/9@6,2 yemlik=wheat:4@-5,-8 bag_yemlik=0 wood=5 gate=True vel=5.0
+      BOT hayvan s4 p=(-3.0316367, 0.0008874084, -5.17344) pof=(-3.8025432, 0, -8.704364) pen=18 c=P2 { X = -4.557783, Z = -6.294315, Length = 7.7712154 } pens=18@-5,-6/9@6,2 yemlik=wheat:4@-5,-8 bag_yemlik=0 wood=5 gate=True vel=2.5
+      BOT hayvan s4 p=(-3.0316367, 0.0008874084, -5.17344) pof=(-3.8025432, 0, -8.704364) pen=18 c=P2 { X = -4.557783, Z = -6.294315, Length = 7.7712154 } pens=18@-5,-6/9@6,2 yemlik=wheat:4@-5,-8 bag_yemlik=0 wood=5 gate=True vel=2.5
+      RESULT fail bot did not reach end step=end t=1300.0
+      QUIT t=1300.0
+[FAIL] savashayvan  exit=1 RESULT fail bot did not reach end step=end
+      --- son satirlar: C:\Users\uruskan\Documents\GitHub\kabarma\.claude\worktrees\m1-varlik-72a21b\.tools\run\test\savashayvan.log
+      BOT hayvan fill p=(-4.095375, 0.001000072, -7.327249) stand=(-4.557786, 0, -7.1942596) yemlik=(-4.557786, 0, -8.394259) pen=18 inpen=True gate=True vel=5.0 menu=False
+      BOT hayvan stage=4 trust=1.00 reg=True turnip=11 happy=10 pending=0 timer=150
+      BOT hayvan s4 p=(-5.378361, 0.0009981556, -6.1714215) pof=(-3.0709715, 0, -6.2677584) pen=18 c=P2 { X = -4.557786, Z = -6.2942605, Length = 7.771173 } pens=18@-5,-6/9@6,2 yemlik=wheat:0@-5,-8 bag_yemlik=0 wood=4 gate=True vel=3.4
+      BOT hayvan fill p=(-5.378361, 0.0009981556, -6.1714215) stand=(-4.557786, 0, -7.1942596) yemlik=(-4.557786, 0, -8.394259) pen=18 inpen=True gate=True vel=3.4 menu=False
+      BOT hayvan s4 p=(-5.378361, 0.0009981556, -6.1714215) pof=(-3.0709715, 0, -6.2677584) pen=18 c=P2 { X = -4.557786, Z = -6.2942605, Length = 7.771173 } pens=18@-5,-6/9@6,2 yemlik=wheat:0@-5,-8 bag_yemlik=0 wood=4 gate=True vel=3.4
+      BOT hayvan fill p=(-5.378361, 0.0009981556, -6.1714215) stand=(-4.557786, 0, -7.1942596) yemlik=(-4.557786, 0, -8.394259) pen=18 inpen=True gate=True vel=3.4 menu=False
+      BOT hayvan s4 p=(-5.526835, 0.0009997975, -6.17142) pof=(-3.0709715, 0, -6.2677584) pen=18 c=P2 { X = -4.557786, Z = -6.2942605, Length = 7.771173 } pens=18@-5,-6/9@6,2 yemlik=wheat:0@-5,-8 bag_yemlik=0 wood=4 gate=True vel=0.0
+      BOT hayvan fill p=(-5.526835, 0.0009997975, -6.17142) stand=(-4.557786, 0, -7.1942596) yemlik=(-4.557786, 0, -8.394259) pen=18 inpen=True gate=True vel=0.0 menu=False
+      BOT hayvan s4 p=(-5.526835, 0.0009997975, -6.17142) pof=(-3.0709715, 0, -6.2677584) pen=18 c=P2 { X = -4.557786, Z = -6.2942605, Length = 7.771173 } pens=18@-5,-6/9@6,2 yemlik=wheat:0@-5,-8 bag_yemlik=0 wood=4 gate=True vel=0.0
+      BOT hayvan fill p=(-5.526835, 0.0009997975, -6.17142) stand=(-4.557786, 0, -7.1942596) yemlik=(-4.557786, 0, -8.394259) pen=18 inpen=True gate=True vel=0.0 menu=False
+      RESULT fail bot did not reach end step=end t=2200.0
+      QUIT t=2200.0
+[PASS] buildtest  exit=0 placed=95 failed=0 pieces=88
+[PASS] audio  exit=0 ok sounds=60 playable=60 variant_files=180 buses=6 layers_loaded=3/3 day_music=yes
+[PASS] world  exit=0 WORLD RESULT ok checks passed (9160 ms)
+[PASS] explore  exit=0 EXPLORE RESULT ok
+[PASS] oyuk  exit=0 OYUK RESULT ok checks=passed hurt=6 rooms=6
+[PASS] boss  exit=0 RESULT ok boss defeated=koca_pofuduk,boynuzlu_dede fights=koca_pofuduk:46,boynuzlu_dede:54 player_hp=31 shears=4 pillar_stuns=1 shard_hits=3 wave_jumps=1 seals=bereketli_toprak,derin_kok
+[PASS] savas  exit=0 RESULT ok savas day_down=True defeated=azman_homur,azman_bozuk fights=azman_homur:ok,azman_bozuk:ok player_hp=100 hurts=0 walls_placed=3 wall_hits=1 riders=6 uproots=8 log_landings=8 log_hits=0 spreads=0 chains=0 wild_mixed=
+[PASS] camera  exit=0 RESULT ok camera checks=73
+[PASS] grip  exit=0 RESULT ok grip checks=67 cart=sag 1.0cm sol 0.1cm
+[PASS] save  exit=0 RESULT ok save round-trip diff=0
+[PASS] menu  exit=0 RESULT ok menu new->esc->menu->devam->close
+[PASS] tarim  exit=0 RESULT ok tarim crop=wheat item=21 alaca=5 seeds=7 ledger=7 best=V2 H1 D3 M2 korkuluk=1 protected=2
+[PASS] creatures  exit=0 RESULT ok creatures=10 wild=11 clips=80 posed=74
+[PASS] latency  exit=0 RESULT ok heads=7/7 budget_max_ms=33.3 wall_med_ms=35.2 wall_max_ms=67.6 hitstop=ok
+[PASS] ekonomi  exit=0 ok=82 fail=0
+[PASS] borsa  exit=0 ok=25 fail=0
+[PASS] holding  exit=0 ok=27 fail=0
+[PASS] zincir  exit=0 ok=8 fail=0 veri=2 t=204
+[PASS] kabarma  exit=0 ok checks=16 species=10 t=1248
+[PASS] kartlar  exit=0 ok=13 fail=0
+[PASS] gece  exit=0 GECE RESULT ok checks=2334 nights=2 day=3
+[PASS] ilerleme  exit=0 ILERLEME RESULT ok checks=15 credits=6100 veri=80
+[PASS] savunma  exit=0 ok=23 fail=0 shots=18 kills=4 trapHits=135
+[FAIL] coop  exit=1 fail players=4 max_diff_mm=2.221 pieces=4 foundations=4 late_join=1 plots=4 tilled=4 crafted=4 revives=1 voice_frames=25 creatures_spawned=31 rejected=4 corrections=57 :: peer1 heard 2/25 voice frames from peer2
+      --- son satirlar: C:\Users\uruskan\Documents\GitHub\kabarma\.claude\worktrees\m1-varlik-72a21b\.tools\run\test\coop.log
+      COOP peer 3 done t=80.2
+      COOP all done t=80.2; tatbikat: host bayildi=True, tokat ve ses
+      NET revive peer=0
+      COOP tatbikat bitti revives=1 down=False voice_from2=25 t=2.3; durulma 2.5 sn
+      COOP collect
+      COOP report peer=1 stone=4 built=1 pieces=4 applied=521 mismatches=1 save_sections=25/25 voice_heard=2 voice_sent=0 creatures_spawned=31 plots=4
+      COOP report peer=2 stone=4 built=1 pieces=4 applied=521 mismatches=1 save_sections=25/25 voice_heard=0 voice_sent=25 creatures_spawned=31 plots=4
+      COOP report peer=3 stone=4 built=1 pieces=4 applied=275 mismatches=0 save_sections=25/25 voice_heard=25 voice_sent=0 creatures_spawned=31 plots=4
+      COOP RESULT fail players=4 max_diff_mm=2.221 pieces=4 foundations=4 late_join=1 plots=4 tilled=4 crafted=4 revives=1 voice_frames=25 creatures_spawned=31 rejected=4 corrections=57 t=85.0 :: peer1 heard 2/25 voice frames from peer2
+      NET leave peer=1 ayrıldı
+      NET leave peer=2 ayrıldı
+      NET leave peer=3 ayrıldı
+[PASS] cip  exit=0 CIP RESULT ok checks=11 chips=6
+[PASS] input_kbm  exit=0 RESULT ok ciraklik=4/5 veri=140 credits=8402 eggs=1 kills=21 cards=2 maya=48 stations=4 harvests=8 skipped=- olay=9192 basis=151 cark=37 menu=0 fare=7888 yanadim=2
+[PASS] input_pad  exit=0 RESULT ok ciraklik=4/5 veri=140 credits=8615 eggs=1 kills=21 cards=2 maya=48 stations=4 harvests=7 skipped=- olay=22231 basis=242 cark=30 menu=21 fare=0 yanadim=2
+
+sinama     sonuc  sure(sn)  ayrinti
+------     -----  --------  -------
+build      PASS       10.9  exit=0 warnings=0 errors=0
+sim        PASS       53.3  exit=0 Passed!  - Failed:     0, Passed:   643, Skipped:     0, Total:   643, Duration: 48 s - Kabarma.Sim.Tests.dll (net8.0)
+bench      PASS        6.1  exit=0 1000 gun 2.331 sn, ayrilan 107.4 MB, tepe 92.9 MB (Release, 3x3)
+bot        PASS        240  exit=0 RESULT ok ciraklik=4/5 veri=140 credits=8096 eggs=1 kills=21 cards=2 maya=48 stations=4 harvests=5 skipped=-
+hayvan     FAIL      339.3  exit=1 HAYVAN satiri yok | RESULT fail bot did not reach end step=end
+savashayvan FAIL      563.8  exit=1 RESULT fail bot did not reach end step=end
+buildtest  PASS       15.7  exit=0 placed=95 failed=0 pieces=88
+audio      PASS        6.5  exit=0 ok sounds=60 playable=60 variant_files=180 buses=6 layers_loaded=3/3 day_music=yes
+world      PASS       10.1  exit=0 WORLD RESULT ok checks passed (9160 ms)
+explore    PASS       38.1  exit=0 EXPLORE RESULT ok
+oyuk       PASS       25.3  exit=0 OYUK RESULT ok checks=passed hurt=6 rooms=6
+boss       PASS       75.7  exit=0 RESULT ok boss defeated=koca_pofuduk,boynuzlu_dede fights=koca_pofuduk:46,boynuzlu_dede:54 player_hp=31 shears=4 pillar_stuns=1 shard_hits=3 wave_jumps=1 seals=bereketli_toprak,derin_kok
+savas      PASS       95.9  exit=0 RESULT ok savas day_down=True defeated=azman_homur,azman_bozuk fights=azman_homur:ok,azman_bozuk:ok player_hp=100 hurts=0 walls_placed=3 wall_hits=1 riders=6 uproots=8 log_landings=8 log_hits=0 spreads=0 chains=0 wild_mixed=
+camera     PASS       33.9  exit=0 RESULT ok camera checks=73
+grip       PASS       41.4  exit=0 RESULT ok grip checks=67 cart=sag 1.0cm sol 0.1cm
+save       PASS        168  exit=0 RESULT ok save round-trip diff=0
+menu       PASS       25.5  exit=0 RESULT ok menu new->esc->menu->devam->close
+tarim      PASS       47.5  exit=0 RESULT ok tarim crop=wheat item=21 alaca=5 seeds=7 ledger=7 best=V2 H1 D3 M2 korkuluk=1 protected=2
+creatures  PASS        1.9  exit=0 RESULT ok creatures=10 wild=11 clips=80 posed=74
+latency    PASS       49.2  exit=0 RESULT ok heads=7/7 budget_max_ms=33.3 wall_med_ms=35.2 wall_max_ms=67.6 hitstop=ok
+ekonomi    PASS       75.5  exit=0 ok=82 fail=0
+borsa      PASS       39.3  exit=0 ok=25 fail=0
+holding    PASS       24.5  exit=0 ok=27 fail=0
+zincir     PASS       63.3  exit=0 ok=8 fail=0 veri=2 t=204
+kabarma    PASS      339.5  exit=0 ok checks=16 species=10 t=1248
+kartlar    PASS       32.3  exit=0 ok=13 fail=0
+gece       PASS       57.6  exit=0 GECE RESULT ok checks=2334 nights=2 day=3
+ilerleme   PASS       15.7  exit=0 ILERLEME RESULT ok checks=15 credits=6100 veri=80
+savunma    PASS       37.2  exit=0 ok=23 fail=0 shots=18 kills=4 trapHits=135
+coop       FAIL       99.9  exit=1 fail players=4 max_diff_mm=2.221 pieces=4 foundations=4 late_join=1 plots=4 tilled=4 crafted=4 revives=1 voice_frames=25 creatures_spawned=31 rejected=4 corrections=57 :: peer1 heard 2/25 voice frames from peer2
+cip        PASS       19.7  exit=0 CIP RESULT ok checks=11 chips=6
+input_kbm  PASS      163.6  exit=0 RESULT ok ciraklik=4/5 veri=140 credits=8402 eggs=1 kills=21 cards=2 maya=48 stations=4 harvests=8 skipped=- olay=9192 basis=151 cark=37 menu=0 fare=7888 yanadim=2
+input_pad  PASS      169.6  exit=0 RESULT ok ciraklik=4/5 veri=140 credits=8615 eggs=1 kills=21 cards=2 maya=48 stations=4 harvests=7 skipped=- olay=22231 basis=242 cark=30 menu=21 fare=0 yanadim=2
+TEST FAIL (3)
