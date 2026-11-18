@@ -118,7 +118,7 @@ public partial class WorldShots : Node
         _savedSpeed = _d.SpeedScale;
         _d.SpeedScale = 0.001f; // eylem durur, cizim surer
         // Insa basligi acik kalirsa hayalet ve ipucu kadraja girer: oyuncunun yapacagi gibi Kazma'ya gecilir.
-        if (_d.Capa.Current == Capa.Head.Insa) _d.Capa.Select(Capa.Head.Kazma);
+        _d.HoldCapa(); // karar 23: elde Capa (hayalet yok)
         // Ipucu suresi oyun zamaniyla akar; yavaslatilmis zamanda donar, elle temizlenir.
         _d.Hud.Hint("", 0f);
         _batchAt = _t + 1.0f;

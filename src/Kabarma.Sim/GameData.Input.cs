@@ -35,6 +35,8 @@ public sealed class InputLookDef
     public float PitchMax { get; set; } = 0.75f;
     public float MouseSens { get; set; } = 0.0025f;
     public float WheelStickGain { get; set; } = 14f;
+    /// <summary>Basiliyken fare tekerlegi kemer yerine kamerayi yakinlastirir (karar 23; Godot tus adlari).</summary>
+    public List<string> ZoomModifiers { get; set; } = new();
 }
 
 /// <summary>Yalnizca --test=input surucusunun ayarlari (oyuncuyu etkilemez).</summary>

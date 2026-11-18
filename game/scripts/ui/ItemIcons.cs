@@ -16,7 +16,7 @@ public static class ItemIcons
     static Texture2D _placeholder;
 
     /// <summary>Capa basligi -> ikon kimligi (Capa.Head sirasiyla).</summary>
-    static readonly string[] HeadIds = { "kazma", "bicme", "toprak", "sulama", "cekim", "insa", "tirpan_isini", "civi_tabancasi" };
+    static readonly string[] HeadIds = { "kazma", "bicme", "toprak", "sulama", "cekim", "tirpan_isini", "civi_tabancasi" };
 
     /// <summary>Kimligin kendi ikonu var mi (yer tutucu sayilmaz).</summary>
     public static bool Has(string id) => Find(id) != null;

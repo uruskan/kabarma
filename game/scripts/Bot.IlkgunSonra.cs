@@ -163,8 +163,7 @@ public partial class Bot
     {
         var b = _d.Build;
         if (!HaveItem("wood", b.CostOf(id))) return;
-        _d.Capa.Select(Capa.Head.Insa);
-        if (_d.Capa.CurrentPlaceable != id) { if (_stepT > 0.12f) { _d.Capa.CyclePlaceable(1); _stepT = 0; } return; }
+        if (!PlanWith(id)) return; // Insa Plani elde, parca carktan (karar 23)
         if (_tryFor != id) { _tryFor = id; _tryIdx = 0; }
         Aim(aims[_tryIdx % aims.Length]);
         if (!MoveTo(stand, 0.6f, false)) { _stepT = 0; return; }

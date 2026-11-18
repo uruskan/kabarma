@@ -31,40 +31,14 @@ public partial class Director
 
     public bool MenuOpen => Hud.MenuOpen;
 
-    /// <summary>Istasyon menusu: tarifler veri sirasiyla (kilitli tarif soluk). Paketleme Tezgahi'nin kendi menusu var (kasa doldurma).</summary>
+    /// <summary>
+    /// Istasyon menusu (E): Uretim paneli o istasyonun tarifleriyle acilir (karar 23; Hud.Craft.cs), tarifler veri sirasiyla.
+    /// Paketleme Tezgahi'nin kendi menusu var (kasa doldurma).
+    /// </summary>
     public void OpenStationMenu(Station st)
     {
         if (st.Def.Station == "paketleme") { OpenPackingMenu(st); return; }
-        var items = new System.Collections.Generic.List<Hud.MenuItem>();
-        var def = st.Def;
-        string fuelText = def.FuelPerJob > 0 && def.Fuel.Count > 0 ? $" + {def.FuelPerJob} {ItemNames.Of(def.Fuel[0])} (yakıt)" : "";
-        foreach (var r in st.Queue.Recipes)
-        {
-            var rr = r;
-            string cost = r.In.Count == 0 ? "—" : string.Join(" + ", r.In.Select(kv => $"{kv.Value} {ItemNames.Of(kv.Key)}"));
-            string label = st.Queue.IsUnlocked(r)
-                ? $"{r.Name} ×{r.Out}   ←   {cost}{fuelText}   ({r.Seconds:0.#} sn){(r.Load ? "  · dünyaya çıkar" : "")}"
-                : $"{r.Name}   (kilitli: ilk {ItemNames.Of(r.UnlockOn)} ile açılır)";
-            items.Add(new Hud.MenuItem(label, () => st.Queue.CanMake(rr, State.Backpack), () =>
-            {
-                if (st.Queue.Enqueue(rr, State.Backpack)) { Sfx.Play("place", st.GlobalPosition, -4f); GD.Print($"QUEUED {rr.Id}"); }
-                else Hud.Hint(!st.Queue.IsUnlocked(rr) ? "Tarif kilitli" : !st.Queue.HasFuel(rr, State.Backpack) ? "Yakıt yok: Odun" : "Malzeme yetmiyor ya da istasyon başka bir şey üretiyor", 1.5f);
-            }, r.Id));
-        }
-        Hud.ShowMenu(st.Def.Name, items, "{act:menu_pick}: sıraya ekle  ·  {act:interact} / {act:ui_cancel}: kapat");
-    }
-
-    /// <summary>Kemer yuvasini kullanir: yemekse yer, degilse ne oldugunu soyler.</summary>
-    public void UseBelt(int slot)
-    {
-        var id = State.Belt.At(slot);
-        if (id == null) return;
-        Hud.FlashBelt(slot);
-        var food = Data.Tool.Foods.FirstOrDefault(f => f.Id == id);
-        if (food != null) { EatFood(food); return; }
-        if (id == "turnip_seed") { Capa.Select(Capa.Head.Toprak); Hud.Hint("Toprak başlığı: sürülmüş kareye ek", 1.2f); return; }
-        if (id == "civi") { Capa.Select(Capa.Head.Civi); return; }
-        Hud.Hint($"{ItemNames.Of(id)} ×{State.Backpack.Count(id)}", 1f);
+        Hud.OpenCraft(st.Def.Station);
     }
 
     public bool EatFood(FoodDef ff)

@@ -56,6 +56,7 @@ public partial class Hud
 
     public void ActivateMenu(int i)
     {
+        if (CraftOpen) { CraftActivate(i); return; } // Uretim sayfasi: satiri uret (Hud.Craft.cs)
         if (!StationOpen) { if (InventoryOpen) InventoryNumber(i); return; } // envanterde sayi tusu: kemer yuvasi
         if (i < 0 || i >= _menuItems.Count) return;
         var it = _menuItems[i];

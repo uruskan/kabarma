@@ -6,7 +6,7 @@ using Kabarma.Sim;
 namespace Kabarma.Game;
 
 /// <summary>
-/// Insa basligi ↔ yapi seti: secim, hayalet, bedel (sekil basina Odun, ICERIK §10.1), tapu siniri (M1: kurma yalniz tapu icinde).
+/// Insa Plani (karar 23; eskiden Insa basligi) ↔ yapi seti: secim, hayalet, bedel (sekil basina Odun, ICERIK §10.1), tapu siniri (M1: kurma yalniz tapu icinde).
 /// Iki arac kipi (GDD §7; URETIM §6 M1 "Yapi"): Sok (tapu icinde %100 iade; parca ya da yerlestirilebilir) ve
 /// Onar (hasar oraninda malzemenin %25'i). Parca cani %10'un altina inmez (Damage).
 /// </summary>
@@ -68,7 +68,7 @@ public partial class BuildBridge
         int wood = _d.State.Backpack.Count("wood");
         bool inClaim = cur != null && _d.Ocak != null && Structures.InClaim(cur.Xf.Origin.X - _d.OcakPos.X, cur.Xf.Origin.Z - _d.OcakPos.Z, Ocak.ClaimRadius);
         string why = cur == null ? "" : !cur.Valid ? cur.Reason : !inClaim ? "tapunun dışı" : wood < cost ? $"odun yetmiyor ({wood}/{cost})" : "";
-        _d.Hud.Hint($"İnşa: {NameOf(id)} ({cost} Odun){(why != "" ? "  ·  " + why : "")}  ·  {{act:build_next}}: değiştir  ·  {{act:build_rotate}}: döndür", 0.2f);
+        _d.Hud.Hint($"İnşa: {NameOf(id)} ({cost} Odun){(why != "" ? "  ·  " + why : "")}  ·  {{act:build_wheel}} basılı: parça  ·  {{act:build_rotate}}: döndür  ·  {{act:interact}} basılı: onar / sök", 0.2f);
         if (!place || cur == null) return;
         if (why != "") { Sfx.Play("hit", null, -10f); return; }
         var piece = _sys.TryPlace();
@@ -82,7 +82,7 @@ public partial class BuildBridge
     // ---------- Sok ve Onar ----------
 
     /// <summary>Nisan altindaki hedef: once yapi parcasi (isin), yoksa nisan noktasina yakin istasyon ya da yerlestirilebilir.</summary>
-    Node3D TargetAt(Player p, Vector3 aim)
+    public Node3D TargetAt(Player p, Vector3 aim)
     {
         var cam = p.Cam;
         var piece = _sys.PieceAt(cam.GlobalPosition, -cam.GlobalBasis.Z);
@@ -118,8 +118,9 @@ public partial class BuildBridge
     static (string id, string name, Dictionary<string, int> cost) Describe(BuildBridge b, Node3D t) => t switch
     {
         BuildPiece bp => (bp.Def.Id, bp.Def.Name, Wood(b.CostOf(bp.Def.Id))),
-        Station st => (st.Def.Id, st.Def.Name, st.Def.Cost),
-        Furniture f => (f.Def.Id, f.Def.Name, f.Def.Cost),
+        // Karar 23: yerlestirilebilir sokulunce esyanin kendisi cantaya doner (kemerden yeniden kurulur).
+        Station st => (st.Def.Id, st.Def.Name, new Dictionary<string, int> { [st.Def.Id] = 1 }),
+        Furniture f => (f.Def.Id, f.Def.Name, new Dictionary<string, int> { [f.Def.Id] = 1 }),
         _ => ("", "", new()),
     };
 

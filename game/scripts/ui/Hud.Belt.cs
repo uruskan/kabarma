@@ -8,9 +8,10 @@ using T = Kabarma.Game.UiTheme;
 namespace Kabarma.Game;
 
 /// <summary>
-/// Pano, alt (SANAT-SES 8.1, M1 karari 20): alt ortada 8 yuvali kemer (yuva numarasi, adet, dayaniklilik cubugu; secili
-/// yuva mavi-beyaz), solunda Capa'nin takili basligi; sag altta can ve dayaniklilik cubuklari (ikonlu, sayilar saga yasli),
-/// Civi Tabancasi takiliyken cephane onlarin ustunde.
+/// Pano, alt (SANAT-SES 8.1, M1 kararlari 20 ve 23): alt ortada 8 yuvali kemer (yuva numarasi, adet, dayaniklilik cubugu;
+/// secili yuva = elde tutulan, mavi-beyaz). Capa'nin yuvasinin sag ustunde takili basligin kucuk simgesi (ayri baslik kutusu
+/// kalkti). Sag altta can ve dayaniklilik cubuklari (ikonlu, sayilar saga yasli), Capa elde ve Civi Tabancasi takiliyken
+/// cephane onlarin ustunde.
 /// </summary>
 public partial class Hud
 {
@@ -18,14 +19,13 @@ public partial class Hud
     double _beltNameAt = -10;
     double _headAt = -10;
 
-    /// <summary>Secili kemer yuvasi (1-8 ya da envanterde); yoksa -1.</summary>
-    public int BeltSelected { get; private set; } = -1;
+    /// <summary>Secili kemer yuvasi = elde tutulan (Sim: State.Belt.Selected); yoksa -1.</summary>
+    public int BeltSelected => _d.State.Belt.Selected;
 
-    /// <summary>Kemer yuvasini secer (Director.SelectBelt): mavi-beyaz olur, esyanin adi kemerin ustunde belirir.</summary>
+    /// <summary>Kemer yuvasi secildi (Director.SelectBelt): yuva bir an kalkar, esyanin adi kemerin ustunde belirir.</summary>
     public void SelectBeltSlot(int i)
     {
         if (i < 0 || i >= Kabarma.Sim.Belt.Slots) return;
-        BeltSelected = i;
         _beltNameAt = _now;
         FlashBelt(i);
     }
@@ -59,7 +59,10 @@ public partial class Hud
             if (flash < b.FlashSeconds) y -= 4 * (1 - flash / b.FlashSeconds);
             bool sel = inventory ? _invFocusBelt == i : BeltSelected == i;
             bool dragged = _drag is { Moving: true, FromBelt: true } d && d.Index == i;
-            SlotBox(x, y, b.Size, id, id == null ? -1 : n, inventory, sel, i + 1, ItemCondition(id), StarsOf(id), dragged ? 0.35f : 1f, dim: id != null && n == 0);
+            bool tool = id != null && s.Belt.IsTool(id);
+            SlotBox(x, y, b.Size, tool && !ItemIcons.Has(id) ? null : id, id == null || tool ? -1 : n, inventory, sel, i + 1, ItemCondition(id), StarsOf(id), dragged ? 0.35f : 1f, dim: id != null && !tool && n == 0);
+            if (tool && !ItemIcons.Has(id)) Glyph(id == PlanTools.Plan ? "insa" : "kazma", new Vector2(x + b.Size / 2f, y + b.Size / 2f), b.Size * 0.26f, T.A(T.Ivory, dragged ? 0.35f : 1f)); // ikonu olmayan alet: glif
+            if (id == PlanTools.Capa) PaintHeadBadge(x, y, b.Size); // takili baslik Capa'nin yuvasinda
         }
         if (!inventory)
         {
@@ -70,25 +73,24 @@ public partial class Hud
                 float a = Mathf.Clamp((b.NameSeconds - age) / 0.4f, 0, 1);
                 CentreText(T.Upper(ItemNames.Of(sid)), b.Y - 30, T.Data.Type.Body + 2, T.A(T.Ink, a), true, true, true);
             }
-            PaintHeadSlot();
             PaintAmmo();
         }
         else Text("KEMER", BeltX(0), b.Y - 22, T.Data.Type.Caption + 1, T.A(T.Ink, 0.8f), true, true);
     }
 
-    /// <summary>Kemerin solunda Capa'nin takili basligi: glif, ad, Q glifi (cark yalniz Q basiliyken acilir).</summary>
-    void PaintHeadSlot()
+    /// <summary>
+    /// Capa'nin yuvasinin sag ustunde takili basligin kucuk simgesi (karar 23: ayri "BASLIK" kutusu kalkti). Baslik
+    /// degisince bir an parlar; Capa eldeyken yanina Q glifi (cark yalniz Capa eldeyken acilir).
+    /// </summary>
+    void PaintHeadBadge(float x, float y, float size)
     {
-        var b = T.Data.Belt;
         int h = (int)_d.Capa.Current;
-        float size = b.Size, x = BeltX(0) - b.Pitch - 14, y = b.Y;
         float flash = (float)(_now - _headAt);
-        Rect(x, y, size, size, T.HudSlot);
-        if (flash < 0.3f) Frame(x, y, size, size, T.A(T.Ivory, 1 - flash / 0.3f), 2);
-        Glyph(HeadGlyphName(h), new Vector2(x + size / 2f, y + size / 2f - 7), 17, T.Ivory);
-        string name = T.Upper(h < T.Data.Heads.Count ? T.Data.Heads[h].Title : Capa.HeadNames[h]);
-        TextIn(Fit(name, size - 8, 13, true, true), x + 4, y + size - 19, size - 8, 13, T.Ink, HorizontalAlignment.Center, true, true);
-        Keycap(KeyText("head_wheel", PadDevice ? "LB" : "Q"), x + 4, y + 4, 20, T.A(T.Ink, 0.8f), PadDevice);
+        float r = 13, cx = x + size - r - 3, cy = y + r + 3;
+        Disc(cx, cy, r, T.A(T.Shade, 0.9f));
+        Disc(cx, cy, r, flash < 0.3f ? T.A(T.Ivory, 1 - flash / 0.3f) : T.A(T.Ivory, 0.55f), false, 1.2f);
+        Glyph(HeadGlyphName(h), new Vector2(cx, cy), 7.5f, T.Ivory);
+        if (_d.Capa.InHand && !InventoryOpen) Keycap(KeyText("head_wheel", PadDevice ? "LB" : "Q"), x + size / 2f - 10, y - 24, 20, T.A(T.Ink, 0.8f), PadDevice);
     }
 
     /// <summary>Takili baslik degisti (Capa.Select -> OnHead): baslik yuvasi bir an parlar.</summary>
@@ -97,7 +99,7 @@ public partial class Hud
     /// <summary>Civi Tabancasi takiliyken cephane: sag altta, can ve dayanikliligin ustunde.</summary>
     void PaintAmmo()
     {
-        if (_d.Capa.Current != Capa.Head.Civi) return;
+        if (_d.Capa.Current != Capa.Head.Civi || !_d.Capa.InHand) return;
         _o = RightFrame;
         var v = T.Data.Vitals;
         float top = v.Bottom - 2 * v.Pitch - 40;

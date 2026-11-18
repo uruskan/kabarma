@@ -130,8 +130,7 @@ public partial class Bot
             else { P.MoveOverride = Vector3.Zero; return; } // hepsi kurulu; sayac ShelterParts ile ilerler
         }
         if (!EnsureItem("wood", b.CostOf(want))) return;
-        Head(Capa.Head.Insa);
-        if (_d.Capa.CurrentPlaceable != want) { if (_stepT > 0.12f) { NextPlaceable(); _stepT = 0; } return; }
+        if (!PlanWith(want)) return; // Insa Plani elde, parca carktan (karar 23)
         Aim(target);
         if (_shelterPending >= 0)
         {

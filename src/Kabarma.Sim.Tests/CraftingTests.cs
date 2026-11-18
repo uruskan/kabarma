@@ -19,10 +19,10 @@ public class CraftingTests
     public void Costs_and_recipes_follow_icerik_20()
     {
         var d = Data();
-        Assert.Equal(new Dictionary<string, int> { ["wood"] = 10, ["stone"] = 5 }, P(d, "tezgah").Cost);
-        Assert.Equal(new Dictionary<string, int> { ["stone"] = 15, ["clay"] = 5 }, P(d, "tas_firin").Cost);
-        Assert.Equal(new Dictionary<string, int> { ["stone"] = 8, ["wood"] = 4 }, P(d, "ocakbasi").Cost);
-        Assert.Equal(new Dictionary<string, int> { ["wood"] = 8 }, P(d, "paketleme").Cost);
+        Assert.Equal(new Dictionary<string, int> { ["wood"] = 10, ["stone"] = 5 }, d.Tool.CostOf("tezgah"));
+        Assert.Equal(new Dictionary<string, int> { ["stone"] = 15, ["clay"] = 5 }, d.Tool.CostOf("tas_firin"));
+        Assert.Equal(new Dictionary<string, int> { ["stone"] = 8, ["wood"] = 4 }, d.Tool.CostOf("ocakbasi"));
+        Assert.Equal(new Dictionary<string, int> { ["wood"] = 8 }, d.Tool.CostOf("paketleme"));
         Assert.Equal(new Dictionary<string, int> { ["wood"] = 12, ["stone"] = 4 }, R(d, "el_arabasi").In);
         Assert.Equal("tezgah", R(d, "el_arabasi").Station);
         Assert.True(R(d, "el_arabasi").Load);
@@ -47,11 +47,11 @@ public class CraftingTests
     public void Placeables_follow_icerik_10_2()
     {
         var d = Data();
-        Assert.Equal(new Dictionary<string, int> { ["wood"] = 10 }, P(d, "sandik").Cost);
+        Assert.Equal(new Dictionary<string, int> { ["wood"] = 10 }, d.Tool.CostOf("sandik"));
         Assert.Equal(20, P(d, "sandik").Slots);
-        Assert.Equal(new Dictionary<string, int> { ["fiber"] = 6 }, P(d, "uyku_tulumu").Cost);
+        Assert.Equal(new Dictionary<string, int> { ["fiber"] = 6 }, d.Tool.CostOf("uyku_tulumu"));
         Assert.True(P(d, "uyku_tulumu").Spawn);
-        Assert.Equal(new Dictionary<string, int> { ["wood"] = 2 }, P(d, "mesale").Cost);
+        Assert.Equal(new Dictionary<string, int> { ["wood"] = 2 }, d.Tool.CostOf("mesale"));
         Assert.Equal(6f, P(d, "mesale").LightRange);
     }
 

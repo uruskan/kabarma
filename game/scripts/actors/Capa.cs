@@ -7,17 +7,19 @@ using Kabarma.Sim;
 namespace Kabarma.Game;
 
 /// <summary>
-/// Capa: tek el aleti, baslik takilir (GDD 4). Is basliklari: Kazma, Toprak, Sulama, Cekim, Insa.
+/// Capa: tek el aleti, baslik takilir (GDD 4). Is basliklari: Kazma, Biçme, Toprak, Sulama, Cekim (karar 23: Insa basligi kalkti;
+/// yapi parcalari Insa Plani esyasiyla, yerlestirilebilirler kemerden kurulur: Capa.Hand.cs, Capa.Insa.cs). Capa kemerdeki bir
+/// esyadir: yalniz elde (secili kemer yuvasi) iken calisir.
 /// Silah basligi: Tirpan Isini (baslangic setinde, ICERIK §6.2 #1).
 /// Parcalar: baslik basina bir dosya (Capa.Kazma.cs, Capa.Bicme.cs, Capa.Toprak.cs, Capa.Sulama.cs, Capa.Cekim.cs,
 /// Capa.Insa.cs, Capa.Weapons.cs). Burada: secim, kare isi ve isin.
 /// </summary>
 public partial class Capa : Node3D
 {
-    // GDD 4: alti is basligi + silah yuvalari (Mk.I: 2). 1-6 is, 7-8 silah.
-    public enum Head { Kazma, Bicme, Toprak, Sulama, Cekim, Insa, Tirpan, Civi }
-    public static readonly string[] HeadNames = { "Kazma", "Biçme", "Toprak", "Sulama", "Çekim", "İnşa", "Tırpan Işını", "Çivi Tab." };
-    public static readonly Color[] HeadColors = { Palette.Warning, Palette.Plant.Lerp(Palette.Warning, 0.3f), Palette.Wood.Lerp(Palette.Warning, 0.4f), new("8CC8E8"), Palette.MayaViolet, Palette.CoopBlue.Lerp(Palette.OffWhite, 0.4f), Palette.MayaTeal, Palette.OffWhite };
+    // GDD 4: bes is basligi + silah yuvalari (Mk.I: 2). Karar 23: Insa basligi kalkti (Insa Plani esyasi).
+    public enum Head { Kazma, Bicme, Toprak, Sulama, Cekim, Tirpan, Civi }
+    public static readonly string[] HeadNames = { "Kazma", "Biçme", "Toprak", "Sulama", "Çekim", "Tırpan Işını", "Çivi Tab." };
+    public static readonly Color[] HeadColors = { Palette.Warning, Palette.Plant.Lerp(Palette.Warning, 0.3f), Palette.Wood.Lerp(Palette.Warning, 0.4f), new("8CC8E8"), Palette.MayaViolet, Palette.MayaTeal, Palette.OffWhite };
     public static bool IsWeapon(Head h) => h is Head.Tirpan or Head.Civi;
 
     public Head Current { get; private set; } = Head.Kazma;
@@ -107,7 +109,16 @@ public partial class Capa : Node3D
         p.Facing = UsingNow || IsWeapon(Current) && _d.NightActive;
 
         var aim = p.AimPoint(out var hitNode, 60f);
-        UpdateGhost(aim);
+        // Karar 23: Capa elde degilse (kemerde baska yuva secili) elde tutulan esya isler (Capa.Hand.cs).
+        if (!InHand)
+        {
+            _spray.Emitting = false; Sfx.Beam(false);
+            if (Held != null) Drop();
+            UsingNow = false; p.Carrying = false; p.Facing = false;
+            if (!p.Down && TickHand(dt, fire, firePressed, aim)) { LastReactionFrame = Engine.GetProcessFrames(); _d.MarkReaction("insa"); }
+            return;
+        }
+        HideHandGhosts(); // Capa eldeyken hayalet ve yapi seti gizli (Capa.Insa.cs)
 
         if (p.Down) { _spray.Emitting = false; Sfx.Beam(false); return; }
 
@@ -146,16 +157,6 @@ public partial class Capa : Node3D
                 break;
             case Head.Cekim:
                 beaming |= TickCekim(dt, fire, firePressed, aim, muzzle); // Capa.Cekim.cs: tut, tasi, birak, firlat
-                break;
-            case Head.Insa:
-                if (_d.Build != null && _d.Build.Handles(CurrentPlaceable))
-                {
-                    int before = _d.Build.System.Pieces.Count;
-                    _d.Build.Tick(p, aim, firePressed);
-                    _reacted |= _d.Build.System.Pieces.Count > before;
-                    break;
-                }
-                if (firePressed && _ghost != null && _ghost.Visible) { TryPlace(); _reacted = true; } // yerlesir ya da "konmaz/yetmiyor" ipucu
                 break;
             case Head.Tirpan:
                 TickWeapon(_d.Data.Tool.Weapon, fire, firePressed, dt, () => FireTirpan(aim)); // Capa.Weapons.cs

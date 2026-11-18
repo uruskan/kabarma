@@ -356,7 +356,7 @@ public partial class PenSystem : Node
         _d.Gidak?.PenTick(dt, this);
         // E ipucu: yakindaki agil nesnesi (tus glifle, ActText)
         _hintT -= dt;
-        if (_hintT <= 0 && !_d.Hud.MenuOpen && _d.Capa.Current != Capa.Head.Insa)
+        if (_hintT <= 0 && !_d.Hud.MenuOpen && _d.Capa.CurrentPlaceable == "")
         {
             _hintT = 0.2f;
             if (Nearest(_d.Player.GlobalPosition, out var label) != null) _d.Hud.Hint("{act:interact}: " + label, 0.3f); // Hint glifi genisletir (girdi akisi)

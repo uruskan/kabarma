@@ -103,15 +103,8 @@ public partial class Bot
     /// <summary>Istasyonun yaninda bekler (uretim surerken).</summary>
     void WaitAt(Station st) { P.MoveOverride = Vector3.Zero; Aim(st.GlobalPosition + Vector3.Up); }
 
-    /// <summary>Insa basliginda istenen yerlestirilebiliri secip verilen noktaya koyar.</summary>
-    void PlaceAt(string id, Vector3 at)
-    {
-        Head(Capa.Head.Insa);
-        if (_d.Capa.CurrentPlaceable != id) { if (_stepT > 0.15f) { NextPlaceable(); _stepT = 0; } return; }
-        var standAt = at + new Vector3(0, 0, -4.5f);
-        Aim(_d.World.Ground(at));
-        if (MoveTo(standAt, 0.6f, false) && _stepT > 1.0f) { FirePressed = true; _stepT = 0; }
-    }
+    /// <summary>Yerlestirilebiliri edinip (uret) kemerden ele alir ve verilen noktaya koyar (Bot.Kemer.cs, karar 23).</summary>
+    void PlaceAt(string id, Vector3 at) => PlaceHeld(id, _d.World.Ground(at), at + new Vector3(0, 0, -4.5f));
 
     Station StationOf(string id) => _d.Stations.FirstOrDefault(s => s.Def.Id == id);
 
@@ -124,13 +117,14 @@ public partial class Bot
         else if (_d.Hud.MenuOpen && _menuT <= 0) { MenuPick(item); MenuClose(); _menuT = 1.0f; }
     }
 
-    /// <summary>Yerlestirilebilirin bedeli (placeables.json): once hepsini topla, sonra kur.</summary>
+    /// <summary>
+    /// Karar 23: yerlestirilebilir uretilir. Cantada yoksa malzemesini toplayip uretir (Bot.Kemer.cs HavePlaceable); varsa
+    /// ve istenirse yakit icin fazladan Odun toplar. Hazirsa true.
+    /// </summary>
     bool EnsureCost(string placeable, int extraWood = 0)
     {
-        var def = _d.Data.Tool.Placeables.First(x => x.Id == placeable);
-        foreach (var kv in def.Cost)
-            if (!EnsureItem(kv.Key, kv.Value + (kv.Key == "wood" ? extraWood : 0))) return false;
-        return extraWood <= 0 || def.Cost.ContainsKey("wood") || EnsureItem("wood", extraWood);
+        if (!HavePlaceable(placeable)) return false;
+        return extraWood <= 0 || EnsureItem("wood", extraWood);
     }
 
     void StepTezgahKur(Vector3 o)

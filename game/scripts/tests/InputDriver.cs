@@ -78,7 +78,7 @@ public sealed class InputDriver
     void Preflight()
     {
         if (_c.Problems.Count > 0) { Error = "unresolved_bindings " + string.Join("; ", _c.Problems); return; }
-        var need = new List<string> { "move_forward", "move_back", "move_left", "move_right", "sprint", "fire", "interact", "bag", "ui_accept", "ui_cancel", "build_next", "card_1", "card_2", "card_3", "head_wheel" };
+        var need = new List<string> { "move_forward", "move_back", "move_left", "move_right", "sprint", "fire", "interact", "bag", "ui_accept", "ui_cancel", "belt_next", "build_wheel", "card_1", "card_2", "card_3", "head_wheel" };
         if (Device == InputDevice.Pad) need.AddRange(new[] { "look_left", "look_right", "look_up", "look_down", "ui_up", "ui_down" });
         else need.AddRange(Enumerable.Range(1, 8).Select(i => $"head_{i}"));
         var missing = need.Where(a => _c.Bindings(a, Device).Count == 0).ToList();
@@ -103,6 +103,9 @@ public sealed class InputDriver
     public void Tap(string action) => Enqueue(new TapOp(action));
 
     public void SelectHead(int head) { var op = HeadOp(head, false); if (op != null) Enqueue(op); }
+
+    /// <summary>Insa Plani'nin parca carki (karar 23): sag tik / LB basili, dilime yonel, birak.</summary>
+    public void SelectPiece(int index, int count) => Enqueue(new WheelOp(index, "build_wheel", count));
 
     /// <summary>
     /// Baslik secen islem: her aygitta cark (Q / LB + fare / sag cubuk). M1 karari 20: 1-8 kemer yuvasini secer, baslik
@@ -411,12 +414,15 @@ public sealed class InputDriver
     /// <summary>Cark: Q / LB basili (cark acilir), fare ya da sag cubuk baslik yonune, birak (Director.ReadInput takar).</summary>
     sealed class WheelOp : Op
     {
-        readonly int _head;
-        public WheelOp(int head) { _head = head; }
+        readonly int _head, _count;
+        readonly string _action;
+        /// <param name="action">Carki acan eylem: head_wheel (baslik) ya da build_wheel (Insa Plani parcasi).</param>
+        /// <param name="count">Carktaki dilim sayisi (0: baslik sayisi).</param>
+        public WheelOp(int head, string action = "head_wheel", int count = 0) { _head = head; _action = action; _count = count; }
         public override bool OwnsLook => true;
         protected override bool Run(InputDriver d)
         {
-            var tok = d.Token("head_wheel");
+            var tok = d.Token(_action);
             if (tok == null) return true;
             int hold = d.Config.WheelHoldFrames;
             if (d._trace) GD.Print($"WHEELTRACE head={_head} F={F} open={d._d.Hud.WheelOpen} look={Input.GetVector("look_left", "look_right", "look_up", "look_down")} lb={Input.IsActionPressed("head_wheel")} cur={d._d.Capa.Current}");
@@ -429,7 +435,7 @@ public sealed class InputDriver
             if (F <= hold)
             {
                 // Hud.WheelMotion: yuva i, ust ortadan saat yonunde i x 360/n derece; ekran y asagi.
-                int n = Capa.HeadNames.Length;
+                int n = _count > 0 ? _count : Capa.HeadNames.Length;
                 float a = _head * Mathf.Tau / n;
                 var dir = new Vector2(Mathf.Sin(a), -Mathf.Cos(a));
                 if (d.Device == InputDevice.Kbm)
@@ -454,7 +460,7 @@ public sealed class InputDriver
             }
             if (F >= hold + 1 + d.Config.GapFrames)
             {
-                if ((int)d._d.Capa.Current != _head) GD.Print($"INPUT wheel miss want={Capa.HeadNames[_head]} got={d._d.Capa.Current}");
+                if (_action == "head_wheel" && (int)d._d.Capa.Current != _head) GD.Print($"INPUT wheel miss want={Capa.HeadNames[_head]} got={d._d.Capa.Current}");
                 return true;
             }
             return false;

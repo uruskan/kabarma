@@ -1,7 +1,7 @@
 {
   "_not": "GDD 4 Capa Mk.I is basliklari: menziller ve hizlar. Silah basliklari weapons.json icinde.",
   "_not_m1": "URETIM 6 M1 Capa satiri. Kazma: tas, kil, bakir. Bicme: alan etkili (mowRadius); agac her vurusta woodPerChop Odun verir, devrilmez. Toprak: yalniz tarla (egim siniri crops.json). Sulama: kucuk dusmani iter (waterPush). Cekim: tutar, tasir, firlatir; carry.maxKg. Vurus hissi sayilari feel.json'da.",
-  "heads": ["kazma", "bicme", "toprak", "sulama", "cekim", "insa"],
+  "heads": ["kazma", "bicme", "toprak", "sulama", "cekim"],
   "mowRadius": 1.6,
   "mowRange": 5,
   "mineRate": 2.5,

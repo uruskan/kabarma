@@ -24,6 +24,8 @@ public partial class Director
     public ControlsPanel ControlsPanel { get; private set; }
     /// <summary>Acik menudeki imlecin satiri (oyun kolu ✚ ile tasir).</summary>
     public int MenuCursorIndex => _menuSel;
+    /// <summary>Fareyle secilen satir menu imlecine de gecer (Uretim paneli, Hud.Craft.cs).</summary>
+    public void SyncMenuCursor(int i) => _menuSel = i;
 
     /// <summary>--test=input: botu girdi kipinde kurar; kararlari sentetik klavye-fare ya da kol olaylarina doner.</summary>
     public void StartInputDriver(InputDevice device)
@@ -42,6 +44,7 @@ public partial class Director
         if (Input.IsActionJustPressed("controls_panel")) ToggleControlsPanel();
         if (ControlsPanel != null && ControlsPanel.Visible) { fire = false; firePressed = false; return; }
         PadLook();
+        if (Hud.CraftTyping) { fire = false; firePressed = false; _menuWasOpen = true; return; } // Uretim arama kutusu: tuslar yaziya gider
         if (Hud.MenuOpen)
         {
             if (!_menuWasOpen) _menuSel = 0;
@@ -62,29 +65,102 @@ public partial class Director
         }
         else
         {
-            // M1 karari 20: 1-8 kemeri secer (Director.Belt.cs); baslik yalniz Q carkindan.
+            // Karar 23: 1-8 ve tekerlek (kolda RB / LT) kemeri secer; secili yuvadaki esya eldedir (Director.Belt.cs).
+            // Ctrl ya da Alt basiliyken tekerlek kamerayi yakinlastirir (input.json look.zoomModifiers).
+            bool zoomMod = ZoomModifierHeld();
             for (int i = 0; i < 8; i++)
                 if (Input.IsActionJustPressed($"head_{i + 1}")) SelectBelt(i);
-            if (Input.IsActionJustPressed("bag")) OpenBagMenu();
-            // Baslik carki: Q / LB basili tut, fareyle ya da sag cubukla sec, birak
-            if (Input.IsActionJustPressed("head_wheel")) { Hud.OpenWheel((int)Capa.Current); Player.LookLocked = true; }
-            if (Hud.WheelOpen && Input.IsActionJustReleased("head_wheel")) { int sel = Hud.CloseWheel(); Player.LookLocked = false; if (sel >= 0) Capa.Select((Capa.Head)sel); }
-            if (Capa.Current == Capa.Head.Insa)
+            if (!zoomMod && !Hud.WheelOpen)
             {
-                if (Input.IsActionJustPressed("build_next")) Capa.CyclePlaceable(1);
-                if (Input.IsActionJustPressed("build_prev")) Capa.CyclePlaceable(-1);
-                if (Input.IsActionJustPressed("build_rotate")) Capa.RotateGhost();
+                if (Input.IsActionJustPressed("belt_next")) ScrollBelt(1);
+                if (Input.IsActionJustPressed("belt_prev")) ScrollBelt(-1);
             }
-            // M1 karari 20: tekerlek / build_next-prev yalniz Insa parcasini degistirir; baslik yalniz carktan.
+            if (Input.IsActionJustPressed("bag")) OpenBagMenu();
+            // Baslik carki: yalniz Capa eldeyken; Q / LB basili tut, fareyle ya da sag cubukla sec, birak.
+            if (Input.IsActionJustPressed("head_wheel") && Capa.InHand && !Hud.WheelOpen) { Hud.OpenWheel((int)Capa.Current); Player.LookLocked = true; }
+            if (Hud.WheelOpen && Hud.OpenWheelKind == Hud.WheelKind.Heads && Input.IsActionJustReleased("head_wheel")) { int sel = Hud.CloseWheel(); Player.LookLocked = false; if (sel >= 0) Capa.Select((Capa.Head)sel); }
+            // Insa Plani: sag tik (kolda LB) basili parca carki; birakinca parca secilir.
+            if (Input.IsActionJustPressed("build_wheel") && Capa.PlanInHand && !Hud.WheelOpen) OpenPieceWheel();
+            if (Hud.WheelOpen && Hud.OpenWheelKind == Hud.WheelKind.Pieces && Input.IsActionJustReleased("build_wheel"))
+            {
+                int sel = Hud.CloseWheel(); Player.LookLocked = false;
+                var pieces = Capa.PlanPieces;
+                if (sel >= 0 && sel < pieces.Count) Capa.SelectPiece(pieces[sel]);
+            }
+            if (Input.IsActionJustPressed("build_rotate") && Capa.CurrentPlaceable != "") Capa.RotateGhost();
             // Kartlar (kolda ✚ sol/yukari/sag): menu acikken ✚ menuyu tasir, kart secmez.
             if (Input.IsActionJustPressed("card_1")) ChooseCard(0);
             if (Input.IsActionJustPressed("card_2")) ChooseCard(1);
             if (Input.IsActionJustPressed("card_3")) ChooseCard(2);
-            Player.CameraInput(Capa.Current == Capa.Head.Insa || Hud.WheelOpen); // oyuncu akisi: V / R3 kip, tekerlek yakinlastirir (Insa'da parca)
+            Player.CameraInput(!zoomMod || Hud.WheelOpen); // oyuncu akisi: V / R3 kip; Ctrl / Alt + tekerlek yakinlastirir
         }
         _menuWasOpen = Hud.MenuOpen;
-        if (Input.IsActionJustPressed("interact") && !Hud.MenuOpen && !_menuClosedThisFrame) Interact();
+        if (!PlanInteract()) // Insa Plani: E basili yukselt / onar / sok carki (kisa basis olagan E)
+            if (Input.IsActionJustPressed("interact") && !Hud.MenuOpen && !_menuClosedThisFrame) Interact();
         _menuClosedThisFrame = false;
+    }
+
+    bool ZoomModifierHeld()
+    {
+        if (Controls == null) return false;
+        foreach (var k in Controls.Data.Look.ZoomModifiers)
+        {
+            var key = OS.FindKeycodeFromString(k);
+            if (key != Key.None && Input.IsKeyPressed(key)) return true;
+        }
+        return false;
+    }
+
+    void OpenPieceWheel()
+    {
+        var pieces = Capa.PlanPieces;
+        if (pieces.Count == 0 || Build == null) return;
+        var slices = pieces.Select(id => new Hud.WheelSlice("insa", id, Build.NameOf(id), $"{Build.CostOf(id)} Odun", State.Backpack.Count("wood") >= Build.CostOf(id))).ToList();
+        Hud.OpenWheel(Hud.WheelKind.Pieces, slices, Mathf.Max(0, pieces.IndexOf(Capa.PlanPiece)));
+        Player.LookLocked = true;
+    }
+
+    // ---------- Insa Plani: E basili (GDD 7 "Yerinde yukseltme") ----------
+
+    Node3D _planTarget;
+    float _planHeld;
+    bool _planHolding;
+
+    /// <summary>Insa Plani eldeyken E: hedef parca / yerlestirilebilirse basili tutma carki acar. E'yi isledi ise true.</summary>
+    bool PlanInteract()
+    {
+        if (!_planHolding && (!Capa.PlanInHand || Build == null || Hud.MenuOpen || _menuClosedThisFrame || !Input.IsActionJustPressed("interact"))) return false;
+        if (!_planHolding)
+        {
+            _planTarget = Build.TargetAt(Player, Player.AimPoint(out _, 60f));
+            if (_planTarget == null) return false; // hedef yok: olagan E
+            _planHolding = true; _planHeld = 0f;
+            return true;
+        }
+        if (!IsInstanceValid(_planTarget)) { _planHolding = false; if (Hud.WheelOpen) Hud.CancelWheel(); return true; }
+        if (Input.IsActionPressed("interact"))
+        {
+            _planHeld += (float)GetProcessDeltaTime();
+            if (_planHeld >= Data.Tool.PlanHoldSeconds && !Hud.WheelOpen)
+            {
+                var acts = Build.PlanActions(_planTarget);
+                var slices = acts.Select((a, i) => new Hud.WheelSlice(i == 2 ? "kazma" : "insa", null, a.title, a.text, a.ok)).ToList();
+                Hud.OpenWheel(Hud.WheelKind.Plan, slices, acts[1].ok ? 1 : 2);
+                Player.LookLocked = true;
+            }
+            if (Hud.WheelOpen && Hud.OpenWheelKind == Hud.WheelKind.Plan) Build.MarkPlanTarget(_planTarget, Hud.WheelSelection == 2);
+            return true;
+        }
+        // Birakildi
+        _planHolding = false;
+        if (Hud.WheelOpen && Hud.OpenWheelKind == Hud.WheelKind.Plan)
+        {
+            int sel = Hud.CloseWheel(); Player.LookLocked = false;
+            if (sel >= 0) Build.RunPlanAction(_planTarget, sel);
+            else Build.MarkPlanTarget(null, false);
+        }
+        else if (_planHeld < Data.Tool.PlanHoldSeconds) Interact(); // kisa basis: olagan E (kapi ac / kapat, istasyon)
+        return true;
     }
 
     /// <summary>
@@ -123,7 +199,10 @@ public partial class Director
     {
         if (InteractEconomy()) return; // Director.Economy.cs: El Arabasi, Sandik, Uyku Tulumu
         var st = Stations.Where(s => s.InReach(Player.GlobalPosition)).OrderBy(s => s.GlobalPosition.DistanceTo(Player.GlobalPosition)).FirstOrDefault();
-        if (st != null) { OpenStationMenu(st); return; }
+        // Gidak istasyondan yakinsa E Gidak'a gider (istasyonun dibinde dolasan Gidak beslenebilsin).
+        bool gidakFirst = st != null && Gidak.Visible && !Gidak.Tame
+            && Gidak.GlobalPosition.DistanceTo(Player.GlobalPosition) < st.GlobalPosition.DistanceTo(Player.GlobalPosition);
+        if (st != null && !gidakFirst) { OpenStationMenu(st); return; }
         if (Pod.IsRamp && new Vector2(Player.GlobalPosition.X - Pod.PadCenter.X, Player.GlobalPosition.Z - Pod.PadCenter.Z).Length() < 4.5f) { OpenSellMenu(); return; }
         if (PenInteract()) return; // Director.Pen.cs: Gidak'a bugday, kapi, Yemlik, Folluk, yerdeki yumurta
         if (Gidak.Visible && !Gidak.Swollen && Gidak.GlobalPosition.DistanceTo(Player.GlobalPosition) < 3f && State.Backpack.Remove("wheat", 1))

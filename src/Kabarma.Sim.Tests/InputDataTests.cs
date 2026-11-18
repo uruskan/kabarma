@@ -53,7 +53,7 @@ public class InputDataTests
         string[] used =
         {
             "move_forward", "move_back", "move_left", "move_right", "look_left", "look_right", "look_up", "look_down",
-            "jump", "sprint", "interact", "bag", "fire", "head_wheel", "build_next", "build_prev", "build_rotate",
+            "jump", "sprint", "interact", "bag", "fire", "head_wheel", "belt_next", "belt_prev", "build_wheel", "build_rotate",
             "card_1", "card_2", "card_3", "ui_accept", "ui_cancel", "ui_up", "ui_down", "controls_panel",
         };
         var inp = Input();

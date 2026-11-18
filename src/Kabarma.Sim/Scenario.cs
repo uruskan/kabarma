@@ -92,11 +92,11 @@ public sealed partial class GameState
         Farm = new Farm(data);
         Scenario = new Scenario(data.Scenario, data.MissingFor);
         Rng = new Rng(seed * 13 + 1);
-        Belt = new Belt(Backpack);
+        Belt = new Belt(Backpack, data.Tool.BeltTools, data.Tool.BeltStart, data.Tool.IsHoldable); // karar 23: Capa ve Insa Plani kemerde
         Tank = new WaterTank(data.Tool.Sulama);
         Stamina = new Stamina(data.Tool.Player.Stamina);
         Food = new FoodBuffs(data.Tool.FoodSlots);
-        foreach (var st in data.Tool.Recipes.Select(r => r.Station).Distinct()) Stations[st] = new StationQueue(data, st) { Known = Known };
+        foreach (var st in data.Tool.Recipes.Select(r => r.Station).Where(s => !string.IsNullOrEmpty(s)).Distinct()) Stations[st] =new StationQueue(data, st) { Known = Known };
         Cargo = new Cargo(data, Credit);
         Coop = new Coop(data.Pen);
         InitNightAndDay(); // GameState.Night.cs: takvim, Defter (is emirleri), gece sayaclari
