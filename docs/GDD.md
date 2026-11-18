@@ -544,6 +544,7 @@ Ayrı bir dünya türüdür; ortak oyun dünyalarında PvP yoktur.
 | 14 | Çivi | Tezgâh'ta Çivi Tabancası ve Çivi yap |
 | 15 | Kasa | Paketleme Tezgâhı kur, kasa doldur; Tezgâh'ta El Arabası yap, kasayı onunla rampaya götür, sat |
 | 16 | Barınak | Temel, duvar, kapı kasası ve Ahşap Kapı, çatı; içine Uyku Tulumu |
+| 17 | Katalog | Kargo Rampası terminalinden Katalog'u aç, satıştan gelen Krediyle Şalgam Tohumu paketi al; kapsül Ocak'ın yanına iner, E ile aç (M2, §13) |
 
 - **Suna'nın seslendirilen replikleri tuş adı içermez.** Tuşlar değiştirilebilir; yönlendirme ekrandaki adım satırında son kullanılan aygıtın glifiyle yazılır ([SANAT-SES.md](SANAT-SES.md) §10.3).
 - **Çıraklık zinciri:** Defter'deki ilk zincir ilk iki saati taşır.

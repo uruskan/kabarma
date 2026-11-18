@@ -34,6 +34,7 @@ if (-not $PSBoundParameters.ContainsKey('Only')) { $Only += 'creatures' }
 if (-not $PSBoundParameters.ContainsKey('Only')) { $Only += 'camera' } # oyuncu akisi: --test=camera varsayilan adimlarda
 if (-not $PSBoundParameters.ContainsKey('Only')) { $Only += 'grip' } # oyuncu akisi: --test=grip varsayilan adimlarda
 if (-not $PSBoundParameters.ContainsKey('Only')) { $Only += 'ekonomi' }  # ekonomi sinamasi (--test=ekonomi) varsayilan kosuda
+if (-not $PSBoundParameters.ContainsKey('Only')) { $Only += 'borsa' }    # ekonomi2: Borsa, Katalog, Cark (--test=borsa)
 $Root = Split-Path -Parent $PSScriptRoot
 Set-Location $Root
 $GamePath = Join-Path $Root 'game'
@@ -229,6 +230,7 @@ if ($Only -contains 'ekonomi') {
     }
 }
 
+if ($Only -contains 'borsa') { if (-not $G) { $G = Find-Godot }; $bo = Join-Path $RunDir 'borsa'; New-Item -ItemType Directory -Force $bo | Out-Null; Invoke-GodotTest 'borsa' "--test=borsa --fast=4 --test_out=`"$bo`"" 300 { param($r) $ok = $false; $detail = 'BORSA RESULT satiri yok'; if ($r.Text -match 'BORSA RESULT ok=(\d+) fail=(\d+)') { $ok = [int]$Matches[2] -eq 0; $detail = "ok=$($Matches[1]) fail=$($Matches[2])" }; [pscustomobject]@{ Ok = $ok; Detail = $detail } } } # ekonomi2: Borsa, Katalog, Cark (--test=borsa)
 if (($Only -contains 'gece') -and -not $G) { $G = Find-Godot }
 if ($Only -contains 'gece') {
     # gecehud: ilk gece kartlari, Hasat Raporu, Defter, envanter, takvim ve uyku, F1'den Kucuk Kabarma (game/scripts/GeceHudTest.cs)

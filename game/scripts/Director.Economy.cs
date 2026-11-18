@@ -29,12 +29,14 @@ public partial class Director
             Events.RaisePaid(v, what);
         };
         if (Main.Args.ContainsKey("ekonomi")) AddChild(new EconomyTest(this));
+        InitMarketTerminal(); // Director.EconomyMarket.cs: Borsa, Katalog, Tohum Carki, teslimat kapsulu (ekonomi2)
     }
 
     /// <summary>Director._Process'ten her karede.</summary>
     void TickEconomy(float dt)
     {
         State.Cargo.Tick(dt);
+        State.Catalog.Tick(dt); // teslimatlar (Director.EconomyMarket.cs Arrived'i dinler)
         WatchCrates(dt);
         foreach (var c in Carts) if (c.Pushed) Hud.Hint("El Arabası: it  ·  E: bırak", 0.2f);
     }
@@ -89,6 +91,7 @@ public partial class Director
     public bool InteractEconomy()
     {
         var p = Player.GlobalPosition;
+        if (OpenDeliveryInReach()) return true; // Director.EconomyMarket.cs: inmis katalog kapsulu
         var pushed = Carts.FirstOrDefault(c => c.Pushed);
         if (pushed != null) { pushed.Release(); return true; }
         var cart = Carts.Where(c => c.InReach(p)).OrderBy(c => c.GlobalPosition.DistanceTo(p)).FirstOrDefault();
@@ -217,6 +220,7 @@ public partial class Director
             OpenRampMenu();
         }));
         string pending = cargo.Pending.Count > 0 ? $"\nYolda: {string.Join(", ", cargo.Pending.Select(x => $"{x.Credits} Kredi ({x.Left:0} sn)"))}" : "";
+        AddTerminalRows(items); // Director.EconomyMarket.cs: Borsa, Katalog, Tohum Carki (satirlarin sonunda; Gonder hep 0)
         Hud.ShowMenu("Kargo Rampası", items, $"Rampada {n}/{Data.Economy.Ramp.MaxCrates} kasa. Rampa 1–{Data.Economy.Ramp.MaxCrates} kasa ya da tek bir kabarık ürün alır.{pending}\nKasaları ve kabarık ürünü Çekim başlığıyla rampaya taşı.  ·  {{act:interact}} / {{act:ui_cancel}}: kapat");
     }
 
