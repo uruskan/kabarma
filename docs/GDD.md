@@ -431,6 +431,13 @@ Yabani yaratıklar, açık arazideki Holding ekipleri ve kervanları, Oyuk koruy
 
 8 kule ve 8 tuzak ([ICERIK.md](ICERIK.md) §13). Kuleler güç ya da cephane ister; sinyalle açılıp kapanır ve hedef önceliği seçilir (en yakın, en güçlü, uçan, hırsız).
 
+**M3 kuralları (T1–T2: Çivi, Sapan, Saçma; Diken Tarlası, Yapışkan Zemin, Fırlatma Pedi, Çukur Kapağı).** Sayılar `data/defense.json`'da.
+- **Kurulum:** Kule ve tuzak Tezgâh'ta üretilen bir eşyadır; kemerden seçilip hayaletle kurulur, İnşa Planı'nın Sök kipiyle sökülür (eşya ve içindeki cephane geri döner). Tapu dışında da kurulur.
+- **Cephane:** Kulenin bir deposu var. Kuleye bakıp {act:interact} basınca çantadaki uygun cephane depo dolana dek aktarılır. Atış başına bir cephane gider; depo boşalınca kule durur. Sapan Taş ya da ürün atar; kabarık ürünün özelliği M4'te.
+- **Hedef:** Kule menzilindeki canlı düşmanlardan önceliğe göre seçer: en yakın, en güçlü (canı en yüksek), uçan, hırsız. Aradığı tür yoksa en yakına döner. {act:interact} basılı tutulunca öncelik sırayla değişir; sıranın sonu "kapalı"dır (sinyal bağlantısı M4'te güç ağıyla). Çivi tek hedefe hızlı ve öne nişanlı atar, Sapan kavisle alana düşürür, Saçma yakın bir koniye saçar.
+- **Bakım:** Her atış ve her tetiklenme aşınma yazar. Can sıfırlanınca yapı durur ve "bakım ister" der. Can yarının altındaysa {act:interact} önce onarır (tuzakta her zaman onarır; Çukur Kapağı'nda yalnız bozuksa): bedel tarifin %25'i (yapı onarımıyla aynı oran), can tamamlanır. Gece dalgasının yapılara saldırısı kabarma3 akışında.
+- **Tuzaklar:** Diken Tarlası üstündekine saniyede hasar verir ve yavaşlatır. Yapışkan Zemin girene yapışır, birkaç saniye tutar; aynı hedef kısa süre yeniden tutulmaz. Fırlatma Pedi basanı (oyuncu dahil) bakış yönünde fırlatır, sonra kurulması için bekler. Çukur Kapağı {act:interact} ile açılır ve kapanır (sinyal M4); açıkken üstüne gelen düşman çukura düşer, çıkamaz ve kapak kapanana dek tutulur. Çukurun sığası vardır.
+
 ## 17. Güçler
 
 - İki etkin güç yuvası ve bir ulti yuvası. İkinci etkin yuva Kurbağa Ağa'nın ödülüdür.

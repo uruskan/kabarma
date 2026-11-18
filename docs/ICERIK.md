@@ -713,6 +713,8 @@ Soket: üretici, akü ve şalter 2, tüketici 1, Direk 4; sinyal teli soket saym
 | Yağ Hendeği | 3 | Tutuşturulunca alev duvarı |
 | Dondurucu Püskürtücü | 5 | Alan Donma; güç ister |
 
+M3'te gelenler: Çivi, Sapan ve Saçma Kulesi; Diken Tarlası, Yapışkan Zemin, Fırlatma Pedi ve Çukur Kapağı. Bedelleri `recipes.json`'da (Tezgâh), menzil, hasar, cephane, aşınma ve tuzak sayıları `data/defense.json`'da (GDD §16.4 M3 kuralları). Saçma Kulesi'nin cephanesi Demirci Ocağı'nın Saçma'sı (`sacma`). Kalan dört kule ve dört tuzak M4'te.
+
 ## 14. Araçlar (7) ve eklentiler (10)
 
 | Araç | T | Kişi | Yuva | Özelliği |
