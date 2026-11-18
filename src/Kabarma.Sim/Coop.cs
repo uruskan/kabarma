@@ -18,15 +18,61 @@ public sealed class PenAnimal
     /// <summary>Bir sonraki urune kalan sure (yem varken isler).</summary>
     public float LayTimer { get; set; }
     public int Laid { get; set; }
+
+    // ---- M2 hayvancilik (GDD 9.2-9.4; kurallar Husbandry*.cs). Duz, serilestirilebilir (TEKNIK 9). ----
+    /// <summary>Kalici kimlik (Ranch.NextId); ebeveynler kimlikle anilir.</summary>
+    public int Id { get; set; }
+    public AnimalGenes Genes { get; set; } = new();
+    /// <summary>Mutluluk 0-100; eksi = henuz baslamadi (ilk tikte happiness.start).</summary>
+    public float Happiness { get; set; } = -1;
+    /// <summary>Yas (oyun gunu). Yabaniden evcillesen yetiskindir.</summary>
+    public float AgeDays { get; set; } = 99;
+    public string Role { get; set; } = "";
+    public string Command { get; set; } = "izle";
+    /// <summary>Urun (esya kimligi), is ("work") ve gubre ("manure") sayaclari, oyun saniyesi.</summary>
+    public Dictionary<string, float> Timers { get; set; } = new();
+    /// <summary>Hayvanin ustunde biriken urun (E ile alinir): esya -> (adet, ★).</summary>
+    public List<ProductStack> Pending { get; set; } = new();
+    /// <summary>Son okşandigi gun (Ranch.Day).</summary>
+    public int LastPetDay { get; set; } = -1;
+    /// <summary>Mutluluk kacma esiginin altinda gecen sure; dolunca WantsOut.</summary>
+    public float LowSeconds { get; set; }
+    public bool WantsOut { get; set; }
+    /// <summary>Ureme sayaci (saniye, eksi = yok) ve esi.</summary>
+    public float BreedTimer { get; set; } = -1;
+    public int MateId { get; set; }
+    public int MotherId { get; set; }
+    public int FatherId { get; set; }
+    /// <summary>Yirtici yolu: can %25 altinda Cekim/Zipkin ile tutuldu (GDD 9.1).</summary>
+    public bool Bound { get; set; }
+    /// <summary>Kovan turu: yerlestigi Ari Kovani'nin kimligi (0 = yok).</summary>
+    public int HiveId { get; set; }
+    /// <summary>Yuk rolunde heybe: esya -> adet (yuva sayisi Rules.PackSlots).</summary>
+    public Dictionary<string, int> Pack { get; set; } = new();
+    /// <summary>Konum (Godot her kare yazar; agil uyeligi buradan turetilir).</summary>
+    public float X { get; set; }
+    public float Z { get; set; }
+    public bool Adult(float adultDays) => AgeDays >= adultDays;
 }
 
-/// <summary>Yemlik: icine yem konur (ICERIK 10.2).</summary>
+/// <summary>Bir urun yigini: esya, adet, kalite (★1-3).</summary>
+public sealed class ProductStack
+{
+    public string Item { get; set; } = "";
+    public int Count { get; set; }
+    public int Stars { get; set; } = 1;
+}
+
+/// <summary>Yemlik: icine yem konur (ICERIK 10.2). Bosken ilk konan yem turunu belirler (M2: her tur kendi yemini yer).</summary>
 public sealed class Feeder
 {
-    public string Food { get; init; } = "wheat";
+    public string Food { get; set; } = "wheat";
     public int Amount { get; set; }
     public int Capacity { get; init; }
     public int Room => Math.Max(0, Capacity - Amount);
+    public int Id { get; set; }
+    public float X { get; set; }
+    public float Z { get; set; }
 }
 
 /// <summary>Folluk: agildaki Gidak buraya yumurtlar (ICERIK 10.2: 6 yuva).</summary>
@@ -35,6 +81,9 @@ public sealed class Nest
     public int Eggs { get; set; }
     public int Slots { get; init; }
     public bool Full => Eggs >= Slots;
+    public int Id { get; set; }
+    public float X { get; set; }
+    public float Z { get; set; }
 }
 
 /// <summary>Bir yumurtlamanin nereye gittigi: Folluk ya da yer.</summary>
