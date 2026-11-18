@@ -20,6 +20,7 @@ public partial class World
     Color _savedAmbientColor;
     bool _savedFog;
     Environment.AmbientSource _savedSource;
+    Environment.BGMode _savedBg;
 
     public void AddInterior(float x, float z, float radius, float floor)
     {
@@ -44,10 +45,10 @@ public partial class World
     {
         if (on == Indoor) return;
         var env = Env.Environment;
-        if (on) { _savedAmbientColor = env.AmbientLightColor; _savedFog = env.FogEnabled; _savedSource = env.AmbientLightSource; }
+        if (on) { _savedAmbientColor = env.AmbientLightColor; _savedFog = env.FogEnabled; _savedSource = env.AmbientLightSource; _savedBg = env.BackgroundMode; }
         Indoor = on;
         _indoorAmbient = ambient;
-        if (!on) { env.AmbientLightColor = _savedAmbientColor; env.FogEnabled = _savedFog; env.AmbientLightSource = _savedSource; }
+        if (!on) { env.AmbientLightColor = _savedAmbientColor; env.FogEnabled = _savedFog; env.AmbientLightSource = _savedSource; env.BackgroundMode = _savedBg; }
         ApplyTime();
     }
 
@@ -60,6 +61,8 @@ public partial class World
         env.AmbientLightColor = IndoorAmbientColor;
         env.AmbientLightEnergy = _indoorAmbient;
         env.FogEnabled = false;
+        env.BackgroundMode = Environment.BGMode.Color; // gok yok: aralik kalirsa siyah
+        env.BackgroundColor = Colors.Black;
         Sun.LightEnergy = 0f;
     }
 }

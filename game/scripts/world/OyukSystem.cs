@@ -208,7 +208,8 @@ public partial class OyukSystem : Node3D
         // Duvardan kacan ya da asagi dusen oyuncu kapiya doner.
         if (!room.Contains(_d.Player.GlobalPosition)) Teleport(room.DoorPos);
         foreach (var l in room.Lamps.Where(l => l.Lit && l.Left > 0)) { l.Left -= dt; if (l.Left <= 0) l.SetLit(false); }
-        if (Fight == null || Fight.Dead) { _bar.Visible = false; return; }
+        if (Fight == null) { _bar.Visible = false; return; }
+        if (Fight.Dead) { Cleared(room); return; }
 
         if (_target != null && _d.Atalar != null && !_d.Atalar.Targets.Contains(_target)) _d.Atalar.Targets.Add(_target);
         var (px, pz) = room.Local(_d.Player.GlobalPosition);

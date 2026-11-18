@@ -22,6 +22,13 @@ public partial class OyukRoom : Node3D
     public readonly List<PlugRock> Plugs = new();
     public readonly List<Node3D> HoleNodes = new();
 
+    /// <summary>Kabuk iceriden gorulur: iki yuzlu, kose renkli (MeshKit renkleri), mat.</summary>
+    static StandardMaterial3D _shell;
+    static StandardMaterial3D ShellMaterial => _shell ??= new StandardMaterial3D
+    {
+        VertexColorUseAsAlbedo = true, CullMode = BaseMaterial3D.CullModeEnum.Disabled, Roughness = 1f,
+    };
+
     public static OyukRoom Build(Director d, Poi poi, OyukGuardianDef g, int index)
     {
         var def = d.Data.Oyuk.Interior;
@@ -51,7 +58,7 @@ public partial class OyukRoom : Node3D
             floorKit.Pillow(new Vector3(rng.RandfRange(0.4f, 1.1f), rng.RandfRange(0.12f, 0.3f), rng.RandfRange(0.4f, 1.0f)),
                 MeshKit.At(new Vector3(Mathf.Cos(a) * r, 0f, Mathf.Sin(a) * r), new Vector3(0, a, 0)), floor.Darkened(rng.RandfRange(0.05f, 0.25f)));
         }
-        AddChild(floorKit.Instance());
+        AddChild(floorKit.Instance(ShellMaterial));
         body.AddChild(new CollisionShape3D { Shape = new CylinderShape3D { Radius = Radius + 1.5f, Height = 0.6f }, Position = new Vector3(0, -0.3f, 0) });
 
         // Duvar: kaya bloklari halkasi (iceri bakar) ve carpisma kutulari.
@@ -81,7 +88,7 @@ public partial class OyukRoom : Node3D
             float a = rng.Randf() * Mathf.Tau, r = Mathf.Sqrt(rng.Randf()) * (Radius - 1f), h = rng.RandfRange(0.6f, 2f);
             wallKit.Cylinder(0.02f, rng.RandfRange(0.25f, 0.5f), h, MeshKit.At(Mathf.Cos(a) * r, Height - h / 2f + 0.2f, Mathf.Sin(a) * r), wall.Darkened(0.2f), 6);
         }
-        AddChild(wallKit.Instance());
+        AddChild(wallKit.Instance(ShellMaterial));
         body.AddChild(new CollisionShape3D { Shape = new CylinderShape3D { Radius = Radius + 2f, Height = 1f }, Position = new Vector3(0, Height + 0.6f, 0) });
 
         // Kapi: ahsap kemer ve sicak isik (cikis).
@@ -94,7 +101,7 @@ public partial class OyukRoom : Node3D
         AddChild(arch.Instance());
         AddChild(new OmniLight3D { Position = door + new Vector3(0, 2.2f, -1f), LightColor = new Color(1f, 0.78f, 0.5f), LightEnergy = 1.4f, OmniRange = 9f, ShadowEnabled = false });
         // Zayif dolgu: oda tamamen kor olmasin (yarasa odasinda daha da zayif; karanlik dovusun parcasi).
-        AddChild(new OmniLight3D { Position = new Vector3(0, Height * 0.7f, 0), LightColor = new Color(0.6f, 0.62f, 0.8f), LightEnergy = g.Kind == "yarasa" ? 0.15f : 0.6f, OmniRange = Radius * 1.6f });
+        AddChild(new OmniLight3D { Position = new Vector3(0, Height * 0.7f, 0), LightColor = new Color(0.6f, 0.62f, 0.8f), LightEnergy = g.Kind == "yarasa" ? 0.35f : 0.8f, OmniRange = Radius * 1.6f });
     }
 
     /// <summary>Oda merkezine gore yerel xz → dunya.</summary>
