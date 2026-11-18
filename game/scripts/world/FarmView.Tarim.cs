@@ -6,7 +6,7 @@ using Kabarma.Sim;
 namespace Kabarma.Game;
 
 /// <summary>
-/// tarim (M2, GDD 8.2-8.3) Godot katmani: tohum secimi (T / DPad asagi), yabani bitkiler (yer tutucu: Ocak cevresinde),
+/// tarim (M2, GDD 8.2-8.3) Godot katmani: tohum secimi (H / DPad sol), yabani bitkiler (yer tutucu: Ocak cevresinde),
 /// Korkuluk ve Ari Kovani taramasi (Sim'e konum), gunduz zararlisi isirigi, hasat geri bildirimi, bilgi karti (FarmCard).
 /// Durum Sim'de (Farm.Selected, Farm.Seeds); burada statik durum yok.
 /// </summary>
@@ -18,7 +18,8 @@ public partial class FarmView
 
     void InitTarim()
     {
-        Farm.Bitten += p => View(p)?.OnBitten();
+        Farm.Bitten += p => { View(p)?.OnBitten(); GD.Print($"TARIM bite plot={p.X},{p.Y} crop={p.Crop} damage={p.PestDamage:0.00}"); };
+        Farm.Eaten += p => { if (!p.Wild && p.Stage == CropStage.Mature && p.Swollen == null) GD.Print($"TARIM eaten plot={p.X},{p.Y} crop={p.Crop}"); };
         Farm.WildGrown += p =>
         {
             var v = View(p);
@@ -47,7 +48,7 @@ public partial class FarmView
         return first?.Id;
     }
 
-    /// <summary>Siradaki tohuma gec (T / DPad asagi; bot da bunu cagirir).</summary>
+    /// <summary>Siradaki tohuma gec (H / DPad sol; bot da bunu cagirir).</summary>
     public void CycleSeed()
     {
         var list = SeedChoices();
@@ -58,7 +59,7 @@ public partial class FarmView
         _card?.Pulse();
     }
 
-    /// <summary>Belirli ekinin tohumunu sec (bot; oyuncunun T'ye basmasi gibi, tohum yoksa secmez).</summary>
+    /// <summary>Belirli ekinin tohumunu sec (bot; oyuncunun H'ye basmasi gibi, tohum yoksa secmez).</summary>
     public bool SelectSeed(string crop)
     {
         var def = _data.FindCrop(crop);
@@ -109,7 +110,7 @@ public partial class FarmView
     void SpawnWildPlants()
     {
         var d = D;
-        if (d == null || Farm.Plots.Any(p => p.Wild)) return;
+        if (d == null || Farm.WildPlots.Any()) return;
         var w = _data.Crops.Genetics.Wild;
         var rng = new Rng(d.State.Seed ^ 0x7A12_11D5UL);
         var center = d.Pod?.GlobalPosition ?? Vector3.Zero;
@@ -122,7 +123,8 @@ public partial class FarmView
                     float a = rng.Range(0f, Mathf.Tau), r = rng.Range(w.RingMin, w.RingMax);
                     var pos = center + new Vector3(Mathf.Cos(a) * r, 0, Mathf.Sin(a) * r);
                     var g = _world.Ground(pos);
-                    if (_world.IsWater(g) || trees.Any(t => new Vector2(t.X - g.X, t.Z - g.Z).Length() < 2.2f)) continue;
+                    if (_world.IsWater(g) || trees.Any(t => new Vector2(t.X - g.X, t.Z - g.Z).Length() < w.Clearance)
+                        || _world.Tufts.Any(t => t.Left > 0 && new Vector2(t.Position.X - g.X, t.Position.Z - g.Z).Length() < w.Clearance)) continue;
                     var (x, y) = Cell(g);
                     if (Farm.SpawnWild(x, y, c.Id, rng) != null) { n++; _world.ClearGrass(CellCenter(x, y), 0.6f); break; }
                 }

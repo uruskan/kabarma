@@ -100,7 +100,7 @@ public partial class BoynuzluDede : AtaActor
         for (int i = 0; i < 14; i++)
         {
             float a = i / 14f * Mathf.Tau;
-            float r = Def.Arena.Radius * (0.55f + 0.4f * (i % 2));
+            float r = Sys.ArenaRadius(Def) * (0.55f + 0.4f * (i % 2));
             var m = new MeshInstance3D { Mesh = new QuadMesh { Size = new Vector2(16f, 7f) }, MaterialOverride = _fogMat, CastShadow = GeometryInstance3D.ShadowCastingSetting.Off };
             m.AddToGroup("ata_fx");
             Sys.AddChild(m);

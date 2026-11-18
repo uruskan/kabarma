@@ -553,7 +553,7 @@ Kare Temel · Üçgen Temel · Kazık Temel · Duvar · Yarım Duvar · Alçak D
 | Sur Duvarı · Sur Kapısı · Kule Tabanı | 8 · 10 · 12 |
 | Makine Platformu | Hücre başına 6 (küçük 6, orta 24, büyük 54) |
 
-Öbür malzemeler aynı adette kendi ana girdisini ister: Kerpiç-Taş yarı Kerpiç yarı Taş, Çelik Sac Çelik, Mayalı Beton Mayalı Beton, cam seti Cam. Sayılar o malzemenin geldiği taşta veriyle ayarlanır.
+Öbür malzemeler aynı adette kendi ana girdisini ister: Kerpiç-Taş yarı Kerpiç yarı Taş, Çelik Sac Çelik, Mayalı Beton Mayalı Beton, cam seti Cam. Sayılar o malzemenin geldiği taşta veriyle ayarlanır (`data/build.json`: malzeme başına oran, can, açıklık, ağırlık ve taşıma sınırı; M2'de 4 malzemenin hepsi yazıldı, Kerpiç-Taş 4 birimlik duvar = 2 Kerpiç + 2 Taş). Cam seti M4'te (T4).
 
 ### 10.2 Yerleştirilebilirler (72)
 
@@ -672,7 +672,7 @@ Yeni ham kaynak kimlikleri (toplama yerini dunya2 ve hayvan akışları kurar): 
 
 Sinyal parçaları T3'te (basit) ve T4'te (sensörler, kapılar) açılır; yalnız Düğme ve Basınç Plakası T2'dedir (URETIM §6 M2 listesi; ilk güç ağını açıp kapatmak için). Bant ve kol T3, drone ve teleferik T5.
 
-**M2 bedelleri ve değerleri** (güç akışı, 18 Kasım 2026). İlk güç Koru'dan önce kurulabilsin diye Rüzgâr Gülü, Hayvan Çarkı ve dağıtım parçaları yalnız Çayır malzemesi ister (Bıçkı'nın 20 W'ı Kereste'den önce gelmeli). Akü Mk1 §20'deki bedeliyle kalır; tarifi Demir Külçe ve Ekşilik oyuna girince eklenir. Kablo iki soket arasına elle çekilir (GDD §11.1): her çekilen kablo 1 Kablo harcar, sökülünce geri verir; sinyal teli aynı Kablo'dan, ince çekilir.
+**M2 bedelleri ve değerleri** (güç akışı, 18 Kasım 2026). İlk güç Koru'dan önce kurulabilsin diye Rüzgâr Gülü, Hayvan Çarkı ve dağıtım parçaları yalnız Çayır malzemesi ister (Bıçkı'nın 20 W'ı Kereste'den önce gelmeli). Akü Mk1 §20'deki bedeliyle Tezgâh'ta yapılır (Ekşilik = `sourberry`). Rüzgâr hiç tam durmaz (en düşük 8 W, `power.json` `wind.min`); 20–60 W isteyen istasyonlar zayıf rüzgârda durur, akü bunu dengeler. Kablo iki soket arasına elle çekilir (GDD §11.1): her çekilen kablo 1 Kablo harcar, sökülünce geri verir; sinyal teli aynı Kablo'dan, ince çekilir.
 
 | Parça | Bedel (yer) | Değer |
 |---|---|---|
@@ -680,9 +680,9 @@ Sinyal parçaları T3'te (basit) ve T4'te (sensörler, kapılar) açılır; yaln
 | Kablo | Tezgâh: 1 Bakır Tel + 1 Lif → 2 | en fazla 12 m |
 | Direk | El: 4 Odun + 1 Bakır Tel | 4 soket |
 | Şalter | Tezgâh: 2 Odun + 2 Bakır Tel | ağı böler; sinyal bağlıysa sinyal > 0 iken kapalı (iletir) |
-| Rüzgâr Gülü | Tezgâh: 12 Odun + 4 Bakır Tel | 0–80 W, rüzgârla değişir |
+| Rüzgâr Gülü | Tezgâh: 12 Odun + 4 Bakır Tel | 8–80 W, rüzgârla değişir |
 | Hayvan Çarkı | Tezgâh: 16 Odun + 2 Bakır Tel | 40 W, içinde hayvan varken |
-| Akü Mk1 | 5 Bakır Külçe + 5 Demir Külçe + 3 Ekşilik (§20) | 500 Wh, en fazla 200 W |
+| Akü Mk1 | Tezgâh: 5 Bakır Külçe + 5 Demir Külçe + 3 Ekşilik (§20) | 500 Wh, en fazla 200 W |
 | Elektrik Lambası (§10.2) | Tezgâh: 2 Odun + 1 Bakır Tel | 5 W, 8 m ışık; sinyal bağlıysa sinyal > 0 iken yanar |
 | Düğme | Tezgâh: 1 Odun + 1 Bakır Tel | basınca 1 sn 100 sinyal |
 | Basınç Plakası | Tezgâh: 2 Taş + 1 Bakır Tel | üstünde oyuncu ya da yaratık varken 100 sinyal |

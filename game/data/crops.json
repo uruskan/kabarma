@@ -73,7 +73,7 @@
     "rotationBonus": 0.10,
     "fallowPerDay": 3,
     "regrowFrom": 0.6,
-    "wild": { "perCrop": 2, "ringMin": 24, "ringMax": 48, "regrowDays": 2 },
+    "wild": { "perCrop": 2, "ringMin": 24, "ringMax": 48, "regrowDays": 2, "clearance": 5.0, "mowRadius": 0.8 },
     "maxNotes": 30
   }
 }

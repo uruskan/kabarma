@@ -23,10 +23,11 @@ public partial class Capa
 
         // Olgun ekin
         int n = 0;
-        foreach (var plot in _d.State.Farm.Plots.ToList())
+        foreach (var plot in _d.State.Farm.AllPlots.ToList()) // tarim: yabani bitkiler dahil
         {
             var c = _d.FarmView.CellCenter(plot.X, plot.Y);
             if (new Vector2(c.X - aim.X, c.Z - aim.Z).Length() > _t.MowRadius) continue;
+            if (plot.Wild && new Vector2(c.X - aim.X, c.Z - aim.Z).Length() > _d.Data.Crops.Genetics.Wild.MowRadius) continue; // tarim: yabani bitki yalniz nisanla
             // tarim (M2): urun ekine gore, tohumlar soyuyla Tohum Kaydi'na (FarmView.Harvest.cs: yazi, renk, olay)
             var h = _d.State.Farm.HarvestFull(plot.X, plot.Y, _d.State.Rng);
             if (h == null) continue;
@@ -45,7 +46,8 @@ public partial class Capa
         foreach (var tp in trees)
         {
             int w = _d.Data.Tool.WoodPerChop;
-            _d.State.Backpack.Add("wood", w);
+            string wood = _d.World.TreeWood(tp); // dunya2: Koru agaci Sert Odun verir (biomes.json decor "wood")
+            _d.State.Backpack.Add(wood, w);
             var at = new Vector3(tp.X, aim.Y, tp.Z);
             FeelHit("bicme_agac", at, Palette.Plant);
             FeelDebris("bicme_odun", at, Palette.Wood);
@@ -53,7 +55,7 @@ public partial class Capa
             foreach (var treeMesh in _d.World.TreeChunksAt(tp)) // ornek bulunamayan parca sessizce gecer
                 Squash.KickInstance(treeMesh, treeMesh.ToLocal(tp), a, F.Squash.Seconds, F.Squash.Wobbles);
             Fx.FlyTo(at, () => _d.Player.BackpackPoint.GlobalPosition, Palette.Wood, 0.12f);
-            Events.RaiseGathered("wood", w);
+            Events.RaiseGathered(wood, w);
         }
 
         // Ot, cali ve yabani bugday (World.Resources.cs, dunya akisi): Lif ya da Bugday, geri gelmez; vurus basina biomes.json "perHit".

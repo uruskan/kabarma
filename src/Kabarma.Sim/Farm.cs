@@ -50,7 +50,11 @@ public sealed partial class Farm
 
     public Farm(GameData data) { _data = data; }
 
-    public IEnumerable<Plot> Plots => _plots.Values;
+    /// <summary>Tapudaki tarla kareleri (surulmus). Yabani bitkiler haric: senaryo, pusula, gece sayaclari bunu sayar.</summary>
+    public IEnumerable<Plot> Plots => _plots.Values.Where(p => !p.Wild);
+    /// <summary>Yabani bitkiler dahil butun kareler (Bicme, gorunus).</summary>
+    public IEnumerable<Plot> AllPlots => _plots.Values;
+    public IEnumerable<Plot> WildPlots => _plots.Values.Where(p => p.Wild);
     public Plot? Get(int x, int y) => _plots.TryGetValue((x, y), out var p) ? p : null;
 
     public event Action<Plot>? Tilled, Planted, Watered, Matured, Swelled, Eaten, Harvested, Cleared;

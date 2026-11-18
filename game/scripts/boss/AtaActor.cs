@@ -258,7 +258,7 @@ public abstract partial class AtaActor : Node3D, IAtaTarget
         {
             var step = d.Normalized() * Mathf.Min(d.Length() - stop, Phase.MoveSpeed * dt);
             var next = GlobalPosition + step;
-            if ((next - center).Length() > Def.Arena.Radius + 2f) next = center + ((next - center) with { Y = 0 }).Normalized() * (Def.Arena.Radius + 2f);
+            if ((next - center).Length() > Sys.ArenaRadius(Def) + 2f) next = center + ((next - center) with { Y = 0 }).Normalized() * (Sys.ArenaRadius(Def) + 2f);
             GlobalPosition = D.World.Ground(next);
             Face(d.Normalized(), dt * 3f);
             WalkAnim(dt, Phase.MoveSpeed);
@@ -293,7 +293,7 @@ public abstract partial class AtaActor : Node3D, IAtaTarget
             p.Hurt(Phase.AttackDamage, GlobalPosition);
             p.Velocity += _chargeDir * Phase.Knockback + Vector3.Up * 3f;
         }
-        bool outside = (next - center).Length() > Def.Arena.Radius + 3f;
+        bool outside = (next - center).Length() > Sys.ArenaRadius(Def) + 3f;
         if (_chargeT >= Phase.ChargeSeconds || outside) { _move = Move.Walk; Squash.Kick(Visual, 0.15f, 0.4f, 2f); return; }
         GlobalPosition = D.World.Ground(next);
     }

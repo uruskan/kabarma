@@ -1,0 +1,48 @@
+tools/test.ps1  2026-11-18 18:38  git 76ccf94
+
+[PASS] build  exit=0 warnings=0 errors=0
+[PASS] sim  exit=0 Passed!  - Failed:     0, Passed:   406, Skipped:     0, Total:   406, Duration: 22 s - Kabarma.Sim.Tests.dll (net8.0)
+[PASS] bench  exit=0 1000 gun 2.948 sn, ayrilan 59.3 MB, tepe 89.7 MB (Release, 3x3)
+[PASS] bot  exit=0 RESULT ok ciraklik=4/5 veri=140 credits=8096 eggs=1 kills=19 cards=1 maya=48 stations=4 harvests=5 skipped=-
+[PASS] buildtest  exit=0 placed=95 failed=0 pieces=88
+[PASS] audio  exit=0 ok sounds=60 playable=60 variant_files=180 buses=6 layers_loaded=3/3 day_music=yes
+[PASS] world  exit=0 WORLD RESULT ok checks passed (5434 ms)
+[PASS] boss  exit=0 RESULT ok boss defeated=koca_pofuduk,boynuzlu_dede fights=koca_pofuduk:48,boynuzlu_dede:58 player_hp=52 shears=4 pillar_stuns=1 shard_hits=3 wave_jumps=1 seals=bereketli_toprak,derin_kok
+[PASS] camera  exit=0 RESULT ok camera checks=73
+[PASS] grip  exit=0 RESULT ok grip checks=67 cart=sag 1.0cm sol 0.1cm
+[PASS] tarim  exit=0 RESULT ok tarim crop=wheat item=16 alaca=5 seeds=4 ledger=4 best=V2 H3 D3 M2 korkuluk=1 protected=2
+[PASS] creatures  exit=0 RESULT ok creatures=10 wild=11 clips=80 posed=74
+[PASS] latency  exit=0 RESULT ok heads=7/7 budget_max_ms=33.3 wall_med_ms=34.8 wall_max_ms=49.2 hitstop=ok
+[PASS] ekonomi  exit=0 ok=82 fail=0
+[PASS] borsa  exit=0 ok=25 fail=0
+[PASS] zincir  exit=0 ok=8 fail=0 veri=2 t=198
+[PASS] gece  exit=0 GECE RESULT ok checks=2135 nights=2 day=3
+[PASS] ilerleme  exit=0 ILERLEME RESULT ok checks=15 credits=6100 veri=80
+[PASS] coop  exit=0 ok players=4 max_diff_mm=2.059 pieces=4 foundations=4 late_join=1 rejected=0 corrections=0
+[PASS] input_kbm  exit=0 RESULT ok ciraklik=4/5 veri=140 credits=8402 eggs=1 kills=20 cards=2 maya=46 stations=4 harvests=8 skipped=- olay=8384 basis=148 cark=37 menu=0 fare=7156 yanadim=1
+[PASS] input_pad  exit=0 RESULT ok ciraklik=4/5 veri=140 credits=8717 eggs=1 kills=20 cards=2 maya=46 stations=4 harvests=8 skipped=- olay=19805 basis=241 cark=30 menu=21 fare=0 yanadim=2
+
+sinama     sonuc  sure(sn)  ayrinti
+------     -----  --------  -------
+build      PASS       14.1  exit=0 warnings=0 errors=0
+sim        PASS       29.2  exit=0 Passed!  - Failed:     0, Passed:   406, Skipped:     0, Total:   406, Duration: 22 s - Kabarma.Sim.Tests.dll (net8.0)
+bench      PASS        7.5  exit=0 1000 gun 2.948 sn, ayrilan 59.3 MB, tepe 89.7 MB (Release, 3x3)
+bot        PASS      239.3  exit=0 RESULT ok ciraklik=4/5 veri=140 credits=8096 eggs=1 kills=19 cards=1 maya=48 stations=4 harvests=5 skipped=-
+buildtest  PASS       13.1  exit=0 placed=95 failed=0 pieces=88
+audio      PASS        6.6  exit=0 ok sounds=60 playable=60 variant_files=180 buses=6 layers_loaded=3/3 day_music=yes
+world      PASS        6.4  exit=0 WORLD RESULT ok checks passed (5434 ms)
+boss       PASS       65.8  exit=0 RESULT ok boss defeated=koca_pofuduk,boynuzlu_dede fights=koca_pofuduk:48,boynuzlu_dede:58 player_hp=52 shears=4 pillar_stuns=1 shard_hits=3 wave_jumps=1 seals=bereketli_toprak,derin_kok
+camera     PASS       29.4  exit=0 RESULT ok camera checks=73
+grip       PASS       36.7  exit=0 RESULT ok grip checks=67 cart=sag 1.0cm sol 0.1cm
+tarim      PASS       41.8  exit=0 RESULT ok tarim crop=wheat item=16 alaca=5 seeds=4 ledger=4 best=V2 H3 D3 M2 korkuluk=1 protected=2
+creatures  PASS        1.9  exit=0 RESULT ok creatures=10 wild=11 clips=80 posed=74
+latency    PASS       43.8  exit=0 RESULT ok heads=7/7 budget_max_ms=33.3 wall_med_ms=34.8 wall_max_ms=49.2 hitstop=ok
+ekonomi    PASS       69.1  exit=0 ok=82 fail=0
+borsa      PASS       35.3  exit=0 ok=25 fail=0
+zincir     PASS       57.7  exit=0 ok=8 fail=0 veri=2 t=198
+gece       PASS       58.3  exit=0 GECE RESULT ok checks=2135 nights=2 day=3
+ilerleme   PASS       12.8  exit=0 ILERLEME RESULT ok checks=15 credits=6100 veri=80
+coop       PASS       91.2  exit=0 ok players=4 max_diff_mm=2.059 pieces=4 foundations=4 late_join=1 rejected=0 corrections=0
+input_kbm  PASS      170.9  exit=0 RESULT ok ciraklik=4/5 veri=140 credits=8402 eggs=1 kills=20 cards=2 maya=46 stations=4 harvests=8 skipped=- olay=8384 basis=148 cark=37 menu=0 fare=7156 yanadim=1
+input_pad  PASS        183  exit=0 RESULT ok ciraklik=4/5 veri=140 credits=8717 eggs=1 kills=20 cards=2 maya=46 stations=4 harvests=8 skipped=- olay=19805 basis=241 cark=30 menu=21 fare=0 yanadim=2
+TEST PASS

@@ -35,7 +35,7 @@ public partial class Director
         Events.Gathered += (item, _) => { if (item == "wood") sc.SetProgress("odun", State.Backpack.Count("wood")); };     // 2 odun
         Events.StationPlaced += id => { if (id == "ocak") sc.Report("ocak"); };                                            // 3 ocak
         Events.StationPlaced += id => { if (id == "tezgah") sc.Report("tezgah"); };                                        // 4 tezgah
-        State.Farm.Watered += p => { if (p.Planted) { _wateredPlots.Add((p.X, p.Y)); sc.SetProgress("tarla", _wateredPlots.Count); } }; // 5 tarla
+        State.Farm.Watered += p => { if (p.Planted && !p.Wild) { _wateredPlots.Add((p.X, p.Y)); sc.SetProgress("tarla", _wateredPlots.Count); } }; // 5 tarla
         Events.PenChanged += cells => sc.SetProgress("agil", cells);                                                       // 6 agil
         Events.AnimalPenned += species => { if (species == "gidak") sc.Report("gidak"); };                                 // 7 gidak
         Events.Dawn += () => sc.Report("night");                                                                           // 8 night (Kucuk Kabarma)
@@ -50,6 +50,7 @@ public partial class Director
         Events.PiecePlaced += _ => sc.SetProgress("barinak", ShelterParts());                                              // 16 barinak
         Events.StationPlaced += id => { _placedIds.Add(id); sc.SetProgress("barinak", ShelterParts()); };                  // 16 barinak
         Events.Delivered += (_, n) => { if (n > 0) sc.Report("katalog"); };                                                // 17 katalog (ekonomi2)
+        Events.PieceUpgraded += (_, mat) => { if (mat == "kerpic_tas") sc.Report("yukselt"); };                            // 18 yukselt (M2 yapi)
 
         // GDD 24: ilk gece ekin evresine bakmadan butun ekinleri kabartir (Kabarma ani gecenin icinde gelir).
         Events.NightStarted += () => { if (sc.Is("night") && Data.Scenario.FirstNightSwellsAll) GD.Print($"FIRSTNIGHT ripen={FirstDayRules.RipenForFirstNight(State.Farm)}"); };
@@ -122,7 +123,7 @@ public partial class Director
     void CatchUp()
     {
         var sc = State.Scenario;
-        foreach (var p in State.Farm.Plots.Where(p => p.Planted && p.Moisture > 0)) _wateredPlots.Add((p.X, p.Y));
+        foreach (var p in State.Farm.Plots.Where(p => p.Planted && !p.Wild && p.Moisture > 0)) _wateredPlots.Add((p.X, p.Y));
         sc.SetProgress("tarla", _wateredPlots.Count);
         sc.SetProgress("odun", State.Backpack.Count("wood"));
         if (Pens != null) sc.SetProgress("agil", Pens.Pens.Where(x => x.HasGate).Select(x => x.Cells(Data.Pen.CellArea)).DefaultIfEmpty(0).Max());

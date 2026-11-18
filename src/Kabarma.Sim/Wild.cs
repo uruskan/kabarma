@@ -1,7 +1,7 @@
 namespace Kabarma.Sim;
 
-// Yabani yaratiklarin gunduz tavri (GDD Â§16.2 "Gunduz tavri", ICERIK Â§3.8): veriyle surulen durum makinesi.
-// Butun durum duz alanlardir (kayda ve aga hazir, TEKNIK Â§9): Godot tipi, dugum basvurusu yok; suru kimlikle baglanir.
+// Yabani yaratiklarin gunduz tavri (GDD §16.2 "Gunduz tavri", ICERIK §3.8): veriyle surulen durum makinesi.
+// Butun durum duz alanlardir (kayda ve aga hazir, TEKNIK §9): Godot tipi, dugum basvurusu yok; suru kimlikle baglanir.
 // Etkiler (ekin kaybi, yumurta, hasar) sahibi olan sisteme olay olarak doner (WildEvent); burada uygulanmaz.
 
 public enum WildMode { Idle, Graze, Rest, Walk, Alert, Flee, Approach, Feed, Warn, Charge, Attack, Sleep }
@@ -48,7 +48,7 @@ public sealed class WildState
     public bool Warned { get; set; }
     public float Hp { get; set; }
     public bool Swollen { get; set; }
-    /// <summary>Evcillesti: davranisi hayvancilik akisi surer (GDD Â§9).</summary>
+    /// <summary>Evcillesti: davranisi hayvancilik akisi surer (GDD §9).</summary>
     public bool Tamed { get; set; }
     public ulong Rand { get; set; } = 0x9E3779B97F4A7C15UL;
     public float Next() { var r = Rand; var v = WildRandom.Next(ref r); Rand = r; return v; }
@@ -110,7 +110,7 @@ public static class WildBrain
         _ => !night,
     };
 
-    /// <summary>Kabarma gecesi yabaniler sahneden cekilir; dalga olarak gelirler (GDD Â§14.2).</summary>
+    /// <summary>Kabarma gecesi yabaniler sahneden cekilir; dalga olarak gelirler (GDD §14.2).</summary>
     public static bool Present(bool kabarmaNight) => !kabarmaNight;
 
 

@@ -41,6 +41,7 @@ public partial class Main : Node3D
         ["swarm"] = m => { m.AddChild(new SwarmTest()); return true; },
         ["audio"] = m => { m.AddChild(new AudioTest()); return true; }, // ses akisi: kanallar, 60 ses, muzik durumlari
         ["world"] = m => { m.AddChild(new WorldTest()); return true; },
+        ["explore"] = m => { Args["explore"] = "1"; Args["mute"] = "1"; Sfx.Muted = true; return false; }, // dunya2: Director + ExploreTest (kule, mancinik, yuva, enkaz, harita)
         ["shots"] = m => { Args.TryAdd("preset", "yuksek"); if (!Args.ContainsKey("shots_quick") && !Args.ContainsKey("shots_clip")) Args["bot"] = "1"; m.AddChild(new WorldShots()); return false; },
         ["perf"] = m => { Args.TryAdd("preset", "yuksek"); if (Args.GetValueOrDefault("perf") == "night") Args["bot"] = "1"; m.AddChild(new PerfProbe()); return false; },
         ["gfxab"] = m => { Args.TryAdd("preset", "yuksek"); m.AddChild(new GfxAb()); return false; },
@@ -53,12 +54,17 @@ public partial class Main : Node3D
         ["camera"] = m => { m.AddChild(new CameraTest()); return false; }, // oyuncu akisi: kamera kipleri, tekerlek, carpisma, nisan, ayar dosyasi
         ["grip"] = m => { Args["mute"] = "1"; Sfx.Muted = true; m.AddChild(new GripTest()); return false; }, // oyuncu akisi: Capa elde, namlu nisanda, araba iki elle
         ["kemer"] = m => { Args["bot"] = "1"; if (m._quitAfter <= 0) m._quitAfter = 600; m.AddChild(new KemerShots()); return false; }, // karar 23 kaniti: progress/kemer/*.png
+        ["save"] = m => { SaveTest.Prepare(); m.AddChild(new SaveTest(m)); return false; }, // kayit: bot bir gun oynar, kaydeder, sahne bastan yuklenir; fark 0 (save/SaveTest.cs)
+        ["menu"] = m => { MenuFlowTest.Prepare(); m.AddChild(new MenuFlowTest(m)); return false; }, // kayit: ana menu -> yeni oyun -> Esc ana menu -> Devam -> kapatma kaydi (save/MenuFlowTest.cs)
+        ["hayvan"] = m => { Args["bot"] = "1"; Args["hayvanbot"] = "1"; if (m._quitAfter <= 0) m._quitAfter = 1300; return false; }, // hayvan akisi: zincir + ikinci tur (Bot.Hayvan.cs)
         ["borsa"] = m => { Args["borsatest"] = "1"; Args["mute"] = "1"; Sfx.Muted = true; return false; }, // ekonomi2: Borsa, Katalog, Cark (MarketTest.cs)
         ["boss"] = m => { Args.TryAdd("fast", "3"); Args.TryAdd("mute", "1"); Sfx.Muted = Args["mute"] == "1"; m.AddChild(new AtaTest()); return false; }, // boss akisi: bot iki Ata'yi bulur ve yener (boss/AtaTest.cs)
         ["zincir"] = m => { Args["bot"] = "1"; Args["mute"] = "1"; Sfx.Muted = true; m.AddChild(new ZincirTest()); return false; }, // zincir M2: bot T2 urununu arastirir ve uretir (ZincirTest.cs)
         ["tarim"] = m => { Args["bot"] = "1"; Args["tarim"] = "1"; Args["mute"] = "1"; Sfx.Muted = true; if (m._quitAfter <= 0) m._quitAfter = 900; return false; }, // tarim M2: Bot.Tarim.cs ikinci ekin
         ["coop"] = m => { CoopTest.Setup(); m.AddChild(new CoopTest()); return false; }, // ortak: host + 3 istemci (ENet), senkron < 1 cm (net/CoopTest.cs)
         ["steam"] = m => { m.AddChild(new SteamTest()); return true; }, // ortak: tek surec Steam baslatma ve lobi (yalniz -Only steam)
+        ["power"] = m => { Args["bot"] = "1"; Args["power"] = "1"; if (m._quitAfter <= 0) m._quitAfter = 1500; return false; }, // guc akisi: ilk gun zinciri, sonra uretec + lamba + dugme (Bot.Power.cs)
+        ["powershots"] = m => { Args["powershots"] = "1"; Args["mute"] = "1"; Sfx.Muted = true; return false; }, // guc akisi: parcalar ve kablolar, gunduz/gece goruntusu (progress/m2/guc/)
         ["input"] = m => { m._inputDevice = InputDriver.ParseDevice(Args.TryGetValue("device", out var d) ? d : "kbm"); if (m._quitAfter <= 0) m._quitAfter = 900; return false; }, // zincir bitince Bot.Hands cikar; bu ust sinir
     };
 
@@ -71,7 +77,11 @@ public partial class Main : Node3D
             if (eq > 0) Args[s[..eq]] = s[(eq + 1)..]; else Args[s] = "1";
         }
         SetupInput();
-        if (Args.ContainsKey("mute")) Sfx.Muted = true;
+        // Sahibin karari (18 Kasim 2026): otomatik kosular (test, bot, goruntu, sure sinirli kosu) hic ses cikarmaz;
+        // sahip calisirken muzik dinliyor. Sesi duymak gereken bir kosu --ses ile acar.
+        bool automated = Args.ContainsKey("test") || Args.ContainsKey("bot") || Args.ContainsKey("shots") || Args.ContainsKey("quit_after")
+            || Args.ContainsKey("checkcolors") || Args.ContainsKey("gfxab") || Args.ContainsKey("perf");
+        if (Args.ContainsKey("mute") || (automated && !Args.ContainsKey("ses"))) { Args["mute"] = "1"; Sfx.Muted = true; AudioServer.SetBusMute(0, true); }
         if (Args.TryGetValue("shots", out var shots)) _shots.AddRange(shots.Split(',').Select(x => float.Parse(x, System.Globalization.CultureInfo.InvariantCulture)));
         if (Args.TryGetValue("shot_prefix", out var pre)) _prefix = pre;
         if (Args.TryGetValue("quit_after", out var q)) _quitAfter = float.Parse(q, System.Globalization.CultureInfo.InvariantCulture);
@@ -90,6 +100,7 @@ public partial class Main : Node3D
         }
         if (Args.ContainsKey("netsync")) { AddChild(new NetSyncTest()); return; }
         if (Args.ContainsKey("swarm")) { AddChild(new SwarmTest()); return; }
+        if (ShowMainMenu()) return; // save/Main.Flow.cs: argumansiz acilista ana menu (otomasyon kosulari dogrudan oyuna)
         _dir = new Director { Name = "Director", Controls = _controls };
         if (Args.TryGetValue("fast", out var f)) _dir.SpeedScale = float.Parse(f, System.Globalization.CultureInfo.InvariantCulture);
         AddChild(_dir);

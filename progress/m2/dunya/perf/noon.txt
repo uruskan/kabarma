@@ -1,0 +1,7 @@
+﻿# --test=perf --perf=noon --preset=yuksek, RTX 2070S, ayni anda 8 Godot oturumu
+PERF kapsul ogle mean=13.60ms fps=73.5 p99=23.825ms draws=584 prims=3179669 frames=4412
+PERF us ogle mean=7.24ms fps=138.0 p99=15.51ms draws=599 prims=3441968 frames=8286
+PERF gol ogle mean=7.97ms fps=125.5 p99=21.706ms draws=571 prims=2620615 frames=7530
+PERF tepe ogle mean=7.85ms fps=127.4 p99=13.228ms draws=527 prims=3079493 frames=7642
+PERF gecis ogle mean=10.62ms fps=94.2 p99=13.906ms draws=649 prims=2289802 frames=5650
+PERF koru ogle mean=11.71ms fps=85.4 p99=13.564ms draws=572 prims=1994070 frames=5123

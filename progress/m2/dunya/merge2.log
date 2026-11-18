@@ -1,0 +1,20 @@
+tools/test.ps1  2026-11-18 18:24  git 68bfeb9
+
+[PASS] build  exit=0 warnings=0 errors=0
+[FAIL] sim  exit=1 Failed!  - Failed:     1, Passed:   405, Skipped:     0, Total:   406, Duration: 16 s - Kabarma.Sim.Tests.dll (net8.0)
+      --- son satirlar: C:\Users\uruskan\Documents\GitHub\kabarma\.claude\worktrees\m2-dunya-9fd4f9\.tools\run\test\sim.log
+      Test run for C:\Users\uruskan\Documents\GitHub\kabarma\.claude\worktrees\m2-dunya-9fd4f9\src\Kabarma.Sim.Tests\bin\Debug\net8.0\Kabarma.Sim.Tests.dll (.NETCoreApp,Version=v8.0)
+      VSTest version 17.11.2 (x64)
+      Starting test execution, please wait...
+      A total of 1 test files matched the specified pattern.
+      Failed!  - Failed:     1, Passed:   405, Skipped:     0, Total:   406, Duration: 16 s - Kabarma.Sim.Tests.dll (net8.0)
+[PASS] world  exit=0 WORLD RESULT ok checks passed (7377 ms)
+[PASS] explore  exit=0 EXPLORE RESULT ok
+
+sinama     sonuc  sure(sn)  ayrinti
+------     -----  --------  -------
+build      PASS        4.7  exit=0 warnings=0 errors=0
+sim        FAIL       19.4  exit=1 Failed!  - Failed:     1, Passed:   405, Skipped:     0, Total:   406, Duration: 16 s - Kabarma.Sim.Tests.dll (net8.0)
+world      PASS        8.3  exit=0 WORLD RESULT ok checks passed (7377 ms)
+explore    PASS       35.2  exit=0 EXPLORE RESULT ok
+TEST FAIL (1)

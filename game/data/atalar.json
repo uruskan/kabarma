@@ -4,6 +4,8 @@
   "teamHpPerExtra": 0.5,
   "phaseShiftSeconds": 1.5,
   "arriveSeconds": 2.5,
+  "abandonSeconds": 20,
+  "_arena": "Arena yeri dunya2'nin Ata Tasi kesif noktasidir (biomes.json biyom pois ata_tasi + spawns.atalar arenaRadius; AtaArena.Resolve) arazinin icindeyse; arena.center ve arena.radius yalniz yedek (Sis Korusu'nun noktasi arazi buyuyene dek disarida). stone ve pillars merkeze gore.",
   "atalar": [
     {
       "id": "koca_pofuduk",
@@ -40,8 +42,8 @@
       "name": "Boynuzlu Dede",
       "nameEn": "Old Antlers",
       "biome": "sis_korusu",
-      "placeholder": "Model: koddan parca model (govde, bacaklar, sakal, dalli boynuz, boynuzda fidanlar ve iki kovan). Arena yeri Sis Korusu gelene dek yer tutucu (dunya2 tasir). Uretim istegi: Ata sinifi model, dort ayak iskeleti, 6 klip.",
-      "arena": { "center": [-58, -72], "radius": 18, "stone": [9, 12], "altarReach": 3.5, "pillars": [], "pillarRadius": 1, "leash": 32 },
+      "placeholder": "Model: koddan parca model (govde, bacaklar, sakal, dalli boynuz, boynuzda fidanlar ve iki kovan). Arena Sis Korusu Ata Tasi'nda (dunya2, biomes.json pois fixed). Uretim istegi: Ata sinifi model, dort ayak iskeleti, 6 klip.",
+      "arena": { "center": [-212, 219], "radius": 18, "stone": [9, 12], "altarReach": 3.5, "pillars": [], "pillarRadius": 1, "leash": 32 },
       "offeringName": "Orman Çıngırağı",
       "offering": [
         { "item": "iron_ingot", "count": 10 },

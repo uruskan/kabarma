@@ -51,6 +51,11 @@ public static class ItemNames
         ["tezgah"] = "Tezgâh",
         ["tas_firin"] = "Taş Fırın",
         ["paketleme"] = "Paketleme Tezgâhı",
+        // M2 yapi: malzeme girdileri (ICERIK 2.3; Kerpic zincirin "brick"i) ve yapi malzemeleri (build.json).
+        ["celik"] = "Çelik",
+        ["mayali_beton"] = "Mayalı Beton",
+        ["kerpic_tas"] = "Kerpiç-Taş",
+        ["celik_sac"] = "Çelik Sac",
         // M2 zincir (ICERIK §11.1): T1-T2 ara urunleri, ham kaynaklar ve istasyonlar.
         ["copper_wire"] = "Bakır Tel",
         ["brick"] = "Kerpiç",
@@ -84,10 +89,6 @@ public static class ItemNames
         ["kompost"] = "Kompost",
         ["truf"] = "Trüf",
         ["et"] = "Et",
-        ["kabak"] = "Kabak",
-        ["bogurtlen"] = "Böğürtlen",
-        ["mantar"] = "Mantar",
-        ["aycicegi"] = "Ayçiçeği",
         ["hu_yumurtasi"] = "Hu Yumurtası",
         ["suluk"] = "Suluk",
         ["kasinma_fircasi"] = "Kaşınma Fırçası",
@@ -130,6 +131,8 @@ public static class ItemNames
         ["sourberry_benekli"] = "Benekli Ekşilik", ["sourberry_altin"] = "Altın Ekşilik", ["sourberry_aurora"] = "Aurora Ekşilik",
         ["hazelnut_benekli"] = "Benekli Fındık", ["hazelnut_altin"] = "Altın Fındık", ["hazelnut_aurora"] = "Aurora Fındık",
         ["garlic_benekli"] = "Benekli Sarımsak", ["garlic_altin"] = "Altın Sarımsak", ["garlic_aurora"] = "Aurora Sarımsak",
+        // holding akisi (M3, GDD §19.4): baskin ganimeti. Holding Parcasi satilmaz (ICERIK §2.1 #27).
+        ["holding_parcasi"] = "Holding Parçası", ["holding_plani"] = "Holding Planı", ["nadir_hayvan"] = "Nadir cins hayvan",
     };
 
     public static string Of(string id) => Names.TryGetValue(id, out var n) ? n : id;

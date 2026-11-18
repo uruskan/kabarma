@@ -30,6 +30,8 @@ public partial class CreatureTest : Node3D
         foreach (var def in species) Check(def, poses);
         if (!species.Any(s => s.Id == "zipzip") || !species.Any(s => s.Id == "gidak")) _fail.Add("zipzip ya da gidak iskeletsiz");
         CheckWild(data, poses); // CreatureTest.Wild.cs: yabani turler dogar, hareket eder, kabarir (yaratik2)
+        CheckHits(data, poses); // CreatureTest.Hits.cs: Capa mermisi yabaniye ve suruye deger (yaratik2)
+        CheckVehicle(data); // CreatureTest.Vehicle.cs: Cekirge ATV aktoru (yaratik2)
         string res = _fail.Count == 0 ? "ok" : "fail";
         GD.Print($"RESULT {res} creatures={species.Count} wild={_wild} clips={_clips} posed={_posed}" + (_fail.Count > 0 ? " :: " + string.Join(" | ", _fail) : ""));
         GetTree().Quit(_fail.Count == 0 ? 0 : 1);

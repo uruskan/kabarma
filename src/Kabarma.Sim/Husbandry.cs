@@ -62,8 +62,22 @@ public sealed class HusbandryRules
         return 0;
     }
 
-    /// <summary>Tek gen: ebeveyn ortalamasi yarim yukari yuvarlanir, ustune mutasyon, 1-10'a kirpilir (GDD 9.3).</summary>
-    public int InheritOne(int a, int b, RanchRng rng) => Clamp((a + b + 1) / 2 + Mutation(rng));
+    /// <summary>
+    /// Tek gen (GDD 9.3: kalitim tarimdakiyle ayni): tarim akisinin Genetics.Cross'u, ebeveyn ortalamasi (bucuk yari
+    /// yariya asagi/yukari) + mutasyon, 1-10. Tarim kurali yuklu degilse (sinama verisi) ayni kural burada.
+    /// </summary>
+    public int InheritOne(int a, int b, RanchRng rng)
+    {
+        if (_crop != null)
+        {
+            var r = Borrow(rng);
+            var g = Genetics.Cross(_crop, new Genes { V = a, H = a, D = a, M = a }, new Genes { V = b, H = b, D = b, M = b }, r);
+            rng.State = r.State;
+            return Clamp(g.V);
+        }
+        int s = a + b;
+        return Clamp(s / 2 + (s % 2 != 0 && rng.Float() < 0.5f ? 1 : 0) + Mutation(rng));
+    }
 
     public AnimalGenes Inherit(AnimalGenes m, AnimalGenes f, RanchRng rng) => new()
     {
@@ -72,6 +86,23 @@ public sealed class HusbandryRules
         V = InheritOne(m.V, f.V, rng),
         K = InheritOne(m.K, f.K, rng),
     };
+
+    /// <summary>Alaca zari (GDD 9.3 = 8.3): Alaca ebeveyn alacaSeedKeep ile aktarir; yoksa Aurora 1/2000, Altin 1/250, Benekli 1/40.</summary>
+    public string Alaca(string mother, string father, RanchRng rng)
+    {
+        if (_crop == null || _crop.Alaca.Count == 0) return "";
+        var r = Borrow(rng);
+        string parent = mother != "" ? mother : father;
+        if (mother != "" && father != "" && rng.Float() < 0.5f) parent = father;
+        var a = Genetics.RollAlaca(_crop, parent == "" ? null : parent, r);
+        rng.State = r.State;
+        return a ?? "";
+    }
+
+    GeneticsRules? _crop;
+    /// <summary>Tarim akisinin gen kurallari (crops.json "genetics"): kalitim ve Alaca ortak.</summary>
+    public void UseCropGenetics(GeneticsRules r) => _crop = r;
+    static Rng Borrow(RanchRng r) => new(1) { State = r.State };
 
     /// <summary>B geninin cana carpani.</summary>
     public float HpMult(PenAnimal a) => 1f + (a.Genes.B - 1) * Def.Genes.BHpPerPoint;

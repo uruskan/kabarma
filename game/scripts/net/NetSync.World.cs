@@ -37,6 +37,7 @@ public partial class NetSync
         Register("tufts", false, WriteTufts, ReadTufts);
         Register("placed", false, WritePlaced, ReadPlaced);
         if (D.Build != null) Register("pieces", false, WritePieces, ReadPieces);
+        if (D.Build != null) RegisterYapi(); // NetSync.Yapi.cs: malzeme, plan, yukselt
 
         On("mine", HostMine);
         On("mow", HostMow);
@@ -312,15 +313,16 @@ public partial class NetSync
         if (!NetRules.InRange(a, x, y, z, Cfg.Ranges.Mow)) { Reject(a, "mow range"); return; }
         if (!a.Cooldown(NetReq.Mow, Now, Cfg.Cooldowns.Mow)) { Reject(a, "mow cooldown"); return; }
         // Capa.Mow ile ayni hedefler ve ayni sayilar (tool.json), canta istekte bulununinki.
-        foreach (var plot in D.State.Farm.Plots.ToList())
+        foreach (var plot in D.State.Farm.AllPlots.ToList()) // tarim: yabani bitkiler dahil
         {
             var c = D.FarmView.CellCenter(plot.X, plot.Y);
             if (new Vector2(c.X - aim.X, c.Z - aim.Z).Length() > T.MowRadius) continue;
-            var h = D.State.Farm.Harvest(plot.X, plot.Y, D.State.Rng);
+            if (plot.Wild && new Vector2(c.X - aim.X, c.Z - aim.Z).Length() > D.Data.Crops.Genetics.Wild.MowRadius) continue; // tarim: Capa.Bicme ile ayni
+            var h = D.State.Farm.HarvestFull(plot.X, plot.Y, D.State.Rng); // Capa.Bicme ile ayni (tarim: urun ekine gore)
             if (h == null) continue;
-            var (yield, stars, seeds) = h.Value;
-            a.Bag.Add("turnip", yield, stars);
-            a.Bag.Add("turnip_seed", seeds);
+            D.FarmView.OnHarvestedBy(h, c);
+            a.Bag.Add(h.Item, h.Yield, h.Stars); // Ustalik carpani kisisel, host'ta uzak oyuncu icin yok (bilinen eksik)
+            a.Bag.Add(h.SeedItem, h.Seeds);
         }
         foreach (var tp in D.World.TreePositions.Where(t => new Vector2(t.X - aim.X, t.Z - aim.Z).Length() < T.TreeRadius))
             a.Bag.Add("wood", T.WoodPerChop);
@@ -342,7 +344,7 @@ public partial class NetSync
         if (!q.IsNormalized()) q = q.Normalized();
         if (!NetRules.InRange(a, o.X, o.Y, o.Z, Cfg.Ranges.Build)) { Reject(a, "place range"); return; }
         if (!a.Cooldown(NetReq.Place, Now, Cfg.Cooldowns.Place)) { Reject(a, "place cooldown"); return; }
-        if (!InClaim(o)) { Reject(a, "place claim"); return; }
+        // M2 (GDD §7): yapi parcasi tapu disinda da kurulur; sokumde iadesi %50.
         int cost = D.Build.CostOf(id);
         if (a.Bag.Count("wood") < cost) { Reject(a, "place wood"); return; }
         var piece = D.Build.System.PlaceAt(id, new Transform3D(new Basis(q), o), out var why);
@@ -376,14 +378,14 @@ public partial class NetSync
         var rules = D.Data.Economy.Build;
         var cost = t switch
         {
-            BuildPiece bp => new Dictionary<string, int> { ["wood"] = D.Build.CostOf(bp.Def.Id) },
+            BuildPiece bp => D.Build.PieceCost(bp), // malzemesine gore (GDD §7)
             Station st => new Dictionary<string, int> { [st.Def.Id] = 1 },
             Furniture f => new Dictionary<string, int> { [f.Def.Id] = 1 },
             _ => new Dictionary<string, int>(),
         };
         if (t is Station s2 && s2.Queue.Active != null) { Reject(a, "remove busy"); return; }
         if (t is Furniture f2 && f2.Storage != null && !f2.Storage.IsEmpty) { Reject(a, "remove chest"); return; }
-        var refund = Structures.Refund(cost, rules);
+        var refund = t is BuildPiece bpr ? D.Build.RefundOf(bpr, cost) : Structures.Refund(cost, rules);
         if (!NetRules.Fits(a.Bag, refund, T.StackOf)) { Reject(a, "remove bag full"); return; }
         switch (t)
         {
@@ -399,8 +401,8 @@ public partial class NetSync
     {
         if (FindTarget(r) is not BuildPiece bp) { Reject(a, "repair target"); return; }
         if (!NetRules.InRange(a, bp.GlobalPosition.X, bp.GlobalPosition.Y, bp.GlobalPosition.Z, Cfg.Ranges.Build)) { Reject(a, "repair range"); return; }
-        float max = D.Build.System.Kit.PieceHp;
-        var cost = Structures.RepairCost(new Dictionary<string, int> { ["wood"] = D.Build.CostOf(bp.Def.Id) }, bp.Hp, max, D.Data.Economy.Build);
+        float max = D.Build.System.MaxHp(bp);
+        var cost = Structures.RepairCost(D.Build.PieceCost(bp), bp.Hp, max, D.Data.Economy.Build);
         if (cost.Count == 0 || !NetRules.CanPay(a.Bag, cost)) { Reject(a, "repair cost"); return; }
         foreach (var (item, n) in cost) a.Bag.Remove(item, n);
         bp.Hp = max;
@@ -421,6 +423,7 @@ public partial class NetSync
         at = D.World.Ground(at);
         a.Bag.Remove(id, 1);
         // Capa.Insa.cs TryPlace ile ayni dallanma.
+        if (D.PlacePower(def, at, yaw)) { Flush(); return; } // guc akisi: guc parcasi "power" bolumuyle cogalir (PowerSystem.Net.cs)
         bool furniture = def.Slots > 0 || def.Spawn || def.LightRange > 0;
         if (PenSystem.IsPenProp(def.Id) || (def.Station == null && def.Id != "ocak" && !furniture)) D.PlaceProp(def, at, yaw);
         else if (def.Id == "ocak") D.PlaceOcak(at);

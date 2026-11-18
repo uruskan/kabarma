@@ -9,7 +9,7 @@ namespace Kabarma.Game;
 /// Bot, tarim (M2) sinamasi (--test=tarim): ilk gun senaryosu yerine ikinci bir ekini bastan sona yetistirir.
 /// Hile yok, butun dokunuslar oyuncunun yolundan (Bot.Hands.cs, Bot.Kemer.cs):
 ///   Ocak'i kur → Korkuluk uret ve tarlanin yanina kur (Odun ve Lif Bicme ile) → yabani Bugday'i Bicme ile biç (urun ve
-///   yabani tohum, Tohum Kaydi'na soy) → Toprak ile 2 kare sur, tohumu sec (T), ek → Sulama → buyurken sula →
+///   yabani tohum, Tohum Kaydi'na soy) → Toprak ile 2 kare sur, tohumu sec (H), ek → Sulama → buyurken sula →
 ///   olgunu Bicme ile hasat et. Yalniz --test=tarim'da kayitlidir; ilk gun botu (--test=bot) degismez.
 /// </summary>
 public partial class Bot
@@ -79,7 +79,7 @@ public partial class Bot
                 int i = Enumerable.Range(0, 2).FirstOrDefault(k => TarimPlot(k)?.Planted != true, -1);
                 if (i < 0 || bag.Count(_tCrop + "_seed") == 0 && TarimPlot(0)?.Planted == true) { _tStage = 4; _stepT = 0; _cell = 0; return; }
                 Head(Capa.Head.Toprak);
-                if (_d.State.Farm.Selected != _tCrop && _stepT > 0.3f) { _d.FarmView.SelectSeed(_tCrop); _stepT = 0; } // oyuncunun T tusu
+                if (_d.State.Farm.Selected != _tCrop && _stepT > 0.3f) { _d.FarmView.SelectSeed(_tCrop); _stepT = 0; } // oyuncunun H tusu
                 var c = TarimCell(i);
                 Aim(c);
                 if (MoveTo(c + new Vector3(0, 0, -3.5f), 1.0f, false)) Fire = true;
@@ -120,6 +120,13 @@ public partial class Bot
                 if (MoveTo(c + new Vector3(0, 0, -3f), 1.0f, false)) Fire = true;
                 return;
             }
+            case 7: // Defter'i ac: Islah notlari (canta → ikinci sekme), 2,5 sn goster (kanit goruntusu)
+                P.MoveOverride = Vector3.Zero;
+                if (_menuT > 0) return;
+                if (!_d.Hud.InventoryOpen) { Bag(); _menuT = 0.4f; _stepT = 0; return; }
+                if (_d.Hud.InventoryPage != 1) { NextPage(); _menuT = 0.3f; _stepT = 0; return; }
+                if (_stepT > 2.5f) _tStage = 8;
+                return;
             default:
                 if (_done) return;
                 _done = true;

@@ -1,26 +1,25 @@
 BOSS start hp=100 arenas=2
 BOSS state Walk koca_pofuduk t=2.5
 BOSS state Altar koca_pofuduk t=10.5
-BOSS altar koca_pofuduk offering='Kabarık Şalgam 0/5  wool 0/10  Bakır Külçe 0/20' complete=False
-BOSS state Fight koca_pofuduk t=11.8
-BOSS hurt -5 hp=95 phase=1 tel=volley charging=False adds=0 waves=0 dist=7.6
-BOSS hurt -5 hp=90 phase=1 tel=volley charging=False adds=0 waves=0 dist=9.8
-BOSS hurt -4 hp=86 phase=2 tel=volley charging=False adds=0 waves=0 dist=7.5
-BOSS hurt -4 hp=82 phase=2 tel=volley charging=False adds=2 waves=0 dist=7.5
-BOSS hurt -16 hp=66 phase=3 tel=charge charging=True adds=1 waves=0 dist=3.1
-BOSS hurt -10 hp=56 phase=3 tel=charge charging=False adds=0 waves=0 dist=2.7
-BOSS state After koca_pofuduk t=72.0
-BOSS defeated koca_pofuduk fight_s=60.2 hp=56/100 shears=4 pillar_stuns=1 shard_hits=0
-BOSS state Walk boynuzlu_dede t=74.5
-BOSS state Altar boynuzlu_dede t=93.3
-BOSS altar boynuzlu_dede offering='iron_ingot 0/10  Kabarık mushroom 0/3  resin 0/5' complete=False
-BOSS state Fight boynuzlu_dede t=94.5
-BOSS hurt -5 hp=51 phase=1 tel=volley charging=False adds=2 waves=0 dist=7.6
-BOSS hurt -5 hp=46 phase=1 tel=volley charging=False adds=0 waves=0 dist=7.4
-BOSS hurt -10 hp=36 phase=3 tel=rootwave charging=False adds=0 waves=0 dist=3.0
-BOSS hurt -5 hp=31 phase=3 tel=volley charging=False adds=0 waves=0 dist=7.1
-BOSS hurt -5 hp=26 phase=3 tel=volley charging=False adds=0 waves=0 dist=7.9
-BOSS hurt -5 hp=21 phase=3 tel=volley charging=False adds=0 waves=0 dist=7.5
-BOSS state After boynuzlu_dede t=165.4
-BOSS defeated boynuzlu_dede fight_s=70.9 hp=21/100 shears=4 pillar_stuns=1 shard_hits=3
-RESULT ok boss defeated=koca_pofuduk,boynuzlu_dede fights=koca_pofuduk:60,boynuzlu_dede:71 player_hp=21 shears=4 pillar_stuns=1 shard_hits=3 wave_jumps=1 seals=bereketli_toprak,derin_kok t=168
+BOSS altar koca_pofuduk offering='Kabarık Şalgam 0/5  Yün 0/10  Bakır Külçe 0/20' complete=False
+BOSS state Fight koca_pofuduk t=11.7
+BOSS hurt -4 hp=96 phase=2 tel=volley charging=False adds=0 waves=0 dist=7.0
+BOSS hurt -4 hp=92 phase=2 tel=volley charging=False adds=2 waves=0 dist=8.2
+BOSS hurt -4 hp=88 phase=2 tel=volley charging=False adds=2 waves=0 dist=7.4
+BOSS hurt -4 hp=84 phase=2 tel=volley charging=False adds=0 waves=0 dist=7.1
+BOSS hurt -16 hp=68 phase=3 tel=charge charging=True adds=0 waves=0 dist=1.9
+BOSS state After koca_pofuduk t=84.1
+BOSS defeated koca_pofuduk fight_s=72.4 hp=68/100 shears=4 pillar_stuns=3 shard_hits=0
+BOSS state Walk boynuzlu_dede t=86.7
+BOSS state Altar boynuzlu_dede t=109.1
+BOSS altar boynuzlu_dede offering='Demir Külçe 0/10  Kabarık Şapkalı Mantar 0/3  Reçine 0/5' complete=False
+BOSS state Fight boynuzlu_dede t=110.3
+BOSS hurt -5 hp=63 phase=1 tel=volley charging=False adds=2 waves=0 dist=7.6
+BOSS hurt -5 hp=58 phase=1 tel=volley charging=False adds=0 waves=0 dist=7.8
+BOSS hurt -10 hp=48 phase=3 tel=rootwave charging=False adds=0 waves=0 dist=2.9
+BOSS hurt -5 hp=43 phase=3 tel=volley charging=False adds=0 waves=0 dist=7.1
+BOSS hurt -5 hp=38 phase=3 tel=volley charging=False adds=0 waves=0 dist=7.9
+BOSS hurt -5 hp=33 phase=3 tel=volley charging=False adds=0 waves=0 dist=7.8
+BOSS state After boynuzlu_dede t=182.6
+BOSS defeated boynuzlu_dede fight_s=72.3 hp=33/100 shears=4 pillar_stuns=3 shard_hits=3
+RESULT ok boss defeated=koca_pofuduk,boynuzlu_dede fights=koca_pofuduk:72,boynuzlu_dede:72 player_hp=33 shears=4 pillar_stuns=3 shard_hits=3 wave_jumps=1 seals=bereketli_toprak,derin_kok t=185

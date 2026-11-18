@@ -135,12 +135,16 @@ Ocak üssün kalbidir. İşlevleri: tapu alanı, doğma noktası, Çan, Maya Kaz
 | Cam (ışık geçirir) | T4 | 300 | 3 parça |
 
 - **Taşıma dengesi:** Her parça en yakın temele olan destek mesafesini hesaplar. Açıklık aşılırsa parça yerleşmez. Desteği yıkılan parçalar fizik nesnesi olarak düşer ve altındakini yere serer.
-- **Yerinde yükseltme:** İnşa Planı eldeyken parçaya bakıp E basılı tutulur (yükselt, onar, sök çarkı); aradaki malzeme farkı ödenir.
-- **Onarım:** Hasar oranında malzemenin %25'i. **Söküm:** tapu içinde %100, dışında %50 iade. M1: sökülen yerleştirilebilir (Tezgâh, Sandık vb.) eşyanın kendisi olarak çantaya döner; tapu dışı %50 kuralı yerleştirilebilirde M2'de (sahibin onayını bekliyor).
+  - **Açıklık:** Araziye oturan parça 0. Alttaki parçanın üstüne dikilen düşey parça (duvar, sütun) aynı açıklıkta kalır; yatay parça (zemin, çatı, kiriş) ve yandan ya da üstten asılan düşey parça +1. Açıklık parçanın kendi malzemesinin sınırını (tablo) aşamaz.
+  - **Yük:** Her parçanın ağırlığı = şekil birimi (ICERIK §10.1 Odun adedi) × malzemenin birim ağırlığı. Parça kendi ağırlığını ve üstündekilerin payını taşır; pay, onu en kısa yoldan taşıyan parçalara eşit bölünür. Araziye oturan parça yükü toprağa verir (sınırsız). Yük malzemenin taşıma sınırını aşamaz.
+  - Açıklığı ya da yükü aşacak parça yerleşmez ve ağırlığı alttakini aşacak yükseltme yapılmaz. Söküm ya da yükseltme sonrası desteği kalmayan ya da aşırı yüklenen parça çöker; üstündekiler zincirle düşer. Sayılar `data/build.json`'da.
+  - **Hayalet rengi:** yeşilden sarıya parçanın zorlanması (açıklık ve yük oranının büyüğü); kırmızı yerleşmez.
+- **Yerinde yükseltme:** İnşa Planı eldeyken parçaya bakıp E basılı tutulur (yükselt, onar, sök çarkı). Yükselt bir üst malzemeye geçer (Ahşap → Kerpiç-Taş → Çelik Sac → Mayalı Beton; geri yok). "Aradaki fark" şöyle ödenir: yeni malzemenin bedeli çantadan düşer, eski malzemenin söküm iadesi (aşağıdaki oranla) çantaya döner. Can, yeni malzemenin canına hasar oranı korunarak geçer. Malzemeye basamak kilidi yok: kilit malzemenin kendisidir (Kerpiç Taş Fırın'da, Çelik Yüksek Fırın'da).
+- **Onarım:** Hasar oranında malzemenin %25'i (parçanın şu anki malzemesiyle). **Söküm:** tapu içinde %100, dışında %50 iade (M2'den itibaren kurma tapu dışında da açık). Söküm yüzünden çöken parçaların iadesi de aynı kuralla döner. M1: sökülen yerleştirilebilir (Tezgâh, Sandık vb.) eşyanın kendisi olarak çantaya döner; tapu dışı %50 kuralı yerleştirilebilirde M2'de (sahibin onayını bekliyor).
 - **Boyama:** 16 renk, parça başına.
 - **Kapalı alan:** Üstü ve çevresi kapalı hacim ısıyı, konforu ve yağmuru etkiler.
-- **Plan modu:** Parçalar hayalet olarak bırakılır; ekip üyeleri malzemeyi getirince tamamlanır.
-- **Plan Defteri:** Kurulu bir bölge plan olarak kaydedilir ve başka yere hayalet olarak konur. 12 yuva.
+- **Plan modu:** Parçalar hayalet olarak bırakılır; ekip üyeleri malzemeyi getirince tamamlanır. İnşa Planı eldeyken G plan modunu açar ve kapatır. Plan kipinde sol tık bedel ödemeden mavi bir plan hayaleti bırakır (açıklık, plan parçaları kurulmuş sayılarak denetlenir). Plan hayaletine bakıp sol tık çantadaki uygun malzemeyi koyar; bedel dolunca parça kurulur. Altı henüz kurulmamış plan "önce altını bitir" der ve malzemeyi bekletir. Plan hayaletini Sök çarkı iz bırakmadan kaldırır, konan malzeme geri döner. Plan hayaleti çarpışmaz (oyuncu ve yaratık geçer).
+- **Plan Defteri:** Kurulu bir bölge plan olarak kaydedilir ve başka yere hayalet olarak konur. 12 yuva. İnşa Planı eldeyken B defteri açar. "Kaydet" bakılan parçanın bağlı yapısını (kurulu ve plan, en fazla 200 parça) seçili yuvaya yazar. Bir yuva seçilince yapının tamamı hayalet olarak nişanı izler, R döndürür, sol tık plan olarak bırakır. Yerine oturamayan parça atlanır ve sayısı yazılır. Kayıt şekli, malzemeyi, ilk temele göre yeri ve yönü tutar.
 - **Dev ürün oyma:** L ve XL kabarık Kabak, Karpuz ve Mantar, yanına kurulan Oyma İskelesi ile kalıcı yapıya dönüşür (Kabak Ev, Karpuz Havuz, Mantar Kule). Konfor puanı verir.
 
 ## 8. Tarım
@@ -233,7 +237,8 @@ Yemlik (türe göre yem), suluk, çatı, tür başına alan. Mutluluk (0–100) 
 
 Dört gen (1–10): **B** boyut (can, yük), **U** uysallık (komut dinleme, ürün sıklığı), **V** ürün verimi, **K** kabarma gücü (kabarık hâlin canı ve hasarı). Kalıtım ve Alaca kuralları tarımdakiyle aynı. İki yetişkin, 60 ve üstü mutluluk ve boş yer varsa 2–4 günde yavru gelir.
 
-- **Genin hesabı:** Yavrunun her geni ebeveyn ortalamasıdır, yarım yukarı yuvarlanır. Üstüne §8.3'teki mutasyon gelir. Sonuç 1–10'a kırpılır.
+- **Genin hesabı:** Tarımdaki çaprazlamayla aynıdır (§8.3). Her gen ebeveyn ortalamasıdır; buçuk yarı yarıya aşağı ya da yukarı yuvarlanır. Üstüne mutasyon gelir, sonuç 1–10'a kırpılır.
+- **Alaca:** Yavru doğarken ve Kuluçka'dan çıkarken §8.3'teki zar atılır. Alaca ebeveyn Alaca'sını aynı olasılıkla aktarır.
 - **Yavru:** Evcil ve kayıtlı doğar. Yetişkin olana kadar (gün sayısı veride) ürün vermez, üremez.
 - **Yer:** Ağıl alanı, içindeki hayvanların tür alanları toplamıdır; yavru da yer kaplar.
 
@@ -253,6 +258,11 @@ Her hayvana bir rol atanır:
 Komutlar: izle, bekle, işaretlediğime saldır, dön. Uysallığı düşük hayvan bazen dinlemez.
 
 - Türün alabileceği roller `husbandry.json`'da ([ICERIK.md](ICERIK.md) §3'ten).
+- **M2 ekleri** (hayvan akışının kararı, ICERIK §3'te yazmıyor):
+  - Homur, Dallı, Hu ve Bozuk'a Üretici rolü de verildi, çünkü ICERIK §2.2'deki Deri, Tüy ve Kürk onlardan gelir.
+  - Hayvan kalıcı ölmediği için (§9.5) Deri ve Kürk av yerine uzun aralıklı ürün olarak gelir.
+  - Bozuk'a Bekçi rolü de verildi.
+  - Vızvız kovanda Yemlik'siz ürün verir; çiçeği kendisi bulur.
 - Dinleme olasılığı U geniyle artar.
 - B geni can, heybe ve binek hızına eklenir.
 
@@ -406,6 +416,14 @@ Hasar türleri: Darbe, Kesme, Ateş, Buz, Şok, Zehir, Maya. Her yaratığın za
 - **Zırh:** `azaltma = zırh / (zırh + 100)`.
 - **Zayıf nokta:** Kabarmış yaratıklarda parlayan maya kesesi; vuruş ×2.
 - **Dost ateşi** kapalıdır (dünya ayarı). İtme, fırlatma ve ezilme her zaman açıktır.
+- **M3 uygulaması:** Sayılar `data/combat.json`'da, kural `src/Kabarma.Sim/Combat.cs` ve `Status.cs`'te; bağlanma [TEKNIK.md](TEKNIK.md) §3.1'de.
+  - Azaltma sırası: türün zayıflık ya da direnç çarpanı → zırh → kalkan ve dost ateşi.
+  - Yanık ve zehir hasarını zırh azaltmaz.
+  - Donma 3 yığında 2 saniye kilitler.
+  - Şok zinciri en çok iki hedefe sıçrar, hasarın %60'ını taşır ve yeniden sıçramaz.
+  - Zehir yığılır.
+  - Kabarık, azami canın üçte biri kadar Maya hasarıyla %200 boya varır ve patlar: çevreye azami canın yarısı kadar Darbe hasarı verir, kendi de o kadar hasar alır.
+  - Çapa başlıklarında Tırpan Işını Kesme, Çivi Tabancası Darbe hasarı verir.
 
 ### 16.2 Düşman davranışları
 
@@ -441,8 +459,9 @@ Yabani yaratıklar, açık arazideki Holding ekipleri ve kervanları, Oyuk koruy
 
 Sayılar `data/atalar.json`'da; kural `src/Kabarma.Sim/Ata*.cs`, Godot katmanı `game/scripts/boss/`.
 
-- **Bulunma ve çağırma:** Ata Taşı ve sunağı arenanın kenarında durur; haritada açıklıktır (`biomes.json` `clearings`). Adak sunağa tek tek konur. Çanta eşyası etkileşimle sunulur; kabarık ürün Çekim'le sunağa bırakılır. Adak tamamlanınca Ata arenanın ortasına iner. Yenilen Ata aynı adakla yeniden çağrılmaz; Kabarık Ata M4'te gelir.
+- **Bulunma ve çağırma:** Arena, biyomun Ata Taşı keşif noktasındadır (`biomes.json` `pois` ve `spawns.atalar`). Nokta henüz arazinin dışındaysa `atalar.json` yedek yeri kullanılır; Sis Korusu'nun noktası bu durumdadır. Ata Taşı ve sunağı arenanın kenarında durur. Adak sunağa tek tek konur. Çanta eşyası etkileşimle sunulur; kabarık ürün Çekim'le sunağa bırakılır. Adak tamamlanınca Ata arenanın ortasına iner. Yenilen Ata aynı adakla yeniden çağrılmaz; Kabarık Ata M4'te gelir.
 - **Aşamalar:** Can oranı aşama eşiğinin altına inince sonraki aşama başlar. Geçişte Ata 1,5 saniye hasar almaz ve kabarır.
+- **Kaçış:** Oyuncu arenadan 20 saniye uzak kalırsa Ata çekilir ve dövüş biter. Adak geri gelmez.
 - **Koca Pofuduk:**
   - **Aşama 1:** Sezdirip hücum eder; yün yumağı atar. Yumak oyuncuyu sektirir.
   - **Aşama 2:** Yün zırhı hasarı azaltır. Biçme vuruşu zırhı kırkar; yanık da zırhı yer. Yumaklardan küçük Pofuduklar çıkar.
@@ -499,6 +518,20 @@ Kabarma gecesi Perde iner. Hedefler:
 | Şube Çekirdeği | Yok edilirse büyük ödül; kamp 3 gün sonra 1. seviyeden yeniden kurulur, Husumet sıfırlanır |
 
 Şafakta Perde geri gelir ve içeride kalan oyuncu dışarı fırlatılır; elindeki ganimet onda kalır. Evde kalmak ile baskına gitmek arasındaki seçim, ekibi bölmenin ya da savunmayı otomatikleştirmenin gerekçesidir.
+
+### 19.4.1 M3 netleştirmeleri (holding akışı, 18 Kasım 2026)
+
+Yukarıdaki kuralların belgede açık kalan yerleri; sayılar `game/data/holding.json`'da.
+
+- **Yer:** M2–M3 haritası ±320 m olduğundan 600 m sığmaz. 1. kamp Sis Korusu kenarında, Ocak'tan en az 250 m uzakta sabit bir yerdedir (veride `anchor`). 600 m kuralı büyük harita (M4) gelince geri döner.
+- **"İlk gerçek Kabarma":** Küçük Kabarma (ilk gece, öğretici) sayılmaz. Kamp ilk gerçek Kabarma'nın ertesi sabahı kurulur.
+- **Seviye:** Kamp 1. seviyede kurulur. Baskın yemediği her 5 günde bir seviye atlar; oyuncunun gece baskını (kampa en az bir isabet) bu sayacı sıfırlar. Tavan `min(10, Ocak basamağı × 2)`; M3'te Ocak T2, yani en fazla 4. Bölmeler aşağı yuvarlanır: `L/2`, `L/3`, `L/2 + 2`.
+- **Kervan:** Her sabah saat 8'de (gün oranı 0,27) kamptan yola çıkar, Holding'in harita kenarındaki teslim noktasına gider ve geri döner. Bir araç ve `2 + L/2` bekçi (2–4). Yükü işçilerin topladığı cevher ve bir kredi kasasıdır. Araç ve bütün bekçiler düşerse pusu başarılıdır; yük yere düşer.
+- **Husumet:** Kamp başınadır ve 0'dan başlar. "İhracat geliri" o günkü kargo satışının bin Kredisi başına +1'dir (en fazla +3), ertesi sabah eklenir. −40 onların baskın ekibi oyuncunun tapusuna girdiği anda uygulanır.
+- **Onların baskını:** Husumet 50 ve üstündeyse Kabarma'nın ilk dalgasıyla birlikte kamp yönünden, tapu sınırından girer. Baskın ekibi ustabaşının yönettiği bekçiler ve bir mekaniktir. 1–4. seviyelerde yayadır: kabarık ürünü iki kişi taşır, taşıyanların yürüme hızı yarıya iner. Taşıyan düşerse ürün yerde kalır. Ürün kampa varırsa kaybolur. Kule yoksa sabotaj yapılmaz.
+- **Senin baskının:** Ganimet hedef yıkılınca düşer. Silo: kabarık ürün yerine (M3) Kredi kasası. Atölye: Holding Parçası ve bir plan. Ahır: nadir cins hayvan (hayvan akışının arayüzü gelene kadar Kooperatif deposunda sayılır). Şube Çekirdeği: Silo, Atölye ve Ahır yıkılmadan vurulamaz.
+- **Perde:** kamp tapusu (`perdeRadius`) içinde gündüz kimse hasar alamaz; içeri giren oyuncu kibarca dışarı itilir. Kabarma gecesi kalkar, şafakta iner; içeride kalan oyuncu dışarı fırlatılır.
+- **Birimler:** M3'te İşçi, Bekçi, Ustabaşı ve Mekanik oynar. Müdür ve Genel Merkez yalnız tanımdır (M5).
 
 ### 19.5 Genel Merkez
 
@@ -590,6 +623,7 @@ Ayrı bir dünya türüdür; ortak oyun dünyalarında PvP yoktur.
 | 15 | Kasa | Paketleme Tezgâhı kur, kasa doldur; Tezgâh'ta El Arabası yap, kasayı onunla rampaya götür, sat |
 | 16 | Barınak | Temel, duvar, kapı kasası ve Ahşap Kapı, çatı; içine Uyku Tulumu |
 | 17 | Katalog | Kargo Rampası terminalinden Katalog'u aç, satıştan gelen Krediyle Şalgam Tohumu paketi al; kapsül Ocak'ın yanına iner, E ile aç (M2, §13) |
+| 18 | Yükseltme (M2) | Taş Fırın'da Kerpiç (2 Kil + 1 Lif) yap; İnşa Planı eldeyken barınağın bir duvarına bakıp E basılı → Yükselt: Kerpiç-Taş (2 Kerpiç + 2 Taş, Odun iadesi). Suna repliği yok, yalnız Defter satırı. |
 
 - **Suna'nın seslendirilen replikleri tuş adı içermez.** Tuşlar değiştirilebilir; yönlendirme ekrandaki adım satırında son kullanılan aygıtın glifiyle yazılır ([SANAT-SES.md](SANAT-SES.md) §10.3).
 - **Çıraklık zinciri:** Defter'deki ilk zincir ilk iki saati taşır.

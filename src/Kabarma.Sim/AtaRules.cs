@@ -27,7 +27,7 @@ public static class AtaRules
     /// </summary>
     public static int OfferFromBag(AtaProgress p, AtaDef def, Inventory bag)
     {
-        if (p.Active != null) return 0;
+        if (p.Active != null || p.IsDefeated(def.Id)) return 0; // M2: yenilen Ata yeniden cagrilmaz (Kabarik Ata M4)
         int moved = 0;
         var rec = p.Record(def.Id);
         foreach (var o in def.Offering.Where(o => !o.Swollen))
@@ -43,7 +43,7 @@ public static class AtaRules
     /// <summary>Kabarik urun sunaga birakildi (Cekim). Adakta bu urun eksikse kabul eder.</summary>
     public static bool OfferSwollen(AtaProgress p, AtaDef def, string crop)
     {
-        if (p.Active != null) return false;
+        if (p.Active != null || p.IsDefeated(def.Id)) return false;
         var o = def.Offering.FirstOrDefault(x => x.Swollen && x.Item == crop);
         if (o == null || Missing(p, def, o) == 0) return false;
         var rec = p.Record(def.Id);
@@ -57,7 +57,7 @@ public static class AtaRules
     /// </summary>
     public static AtaFight? Summon(AtaProgress p, AtalarFile data, AtaDef def, int teamSize, bool force = false)
     {
-        if (p.Active != null) return null;
+        if (p.Active != null || p.IsDefeated(def.Id)) return null; // Kabarik Ata (KS ile yeniden cagirma) M4
         if (!force && !OfferingComplete(p, def)) return null;
         p.Record(def.Id).Offered.Clear();
         float hp = def.Hp * TeamHpMult(data, teamSize);

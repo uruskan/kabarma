@@ -122,6 +122,35 @@ public sealed class Exploration
         return u.Left;
     }
 
+    /// <summary>
+    /// Dunyadaki nesneden okunan kalan birimi yazar (Enkaz kayasi Kazma ile, Bahce tutamlari Bicme ile tukenir).
+    /// Dolu ise kayit tutulmaz; bos kalinca RefillDay = bugun + RespawnDays.
+    /// </summary>
+    public void SetLeft(Poi poi, PoiTypeDef type, int day, int left)
+    {
+        int full = Loot(poi, type).Values.Sum();
+        left = Math.Clamp(left, 0, full);
+        if (left >= full) { Uses.Remove(poi.Id); return; }
+        if (!Uses.TryGetValue(poi.Id, out var u)) Uses[poi.Id] = u = new PoiUse();
+        if (u.Left == left && (left > 0 || u.RefillDay > 0)) return;
+        u.Left = left;
+        if (left <= 0) u.RefillDay = type.RespawnDays > 0 ? day + (int)MathF.Ceiling(type.RespawnDays) : int.MaxValue;
+    }
+
+    /// <summary>Kalan birimin esyalara dagilimi (Loot sirasiyla, once alinanlar dusulur): dunyadaki nesneyi kurmak icin.</summary>
+    public static Dictionary<string, int> Split(Poi poi, PoiTypeDef type, int left)
+    {
+        var loot = Loot(poi, type);
+        int taken = loot.Values.Sum() - left;
+        var res = new Dictionary<string, int>();
+        foreach (var (item, count) in loot)
+        {
+            int skip = Math.Min(taken, count); taken -= skip;
+            res[item] = count - skip;
+        }
+        return res;
+    }
+
     public static Dictionary<string, int> Loot(Poi poi, PoiTypeDef type) =>
         type.LootByBiome.TryGetValue(poi.Biome, out var l) ? l : type.Loot;
 

@@ -42,10 +42,13 @@ public partial class Bot : Node
         RegisterIlkgun();    // Bot.Ilkgun.cs: ilk gun (GDD 24): mine (kapak), tezgah, tarla, agil, gidak, night (agil kapisi)
         RegisterZincir();    // Bot.Zincir.cs (entegrasyon): yemek, firin, civi, kasa, barinak
         RegisterMarket();    // Bot.Market.cs (ekonomi2): katalog (rampadan tohum al, kapsulu ac)
+        RegisterYapi();      // Bot.Yapi.cs (M2 yapi): yukselt (duvari Kerpic-Tas'a)
         RegisterUretim();    // Bot.Uretim.cs (zincir M2): arastir_t2 (--test=zincir; senaryoda yok)
         _steps["end"] = StepEnd;
+        RegisterHayvan();    // Bot.Hayvan.cs (--test=hayvan): end'den once Pofuduk'u evcillestir, sutunu al
         RegisterCoop();      // Bot.Coop.cs (ortak): --test=coop'ta butun adimlar ortak bot
         RegisterTarim();     // Bot.Tarim.cs (tarim M2): yalniz --test=tarim; ikinci ekin, Korkuluk, yabani tohum
+        RegisterPower();     // Bot.Power.cs (guc): yalniz --test=power'da "end" guc adimina uzar
     }
 
     Player P => _d.Player;

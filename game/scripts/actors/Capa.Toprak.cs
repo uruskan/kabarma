@@ -17,6 +17,7 @@ public partial class Capa
         if (_d.Ocak == null) { _d.Hud.Hint("Önce Ocak'ı kur: tapu dışında tarla açılmaz"); return false; }
         if (aim.DistanceTo(_d.OcakPos) > Ocak.ClaimRadius) { _d.Hud.Hint("Tapunun dışı"); return false; }
         if (aim.DistanceTo(_d.OcakPos) < _t.TillClearOcak || aim.DistanceTo(_d.Pod.GlobalPosition) < _t.TillClearPod) return false;
+        _d.Net?.ForwardTill(aim); // ortak: istemcide host'a da gider (yerel sonuc tahmin, tarla host'tan doner)
         var (x, y) = FarmView.Cell(aim);
         var farm = _d.State.Farm;
         var plot = farm.Get(x, y);
@@ -36,7 +37,7 @@ public partial class Capa
         }
         if (plot.Crop == null)
         {
-            string seed = _d.FarmView.PlantableSeed(); // tarim: secili tohum (T / DPad asagi), yoksa elde olan ilk tohum
+            string seed = _d.FarmView.PlantableSeed(); // tarim: secili tohum (H / DPad sol), yoksa elde olan ilk tohum
             if (seed == null || !farm.Plant(x, y, seed, _d.State.Backpack, _d.State.Rng)) { _d.Hud.Hint("Tohum kalmadı"); return false; }
             FeelHit("toprak_ekim", center + Vector3.Up * 0.2f, Palette.Plant, squash: _d.FarmView.View(x, y));
             _d.State.Scenario.SetProgress("plant", farm.Plots.Count(q => q.Crop != null));

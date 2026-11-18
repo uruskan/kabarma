@@ -23,8 +23,11 @@ public partial class Gidak
     {
         get
         {
-            if (_animal != null) return _animal;
             var coop = _dir.State.Coop;
+            // Kayit yukleme ve ortak oyun esitlemesi PenAnimal nesnelerini yeniler: ogretici hayvani yeniden bul.
+            if (_animal != null && !coop.Animals.Contains(_animal))
+                _animal = coop.Animals.FirstOrDefault(a => a.Species == Def.Id && a.Tutorial);
+            if (_animal != null) return _animal;
             _animal = new PenAnimal { Species = Def.Id, Tutorial = coop.Animals.Count(a => a.Species == Def.Id) == 0 };
             coop.Animals.Add(_animal);
             return _animal;
@@ -58,6 +61,7 @@ public partial class Gidak
         var hit = ps.FirstHit(_penPrev, GlobalPosition, radius);
         if (hit is WallHit h) GlobalPosition = _dir.World.Ground(new Vector3(h.Point.X, 0, h.Point.Z));
         _penPrev = GlobalPosition;
+        Animal.X = GlobalPosition.X; Animal.Z = GlobalPosition.Z; // M2: agil uyeligi konumdan (Ranch)
         if (Swollen) return;
 
         var p = _dir.Player;
@@ -74,8 +78,10 @@ public partial class Gidak
         // 3) Kayit: evcil Gidak agilin icine girdi.
         if (Tame && !Penned && ps.PenAt(GlobalPosition) is PenShape pen)
         {
-            int inPen = _dir.State.Coop.Animals.Count(a => a != Animal && a.Registered);
-            if (_dir.State.Coop.Rules.Register(Animal, pen, inPen, out bool egg))
+            // M2: agil alani turlerin alanlari toplamidir (GDD 9.3); ilk yumurta kurali CoopRules'ta (GDD 24).
+            var ranch = _dir.State.Ranch;
+            bool room = ranch.UsedArea(pen, Animal) + ranch.Rules.Species(Def.Id).Area <= pen.Area + 0.01f;
+            if (room && _dir.State.Coop.Rules.Register(Animal, pen, 0, out bool egg))
             {
                 _home = pen;
                 GD.Print($"GIDAK penned area={pen.Area:0.0} cells={pen.Cells(def.CellArea)}");
@@ -101,8 +107,7 @@ public partial class Gidak
                 }
             }
             _wanderT = 999f; // Gidak.cs'in serbest gezinmesi agildan cikarmasin
-            int eggs = _dir.State.Coop.Rules.Tick(Animal, dt, _home == null ? null : ps.PropsIn(_home, "yemlik").Select(y => y.Feeder).FirstOrDefault(f => f.Amount > 0));
-            for (int i = 0; i < eggs; i++) ps.Lay(def.Animals.First(a => a.Id == Def.Id).Product, GlobalPosition - GlobalBasis.Z * 0.35f, _home);
+            // Yumurta ve diger urunler M2'de Ranch.Tick'ten (RanchSystem: Folluk ya da yer; mutluluk ve gen).
         }
         else if (Tame)
         {

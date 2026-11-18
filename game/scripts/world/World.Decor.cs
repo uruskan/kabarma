@@ -19,10 +19,19 @@ public partial class World
     /// <summary>Yerlestirilen ornek (sinama ve goruntu araci okur).</summary>
     public readonly Dictionary<string, int> DecorCounts = new();
 
+    /// <summary>Agacin verdigi odun (Koru agaci "hard_wood"); listede yoksa "wood" (Capa.Bicme okur).</summary>
+    readonly Dictionary<Vector3, string> _treeWood = new();
+    public string TreeWood(Vector3 tree) => _treeWood.TryGetValue(tree, out var w) ? w : "wood";
+
     void BuildDecor()
     {
         var rng = new RandomNumberGenerator { Seed = (ulong)(T.Seed + 11) };
         float density = Preset.PlantDensity;
+        // M1 kutusu (biomes.json area): ici M1 ile ayni tohum akisi; disi FillOutside ile ayri tohumdan (dunya2).
+        var box = Biome.Area.Count == 4 ? Biome.Area : null;
+        float boxArea = box != null ? (box[2] - box[0]) * (box[3] - box[1]) : 1f;
+        float outArea = box != null && Biome.FillOutside ? BiomeAreaOutside(Biomes.World.Biome, box) : 0f;
+        var fillRng = new RandomNumberGenerator { Seed = (ulong)(T.Seed + 11 + 1000 * (Biome.Seed + 1)) };
         foreach (var def in Biome.Decor)
         {
             var mesh = DecorMesh(def, out float modelHeight);
@@ -42,9 +51,10 @@ public partial class World
                 }
             int want = Mathf.RoundToInt(def.Count * density);
             float half = Size / 2f - 4f;
+            float x0 = box?[0] ?? -half, z0 = box?[1] ?? -half, x1 = box?[2] ?? half, z1 = box?[3] ?? half;
             for (int tries = 0; tries < want * 12 && placed.Count < want + PatchCount(def.Id); tries++)
             {
-                var p = new Vector3(rng.RandfRange(-half, half), 0, rng.RandfRange(-half, half));
+                var p = new Vector3(rng.RandfRange(x0, x1), 0, rng.RandfRange(z0, z1));
                 float dist = new Vector2(p.X, p.Z).Length();
                 if (dist < def.MinDistance || dist > def.MaxDistance || InClearing(p)) continue;
                 float shore = ShoreDistance(p.X, p.Z);
@@ -52,27 +62,89 @@ public partial class World
                 if (SlopeAt(p.X, p.Z) > (def.Tree ? 22f : 30f)) continue;
                 placed.Add(DecorTransform(def, p, rng));
             }
-            DecorCounts[def.Id] = placed.Count;
-            var chunks = AddChunkedInstances(def.Id, mesh, placed, def.Shadow, def.ViewDistance);
-            AddDecorLods(def, chunks, modelHeight); // bitki-pbr: uzak LOD parcalari (World.DecorLod.cs)
-            if (def.Tree) TreePositions.AddRange(placed.Select(x => x.Origin));
-            if (def.CollideRadius > 0)
-                foreach (var xf in placed)
-                {
-                    float s = xf.Basis.Scale.Y;
-                    var body = new StaticBody3D { Name = def.Id + "Body" };
-                    body.AddChild(new CollisionShape3D { Shape = new CylinderShape3D { Radius = def.CollideRadius * xf.Basis.Scale.X, Height = def.CollideHeight * s }, Position = new Vector3(0, def.CollideHeight * s * 0.5f, 0) });
-                    AddChild(body);
-                    body.GlobalPosition = xf.Origin;
-                }
-            if (!string.IsNullOrEmpty(def.Harvest)) AddTufts(def, chunks);
+            int inBox = placed.Count;
+            if (outArea > 0)
+                ScatterInBiome(def, Biomes.World.Biome, Mathf.RoundToInt(def.Count * density * outArea / boxArea), placed, fillRng, box);
+            GD.Print($"WORLD decor {def.Id} box={inBox} outside={placed.Count - inBox}");
+            FinishDecor(def, def.Id, mesh, placed);
         }
+        // Diger biyomlar (Sis Korusu): kendi tohumu, adetler o biyomun alani icin (dunya2).
+        foreach (var (id, b) in OtherBiomes)
+        {
+            var brng = new RandomNumberGenerator { Seed = (ulong)(T.Seed + 11 + 1000 * (b.Seed + 1)) };
+            foreach (var def in b.Decor)
+            {
+                var mesh = DecorMesh(def, out _);
+                if (mesh == null) { GD.PrintErr($"WORLD decor model yok: {def.Model}"); continue; }
+                var placed = new List<Transform3D>();
+                ScatterInBiome(def, id, Mathf.RoundToInt(def.Count * density), placed, brng, null);
+                string key = DecorCounts.ContainsKey(def.Id) ? $"{id}_{def.Id}" : def.Id;
+                FinishDecor(def, key, mesh, placed);
+            }
+        }
+    }
+
+    /// <summary>Biyomun kutu disinda kalan alani (m², 8 m'lik orneklemle; agirlik >= 0,5).</summary>
+    float BiomeAreaOutside(string biome, List<float> box)
+    {
+        float area = 0, half = Size / 2f - 4f;
+        for (float x = -half; x < half; x += 8f)
+        for (float z = -half; z < half; z += 8f)
+        {
+            if (x >= box[0] && x <= box[2] && z >= box[1] && z <= box[3]) continue;
+            if (Map.Weight(biome, x, z) >= 0.5f) area += 64f;
+        }
+        return area;
+    }
+
+    /// <summary>
+    /// Biyomun icine serpme: agirligi rastgele esikten buyuk yer (gecis bandinda seyrelir), kutunun disi (box verilirse),
+    /// aciklik, gol, egim kurallari Cayir'inkiyle ayni.
+    /// </summary>
+    void ScatterInBiome(DecorDef def, string biome, int want, List<Transform3D> placed, RandomNumberGenerator rng, List<float> box)
+    {
+        float half = Size / 2f - 4f;
+        int start = placed.Count;
+        for (int tries = 0; tries < want * 20 && placed.Count - start < want; tries++)
+        {
+            var p = new Vector3(rng.RandfRange(-half, half), 0, rng.RandfRange(-half, half));
+            if (box != null && p.X >= box[0] && p.X <= box[2] && p.Z >= box[1] && p.Z <= box[3]) continue;
+            if (Map.Weight(biome, p.X, p.Z) < rng.Randf() * 0.9f + 0.1f) continue;
+            float dist = new Vector2(p.X, p.Z).Length();
+            if (dist < def.MinDistance || dist > def.MaxDistance || InClearing(p) || InPoiClear(p)) continue;
+            if (ShoreDistance(p.X, p.Z) < def.LakeClear) continue;
+            if (SlopeAt(p.X, p.Z) > (def.Tree ? 26f : 32f)) continue;
+            placed.Add(DecorTransform(def, p, rng));
+        }
+    }
+
+    /// <summary>Parcali cizim, agac listesi, carpisma, tutamlar.</summary>
+    void FinishDecor(DecorDef def, string key, Mesh mesh, List<Transform3D> placed)
+    {
+        DecorCounts[key] = placed.Count;
+        var chunks = AddChunkedInstances(key, mesh, placed, def.Shadow, def.ViewDistance);
+        AddDecorLods(def, chunks, Mathf.Max(0.05f, mesh.GetAabb().End.Y)); // bitki-pbr: uzak LOD parcalari (World.DecorLod.cs)
+        if (def.Tree)
+        {
+            TreePositions.AddRange(placed.Select(x => x.Origin));
+            if (!string.IsNullOrEmpty(def.Wood) && def.Wood != "wood") foreach (var xf in placed) _treeWood[xf.Origin] = def.Wood;
+        }
+        if (def.CollideRadius > 0)
+            foreach (var xf in placed)
+            {
+                float s = xf.Basis.Scale.Y;
+                var body = new StaticBody3D { Name = def.Id + "Body" };
+                body.AddChild(new CollisionShape3D { Shape = new CylinderShape3D { Radius = def.CollideRadius * xf.Basis.Scale.X, Height = def.CollideHeight * s }, Position = new Vector3(0, def.CollideHeight * s * 0.5f, 0) });
+                AddChild(body);
+                body.GlobalPosition = xf.Origin;
+            }
+        if (!string.IsNullOrEmpty(def.Harvest)) AddTufts(def, chunks);
     }
 
     int PatchCount(string id) => Biome.Patches.Where(p => p.Decor == id).Sum(p => p.Count);
 
     /// <summary>Bu noktadaki agac turlerinin MultiMesh parcalari (Capa.Bicme agac esnemesi, capa akisi; entegrasyon).</summary>
-    public IEnumerable<MultiMeshInstance3D> TreeChunksAt(Vector3 p) => Biome.Decor.Where(d => d.Tree)
+    public IEnumerable<MultiMeshInstance3D> TreeChunksAt(Vector3 p) => Biome.Decor.Concat(OtherBiomes.SelectMany(b => b.def.Decor)).Where(d => d.Tree)
         .Select(d => GetNodeOrNull<MultiMeshInstance3D>($"{d.Id}_{Mathf.FloorToInt(p.X / DecorChunk)}_{Mathf.FloorToInt(p.Z / DecorChunk)}"))
         .Where(m => m != null);
 

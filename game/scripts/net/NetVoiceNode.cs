@@ -53,6 +53,7 @@ public partial class NetVoiceNode : Node
     {
         float dt = (float)delta;
         _talkT -= dt;
+        TickInject(delta);
         bool ptt = InputMap.HasAction("voice_ptt") && Input.IsActionPressed("voice_ptt");
         bool radio = InputMap.HasAction("voice_radio") && Input.IsActionPressed("voice_radio");
         if (_capture != null)
@@ -103,15 +104,27 @@ public partial class NetVoiceNode : Node
         _talkT = 0.3f;
     }
 
-    /// <summary>Sinama: n cerceve sinus (mikrofonsuz basliksiz kip).</summary>
-    public void InjectTone(int frames, bool radio = false)
+    /// <summary>Sinama: n cerceve sinus (mikrofonsuz basliksiz kip), gercek konusma gibi cerceve suresi aralikla (TickInject).</summary>
+    public void InjectTone(int frames, bool radio = false) { _injectLeft += frames; _injectRadio = radio; }
+
+    int _injectLeft, _injectK;
+    bool _injectRadio;
+    double _injectAcc;
+
+    void TickInject(double delta)
     {
+        if (_injectLeft <= 0) return;
+        _injectAcc += delta;
+        double frameSec = V.FrameMs / 1000.0;
         int fs = V.FrameSamples;
-        for (int k = 0; k < frames; k++)
+        while (_injectLeft > 0 && _injectAcc >= frameSec)
         {
+            _injectAcc -= frameSec;
             var f = new float[fs];
-            for (int i = 0; i < fs; i++) f[i] = 0.4f * Mathf.Sin((k * fs + i) * Mathf.Tau * 440f / V.SampleRate);
-            SendFrame(f, radio);
+            for (int i = 0; i < fs; i++) f[i] = 0.4f * Mathf.Sin((_injectK * fs + i) * Mathf.Tau * 440f / V.SampleRate);
+            _injectK++;
+            _injectLeft--;
+            SendFrame(f, _injectRadio);
         }
     }
 
