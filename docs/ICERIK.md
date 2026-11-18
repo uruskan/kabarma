@@ -822,6 +822,7 @@ Bir ürünün basamağı, ilk elde edilebildiği biyomun basamağıdır. Örnek:
 |---|---|
 | Tohum paketi (10 tohum, genler 1–3) | Ürünün taban fiyatı × 20 |
 | Yumurta | Gıdak 1.500 · Koşar 4.000 · Paytak 9.000 |
+| Araç gövdesi (rampaya iner) | El Arabası 400 · diğerleri araçlarıyla birlikte (§14) |
 | Süs ve mobilya planı | Basamağa göre 200 · 400 · 800 · 1.200 · 1.600 · 2.000 |
 | Kozmetik (72 parçanın 36'sı) | 500 – 5.000 |
 | Plan Defteri yuvası | 2.500 |
@@ -830,6 +831,10 @@ Bir ürünün basamağı, ilk elde edilebildiği biyomun basamağıdır. Örnek:
 Kozmetiklerin kalan 36'sı iş emirlerinden, çarktan, Atalardan ve Genel Merkez'den gelir.
 
 **Tohum Çarkı ödülleri:** Kredi (%40) · tohum paketi, genleri 3–6 (%22) · çip, Sıradan ya da Nadir (%15) · yumurta (%8) · kozmetik (%8) · Destansı çip (%4) · kart jetonu (%2,5) · Alaca tohum (%0,5).
+
+Beklenen değeri hesaplamak için ödüllerin Kredi karşılığı (veride `wheel.json`): Kredi 50 / 100 / 175 (eşit olasılık) · tohum paketi 450 · çip 300 · yumurta 1.500 · kozmetik 500 · Destansı çip 1.200 · kart jetonu 800 · Alaca tohum 2.000. Toplam beklenen değer 425 Kredi = 500'ün %85'i.
+
+**Borsa kategorisi eşlemesi:** her satılır ürünün kategorisi veride (`market.json`); yazılmamış ürün yemekse "Yemek", değilse "İşlenmiş Mal" sayılır.
 
 ## 19. Ustalık özellikleri (80)
 

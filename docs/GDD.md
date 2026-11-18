@@ -275,9 +275,12 @@ Hasat Robotu, Ekim Robotu, otomatik yemlik, Sağım-Kırkım Kolu, Yumurta Topla
 - **Kredi kaynakları:** kargo satışı, iş emri ödülü, Holding silosu, enkaz kasaları.
 - **Kargo:** Ürünler Paketleme Tezgâhı'nda kargo kasasına konur (20 yığın). Kasa yük nesnesidir (25 kg); değeri içindekilerin satış değerinin toplamıdır. Kargo Rampası 1–6 kasa ya da bir kabarık ürün alır ve fırlatır; ödeme 60 saniye sonra gelir.
 - **Fiyat:** `taban × kalite (1,0 / 1,3 / 1,7) × Alaca (3 / 10 / 50) × Borsa × doygunluk`. Taban fiyat, katalog fiyatı ve ödül kuralları: [ICERIK.md](ICERIK.md) §18.
-- **Borsa:** 12 kategori. Her kategorinin çarpanı günde ±0,15 oynar, 0,6 ile 1,6 arasında kalır. Her gün bir kategori "sıcak"tır (×2).
-- **Doygunluk:** Aynı kategoriden satılan her kasa o kategoriyi %3 düşürür (taban %40); günde %15 geri gelir. Tek ürüne yüklenmek cezalanır.
-- **Tohum Çarkı:** Bir çevirme 500 Kredi ya da 3 Alaca ürün; günün ilk çevirmesi bedava. Ödüller: nadir tohum, yumurta, çip, kart jetonu, kozmetik, kredi. Beklenen değer harcananın %85'i.
+- **Borsa:** 12 kategori. Her kategorinin çarpanı günde ±0,15 oynar (artı 1,0'a doğru %10 çekim), 0,6 ile 1,6 arasında kalır. Her gün bir kategori "sıcak"tır (×2); ×2 bu sınırın üstüne biner, yani Borsa çarpanı 0,6 ile 3,2 arasındadır. Borsa Kargo Rampası'nın terminalindedir; her kategorinin son 30 günlük çarpanı görünür.
+- **Borsanın açılışı:** İlk Kabarma'nın şafağına kadar bütün çarpanlar 1,0, sıcak kategori yok, doygunluk tam; öğretici satışlar (ilk kabarık şalgam 120 Kredi) nötr fiyattandır. Fiyatlar takvimin ilk gün değişiminde (ilk şafaktan sonraki sabah) oynamaya başlar.
+- **Doygunluk:** Aynı kategoriden satılan her kasa o kategoriyi %3 düşürür (taban %40); her sabah 0,15 eklenerek geri gelir (en fazla 1,0). Karışık kasa içindeki her kategoriyi bir kez düşürür; kabarık ürün kendi kategorisini bir kez düşürür. Tek ürüne yüklenmek cezalanır.
+- **Fiyat kilidi:** Kasanın ve kabarık ürünün değeri fırlatma anındaki fiyatla belirlenir; 60 saniyelik ödeme gecikmesinde fiyat değişmez.
+- **Katalog:** Kargo Rampası terminalinden Krediyle alınır. Küçük kalemler (tohum, yumurta, süs) gökten kapsülle Ocak'ın yanına iner (20 sn); araç gövdesi Kargo Rampası'na iner (40 sn). Kapsül E ile açılır, içi çantaya geçer; sığmayan kapsülde kalır.
+- **Tohum Çarkı:** Bir çevirme 500 Kredi ya da 3 Alaca ürün; günün ilk çevirmesi bedava (takvim günü başına bir). Ödüller: nadir tohum, yumurta, çip, kart jetonu, kozmetik, kredi. Beklenen değer harcananın %85'i (ödüllerin Kredi karşılığı ICERIK §18). Sistemi henüz olmayan ödüller (çip, kart jetonu, kozmetik, yumurta, Alaca tohum) Kooperatif deposunda sayılır ve sistemleri gelince oradan alınır.
 - **Cüzdan ekipçe ortaktır.**
 - **İş emirleri:** 48 zincir, her biri 5 adım. Suna okur, Defter'de durur.
 

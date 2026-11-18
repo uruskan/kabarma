@@ -30,7 +30,11 @@ public sealed class Pricing
         return q.Count == 0 ? 1f : q[Math.Clamp(stars - 1, 0, q.Count - 1)];
     }
 
-    public float Unit(string id, int stars = 1) => Base(id) * Quality(stars);
+    /// <summary>Borsa (GameState.Market.cs baglar); null ise fiyat notr (Borsa ve doygunluk 1).</summary>
+    public Market? Market { get; set; }
+
+    /// <summary>Birim satis fiyati: taban × kalite × Borsa × doygunluk (GDD 13; Alaca carpani tarim akisiyla).</summary>
+    public float Unit(string id, int stars = 1) => Base(id) * Quality(stars) * (Market?.FactorOf(id) ?? 1f);
 
     public bool Sellable(string id) => Base(id) > 0;
 
@@ -142,8 +146,9 @@ public sealed class Cargo
     public int LaunchCrates()
     {
         if (_pad.Count == 0) return 0;
-        int v = _pad.Sum(Value);
+        int v = _pad.Sum(Value); // fiyat firlatma aninda kilitlenir (GDD 13)
         string what = $"kargo_kasasi x{_pad.Count}";
+        if (Pricing.Market is Market m) foreach (var c in _pad) m.RecordSale(m.CategoriesOf(c.Items)); // doygunluk: kasa basina
         _pad.Clear();
         Schedule(v, what);
         return v;
