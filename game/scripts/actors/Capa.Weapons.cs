@@ -64,6 +64,7 @@ public partial class Capa
             nail.GlobalPosition = muzzle;
         }
         FeelFire("civi", muzzle, Palette.Warning);
+        _d.OnCardShot(aim); // kartlar: Patlar Uc (Director.Cards.cs)
     }
 
     public void FireTirpan(Vector3 aim)
@@ -85,6 +86,7 @@ public partial class Capa
             proj.GlobalPosition = muzzle;
         }
         FeelFire("tirpan", muzzle, Palette.MayaTeal);
+        _d.OnCardShot(aim); // kartlar: Patlar Uc (Director.Cards.cs)
     }
 
     /// <summary>Civinin gorunusu (malzeme, govde, iz parcaciginin malzemesi ve cizimi): her atista yeniden kurmak (ozellikle
@@ -119,6 +121,7 @@ public partial class Capa
         else { dmg = w.Damage; crit = false; }
         if (_d.Net?.ForwardHit(z, dmg, crit, dir with { Y = 0 }, w.Knockback * s.KnockbackMult, weak, night != null && night.RollBurn() ? w.BurnSeconds : 0, night != null && night.RollFreeze() ? w.FreezeSeconds : 0) == true) { FeelHit(feel, at, crit ? Palette.Warning : color, crit, weak); return; } // ortak: istemcinin vurusu host'ta
         z.Hit(dmg, crit, dir with { Y = 0 }, w.Knockback * s.KnockbackMult, weak);
+        _d.OnCardHit(z); // kartlar: can emme, Sok, Zehir (Director.Cards.cs)
         if (night != null && night.RollBurn()) z.BurnT = w.BurnSeconds;
         if (night != null && night.RollFreeze()) z.FreezeT = w.FreezeSeconds;
         FeelHit(feel, at, crit ? Palette.Warning : color, crit, weak);
