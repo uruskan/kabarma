@@ -23,6 +23,7 @@ public partial class Wildlife
     // klip ortasinda ekran goruntusu (yurume, kosu, bekleme, saldiri, darbe), sonra cikis.
     static readonly string[] SiraSlots = { "walk", "run", "idle", "attack1", "hit" };
     WildCreature _siraC;
+    Camera3D _siraCam;
     int _siraI = -1;
     float _siraT;
 
@@ -33,12 +34,28 @@ public partial class Wildlife
         if (_siraC == null && _m4T > 1.5f)
         {
             var def = _d.Data.Creatures.Creatures.First(c => c.Id == speciesId);
+            if (Main.Args.ContainsKey("yaratik4_kod") && _d.Data.Body(speciesId) != null)
+            {
+                // Karsilastirma: ayni turun koddan yer tutucu govdesi (bodies.json), Tripo modeli yerine; rol adlari govdede ayni.
+                def.Rig!.Model = "code:" + speciesId;
+                def.Rig.Bones = def.Rig.Bones.Keys.ToDictionary(k => k, k => k);
+                def.Rig.Clips = new(); def.Rig.ClipSpeed = new();
+            }
             var fwd = -p.GlobalTransform.Basis.Z; fwd.Y = 0; fwd = fwd.Normalized();
             var at = p.GlobalPosition + fwd * 3.6f + fwd.Cross(Vector3.Up) * 0.6f;
             _siraC = Spawn(def, at, display: true)[0] as WildCreature;
             _siraC.Rotation = new Vector3(0, Mathf.Atan2(fwd.X, fwd.Z) + Mathf.DegToRad(215f), 0); // yan-onden gorunum
             _siraC.DisplaySlot = SiraSlots[0];
             _siraI = 0; _siraT = 0;
+            // Ayri kamera: yaratigin onunden-yanindan 3/4 (oyuncu kamerasi uzak ve kucuk gosteriyordu).
+            var b = _siraC.GlobalTransform.Basis;
+            var cen = _siraC.GlobalPosition + Vector3.Up * ((def.Rig?.Height ?? 0.9f) * 0.5f);
+            var camAt = cen + b.Z * 2.3f + b.X * 2.2f + Vector3.Up * 0.5f;
+            _siraCam = new Camera3D { Fov = 38f, Far = 400f };
+            AddChild(_siraCam);
+            _siraCam.GlobalPosition = camAt;
+            _siraCam.LookAt(cen, Vector3.Up);
+            _siraCam.MakeCurrent();
             GD.Print($"YARATIK4 sira basladi {speciesId} dogus_y={_siraC.GlobalPosition.Y:0.00} zemin_y={_d.World.Ground(_siraC.GlobalPosition).Y:0.00}");
             return;
         }
