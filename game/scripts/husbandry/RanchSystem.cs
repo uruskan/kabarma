@@ -7,8 +7,8 @@ namespace Kabarma.Game;
 
 /// <summary>
 /// Hayvancilik dugumu (GDD 9.1-9.4). Ranch'i (Sim) zamanla isletir ve olaylarini gosterir: urun, gubre, yavru, kacma.
-/// Hayvanlara bileseni takar: var olan Pofuduk aktoru, ilk gunun Gidak'i (kendi agil yolu Gidak.Pen.cs) ve yer tutucular
-/// (TameablePlaceholder; yaratik2'nin aktorleri gelene kadar).
+/// Hayvanlara bileseni takar: var olan Pofuduk aktoru, ilk gunun Gidak'i (kendi agil yolu Gidak.Pen.cs), yaratik2'nin
+/// WildCreature aktorleri (WildCreature.Pen.cs) ve aktoru olmayan tur icin yer tutucu (TameablePlaceholder: Vizviz surusu).
 /// E ile yeme, okşamaya, urune, gubreye ve hayvan paneline bakar (Director.Pen.cs PenInteract'ten).
 /// </summary>
 public partial class RanchSystem : Node
@@ -31,6 +31,7 @@ public partial class RanchSystem : Node
     public override void _Ready()
     {
         Events.Dawn += () => Ranch.Dawn();
+        Events.WildActed += OnWildActed;
         Card = new AnimalCard(_d, this);
         _d.Hud.AddChild(Card);
     }
@@ -56,7 +57,9 @@ public partial class RanchSystem : Node
             if (a.Tame) _d.Pofuduk.GlobalPosition = _d.World.Ground(new Vector3(a.X, 0, a.Z));
             Attach(_d.Pofuduk, a);
         }
-        // YER TUTUCU: yaratik2'nin gercek aktorleri gelene kadar Cayir ve Koru turleri cayirda (Pod'a gore).
+        // Evcillesebilir turler cayirda (Pod'a gore): yaratik2'nin WildCreature aktoru (Wildlife.Spawn); suru turu Vizviz
+        // ve aktoru olmayanlar yer tutucu (TameablePlaceholder). Istemcide host'un yaratiklari kukla olarak gelir.
+        if (_d.Net?.IsClient == true) { GD.Print("RANCH start client"); return; }
         var spots = new (string id, Vector3 off)[]
         {
             ("homur", new(-24, 0, 18)), ("homur", new(-28, 0, 22)),
@@ -71,8 +74,7 @@ public partial class RanchSystem : Node
             var s = Ranch.Rules.Species(id);
             var at = _d.World.Ground(Director.PodPos + off);
             var a = Take(id, at);
-            var actor = new TameablePlaceholder(_d, s, at);
-            _d.AddChild(actor);
+            var actor = MakeActor(s, at);
             if (a.Tame) actor.GlobalPosition = _d.World.Ground(new Vector3(a.X, 0, a.Z));
             Attach(actor, a);
         }
@@ -98,6 +100,12 @@ public partial class RanchSystem : Node
         if (!_started) { if (_d.World != null && _d.Pens != null) Start(); else return; }
         _agents.RemoveAll(a => !IsInstanceValid(a));
         Rebind();
+        foreach (var ag in _agents)
+            if (ag.Host is WildCreature wc && IsInstanceValid(wc))
+            {
+                wc.State.Tamed = ag.Animal.Tame; // yaratik2 sozlesmesi: State.Tamed hayvan akisinda
+                if (_d.Wildlife != null && !wc.Dead && !_d.Wildlife.Creatures.Contains(wc)) _d.Wildlife.Creatures.Add(wc); // kayit yuklemesi listeyi bosaltir
+            }
         _acc += (float)delta;
         if (_acc >= 0.25f)
         {
@@ -196,20 +204,66 @@ public partial class RanchSystem : Node
         }
     }
 
-    /// <summary>Yavru ya da kuluckadan cikan icin aktor: Pofuduk ve Gidak gercek aktor, digerleri yer tutucu.</summary>
+    /// <summary>
+    /// Turun aktoru: yaratik2'nin WildCreature'i (Wildlife.Spawn; ortak oyunda Wildlife.Creatures uzerinden esitlenir),
+    /// yoksa YER TUTUCU (TameablePlaceholder, net yaratik grubunda).
+    /// </summary>
+    Node3D MakeActor(SpeciesDef s, Vector3 at)
+    {
+        var def = _d.Data.Creatures.Creatures.FirstOrDefault(c => c.Id == s.Id);
+        if (_d.Wildlife != null && def?.Wild != null && _d.Wildlife.Spawn(def, at).FirstOrDefault() is WildCreature wc)
+        {
+            if (wc.Loaded) return wc;
+            _d.Wildlife.Creatures.Remove(wc); wc.QueueFree(); // modeli yok: yer tutucuya dus
+        }
+        var ph = new TameablePlaceholder(_d, s, at);
+        _d.AddChild(ph);
+        return ph;
+    }
+
+    /// <summary>Yavru ya da kuluckadan cikan icin aktor: Pofuduk ve Gidak kendi aktorleri, digerleri MakeActor.</summary>
     void SpawnActor(PenAnimal a)
     {
         var at = _d.World.Ground(new Vector3(a.X, 0, a.Z));
-        Node3D actor = a.Species switch
+        Node3D actor;
+        if (a.Species is "pofuduk" or "gidak")
         {
-            "pofuduk" => new Pofuduk(_d, at) { Name = "Pofuduk_" + a.Id },
-            "gidak" => new Gidak(_d.Data.Creature("gidak"), _d) { Name = "Gidak_" + a.Id },
-            _ => new TameablePlaceholder(_d, Ranch.Rules.Species(a.Species), at),
-        };
-        _d.AddChild(actor);
+            actor = a.Species == "pofuduk" ? new Pofuduk(_d, at) { Name = "Pofuduk_" + a.Id } : new Gidak(_d.Data.Creature("gidak"), _d) { Name = "Gidak_" + a.Id };
+            _d.AddChild(actor);
+            actor.AddToGroup(NetSync.CreatureGroup); // ortak oyun: host yetkili konum (NetSync.Creatures.cs)
+        }
+        else actor = MakeActor(Ranch.Rules.Species(a.Species), at);
         actor.GlobalPosition = at;
-        actor.AddToGroup(NetSync.CreatureGroup); // ortak oyun: host yetkili konum (NetSync.Creatures.cs)
         Attach(actor, a);
+    }
+
+    /// <summary>
+    /// Yabani olay (yaratik2, Events.WildActed): Sinsi kumesin yaninda "Took" = yumurta calar (ICERIK 3.8). En yakin
+    /// Folluk'tan bir yumurta, yoksa yakindaki hayvanin bekleyen yumurtasi gider. Evcil WildCreature'lar Wildlife
+    /// listesinde kalir (kayit yuklemesi listeyi temizler; ortak oyun esitlemesi o listeden okur).
+    /// </summary>
+    void OnWildActed(string species, string what, float x, float z)
+    {
+        if (what != "Took" || species != "sinsi") return;
+        const float r = 8f;
+        var nest = Ranch.Nests.Where(n => n.Eggs > 0 && (n.X - x) * (n.X - x) + (n.Z - z) * (n.Z - z) < r * r)
+            .OrderBy(n => (n.X - x) * (n.X - x) + (n.Z - z) * (n.Z - z)).FirstOrDefault();
+        string lost = null;
+        if (nest != null) { nest.Eggs--; lost = "egg"; }
+        else
+        {
+            foreach (var a in Ranch.Animals.Where(a => (a.X - x) * (a.X - x) + (a.Z - z) * (a.Z - z) < r * r))
+            {
+                var st = a.Pending.FirstOrDefault(p => p.Count > 0 && (p.Item.Contains("egg") || p.Item.Contains("yumurta")));
+                if (st == null) continue;
+                st.Count--; if (st.Count <= 0) a.Pending.Remove(st);
+                lost = st.Item; break;
+            }
+        }
+        if (lost == null) return;
+        var at = _d.World.Ground(new Vector3(x, 0, z)) + Vector3.Up * 1.2f;
+        Fx.Text3D(at, $"-1 {ItemNames.Of(lost)}", Palette.Warning, 56, 1f, 1.4f);
+        GD.Print($"RANCH stolen {lost} by sinsi at={x:0.0},{z:0.0}");
     }
 
     // ---------- gubre yiginlari ----------
