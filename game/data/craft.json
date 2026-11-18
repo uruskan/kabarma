@@ -28,6 +28,7 @@
     "wheat": { "text": "yabani buğday, Biçme", "target": "tuft:wheat" },
     "turnip": { "text": "tarlan, olgun şalgamı Biçme ile hasat et", "target": "farm" },
     "egg": { "text": "ağıldaki Gıdak, Folluk'tan E ile", "target": "gidak" },
+    "deri": { "text": "ağıldaki Homur ve Dallı, uzun aralıklı ürün; hayvana E", "target": "gidak" },
     "copper_ingot": { "text": "Taş Fırın'da Bakır Cevheri'nden eritilir", "target": "station:tas_firin" },
     "copper_wire": { "text": "Tezgâh'ta Bakır Külçe'den çekilir", "target": "station:tezgah" },
     "charcoal": { "text": "Kömür Ocağı'nda Odun'dan yakılır", "target": "station:komur_ocagi" },

@@ -5,7 +5,7 @@ namespace Kabarma.Sim;
 // Durum duz veri: kayda hazir (TEKNIK 9), Godot katmani yalniz gorur ve bildirir.
 
 /// <summary>Bir evcillestirilebilir hayvanin kural durumu.</summary>
-public sealed class PenAnimal
+public sealed partial class PenAnimal
 {
     public string Species { get; init; } = "";
     /// <summary>Ilk gunun ogretici hayvani (GDD 24: tek yemle guvenir, agila ilk girisinde hemen yumurtlar).</summary>

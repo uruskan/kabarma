@@ -112,7 +112,9 @@ public partial class AnimalCard : Control
         Txt($"Rol {roleName}  ·  Komut {cmdName}", cx, cy, 16, T.Muted); cy += line;
         string pend = a.Pending.Count == 0 ? "Ürün yok" : string.Join("  ", a.Pending.Select(p => $"{p.Count} {ItemNames.Of(p.Item)} {new string('★', p.Stars)}"));
         Txt(pend, cx, cy, 16, a.Pending.Count > 0 ? T.Green : T.Muted); cy += line;
-        if (a.WantsOut) Txt("Mutsuz: açık kapıdan kaçar", cx, cy, 16, T.Red);
+        if (a.War != null) Txt(a.Fainted ? "Bayıldı: şafakta ağılında uyanır" : $"Kabarık · can {a.War.Hp:0}/{a.War.MaxHp:0}", cx, cy, 16, a.Fainted ? T.Red : T.Green); // M3 (GDD 9.5)
+        else if (a.TiredDawns > 0) Txt("Yorgun: ürün vermez, savaşmaz, binilmez", cx, cy, 16, T.Red);
+        else if (a.WantsOut) Txt("Mutsuz: açık kapıdan kaçar", cx, cy, 16, T.Red);
         else if (a.BreedTimer >= 0) Txt($"Yavru yolda: {a.BreedTimer / rules.DaySeconds:0.0} gün", cx, cy, 16, T.Green);
     }
 

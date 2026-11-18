@@ -634,8 +634,14 @@
    "slot": "B",
    "name": "Savaş Çığlığı",
    "text": "kabarık hayvan hasarı +%25",
-   "live": false,
-   "effects": []
+   "live": true,
+   "effects": [
+    {
+     "stat": "swell_animal_damage",
+     "op": "add",
+     "value": 0.25
+    }
+   ]
   },
   {
    "id": "muhendislik_10a_cabuk_el",

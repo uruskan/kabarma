@@ -247,7 +247,8 @@ public partial class PenSystem : Node
     // ---------- Yerlestirilebilirler ----------
 
     /// <summary>Agil sisteminin kurdugu yerlestirilebilirler (Capa.Insa bunlari PlaceProp'a yollar; Sandik, Uyku Tulumu, Mesale ekonomi'nin).</summary>
-    public static bool IsPenProp(string id) => id is "ahsap_kapi" or "yemlik" or "folluk" or "suluk" or "kasinma_fircasi" or "ari_kovani"; // M2 hayvan: Suluk, Firca, Kovan
+    public static bool IsPenProp(string id) => id is "ahsap_kapi" or "yemlik" or "folluk" or "suluk" or "kasinma_fircasi" or "ari_kovani" // M2 hayvan: Suluk, Firca, Kovan
+        or "savas_agili_bayragi" or "ahir_zili" or "baglama_diregi" or "eyerlik"; // M3 hayvan (GDD 9.5)
 
     public PenProp PlaceProp(PlaceableDef def, Vector3 at, float yaw)
     {
@@ -336,6 +337,7 @@ public partial class PenSystem : Node
             if (pr.Nest != null && pr.Nest.Eggs > 0) { bestD = d; var pp = pr; act = () => pp.Collect(); lab = $"Folluk: {pr.Nest.Eggs} yumurtayı al"; }
             else if (pr.Feeder != null && pr.Feeder.Room > 0 && FoodFor(pr) is string food) { bestD = d; var pp = pr; act = () => pp.Fill(); lab = $"Yemlik'e {ItemNames.Of(food)} koy"; }
             else if (pr.Kasa != null) { bestD = d; var pp = pr; act = () => pp.ToggleDoor(); lab = pr.DoorOpen ? "Kapıyı kapat" : "Kapıyı aç"; }
+            else if (_d.Ranch?.PropAction(pr) is var (pa, pl) && pa != null) { bestD = d; act = pa; lab = pl; } // M3: Ahir Zili, Eyerlik (Husbandry.Combat)
         }
         foreach (var g in _gates.Values.Where(g => g.Leaves.Count > 0 && IsInstanceValid(g.Piece)))
         {

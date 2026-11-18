@@ -32,6 +32,7 @@ public partial class RanchSystem : Node
     {
         Events.Dawn += () => Ranch.Dawn();
         Events.WildActed += OnWildActed;
+        SetupWar(); // M3: Kabarma'da hayvanlar, Ahir Zili, Eyerlik, binek agi (Husbandry.Combat.cs, Mount.cs)
         Card = new AnimalCard(_d, this);
         _d.Hud.AddChild(Card);
     }
@@ -116,6 +117,8 @@ public partial class RanchSystem : Node
             foreach (var e in ev) Show(e);
         }
         PilesSync();
+        WarProcess((float)delta); // M3 (Husbandry.Combat.cs)
+        MountProcess((float)delta); // M3 (Mount.cs)
         _hintT -= (float)delta;
         if (_hintT <= 0 && !_d.Hud.MenuOpen && _d.Capa.CurrentPlaceable == "")
         {
@@ -351,6 +354,7 @@ public partial class RanchSystem : Node
     /// <summary>E: hayvan isi menzildeyse ve agil nesnesinden yakinsa isler.</summary>
     public bool Interact(Vector3 p)
     {
+        if (Riding) { Dismount(); return true; } // M3: binerken E iner
         if (Nearest(p, out var act, out var dist) == null) return false;
         if (_d.Pens != null && _d.Pens.NearestDistance(p) < dist) return false;
         act();
@@ -438,6 +442,8 @@ public partial class RanchSystem : Node
             }));
             items.Add(new($"Heybeyi boşalt ({a.Pack.Values.Sum()})", () => a.Pack.Count > 0, () => { r.PackUnload(a, _d.State.Backpack); OpenPanel(ag); }));
         }
+        if (Ranch.Mount.Rideable(s.Id)) // M3 binek (Mount.cs)
+            items.Add(new(a.Saddled ? "Bin" : "Bin (eyer yok: Eyerlik)", () => CanMount(ag), () => { _d.Hud.HideMenu(); MountUp(ag); }));
         _d.Hud.ShowMenu($"{PanelTitle}: {ag.Title}", items, AnimalCard.Summary(this, _d, ag));
     }
 }

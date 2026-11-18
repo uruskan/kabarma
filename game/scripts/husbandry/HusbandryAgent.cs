@@ -25,6 +25,9 @@ public partial class HusbandryAgent : Node
     public bool Passive { get; set; }
     /// <summary>Bilesen hayvani yurutuyor (evcil ya da tutulmus).</summary>
     public bool Driven { get; private set; }
+    /// <summary>M3: savas hedefi (Husbandry.Combat.cs her kare yazar; null: normal davranis).</summary>
+    public Vector3? Override;
+    public float OverrideSpeed;
     readonly Director _d;
     readonly RanchSystem _r;
     readonly IHusbandryHost _iface;
@@ -60,6 +63,10 @@ public partial class HusbandryAgent : Node
         // Duvar: bu karede gecilmez duvari kestiyse onunde durur (acik kapi gecilir).
         var now = Driven && _iface == null ? _pos : Host.GlobalPosition;
         Animal.X = now.X; Animal.Z = now.Z;
+        // M3 (Husbandry.Combat.cs, Mount.cs): binilen hayvani binek kodu, saklanan ve bayilani savas kodu yurutur.
+        if (Animal.Rider != 0) return;
+        if (Animal.Hidden || Animal.Fainted) { Steer(Host.GlobalPosition, 0f, dt, ps); return; }
+        if (Override is Vector3 war) { Steer(war, OverrideSpeed, dt, ps); return; }
 
         if (!Animal.Tame && !Animal.Bound)
         {
@@ -79,6 +86,15 @@ public partial class HusbandryAgent : Node
             goal = c + new Vector3(Mathf.Cos(_t * 0.8f), 0, Mathf.Sin(_t * 0.8f)) * 1.2f; // kovan cevresinde vizilti
         }
         else if (Animal.Registered && Animal.WantsOut) goal = EscapeGoal(ps) ?? Wander(ps, dt);
+        else if (!Animal.Registered && Animal.Called && ps != null)
+        {
+            // Ahir Zili cagirdi (GDD 9.5): agilin merkezine yol bulur, girince kayit olur.
+            _routeT -= dt;
+            if (_routeT <= 0) { _routeT = 0.25f; _goal = ps.Route(Host.GlobalPosition, new Vector3(Animal.CallX, 0, Animal.CallZ), Radius); }
+            goal = _goal;
+            TryHome(ps);
+            if (Animal.Registered) Animal.Called = false;
+        }
         else if (!Animal.Registered)
         {
             goal = Follow(ps, p, dt);

@@ -65,6 +65,7 @@ Hepsi koddan, kredisiz ve lisans sorunu yok. Gerçekleri yaratik2 akışının a
 | Vızvız gövdesi ve modeli olmayan tür | `game/scripts/husbandry/TameablePlaceholder.cs` (MeshKit küre/yastık) | Proje kodu | YER TUTUCU; diğer türler yaratik2'nin WildCreature aktörüyle gelir |
 | Suluk, Kaşınma Fırçası, Arı Kovanı | `pipeline/hayvan_props_kit.py` (Blender, yapı kitinin kalas dili, ortak ahşap atlası) | Proje kodu | Kredisiz; 396–660 üçgen |
 | Gübre yığını | `RanchSystem.PilesSync` (MeshKit küre) | Proje kodu | YER TUTUCU |
+| Savaş Ağılı Bayrağı, Ahır Zili, Bağlama Direği, Eyerlik (M3) | `pipeline/hayvan_m3_kit.py` (Blender, yapı kitinin kalas dili, ortak ahşap atlası) | Proje kodu | Kredisiz; 264–440 üçgen |
 
 ## Model yer tutucuları (dunya2, M2)
 
