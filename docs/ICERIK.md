@@ -737,6 +737,20 @@ Can ve Dayanıklılık değerleri yemeğin süresi boyunca eklenir.
 | Yuva | Yaklaşık 20 | Yumurta ya da yavru |
 | Zengin Yatak | 14 | Sondaj Kulesi ile bitmeyen cevher |
 
+**M2 dünyasındaki T1–T2 noktaları** (640 m'lik ara dünya, [TEKNIK.md](TEKNIK.md) §7; URETIM §6 "İçerik dağılımı": M2'de Seyir Kulesi, Ata Taşı, Yabani Bahçe, Yuva, Enkaz). Adetler 5 × 5 km'lik adanın yukarıdaki toplamlarından bu iki biyoma düşen paydır; Kadim Taş, Oyuk ve Holding Kampı M3'te, Zengin Yatak M4'te.
+
+| Tür | Altın Çayır | Sis Korusu | Ne verir (M2) |
+|---|---|---|---|
+| Seyir Kulesi | 1 | 1 | Tırmanınca 600 m harita açılır; tepesinde mancınık durağı |
+| Ata Taşı | 1 | 1 | Ata çağırma yeri ve arena merkezi (Koca Pofuduk, Boynuzlu Dede) |
+| Yabani Bahçe | 1 | 1 | Biçme ile o biyomun tohumları; günde bir yenilenir |
+| Yuva | 2 | 2 | Bir Yumurta (`egg`; Koru türlerinin yumurtası hayvan akışıyla gelir); 3 günde bir yenilenir |
+| Enkaz | 3 | 3 | Kazma ile Hurda; 5 günde yenilenir |
+
+**Mancınık** bir yerleştirilebilirdir (§10.2 Hizmet). Ocak'ın tapusuna ve karakollara kurulur; her Seyir Kulesi'nin dibinde hazır bir durak vardır ve kule tırmanılınca açılır. Açık bir duraktan açık bir durağa fırlatır. El arabası iterken ya da yük nesnesi taşırken kullanılmaz.
+
+**Koru kaynak kimlikleri** (§2.1): `hard_wood` Sert Odun (Koru ağaçları, Kesme), `resin` Reçine (Koru ağaçlarındaki reçine yumruları, Kazma), `iron_ore` Demir Cevheri (Koru damarları, Kazma), `saltpeter` Güherçile (Oyuk'a kadar Koru'daki kaya çatlaklarında küçük damarlar, Kazma), `scrap` Hurda (Enkaz, Kazma).
+
 ## 18. İş emirleri (48 zincir × 5 adım), başarımlar, katalog, çark
 
 Her adım Kredi ve Veri verir. Zincirin son adımı sütundaki ödülü de verir.

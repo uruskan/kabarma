@@ -175,6 +175,14 @@ Host ya da sunucu yetkilidir. İstemci istekleri mesafe, bekleme süresi ve enva
 
 **Arazi farkları** parça başına seyrek tutulur; kayda ve ağa yalnızca farklar gider.
 
+**M2 dünyası (ara adım, 18 Kasım 2026; dunya2 akışı).** 5 × 5 km'lik ada M4'te gelir; M2'de dünya **640 × 640 m**'dir ve iki biyom taşır:
+- **Biyom haritası `Sim`'dedir** (`BiomeMap`, motordan bağımsız, tohumlu): Ocak'tan krater ışık sütununa doğru ölçülen uzaklık, gürültüyle bükülmüş bir sınırı geçince Sis Korusu başlar. Bu, açısal dilimlerin ilk ikisinin (güney Çayır, krater yönünde Koru) yerel karşılığıdır; kademe (T) kratere yaklaştıkça artar.
+- **Geçiş yumuşaktır** (GDD §21): sınırda ~45 m'lik bir karışım bandı. Yükseklik terimleri, zemin rengi, ot sıklığı, sis ve ışık biyom ağırlığıyla karışır.
+- **Çayır'ın M1 yerleşimi bit bit korunur:** üssün 42 m'si yükseklikte, Çayır'ın eski ±146 m'lik kutusu da bitki, tutam ve kaya dağılımında aynı tohum akışıyla kalır. Kutunun dışındaki Çayır ve Koru ayrı tohumlarla doldurulur.
+- **Keşif noktaları** `Sim`'de tohumdan yerleşir (`PoiPlacer`: tür başına asgari aralık, biyom ağırlığı, Ocak'a uzaklık, göl dışı); kayda yalnız oyuncunun durumu (açılan harita hücreleri, tırmanılan kuleler, bulunan noktalar) gider, yerler tohumdan yeniden üretilir.
+- **Arazi** 64 m'lik görsel parçalara bölünür (görüş konisi eleme); çarpışma tek yükseklik şeklidir. Bütçeler §10'dakilerle aynıdır.
+- **Doğma tabloları** biyom başına `biomes.json` `spawns` içindedir: `creatures` (yaratık sürüleri: gündüz/gece, ağırlık, sürü boyu, en çok sürü, Ocak'a uzaklık) ve `atalar` (Ata'nın çağrıldığı Ata Taşı ve arena yarıçapı). Yaratık ve Ata akışları satır ekler; tabloyu `SpawnTable` okur.
+
 ## 8. Yapay zekâ
 
 - **Izgara:** 1 m'lik maliyet ızgarası; eğim, su ve yapı ayak izinden türetilir. Duvar hücreleri kapalı değil, "kırma maliyetli"dir.
