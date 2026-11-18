@@ -389,6 +389,24 @@ Yabani yaratıklar, açık arazideki Holding ekipleri ve kervanları, Oyuk koruy
 - **Kabarık Ata:** Yenilen Ata aynı adak ve `KS × 50` Maya ile yeniden çağrılır; gücü seçilen KS'ye göre ölçeklenir, üst basamak çip malzemesi verir.
 - Ayrıntılar: [ICERIK.md](ICERIK.md) §4.
 
+### 18.1 M2 uygulaması (Koca Pofuduk, Boynuzlu Dede)
+
+Sayılar `data/atalar.json`'da; kural `src/Kabarma.Sim/Ata*.cs`, Godot katmanı `game/scripts/boss/`.
+
+- **Bulunma ve çağırma:** Ata Taşı ve sunağı arenanın kenarında durur; haritada açıklıktır (`biomes.json` `clearings`). Adak sunağa tek tek konur. Çanta eşyası etkileşimle sunulur; kabarık ürün Çekim'le sunağa bırakılır. Adak tamamlanınca Ata arenanın ortasına iner. Yenilen Ata aynı adakla yeniden çağrılmaz; Kabarık Ata M4'te gelir.
+- **Aşamalar:** Can oranı aşama eşiğinin altına inince sonraki aşama başlar. Geçişte Ata 1,5 saniye hasar almaz ve kabarır.
+- **Koca Pofuduk:**
+  - **Aşama 1:** Sezdirip hücum eder; yün yumağı atar. Yumak oyuncuyu sektirir.
+  - **Aşama 2:** Yün zırhı hasarı azaltır. Biçme vuruşu zırhı kırkar; yanık da zırhı yer. Yumaklardan küçük Pofuduklar çıkar.
+  - **Aşama 3:** Çıplak ve hızlıdır. Hücumda arenanın taş sütununa toslarsa sersemler; sersemken aldığı hasar artar.
+- **Boynuzlu Dede:**
+  - **Aşama 1:** Dallardan koruyucular düşer; sis koyulaşır.
+  - **Aşama 2:** Yerden kök dalgası halkaları yayılır; zıplayan oyuncuya değmez. Boynuzdaki iki ışıyan kovan zayıf noktadır: kırılan kovan Dede'yi sersemletir.
+  - **Aşama 3:** Boynuz kırılır ve parçaları yere düşer. Parçalar Çekim'le alınıp Dede'ye fırlatılınca büyük hasar verir. Silah hasarı azalır.
+- **Kural:** Özel mekanikler dövüşü hızlandırır, kapı değildir. Her aşama Tırpan Işını ya da Çivi Tabancası ile tek başına bitirilebilir.
+- **Ödül:** Çekirdek ve ganimet çantaya girer. Mühür, ulti ve açılan içerik Sim'deki Ata ilerlemesine yazılır. Mühür etkisinin oranını tarım ve yapı kuralları buradan okur.
+- **M2 sınaması:** Adak bileşenlerinin çoğu henüz başka akışlarda: Yün, Demir Külçe, Reçine, kabarık mantar. Bu yüzden `--test=boss` botu Ata Taşı'na yürür ve Ata'yı F1 geliştirici çağırmasıyla indirir. Adak kuralı Sim testlerinde sınanır. Dövüşte eşya, can ya da hasar verilmez.
+
 ## 19. Bereket Holding (rakipler)
 
 ### 19.1 Kamplar
