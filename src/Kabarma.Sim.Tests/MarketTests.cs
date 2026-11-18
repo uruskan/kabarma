@@ -201,6 +201,28 @@ public class MarketTests
     }
 
     [Fact]
+    public void Market_catalog_and_wheel_survive_save_and_load()
+    {
+        var d = Data();
+        var a = new GameState(d);
+        Earn(a, 3);
+        a.Calendar.Start(d.Calendar.FirstDay);
+        a.Market.OnMorning(d.Calendar.FirstDay + 3);
+        a.BuyCatalog("tohum_salgam");
+        a.SpinWheel();
+        var g = new SaveRegistry().AddRange(a.SaveSections()).Capture(SaveScope.World);
+        var b = new GameState(d);
+        new SaveRegistry().AddRange(b.SaveSections()).Restore(g);
+        Assert.Equal(a.Market.State.Hot, b.Market.State.Hot);
+        foreach (var c in a.Market.Categories) Assert.Equal(a.Market.Factor(c.Id), b.Market.Factor(c.Id), 5);
+        Assert.Equal(a.Catalog.Deliveries.Count, b.Catalog.Deliveries.Count);
+        Assert.Equal(a.Wheel.State.Spins, b.Wheel.State.Spins);
+        Assert.Equal(a.Purchases, b.Purchases);
+        Assert.False(b.WheelFreeToday);
+        Assert.Equal(a.Credits, b.Credits);
+    }
+
+    [Fact]
     public void Spend_never_goes_negative()
     {
         var s = new GameState(Data());
