@@ -134,6 +134,7 @@ M4 (URETIM §6): dört yeni biyom, T3–T6 ve kalan içerik. Kurallar M3 ile ayn
 - **Ortak kimlikler: `docs/kimlikler-m4.md`.** Biyom, kaynak, yaratık, ekin, istasyon, araç, yemek ve öteki içerik kimlikleri oradan alınır. Yeni kimlik satır eklenerek gelir; var olan kimlik yeniden adlandırılmaz. Listede olmayan bir şey gerekirse satırı ekle ve raporda say.
 - **Modeller:** yeni yaratık, Ata, araç, istasyon ve kozmetik modelleri önce yer tutucudur (`data/assets.json`'da işaretli, URETIM §3). Kredi isteyen üretimi listele; ana oturum Tripo web'de üretir.
 - **Adetler:** içerik adetleri PLAN §7.1 ile birebir olmalı. Akış kendi bölümünü bitirince `DataCheckTests` sayısını günceller.
+- **Kaba hata bakışı (sahibin kararı, 19 Kasım 2026):** büyük bir akış main'e alınınca ana oturum bir Opus high alt ajanına akışın farkını yalnız kaba hatalar için kısaca okutur: çökme, eksik kayıt ya da ağ kancası, yanlış veri, belgeyle çelişki. Test koşusu ve düzeltme yok; bulunanı akışın kendisi (Sonnet) düzeltir.
 
 | Akış | Sıra | Model | Sahip olduğu dosyalar ve işler |
 |---|---|---|---|
