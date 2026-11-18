@@ -26,3 +26,14 @@ Her üretimden sonra bu tabloya bir satır eklenir. `pipeline/eleven.py` her ça
 ## AI beyanı (URETIM §9)
 
 Steam içerik anketinde: ses efektleri, müzik ve Suna'nın seslendirmesi önceden üretilmiştir (Genex, ElevenLabs). Arayüz sesleri kodla sentezlenmiştir. Oyun sırasında çalışan üretken model yoktur.
+
+## Doku kaynakları (arazi)
+
+Sahibin varlık kitaplığından (`F:\Assets`, yalnız okundu) kopyalanıp `pipeline/import_terrain_scans.py` ile 2K/1K paketli dokuya çevrildi. Çıktı: `game/assets/textures/terrain/`.
+
+| Katman | Kaynak klasör | Lisans | Not |
+|---|---|---|---|
+| `cimen` (2K) | `F:\Assets\leafy_grass_4k` (Poly Haven, Charlotte Baglioni) | CC0 1.0 | Klasördeki json lisansı yazıyor |
+| `toprak` (2K), `tarla` (1K, üstüne koddan eğatlar) | `F:\Assets\forest_floor_wgyhdgy_4k` (Megascans) | Fab Standart Lisans (Megascans) | Klasörde lisans alanı yok; ana oturumun bildirdiği lisans. Sahip doğrulamalı |
+| `kaya` (2K) | `F:\Assets\cracked_nordic_coastal_rock_ukohaj0mw_4k` (Megascans) | Fab Standart Lisans (Megascans) | Aynı not |
+| `kum` (1K) | `F:\Assets\beach_sand_uinladeo_4k` (Megascans) | Fab Standart Lisans (Megascans) | Aynı not |

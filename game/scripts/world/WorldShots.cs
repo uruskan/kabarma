@@ -33,8 +33,8 @@ public partial class WorldShots : Node
     public override void _Ready()
     {
         // --shots_out=progress/... (depo kokune gore) ciktiyi baska klasore yazar (once/sonra karsilastirmalari).
-        _outDir = ProjectSettings.GlobalizePath("res://").TrimEnd('/') + "/../"
-            + (Main.Args.TryGetValue("shots_out", out var o) && !string.IsNullOrEmpty(o) ? o.TrimEnd('/') : "progress/m1/dunya/shots");
+        var rel = Main.Args.TryGetValue("shots_out", out var o) && !string.IsNullOrEmpty(o) ? o.Replace('\\', '/').TrimEnd('/') : "progress/m1/dunya/shots";
+        _outDir = System.IO.Path.IsPathRooted(rel) ? rel : ProjectSettings.GlobalizePath("res://").TrimEnd('/') + "/../" + rel;
         DirAccess.MakeDirRecursiveAbsolute(_outDir + "/deck");
     }
 

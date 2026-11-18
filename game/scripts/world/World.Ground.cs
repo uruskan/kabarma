@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using Godot;
 using Kabarma.Sim;
@@ -37,14 +37,21 @@ public partial class World
     static Texture2DArray LoadArray(string kind)
     {
         var imgs = new Godot.Collections.Array<Image>();
+        int size = 0;
         foreach (var n in LayerNames)
         {
             var tex = GD.Load<Texture2D>($"res://assets/textures/terrain/{n}_{kind}.png");
             var img = tex.GetImage();
             if (img.IsCompressed()) img.Decompress();
             if (img.GetFormat() != Image.Format.Rgba8) img.Convert(Image.Format.Rgba8);
-            if (!img.HasMipmaps()) img.GenerateMipmaps();
+            size = Mathf.Max(size, img.GetWidth());
             imgs.Add(img);
+        }
+        // Katmanlar farkli boyda olabilir (uzak/az gorunen katmanlar 1K); dizi tek boy ister.
+        foreach (var img in imgs)
+        {
+            if (img.GetWidth() != size) { img.ClearMipmaps(); img.Resize(size, size, Image.Interpolation.Cubic); }
+            if (!img.HasMipmaps()) img.GenerateMipmaps();
         }
         var arr = new Texture2DArray();
         arr.CreateFromImages(imgs);
@@ -184,7 +191,7 @@ public partial class World
     }
 
     /// <summary>Cimen dokusunun ortalama sRGB rengi (gen_terrain_textures.py ciktisi "TEX cimen mean_srgb").</summary>
-    static readonly Color CimenMean = new(0.406f, 0.391f, 0.190f);
+    static readonly Color CimenMean = new(0.42f, 0.40f, 0.20f);
 
     ShaderMaterial TerrainMaterial()
     {
