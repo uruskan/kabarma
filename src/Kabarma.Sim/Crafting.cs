@@ -8,7 +8,7 @@ namespace Kabarma.Sim;
 /// girmez: ilk alinan esya (GDD 12 Kesif), "arastirma:x" (Arastirma) ya da "ocak:n" (Ocak basamagi).
 /// Durum duz ve seriye dokulebilir (TEKNIK §9): isler (tarif, kalan adet, harcanan yakitlar) ve ilerleme.
 /// </summary>
-public sealed class StationQueue
+public sealed partial class StationQueue
 {
     public sealed class Job
     {
@@ -156,7 +156,7 @@ public sealed class StationQueue
 /// Yemek guclendirmesi (GDD 3.3): aclik yok; yemek suresince azami Can ve Dayaniklilik ekler, bazilari can yeniler.
 /// Uc yemek yuvasi; ayni yemek iki yuvaya konmaz (yeniden yenirse suresi tazelenir).
 /// </summary>
-public sealed class FoodBuffs
+public sealed partial class FoodBuffs
 {
     readonly List<(FoodDef food, float left)> _active = new();
     public int Slots { get; }

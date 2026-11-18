@@ -45,7 +45,7 @@ public static class CraftRules
 /// adet, sure dolunca urun cantaya girer. Iptal edilen isin kalan adetlerinin malzemesi geri doner. Canta doluysa is
 /// bekler (urun kaybolmaz). Duz ve seriye dokulebilir (TEKNIK 9).
 /// </summary>
-public sealed class CraftQueue
+public sealed partial class CraftQueue
 {
     public sealed class Job
     {

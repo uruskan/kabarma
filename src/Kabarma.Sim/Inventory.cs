@@ -5,6 +5,8 @@ public sealed class Rng
 {
     ulong _s;
     public Rng(ulong seed) { _s = seed == 0 ? 0x9E3779B97F4A7C15UL : seed; }
+    /// <summary>Ic durum (kayit, TEKNIK 9.1): ayni durum ayni diziyi surdurur.</summary>
+    public ulong State { get => _s; set => _s = value == 0 ? 0x9E3779B97F4A7C15UL : value; }
     public ulong NextU64() { _s ^= _s << 13; _s ^= _s >> 7; _s ^= _s << 17; return _s; }
     public float NextFloat() => (NextU64() >> 40) / (float)(1UL << 24);
     public int Range(int minInclusive, int maxExclusive) =>
@@ -50,6 +52,14 @@ public sealed partial class Inventory
     public bool IsEmpty => _slots.Count == 0;
 
     static int Norm(int stars) => Math.Max(BaseStars, stars);
+
+    /// <summary>Kayittan yuvalari aynen (sira dahil) yerine koyar; olay yaymaz (TEKNIK 9.1 sessiz yukleme).</summary>
+    public void Load(IEnumerable<(string id, int count, int stars)> stacks)
+    {
+        _slots.Clear();
+        foreach (var (id, count, stars) in stacks)
+            if (!string.IsNullOrEmpty(id) && count > 0 && _slots.Count < Slots) _slots.Add((id, count, Norm(stars)));
+    }
 
     /// <summary>Butun kaliteler.</summary>
     public int Count(string id) => _slots.Where(s => s.id == id).Sum(s => s.count);
@@ -198,6 +208,13 @@ public sealed class Belt
     }
 
     public bool IsTool(string id) => _tools.Contains(id);
+
+    /// <summary>Kayittan yuvalari ve secimi aynen koyar; SelectionChanged yaymaz (TEKNIK 9.1 sessiz yukleme).</summary>
+    public void Load(IReadOnlyList<string?> ids, int selected)
+    {
+        for (int i = 0; i < Slots; i++) _ids[i] = i < ids.Count && !string.IsNullOrEmpty(ids[i]) ? ids[i] : null;
+        Selected = selected >= -1 && selected < Slots ? selected : -1;
+    }
 
     public bool Contains(string id) => Array.IndexOf(_ids, id) >= 0;
 
