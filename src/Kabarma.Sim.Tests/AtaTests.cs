@@ -8,6 +8,7 @@ namespace Kabarma.Sim.Tests;
 public class AtaTests
 {
     static AtalarFile D => TestData.Load().Atalar;
+    static CombatFile C => TestData.Load().Combat;
     static AtaDef Pofuduk => D.Get("koca_pofuduk");
     static AtaDef Dede => D.Get("boynuzlu_dede");
 
@@ -73,9 +74,9 @@ public class AtaTests
     public void Arrival_shield_blocks_damage()
     {
         var f = AtaRules.Summon(new AtaProgress(), D, Pofuduk, 1, force: true)!;
-        Assert.Equal(0f, AtaRules.Damage(f, D, Pofuduk, 50, AtaHitKind.Weapon));
+        Assert.Equal(0f, AtaRules.Damage(f, D, C, Pofuduk, 50, AtaHitKind.Weapon));
         AtaRules.Tick(f, Pofuduk, D.ArriveSeconds + 0.01f);
-        Assert.Equal(50f, AtaRules.Damage(f, D, Pofuduk, 50, AtaHitKind.Weapon));
+        Assert.Equal(50f, AtaRules.Damage(f, D, C, Pofuduk, 50, AtaHitKind.Weapon));
     }
 
     [Fact]
@@ -84,19 +85,19 @@ public class AtaTests
         var f = Start(Pofuduk);
         var cmds = new List<AtaCommand>();
         // Bir vurusta esigi asan hasar bile yalniz bir asama ilerletir; gecis kalkani sonrakini tutar.
-        AtaRules.Damage(f, D, Pofuduk, f.MaxHp * 0.9f, AtaHitKind.Weapon, cmds);
+        AtaRules.Damage(f, D, C, Pofuduk, f.MaxHp * 0.9f, AtaHitKind.Weapon, cmds);
         Assert.Equal(1, f.Phase);
         Assert.Contains(cmds, c => c.Cue == AtaCue.PhaseChanged && c.Phase == 1);
         Assert.Equal(D.PhaseShiftSeconds, f.ShieldT, 3);
         Assert.Equal(Pofuduk.Phases[1].Armor, f.Armor, 3); // yun zirhi geldi
-        Assert.Equal(0f, AtaRules.Damage(f, D, Pofuduk, 100, AtaHitKind.Weapon));
+        Assert.Equal(0f, AtaRules.Damage(f, D, C, Pofuduk, 100, AtaHitKind.Weapon));
         AtaRules.Tick(f, Pofuduk, D.PhaseShiftSeconds + 0.01f);
-        AtaRules.Damage(f, D, Pofuduk, 1, AtaHitKind.Thrown, cmds); // can %10: ikinci esik da gecildi
+        AtaRules.Damage(f, D, C, Pofuduk, 1, AtaHitKind.Thrown, cmds); // can %10: ikinci esik da gecildi
         Assert.Equal(2, f.Phase);
         Assert.Equal(0f, f.Armor);
         Assert.False(f.Defeated);
         AtaRules.Tick(f, Pofuduk, D.PhaseShiftSeconds + 0.01f);
-        AtaRules.Damage(f, D, Pofuduk, 10_000, AtaHitKind.Weapon, cmds);
+        AtaRules.Damage(f, D, C, Pofuduk, 10_000, AtaHitKind.Weapon, cmds);
         Assert.True(f.Defeated);
         Assert.Equal(0f, f.Hp);
         Assert.Contains(cmds, c => c.Cue == AtaCue.Defeated);
@@ -106,18 +107,18 @@ public class AtaTests
     public void Wool_armor_reduces_weapon_damage_and_shearing_strips_it()
     {
         var f = Start(Pofuduk);
-        AtaRules.Damage(f, D, Pofuduk, f.MaxHp * 0.4f, AtaHitKind.Weapon);
+        AtaRules.Damage(f, D, C, Pofuduk, f.MaxHp * 0.4f, AtaHitKind.Weapon);
         f.ShieldT = 0;
         Assert.Equal(1, f.Phase);
         var ph = Pofuduk.Phases[1];
-        Assert.Equal(10f * (1f - ph.Armor), AtaRules.Damage(f, D, Pofuduk, 10, AtaHitKind.Weapon), 3);
-        Assert.Equal(10f, AtaRules.Damage(f, D, Pofuduk, 10, AtaHitKind.Thrown), 3); // zirh yalniz silaha
+        Assert.Equal(10f * (1f - ph.Armor), AtaRules.Damage(f, D, C, Pofuduk, 10, AtaHitKind.Weapon), 3);
+        Assert.Equal(10f, AtaRules.Damage(f, D, C, Pofuduk, 10, AtaHitKind.Thrown), 3); // zirh yalniz silaha
         int hits = 0;
         while (f.Armor > 0 && hits < 50) { AtaRules.Shear(f, Pofuduk); hits++; }
         Assert.Equal((int)Math.Ceiling(ph.Armor / ph.ShearPerHit - 1e-4), hits);
-        Assert.Equal(10f, AtaRules.Damage(f, D, Pofuduk, 10, AtaHitKind.Weapon), 3);
+        Assert.Equal(10f, AtaRules.Damage(f, D, C, Pofuduk, 10, AtaHitKind.Weapon), 3);
         // Yanik da yer
-        var g = Start(Pofuduk); AtaRules.Damage(g, D, Pofuduk, g.MaxHp * 0.4f, AtaHitKind.Weapon);
+        var g = Start(Pofuduk); AtaRules.Damage(g, D, C, Pofuduk, g.MaxHp * 0.4f, AtaHitKind.Weapon);
         float a0 = g.Armor; AtaRules.Burn(g, Pofuduk, 2f);
         Assert.Equal(a0 - ph.BurnPerSecond * 2f, g.Armor, 3);
     }
@@ -137,13 +138,13 @@ public class AtaTests
         f.Hp = f.MaxHp * 0.2f; f.Phase = 2;
         var ph = Pofuduk.Phases[2];
         Assert.True(AtaRules.Stun(f, Pofuduk));
-        Assert.Equal(10f * ph.StunMult, AtaRules.Damage(f, D, Pofuduk, 10, AtaHitKind.Weapon), 3);
+        Assert.Equal(10f * ph.StunMult, AtaRules.Damage(f, D, C, Pofuduk, 10, AtaHitKind.Weapon), 3);
         // Sersemken saldiri yok; sure bitince saldiri sirasi doner
         var c1 = AtaRules.Tick(f, Pofuduk, ph.StunSeconds * 0.5f);
         Assert.DoesNotContain(c1, c => c.Cue == AtaCue.Telegraph);
         AtaRules.Tick(f, Pofuduk, ph.StunSeconds);
         Assert.Equal(0f, f.StunT);
-        Assert.Equal(10f, AtaRules.Damage(f, D, Pofuduk, 10, AtaHitKind.Weapon), 3);
+        Assert.Equal(10f, AtaRules.Damage(f, D, C, Pofuduk, 10, AtaHitKind.Weapon), 3);
     }
 
     [Fact]
@@ -181,37 +182,37 @@ public class AtaTests
     {
         var f = Start(Dede);
         var cmds = new List<AtaCommand>();
-        AtaRules.Damage(f, D, Dede, f.MaxHp * 0.35f, AtaHitKind.Weapon, cmds);
+        AtaRules.Damage(f, D, C, Dede, f.MaxHp * 0.35f, AtaHitKind.Weapon, cmds);
         f.ShieldT = 0;
         Assert.Equal(1, f.Phase);
         Assert.Equal(2, f.WeakPoints.Count);
         var ph = Dede.Phases[1];
         // Kovanlar yalniz kok dalgasindan sonra isir (weakWindow): kapaliyken vurulmaz.
         Assert.False(AtaRules.WeakOpen(f, Dede));
-        Assert.False(AtaRules.HitWeakPoint(f, D, Dede, 0, ph.WeakPointHp * 2f, cmds));
+        Assert.False(AtaRules.HitWeakPoint(f, D, C, Dede, 0, ph.WeakPointHp * 2f, cmds));
         Assert.Equal(ph.WeakPointHp, f.WeakPoints[0], 3);
         var seen = new List<AtaCommand>();
         for (int i = 0; i < 400 && !seen.Any(c => c.Cue == AtaCue.Attack); i++) seen.AddRange(AtaRules.Tick(f, Dede, 0.05f));
         Assert.Contains(seen, c => c.Cue == AtaCue.Attack && c.Attack == "rootwave");
         Assert.True(AtaRules.WeakOpen(f, Dede));
         Assert.Equal(ph.WeakWindow, f.WeakOpenT, 1);
-        Assert.False(AtaRules.HitWeakPoint(f, D, Dede, 0, ph.WeakPointHp * 0.5f, cmds));
+        Assert.False(AtaRules.HitWeakPoint(f, D, C, Dede, 0, ph.WeakPointHp * 0.5f, cmds));
         Assert.Equal(0f, f.StunT);
-        Assert.True(AtaRules.HitWeakPoint(f, D, Dede, 0, ph.WeakPointHp, cmds));
+        Assert.True(AtaRules.HitWeakPoint(f, D, C, Dede, 0, ph.WeakPointHp, cmds));
         Assert.Equal(ph.StunSeconds, f.StunT, 3);
         Assert.Contains(cmds, c => c.Cue == AtaCue.WeakPointBroken && c.Count == 0);
-        Assert.False(AtaRules.HitWeakPoint(f, D, Dede, 0, 10, cmds)); // kirik kovan
+        Assert.False(AtaRules.HitWeakPoint(f, D, C, Dede, 0, 10, cmds)); // kirik kovan
         AtaRules.Tick(f, Dede, ph.WeakWindow + 0.1f); // pencere sersemken de kapanir
         Assert.False(AtaRules.WeakOpen(f, Dede));
-        Assert.False(AtaRules.HitWeakPoint(f, D, Dede, 1, 10, cmds));
+        Assert.False(AtaRules.HitWeakPoint(f, D, C, Dede, 1, 10, cmds));
         // Asama 3: silah yari, parca tam
         f.StunT = 0;
-        AtaRules.Damage(f, D, Dede, f.Hp - f.MaxHp * 0.3f, AtaHitKind.Thrown, cmds);
+        AtaRules.Damage(f, D, C, Dede, f.Hp - f.MaxHp * 0.3f, AtaHitKind.Thrown, cmds);
         f.ShieldT = 0;
         Assert.Equal(2, f.Phase);
         Assert.Equal(Dede.Phases[2].Shards, f.ShardsDropped);
-        Assert.Equal(10f * Dede.Phases[2].WeaponMult, AtaRules.Damage(f, D, Dede, 10, AtaHitKind.Weapon), 3);
-        Assert.Equal(Dede.Phases[2].ShardDamage, AtaRules.Damage(f, D, Dede, Dede.Phases[2].ShardDamage, AtaHitKind.Thrown), 3);
+        Assert.Equal(10f * Dede.Phases[2].WeaponMult, AtaRules.Damage(f, D, C, Dede, 10, AtaHitKind.Weapon), 3);
+        Assert.Equal(Dede.Phases[2].ShardDamage, AtaRules.Damage(f, D, C, Dede, Dede.Phases[2].ShardDamage, AtaHitKind.Thrown), 3);
     }
 
     [Fact]
@@ -228,7 +229,7 @@ public class AtaTests
             {
                 t += dt; cd -= dt;
                 AtaRules.Tick(f, def, dt);
-                if (cd <= 0) { cd = tool.FireInterval; AtaRules.Damage(f, D, def, tool.Damage, AtaHitKind.Weapon); }
+                if (cd <= 0) { cd = tool.FireInterval; AtaRules.Damage(f, D, C, def, tool.Damage, AtaHitKind.Weapon); }
             }
             Assert.True(f.Defeated, $"{def.Id} yalniz silahla {t:0} sn'de bitmedi");
             Assert.True(t < 240f, $"{def.Id} yalniz silahla cok uzun: {t:0} sn");
@@ -302,7 +303,7 @@ public class AtaTests
         bag.Add("yun", 4);
         AtaRules.OfferFromBag(p, Pofuduk, bag);
         var f = Start(Dede, p);
-        AtaRules.Damage(f, D, Dede, f.MaxHp * 0.4f, AtaHitKind.Weapon);
+        AtaRules.Damage(f, D, C, Dede, f.MaxHp * 0.4f, AtaHitKind.Weapon);
         var json = JsonSerializer.Serialize(p);
         var back = JsonSerializer.Deserialize<AtaProgress>(json)!;
         Assert.Equal(json, JsonSerializer.Serialize(back));

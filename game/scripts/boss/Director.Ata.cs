@@ -18,23 +18,24 @@ public partial class Director
         AddChild(Atalar);
     }
 
-    static readonly IAtaTarget[] NoTargets = System.Array.Empty<IAtaTarget>();
-
-    /// <summary>Bu kure icindeki canli Ata hedefleri (Tirpan hilali).</summary>
-    public IEnumerable<IAtaTarget> AtaTargetsNear(Vector3 at, float reach)
+    /// <summary>Silahin arayacagi hedefler: Ata hedefleri ve savas kaydindaki IAtaTarget'lar (Azman ...).</summary>
+    IEnumerable<IAtaTarget> WeaponTargets()
     {
-        if (Atalar == null || Atalar.Targets.Count == 0) return NoTargets;
-        return Atalar.Targets.Where(t => t.Alive && t.Center.DistanceTo(at) <= t.Radius + reach).ToArray();
+        if (Atalar != null) foreach (var t in Atalar.Targets) yield return t;
+        if (Savas != null) foreach (var t in Savas.Targets) if (t is IAtaTarget a) yield return a;
     }
 
-    /// <summary>Bu karede gecilen dogru parcasina ilk degen Ata hedefi (Civi). Zayif nokta govdeden once.</summary>
+    /// <summary>Bu kure icindeki canli Ata/Azman hedefleri (Tirpan hilali).</summary>
+    public IEnumerable<IAtaTarget> AtaTargetsNear(Vector3 at, float reach) =>
+        WeaponTargets().Where(t => t.Alive && t.Center.DistanceTo(at) <= t.Radius + reach).ToArray();
+
+    /// <summary>Bu karede gecilen dogru parcasina ilk degen Ata/Azman hedefi (Civi). Zayif nokta govdeden once.</summary>
     public IAtaTarget AtaSegmentHit(Vector3 from, Vector3 to, float reach)
     {
-        if (Atalar == null || Atalar.Targets.Count == 0) return null;
         var seg = to - from;
         IAtaTarget best = null;
         float bestT = float.MaxValue;
-        foreach (var t in Atalar.Targets)
+        foreach (var t in WeaponTargets())
         {
             if (!t.Alive) continue;
             float k = Mathf.Clamp((t.Center - from).Dot(seg) / Mathf.Max(0.0001f, seg.LengthSquared()), 0, 1);
@@ -46,15 +47,8 @@ public partial class Director
     }
 }
 
-/// <summary>Silahla vurulabilen Ata parcasi: govde, zayif nokta (kovan) ya da yardimci yaratik.</summary>
-public interface IAtaTarget
-{
-    Vector3 Center { get; }
-    float Radius { get; }
-    bool Alive { get; }
-    bool IsWeakPoint { get; }
-    /// <summary>Silah isabeti: hasar Night.RollHit'ten (gece) ya da silahin hasari (gunduz).</summary>
-    void TakeWeapon(float dmg, bool crit, Vector3 dir, float knock);
-    /// <summary>Yanik (Kor karti, gece): Koca Pofuduk'un yununu yer.</summary>
-    void Burn(float seconds) { }
-}
+/// <summary>
+/// Capa'nin mermi satirlarinin (Capa.Weapons.cs) aradigi patron hedefi: Ata govdesi, kovan, yardimci ve Azman.
+/// Savas sozlesmesine gecti (M3): isabet ICombatTarget.TakeHit ile, hasar Combat.Apply'dan.
+/// </summary>
+public interface IAtaTarget : ICombatTarget { }
