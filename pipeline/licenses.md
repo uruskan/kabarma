@@ -51,3 +51,16 @@ Sahibin varlık kitaplığından (`F:\Assets`, yalnız okundu) kopyalanıp `pipe
 | `toprak` (2K), `tarla` (1K, üstüne koddan eğatlar) | `F:\Assets\forest_floor_wgyhdgy_4k` (Megascans) | Fab Standart Lisans (Megascans) | Klasörde lisans alanı yok; ana oturumun bildirdiği lisans. Sahip doğrulamalı |
 | `kaya` (2K) | `F:\Assets\cracked_nordic_coastal_rock_ukohaj0mw_4k` (Megascans) | Fab Standart Lisans (Megascans) | Aynı not |
 | `kum` (1K) | `F:\Assets\beach_sand_uinladeo_4k` (Megascans) | Fab Standart Lisans (Megascans) | Aynı not |
+
+## Yapı kiti malzemeleri: Kerpiç-Taş, Çelik Sac, Mayalı Beton (M2, 18 Kasım 2026)
+
+`pipeline/build_kit_materials.py` kodla üretir; kredi harcanmadı (Genex, Tripo, ElevenLabs yok). Geometri ahşap kitinden (`pipeline/build_kit.py`, değiştirilmedi) modül olarak alınır; 28 parçanın sınırları, yuvaları, çarpışma kutuları ve üçgen sayıları ahşap `sockets.json` ile betikte birebir denetlenir. Doku yapısı (tuğla, blok, kiremit, oluk, perçin, panel, derz) numpy ile yordamsal. Yüzey tanesi ve pas deseni aşağıdaki taramalardan gelir: `F:\Assets`'ten yalnız okundu, 1024'lük atlasa küçültüldü ve yüksek geçiren ayrıntı olarak palet renklerinin üstüne karıştırıldı. Çıktı: `game/assets/models/build/{kerpic_tas,celik_sac,mayali_beton}/`. **Yer tutucu:** dokular sahip ve görsel akış onaylayana dek son kalite sayılmaz.
+
+| Malzeme | Kaynak (F:\Assets) | Lisans | Not |
+|---|---|---|---|
+| Kerpiç-Taş (taş blok ve kerpiç tanesi, kiremit) | `PSG_Compound_Utilities_R02\Textures\Source\rock_boulder_dry\rock_boulder_dry_diff_4k.jpg` (Poly Haven "Rock Boulder Dry") | CC0 1.0 | Lisans: aynı paketin `Reports\Texture_sources.json` dosyası (polyhaven.com/a/rock_boulder_dry) |
+| Çelik Sac (duvar sacı ve kiriş boyası, aşınma) | `PSG_Compound_Utilities_R02\Textures\Source\blue_metal_plate\blue_metal_plate_diff_4k.jpg` (Poly Haven "Blue Metal Plate") | CC0 1.0 | Aynı kaynak json |
+| Çelik Sac (çatı sacı pas ve kir deseni) | `PSG_Compound_Utilities_R02\Textures\Source\worn_corrugated_iron\worn_corrugated_iron_diff_4k.jpg` (Poly Haven "Worn Corrugated Iron") | CC0 1.0 | Aynı kaynak json |
+| Mayalı Beton (beton yüzey tanesi) | `PSG_Compound_Utilities_R01\Textures\Source\concrete_wall_001\concrete_wall_001_diff_4k.jpg` (Poly Haven "Concrete Wall 001") | CC0 1.0 | Lisans: `PSG_Compound_Utilities_R01\Reports\Texture_sources.json` |
+
+Demir karoları (cıvata, kayış) ahşap kitinin yordamsal `metal_tile` işlevinden gelir. Megascans ve lisansı yazılı olmayan klasörler kullanılmadı.

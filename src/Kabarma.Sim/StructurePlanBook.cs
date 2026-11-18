@@ -1,4 +1,4 @@
-﻿namespace Kabarma.Sim;
+namespace Kabarma.Sim;
 
 /// <summary>Plan Defteri'ndeki bir parca: ilk temele gore yer (cevrilmis) ve yon.</summary>
 public sealed class BlueprintPiece
@@ -118,12 +118,12 @@ public sealed class StructureState
     }
 }
 
-/// <summary>GameState parcasi: yapi (GDD §7).</summary>
+/// <summary>GameState parcasi: yapi (GDD §7) ve kayit bolumu "build" (TEKNIK §9.1).</summary>
 public sealed partial class GameState
 {
     StructureState? _build;
 
-    /// <summary>Ilk eriside veriden baglanir. Kayit yukleyen yeni durumu atar ve Bind cagirir.</summary>
+    /// <summary>Ilk eriside veriden baglanir. Kayit yerinde doldurur (Godot katmani ayni grafa bakar).</summary>
     public StructureState Build
     {
         get
@@ -131,6 +131,23 @@ public sealed partial class GameState
             if (_build == null) { _build = new StructureState(); _build.Bind(Data.Build); }
             return _build;
         }
-        set { _build = value; _build.Bind(Data.Build); }
+    }
+
+    /// <summary>
+    /// Yapi parcalari (malzeme, can, yer, kenarlar, plan ve konan malzeme) ve Plan Defteri. Aciklik ve yuk turetilmistir,
+    /// yuklemede Bind yeniden hesaplar. Godot dugumleri "build.view" bolumunun AfterRestore'unda kurulur (BuildBridge.Yapi.cs).
+    /// </summary>
+    [SaveSection("build", 1, Order = SaveOrder.Spawn, Covers = new[] { nameof(Build) })]
+    StructureState BuildSection
+    {
+        get => Build;
+        set
+        {
+            var b = Build;
+            b.Graph.Pieces = value.Graph.Pieces;
+            b.Graph.NextId = value.Graph.NextId;
+            b.PlanBook = value.PlanBook;
+            b.Bind(Data.Build);
+        }
     }
 }

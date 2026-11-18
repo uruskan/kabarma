@@ -535,18 +535,27 @@ public partial class BuildSystem : Node3D
         var m = Data.Build.Material(material);
         s.Hp = m?.Hp ?? Kit.PieceHp;
         Graph.Add(s);
+        var piece = SpawnNode(def, p.Xf, s, p.SlotKey);
+        if (planned) PlanPlaced?.Invoke(piece);
+        else Placed?.Invoke(piece);
+        return piece;
+    }
+
+    /// <summary>Sim parcasinin dugumu: govde, model, carpisma, yuvalar (Sim'e eklemez).</summary>
+    BuildPiece SpawnNode(PieceDef def, Transform3D xf, StructurePiece s, string slotKey)
+    {
         var piece = new BuildPiece
         {
             Def = def,
             S = s,
             Name = $"{def.Id}_{++_serial}",
-            CollisionLayer = planned ? BuildLayer : 1u | BuildLayer,
+            CollisionLayer = s.Planned ? BuildLayer : 1u | BuildLayer,
             CollisionMask = 0,
-            SlotKey = p.SlotKey,
+            SlotKey = slotKey,
         };
         _piecesRoot.AddChild(piece);
-        piece.GlobalTransform = p.Xf;
-        piece.Model = planned ? PlanModel(def) : ModelFor(def, material);
+        piece.GlobalTransform = xf;
+        piece.Model = s.Planned ? PlanModel(def) : ModelFor(def, s.Material);
         piece.AddChild(piece.Model);
         foreach (var c in def.Colliders)
         {
@@ -555,7 +564,7 @@ public partial class BuildSystem : Node3D
         }
         foreach (var sd in def.Sockets)
         {
-            var ws = new WorldSocket { Piece = piece, Def = sd, Pos = p.Xf * sd.Pos, Dir = (p.Xf.Basis * sd.Dir).Normalized() };
+            var ws = new WorldSocket { Piece = piece, Def = sd, Pos = xf * sd.Pos, Dir = (xf.Basis * sd.Dir).Normalized() };
             piece.WorldSockets.Add(ws);
             var k = HashKey(ws.Pos);
             if (!_hash.TryGetValue(k, out var list)) _hash[k] = list = new List<WorldSocket>();
@@ -564,9 +573,27 @@ public partial class BuildSystem : Node3D
         _slots.Add(piece.SlotKey);
         _pieces.Add(piece);
         _byId[s.Id] = piece;
-        if (planned) PlanPlaced?.Invoke(piece);
-        else Placed?.Invoke(piece);
         return piece;
+    }
+
+    /// <summary>
+    /// Kayittan sonra (build.view AfterRestore): butun dugumleri siler ve Sim grafindaki parcalardan yeniden kurar.
+    /// Olay yaymaz (sayaclar kayittan gelir).
+    /// </summary>
+    public void RebuildFromGraph()
+    {
+        foreach (var p in _pieces.ToList()) { Detach(p); p.QueueFree(); }
+        _hash.Clear();
+        _slots.Clear();
+        _byId.Clear();
+        foreach (var s in Graph.Pieces.Values.OrderBy(x => x.Id))
+        {
+            var def = Kit[s.Shape];
+            if (def == null) { GD.PushWarning($"BuildSystem: kayitta bilinmeyen parca '{s.Shape}'"); continue; }
+            var xf = new Transform3D(new Basis(Vector3.Up, s.Yaw), new Vector3(s.Pos[0], s.Pos[1], s.Pos[2]));
+            SpawnNode(def, xf, s, SlotKeyOf(def, xf));
+        }
+        GD.Print($"BUILD restored pieces={_pieces.Count}");
     }
 
     Node3D PlanModel(PieceDef def)

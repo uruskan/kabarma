@@ -22,6 +22,8 @@ public partial class BuildBridge
     {
         _sys.PlanPlaced += piece => GD.Print($"PLANNED {piece.Def.Id} pieces={_sys.Pieces.Count}");
         _sys.Fell += (piece, _) => GD.Print($"COLLAPSE {piece.Def.Id} {piece.Material} span={(piece.Span == int.MaxValue ? "-" : piece.Span.ToString())} load={piece.Load:0.#}");
+        // Kayit (TEKNIK 9.1): kural durumu Sim "build" bolumunde; dugumler butun bolumler okununca yeniden kurulur.
+        _d.Save.Add(SaveSection.Json("build.view", 1, () => 0, _ => { }, SaveOrder.Spawn, afterRestore: _sys.RebuildFromGraph));
     }
 
     /// <summary>Parcanin malzemesindeki bedeli; plan parcasinda konmus malzeme (sokulunce aynen doner).</summary>

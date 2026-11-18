@@ -1,0 +1,19 @@
+[gd_resource type="StandardMaterial3D" load_steps=4 format=3]
+
+[ext_resource type="Texture2D" path="res://assets/models/build/kerpic_tas/kerpic_tas_atlas_albedo.png" id="1_alb"]
+[ext_resource type="Texture2D" path="res://assets/models/build/kerpic_tas/kerpic_tas_atlas_rm.png" id="2_rm"]
+[ext_resource type="Texture2D" path="res://assets/models/build/kerpic_tas/kerpic_tas_atlas_normal.png" id="3_nrm"]
+
+[resource]
+resource_name = "kabarma_kerpic_tas"
+vertex_color_use_as_albedo = true
+albedo_texture = ExtResource("1_alb")
+metallic = 1.0
+metallic_texture = ExtResource("2_rm")
+metallic_texture_channel = 2
+roughness_texture = ExtResource("2_rm")
+roughness_texture_channel = 1
+normal_enabled = true
+normal_scale = 0.7
+normal_texture = ExtResource("3_nrm")
+texture_filter = 5

@@ -83,7 +83,7 @@ public sealed class StructureGraph
         RebuildAll();
     }
 
-    public BuildFile Rules => _rules;
+    [JsonIgnore] public BuildFile Rules => _rules;
     public StructurePiece? Get(int id) => Pieces.TryGetValue(id, out var p) ? p : null;
     public BuildMaterialDef Mat(StructurePiece p) => _rules.Material(p.Material) ?? Fallback;
     public int MaxSpan(StructurePiece p) => Mat(p).MaxSpan;
