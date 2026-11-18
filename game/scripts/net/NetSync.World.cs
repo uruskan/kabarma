@@ -312,15 +312,15 @@ public partial class NetSync
         if (!NetRules.InRange(a, x, y, z, Cfg.Ranges.Mow)) { Reject(a, "mow range"); return; }
         if (!a.Cooldown(NetReq.Mow, Now, Cfg.Cooldowns.Mow)) { Reject(a, "mow cooldown"); return; }
         // Capa.Mow ile ayni hedefler ve ayni sayilar (tool.json), canta istekte bulununinki.
-        foreach (var plot in D.State.Farm.Plots.ToList())
+        foreach (var plot in D.State.Farm.AllPlots.ToList()) // tarim: yabani bitkiler dahil
         {
             var c = D.FarmView.CellCenter(plot.X, plot.Y);
             if (new Vector2(c.X - aim.X, c.Z - aim.Z).Length() > T.MowRadius) continue;
-            var h = D.State.Farm.Harvest(plot.X, plot.Y, D.State.Rng);
+            if (plot.Wild && new Vector2(c.X - aim.X, c.Z - aim.Z).Length() > D.Data.Crops.Genetics.Wild.MowRadius) continue; // tarim: Capa.Bicme ile ayni
+            var h = D.State.Farm.HarvestFull(plot.X, plot.Y, D.State.Rng); // tarim M2: ekine gore urun ve tohum (Capa.Bicme ile ayni)
             if (h == null) continue;
-            var (yield, stars, seeds) = h.Value;
-            a.Bag.Add("turnip", yield, stars);
-            a.Bag.Add("turnip_seed", seeds);
+            a.Bag.Add(h.Item, h.Yield, h.Stars);
+            a.Bag.Add(h.SeedItem, h.Seeds);
         }
         foreach (var tp in D.World.TreePositions.Where(t => new Vector2(t.X - aim.X, t.Z - aim.Z).Length() < T.TreeRadius))
             a.Bag.Add("wood", T.WoodPerChop);
