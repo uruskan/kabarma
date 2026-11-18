@@ -26,3 +26,28 @@ Her üretimden sonra bu tabloya bir satır eklenir. `pipeline/eleven.py` her ça
 ## AI beyanı (URETIM §9)
 
 Steam içerik anketinde: ses efektleri, müzik ve Suna'nın seslendirmesi önceden üretilmiştir (Genex, ElevenLabs). Arayüz sesleri kodla sentezlenmiştir. Oyun sırasında çalışan üretken model yoktur.
+
+## Sahibin varlık kütüphanesinden alınan modeller (F:\Assets)
+
+gorsel-model akışı, 18 Kasım 2026. Kaynak dosyalar yalnızca okundu; `F:\Assets` içinde hiçbir şey değiştirilmedi. `pipeline/lib_import.py` seçili nesneyi tek mesh yapar, sadeleştirir, ölçekler, tabanı y=0'a koyar, dokuları 1024 px'e küçültür ve GLB yazar. `.blend.zip` kaynakları önce oturumun geçici klasörüne açıldı.
+
+| Oyundaki dosya | Kaynak (F:\Assets) | Lisans | Yükümlülük | Not |
+|---|---|---|---|---|
+| `game/assets/models/lib/kaya/kaya.glb` (kazılan taş kayası, `biomes.json` nodes `kaya`) | `boulder_01_4k.blend.zip` → `boulder_01_LOD2` (Poly Haven "Boulder 01") | CC0 1.0 | Yok (atıf gerekmez) | 5.500 üçgen, 1,1 m; diff/nor_gl/rough 1K |
+| `game/assets/models/lib/kaya_dik/kaya_dik.glb` (süs, dik kaya) | aynı `boulder_01_LOD2`, dik çevrilmiş | CC0 1.0 | Yok | 4.500 üçgen, 2,4 m |
+| `game/assets/models/lib/kaya_duz/kaya_duz.glb` (süs, düz kaya) | `rock_moss_set_02_4k.gltf` → `rock_moss_set_02_rock10` (Poly Haven "Rock Moss Set 02") | CC0 1.0 | Yok | 3.500 üçgen, 0,7 m |
+
+Denenip **kullanılmayanlar:** `SourceWorld/nodes/stone_node.glb` ve `metal_node.glb` (PROVENANCE: sahibin kendi yaptığı ResourceNodes; lisans sorunu yok). Çakıl yığını yapısı sadeleştirmede kırıklı parçalara dönüştü; ayrıca biçimleri Rust'ın kaynak düğümlerine çok benziyor. PSG Furnace, Workbench ve StarterKit parçaları aynı benzerlik nedeniyle alınmadı.
+
+⚠️ **Lisansı doğrulanmamış olanlar (kullanılmadı):** `SourceWorld/rocks/*` ve `SourceWorld/vegetation/dwarf_birch_*`. Bunlar Fab Megascans; PROVENANCE yalnız "owned_in_local_fab_catalog" diyor. Fab Standard License metni okunmadı. `SourceWorld/birch/five_birch_trees_pack_lowpoly_lods.glb` CC-BY 4.0 (LOLIPOP, Fab): kullanılırsa oyun içi künyede atıf gerekir.
+
+## Doku kaynakları (arazi)
+
+Sahibin varlık kitaplığından (`F:\Assets`, yalnız okundu) kopyalanıp `pipeline/import_terrain_scans.py` ile 2K/1K paketli dokuya çevrildi. Çıktı: `game/assets/textures/terrain/`.
+
+| Katman | Kaynak klasör | Lisans | Not |
+|---|---|---|---|
+| `cimen` (2K) | `F:\Assets\leafy_grass_4k` (Poly Haven, Charlotte Baglioni) | CC0 1.0 | Klasördeki json lisansı yazıyor |
+| `toprak` (2K), `tarla` (1K, üstüne koddan eğatlar) | `F:\Assets\forest_floor_wgyhdgy_4k` (Megascans) | Fab Standart Lisans (Megascans) | Klasörde lisans alanı yok; ana oturumun bildirdiği lisans. Sahip doğrulamalı |
+| `kaya` (2K) | `F:\Assets\cracked_nordic_coastal_rock_ukohaj0mw_4k` (Megascans) | Fab Standart Lisans (Megascans) | Aynı not |
+| `kum` (1K) | `F:\Assets\beach_sand_uinladeo_4k` (Megascans) | Fab Standart Lisans (Megascans) | Aynı not |

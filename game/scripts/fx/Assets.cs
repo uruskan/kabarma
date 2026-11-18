@@ -36,6 +36,7 @@ public static class Assets
         if (!ResourceLoader.Exists(path)) return null;
         var inst = GD.Load<PackedScene>(path)?.Instantiate<Node3D>();
         if (inst == null) return null;
+        MaterialUplift.Apply(inst, path); // gorsel-model: pisirilmis PBR haritalari (data/materials.json)
         if (paletted || material != null)
             foreach (var mi in inst.FindChildren("*", "MeshInstance3D", true, false).OfType<MeshInstance3D>())
                 mi.MaterialOverride = material ?? PipelineMaterial;

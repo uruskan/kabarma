@@ -14,7 +14,7 @@ namespace Kabarma.Game;
 public partial class Hud
 {
     // ---------- Menu: istasyon, canta, satis (ortak sablon, SANAT-SES §8.2) ----------
-    public sealed record MenuItem(string Label, System.Func<bool> Enabled, System.Action Act);
+    public sealed record MenuItem(string Label, System.Func<bool> Enabled, System.Action Act, string Icon = null);
     PanelContainer _menu;
     VBoxContainer _menuList;
     Label _menuTitle, _menuFoot;
@@ -128,6 +128,7 @@ public partial class Hud
             if (i < 9) Keycap((i + 1).ToString(), x + 10, y + (h - 24) / 2f, 24, on ? T.Ink : T.Muted);
             var (head, sub) = SplitMenuLabel(it.Label);
             float tx = x + 46, tw = ColW - 56;
+            if (it.Icon != null && ItemIcons.Has(it.Icon)) { ItemIcon(it.Icon, x + ColW - h - 2, y, h, h, on ? 1f : 0.45f, false); tw -= h; } // satirin esyasi (ItemIcons)
             if (sub.Length > 0)
             {
                 Text(Fit(T.Upper(head), tw, 20, true, true), tx, y + 6, 20, on ? T.Ink : T.Muted, true, true);

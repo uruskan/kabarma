@@ -10,17 +10,6 @@ namespace Kabarma.Game;
 /// </summary>
 public partial class Hud
 {
-    const string ItemIconDir = "res://assets/icons/items/";
-    readonly Dictionary<string, Texture2D> _itemIcons = new();
-
     /// <summary>Esyanin ikonu ya da null (yer tutucu cizilir). Onbellekli: her kare diske gitmez.</summary>
-    Texture2D ItemIconTexture(string id)
-    {
-        if (string.IsNullOrEmpty(id)) return null;
-        if (_itemIcons.TryGetValue(id, out var t)) return t;
-        string path = ItemIconDir + id + ".png";
-        t = ResourceLoader.Exists(path) ? GD.Load<Texture2D>(path) : null;
-        _itemIcons[id] = t;
-        return t;
-    }
+    Texture2D ItemIconTexture(string id) => ItemIcons.Find(id); // ItemIcons.cs (ikon oturumu): onbellekli, yoksa null
 }

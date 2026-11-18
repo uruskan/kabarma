@@ -8,6 +8,8 @@ Beş kural. Bir varlık bunlardan birini bozuyorsa oyuna girmez.
 
 > **17 Kasım 2026 güncellemesi (sahibinin kararı):** "Aşırı yüksek poligon gerekmez ama flash oyun gibi de durmasın; bütçeye göre ayarla." Dokusuz, palete oturtulmuş düşük poligon bırakıldı. Kural 1 ve 3 kalır; kural 2 aşağıdaki gibi değişti; bütçeler §4'te yükseldi.
 
+> **18 Kasım 2026 güncellemesi (sahibin kararı, ana oturum aracılığıyla):** "7 yaş bebek oyunu gibi; Astroneer bile daha AAA duruyor." Hedef olgun, cilalı, AAA'ya yakın yarı stilize dil: Astroneer'in cilası, Valheim/Rust'ın malzeme ciddiyeti. Kimlik korunur: sıcak çayır ve kabaran yaratıklar. Uygulama (gorsel-model akışı): (a) her yüzeyde gerçek malzeme ayrımı (boyalı sac, çıplak metal, taş, ahşap, lastik) ve yıpranma: kenarda boya atması, oyukta kir, alttan toprak, is; `pipeline/pbr_bake.py` + `data/materials.json`. (b) §5'teki "makineler oyuncak gibi okunur" cümlesi yerine: makineler **iş aleti** gibi okunur; iri, okunur parçalar kalır, plastik oyuncak görünüşü kalkar. (c) Tripo istem dili `pipeline/gen_gorsel.py` STYLE; "toy-like, chunky soft" kullanılmaz. (d) **Çelişki, sahibin kararını bekliyor:** kural 1 ve §9 ölçüt 3 (en ince parça en uzun kenarın %6'sı) endüstriyel kapsül, iniş ayağı, ızgara çubuğu gibi parçalarla çatışır; öneri: makine ve araç sınıfında sınır %3, ince parça payı %5.
+
 1. **Büyük, okunaklı biçimler.** İnce çubuk ve sivri diken yok; en ince parça, nesnenin en uzun kenarının %6'sından kalın olur. Ayrıntı vardır ama siluet önce gelir.
 2. **Doku var, palet yön verir.** Modelin kendi dokusu korunur (Tripo doku v3.5, gerekirse PBR). Palet artık yüzeyi zorlamaz; istemde renk yönü olarak verilir ve ışık, sis, renk düzeltmesiyle sahne bütünlenir. İstemde "cartoon / flat colours" kullanılmaz; "stylised, hand-painted, grounded materials" kullanılır.
 3. **Yumuşak gölgeleme, net siluet.** Yüzler pürüzsüz gölgelenir; sert kenar yalnızca biçimin kırıldığı yerde. Her nesne 64 piksellik küçük resimde tanınır.
@@ -35,13 +37,13 @@ Her biyomun altı ana rengi ve dört gün saati için gökyüzü geçişi var. V
 
 | Saat | Güneş yüksekliği | Gökyüzü tepe → ufuk | Güneş ışığı | Sis |
 |---|---|---|---|---|
-| Sabah | 12°, doğudan | `#A3CFE6` → `#F6D7B0` | `#FFE2B8` | `#F3D9A4`, yoğunluk ×1,5 |
-| Öğle | 62° | `#8CC8E8` → `#F3D9A4` | `#FFF4DE` | `#F3D9A4` |
-| Gün batımı | 4°, batıdan | `#6E79B0` → `#F58A5B` | `#FF9A5C` | `#F2A878` |
+| Sabah | 12°, doğudan | `#5F98CF` → `#F4D2AE` | `#FFD6A6` | `#E9CDAE`, yoğunluk ×1,5 |
+| Öğle | 62° | `#3E7DC2` → `#D7E2E2` | `#FFF5E4` | `#C9D6DA` |
+| Gün batımı | 4°, batıdan | `#3A4A86` → `#F48A52` | `#FF8C4A` | `#C98466` |
 | Kabarma gecesi | Güneş yok; ay 35° | `#1A2238` → `#5FF0C8` (aurora bandı) | Ay `#A9B8E8` | `#2A3358`; zemin damarları Maya paletinde |
 | Normal gece | Güneş yok; ay 35° | `#1A2238` → `#2E3E66` | Ay `#A9B8E8` | `#2A3358` |
 
-M1'in 16 ekran görüntüsü ilk dört satırdandır; normal gece M1'de ışık olarak vardır ama görüntü setine girmez.
+Gündüz renkleri 18 Kasım görsel düzeltmesinde (gorsel-dunya) daha derin gökyüzü ve ince sise çekildi; enerji ve ortam ışığı veride. M1'in 16 ekran görüntüsü ilk dört satırdandır; normal gece M1'de ışık olarak vardır ama görüntü setine girmez.
 
 ## 3. Karakter
 

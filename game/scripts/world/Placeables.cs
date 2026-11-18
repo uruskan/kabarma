@@ -97,6 +97,13 @@ public partial class OcakbasiVisual : Node3D
 
     public OcakbasiVisual()
     {
+        // gorsel-model: Blender'da kurulan model (pipeline/build_props.py); yoksa asagidaki koddan kit.
+        if (Assets.Load("res://assets/models/props/ocakbasi.glb") is Node3D prop)
+        {
+            AddChild(prop);
+            (_light, _flame) = PlaceableVisuals.Fire(this, new Vector3(0, 0.16f, 0), 7f, 1.6f);
+            return;
+        }
         const int stones = 8;
         var rng = new RandomNumberGenerator { Seed = 4417 };
         for (int i = 0; i < stones; i++)
@@ -207,6 +214,7 @@ public partial class Furniture : Node3D
 
     public override void _Ready()
     {
+        Callable.From(() => { if (IsInstanceValid(this) && IsInsideTree()) _d.World?.ClearGrass(GlobalPosition, Def.Radius + 0.2f); }).CallDeferred(); // altindaki ot kalkar (gorsel-dunya; konum AddChild'dan sonra verilir)
         var vis = PlaceableVisuals.Make(Def);
         AddChild(vis);
         _lid = vis.FindChild("lid", true, false) as Node3D;

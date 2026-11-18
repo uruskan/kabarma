@@ -1,0 +1,18 @@
+{
+  "_not": "Inis kapsulunun parcali gorunusu (gorsel-model, 18 Kasim). Govde kapsul.glb (Pod.cs). hatch: kapak-rampa modeli (yere yatik uretilir; mentese kenari modelin -X ucunda, Tripo +X). hinge: Pod yerel mentese noktasi (kapagin alt kenari; +Z kapak yonu). hatchClosedRotation: yatik plakayi dik kapali kapiya ceviren donus (derece X Y Z); acilis Pod.Hatch.cs ve Pod.cs'deki gibi mentesenin X donusudur. hatchLength / legLength: modelin en uzun boyu bu metreye olceklenir (0 = olduğu gibi). legs: dort ayak baglantisi (pos Pod yerel ust baglanti noktasi, yaw derece: ayagin +X ucu disari, tilt disa egim; ayak asagi sarkar, yere degmesi icin pos.y = legLength * cos(tilt)). pad / rocket: Kargo Rampasi pisti ve kargo roketi (pipeline/build_props.py). Dosyasi olmayan parca eski gorunusunde kalir; kapsul.glb'de 'hatch' dugumu varsa ayri kapak takilmaz.",
+  "bodyYaw": 0,
+  "hatch": "res://assets/models/props/kapsul_kapak.glb",
+  "hinge": [0, 0.9, 1.42],
+  "hatchClosedRotation": [0, 90, 90],
+  "hatchLength": 1.0,
+  "leg": "",
+  "legLength": 1.1,
+  "legs": [
+    { "pos": [0.95, 0.97, 0.95], "yaw": -45, "tilt": 28 },
+    { "pos": [-0.95, 0.97, 0.95], "yaw": -135, "tilt": 28 },
+    { "pos": [-0.95, 0.97, -0.95], "yaw": 135, "tilt": 28 },
+    { "pos": [0.95, 0.97, -0.95], "yaw": 45, "tilt": 28 }
+  ],
+  "pad": "res://assets/models/props/rampa_pisti.glb",
+  "rocket": "res://assets/models/props/kargo_roketi.glb"
+}

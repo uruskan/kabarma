@@ -25,6 +25,20 @@ public sealed class GraphicsPreset
     /// <summary>Bitki ornek yogunlugu (1 = %100) ve ot gorunme yaricapi (m).</summary>
     public float PlantDensity { get; set; } = 1f;
     public float GrassRadius { get; set; }
+    /// <summary>Uzak ot halkasinin dis yaricapi (m; 0 = yok) ve ot sikligi carpani (1 = biomes.json'daki aralik).</summary>
+    public float GrassFar { get; set; }
+    public float GrassDensity { get; set; } = 1f;
+    /// <summary>Arazi ayrinti kademesi: 0 tek olcek, egimde duz izdusum; 1 iki olcek; 2 iki olcek + uc duzlemli kaya.</summary>
+    public int TerrainDetail { get; set; } = 2;
+    /// <summary>Yumusak golge suzgeci 0..5 (RenderingServer.ShadowQuality) ve gunes acisal capi (derece, yari golge).</summary>
+    public int SoftShadows { get; set; } = 2;
+    public float SunAngle { get; set; } = 0.5f;
+    /// <summary>Hacimsel sis yogunlugu (VolumetricFog acikken) ve SSIL/SSAO yari cozunurluk.</summary>
+    public float VolumetricDensity { get; set; } = 0.004f;
+    public bool SsilHalf { get; set; } = true;
+    /// <summary>Ekran uzayi kenar yumusatma (SMAA; ot gibi ince geometride MSAA'dan ucuz) ve zamansal (TAA).</summary>
+    public bool Smaa { get; set; }
+    public bool Taa { get; set; }
     public bool Vsync { get; set; }
     public int MaxFps { get; set; }
 }

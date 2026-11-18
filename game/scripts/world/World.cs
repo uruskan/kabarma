@@ -38,6 +38,7 @@ public partial class World : Node3D
         _hillNoise = new FastNoiseLite { Seed = T.Seed + 1, Frequency = T.HillFrequency, FractalOctaves = 2, NoiseType = FastNoiseLite.NoiseTypeEnum.Perlin };
         _shoreNoise = new FastNoiseLite { Seed = T.Seed + 2, Frequency = 0.08f, NoiseType = FastNoiseLite.NoiseTypeEnum.Perlin };
         BuildHeights();
+        BuildGroundLayers();
         BuildTerrain();
         BuildEnvironment();
         BuildHorizon();
@@ -99,38 +100,21 @@ public partial class World : Node3D
         return Mathf.RadToDeg(Mathf.Atan(Mathf.Sqrt(dx * dx + dz * dz)));
     }
 
-    /// <summary>Indeksli ArrayMesh (301 x 301 kose): kose rengi egime, yukseklige ve gol kiyisina gore (SANAT-SES §6).</summary>
+    /// <summary>Indeksli ArrayMesh (301 x 301 kose). Renk ve doku terrain.gdshader'da (World.Ground.cs katmanlari).</summary>
     void BuildTerrain()
     {
         int n = Cells + 1;
         var verts = new Vector3[n * n];
         var norms = new Vector3[n * n];
-        var cols = new Color[n * n];
-        var colNoise = new FastNoiseLite { Seed = 99, Frequency = 0.05f };
-        var ground = Pal("ground", Palette.Ground);
-        var plant = Pal("plant", Palette.Plant);
-        var shadow = Pal("shadow", Palette.Shadow);
-        var fog = Pal("fog", Palette.Fog);
         for (int z = 0; z < n; z++)
         for (int x = 0; x < n; x++)
         {
             int i = z * n + x;
             float wx = x - Cells / 2f, wz = z - Cells / 2f;
-            float h = _h[x, z];
-            verts[i] = new Vector3(wx, h, wz);
+            verts[i] = new Vector3(wx, _h[x, z], wz);
             float hl = _h[Mathf.Max(x - 1, 0), z], hr = _h[Mathf.Min(x + 1, Cells), z];
             float hd = _h[x, Mathf.Max(z - 1, 0)], hu = _h[x, Mathf.Min(z + 1, Cells)];
             norms[i] = new Vector3(-(hr - hl) * 0.5f, 1f, -(hu - hd) * 0.5f).Normalized();
-            float slope = Mathf.Abs(hr - h) + Mathf.Abs(hu - h);
-            float patch = colNoise.GetNoise2D(wx, wz);
-            var c = ground;
-            c = c.Lerp(plant, Mathf.Clamp(patch * 1.6f + 0.15f, 0, 0.75f));
-            c = c.Lerp(ground.Lerp(shadow, 0.35f), Mathf.Clamp(slope * 0.5f, 0, 0.6f));
-            c = c.Lerp(fog, Mathf.Clamp((h - 6f) / 14f, 0, 0.35f));
-            // Gol: kiyida islak kum, suyun altinda koyulasan taban (SANAT-SES §6 "derinlige gore renk" suyla birlikte).
-            float wet = LakeWetness(wx, wz, h);
-            if (wet > 0) c = c.Lerp(Palette.Soil.Lerp(shadow, 0.25f), wet);
-            cols[i] = c;
         }
         var idx = new int[Cells * Cells * 6];
         int k = 0;
@@ -145,13 +129,10 @@ public partial class World : Node3D
         arrays.Resize((int)Mesh.ArrayType.Max);
         arrays[(int)Mesh.ArrayType.Vertex] = verts;
         arrays[(int)Mesh.ArrayType.Normal] = norms;
-        arrays[(int)Mesh.ArrayType.Color] = cols;
         arrays[(int)Mesh.ArrayType.Index] = idx;
         var mesh = new ArrayMesh();
         mesh.AddSurfaceFromArrays(Mesh.PrimitiveType.Triangles, arrays);
-        _groundMat = MeshKit.NewLiveMaterial();
-        _groundMat.SetShaderParameter("wobble_amp", 0f);
-        _groundMat.SetShaderParameter("rim", 0f);
+        _groundMat = TerrainMaterial();
         AddChild(new MeshInstance3D { Mesh = mesh, MaterialOverride = _groundMat, Name = "Terrain" });
 
         var body = new StaticBody3D { Name = "TerrainBody" };

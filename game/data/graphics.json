@@ -1,29 +1,46 @@
 {
-  "_not": "Grafik on ayarlari (SANAT-SES 8.3) ve M1 performans olcumu (TEKNIK §10). Oyun varsayilani 'default'; dikey esitleme ve kare siniri yalniz olcumde ya da --preset ile uygulanir.",
+  "_not": "Grafik on ayarlari (SANAT-SES 8.3) ve M1 performans olcumu (TEKNIK §10). Oyun varsayilani 'default'; dikey esitleme ve kare siniri yalniz olcumde ya da --preset ile uygulanir. Kademeler (gorsel-dunya): dusuk < orta < yuksek (1080p, RTX 2070S hedefi) < ultra (SDFGI, hacimsel sis, SSR). grassRadius yakin ot halkasi, grassFar uzak halka (0 yok), grassDensity ot sikligi; terrainDetail 0 tek olcek / 1 iki olcek / 2 + uc duzlemli kaya; softShadows 0..5 golge suzgeci; sunAngle gunesin acisal capi (yari golge).",
   "default": "yuksek",
   "presets": {
+    "dusuk": {
+      "name": "Düşük",
+      "width": 1920, "height": 1080, "scale": 1.0, "msaa": 0, "smaa": false, "taa": false,
+      "shadowSplits": 2, "shadowAtlas": 2048, "shadowDistance": 80,
+      "ssao": false, "ssaoHalf": true, "glow": true, "sdfgi": false, "ssil": false, "ssilHalf": true, "ssr": false,
+      "volumetricFog": false, "volumetricDensity": 0.0, "distanceFog": true, "heightFog": true,
+      "plantDensity": 0.6, "grassRadius": 16, "grassFar": 0, "grassDensity": 0.5,
+      "terrainDetail": 0, "softShadows": 1, "sunAngle": 0.0,
+      "vsync": false, "maxFps": 0
+    },
+    "orta": {
+      "name": "Orta",
+      "width": 1920, "height": 1080, "scale": 1.0, "msaa": 0, "smaa": true, "taa": false,
+      "shadowSplits": 2, "shadowAtlas": 4096, "shadowDistance": 120,
+      "ssao": true, "ssaoHalf": true, "glow": true, "sdfgi": false, "ssil": false, "ssilHalf": true, "ssr": false,
+      "volumetricFog": false, "volumetricDensity": 0.0, "distanceFog": true, "heightFog": true,
+      "plantDensity": 0.8, "grassRadius": 20, "grassFar": 42, "grassDensity": 0.7,
+      "terrainDetail": 1, "softShadows": 2, "sunAngle": 0.4,
+      "vsync": false, "maxFps": 0
+    },
     "yuksek": {
       "name": "Yüksek",
-      "width": 1920,
-      "height": 1080,
-      "scale": 1.0,
-      "msaa": 2,
-      "shadowSplits": 2,
-      "shadowAtlas": 4096,
-      "shadowDistance": 150,
-      "ssao": true,
-      "ssaoHalf": true,
-      "glow": true,
-      "sdfgi": false,
-      "ssil": false,
-      "ssr": false,
-      "volumetricFog": false,
-      "distanceFog": true,
-      "heightFog": true,
-      "plantDensity": 1.0,
-      "grassRadius": 40,
-      "vsync": false,
-      "maxFps": 0
+      "width": 1920, "height": 1080, "scale": 1.0, "msaa": 0, "smaa": true, "taa": false,
+      "shadowSplits": 4, "shadowAtlas": 4096, "shadowDistance": 110,
+      "ssao": true, "ssaoHalf": true, "glow": true, "sdfgi": false, "ssil": false, "ssilHalf": true, "ssr": false,
+      "volumetricFog": false, "volumetricDensity": 0.0, "distanceFog": true, "heightFog": true,
+      "plantDensity": 1.0, "grassRadius": 22, "grassFar": 50, "grassDensity": 1.0,
+      "terrainDetail": 2, "softShadows": 2, "sunAngle": 0.0,
+      "vsync": false, "maxFps": 0
+    },
+    "ultra": {
+      "name": "Ultra",
+      "width": 1920, "height": 1080, "scale": 1.0, "msaa": 2, "smaa": false, "taa": true,
+      "shadowSplits": 4, "shadowAtlas": 4096, "shadowDistance": 200,
+      "ssao": true, "ssaoHalf": false, "glow": true, "sdfgi": true, "ssil": true, "ssilHalf": false, "ssr": true,
+      "volumetricFog": true, "volumetricDensity": 0.006, "distanceFog": true, "heightFog": true,
+      "plantDensity": 1.0, "grassRadius": 32, "grassFar": 80, "grassDensity": 1.4,
+      "terrainDetail": 2, "softShadows": 4, "sunAngle": 0.6,
+      "vsync": false, "maxFps": 0
     }
   },
   "perf": {

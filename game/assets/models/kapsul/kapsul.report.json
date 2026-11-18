@@ -1,45 +1,45 @@
 {
   "name": "kapsul",
   "label": "İniş kapsülü",
-  "input": "C:/Users/uruskan/Documents/GitHub/kabarma\\.tools/tripo/kapsul/tripo-out/kapsul-segment-e3b30365/model.glb",
+  "input": "C:/Users/uruskan/Documents/GitHub/kabarma\\.tools/tripo/kapsul_govde_v3/tripo-out/kapsul-govde-v3-c249cb81/model.glb",
   "class": "makine",
   "forward": "+X",
   "checks": {
     "1_texture": {
       "pass": true,
       "textures": {
-        "tripo_image_0_base_color": [
+        "Color_c249cb81-24d3-4d6b-8916-3334153ec6ee": [
           1024,
           1024
         ],
-        "tripo_image_1_base_color": [
+        "ORM_c249cb81-24d3-4d6b-8916-3334153ec6ee": [
           1024,
           1024
         ],
-        "tripo_image_2_base_color": [
-          512,
-          512
+        "NormalGL_c249cb81-24d3-4d6b-8916-3334153ec6ee": [
+          1024,
+          1024
         ]
       },
-      "base_color_maps": 3,
+      "base_color_maps": 1,
       "max_tex": 2048
     },
     "2_polygon": {
       "pass": true,
-      "value": 9546,
+      "value": 13410,
       "budget": 15000,
       "class": "makine",
       "below_min": false
     },
     "3_thickness": {
-      "pass": true,
-      "thin_share": 0.012,
+      "pass": false,
+      "thin_share": 0.0648,
       "allowed_share": 0.02,
-      "limit_m": 0.168,
-      "stick_min_t_m": 0.001,
-      "plate_share": 0.1503,
-      "faces_measured": 9539,
-      "old_bbox_min_ratio": 0.123,
+      "limit_m": 0.1706,
+      "stick_min_t_m": 0.0003,
+      "plate_share": 0.1068,
+      "faces_measured": 13399,
+      "old_bbox_min_ratio": 0.981,
       "note": "cubuk/diken alani (iki yonde ince) / yuzey; levha payi (tek yonde ince: yaprak, kapak) bilgi; eski olcu: parca kutusunun en dar boyutu / en uzun kenar"
     },
     "4_integrity": {
@@ -50,27 +50,7 @@
       "inverted_note": "ters sarimli kenar sayisi",
       "negative_volume_parts": 0,
       "floating_parts": [],
-      "loose_parts": 3,
-      "per_part": {
-        "body": {
-          "fan": 0,
-          "boundary": 0,
-          "wire": 0,
-          "non_manifold": 0
-        },
-        "base": {
-          "fan": 0,
-          "boundary": 0,
-          "wire": 0,
-          "non_manifold": 0
-        },
-        "hatch": {
-          "fan": 0,
-          "boundary": 0,
-          "wire": 0,
-          "non_manifold": 0
-        }
-      }
+      "loose_parts": 1
     },
     "5_scale_axis": {
       "pass": true,
@@ -86,37 +66,35 @@
     }
   },
   "source_parts": [
-    "tripo_part_0",
-    "tripo_part_1",
-    "tripo_part_2"
+    "tripo_node_c249cb81-24d3-4d6b-8916-3334153ec6ee"
   ],
   "dropped": [],
   "merged": {},
-  "tris_in": 9377,
-  "welded_verts": 1143,
+  "tris_in": 13402,
+  "welded_verts": 3000,
   "repair_before": {
-    "fan": 9,
-    "boundary": 198,
+    "fan": 14,
+    "boundary": 8,
     "wire": 0
   },
   "repair_log": [
     {
       "pass": 1,
-      "deleted_slivers": 9,
-      "filled_faces": 180,
-      "fan": 0,
-      "boundary": 4,
+      "deleted_slivers": 18,
+      "filled_faces": 4,
+      "fan": 2,
+      "boundary": 20,
       "wire": 0,
-      "nonmanifold_verts": 0
+      "nonmanifold_verts": 11
     },
     {
       "pass": 2,
-      "deleted_slivers": 0,
-      "filled_faces": 4,
+      "deleted_slivers": 4,
+      "filled_faces": 26,
       "fan": 0,
       "boundary": 0,
       "wire": 0,
-      "nonmanifold_verts": 0
+      "nonmanifold_verts": 9
     }
   ],
   "dropped_floating": [],
@@ -127,114 +105,64 @@
     "area_share": 0.0
   },
   "tex_size": 1024,
-  "tris": 9546,
+  "tris": 13410,
   "size_m": [
-    2.387,
-    2.443,
+    2.788,
+    2.843,
     2.8
   ],
-  "parts": 3,
+  "parts": 1,
   "palette_direction": {
     "samples": 1500,
-    "mean_dE": 10.7,
+    "mean_dE": 15.1,
     "share": [
-      {
-        "color": "tones.wood_dark",
-        "hex": "7E5A48",
-        "share": 0.354
-      },
-      {
-        "color": "altin_cayir.fog",
-        "hex": "F3D9A4",
-        "share": 0.252
-      },
-      {
-        "color": "neutral.coop_blue",
-        "hex": "3E78B2",
-        "share": 0.12
-      },
-      {
-        "color": "neutral.warning",
-        "hex": "F2B632",
-        "share": 0.088
-      },
       {
         "color": "neutral.dark_grey",
         "hex": "3B3F4A",
-        "share": 0.059
+        "share": 0.332
       },
       {
-        "color": "neutral.off_white",
-        "hex": "EDE6D6",
-        "share": 0.055
+        "color": "tones.soil",
+        "hex": "81605C",
+        "share": 0.295
+      },
+      {
+        "color": "tones.turnip_body",
+        "hex": "E1DACD",
+        "share": 0.245
+      },
+      {
+        "color": "tones.wood_dark",
+        "hex": "7E5A48",
+        "share": 0.051
+      },
+      {
+        "color": "tones.rock",
+        "hex": "9C909B",
+        "share": 0.03
+      },
+      {
+        "color": "tones.turnip_top",
+        "hex": "9158B7",
+        "share": 0.025
       }
     ]
   },
-  "parts_named": [
-    {
-      "name": "body",
-      "source": "tripo_part_0",
-      "center": [
-        -0.0,
-        0.0,
-        1.716
-      ],
-      "size": [
-        2.386,
-        2.443,
-        2.168
-      ],
-      "faces": 5872,
-      "pivot": null
-    },
-    {
-      "name": "base",
-      "source": "tripo_part_1",
-      "center": [
-        0.015,
-        -0.01,
-        0.349
-      ],
-      "size": [
-        2.273,
-        2.34,
-        0.699
-      ],
-      "faces": 2756,
-      "pivot": null
-    },
-    {
-      "name": "hatch",
-      "source": "tripo_part_2",
-      "center": [
-        1.021,
-        0.001,
-        1.598
-      ],
-      "size": [
-        0.346,
-        1.242,
-        1.146
-      ],
-      "faces": 918,
-      "pivot": null
-    }
-  ],
   "sockets": [],
-  "icon": "C:\\Users\\uruskan\\Documents\\GitHub\\kabarma\\.claude\\worktrees\\m1-varlik-72a21b\\game/assets/models\\kapsul\\kapsul_icon.png",
-  "out": "C:\\Users\\uruskan\\Documents\\GitHub\\kabarma\\.claude\\worktrees\\m1-varlik-72a21b\\game/assets/models\\kapsul\\kapsul.glb",
+  "icon": "C:\\Users\\uruskan\\Documents\\GitHub\\kabarma\\.claude\\worktrees\\gorsel-model-bee2cf\\game/assets/models\\kapsul\\kapsul_icon.png",
+  "out": "C:\\Users\\uruskan\\Documents\\GitHub\\kabarma\\.claude\\worktrees\\gorsel-model-bee2cf\\game/assets/models\\kapsul\\kapsul.glb",
   "lods": [
     {
       "level": 0,
-      "tris": 9546,
-      "file": "C:\\Users\\uruskan\\Documents\\GitHub\\kabarma\\.claude\\worktrees\\m1-varlik-72a21b\\game/assets/models\\kapsul\\kapsul.glb",
+      "tris": 13410,
+      "file": "C:\\Users\\uruskan\\Documents\\GitHub\\kabarma\\.claude\\worktrees\\gorsel-model-bee2cf\\game/assets/models\\kapsul\\kapsul.glb",
       "tex": 1024
     },
     {
       "level": 1,
       "ratio": 0.5,
-      "tris": 4628,
-      "file": "C:\\Users\\uruskan\\Documents\\GitHub\\kabarma\\.claude\\worktrees\\m1-varlik-72a21b\\game/assets/models\\kapsul\\kapsul_lod1.glb",
+      "tris": 6502,
+      "file": "C:\\Users\\uruskan\\Documents\\GitHub\\kabarma\\.claude\\worktrees\\gorsel-model-bee2cf\\game/assets/models\\kapsul\\kapsul_lod1.glb",
       "tex": 512,
       "census": {
         "fan": 0,
@@ -245,8 +173,8 @@
     {
       "level": 2,
       "ratio": 0.2,
-      "tris": 1850,
-      "file": "C:\\Users\\uruskan\\Documents\\GitHub\\kabarma\\.claude\\worktrees\\m1-varlik-72a21b\\game/assets/models\\kapsul\\kapsul_lod2.glb",
+      "tris": 2600,
+      "file": "C:\\Users\\uruskan\\Documents\\GitHub\\kabarma\\.claude\\worktrees\\gorsel-model-bee2cf\\game/assets/models\\kapsul\\kapsul_lod2.glb",
       "tex": 256,
       "census": {
         "fan": 0,
@@ -256,12 +184,12 @@
     }
   ],
   "hull": {
-    "file": "C:\\Users\\uruskan\\Documents\\GitHub\\kabarma\\.claude\\worktrees\\m1-varlik-72a21b\\game/assets/models\\kapsul\\kapsul_hull.tres",
+    "file": "C:\\Users\\uruskan\\Documents\\GitHub\\kabarma\\.claude\\worktrees\\gorsel-model-bee2cf\\game/assets/models\\kapsul\\kapsul_hull.tres",
     "points": 64,
-    "volume_m3": 9.8511,
-    "mesh_volume_m3": 8.5241,
+    "volume_m3": 10.7176,
+    "mesh_volume_m3": 8.2861,
     "note": "Godot ekseninde (Y yukari), model orijinine gore"
   },
-  "pass_scripted": true,
-  "card": "C:\\Users\\uruskan\\Documents\\GitHub\\kabarma\\.claude\\worktrees\\m1-varlik-72a21b\\progress/m1/varlik/kart\\kapsul.png"
+  "pass_scripted": false,
+  "card": "C:\\Users\\uruskan\\Documents\\GitHub\\kabarma\\.claude\\worktrees\\gorsel-model-bee2cf\\progress/m1/varlik/kart\\kapsul.png"
 }

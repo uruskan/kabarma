@@ -1,0 +1,189 @@
+{
+  "_not": "Kredisiz PBR yukseltmesi (pipeline/pbr_bake.py yazar; elle duzenleme pbr_manifest.json'da). Model yolu -> yuzey (glTF malzeme adi) -> albedo, normal (OpenGL), orm (R ao, G roughness, B metal). Oyun MaterialUplift.cs ile yuklenen malzemeye takar; dekor ruzgar ve yaratik sisme shader'lari albedo ile normali buradan devralir.",
+  "models": {
+    "res://assets/models/tas_firin/tas_firin.glb": {
+      "id": "tas_firin",
+      "normalScale": 1.0,
+      "surfaces": {
+        "Material_tripo_part_1": {
+          "albedo": "res://assets/models/tas_firin/pbr/tas_firin_base_albedo.png",
+          "normal": "res://assets/models/tas_firin/pbr/tas_firin_base_normal.png",
+          "orm": "res://assets/models/tas_firin/pbr/tas_firin_base_orm.png"
+        },
+        "Material_tripo_part_0": {
+          "albedo": "res://assets/models/tas_firin/pbr/tas_firin_body_albedo.png",
+          "normal": "res://assets/models/tas_firin/pbr/tas_firin_body_normal.png",
+          "orm": "res://assets/models/tas_firin/pbr/tas_firin_body_orm.png"
+        },
+        "Material_tripo_part_3": {
+          "albedo": "res://assets/models/tas_firin/pbr/tas_firin_chimney_albedo.png",
+          "normal": "res://assets/models/tas_firin/pbr/tas_firin_chimney_normal.png",
+          "orm": "res://assets/models/tas_firin/pbr/tas_firin_chimney_orm.png"
+        },
+        "Material_tripo_part_2": {
+          "albedo": "res://assets/models/tas_firin/pbr/tas_firin_door_albedo.png",
+          "normal": "res://assets/models/tas_firin/pbr/tas_firin_door_normal.png",
+          "orm": "res://assets/models/tas_firin/pbr/tas_firin_door_orm.png"
+        },
+        "Material_tripo_part_5": {
+          "albedo": "res://assets/models/tas_firin/pbr/tas_firin_door_handle_albedo.png",
+          "normal": "res://assets/models/tas_firin/pbr/tas_firin_door_handle_normal.png",
+          "orm": "res://assets/models/tas_firin/pbr/tas_firin_door_handle_orm.png"
+        },
+        "Material_tripo_part_4": {
+          "albedo": "res://assets/models/tas_firin/pbr/tas_firin_panel_albedo.png",
+          "normal": "res://assets/models/tas_firin/pbr/tas_firin_panel_normal.png",
+          "orm": "res://assets/models/tas_firin/pbr/tas_firin_panel_orm.png"
+        }
+      }
+    },
+    "res://assets/models/bakir/bakir.glb": {
+      "id": "bakir",
+      "normalScale": 1.0,
+      "surfaces": {
+        "tripo_material_08acb5ee-1b9a-41f1-b801-a783e556079c": {
+          "albedo": "res://assets/models/bakir/pbr/bakir_albedo.png",
+          "normal": "res://assets/models/bakir/pbr/bakir_normal.png",
+          "orm": "res://assets/models/bakir/pbr/bakir_orm.png"
+        }
+      }
+    },
+    "res://assets/models/kil_yatagi/kil_yatagi.glb": {
+      "id": "kil_yatagi",
+      "normalScale": 1.0,
+      "surfaces": {
+        "kil_yatagi": {
+          "albedo": "res://assets/models/kil_yatagi/pbr/kil_yatagi_albedo.png",
+          "normal": "res://assets/models/kil_yatagi/pbr/kil_yatagi_normal.png",
+          "orm": "res://assets/models/kil_yatagi/pbr/kil_yatagi_orm.png"
+        }
+      }
+    },
+    "res://assets/models/kaya_duz/kaya_duz.glb": {
+      "id": "kaya_duz",
+      "normalScale": 1.0,
+      "surfaces": {
+        "tripo_material_e4b0adac-614c-45de-93a9-9e3d2841df78": {
+          "albedo": "res://assets/models/kaya_duz/pbr/kaya_duz_albedo.png",
+          "normal": "res://assets/models/kaya_duz/pbr/kaya_duz_normal.png",
+          "orm": "res://assets/models/kaya_duz/pbr/kaya_duz_orm.png"
+        }
+      }
+    },
+    "res://assets/models/kaya_dik/kaya_dik.glb": {
+      "id": "kaya_dik",
+      "normalScale": 1.0,
+      "surfaces": {
+        "tripo_material_d32150ae-0ebe-4adc-a086-dc660bd8e3e1": {
+          "albedo": "res://assets/models/kaya_dik/pbr/kaya_dik_albedo.png",
+          "normal": "res://assets/models/kaya_dik/pbr/kaya_dik_normal.png",
+          "orm": "res://assets/models/kaya_dik/pbr/kaya_dik_orm.png"
+        }
+      }
+    },
+    "res://assets/models/kaya/kaya.glb": {
+      "id": "kaya",
+      "normalScale": 1.0,
+      "surfaces": {
+        "tripo_material_966d957e-96e8-403f-96ca-c84ae6bf7111": {
+          "albedo": "res://assets/models/kaya/pbr/kaya_albedo.png"
+        }
+      }
+    },
+    "res://assets/models/agac/agac.glb": {
+      "id": "agac",
+      "normalScale": 1.0,
+      "surfaces": {
+        "tripo_material_ab01422b-b3b0-4c29-afd4-0106c4f4f4ca": {
+          "albedo": "res://assets/models/agac/pbr/agac_albedo.png"
+        }
+      }
+    },
+    "res://assets/models/kova/kova.glb": {
+      "id": "kova",
+      "normalScale": 1.0,
+      "surfaces": {
+        "tripo_material_8389ff81-30ac-4398-8d3b-9db77a31ffd1": {
+          "albedo": "res://assets/models/kova/pbr/kova_albedo.png"
+        }
+      }
+    },
+    "res://assets/models/salgam/salgam.glb": {
+      "id": "salgam",
+      "normalScale": 1.0,
+      "surfaces": {
+        "tripo_material_15b23276-81d0-4cf9-97cf-53aeb12b7c82": {
+          "albedo": "res://assets/models/salgam/pbr/salgam_albedo.png",
+          "normal": "res://assets/models/salgam/pbr/salgam_normal.png",
+          "orm": "res://assets/models/salgam/pbr/salgam_orm.png"
+        }
+      }
+    },
+    "res://assets/models/turuncu_agac/turuncu_agac.glb": {
+      "id": "turuncu_agac",
+      "normalScale": 1.0,
+      "surfaces": {
+        "tripo_material_ce10f6ea-2da0-49d9-bb99-924d37015762": {
+          "albedo": "res://assets/models/turuncu_agac/pbr/turuncu_agac_albedo.png",
+          "normal": "res://assets/models/turuncu_agac/pbr/turuncu_agac_normal.png",
+          "orm": "res://assets/models/turuncu_agac/pbr/turuncu_agac_orm.png"
+        }
+      }
+    },
+    "res://assets/models/cali/cali.glb": {
+      "id": "cali",
+      "normalScale": 1.0,
+      "surfaces": {
+        "tripo_material_d555cf49-06b7-46f1-bcd3-60accb8ec254": {
+          "albedo": "res://assets/models/cali/pbr/cali_albedo.png",
+          "normal": "res://assets/models/cali/pbr/cali_normal.png",
+          "orm": "res://assets/models/cali/pbr/cali_orm.png"
+        }
+      }
+    },
+    "res://assets/models/ot/ot.glb": {
+      "id": "ot",
+      "normalScale": 1.0,
+      "surfaces": {
+        "tripo_material_7ce835e7-4932-4b66-a3b3-92c7a79e3db7": {
+          "albedo": "res://assets/models/ot/pbr/ot_albedo.png",
+          "normal": "res://assets/models/ot/pbr/ot_normal.png",
+          "orm": "res://assets/models/ot/pbr/ot_orm.png"
+        }
+      }
+    },
+    "res://assets/models/bugday/bugday.glb": {
+      "id": "bugday",
+      "normalScale": 1.0,
+      "surfaces": {
+        "tripo_material_22cbca48-e30c-41fd-bbe6-8da2dc0c6092": {
+          "albedo": "res://assets/models/bugday/pbr/bugday_albedo.png",
+          "normal": "res://assets/models/bugday/pbr/bugday_normal.png",
+          "orm": "res://assets/models/bugday/pbr/bugday_orm.png"
+        }
+      }
+    },
+    "res://assets/models/cicek/cicek.glb": {
+      "id": "cicek",
+      "normalScale": 1.0,
+      "surfaces": {
+        "tripo_material_210feef8-15b6-41df-a1f9-fb5ef2ec4422": {
+          "albedo": "res://assets/models/cicek/pbr/cicek_albedo.png",
+          "normal": "res://assets/models/cicek/pbr/cicek_normal.png",
+          "orm": "res://assets/models/cicek/pbr/cicek_orm.png"
+        }
+      }
+    },
+    "res://assets/models/egrelti/egrelti.glb": {
+      "id": "egrelti",
+      "normalScale": 1.0,
+      "surfaces": {
+        "tripo_material_fcf7c01a-c436-42c1-ba05-9c989438b141": {
+          "albedo": "res://assets/models/egrelti/pbr/egrelti_albedo.png",
+          "normal": "res://assets/models/egrelti/pbr/egrelti_normal.png",
+          "orm": "res://assets/models/egrelti/pbr/egrelti_orm.png"
+        }
+      }
+    }
+  }
+}

@@ -71,6 +71,9 @@ public sealed class WorldDef
     public List<float> HeightFog { get; set; } = new() { 1f, 0.015f };
     /// <summary>Bitki konmayan aciklik [x, z, yaricap]: inis kapsulu, ussun tarlasi ve istasyonlari.</summary>
     public List<List<float>> Clearings { get; set; } = new();
+    /// <summary>Cignenmis patikalar: her biri [x, z] noktalarindan cizgi; genislik (m). Zemin toprak katmani, ot yok.</summary>
+    public List<List<List<float>>> Paths { get; set; } = new();
+    public float PathWidth { get; set; } = 1.6f;
     public List<BookmarkDef> Bookmarks { get; set; } = new();
 }
 
@@ -171,6 +174,12 @@ public sealed class GrassDef
     public List<float> Height { get; set; } = new();
     public float BaseClear { get; set; }
     public float Wind { get; set; }
+    /// <summary>Kameraya bagli ot alani (GrassField): yakin ve uzak halkanin tutam araligi (m), tutam basina bicak.</summary>
+    public float Spacing { get; set; } = 0.3f;
+    public float FarSpacing { get; set; } = 0.75f;
+    public int Blades { get; set; } = 6;
+    /// <summary>Uzak halkanin dis kenarinda kalan tutam payi (0..1).</summary>
+    public float FarKeep { get; set; } = 0.45f;
 }
 
 public sealed class BiomeDef

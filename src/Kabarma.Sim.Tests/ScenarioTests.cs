@@ -61,7 +61,8 @@ public class ScenarioTests
             Assert.False(keyish.IsMatch(l.Tr), $"{id} (tr): {l.Tr}");
             Assert.False(keyish.IsMatch(l.En), $"{id} (en): {l.En}");
         }
-        var known = new HashSet<string> { "interact", "fire", "bag", "build_next", "build_prev", "build_rotate", "head_1", "head_2", "head_3", "head_4", "head_5", "head_6", "head_7", "head_8" };
+        // M1 karari 20: baslik yalniz carktan (head_wheel); head_1..8 kemer yuvasi, adim satirinda baslik icin kullanilmaz.
+        var known = new HashSet<string> { "interact", "fire", "bag", "build_next", "build_prev", "build_rotate", "head_wheel" };
         foreach (var s in sc.Steps)
         {
             foreach (Match m in Regex.Matches(s.Goal, @"\{act:([a-z0-9_]+)\}")) Assert.Contains(m.Groups[1].Value, known);
