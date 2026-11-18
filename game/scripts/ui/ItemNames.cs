@@ -33,6 +33,8 @@ public static class ItemNames
         ["folluk"] = "Folluk",
         ["ocakbasi"] = "Ocakbaşı",
         ["kargo_rampasi"] = "Kargo Rampası",
+        // boss akisi (M2, GDD §18): Ata odulleri ve Ata Tasi.
+        ["cayir_cekirdegi"] = "Çayır Çekirdeği", ["koru_cekirdegi"] = "Koru Çekirdeği", ["ata_yunu"] = "Ata Yünü", ["dede_boynuzu"] = "Dede Boynuzu", ["ata_tasi"] = "Ata Taşı",
         // Karar 23 (kemer akisi): kemer aletleri ve uretilen yerlestirilebilirler.
         ["capa"] = "Çapa",
         ["insa_plani"] = "İnşa Planı",
@@ -40,6 +42,13 @@ public static class ItemNames
         ["tezgah"] = "Tezgâh",
         ["tas_firin"] = "Taş Fırın",
         ["paketleme"] = "Paketleme Tezgâhı",
+        // M2 dunya2: Koru kaynaklari ve Enkaz (ICERIK 2.1, 17), mancinik (ICERIK 10.2).
+        ["hard_wood"] = "Sert Odun",
+        ["resin"] = "Reçine",
+        ["iron_ore"] = "Demir Cevheri",
+        ["saltpeter"] = "Güherçile",
+        ["scrap"] = "Hurda",
+        ["mancinik"] = "Mancınık",
     };
 
     public static string Of(string id) => Names.TryGetValue(id, out var n) ? n : id;

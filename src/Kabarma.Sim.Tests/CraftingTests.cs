@@ -39,8 +39,8 @@ public class CraftingTests
         // Yakit: Tas Firin ve Ocakbasi is basina 1 Odun (ICERIK 20).
         foreach (var st in new[] { "tas_firin", "ocakbasi" }) { Assert.Equal(new List<string> { "wood" }, P(d, st).Fuel); Assert.Equal(1, P(d, st).FuelPerJob); }
         Assert.Equal(0, P(d, "tezgah").FuelPerJob);
-        // M1'in 5 istasyonu: dordu yerlestirilir, rampa kapsulden (URETIM 6).
-        Assert.Equal(new[] { "ocakbasi", "paketleme", "tas_firin", "tezgah" }, d.Tool.Placeables.Where(p => p.Station != null).Select(p => p.Id).OrderBy(x => x));
+        // M1'in 5 istasyonu: dordu yerlestirilir, rampa kapsulden (URETIM 6). M2'nin T1-T2 istasyonlari arkaya eklenir (ResearchTests).
+        foreach (var st in new[] { "ocakbasi", "paketleme", "tas_firin", "tezgah" }) Assert.Contains(st, d.Tool.Placeables.Where(p => p.Station != null).Select(p => p.Id));
     }
 
     [Fact]
