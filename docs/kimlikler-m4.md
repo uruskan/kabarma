@@ -130,7 +130,7 @@ Main creatures.json (var): `zipzip, gidak, pofuduk, homur, cekirge, sinsi, dalli
 | kosar | Koşar | §3.4 | Kanyon |
 | kivrik | Kıvrık | §3.4 | Kanyon |
 | kizgin | Kızgın | §3.4 | Kanyon |
-| lescci | Leşçi | §3.4 | Kanyon |
+| lesci | Leşçi | §3.4 | Kanyon |
 | dehliz | Dehliz | §3.4 | Kanyon |
 | tosun | Tosun | §3.5 | Ayaz |
 | ayaz_kurdu | Ayaz Kurdu | §3.5 | Ayaz |
