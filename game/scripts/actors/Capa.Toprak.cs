@@ -17,6 +17,7 @@ public partial class Capa
         if (_d.Ocak == null) { _d.Hud.Hint("Önce Ocak'ı kur: tapu dışında tarla açılmaz"); return false; }
         if (aim.DistanceTo(_d.OcakPos) > Ocak.ClaimRadius) { _d.Hud.Hint("Tapunun dışı"); return false; }
         if (aim.DistanceTo(_d.OcakPos) < _t.TillClearOcak || aim.DistanceTo(_d.Pod.GlobalPosition) < _t.TillClearPod) return false;
+        _d.Net?.ForwardTill(aim); // ortak: istemcide host'a da gider (yerel sonuc tahmin, tarla host'tan doner)
         var (x, y) = FarmView.Cell(aim);
         var farm = _d.State.Farm;
         var plot = farm.Get(x, y);

@@ -145,14 +145,14 @@ public partial class Director
             var iid = id;
             if (items.Count >= max) break;
             items.Add(new Hud.MenuItem($"Al: {ItemNames.Of(iid)} ×{store.Count(iid)}", () => store.Count(iid) > 0 && State.Backpack.Room(iid) > 0,
-                () => { store.MoveTo(State.Backpack, iid, store.Count(iid)); Sfx.Play("pickup", null, -6f); reopen(); }, iid));
+                () => { Net?.ForwardChest(store, iid, true, store.Count(iid)); store.MoveTo(State.Backpack, iid, store.Count(iid)); Sfx.Play("pickup", null, -6f); reopen(); }, iid));
         }
         foreach (var id in State.Backpack.Contents.Select(c => c.id).Distinct().ToList())
         {
             var iid = id;
             if (items.Count >= max) break;
             items.Add(new Hud.MenuItem($"Koy: {ItemNames.Of(iid)} ×{State.Backpack.Count(iid)}", () => allowPut() && State.Backpack.Count(iid) > 0 && store.Room(iid) > 0,
-                () => { State.Backpack.MoveTo(store, iid, State.Backpack.Count(iid)); Sfx.Play("place", null, -8f); reopen(); }, iid));
+                () => { Net?.ForwardChest(store, iid, false, State.Backpack.Count(iid)); State.Backpack.MoveTo(store, iid, State.Backpack.Count(iid)); Sfx.Play("place", null, -8f); reopen(); }, iid));
         }
     }
 

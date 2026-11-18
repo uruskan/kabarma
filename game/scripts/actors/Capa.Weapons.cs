@@ -117,6 +117,7 @@ public partial class Capa
         float dmg; bool crit;
         if (night != null) (dmg, crit) = night.RollHit(w, weak, z.Def.WeakPointMult);
         else { dmg = w.Damage; crit = false; }
+        if (_d.Net?.ForwardHit(z, dmg, crit, dir with { Y = 0 }, w.Knockback * s.KnockbackMult, weak, night != null && night.RollBurn() ? w.BurnSeconds : 0, night != null && night.RollFreeze() ? w.FreezeSeconds : 0) == true) { FeelHit(feel, at, crit ? Palette.Warning : color, crit, weak); return; } // ortak: istemcinin vurusu host'ta
         z.Hit(dmg, crit, dir with { Y = 0 }, w.Knockback * s.KnockbackMult, weak);
         if (night != null && night.RollBurn()) z.BurnT = w.BurnSeconds;
         if (night != null && night.RollFreeze()) z.FreezeT = w.FreezeSeconds;

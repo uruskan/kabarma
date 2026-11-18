@@ -76,7 +76,7 @@ public partial class Station : Node3D
     public override void _Process(double delta)
     {
         float dt = (float)delta;
-        if (_d.Stations.FirstOrDefault(s => s.Queue == Queue) == this) Queue.Tick(dt, _d.State.Backpack);
+        if (_d.Stations.FirstOrDefault(s => s.Queue == Queue) == this && _d.Net?.TickStation(Queue, dt) != true) Queue.Tick(dt, _d.State.Backpack);
         bool working = Queue.Active != null;
         if (_oven != null) _oven.Working = working;
         if (_grill != null) _grill.Working = working;

@@ -46,6 +46,7 @@ public partial class Director
         if (State.Backpack.Count(ff.Id) <= 0) { Hud.Hint($"{ff.Name} yok", 1f); return false; }
         if (!State.Food.Eat(ff)) { Hud.Hint("Üç yemek yuvası dolu", 1.2f); return false; }
         State.Backpack.Remove(ff.Id, 1);
+        Net?.ForwardEat(ff.Id); // ortak: istemcinin cantasi host'ta
         Sfx.Play("pickup", null, -2f);
         Hud.Hint($"{ff.Name}: doydun, güçlendin", 1.5f);
         GD.Print($"ATE {ff.Id}");

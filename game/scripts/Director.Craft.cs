@@ -44,6 +44,7 @@ public partial class Director
             Sfx.Play("hit", null, -12f);
             return false;
         }
+        if (Net?.ForwardCraft(r, count) == true) return true; // ortak: istemcide host'a gider (NetSync.Stations.cs)
         if (CraftRules.IsHand(r))
         {
             if (!State.Craft.Enqueue(r, count, inv)) { Hud.Hint(!State.Craft.IsUnlocked(r) ? "Tarif kilitli" : "Üretim sırası dolu", 1.5f); Sfx.Play("hit", null, -12f); return false; }
@@ -71,6 +72,7 @@ public partial class Director
         var jobs = State.Craft.Jobs;
         if (index < 0 || index >= jobs.Count) return;
         var name = jobs[index].Recipe.Name;
+        if (Net?.ForwardCraftCancel(index) == true) return;
         var back = State.Craft.Cancel(index, State.Backpack);
         Hud.Hint($"{name} iptal: malzeme geri döndü", 1.4f);
         Sfx.Play("place", null, -10f);
@@ -82,6 +84,7 @@ public partial class Director
     {
         if (st == null || st.Queue.Active == null) return;
         var name = st.Queue.Active.Name;
+        if (Net?.ForwardStationCancel(st) == true) return;
         st.Queue.Cancel(State.Backpack);
         Hud.Hint($"{name} iptal: malzeme geri döndü", 1.4f);
         Sfx.Play("place", null, -10f);
@@ -99,6 +102,7 @@ public partial class Director
                 OnProduced(r); // Director.Menus.cs: Events.RaiseProduced, PRODUCED satiri
             };
         }
+        if (NetClient) return; // ortak: el kuyrugu host'ta isler, "craft" bolumuyle doner
         State.Craft.Tick(dt, State.Backpack);
     }
 }
