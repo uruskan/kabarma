@@ -9,6 +9,10 @@ config/name="Kabarma"
 run/main_scene="res://scenes/main.tscn"
 config/features=PackedStringArray("4.7", "C#", "Forward Plus")
 
+[audio]
+
+driver/enable_input=true
+
 [display]
 
 window/size/viewport_width=1600
