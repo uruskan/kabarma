@@ -101,6 +101,7 @@ public sealed partial class GameState
         Coop = new Coop(data.Pen);
         InitNightAndDay(); // GameState.Night.cs: takvim, Defter (is emirleri), gece sayaclari
         InitMarket(); // GameState.Market.cs: Borsa, Katalog, Tohum Carki (ekonomi2)
+        InitHolding(); // GameState.Holding.cs: Bereket Holding (holding, M3)
     }
 
     /// <summary>Odeme hesaba gecer (Kargo Rampasi; ilk satis aninda, sonrakiler 60 sn sonra).</summary>

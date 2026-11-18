@@ -1,0 +1,41 @@
+Godot Engine v4.7.2.stable.mono.official.ed1daf0bf - https://godotengine.org
+
+TEST menu
+MENU main
+MENUTEST press 'YENİ OYUN'
+MENUTEST press 'YUVA 1  ·  boş'
+MUSIC ready day=yes layers=3/3 bar=2.00s
+PLAYER model anims: carry,cheer,crouch_walk,eat,getup_back_pose,getup_front_pose,hurt,idle,jump,jump_air,jump_land,jump_start,kneel,knockdown,plant,push,run,shock_fall,sleep,sprint,walk,walk_casual,wave
+AUDIO sounds=60 playable=60 variant_files=180 m0_only=0 silent=0 placeholder=0
+AUDIO ok 60/60
+POFUDUK anims: pose/attack1,pose/attack2,pose/eat,pose/hit,pose/idle,pose/rest,pose/run,pose/walk,preset_quadruped_walk
+BUILD kit pieces=28
+GAME start slot=yuva1 load=-
+HELD capa
+MUSIC Silence -> Day
+ZIPZIP herd size=3 at=30,-24 herds=1
+ZIPZIP herd size=3 at=8,19 herds=2
+ZIPZIP herd size=2 at=33,3 herds=3
+SUNA line=giris_1 voice=yes
+HATCH intro done
+MENUTEST press 'ANA MENÜ'
+SAVE ok slot=yuva1 reason=cikis bytes=3263 sections=23 day=1
+MENU main
+MENUTEST press 'DEVAM'
+MENU load yuva1 from C:/Users/uruskan/AppData/Roaming/Godot/app_userdata/Kabarma/test/menu_23720_425175\yuva1\world.kbs
+MUSIC ready day=yes layers=3/3 bar=2.00s
+PLAYER model anims: carry,cheer,crouch_walk,eat,getup_back_pose,getup_front_pose,hurt,idle,jump,jump_air,jump_land,jump_start,kneel,knockdown,plant,push,run,shock_fall,sleep,sprint,walk,walk_casual,wave
+AUDIO sounds=60 playable=60 variant_files=180 m0_only=0 silent=0 placeholder=0
+AUDIO ok 60/60
+POFUDUK anims: pose/attack1,pose/attack2,pose/eat,pose/hit,pose/idle,pose/rest,pose/run,pose/walk,preset_quadruped_walk
+BUILD kit pieces=28
+CHARACTER yuklendi 0, eksik 0 [], bilinmeyen 0 [], goc 0
+GAME start slot=yuva1 load=1
+LOAD ok day=1 yuklendi 23, eksik 0 [], bilinmeyen 0 [], goc 0
+HELD capa
+MUSIC Silence -> Day
+ZIPZIP herd size=2 at=-20,4 herds=1
+ZIPZIP herd size=2 at=50,-13 herds=2
+ZIPZIP herd size=2 at=-11,19 herds=3
+SAVE ok slot=yuva1 reason=cikis bytes=3265 sections=23 day=1
+RESULT ok menu new->esc->menu->devam->close

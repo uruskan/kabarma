@@ -445,6 +445,14 @@ Hasar türleri: Darbe, Kesme, Ateş, Buz, Şok, Zehir, Maya. Her yaratığın za
 - **Zırh:** `azaltma = zırh / (zırh + 100)`.
 - **Zayıf nokta:** Kabarmış yaratıklarda parlayan maya kesesi; vuruş ×2.
 - **Dost ateşi** kapalıdır (dünya ayarı). İtme, fırlatma ve ezilme her zaman açıktır.
+- **M3 uygulaması:** Sayılar `data/combat.json`'da, kural `src/Kabarma.Sim/Combat.cs` ve `Status.cs`'te; bağlanma [TEKNIK.md](TEKNIK.md) §3.1'de.
+  - Azaltma sırası: türün zayıflık ya da direnç çarpanı → zırh → kalkan ve dost ateşi.
+  - Yanık ve zehir hasarını zırh azaltmaz.
+  - Donma 3 yığında 2 saniye kilitler.
+  - Şok zinciri en çok iki hedefe sıçrar, hasarın %60'ını taşır ve yeniden sıçramaz.
+  - Zehir yığılır.
+  - Kabarık, azami canın üçte biri kadar Maya hasarıyla %200 boya varır ve patlar: çevreye azami canın yarısı kadar Darbe hasarı verir, kendi de o kadar hasar alır.
+  - Çapa başlıklarında Tırpan Işını Kesme, Çivi Tabancası Darbe hasarı verir.
 
 ### 16.2 Düşman davranışları
 
@@ -539,6 +547,20 @@ Kabarma gecesi Perde iner. Hedefler:
 | Şube Çekirdeği | Yok edilirse büyük ödül; kamp 3 gün sonra 1. seviyeden yeniden kurulur, Husumet sıfırlanır |
 
 Şafakta Perde geri gelir ve içeride kalan oyuncu dışarı fırlatılır; elindeki ganimet onda kalır. Evde kalmak ile baskına gitmek arasındaki seçim, ekibi bölmenin ya da savunmayı otomatikleştirmenin gerekçesidir.
+
+### 19.4.1 M3 netleştirmeleri (holding akışı, 18 Kasım 2026)
+
+Yukarıdaki kuralların belgede açık kalan yerleri; sayılar `game/data/holding.json`'da.
+
+- **Yer:** M2–M3 haritası ±320 m olduğundan 600 m sığmaz. 1. kamp Sis Korusu kenarında, Ocak'tan en az 250 m uzakta sabit bir yerdedir (veride `anchor`). 600 m kuralı büyük harita (M4) gelince geri döner.
+- **"İlk gerçek Kabarma":** Küçük Kabarma (ilk gece, öğretici) sayılmaz. Kamp ilk gerçek Kabarma'nın ertesi sabahı kurulur.
+- **Seviye:** Kamp 1. seviyede kurulur. Baskın yemediği her 5 günde bir seviye atlar; oyuncunun gece baskını (kampa en az bir isabet) bu sayacı sıfırlar. Tavan `min(10, Ocak basamağı × 2)`; M3'te Ocak T2, yani en fazla 4. Bölmeler aşağı yuvarlanır: `L/2`, `L/3`, `L/2 + 2`.
+- **Kervan:** Her sabah saat 8'de (gün oranı 0,27) kamptan yola çıkar, Holding'in harita kenarındaki teslim noktasına gider ve geri döner. Bir araç ve `2 + L/2` bekçi (2–4). Yükü işçilerin topladığı cevher ve bir kredi kasasıdır. Araç ve bütün bekçiler düşerse pusu başarılıdır; yük yere düşer.
+- **Husumet:** Kamp başınadır ve 0'dan başlar. "İhracat geliri" o günkü kargo satışının bin Kredisi başına +1'dir (en fazla +3), ertesi sabah eklenir. −40 onların baskın ekibi oyuncunun tapusuna girdiği anda uygulanır.
+- **Onların baskını:** Husumet 50 ve üstündeyse Kabarma'nın ilk dalgasıyla birlikte kamp yönünden, tapu sınırından girer. Baskın ekibi ustabaşının yönettiği bekçiler ve bir mekaniktir. 1–4. seviyelerde yayadır: kabarık ürünü iki kişi taşır, taşıyanların yürüme hızı yarıya iner. Taşıyan düşerse ürün yerde kalır. Ürün kampa varırsa kaybolur. Kule yoksa sabotaj yapılmaz.
+- **Senin baskının:** Ganimet hedef yıkılınca düşer. Silo: kabarık ürün yerine (M3) Kredi kasası. Atölye: Holding Parçası ve bir plan. Ahır: nadir cins hayvan (hayvan akışının arayüzü gelene kadar Kooperatif deposunda sayılır). Şube Çekirdeği: Silo, Atölye ve Ahır yıkılmadan vurulamaz.
+- **Perde:** kamp tapusu (`perdeRadius`) içinde gündüz kimse hasar alamaz; içeri giren oyuncu kibarca dışarı itilir. Kabarma gecesi kalkar, şafakta iner; içeride kalan oyuncu dışarı fırlatılır.
+- **Birimler:** M3'te İşçi, Bekçi, Ustabaşı ve Mekanik oynar. Müdür ve Genel Merkez yalnız tanımdır (M5).
 
 ### 19.5 Genel Merkez
 

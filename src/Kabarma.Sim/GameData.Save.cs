@@ -20,6 +20,16 @@ public sealed class SaveFile
     /// <summary>Menudeki yuva sayisi.</summary>
     public int Slots { get; set; } = 6;
     public string DefaultSlot { get; set; } = "yuva1";
+    /// <summary>GDD 25: yeni oyunun dunya ayari.</summary>
+    public string DefaultPreset { get; set; } = "kooperatif";
+    public List<WorldPresetDef> WorldPresets { get; set; } = new();
+}
+
+public sealed class WorldPresetDef
+{
+    public string Id { get; set; } = "";
+    public string Name { get; set; } = "";
+    public string Note { get; set; } = "";
 }
 
 public sealed partial class GameData

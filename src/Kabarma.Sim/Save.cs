@@ -233,6 +233,8 @@ public sealed class SaveManifest
     public ulong Seed { get; set; }
     /// <summary>Oyun gunu (takvim).</summary>
     public int Day { get; set; } = 1;
+    /// <summary>Dunya ayari (GDD 25), menude gosterilir.</summary>
+    public string Preset { get; set; } = "";
     public List<string> Crew { get; set; } = new();
     /// <summary>ISO 8601, UTC.</summary>
     public string SavedUtc { get; set; } = "";
@@ -276,8 +278,10 @@ public sealed class RestoreReport
 public sealed class SaveRegistry
 {
     readonly List<ISaveSection> _sections = new();
-    /// <summary>Son yuklenen kayitta taninmayan bolumler: sonraki kayda aynen yazilir.</summary>
-    readonly SortedDictionary<string, SaveBlob> _carried = new(StringComparer.Ordinal);
+    /// <summary>Son yuklenen kayitta taninmayan bolumler (kapsam basina): sonraki kayda aynen yazilir.</summary>
+    readonly Dictionary<SaveScope, SortedDictionary<string, SaveBlob>> _carried = new();
+
+    SortedDictionary<string, SaveBlob> Carried(SaveScope s) => _carried.TryGetValue(s, out var d) ? d : _carried[s] = new(StringComparer.Ordinal);
 
     public IReadOnlyList<ISaveSection> Sections => _sections;
 
@@ -307,8 +311,7 @@ public sealed class SaveRegistry
             catch (Exception e) when (e is not SaveException) { throw new SaveException($"'{s.Id}' bolumu yazilamadi: {e.Message}", e); }
             g.Sections[s.Id] = new SaveBlob { Version = s.Version, Data = data };
         }
-        if (scope == SaveScope.World)
-            foreach (var (id, b) in _carried) g.Sections.TryAdd(id, b);
+        foreach (var (id, b) in Carried(scope)) g.Sections.TryAdd(id, b);
         g.Manifest.Sections = g.Sections.Select(kv => new SaveSectionInfo { Id = kv.Key, Version = kv.Value.Version, Bytes = kv.Value.Data.Length }).ToList();
         return g;
     }
@@ -343,12 +346,10 @@ public sealed class SaveRegistry
             catch (Exception e) when (e is not SaveException) { throw new SaveException($"'{s.Id}' bolumu okunamadi: {e.Message}", e); }
             r.Loaded.Add(s.Id);
         }
-        if (scope == SaveScope.World)
-        {
-            _carried.Clear();
-            foreach (var (id, b) in g.Sections)
-                if (_sections.All(s => s.Id != id)) { _carried[id] = b; r.Unknown.Add(id); }
-        }
+        var carried = Carried(scope);
+        carried.Clear();
+        foreach (var (id, b) in g.Sections)
+            if (_sections.All(s => s.Id != id)) { carried[id] = b; r.Unknown.Add(id); }
         foreach (var s in ordered) s.AfterRestore();
         return r;
     }
