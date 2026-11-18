@@ -35,7 +35,19 @@ public partial class CreatureTest
         if (BoneRest(rig, "head", frame, out var head) && BoneRest(rig, "tail", frame, out var tail)) f = head - tail;
         else if (BoneRest(rig, "foot_l", frame, out var foot) && BoneRest(rig, "calf_l", frame, out var calf)) f = foot - calf;
         else if (BoneRest(rig, "foot_l", frame, out foot) && BoneRest(rig, "shin_l", frame, out var shin)) f = foot - shin;
-        else return null;
+        else
+        {
+            // Yedek (kuyrugu olmayan ya da ayak ucu bilegin altinda duran modeller: Zipzip, Pofuduk): sol-sag kemik cifti.
+            // Model +Z'ye bakarken sol +X'tedir; on = (sol - sag) x Yukari.
+            f = default;
+            foreach (var pair in new[] { "thigh", "upperarm", "back", "front", "wing" })
+                if (BoneRest(rig, pair + "_l", frame, out var l) && BoneRest(rig, pair + "_r", frame, out var r) && (l - r).Length() > 0.02f)
+                {
+                    f = (l - r).Cross(Vector3.Up);
+                    break;
+                }
+            if (f == default) return null;
+        }
         f.Y = 0;
         return f.Length() < 0.02f ? null : f.Normalized();
     }
@@ -50,7 +62,7 @@ public partial class CreatureTest
             var rig = CreatureRig.Load(def, poses, frame);
             if (rig?.Skeleton == null) { frame.QueueFree(); continue; }
             var f = RestFront(rig, frame);
-            if (f == null) { GD.Print($"FACING {def.Id} on yonu bulunamadi (kemik yok), atlandi"); frame.QueueFree(); continue; }
+            if (f == null) { Fail(def.Id, "modelin on yonu bulunamadi (bas-kuyruk ya da sol-sag kemik cifti yok)"); frame.QueueFree(); continue; }
             n++;
             float deg = Mathf.RadToDeg(Mathf.Acos(Mathf.Clamp(f.Value.Dot(Vector3.Back), -1f, 1f))); // +Z = Godot Back
             GD.Print($"FACING {def.Id} yaw={def.Rig!.Yaw} on-sapma={deg:0}");
