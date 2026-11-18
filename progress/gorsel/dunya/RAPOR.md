@@ -31,16 +31,26 @@ ClearGrass), `Main.cs` (Tests'e `gfxab` satiri), `WorldShots.cs` (cikti klasoru,
 
 ## Acik kalanlar
 
-- **Performans olculemedi.** Olcum sirasinda GPU baska islerle %100 doluydu (sahibin oyunu ve diger oturumlarin
-  Godot'lari; bir ara benim takilan bir `gfxab` surecim de, kapattim). Tek temiz olcum: `us` yer imi `dusuk` 9,8 ms.
-  `yuksek` sonra hafifletildi (PCSS kapali, SSIL ultraya, ot 22/50 m) ama temiz makinede yeniden olculmedi. Bos
+- **Varsayilan kademenin (`yuksek`) kare hizi dogrulanmadi.** Olcum sirasinda GPU baska islerle %100 doluydu (sahibin
+  oyunu ve diger oturumlarin Godot'lari; bir ara benim takilan bir `gfxab` surecim de, kapattim). `us` yer iminde art
+  arda: `dusuk` 9,8 ms, `yuksek` 23,8 ms (baslarken 2 baska Godot calisiyordu). Bu olcumden SONRA `yuksek`
+  hafifletildi (PCSS kapali, SSIL ultraya, ot 22/50 m, golge 110 m, MSAA yerine SMAA) ama yeniden olculmedi. Butceyi
+  tutmazsa yedek kademe `orta`. Bos
   makinede: `--test=perf` (4 yer imi) ve `--test=gfxab` (hangi ozellik ne kadar). 11,1 ms'yi asarsa ilk adaylar:
   uzak ot halkasi (`grassFar`), 4 bolmeli golge, `terrainDetail`.
 - **agy kullanilamadi**: komut izin sinifinda reddedildi. Dokular koddan; gercek fotograf tabanli dokular ayni dosya
   adlari ve kanal duzeniyle konabilir (KAYNAK.md). Uretim istegi gerekirse: 5 dosenebilir arazi dokusu.
 - Agaclar, kayalar ve sus bitkileri hala toon/duz renkli (gorsel-model akisinin isi); yeni isikla birlikte en cok
   goze batan sey bunlar.
-- `biomes.json` isik degerleri SANAT-SES §2 tablosundan ayrildi (ogle azimutu 165, enerjiler); belge guncellenmeli.
 - Gun batiminda on plan biraz karanlik; `gunbatimi.ambient` 0.5 -> 0.6 denenebilir.
+- `ultra` hic calisir gorulmedi: sahibin oyunu VRAM'in ~7/8 GB'ini tutarken goruntu suresi doldu (hata yok, yalniz
+  cok yavas). Golge atlasi 8192'den 4096'ya indirildi. Bos makinede bir kez `--preset=ultra` ile bakilmali.
+- Tarla katmani (`MarkSoil`), yapi altindan ot kalkmasi (`ClearGrass`) ve ayakla otun egilmesi oyunda gorulmedi
+  (`--shots_quick` bos us, bot yok). 1 m tarla karesi 0,586 m denetim hucresine duser: kenari keskin kare degil,
+  yumusak leke olur.
+- `SANAT-SES.md` §2 gunduz renkleri ve `TEKNIK.md` §10 "Yuksek" satiri yeni degerlere guncellendi;
+  `BiomesDataTests` buna gore (166/166 gecti). Gunes yukseklikleri ve sabah sisi x1,5 kurali korundu.
+- `--headless --test=build` gecti (75 yerlestirme, 0 hata). `sonra/` goruntuleri gunes yukseklikleri belgedeki
+  12/62/4 dereceye geri alinmadan once cekildi (13/58/5); fark kucuk.
 - Oyun icinden kademe secimi yok (yalniz `--preset=` ve `graphics.json` `default`).
 - Tam `tools/test.ps1` ve bot kosulmadi (yeni calisma modu); yalniz derleme ve goruntu kosulari.

@@ -209,7 +209,7 @@ Host ya da sunucu yetkilidir. İstemci istekleri mesafe, bekleme süresi ve enva
 
 **Çizim:** Forward+. Bitki örtüsü, ekinler ve yapı parçaları örneklenmiş (MultiMesh). Sürü üyeleri köşe animasyon dokusuyla tek çizim çağrısında. Gölge iki bölümlü; SDFGI kapalı; hafif SSAO ve glow; yükseklik ve mesafe sisi. Düşük ayarda gölge mesafesi ve bitki yoğunluğu yarıya iner.
 
-**"Yüksek" ön ayarı** (önerilen donanım sütunu ve M1'in ≥ 90 FPS ölçümü): 1920×1080, çözünürlük ölçeği 1,0 · MSAA 2× · yönlü gölge 2 bölüm, 4096 atlas, 150 m · SSAO açık (yarım çözünürlük) · glow açık · SDFGI, VoxelGI, SSIL, SSR ve hacimsel sis kapalı · yükseklik ve mesafe sisi açık · bitki yoğunluğu %100, ot yarıçapı 40 m · dikey eşitleme kapalı, kare sınırı yok.
+**"Yüksek" ön ayarı** (önerilen donanım sütunu ve M1'in ≥ 90 FPS ölçümü): 1920×1080, çözünürlük ölçeği 1,0 · MSAA yok, SMAA · yönlü gölge 4 bölüm, 4096 atlas, 110 m · SSAO açık (yarım çözünürlük) · glow açık · SDFGI, VoxelGI, SSIL, SSR ve hacimsel sis kapalı · yükseklik ve mesafe sisi açık · bitki yoğunluğu %100, ot yakın halka 22 m, uzak halka 50 m · dikey eşitleme kapalı, kare sınırı yok. Kademeler `graphics.json`: düşük, orta, yüksek, ultra (18 Kasım görsel düzeltmesi).
 
 **M1 ölçümü:** dört yer iminin her birinde ([SANAT-SES.md](SANAT-SES.md) §9) öğle saatinde 60 sn ve ilk gecenin son dalgası boyunca; her birinde ortalama kare süresi ≤ 11,1 ms (≥ 90 FPS). Gündüzün 8,3 ms bütçesi M6 performans turunun hedefidir.
 

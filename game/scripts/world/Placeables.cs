@@ -207,7 +207,7 @@ public partial class Furniture : Node3D
 
     public override void _Ready()
     {
-        Callable.From(() => _d.World?.ClearGrass(GlobalPosition, Def.Radius + 0.2f)).CallDeferred(); // altindaki ot kalkar (gorsel-dunya; konum AddChild'dan sonra verilir)
+        Callable.From(() => { if (IsInstanceValid(this) && IsInsideTree()) _d.World?.ClearGrass(GlobalPosition, Def.Radius + 0.2f); }).CallDeferred(); // altindaki ot kalkar (gorsel-dunya; konum AddChild'dan sonra verilir)
         var vis = PlaceableVisuals.Make(Def);
         AddChild(vis);
         _lid = vis.FindChild("lid", true, false) as Node3D;

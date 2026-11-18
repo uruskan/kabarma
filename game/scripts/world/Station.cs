@@ -34,7 +34,7 @@ public partial class Station : Node3D
 
     public override void _Ready()
     {
-        Callable.From(() => _d.World?.ClearGrass(GlobalPosition, Def.Radius + 0.3f)).CallDeferred(); // altindaki ot kalkar (gorsel-dunya; konum AddChild'dan sonra verilir)
+        Callable.From(() => { if (IsInstanceValid(this) && IsInsideTree()) _d.World?.ClearGrass(GlobalPosition, Def.Radius + 0.3f); }).CallDeferred(); // altindaki ot kalkar (gorsel-dunya; konum AddChild'dan sonra verilir)
         var vis = MakeVisual(Def);
         AddChild(vis);
         _oven = vis as TasFirin;

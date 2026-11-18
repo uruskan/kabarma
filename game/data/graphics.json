@@ -35,7 +35,7 @@
     "ultra": {
       "name": "Ultra",
       "width": 1920, "height": 1080, "scale": 1.0, "msaa": 2, "smaa": false, "taa": true,
-      "shadowSplits": 4, "shadowAtlas": 8192, "shadowDistance": 200,
+      "shadowSplits": 4, "shadowAtlas": 4096, "shadowDistance": 200,
       "ssao": true, "ssaoHalf": false, "glow": true, "sdfgi": true, "ssil": true, "ssilHalf": false, "ssr": true,
       "volumetricFog": true, "volumetricDensity": 0.006, "distanceFog": true, "heightFog": true,
       "plantDensity": 1.0, "grassRadius": 32, "grassFar": 80, "grassDensity": 1.4,
