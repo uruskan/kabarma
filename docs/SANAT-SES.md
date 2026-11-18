@@ -256,8 +256,8 @@ Müzik durumdan duruma en az iki saniyelik geçişle değişir; aynı parça art
 
 ### 10.3 Suna ve sesler
 
-- **Suna:** orta yaşlı, sakin, kuru bir santral memuru. Asla bağırmaz, asla gülmez; en büyük felakette bile tutanak okur gibi konuşur. Ses, tek bir tasarlanmış sentetik sestir; Türkçe ve İngilizce aynı sesle üretilir.
-- **Telsiz süzgeci** oyunda uygulanır: bant geçiren süzgeç, hafif doyum, başta ve sonda mandal sesi. Bu hem kimliği kurar hem sentetik sesin pürüzlerini örter.
+- **Suna:** sesi genç yetişkin bir kadının sıcak, kadifemsi, hafif boğuk ve çekici sesidir; yavaş, mikrofona yakın, sesinde belli belirsiz bir gülümsemeyle konuşur (sahibin kararı, 18 Kasım 2026: "robot gibi olmasın"). Kişiliği aynı kalır: asla bağırmaz, en büyük felakette bile tutanak okur gibi konuşur. Komiklik, sesin çekiciliği ile metnin kuruluğu arasındaki farktan gelir. Ses, tek bir tasarlanmış sestir (ElevenLabs v4); Türkçe ve İngilizce aynı sesle üretilir. Doğal nefes ve tonlama korunur; tekdüze, makine gibi okuma kabul edilmez.
+- **Telsiz süzgeci** yalnızca başta ve sonda mandal sesidir; sesi boğan bant geçiren süzgeç ve doyum kullanılmaz (sahibin kararı, 18 Kasım 2026). Ses doğal ve yakın duyulur.
 - **Replik dağılımı (dil başına yaklaşık 700):**
 
 | Grup | Adet |

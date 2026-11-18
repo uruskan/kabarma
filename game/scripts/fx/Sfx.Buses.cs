@@ -33,7 +33,7 @@ public static partial class Sfx
 
         var r = _a.Radio;
         int v = AudioServer.GetBusIndex(r.Bus);
-        if (v >= 0)
+        if (v >= 0 && r.Filter)
         {
             Effect<AudioEffectHighPassFilter>(v).CutoffHz = r.HighPassHz;
             Effect<AudioEffectLowPassFilter>(v).CutoffHz = r.LowPassHz;

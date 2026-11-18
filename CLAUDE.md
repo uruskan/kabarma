@@ -10,7 +10,7 @@ Bu bölüm sahibin kurallarıdır ve yukarıdaki Genex sözleşmesiyle çelişti
 
 - Sıra: **önce belge, sonra veri, sonra kod** (URETIM §7). Belgeyle çelişen bir şey gerekiyorsa koda geçmeden önce dur ve raporla.
 - Kurallar motordan bağımsız `src/Kabarma.Sim` içinde ve testli; sayılar `game/data/*.json` içinde, kodda sihirli sayı yok.
-- Kilometre taşı sırası sabittir (URETIM §6). Şu an **M1** (görünüş ve his dilimi). M2'ye ait iş, sahip M1 kapısını açıkça geçmeden yapılmaz.
+- Kilometre taşı sırası URETIM §6'dadır, ama **M1 kapısı kalktı** (sahibin kararı, 18 Kasım 2026, URETIM M1 kararı 22): oyunun tamamı hızla yapılır, sahip sonda oynar ve düzeltme ister. Efor yalnız medium/high (xhigh ve üstü yasak); test hafif, raporlar kısa.
 - "Bitti" = PLAN §7.2'nin altı koşulu. Raporda her koşulu ayrı yaz: geçti / kısmen / yok / M2'de (ortak oyun yarısı ve kayıt, URETIM §6 M1 kapsamı). Sahibin yargısına kalanları (his, dinleme, 30 dk oynama, RTX 2070S FPS) asla "geçti" diye yazma; "sahibin onayını bekliyor" yaz.
 - M1 kapsamı ve kararları: `docs/URETIM.md` §6 "M1 kapsamı ayrıntısı" ve "M1 kararları" tabloları. Önce bunları oku.
 - Yer tutucu varlıklar `data/` içinde işaretlenir (URETIM §3).
@@ -38,7 +38,7 @@ Bu bölüm sahibin kurallarıdır ve yukarıdaki Genex sözleşmesiyle çelişti
 
 ## Paralel çalışma
 
-- Aynı anda birkaç oturum, her biri kendi worktree dalında çalışır. **Dallar main'e birleştirilmez**; sahip kendisi inceleyip birleştirecek. Bu yüzden her dal kendi başına derlenmeli ve yeşil olmalı; başka bir akışın henüz yazmadığı koda dayanma.
+- Aynı anda birkaç oturum, her biri kendi worktree dalında çalışır. Dalları main'e **ana oturum** birleştirir (sahibin kararı, 18 Kasım 2026); alt oturum kendi dalına commit eder, main'e yazmaz. İşe başlamadan ve bitirmeden önce güncel main'i kendi dalına birleştir. Her dal kendi başına derlenmeli ve yeşil olmalı; başka bir akışın henüz yazmadığı koda dayanma.
 - Dosya sahipliği aşağıda. Başka akışın dosyasına dokunman gerekiyorsa küçük, yerel değişiklik yap ve raporda say. Ortak noktalar (`Bot` kurucusundaki `Register` listesi, `WireScenario`, `Events.cs`, `ItemNames.cs`, `Main.Tests`, `tools/test.ps1`, `Capa.Process` içindeki başlık anahtarı, `Hud`/`Director`/`World` `_Ready`/`_Process`, `data/*.json` dizilerine yeni öğe) yalnızca **satır ekleyerek** değişir; var olan satırı yeniden düzenleme.
 - **Ortak kimlikler** (değiştirme, yeniden adlandırma; yeni kimlik satır eklenerek gelir): kaynak `stone`, `wood`, `fiber`, `clay`, `copper_ore`, `copper_ingot`, `wheat`, `egg` (çanta eşyası), `turnip`, `turnip_seed`, `civi` · ürün `civi_tabancasi`, `el_arabasi`, `kargo_kasasi`, `kozde_salgam`, `haslanmis_yumurta`, `sebze_corbasi` · yerleştirilebilir/istasyon `ocak`, `tezgah`, `tas_firin`, `paketleme`, `ocakbasi`, `kargo_rampasi`, `ahsap_kapi`, `sandik`, `uyku_tulumu`, `mesale`, `yemlik`, `folluk`. Türkçe adları `game/scripts/ui/ItemNames.cs`.
 - **Yer tutucu kaynaklar:** `World.Placeholders.cs` kil, bakır, lif ve yabani buğday için geçici düğümler kurar (Kazma ve Biçme ile toplanır). Diğer akışlar bunları gerçek oyun yolundan toplar; dunya akışı gerçekleriyle değiştirir.

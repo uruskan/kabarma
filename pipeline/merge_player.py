@@ -17,8 +17,10 @@ Asamalar:
     kopyalanir; Blender tek bir derili GLB acar ve her klip "OBArmature" yuvasina bagli eylem olur.
  B. Blender: olcegi uygula (Meshy iskeleti 0,01 olcekli, santimetre), yerinde kliplerde kalca kaymasini sil,
     sirt cantasina "Backpack" kemigi ekle (Meshy cantayi kollara ve bacaklara agirliklamis; canta yuruyuste
-    bukuluyordu) ve agirliklari ona aktar, her eylemi NLA izi yapip disa aktar.
- C. Denetim: ciktidaki her beklenen klip var, 0,2 sn'den uzun ve kanalli; Backpack eklemi var. Yoksa cikis 1.
+    bukuluyordu) ve cantanin koselerini tamamen ona ver (kati canta; yalniz sirta degdigi ince serit harmanli),
+    her eylemi NLA izi yapip disa aktar.
+ C. Denetim: ciktidaki her beklenen klip var, 0,2 sn'den uzun ve kanalli; Backpack eklemi var; cantanin kati
+    cekirdegi disa aktarimda korunmus (B'deki kati koselerin en az %90'i ciktida yalniz Backpack'e bagli). Yoksa cikis 1.
 """
 import bpy, sys, os, json, struct, glob, argparse, tempfile
 
@@ -189,7 +191,7 @@ bpy.context.view_layer.objects.active = arm
 bpy.ops.object.transform_apply(location=False, rotation=False, scale=True)
 print("APPLIED scale", k, "-> armature scale", tuple(arm.scale))
 
-# --- Backpack kemigi (cantanin salinimi, SANAT-SES §3.1 "canta ve suslerin salinimi") ---
+# --- Backpack kemigi: cantayi gogse (Spine) kati baglar. Kod bu kemigi oynatmaz; canta sirtta sabit durur. ---
 # Blender ekseninde govde -Y'ye bakar; canta arkada (+Y), y 0,07..0,26, z 0,78..1,30, |x| < 0,27 (olculdu).
 bpy.ops.object.mode_set(mode="EDIT")
 eb = arm.data.edit_bones
@@ -206,23 +208,41 @@ def smooth(e0, e1, x):
     return t * t * (3 - 2 * t)
 
 
-vg = mesh.vertex_groups.get("Backpack") or mesh.vertex_groups.new(name="Backpack")
-mw = mesh.matrix_world
-moved = 0
-for v in mesh.data.vertices:
-    p = mw @ v.co
+def bag_region(p):
+    """Cantanin olculen kutusu icinde olma payi (0..1)."""
     w = smooth(0.075, 0.13, p.y) * smooth(0.72, 0.80, p.z) * (1 - smooth(1.27, 1.33, p.z)) * (1 - smooth(0.25, 0.32, abs(p.x)))
     if p.z > 1.20:
         w *= smooth(0.11, 0.15, p.y)  # kask arkasi (y <= 0,11) cantaya girmez
+    return w
+
+
+# Canta kati (sahip, 18 Kasim: "canta sirta sabit dursun; nefes, salinim, olcek degisimi yok"). Eskiden payin
+# kendisi kadar kismi agirlik veriliyordu: 788 kose kalca, uyluk, kol ve basla paylasiyordu, canta yururken de
+# beklerken de sisip iniyordu. Simdi pay >= BAG_CORE olan koseler (cantanin kendisi) yalniz Backpack'e (1,0) aittir.
+# Pay daha kucukse (cantanin sirta degdigi ince serit) Backpack payi BAG_CORE'a bolunerek surekli artar; ag tek
+# kaynakli yuzey oldugu icin sert sinir catlak ya da gerilme acardi. Backpack, Spine'in canlandirilmayan cocugudur:
+# derileme icin Spine ile ayni hareket eder, yani bu serit de yalniz govdeyle gogus arasinda harmanlanir.
+BAG_CORE = 0.5
+mw = mesh.matrix_world
+vg = mesh.vertex_groups.get("Backpack") or mesh.vertex_groups.new(name="Backpack")
+rigid = fringe = 0
+for v in mesh.data.vertices:
+    w = bag_region(mw @ v.co)
     if w <= 0.01:
         continue
-    for g in v.groups:
-        g.weight *= (1 - w)
-    vg.add([v.index], w, "REPLACE")
-    moved += 1
-print("BACKPACK vertices", moved)
-if moved < 100:
-    fail(f"canta bolgesinde yalnizca {moved} kose bulundu")
+    b = min(1.0, w / BAG_CORE)
+    if b >= 1.0:
+        for gi in [g.group for g in v.groups]:
+            mesh.vertex_groups[gi].remove([v.index])
+        rigid += 1
+    else:
+        for g in v.groups:
+            g.weight *= (1 - b)
+        fringe += 1
+    vg.add([v.index], b, "REPLACE")
+print("BACKPACK vertices", rigid, "kati,", fringe, "temas seridi")
+if rigid < 100:
+    fail(f"canta bolgesinde yalnizca {rigid} kati kose bulundu")
 
 # Tum eylemler NLA'ya: disa aktarim her birini ayri klip yapar. Eylem yuvasi acikca baglanir (Blender 4.4+).
 arm.animation_data_create()
@@ -257,6 +277,52 @@ for e in expected:
 joints = {out_js["nodes"][j].get("name") for s in out_js.get("skins", []) for j in s["joints"]}
 if "Backpack" not in joints:
     problems.append("Backpack eklemi derinin eklem listesinde yok")
+
+
+def read_acc(js, binc, ai):
+    """Erisiciyi kose basina demet listesi olarak okur (normalize tamsayilar 0..1'e cevrilir)."""
+    a = js["accessors"][ai]
+    bv = js["bufferViews"][a["bufferView"]]
+    ct, n = a["componentType"], TYPE_N[a["type"]]
+    fmt = {5120: "b", 5121: "B", 5122: "h", 5123: "H", 5125: "I", 5126: "f"}[ct]
+    elem = COMP_SIZE[ct] * n
+    stride = bv.get("byteStride", elem)
+    start = bv.get("byteOffset", 0) + a.get("byteOffset", 0)
+    scale = {5121: 255.0, 5123: 65535.0}.get(ct) if a.get("normalized") else None
+    out = []
+    for k in range(a["count"]):
+        t = struct.unpack_from("<" + fmt * n, binc, start + k * stride)
+        out.append(tuple(x / scale for x in t) if scale else t)
+    return out
+
+
+out_js2, out_bin = read_glb(args.out)
+partial = full = 0
+for sk_i, sk in enumerate(out_js2.get("skins", [])):
+    bag_j = [i for i, j in enumerate(sk["joints"]) if out_js2["nodes"][j].get("name") == "Backpack"]
+    if not bag_j:
+        continue
+    for nd in out_js2["nodes"]:
+        if nd.get("skin") != sk_i or "mesh" not in nd:
+            continue
+        for prim in out_js2["meshes"][nd["mesh"]]["primitives"]:
+            at = prim["attributes"]
+            sets = [(at[f"JOINTS_{s}"], at[f"WEIGHTS_{s}"]) for s in range(4) if f"JOINTS_{s}" in at]
+            data = [(read_acc(out_js2, out_bin, j), read_acc(out_js2, out_bin, w)) for j, w in sets]
+            for vi in range(len(data[0][0]) if data else 0):
+                tot = bagw = 0.0
+                for js_, ws_ in data:
+                    for jj, ww in zip(js_[vi], ws_[vi]):
+                        tot += ww
+                        if jj == bag_j[0]:
+                            bagw += ww
+                if tot > 0 and bagw / tot >= 0.99:
+                    full += 1
+                elif tot > 0 and bagw / tot > 0.01:
+                    partial += 1
+print(f"RIGID BAG cikti: {full} kati, {partial} harmanli (B: {rigid} kati, {fringe} serit)")
+if full < 0.9 * rigid:
+    problems.append(f"cantanin kati cekirdegi disa aktarimda kayboldu ({full} < {rigid})")
 for n, (d, c) in sorted(durs.items()):
     print(f"OUT {n:12s} {d:6.2f} sn  {c} kanal")
 if problems:

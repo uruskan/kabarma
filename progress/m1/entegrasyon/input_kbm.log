@@ -1,0 +1,162 @@
+Godot Engine v4.7.2.stable.mono.official.ed1daf0bf - https://godotengine.org
+
+TEST input
+MUSIC ready day=no layers=1/3 bar=2.00s
+PLAYER model anims: carry,cheer,crouch_walk,eat,getup_back_pose,getup_front_pose,hurt,idle,jump,jump_air,jump_land,jump_start,kneel,knockdown,plant,push,run,shock_fall,sleep,sprint,walk,walk_casual,wave
+AUDIO sounds=60 playable=17 variant_files=15 m0_only=12 silent=43 placeholder=60
+AUDIO ok 17/60
+POFUDUK anims: pose/attack1,pose/attack2,pose/eat,pose/hit,pose/idle,pose/rest,pose/run,pose/walk,preset_quadruped_walk
+BUILD kit pieces=28
+INPUT driver device=Kbm problems=0 user=C:\Users\uruskan\Documents\GitHub\kabarma\.claude\worktrees\m1-entegrasyon\.tools\run\test\input_user_kbm.json
+BOOT Kabarma MVP
+MUSIC Silence -> Day
+ZIPZIP herd size=2 at=-19,-5 herds=1
+ZIPZIP herd size=2 at=-6,13 herds=2
+ZIPZIP herd size=3 at=-5,-34 herds=3
+BOT step mine t=1.0
+INPUT rebind interact Kbm -> F
+INPUT probe ok device=Kbm interact: E->F->E glyph [F]->[E] last=Kbm user=C:\Users\uruskan\Documents\GitHub\kabarma\.claude\worktrees\m1-entegrasyon\.tools\run\test\input_user_kbm.json
+SUNA line=giris_1 voice=no
+HATCH intro done
+INPUT heads ok device=Kbm n=8 via=keys+wheel
+SUNA line=giris_2 voice=no
+STEP mine -> odun t=6.2
+SUNA line=tas_bitti voice=no
+BOT step odun t=11.1
+SUNA line=odun_basla voice=no
+STEP odun -> ocak t=7.7
+BOT step ocak t=17.4
+SUNA line=ocak_basla voice=no
+STEP ocak -> tezgah t=8.5
+BOT step tezgah t=20.6
+PLACED tezgah at (-2.5560985, 0, 4.7889805)
+STEP tezgah -> tarla t=8.9
+BOT step tarla t=22.0
+SUNA line=ocak_bitti voice=no
+SUNA line=tezgah_basla voice=no
+ORDER ciraklik step=1 done (defter kapali)
+SUNA line=tarla_basla voice=no
+STEP tarla -> agil t=10.6
+BOT step agil t=29.0
+TAS_FIRIN parts: base,body,chimney,panel,door,door_handle door=True
+SUNA line=tarla_bitti voice=no
+SUNA line=agil_basla voice=no
+BOT aim cit err=1.37 valid=True reason= mode=ground
+BOT place cit at (-4.466056, 0, -8.714815)
+BUILT cit pieces=1
+BOT place cit at (-2.9660559, 0, -7.2148113)
+BUILT cit pieces=2
+BOT aim bahce_kapisi err=2.12 valid=True reason= mode=snap
+BOT aim bahce_kapisi err=1.26 valid=True reason= mode=ground
+BOT place bahce_kapisi at (-2.9660559, 0, -4.2148113)
+BUILT bahce_kapisi pieces=3
+TAS_FIRIN parts: base,body,chimney,panel,door,door_handle door=True
+BOT place cit at (-4.466056, 0, -2.7148113)
+BUILT cit pieces=4
+BOT aim cit err=2.12 valid=True reason= mode=snap
+BOT place cit at (-5.966056, 0, -4.2148113)
+BUILT cit pieces=5
+BOT place cit at (-5.966056, 0, -7.2148113)
+BUILT cit pieces=6
+PEN area=18.0 cells=2 walls=6 gate=True gidak=4
+STEP agil -> gidak t=20.6
+GIDAK appears at (0.5694785, 0, 2.1491504)
+SUNA line=agil_bitti voice=no
+BOT step gidak t=68.8
+SUNA line=gidak_basla voice=no
+TAS_FIRIN parts: base,body,chimney,panel,door,door_handle door=True
+BOT place folluk at (-5.1660557, 0, -6.3148117)
+PLACED folluk at (-5.5901213, 0, -6.011876)
+TAS_FIRIN parts: base,body,chimney,panel,door,door_handle door=True
+BOT place yemlik at (-4.4660563, 0, -7.814811)
+PLACED yemlik at (-4.989702, 0, -8.181925)
+FEEDER +10 wheat -> 10
+GIDAK fed trust=1.00 tame=True
+GATE bahce_kapisi open
+GIDAK penned area=18.0 cells=2
+STEP gidak -> night t=34.1
+EGG laid nest at (-2.7643015, 0, -2.530062)
+MUSIC Day -> Silence
+SUNA line=gidak_bitti voice=no
+BOT step night t=123.0
+NEST collected 1 eggs=1
+GATE bahce_kapisi closed
+SUNA line=kabarma_basla voice=no
+NIGHT start n=1
+FIRSTNIGHT ripen=9
+MUSIC Silence -> Kabarma
+SUNA line=gece_alarm voice=no
+NIGHT swell crops=9
+SUNA line=gece_kabarma voice=no
+SUNA line=gece_gidak voice=no
+NIGHT wave 1 count=3
+SUNA line=gece_dalga voice=no
+GIDAK kick to=-0.96,-0.29
+GIDAK kick to=-0.98,-0.18
+GIDAK kick to=-1.00,-0.10
+GIDAK kick to=-0.81,-0.59
+GIDAK kick to=-0.45,0.89
+FENCE hit cit_5 hp=394/400 hits=1
+GIDAK kick to=-0.25,-0.97
+GIDAK kick to=-0.20,-0.98
+GIDAK kick to=-0.77,0.64
+SUNA line=gece_kart voice=no
+NIGHT card catal rank=1
+BOT fence watch done hits=3 t=40.0
+NIGHT wave 2 count=7
+MUSIC layers=2 bar=6
+GIDAK kick to=-0.83,-0.55
+GIDAK kick to=-0.74,-0.67
+GIDAK kick to=-0.70,-0.72
+GIDAK kick to=-0.72,-0.70
+NIGHT card seken rank=1
+NIGHT wave 3 count=11
+MUSIC layers=3 bar=11
+GIDAK kick to=-0.79,-0.61
+GIDAK kick to=-0.94,-0.35
+NIGHT card tez_el rank=1
+GIDAK kick to=-0.45,-0.89
+GIDAK kick to=-0.88,-0.48
+ORDER ciraklik step=4 done (defter kapali)
+CALENDAR morning day=2
+NIGHT oz picked=4 auto=17
+NIGHT dawn kills=21 level=3 maya=48 cards=3 statsBase=True
+NIGHT swollenLeft=9
+FENCE night hits=3 lowest_hp=388/400 knocked_over=0
+STEP night -> sell t=67.5
+MUSIC Kabarma -> Day
+SUNA line=safak voice=no
+BOT step sell t=247.3
+SUNA line=kargo_basla voice=no
+ORDER ciraklik step=3 done (defter kapali)
+PAID turnip S +120 credits=120
+SOLD turnip S +120 credits=120 instant=True
+STEP sell -> hasat t=69.6
+SUNA line=kargo_bitti voice=no
+BOT step hasat t=255.7
+STEP hasat -> yemek t=70.0
+HARVEST 8 total=8 turnips=56
+BOT step yemek t=257.1
+SUNA line=siradaki_is voice=no
+REPORT shown night=1 kills=21 maya=48 level=3 cards=seken:1,tez_el:1,catal:1 swollen=9 eaten=0 sold=120 defter=True
+SUNA line=yemek_basla voice=no
+TAS_FIRIN parts: base,body,chimney,panel,door,door_handle door=True
+SUNA line=yemek_basla voice=no
+PLACED ocakbasi at (-9.101778, 0, -0.92638016)
+QUEUED sebze_corbasi
+PRODUCED sebze_corbasi civi=40 ingot=0 soup=1
+ATE sebze_corbasi
+STEP yemek -> bakir_kil t=78.0
+BOT step bakir_kil t=289.5
+SUNA line=bakir_kil_basla voice=no
+ZIPZIP herd size=2 at=-8,-33 herds=1
+ZIPZIP herd size=2 at=-36,-17 herds=2
+ZIPZIP herd size=3 at=-5,-25 herds=3
+STEP bakir_kil -> firin t=84.3
+SUNA line=firin_basla voice=no
+BOT step firin t=314.4
+TAS_FIRIN parts: base,body,chimney,panel,door,door_handle door=True
+TAS_FIRIN parts: base,body,chimney,panel,door,door_handle door=True
+PLACED tas_firin at (-5.6445518, 0, 6.169174)
+EGG laid nest at (-5.0892406, 0, -6.0872254)
+RESULT fail input stuck step=firin age=240 device=Kbm op=- queue=0 aimErr=0.1deg miss=0.07m aim=(-5.6445518, 1, 6.169174) hit=(-4.9799385, 1.1619874, 6.0433493) node=@StaticBody3D@3239 muzzle->hit=1.4 pos=(-3.087406, 0.00077211857, 6.39955) move=(0, 0, 0) fire=False/False pressed=False head=Bicme menu=False wheel=False lock=False look=(0, 0) sent= bag=10/20 events=8613

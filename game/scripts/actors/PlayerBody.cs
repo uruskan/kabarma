@@ -11,8 +11,9 @@ namespace Kabarma.Game;
 ///  3. bas ve govdenin bakis yonune donmesi (aci omurgaya paylastirilir; kalani LookAtModifier3D),
 ///  4. geri tepme (omurga geriye seker),
 ///  5. yurume ustune katmanlar: el arabasi itme (push_cart) ve suda yurume (wade),
-///  6. canta yayi (Backpack kemigi, ivmeye gecikmeli tepki),
-///  7. ayaklarin zemine oturmasi: ayak altindan isin, kalca inisi ve bacak IK hedefleri (TwoBoneIK3D sonra cozer).
+///  6. ayaklarin zemine oturmasi: ayak altindan isin, kalca inisi ve bacak IK hedefleri (TwoBoneIK3D sonra cozer).
+/// Canta bilerek oynatilmaz (sahip, 18 Kasim: "canta sirta sabit dursun"): Backpack kemigine burada hic yazilmaz;
+/// canta merge_player.py'de gogse (Spine) kati agirliklanir ve sirtla birlikte tek parca hareket eder.
 /// Godot her karede degistirilmemis pozu geri yukler; buradaki donusler birikmez.
 /// Girdiler PlayerRig.Update'ten gelir (fizik karesi), uygulama iskeletin guncelleme karesinde.
 /// </summary>
@@ -31,9 +32,6 @@ public partial class PlayerBody : SkeletonModifier3D
     public Node3D[] FootTargets = new Node3D[2], KneePoles = new Node3D[2];
 
     float _push, _wade, _foot, _pelvis, _lean, _bank;
-    float _bagPitch, _bagRoll, _bagPitchV, _bagRollV;
-    Vector3 _bagPrev, _bagVel, _bagAcc;
-    bool _bagInit;
     int _hips = -1, _bag = -1;
     int[] _spine = new int[0];
     readonly int[] _feet = { -1, -1 }, _knees = { -1, -1 };
@@ -73,7 +71,6 @@ public partial class PlayerBody : SkeletonModifier3D
     public void BlendFrom(Quaternion[] localRots, Vector3 hipsPos, float seconds)
     {
         _snap = localRots; _snapHips = hipsPos; _snapT = 0f; _snapDur = Mathf.Max(0.05f, seconds);
-        _bagInit = false; _bagPitch = _bagRoll = _bagPitchV = _bagRollV = 0f; // govde yer degistirdi: canta ivmesi sifirdan
     }
 
     public bool HasBag => _bag >= 0;
@@ -125,10 +122,7 @@ public partial class PlayerBody : SkeletonModifier3D
         if (_push > 0.001f) foreach (var (b, d) in PushPose) OverrideDir(s, Bone(b), d, _push);
         if (_wade > 0.001f) foreach (var (b, d) in WadePose) OverrideDir(s, Bone(b), d, _wade);
 
-        // 6. Canta yayi
-        if (_bag >= 0) BagSpring(s, dt);
-
-        // 7. Ayak IK'si
+        // 6. Ayak IK'si
         FootIk(s, dt);
     }
 
@@ -151,28 +145,6 @@ public partial class PlayerBody : SkeletonModifier3D
         var arc = PlayerPoses.Arc(cur, want.Normalized());
         RotateGlobal(s, b, Quaternion.Identity.Slerp(arc, Mathf.Clamp(w, 0f, 1f)));
     }
-
-    void BagSpring(Skeleton3D s, float dt)
-    {
-        var xf = s.GlobalTransform;
-        var p = xf * s.GetBoneGlobalPose(_bag).Origin;
-        if (!_bagInit || p.DistanceTo(_bagPrev) > 1.5f) { _bagPrev = p; _bagVel = Vector3.Zero; _bagAcc = Vector3.Zero; _bagInit = true; }
-        var v = (p - _bagPrev) / dt;
-        var a = ((v - _bagVel) / dt).LimitLength(40f);
-        _bagAcc = _bagAcc.Lerp(a, Mathf.Min(1f, dt * 20f)); // gurultuyu suz
-        _bagPrev = p; _bagVel = v;
-        var am = xf.Basis.Orthonormalized().Inverse() * _bagAcc;
-        float tp = Mathf.Clamp(Def.BagGain * am.Z, -Def.BagMaxPitch, Def.BagMaxPitch);
-        float tr = Mathf.Clamp(-Def.BagGain * am.X, -Def.BagMaxRoll, Def.BagMaxRoll);
-        _bagPitchV += (-Def.BagStiffness * (_bagPitch - tp) - Def.BagDamping * _bagPitchV) * dt;
-        _bagRollV += (-Def.BagStiffness * (_bagRoll - tr) - Def.BagDamping * _bagRollV) * dt;
-        _bagPitch = Mathf.Clamp(_bagPitch + _bagPitchV * dt, -Def.BagMaxPitch, Def.BagMaxPitch);
-        _bagRoll = Mathf.Clamp(_bagRoll + _bagRollV * dt, -Def.BagMaxRoll, Def.BagMaxRoll);
-        RotateGlobal(s, _bag, new Quaternion(Vector3.Right, _bagPitch) * new Quaternion(new Vector3(0, 0, 1), _bagRoll));
-    }
-
-    /// <summary>Son karedeki canta acisi (sinama ve goruntu icin).</summary>
-    public Vector2 BagAngles => new(_bagPitch, _bagRoll);
 
     void FootIk(Skeleton3D s, float dt)
     {
