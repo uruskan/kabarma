@@ -11,7 +11,7 @@ namespace Kabarma.Game;
 ///   1. Savas Agili Bayragi agila konur (PenSystem.PlaceProp), Pofuduk'a Savasci rolu (panelin SetRole'u).
 ///   2. Homur: Eyerlik'in E eylemi eyer takar (RanchSystem.PropAction), panelin "Bin"i (MountUp), oyuncu yurur, binek
 ///      altinda tasinir ve yol sayilir; Baglama Diregi yaninda inilince baglanir.
-///   3. Ahir Zili Dalli'yi cagirir; kapali kapida duvar onu durdurur (evcil WildCreature duvar kirpmasi), kapi acilinca
+///   3. Ahir Zili Hu'yu cagirir; kapali kapida duvar onu durdurur (evcil WildCreature duvar kirpmasi), kapi acilinca
 ///      girer ve kayit olur.
 ///   4. Kucuk Kabarma (F1 yolu, RestartKucukKabarma): Pofuduk kabarir ve savas govdesi alir, bagli Homur saklanir;
 ///      gelistirici vurusu (Ranch.Hit) Pofuduk'u bayiltir; safakta agilinda yorgun uyanir.
@@ -75,7 +75,7 @@ public partial class SavasHayvanTest : Node
         _pen = _d.Pens.Pens.FirstOrDefault(p => p.HasGate);
         _pof = Find("pofuduk");
         _homur = Find("homur");
-        _dalli = Find("dalli");
+        _dalli = Find("hu"); // zil: agilda yer olan tur (18 m2: Gidak 4 + Pofuduk 9 + Hu 4)
         if (_pen == null || _pof == null || _homur == null || _dalli == null) { _fails.Add($"kurulum: pen={_pen != null} pof={_pof != null} homur={_homur != null} dalli={_dalli != null}"); Finish(); return; }
         Say($"actors homur={_homur.Host.GetType().Name} dalli={_dalli.Host.GetType().Name} pof={_pof.Host.GetType().Name}");
         // 1. Savas Agili
@@ -114,11 +114,13 @@ public partial class SavasHayvanTest : Node
                 return;
             case 1:
                 // 5 sn duz yuru (agildan uzaga)
-                var away = P.GlobalPosition - new Vector3(_pen.Centroid.X, P.GlobalPosition.Y, _pen.Centroid.Z); away.Y = 0;
-                P.MoveOverride = away.LengthSquared() > 0.01f ? away.Normalized() : Vector3.Forward;
+                // agildan acik kapidan disari, 25 m uzaga (duvarin etrafindan yol: PenSystem.Route)
+                var dest = _rideStart + (_rideStart - new Vector3(_pen.Centroid.X, _rideStart.Y, _pen.Centroid.Z)).Normalized() * 25f;
+                var way = _d.Pens.Route(P.GlobalPosition, dest, 0.45f) - P.GlobalPosition; way.Y = 0;
+                P.MoveOverride = way.LengthSquared() > 0.01f ? way.Normalized() : Vector3.Zero;
                 _diagT -= dt;
                 if (_diagT <= 0) { _diagT = 1f; Say($"diag ride p={P.GlobalPosition} v={P.Velocity.Length():0.00} mo={P.MoveOverride} lock={P.MovementLocked} ui={P.UiCapture} down={P.Down} phys={P.IsPhysicsProcessing()} mode={P.ProcessMode} paused={GetTree().Paused} speed={P.SpeedMult:0.00} floor={P.IsOnFloor()}"); }
-                if (_st < 5f) return;
+                if (_st < 8f) return;
                 P.MoveOverride = Vector3.Zero;
                 float moved = new Vector2(P.GlobalPosition.X - _rideStart.X, P.GlobalPosition.Z - _rideStart.Z).Length();
                 float gap = new Vector2(P.GlobalPosition.X - _homur.Host.GlobalPosition.X, P.GlobalPosition.Z - _homur.Host.GlobalPosition.Z).Length();
@@ -146,7 +148,7 @@ public partial class SavasHayvanTest : Node
         {
             case 0:
                 if (gate != null) _d.Pens.SetGate(gate, false);
-                _dalli.Animal.Trust = 1f; // GELISTIRICI: bogurtlen dunyada yok
+                _dalli.Animal.Trust = 1f; // GELISTIRICI: Hu yumurtadan (Kulucka) evcillesir, kanca zincir akisinda
                 _dalli.Animal.Registered = false;
                 var bellAt = new Vector3(_pen.Centroid.X, 0, _pen.Centroid.Z) + new Vector3(-0.8f, 0, 0.8f);
                 var bell = Place("ahir_zili", bellAt);
@@ -156,7 +158,7 @@ public partial class SavasHayvanTest : Node
                 var (act, label) = R.PropAction(bell);
                 Check(act != null && label == "Zili çal", "zil eylemi");
                 act?.Invoke();
-                Check(_dalli.Animal.Called, "Dalli cagrildi");
+                Check(_dalli.Animal.Called, "Hu cagrildi");
                 _bellStage = 1; _st = 0;
                 return;
             case 1:
@@ -170,7 +172,7 @@ public partial class SavasHayvanTest : Node
                 return;
             default:
                 _diagT -= (float)GetProcessDeltaTime();
-                if (_diagT <= 0) { _diagT = 5f; Say($"diag bell dalli={_dalli.Host.GlobalPosition} called={_dalli.Animal.Called} tame={_dalli.Animal.Tame} reg={_dalli.Animal.Registered} driven={_dalli.Driven} gate={gate?.Open} inpen={_d.Pens.PenAt(_dalli.Host.GlobalPosition) != null} call=({_dalli.Animal.CallX:0.0},{_dalli.Animal.CallZ:0.0}) cmd={_dalli.Animal.Command} hidden={_dalli.Animal.Hidden}"); }
+                if (_diagT <= 0) { _diagT = 5f; Say($"diag bell hu={_dalli.Host.GlobalPosition} called={_dalli.Animal.Called} tame={_dalli.Animal.Tame} reg={_dalli.Animal.Registered} driven={_dalli.Driven} gate={gate?.Open} inpen={_d.Pens.PenAt(_dalli.Host.GlobalPosition) != null} call=({_dalli.Animal.CallX:0.0},{_dalli.Animal.CallZ:0.0}) cmd={_dalli.Animal.Command} hidden={_dalli.Animal.Hidden}"); }
                 if (!_dalli.Animal.Registered && _st < 90f) return;
                 Check(_dalli.Animal.Registered && !_dalli.Animal.Called, $"zille agila dondu ve kayit oldu ({_st:0} sn)");
                 if (gate != null) _d.Pens.SetGate(gate, false);
@@ -193,7 +195,7 @@ public partial class SavasHayvanTest : Node
                 Check(Sim.AtWar, "Kabarma: savas basladi");
                 Check(_pof.Animal.War != null && _pof.Animal.War.Team == CombatTeam.Player, $"Pofuduk kabardi (can {_pof.Animal.War?.MaxHp:0})");
                 Check(_homur.Animal.Hidden && !_homur.Host.Visible, "direkteki Homur saklandi");
-                Check(_dalli.Animal.Hidden, "ahirdaki (Savasci olmayan) Dalli saklandi");
+                Check(_dalli.Animal.Hidden, "ahirdaki (Savasci olmayan) Hu saklandi");
                 _nightStage = 2; _st = 0;
                 return;
             case 2:
