@@ -66,7 +66,9 @@ Direnç yetmiyorsa dayanıklılık yenilenmez ve saniyede 1–3 can gider. Hiçb
 
 ## 4. Çapa
 
-Oyuncunun elindeki tek alet. Bütün işler ve silahlar başlık olarak takılır. Karakter Çapa'yı hep aynı pozda tutar; hedefe kol IK'sıyla döner.
+Oyuncunun ana aleti. Bütün işler ve silahlar başlık olarak takılır. Çapa kemerdeki bir eşyadır (başta 1. yuvada); 1–8 ile seçilir, başka yuva seçilince elden iner (sahibin kararı, 18 Kasım 2026; [URETIM.md](URETIM.md) §6 M1 kararı 23). Karakter Çapa'yı hep aynı pozda tutar; hedefe kol IK'sıyla döner.
+
+- **Elde tutulan öbür eşyalar** (kemerden): yerleştirilebilir (hayalet görünür, sol tık kurar, R döndürür), İnşa Planı (yapı parçaları, aşağıda §7), yemek (sol tık yer), tohum, Meşale. Boş yuva seçilirse eller boştur; E ile etkileşim her durumda çalışır.
 
 | Çapa | Gereken Ocak | Güç çarpanı | Silah yuvası | Başlık başına çip yuvası |
 |---|---|---|---|---|
@@ -77,7 +79,7 @@ Oyuncunun elindeki tek alet. Bütün işler ve silahlar başlık olarak takılı
 | Mk.V | T5 | 4,5 | 4 | 3 |
 | Mk.VI | T6 | 6,5 | 5 | 4 |
 
-- **İş başlıkları** (6): Kazma, Biçme, Çekim, Toprak, Sulama, İnşa. Hepsi iniş kapsülünden çıkar, yuva harcamaz ve iş çarkından seçilir. Çapa basamağı ve çipler onları güçlendirir.
+- **İş başlıkları** (5): Kazma, Biçme, Çekim, Toprak, Sulama. Hepsi iniş kapsülünden çıkar, yuva harcamaz ve iş çarkından seçilir. Çapa basamağı ve çipler onları güçlendirir. (İnşa başlığı kalktı; yerine İnşa Planı eşyası, §7.)
 - **Silah başlıkları** (12): [ICERIK.md](ICERIK.md) §6. Aynı anda silah yuvası kadarı takılı durur; Alet Askısı'nda değiştirilir.
 - Başlık değiştirme: yalnız çark (Q basılı; kol: sol tampon basılı). Sayı tuşları 1–8 kemeri seçer, başlık seçmez (sahibin kararı, 18 Kasım 2026; [SANAT-SES.md](SANAT-SES.md) §8.1).
 - **Tarayıcı** başlık değildir; her zaman açılabilen bir moddur. İlk kez taranan her tür, bitki ve maden Veri verir ve Ansiklopedi'ye yazılır.
@@ -88,7 +90,10 @@ Oyuncunun elindeki tek alet. Bütün işler ve silahlar başlık olarak takılı
 
 ## 5. Envanter ve yük
 
-- **Sırt çantası:** 20 yuva; Çapa basamağıyla 24, 30, 36, 42, 48. **Kemer:** 8 yuva.
+- **Sırt çantası:** 20 yuva; Çapa basamağıyla 24, 30, 36, 42, 48. **Kemer:** 8 yuva; seçili yuvadaki eşya eldedir. Başlangıçta 1. yuvada Çapa, 2. yuvada İnşa Planı.
+- **Üretim paneli (Rust tarzı):** Tab envanterinin yanında. Bütün tarifler listelenir; arama ve kategori var. El tarifleri her yerde, istasyon tarifleri yalnız o istasyonun yakınında üretilir (uzaktaysa satır "Tezgâh gerekir" der). Üretim süreli bir kuyruğa girer; kuyruk ekranın sağ altında görünür, iptal edilince malzeme geri döner. İstasyon menüsü (E) aynı paneli o istasyonun tarifleriyle açar.
+- **Eksik malzeme:** Tarif satırında eksik malzeme kırmızıdır ve nereden geldiğini yazar (örnek: "Kil: göl kıyısındaki kil yatakları, Kazma"). "Pusulada göster" en yakın kaynağı pusulaya işaretler.
+- **Yerleştirilebilirler** (Tezgâh, Taş Fırın, Ocakbaşı, Paketleme, Sandık, Uyku Tulumu, Meşale, Yemlik, Folluk, Ahşap Kapı, Kargo Rampası) üretilince envantere eşya olarak girer; kemerden seçilip kurulur.
 - Yığın: kaynak 50, ara ürün 20, yemek 10.
 - **Yük nesneleri** çantaya girmez; dünyada fiziksel durur: kabarık ürün, kargo kasası, büyük leş, kuluçkalık yumurta (yuvadan alınan; Gıdak yumurtası sıradan eşyadır, çantaya girer), paketlenmiş makine ve araç, Ata ganimeti. Çekim başlığıyla, birkaç kişiyle, hayvanla, vinçle ya da araçla taşınır.
 - **Ambardan üretim:** Tapu içinde Ocak'a bağlı bütün depolardaki malzeme tezgâhlarda doğrudan kullanılır.
@@ -116,7 +121,7 @@ Ocak üssün kalbidir. İşlevleri: tapu alanı, doğma noktası, Çan, Maya Kaz
 
 - **Izgara:** 3 m'lik kare; kat yüksekliği 3 m; üçgen parçalar var. İlk temel serbest döner (15° adım), sonrakiler yuvaya oturur.
 - **Tapu dışı:** Kurma tapu dışında da serbesttir (köprü, gözetleme yeri, yol); söküm iadesi orada düşüktür (aşağıda).
-- **Bedel:** Parça bedelleri [ICERIK.md](ICERIK.md) §10.1'de; yerleştirilebilirler İnşa başlığıyla doğrudan kurulur, bedel çantadan düşer.
+- **Bedel:** Parça bedelleri [ICERIK.md](ICERIK.md) §10.1'de. Yapı parçaları (temel, duvar, kapı kasası, tavan, merdiven) **İnşa Planı** eşyasıyla kurulur: plan eldeyken sağ tık basılı parça çarkını açar, sol tık kurar, bedel çantadan düşer. Yerleştirilebilirler önce üretilir, sonra kemerden kurulur (§5).
 - **Malzemeler:**
 
 | Malzeme | Basamak | Parça canı | En fazla yatay açıklık |
@@ -128,7 +133,7 @@ Ocak üssün kalbidir. İşlevleri: tapu alanı, doğma noktası, Çan, Maya Kaz
 | Cam (ışık geçirir) | T4 | 300 | 3 parça |
 
 - **Taşıma dengesi:** Her parça en yakın temele olan destek mesafesini hesaplar. Açıklık aşılırsa parça yerleşmez. Desteği yıkılan parçalar fizik nesnesi olarak düşer ve altındakini yere serer.
-- **Yerinde yükseltme:** İnşa başlığıyla; aradaki malzeme farkı ödenir.
+- **Yerinde yükseltme:** İnşa Planı eldeyken parçaya bakıp E basılı tutulur (yükselt, onar, sök çarkı); aradaki malzeme farkı ödenir.
 - **Onarım:** Hasar oranında malzemenin %25'i. **Söküm:** tapu içinde %100, dışında %50 iade.
 - **Boyama:** 16 renk, parça başına.
 - **Kapalı alan:** Üstü ve çevresi kapalı hacim ısıyı, konforu ve yağmuru etkiler.
