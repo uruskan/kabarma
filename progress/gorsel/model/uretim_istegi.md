@@ -1,5 +1,12 @@
 # Üretim isteği: görsel yenileme (gorsel-model akışı, 18 Kasım 2026)
 
+> **Durum (18 Kasım, gece):** üstteki 6 model ana oturumda üretildi (300 kredi, bakiye 10) ve `pipeline/oturt_gorsel.py` ile oturtuldu. Vitrin görüntüleri `progress/gorsel/model/yeni/`.
+> - Kapsül gövdesi kendi kısa ayaklarıyla geldi. Bu yüzden `data/kapsul.json` `leg` boş: Blender ayakları takılmıyor.
+> - Kapı boşluğu ölçüldü: yükseklik 1,05–1,75 m, en 0,8 m, `+Z`'ye bakıyor. Blender kapağı ona göre ayarlandı: menteşe [0, 0.9, 1.42], boy 1,0 m.
+> - El Arabası üç parça geldi: tekne `body`, çerçeve `frame`, teker `wheel`. Soketler `wheel_pivot`, `handle`, `load_slot`.
+> - `AssetsTests` yeni yapıya uyarlandı: kapsülde `hatch` parçası yok; El Arabası'nda tek `handle` soketi var.
+> - Taş Fırın sonraya kaldı (Tripo web havuzu).
+
 Bu dal **hiç kredi harcamadı**. Aşağıdaki üretimleri ana oturum, sahibin onayıyla çalıştırır. Sahip Tripo API bakiyesinin tamamını (310) bu iş için onayladı; liste kaliteye göre yeniden yazıldı.
 
 - Betik: `pipeline/gen_gorsel.py`. Varsayılan `--dry-run`'dır ve kredi harcamaz. Üretim: `python pipeline/gen_gorsel.py --run <ad>`.

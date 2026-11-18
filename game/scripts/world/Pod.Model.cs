@@ -35,6 +35,8 @@ public partial class Pod
         SwapVisual(_rocket, k.Rocket);
         // Govdede kendi 'hatch' parcasi varsa (eski kapsul.glb) Pod._Ready onu menteseye takar; ayri kapak yalniz yeni govdeyle.
         bool bodyHasHatch = _golden?.FindChild("hatch", true, false) != null;
+        // Yeni govde (kapaksiz): kapi boslugu kapak yonune (+Z) donsun.
+        if (_golden != null && !bodyHasHatch && k.BodyYaw != 0) _golden.RotationDegrees += new Vector3(0, k.BodyYaw, 0);
         if (!bodyHasHatch && Assets.Load(k.Hatch) is Node3D hatch)
         {
             foreach (var c in _hatch.GetChildren()) c.QueueFree();

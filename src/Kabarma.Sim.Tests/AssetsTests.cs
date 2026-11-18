@@ -83,10 +83,12 @@ public class AssetsTests
     {
         // TasFirin (door, door_handle, chimney), Pod (hatch), El Arabasi (ekonomi akisi icin tutamak, teker, yuk yuvasi).
         Assert.Equal(new[] { "base", "body", "chimney", "door", "door_handle", "panel" }, A.Assets.Single(a => a.Id == "tas_firin").Parts.OrderBy(p => p, StringComparer.Ordinal));
-        Assert.Contains("hatch", A.Assets.Single(a => a.Id == "kapsul").Parts);
+        // gorsel-model (18 Kasim): kapsul govdesi tek parca; kapak ve ayaklar ayri Blender modelleri (data/kapsul.json,
+        // Pod.Model.cs). El Arabasi'nin yeni parcalamasinda saplar cercevenin icinde: tek 'handle' soketi.
+        Assert.DoesNotContain("hatch", A.Assets.Single(a => a.Id == "kapsul").Parts);
         var cart = A.Assets.Single(a => a.Id == "el_arabasi");
         Assert.Contains("wheel", cart.Parts);
-        Assert.Superset(new HashSet<string> { "wheel_pivot", "handle", "handle_l", "handle_r", "load_slot" }, cart.Sockets.Select(s => s.Name).ToHashSet());
+        Assert.Superset(new HashSet<string> { "wheel_pivot", "handle", "load_slot" }, cart.Sockets.Select(s => s.Name).ToHashSet());
     }
 
     static string GameDir()

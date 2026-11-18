@@ -1,40 +1,43 @@
-00:17:19 | INFO: Data are loaded, start creating Blender stuff
-00:17:19 | INFO: Blender create Mesh node tripo_mesh_a08e6543-d32b-4cba-818a-f1ef68cd26e6
-00:17:19 | INFO: glTF import finished in 0.02s
-C:\Users\uruskan\Documents\GitHub\kabarma\.claude\worktrees\m1-varlik-72a21b\pipeline\clean_asset.py:760: DeprecationWarning: 'Material.use_nodes' is expected to be removed in Blender 6.0
+03:31:39 | INFO: Data are loaded, start creating Blender stuff
+03:31:39 | INFO: Blender create Mesh node tripo_mesh_ce92d478-d4be-4a18-bb89-08ab22720aa1
+03:31:39 | INFO: glTF import finished in 0.07s
+C:\Users\uruskan\Documents\GitHub\kabarma\.claude\worktrees\gorsel-model-bee2cf\pipeline\clean_asset.py:760: DeprecationWarning: 'Material.use_nodes' is expected to be removed in Blender 6.0
   if m and m.use_nodes:
-C:\Users\uruskan\Documents\GitHub\kabarma\.claude\worktrees\m1-varlik-72a21b\pipeline\clean_asset.py:145: DeprecationWarning: 'Material.use_nodes' is expected to be removed in Blender 6.0
+C:\Users\uruskan\Documents\GitHub\kabarma\.claude\worktrees\gorsel-model-bee2cf\pipeline\clean_asset.py:145: DeprecationWarning: 'Material.use_nodes' is expected to be removed in Blender 6.0
   if not mat or not mat.use_nodes:
-00:04.031  render           | Saved: 'C:\Users\uruskan\Documents\GitHub\kabarma\.claude\worktrees\m1-varlik-72a21b\progress\m1\varlik\render\tezgah\tezgah_0.png'
-00:04.094  render           | Saved: 'C:\Users\uruskan\Documents\GitHub\kabarma\.claude\worktrees\m1-varlik-72a21b\progress\m1\varlik\render\tezgah\tezgah_1.png'
-00:04.156  render           | Saved: 'C:\Users\uruskan\Documents\GitHub\kabarma\.claude\worktrees\m1-varlik-72a21b\progress\m1\varlik\render\tezgah\tezgah_2.png'
-00:04.219  render           | Saved: 'C:\Users\uruskan\Documents\GitHub\kabarma\.claude\worktrees\m1-varlik-72a21b\progress\m1\varlik\render\tezgah\tezgah_3.png'
-00:04.281  render           | Saved: 'C:\Users\uruskan\Documents\GitHub\kabarma\.claude\worktrees\m1-varlik-72a21b\progress\m1\varlik\render\tezgah\tezgah_kalinlik_0.png'
-00:04.344  render           | Saved: 'C:\Users\uruskan\Documents\GitHub\kabarma\.claude\worktrees\m1-varlik-72a21b\progress\m1\varlik\render\tezgah\tezgah_kalinlik_1.png'
-00:04.359  render           | Saved: 'C:\Users\uruskan\Documents\GitHub\kabarma\.claude\worktrees\m1-varlik-72a21b\progress\m1\varlik\render\tezgah\tezgah_silhouette64.png'
-00:04.375  render           | Saved: 'C:\Users\uruskan\Documents\GitHub\kabarma\.claude\worktrees\m1-varlik-72a21b\game\assets\models\tezgah\tezgah_icon.png'
+00:16.672  render           | Saved: 'C:\Users\uruskan\Documents\GitHub\kabarma\.claude\worktrees\gorsel-model-bee2cf\progress\m1\varlik\render\tezgah\tezgah_0.png'
+00:16.750  render           | Saved: 'C:\Users\uruskan\Documents\GitHub\kabarma\.claude\worktrees\gorsel-model-bee2cf\progress\m1\varlik\render\tezgah\tezgah_1.png'
+00:16.813  render           | Saved: 'C:\Users\uruskan\Documents\GitHub\kabarma\.claude\worktrees\gorsel-model-bee2cf\progress\m1\varlik\render\tezgah\tezgah_2.png'
+00:16.891  render           | Saved: 'C:\Users\uruskan\Documents\GitHub\kabarma\.claude\worktrees\gorsel-model-bee2cf\progress\m1\varlik\render\tezgah\tezgah_3.png'
+00:16.954  render           | Saved: 'C:\Users\uruskan\Documents\GitHub\kabarma\.claude\worktrees\gorsel-model-bee2cf\progress\m1\varlik\render\tezgah\tezgah_kalinlik_0.png'
+00:17.016  render           | Saved: 'C:\Users\uruskan\Documents\GitHub\kabarma\.claude\worktrees\gorsel-model-bee2cf\progress\m1\varlik\render\tezgah\tezgah_kalinlik_1.png'
+00:17.047  render           | Saved: 'C:\Users\uruskan\Documents\GitHub\kabarma\.claude\worktrees\gorsel-model-bee2cf\progress\m1\varlik\render\tezgah\tezgah_silhouette64.png'
+00:17.063  render           | Saved: 'C:\Users\uruskan\Documents\GitHub\kabarma\.claude\worktrees\gorsel-model-bee2cf\game\assets\models\tezgah\tezgah_icon.png'
 INFO Draco is available, use library at C:\Program Files\Blender Foundation\Blender 5.3\blender.shared\bf_intern_draco_bridge.dll
 INFO MeshOptimizer is available, use library at C:\Program Files\Blender Foundation\Blender 5.3\blender.shared\bf_intern_meshopt_bridge.dll
-00:17:21 | INFO: Starting glTF 2.0 export
-00:17:21 | INFO: Extracting primitive: tripo_mesh_a08e6543-d32b-4cba-818a-f1ef68cd26e6
-00:17:21 | INFO: Primitives created: 1
-00:17:21 | INFO: Finished glTF 2.0 export in 0.07282161712646484 s
+03:31:53 | INFO: Starting glTF 2.0 export
+03:31:53 | INFO: Extracting primitive: tripo_mesh_ce92d478-d4be-4a18-bb89-08ab22720aa1
+03:31:53 | WARNING: More than one shader node tex image used for a texture. The resulting glTF sampler will behave like the first shader node tex image.
+03:31:53 | INFO: Primitives created: 1
+03:31:53 | INFO: Finished glTF 2.0 export in 0.11257815361022949 s
 
-00:17:21 | INFO: Starting glTF 2.0 export
-00:17:21 | INFO: Extracting primitive: tezgah_lod1
-00:17:21 | INFO: Primitives created: 1
-00:17:21 | INFO: Finished glTF 2.0 export in 0.012408733367919922 s
+03:31:53 | INFO: Starting glTF 2.0 export
+03:31:53 | INFO: Extracting primitive: tezgah_lod1
+03:31:53 | WARNING: More than one shader node tex image used for a texture. The resulting glTF sampler will behave like the first shader node tex image.
+03:31:53 | INFO: Primitives created: 1
+03:31:53 | INFO: Finished glTF 2.0 export in 0.02166604995727539 s
 
-00:17:21 | INFO: Starting glTF 2.0 export
-00:17:21 | INFO: Extracting primitive: tezgah_lod2
-00:17:21 | INFO: Primitives created: 1
-00:17:21 | INFO: Finished glTF 2.0 export in 0.006694793701171875 s
-00:05.219  render           | Saved: 'C:\Users\uruskan\Documents\GitHub\kabarma\.claude\worktrees\m1-varlik-72a21b\progress\m1\varlik\kart\tezgah.png.text.png'
+03:31:53 | INFO: Starting glTF 2.0 export
+03:31:53 | INFO: Extracting primitive: tezgah_lod2
+03:31:53 | WARNING: More than one shader node tex image used for a texture. The resulting glTF sampler will behave like the first shader node tex image.
+03:31:53 | INFO: Primitives created: 1
+03:31:53 | INFO: Finished glTF 2.0 export in 0.011480569839477539 s
+00:18.282  render           | Saved: 'C:\Users\uruskan\Documents\GitHub\kabarma\.claude\worktrees\gorsel-model-bee2cf\progress\m1\varlik\kart\tezgah.png.text.png'
 
-PIPELINE_REPORT {"name": "tezgah", "tris_in": 7428, "tris": 7424, "size_m": [1.068, 1.354, 1.5], "parts": 2, "pass_scripted": true}
+PIPELINE_REPORT {"name": "tezgah", "tris_in": 12547, "tris": 12544, "size_m": [1.339, 1.16, 1.5], "parts": 2, "pass_scripted": false}
 CHECK 1_texture PASS {"base_color_maps": 1, "max_tex": 2048}
-CHECK 2_polygon PASS {"value": 7424, "budget": 15000, "class": "makine", "below_min": true}
-CHECK 3_thickness PASS {"thin_share": 0.0144, "allowed_share": 0.02, "limit_m": 0.09, "stick_min_t_m": 0.0017, "plate_share": 0.0963, "faces_measured": 7422, "old_bbox_min_ratio": 0.082, "note": "cubuk/diken alani (iki yonde ince) / yuzey; levha payi (tek yonde ince: yaprak, kapak) bilgi; eski olcu: parca kutusunun en dar boyutu / en uzun kenar"}
+CHECK 2_polygon PASS {"value": 12544, "budget": 15000, "class": "makine", "below_min": false}
+CHECK 3_thickness FAIL {"thin_share": 0.0397, "allowed_share": 0.02, "limit_m": 0.09, "stick_min_t_m": 0.0002, "plate_share": 0.4784, "faces_measured": 12542, "old_bbox_min_ratio": 0.042, "note": "cubuk/diken alani (iki yonde ince) / yuzey; levha payi (tek yonde ince: yaprak, kapak) bilgi; eski olcu: parca kutusunun en dar boyutu / en uzun kenar"}
 CHECK 4_integrity PASS {"non_manifold_edges": 0, "boundary_edges": 0, "inverted_faces": 0, "inverted_note": "ters sarimli kenar sayisi", "negative_volume_parts": 0, "floating_parts": [], "loose_parts": 2}
 CHECK 5_scale_axis PASS {"height": 1.5, "target": 1.5, "base_z": 0.0, "center_xy": [0.0, 0.0], "forward": "+X", "note": "on yon betikle olculemez; bildirilen eksen yazilir"}
 Blender 5.3.0 (hash 02f0899d78e3 built 2026-11-10 01:33:43)

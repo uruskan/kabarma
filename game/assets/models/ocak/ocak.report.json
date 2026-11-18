@@ -1,14 +1,22 @@
 {
   "name": "ocak",
   "label": "Ocak",
-  "input": "C:/Users/uruskan/Documents/GitHub/kabarma\\.tools/tripo/ocak/tripo-out/ocak-90eeaf7c/model.glb",
+  "input": "C:/Users/uruskan/Documents/GitHub/kabarma\\.tools/tripo/ocak_v3/tripo-out/ocak-v3-e84b195e/model.glb",
   "class": "makine",
   "forward": "+X",
   "checks": {
     "1_texture": {
       "pass": true,
       "textures": {
-        "Color_90eeaf7c-ce83-4762-accc-73691b10f5bc": [
+        "Color_e84b195e-e7ce-4a38-8edb-f8266ee84b46": [
+          1024,
+          1024
+        ],
+        "ORM_e84b195e-e7ce-4a38-8edb-f8266ee84b46": [
+          1024,
+          1024
+        ],
+        "NormalGL_e84b195e-e7ce-4a38-8edb-f8266ee84b46": [
           1024,
           1024
         ]
@@ -18,20 +26,20 @@
     },
     "2_polygon": {
       "pass": true,
-      "value": 7714,
+      "value": 12610,
       "budget": 15000,
       "class": "makine",
-      "below_min": true
+      "below_min": false
     },
     "3_thickness": {
-      "pass": true,
-      "thin_share": 0.0181,
+      "pass": false,
+      "thin_share": 0.0727,
       "allowed_share": 0.02,
       "limit_m": 0.12,
-      "stick_min_t_m": 0.0004,
-      "plate_share": 0.3816,
-      "faces_measured": 7714,
-      "old_bbox_min_ratio": 0.89,
+      "stick_min_t_m": 0.0009,
+      "plate_share": 0.1096,
+      "faces_measured": 12610,
+      "old_bbox_min_ratio": 0.471,
       "note": "cubuk/diken alani (iki yonde ince) / yuzey; levha payi (tek yonde ince: yaprak, kapak) bilgi; eski olcu: parca kutusunun en dar boyutu / en uzun kenar"
     },
     "4_integrity": {
@@ -58,42 +66,26 @@
     }
   },
   "source_parts": [
-    "tripo_node_90eeaf7c-ce83-4762-accc-73691b10f5bc"
+    "tripo_node_e84b195e-e7ce-4a38-8edb-f8266ee84b46"
   ],
   "dropped": [],
   "merged": {},
-  "tris_in": 7728,
-  "welded_verts": 1286,
+  "tris_in": 13382,
+  "welded_verts": 2549,
   "repair_before": {
-    "fan": 12,
-    "boundary": 8,
+    "fan": 0,
+    "boundary": 0,
     "wire": 0
   },
   "repair_log": [
     {
       "pass": 1,
-      "deleted_slivers": 14,
-      "filled_faces": 4,
-      "fan": 0,
-      "boundary": 4,
-      "wire": 0,
-      "nonmanifold_verts": 2
-    },
-    {
-      "pass": 2,
       "deleted_slivers": 0,
-      "filled_faces": 4,
+      "filled_faces": 0,
       "fan": 0,
       "boundary": 0,
       "wire": 0,
-      "nonmanifold_verts": 2
-    },
-    {
-      "pass": "sarim1",
-      "deleted_faces": 6,
-      "fan": 0,
-      "boundary": 0,
-      "wire": 0
+      "nonmanifold_verts": 0
     }
   ],
   "dropped_floating": [],
@@ -104,64 +96,64 @@
     "area_share": 0.0
   },
   "tex_size": 1024,
-  "tris": 7714,
+  "tris": 12610,
   "size_m": [
-    1.78,
-    1.951,
+    0.962,
+    0.942,
     2.0
   ],
   "parts": 1,
   "palette_direction": {
     "samples": 1500,
-    "mean_dE": 11.6,
+    "mean_dE": 16.2,
     "share": [
+      {
+        "color": "tones.soil",
+        "hex": "81605C",
+        "share": 0.368
+      },
       {
         "color": "neutral.dark_grey",
         "hex": "3B3F4A",
-        "share": 0.481
+        "share": 0.267
       },
       {
-        "color": "altin_cayir.shadow",
-        "hex": "5A4A6B",
-        "share": 0.343
+        "color": "altin_cayir.fog",
+        "hex": "F3D9A4",
+        "share": 0.179
       },
       {
-        "color": "tones.turnip_top",
-        "hex": "9158B7",
-        "share": 0.083
+        "color": "tones.wood_dark",
+        "hex": "7E5A48",
+        "share": 0.121
       },
       {
-        "color": "tones.blue_dark",
-        "hex": "2E5580",
-        "share": 0.024
+        "color": "tones.ground_dark",
+        "hex": "A88A52",
+        "share": 0.03
       },
       {
-        "color": "tones.rock_dark",
-        "hex": "827488",
-        "share": 0.02
-      },
-      {
-        "color": "altin_cayir.accent",
-        "hex": "F26B3A",
-        "share": 0.017
+        "color": "neutral.warning",
+        "hex": "F2B632",
+        "share": 0.009
       }
     ]
   },
   "sockets": [],
-  "icon": "C:\\Users\\uruskan\\Documents\\GitHub\\kabarma\\.claude\\worktrees\\m1-varlik-72a21b\\game/assets/models\\ocak\\ocak_icon.png",
-  "out": "C:\\Users\\uruskan\\Documents\\GitHub\\kabarma\\.claude\\worktrees\\m1-varlik-72a21b\\game/assets/models\\ocak\\ocak.glb",
+  "icon": "C:\\Users\\uruskan\\Documents\\GitHub\\kabarma\\.claude\\worktrees\\gorsel-model-bee2cf\\game/assets/models\\ocak\\ocak_icon.png",
+  "out": "C:\\Users\\uruskan\\Documents\\GitHub\\kabarma\\.claude\\worktrees\\gorsel-model-bee2cf\\game/assets/models\\ocak\\ocak.glb",
   "lods": [
     {
       "level": 0,
-      "tris": 7714,
-      "file": "C:\\Users\\uruskan\\Documents\\GitHub\\kabarma\\.claude\\worktrees\\m1-varlik-72a21b\\game/assets/models\\ocak\\ocak.glb",
+      "tris": 12610,
+      "file": "C:\\Users\\uruskan\\Documents\\GitHub\\kabarma\\.claude\\worktrees\\gorsel-model-bee2cf\\game/assets/models\\ocak\\ocak.glb",
       "tex": 1024
     },
     {
       "level": 1,
       "ratio": 0.5,
-      "tris": 3740,
-      "file": "C:\\Users\\uruskan\\Documents\\GitHub\\kabarma\\.claude\\worktrees\\m1-varlik-72a21b\\game/assets/models\\ocak\\ocak_lod1.glb",
+      "tris": 6114,
+      "file": "C:\\Users\\uruskan\\Documents\\GitHub\\kabarma\\.claude\\worktrees\\gorsel-model-bee2cf\\game/assets/models\\ocak\\ocak_lod1.glb",
       "tex": 512,
       "census": {
         "fan": 0,
@@ -172,8 +164,8 @@
     {
       "level": 2,
       "ratio": 0.2,
-      "tris": 1494,
-      "file": "C:\\Users\\uruskan\\Documents\\GitHub\\kabarma\\.claude\\worktrees\\m1-varlik-72a21b\\game/assets/models\\ocak\\ocak_lod2.glb",
+      "tris": 2446,
+      "file": "C:\\Users\\uruskan\\Documents\\GitHub\\kabarma\\.claude\\worktrees\\gorsel-model-bee2cf\\game/assets/models\\ocak\\ocak_lod2.glb",
       "tex": 256,
       "census": {
         "fan": 0,
@@ -183,12 +175,12 @@
     }
   ],
   "hull": {
-    "file": "C:\\Users\\uruskan\\Documents\\GitHub\\kabarma\\.claude\\worktrees\\m1-varlik-72a21b\\game/assets/models\\ocak\\ocak_hull.tres",
+    "file": "C:\\Users\\uruskan\\Documents\\GitHub\\kabarma\\.claude\\worktrees\\gorsel-model-bee2cf\\game/assets/models\\ocak\\ocak_hull.tres",
     "points": 64,
-    "volume_m3": 2.7553,
-    "mesh_volume_m3": 1.3123,
+    "volume_m3": 1.1899,
+    "mesh_volume_m3": 0.67,
     "note": "Godot ekseninde (Y yukari), model orijinine gore"
   },
-  "pass_scripted": true,
-  "card": "C:\\Users\\uruskan\\Documents\\GitHub\\kabarma\\.claude\\worktrees\\m1-varlik-72a21b\\progress/m1/varlik/kart\\ocak.png"
+  "pass_scripted": false,
+  "card": "C:\\Users\\uruskan\\Documents\\GitHub\\kabarma\\.claude\\worktrees\\gorsel-model-bee2cf\\progress/m1/varlik/kart\\ocak.png"
 }

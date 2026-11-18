@@ -28,8 +28,11 @@ MAN = json.load(open(MANP, encoding="utf-8"))
 SRC = MAN["sourceRoot"]
 
 # El Arabasi: yeni parcalamanin numaralari gelince doldurulur (--parts el_arabasi ciktisina gore).
-EL_ARABASI_RENAME = ""
+# 18 Kasim uretimi (segment 50b6d0eb) uc parca verdi: 0 tekne (1,00 x 0,77 x 0,46), 1 cerceve + saplar + ayaklar
+# (0,70 x 0,38 x 0,45), 2 teker (cap 0,4, +X onde). Ayri sap parcasi yok: handle soketi cerceveye baglanir.
+EL_ARABASI_RENAME = "tripo_part_0=body,tripo_part_1=frame,tripo_part_2=wheel"
 EL_ARABASI_DROP = ""
+EL_ARABASI_SOCKETS = "wheel_pivot=wheel:center:wheel,handle=frame:center,load_slot=body:center"
 
 # uretim adi (gen_gorsel.py) -> manifest anahtari ve ayarlar. Ucgen hedefleri SANAT-SES §4 butcesinin icinde:
 # makine 15000, arac 20000, esya_kaya 6000.
@@ -92,6 +95,19 @@ for o in bpy.data.objects:
         os.remove(tmp)
 
 
+def fix_foreign_paths():
+    """run_golden assets.json'u butun raporlardan yeniden yazar; baska worktree'de uretilmis raporlar (agac, kaya, kova:
+    m1-varlik) mutlak yol tasir ve '../<worktree>/game/...' olarak yazilir. Bunlari res:// ve progress/ yoluna dondurur."""
+    import re
+    p = os.path.join(ROOT, "game", "data", "assets.json")
+    t = open(p, encoding="utf-8").read()
+    n = re.sub(r'"\.\./[^/"]+/game/', '"res://', t)
+    n = re.sub(r'"\.\./[^/"]+/progress/', '"progress/', n)
+    if n != t:
+        open(p, "w", encoding="utf-8", newline="\n").write(n)
+        print("assets.json: baska worktree yollari duzeltildi")
+
+
 def drop_material_records(keys):
     paths = {f"res://assets/models/{k}/{k}.glb" for k in keys}
     mp = os.path.join(ROOT, "game", "data", "materials.json")
@@ -147,6 +163,8 @@ def main():
             a.pop(k, None)
         if n == "el_arabasi":
             a["rename"] = EL_ARABASI_RENAME
+            a["sockets"] = EL_ARABASI_SOCKETS
+            a["pivots"] = "wheel=center"
             if EL_ARABASI_DROP:
                 a["drop"] = EL_ARABASI_DROP
             else:
@@ -157,6 +175,7 @@ def main():
     if r.returncode != 0:
         print("run_golden basarisiz: progress/m1/varlik/log/<ad>.log")
         return sys.exit(1)
+    fix_foreign_paths()
     gone = drop_material_records(keys)
     print(f"eski pisirilmis malzeme kayitlari silindi: {gone}")
     g = MAN["godot"]

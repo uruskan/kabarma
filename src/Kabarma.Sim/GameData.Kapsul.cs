@@ -16,6 +16,8 @@ public sealed class KapsulLegDef
 
 public sealed class KapsulFile
 {
+    /// <summary>Govdeye Pod.cs'nin -90 derecesine ek Y donusu (derece): modelin kapi boslugu +Z'ye (kapak, rampa) baksin.</summary>
+    public float BodyYaw { get; set; }
     /// <summary>Kapak-rampa modeli (yere yatik uretilir; mentese kenari modelin -X ucunda).</summary>
     public string Hatch { get; set; } = "";
     /// <summary>Mentese (Pod yerel): kapagin alt kenari.</summary>
