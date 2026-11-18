@@ -56,8 +56,8 @@ public partial class OyukTest : Node
         if (!Main.Args.TryGetValue("oyuk_shots", out var dir) || string.IsNullOrEmpty(dir) || DisplayServer.GetName() == "headless") yield break;
         if (look is { } l && _d.Player.Yaw != null)
         {
-            var dir = l - _d.Player.GlobalPosition;
-            _d.Player.Yaw.Rotation = new Vector3(0, Mathf.Atan2(-dir.X, -dir.Z), 0); // kamera agaci -Z'ye bakar
+            var to = l - _d.Player.GlobalPosition;
+            _d.Player.Yaw.Rotation = new Vector3(0, Mathf.Atan2(-to.X, -to.Z), 0); // kamera agaci -Z'ye bakar
         }
         for (int i = 0; i < 8; i++) yield return 0.02;
         DirAccess.MakeDirRecursiveAbsolute(dir);
