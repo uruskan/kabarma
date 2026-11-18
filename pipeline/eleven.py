@@ -20,6 +20,7 @@ Kullanim (depo kokunden):
 Var olan cikti dosyasi yeniden uretilmez (--force ile uretilir; o da sinira sayilir).
 """
 import argparse
+import array
 import base64
 import datetime
 import difflib
@@ -48,7 +49,7 @@ OUTPUT_FORMAT = "mp3_44100_128"
 # ---------- Sabit model kimlikleri ----------
 SFX_MODEL = "eleven_text_to_sound_v3"     # belge: URETIM §2.1 "sabitlenecek"
 MUSIC_MODEL = "music_v2_5"                # belge: URETIM §2.1 "sabitlenecek"
-TTS_MODEL = "eleven_v3"                   # belge: URETIM §2.1 "eleven_v4 ve eleven_v3"; v3 secildi (ses etiketli, Turkce)
+TTS_MODEL = "eleven_v4"                   # sahibin karari (18 Kasim 2026): v4; ses kutuphaneden dogal bir kadin sesi (SANAT-SES §10.3)
 VOICE_DESIGN_MODEL = "eleven_ttv_v3"      # belge susuyor: ElevenLabs API'nin v3 ses tasarim modeli
 STT_MODEL = "scribe_v3"                   # belge susuyor: geri cevirme icin guncel yaziya cevirme modeli
 
@@ -465,14 +466,50 @@ def assign_stems(stems, layers):
     return assign, silent
 
 
-def mix_layers(assign, outs):
-    """Her katmanin koklerini (hizali, ayni boy) toplayip mp3 yazar; tepe -1 dBTP ustundeyse post_process indirir."""
+STEM_LEAD_MAX_S = 0.1     # kokun tam parcadan bu kadarindan fazla uzun olmasi beklenmez
+STEM_LEAD_SILENT = 64     # basta kirpilacak fazlalikta en buyuk ornek (~-54 dBFS); ustuyse kirpilmaz, durulur
+
+
+def stem_lead(stems, full):
+    """
+    Ayristirma servisi kokleri tam parcadan bir mp3 karesi (1152 ornek) uzun ve o kadar gec veriyor: kodlayici
+    gecikmesi koklerin basina sessizlik olarak yazilmis (18 Kasim: 5.294.592 / 5.293.440 ornek, ilk 1152 ornek
+    -80 dBFS alti). Kirpilmazsa her dongude 25 ms bosluk olur. Donus: bastan kirpilacak ornek sayisi.
+    """
+    import audio_qc
+    sr, n_full = audio_qc.native(full)
+    counts = {s: audio_qc.native(s)[1] for s in stems}
+    if len(set(counts.values())) > 1:
+        raise RuntimeError(f"kok boylari esit degil: { {s.name: n for s, n in counts.items()} }")
+    diff = next(iter(counts.values())) - n_full
+    if diff <= 0:
+        return 0
+    if diff > STEM_LEAD_MAX_S * sr:
+        raise RuntimeError(f"kokler tam parcadan {diff} ornek uzun (> {STEM_LEAD_MAX_S} sn); elle bak")
+    for s in stems:
+        r = subprocess.run(["ffmpeg", "-hide_banner", "-loglevel", "error", "-i", str(s), "-ac", "1", "-f", "s16le",
+                            "-t", f"{(diff + 64) / sr:.4f}", "-"], capture_output=True)
+        a = array.array("h")
+        a.frombytes(r.stdout[: len(r.stdout) // 2 * 2])
+        peak = max((abs(v) for v in a[:diff]), default=0)
+        if peak > STEM_LEAD_SILENT:
+            raise RuntimeError(f"{s.name}: bastaki {diff} ornek sessiz degil (en buyuk {peak}); kirpilmadi")
+    return diff
+
+
+def mix_layers(assign, outs, trim=0):
+    """
+    Her katmanin koklerini toplayip mp3 yazar. trim: her kokun basindan atilacak ornek (stem_lead). Tepe -1 dBTP
+    ustundeyse post_process indirir (katman kirpilmaz, boy degismez).
+    """
     for name, files in assign.items():
         cmd = ["ffmpeg", "-hide_banner", "-loglevel", "error", "-y"]
         for f in files:
             cmd += ["-i", str(f)]
-        cmd += ["-filter_complex", f"amix=inputs={len(files)}:normalize=0:duration=longest" if len(files) > 1 else "anull",
-                "-c:a", "libmp3lame", "-q:a", "2", str(outs[name])]
+        cut = "".join(f"[{i}:a]atrim=start_sample={trim},asetpts=PTS-STARTPTS[s{i}];" for i in range(len(files)))
+        tail = (f"{''.join(f'[s{i}]' for i in range(len(files)))}amix=inputs={len(files)}:normalize=0:duration=longest[o]"
+                if len(files) > 1 else "[s0]anull[o]")
+        cmd += ["-filter_complex", cut + tail, "-map", "[o]", "-c:a", "libmp3lame", "-q:a", "2", str(outs[name])]
         subprocess.run(cmd, check=True)
         post_process(outs[name], loop=True)
         print(f"katman {name}: {', '.join(f.name for f in files)}")
@@ -519,10 +556,13 @@ def run_stems(req, args, key, led):
         assign, silent = assign_stems(stems, t["layers"])
         if silent:
             print("bos kokler (katmana girmedi):", ", ".join(s.name for s in silent))
+        trim = stem_lead([s for v in assign.values() for s in v], t["out"])
+        if trim:
+            print(f"koklerin basindaki {trim} ornek sessiz kodlayici gecikmesi: kirpiliyor (tam parcayla hizali)")
         if e is not None:
             e["stems"] = {k: [s.name for s in v] for k, v in assign.items()}
             save_ledger(led)
-        mix_layers(assign, layer_out)
+        mix_layers(assign, layer_out, trim)
 
 
 def run_design(req, args, key, led):

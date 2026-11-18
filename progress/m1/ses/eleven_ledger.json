@@ -1624,6 +1624,1165 @@
    "label": "Suna ses tasarimi",
    "at": "2026-11-18T00:34:17",
    "billed": true
+  },
+  {
+   "kind": "tts_chars",
+   "amount": 58,
+   "label": "Suna tr giris_1 #1",
+   "at": "2026-11-18T02:34:41",
+   "billed": true,
+   "out": "game/assets/audio/voice/tr/giris_1.mp3",
+   "backTranscription": {
+    "heard": "Kooperatife hoş geldin, Üye 4417. Tarla senin, borç bizim.",
+    "ratio": 1.0
+   }
+  },
+  {
+   "kind": "stt_seconds",
+   "amount": 4.143,
+   "label": "geri cevirme tr giris_1",
+   "at": "2026-11-18T02:34:44",
+   "billed": true
+  },
+  {
+   "kind": "tts_chars",
+   "amount": 84,
+   "label": "Suna tr giris_2 #1",
+   "at": "2026-11-18T02:34:46",
+   "billed": true,
+   "out": "game/assets/audio/voice/tr/giris_2.mp3",
+   "backTranscription": {
+    "heard": "Çapanın kazma başlığı takılı. Kayaya tut, tetiğe bas. Taşlar çantana kendisi gelir.",
+    "ratio": 0.994
+   }
+  },
+  {
+   "kind": "stt_seconds",
+   "amount": 6.0,
+   "label": "geri cevirme tr giris_2",
+   "at": "2026-11-18T02:34:48",
+   "billed": true
+  },
+  {
+   "kind": "tts_chars",
+   "amount": 58,
+   "label": "Suna tr tas_bitti #1",
+   "at": "2026-11-18T02:34:49",
+   "billed": true,
+   "out": "game/assets/audio/voice/tr/tas_bitti.mp3",
+   "backTranscription": {
+    "heard": "Güzel. Taş, kooperatifin en sadık üyesidir. Şikâyet etmez.",
+    "ratio": 1.0
+   }
+  },
+  {
+   "kind": "stt_seconds",
+   "amount": 4.143,
+   "label": "geri cevirme tr tas_bitti",
+   "at": "2026-11-18T02:34:51",
+   "billed": true
+  },
+  {
+   "kind": "tts_chars",
+   "amount": 91,
+   "label": "Suna tr odun_basla #1",
+   "at": "2026-11-18T02:34:52",
+   "billed": true,
+   "out": "game/assets/audio/voice/tr/odun_basla.mp3",
+   "backTranscription": {
+    "heard": "Şimdi odun. Biçme başlığını bir ağaca tut. Ağaç yerinde kalır. Bu ayın ağaçları kin tutmaz.",
+    "ratio": 1.0
+   }
+  },
+  {
+   "kind": "stt_seconds",
+   "amount": 6.5,
+   "label": "geri cevirme tr odun_basla",
+   "at": "2026-11-18T02:34:55",
+   "billed": true
+  },
+  {
+   "kind": "tts_chars",
+   "amount": 57,
+   "label": "Suna tr ocak_basla #1",
+   "at": "2026-11-18T02:34:57",
+   "billed": true,
+   "out": "game/assets/audio/voice/tr/ocak_basla.mp3",
+   "backTranscription": {
+    "heard": "Ocağı düz bir yere koy. Çevresine yayılan ışık tapundur.",
+    "ratio": 0.972
+   }
+  },
+  {
+   "kind": "stt_seconds",
+   "amount": 4.071,
+   "label": "geri cevirme tr ocak_basla",
+   "at": "2026-11-18T02:34:59",
+   "billed": true
+  },
+  {
+   "kind": "tts_chars",
+   "amount": 46,
+   "label": "Suna tr ocak_bitti #1",
+   "at": "2026-11-18T02:35:00",
+   "billed": true,
+   "out": "game/assets/audio/voice/tr/ocak_bitti.mp3",
+   "backTranscription": {
+    "heard": "Ocak yandı. Tapu senin. Kira yok. Sadece borç.",
+    "ratio": 1.0
+   }
+  },
+  {
+   "kind": "stt_seconds",
+   "amount": 3.286,
+   "label": "geri cevirme tr ocak_bitti",
+   "at": "2026-11-18T02:35:02",
+   "billed": true
+  },
+  {
+   "kind": "tts_chars",
+   "amount": 49,
+   "label": "Suna tr tezgah_basla #1",
+   "at": "2026-11-18T02:35:03",
+   "billed": true,
+   "out": "game/assets/audio/voice/tr/tezgah_basla.mp3",
+   "backTranscription": {
+    "heard": "Şimdi, bir tezgâh. Kooperatif çalışan üyeyi sever.",
+    "ratio": 1.0
+   }
+  },
+  {
+   "kind": "stt_seconds",
+   "amount": 3.5,
+   "label": "geri cevirme tr tezgah_basla",
+   "at": "2026-11-18T02:35:05",
+   "billed": true
+  },
+  {
+   "kind": "tts_chars",
+   "amount": 103,
+   "label": "Suna tr tarla_basla #1",
+   "at": "2026-11-18T02:35:06",
+   "billed": true,
+   "out": "game/assets/audio/voice/tr/tarla_basla.mp3",
+   "backTranscription": {
+    "heard": "\"Toprak\" başlığıyla dokuz kare aç, şalgam ek, sonra sula. Kuru toprak büyümez. Bu bilimsel bir gerçektir.",
+    "ratio": 1.0
+   }
+  },
+  {
+   "kind": "stt_seconds",
+   "amount": 7.357,
+   "label": "geri cevirme tr tarla_basla",
+   "at": "2026-11-18T02:35:09",
+   "billed": true
+  },
+  {
+   "kind": "tts_chars",
+   "amount": 57,
+   "label": "Suna tr tarla_bitti #1",
+   "at": "2026-11-18T02:35:10",
+   "billed": true,
+   "out": "game/assets/audio/voice/tr/tarla_bitti.mp3",
+   "backTranscription": {
+    "heard": "Filizler çıktı. Bu ayda her şey hızlı büyür. Fazla hızlı.",
+    "ratio": 1.0
+   }
+  },
+  {
+   "kind": "stt_seconds",
+   "amount": 4.071,
+   "label": "geri cevirme tr tarla_bitti",
+   "at": "2026-11-18T02:35:12",
+   "billed": true
+  },
+  {
+   "kind": "tts_chars",
+   "amount": 91,
+   "label": "Suna tr agil_basla #1",
+   "at": "2026-11-18T02:35:13",
+   "billed": true,
+   "out": "game/assets/audio/voice/tr/agil_basla.mp3",
+   "backTranscription": {
+    "heard": "Bir ağıl çak. Çitler kapalı bir halka olsun. Bir de kapısı. Hayvan kaçarsa tutanak tutarım.",
+    "ratio": 1.0
+   }
+  },
+  {
+   "kind": "stt_seconds",
+   "amount": 6.5,
+   "label": "geri cevirme tr agil_basla",
+   "at": "2026-11-18T02:35:16",
+   "billed": true
+  },
+  {
+   "kind": "tts_chars",
+   "amount": 55,
+   "label": "Suna tr agil_bitti #1",
+   "at": "2026-11-18T02:35:17",
+   "billed": true,
+   "out": "game/assets/audio/voice/tr/agil_bitti.mp3",
+   "backTranscription": {
+    "heard": "Alıl kapalı. Kapıya dikkat. Açık kapıdan her şey geçer.",
+    "ratio": 0.981
+   }
+  },
+  {
+   "kind": "stt_seconds",
+   "amount": 3.929,
+   "label": "geri cevirme tr agil_bitti",
+   "at": "2026-11-18T02:35:19",
+   "billed": true
+  },
+  {
+   "kind": "tts_chars",
+   "amount": 75,
+   "label": "Suna tr gidak_basla #1",
+   "at": "2026-11-18T02:35:20",
+   "billed": true,
+   "out": "game/assets/audio/voice/tr/gidak_basla.mp3",
+   "backTranscription": {
+    "heard": "Bir gıdak geçiyor. Önüne buğday at, peşinden gelir. Açık kapıdan ağıla sok.",
+    "ratio": 1.0
+   }
+  },
+  {
+   "kind": "stt_seconds",
+   "amount": 5.357,
+   "label": "geri cevirme tr gidak_basla",
+   "at": "2026-11-18T02:35:23",
+   "billed": true
+  },
+  {
+   "kind": "tts_chars",
+   "amount": 79,
+   "label": "Suna tr gidak_bitti #1",
+   "at": "2026-11-18T02:35:24",
+   "billed": true,
+   "out": "game/assets/audio/voice/tr/gidak_bitti.mp3",
+   "backTranscription": {
+    "heard": "Kayıt oldu, ilk yumurtası da geldi. Kooperatif adına tebrik ederim. Bir miktar.",
+    "ratio": 1.0
+   }
+  },
+  {
+   "kind": "stt_seconds",
+   "amount": 5.643,
+   "label": "geri cevirme tr gidak_bitti",
+   "at": "2026-11-18T02:35:26",
+   "billed": true
+  },
+  {
+   "kind": "tts_chars",
+   "amount": 46,
+   "label": "Suna tr kabarma_basla #1",
+   "at": "2026-11-18T02:35:27",
+   "billed": true,
+   "out": "game/assets/audio/voice/tr/kabarma_basla.mp3",
+   "backTranscription": {
+    "heard": "Küçük bir ayrıntı kaldı. Bu ayın bir huyu var.",
+    "ratio": 1.0
+   }
+  },
+  {
+   "kind": "stt_seconds",
+   "amount": 3.286,
+   "label": "geri cevirme tr kabarma_basla",
+   "at": "2026-11-18T02:35:29",
+   "billed": true
+  },
+  {
+   "kind": "tts_chars",
+   "amount": 74,
+   "label": "Suna tr kargo_basla #1",
+   "at": "2026-11-18T02:35:31",
+   "billed": true,
+   "out": "game/assets/audio/voice/tr/kargo_basla.mp3",
+   "backTranscription": {
+    "heard": "Fıçı boyundaki şalgamı çekim başlığıyla tut, kapsülden bozma rampaya taşı.",
+    "ratio": 1.0
+   }
+  },
+  {
+   "kind": "stt_seconds",
+   "amount": 5.286,
+   "label": "geri cevirme tr kargo_basla",
+   "at": "2026-11-18T02:35:33",
+   "billed": true
+  },
+  {
+   "kind": "tts_chars",
+   "amount": 30,
+   "label": "Suna tr kargo_bitti #1",
+   "at": "2026-11-18T02:35:35",
+   "billed": true,
+   "out": "game/assets/audio/voice/tr/kargo_bitti.mp3",
+   "backTranscription": {
+    "heard": "\"Roket kalktı.\" hesabına yazdım.",
+    "ratio": 1.0
+   }
+  },
+  {
+   "kind": "stt_seconds",
+   "amount": 2.143,
+   "label": "geri cevirme tr kargo_bitti",
+   "at": "2026-11-18T02:35:37",
+   "billed": true
+  },
+  {
+   "kind": "tts_chars",
+   "amount": 57,
+   "label": "Suna tr gece_alarm #1",
+   "at": "2026-11-18T02:35:37",
+   "billed": true,
+   "out": "game/assets/audio/voice/tr/gece_alarm.mp3",
+   "backTranscription": {
+    "heard": "Gökyüzü dalgalanıyor. Bu normal. Yani, bu ay için normal.",
+    "ratio": 1.0
+   }
+  },
+  {
+   "kind": "stt_seconds",
+   "amount": 4.071,
+   "label": "geri cevirme tr gece_alarm",
+   "at": "2026-11-18T02:35:40",
+   "billed": true
+  },
+  {
+   "kind": "tts_chars",
+   "amount": 64,
+   "label": "Suna tr gece_kabarma #1",
+   "at": "2026-11-18T02:35:41",
+   "billed": true,
+   "out": "game/assets/audio/voice/tr/gece_kabarma.mp3",
+   "backTranscription": {
+    "heard": "Şalgamların fıçı boyuna geliyor. Broşürde yazmıyordu, biliyorum.",
+    "ratio": 1.0
+   }
+  },
+  {
+   "kind": "stt_seconds",
+   "amount": 4.571,
+   "label": "geri cevirme tr gece_kabarma",
+   "at": "2026-11-18T02:35:43",
+   "billed": true
+  },
+  {
+   "kind": "tts_chars",
+   "amount": 67,
+   "label": "Suna tr gece_dalga #1",
+   "at": "2026-11-18T02:35:44",
+   "billed": true,
+   "out": "game/assets/audio/voice/tr/gece_dalga.mp3",
+   "backTranscription": {
+    "heard": "Zıpzıplar geliyor. Kabarmışlar, plaj topu gibi çite yükleniyorlar.",
+    "ratio": 1.0
+   }
+  },
+  {
+   "kind": "stt_seconds",
+   "amount": 4.786,
+   "label": "geri cevirme tr gece_dalga",
+   "at": "2026-11-18T02:35:47",
+   "billed": true
+  },
+  {
+   "kind": "tts_chars",
+   "amount": 67,
+   "label": "Suna tr gece_kart #1",
+   "at": "2026-11-18T02:35:48",
+   "billed": true,
+   "out": "game/assets/audio/voice/tr/gece_kart.mp3",
+   "backTranscription": {
+    "heard": "Çapan çatır diyor. Bir kart seç. Hepsi iyi kart. Bazıları daha iyi.",
+    "ratio": 0.968
+   }
+  },
+  {
+   "kind": "stt_seconds",
+   "amount": 4.786,
+   "label": "geri cevirme tr gece_kart",
+   "at": "2026-11-18T02:35:50",
+   "billed": true
+  },
+  {
+   "kind": "tts_chars",
+   "amount": 57,
+   "label": "Suna tr gece_gidak #1",
+   "at": "2026-11-18T02:35:51",
+   "billed": true,
+   "out": "game/assets/audio/voice/tr/gece_gidak.mp3",
+   "backTranscription": {
+    "heard": "Gıdığın midilli boyuna geldi. Tarafını seçmiş görünüyor.",
+    "ratio": 0.954
+   }
+  },
+  {
+   "kind": "stt_seconds",
+   "amount": 4.071,
+   "label": "geri cevirme tr gece_gidak",
+   "at": "2026-11-18T02:35:53",
+   "billed": true
+  },
+  {
+   "kind": "tts_chars",
+   "amount": 48,
+   "label": "Suna tr safak #1",
+   "at": "2026-11-18T02:35:54",
+   "billed": true,
+   "out": "game/assets/audio/voice/tr/safak.mp3",
+   "backTranscription": {
+    "heard": "Şafak, kabarma bitti. Ayakta kalanı satabiliriz.",
+    "ratio": 1.0
+   }
+  },
+  {
+   "kind": "stt_seconds",
+   "amount": 3.429,
+   "label": "geri cevirme tr safak",
+   "at": "2026-11-18T02:35:56",
+   "billed": true
+  },
+  {
+   "kind": "tts_chars",
+   "amount": 106,
+   "label": "Suna tr hasat_basla #1",
+   "at": "2026-11-18T02:35:57",
+   "billed": true,
+   "out": "game/assets/audio/voice/tr/hasat_basla.mp3",
+   "backTranscription": {
+    "heard": "\"Bitme\" başlığıyla beş şalgam hasat et. Kabarık olanlar sönünce iki kat ürün verir. Kimse nedenini bilmiyor.",
+    "ratio": 0.99
+   }
+  },
+  {
+   "kind": "stt_seconds",
+   "amount": 7.571,
+   "label": "geri cevirme tr hasat_basla",
+   "at": "2026-11-18T02:36:00",
+   "billed": true
+  },
+  {
+   "kind": "tts_chars",
+   "amount": 63,
+   "label": "Suna tr yemek_basla #1",
+   "at": "2026-11-18T02:36:03",
+   "billed": true,
+   "out": "game/assets/audio/voice/tr/yemek_basla.mp3",
+   "backTranscription": {
+    "heard": "Ocakbaşı kur, bir yemek pişir, ye. Kooperatif açlığı yasakladı.",
+    "ratio": 1.0
+   }
+  },
+  {
+   "kind": "stt_seconds",
+   "amount": 4.5,
+   "label": "geri cevirme tr yemek_basla",
+   "at": "2026-11-18T02:36:06",
+   "billed": true
+  },
+  {
+   "kind": "tts_chars",
+   "amount": 75,
+   "label": "Suna tr bakir_kil_basla #1",
+   "at": "2026-11-18T02:36:07",
+   "billed": true,
+   "out": "game/assets/audio/voice/tr/bakir_kil_basla.mp3",
+   "backTranscription": {
+    "heard": "Bakır damarından cevher, göl kıyısından kil. Kazma başlığı ikisini de alır.",
+    "ratio": 1.0
+   }
+  },
+  {
+   "kind": "stt_seconds",
+   "amount": 5.357,
+   "label": "geri cevirme tr bakir_kil_basla",
+   "at": "2026-11-18T02:36:09",
+   "billed": true
+  },
+  {
+   "kind": "tts_chars",
+   "amount": 63,
+   "label": "Suna tr firin_basla #1",
+   "at": "2026-11-18T02:36:11",
+   "billed": true,
+   "out": "game/assets/audio/voice/tr/firin_basla.mp3",
+   "backTranscription": {
+    "heard": "Taş fırın, kur ve bakırı erit. Bacası tütüyorsa iyiye işarettir.",
+    "ratio": 1.0
+   }
+  },
+  {
+   "kind": "stt_seconds",
+   "amount": 4.5,
+   "label": "geri cevirme tr firin_basla",
+   "at": "2026-11-18T02:36:13",
+   "billed": true
+  },
+  {
+   "kind": "tts_chars",
+   "amount": 68,
+   "label": "Suna tr civi_basla #1",
+   "at": "2026-11-18T02:36:15",
+   "billed": true,
+   "out": "game/assets/audio/voice/tr/civi_basla.mp3",
+   "backTranscription": {
+    "heard": "Tezgahta bir çivi tabancası ve çivi yap. Bunun nasıl olduğunu sorma.",
+    "ratio": 0.985
+   }
+  },
+  {
+   "kind": "stt_seconds",
+   "amount": 4.857,
+   "label": "geri cevirme tr civi_basla",
+   "at": "2026-11-18T02:36:17",
+   "billed": true
+  },
+  {
+   "kind": "tts_chars",
+   "amount": 94,
+   "label": "Suna tr kasa_basla #1",
+   "at": "2026-11-18T02:36:19",
+   "billed": true,
+   "out": "game/assets/audio/voice/tr/kasa_basla.mp3",
+   "backTranscription": {
+    "heard": "Kasalı mal daha iyi satılır. Kasayı doldur, el arabasıyla rampaya götür. Etiketi ben yazarım.",
+    "ratio": 0.994
+   }
+  },
+  {
+   "kind": "stt_seconds",
+   "amount": 6.714,
+   "label": "geri cevirme tr kasa_basla",
+   "at": "2026-11-18T02:36:21",
+   "billed": true
+  },
+  {
+   "kind": "tts_chars",
+   "amount": 108,
+   "label": "Suna tr barinak_basla #1",
+   "at": "2026-11-18T02:36:24",
+   "billed": true,
+   "out": "game/assets/audio/voice/tr/barinak_basla.mp3",
+   "backTranscription": {
+    "heard": "Şimdi bir çatı. Temel, duvar, kapı, çatı. İçine bir uyku tulumu. Yağmur yağmıyor ama kooperatif önlem sever.",
+    "ratio": 1.0
+   }
+  },
+  {
+   "kind": "stt_seconds",
+   "amount": 7.714,
+   "label": "geri cevirme tr barinak_basla",
+   "at": "2026-11-18T02:36:27",
+   "billed": true
+  },
+  {
+   "kind": "tts_chars",
+   "amount": 109,
+   "label": "Suna tr siradaki_is #1",
+   "at": "2026-11-18T02:36:28",
+   "billed": true,
+   "out": "game/assets/audio/voice/tr/siradaki_is.mp3",
+   "backTranscription": {
+    "heard": "Defterin açıldı. 240 iş emri. Sıradaki beş kabarık ürün yetiştir. Kooperatif sabırsız değil, biraz.",
+    "ratio": 0.924
+   }
+  },
+  {
+   "kind": "stt_seconds",
+   "amount": 7.786,
+   "label": "geri cevirme tr siradaki_is",
+   "at": "2026-11-18T02:36:32",
+   "billed": true
+  },
+  {
+   "kind": "tts_chars",
+   "amount": 78,
+   "label": "Suna en giris_1 #1",
+   "at": "2026-11-18T02:36:41",
+   "billed": true,
+   "out": "game/assets/audio/voice/en/giris_1.mp3",
+   "backTranscription": {
+    "heard": "Welcome to the cooperative, member 4417. The field is yours. The debt is ours.",
+    "ratio": 1.0
+   }
+  },
+  {
+   "kind": "stt_seconds",
+   "amount": 5.571,
+   "label": "geri cevirme en giris_1",
+   "at": "2026-11-18T02:36:44",
+   "billed": true
+  },
+  {
+   "kind": "tts_chars",
+   "amount": 118,
+   "label": "Suna en giris_2 #1",
+   "at": "2026-11-18T02:36:45",
+   "billed": true,
+   "out": "game/assets/audio/voice/en/giris_2.mp3",
+   "backTranscription": {
+    "heard": "Your chopper has the pick head on. Point it at a rock and squeeze the trigger. The stones come to your pack on their own.",
+    "ratio": 0.961
+   }
+  },
+  {
+   "kind": "stt_seconds",
+   "amount": 8.429,
+   "label": "geri cevirme en giris_2",
+   "at": "2026-11-18T02:36:48",
+   "billed": true
+  },
+  {
+   "kind": "tts_chars",
+   "amount": 71,
+   "label": "Suna en tas_bitti #1",
+   "at": "2026-11-18T02:36:50",
+   "billed": true,
+   "out": "game/assets/audio/voice/en/tas_bitti.mp3",
+   "backTranscription": {
+    "heard": "Good. Stone is the cooperative's most loyal member. It never complains.",
+    "ratio": 1.0
+   }
+  },
+  {
+   "kind": "stt_seconds",
+   "amount": 5.071,
+   "label": "geri cevirme en tas_bitti",
+   "at": "2026-11-18T02:36:52",
+   "billed": true
+  },
+  {
+   "kind": "tts_chars",
+   "amount": 101,
+   "label": "Suna en odun_basla #1",
+   "at": "2026-11-18T02:36:53",
+   "billed": true,
+   "out": "game/assets/audio/voice/en/odun_basla.mp3",
+   "backTranscription": {
+    "heard": "Now, wood. Point the mower head at a tree. The tree stays put. Trees on this moon don't hold grudges.",
+    "ratio": 1.0
+   }
+  },
+  {
+   "kind": "stt_seconds",
+   "amount": 7.214,
+   "label": "geri cevirme en odun_basla",
+   "at": "2026-11-18T02:36:56",
+   "billed": true
+  },
+  {
+   "kind": "tts_chars",
+   "amount": 84,
+   "label": "Suna en ocak_basla #1",
+   "at": "2026-11-18T02:36:57",
+   "billed": true,
+   "out": "game/assets/audio/voice/en/ocak_basla.mp3",
+   "backTranscription": {
+    "heard": "Set the hearth down on level ground. The light that spreads around it is your claim.",
+    "ratio": 1.0
+   }
+  },
+  {
+   "kind": "stt_seconds",
+   "amount": 6.0,
+   "label": "geri cevirme en ocak_basla",
+   "at": "2026-11-18T02:37:00",
+   "billed": true
+  },
+  {
+   "kind": "tts_chars",
+   "amount": 58,
+   "label": "Suna en ocak_bitti #1",
+   "at": "2026-11-18T02:37:01",
+   "billed": true,
+   "out": "game/assets/audio/voice/en/ocak_bitti.mp3",
+   "backTranscription": {
+    "heard": "The hearth is lit. The claim is yours. No rent, only debt.",
+    "ratio": 1.0
+   }
+  },
+  {
+   "kind": "stt_seconds",
+   "amount": 4.143,
+   "label": "geri cevirme en ocak_bitti",
+   "at": "2026-11-18T02:37:03",
+   "billed": true
+  },
+  {
+   "kind": "tts_chars",
+   "amount": 59,
+   "label": "Suna en tezgah_basla #1",
+   "at": "2026-11-18T02:37:04",
+   "billed": true,
+   "out": "game/assets/audio/voice/en/tezgah_basla.mp3",
+   "backTranscription": {
+    "heard": "Now, a workbench. The cooperative likes a member who works.",
+    "ratio": 1.0
+   }
+  },
+  {
+   "kind": "stt_seconds",
+   "amount": 4.214,
+   "label": "geri cevirme en tezgah_basla",
+   "at": "2026-11-18T02:37:06",
+   "billed": true
+  },
+  {
+   "kind": "tts_chars",
+   "amount": 120,
+   "label": "Suna en tarla_basla #1",
+   "at": "2026-11-18T02:37:07",
+   "billed": true,
+   "out": "game/assets/audio/voice/en/tarla_basla.mp3",
+   "backTranscription": {
+    "heard": "Open nine squares with the soil head, plant turnips, then water them. Dry soil grows nothing. That is a scientific fact.",
+    "ratio": 1.0
+   }
+  },
+  {
+   "kind": "stt_seconds",
+   "amount": 8.571,
+   "label": "geri cevirme en tarla_basla",
+   "at": "2026-11-18T02:37:10",
+   "billed": true
+  },
+  {
+   "kind": "tts_chars",
+   "amount": 61,
+   "label": "Suna en tarla_bitti #1",
+   "at": "2026-11-18T02:37:11",
+   "billed": true,
+   "out": "game/assets/audio/voice/en/tarla_bitti.mp3",
+   "backTranscription": {
+    "heard": "Sprouts are up. Everything grows fast on this moon, too fast.",
+    "ratio": 1.0
+   }
+  },
+  {
+   "kind": "stt_seconds",
+   "amount": 4.357,
+   "label": "geri cevirme en tarla_bitti",
+   "at": "2026-11-18T02:37:13",
+   "billed": true
+  },
+  {
+   "kind": "tts_chars",
+   "amount": 89,
+   "label": "Suna en agil_basla #1",
+   "at": "2026-11-18T02:37:15",
+   "billed": true,
+   "out": "game/assets/audio/voice/en/agil_basla.mp3",
+   "backTranscription": {
+    "heard": "Put up a pen, fences in a closed ring, and a gate. If an animal escapes, I file a report.",
+    "ratio": 1.0
+   }
+  },
+  {
+   "kind": "stt_seconds",
+   "amount": 6.357,
+   "label": "geri cevirme en agil_basla",
+   "at": "2026-11-18T02:37:17",
+   "billed": true
+  },
+  {
+   "kind": "tts_chars",
+   "amount": 72,
+   "label": "Suna en agil_bitti #1",
+   "at": "2026-11-18T02:37:18",
+   "billed": true,
+   "out": "game/assets/audio/voice/en/agil_bitti.mp3",
+   "backTranscription": {
+    "heard": "The pen is closed. Mind the gate. Anything can walk through an open one.",
+    "ratio": 1.0
+   }
+  },
+  {
+   "kind": "stt_seconds",
+   "amount": 5.143,
+   "label": "geri cevirme en agil_bitti",
+   "at": "2026-11-18T02:37:21",
+   "billed": true
+  },
+  {
+   "kind": "tts_chars",
+   "amount": 109,
+   "label": "Suna en gidak_basla #1",
+   "at": "2026-11-18T02:37:22",
+   "billed": true,
+   "out": "game/assets/audio/voice/en/gidak_basla.mp3",
+   "backTranscription": {
+    "heard": "A gadak is passing by. Toss it some wheat, and it will follow you. Lead it into the pen through the open gate.",
+    "ratio": 0.991
+   }
+  },
+  {
+   "kind": "stt_seconds",
+   "amount": 7.786,
+   "label": "geri cevirme en gidak_basla",
+   "at": "2026-11-18T02:37:25",
+   "billed": true
+  },
+  {
+   "kind": "tts_chars",
+   "amount": 96,
+   "label": "Suna en gidak_bitti #1",
+   "at": "2026-11-18T02:37:26",
+   "billed": true,
+   "out": "game/assets/audio/voice/en/gidak_bitti.mp3",
+   "backTranscription": {
+    "heard": "Registered. And there's its first egg. Congratulations on behalf of the cooperative, moderately.",
+    "ratio": 1.0
+   }
+  },
+  {
+   "kind": "stt_seconds",
+   "amount": 6.857,
+   "label": "geri cevirme en gidak_bitti",
+   "at": "2026-11-18T02:37:29",
+   "billed": true
+  },
+  {
+   "kind": "tts_chars",
+   "amount": 48,
+   "label": "Suna en kabarma_basla #1",
+   "at": "2026-11-18T02:37:30",
+   "billed": true,
+   "out": "game/assets/audio/voice/en/kabarma_basla.mp3",
+   "backTranscription": {
+    "heard": "One small detail remains. This moon has a habit.",
+    "ratio": 1.0
+   }
+  },
+  {
+   "kind": "stt_seconds",
+   "amount": 3.429,
+   "label": "geri cevirme en kabarma_basla",
+   "at": "2026-11-18T02:37:32",
+   "billed": true
+  },
+  {
+   "kind": "tts_chars",
+   "amount": 97,
+   "label": "Suna en kargo_basla #1",
+   "at": "2026-11-18T02:37:34",
+   "billed": true,
+   "out": "game/assets/audio/voice/en/kargo_basla.mp3",
+   "backTranscription": {
+    "heard": "Grab the barrel-sized turnip with the pull head and carry it to the ramp. It used to be your pod.",
+    "ratio": 1.0
+   }
+  },
+  {
+   "kind": "stt_seconds",
+   "amount": 6.929,
+   "label": "geri cevirme en kargo_basla",
+   "at": "2026-11-18T02:37:36",
+   "billed": true
+  },
+  {
+   "kind": "tts_chars",
+   "amount": 46,
+   "label": "Suna en kargo_bitti #1",
+   "at": "2026-11-18T02:37:38",
+   "billed": true,
+   "out": "game/assets/audio/voice/en/kargo_bitti.mp3",
+   "backTranscription": {
+    "heard": "The rocket's away. I've credited your account.",
+    "ratio": 1.0
+   }
+  },
+  {
+   "kind": "stt_seconds",
+   "amount": 3.286,
+   "label": "geri cevirme en kargo_bitti",
+   "at": "2026-11-18T02:37:40",
+   "billed": true
+  },
+  {
+   "kind": "tts_chars",
+   "amount": 60,
+   "label": "Suna en gece_alarm #1",
+   "at": "2026-11-18T02:37:41",
+   "billed": true,
+   "out": "game/assets/audio/voice/en/gece_alarm.mp3",
+   "backTranscription": {
+    "heard": "The sky is rippling. This is normal, for this moon, that is.",
+    "ratio": 1.0
+   }
+  },
+  {
+   "kind": "stt_seconds",
+   "amount": 4.286,
+   "label": "geri cevirme en gece_alarm",
+   "at": "2026-11-18T02:37:43",
+   "billed": true
+  },
+  {
+   "kind": "tts_chars",
+   "amount": 73,
+   "label": "Suna en gece_kabarma #1",
+   "at": "2026-11-18T02:37:45",
+   "billed": true,
+   "out": "game/assets/audio/voice/en/gece_kabarma.mp3",
+   "backTranscription": {
+    "heard": "Your turnips are reaching barrel size. It wasn't in the brochure, I know.",
+    "ratio": 1.0
+   }
+  },
+  {
+   "kind": "stt_seconds",
+   "amount": 5.214,
+   "label": "geri cevirme en gece_kabarma",
+   "at": "2026-11-18T02:37:47",
+   "billed": true
+  },
+  {
+   "kind": "tts_chars",
+   "amount": 72,
+   "label": "Suna en gece_dalga #1",
+   "at": "2026-11-18T02:37:48",
+   "billed": true,
+   "out": "game/assets/audio/voice/en/gece_dalga.mp3",
+   "backTranscription": {
+    "heard": "Zip-zips incoming. Swollen like beach balls, they're charging the fence.",
+    "ratio": 0.964
+   }
+  },
+  {
+   "kind": "stt_seconds",
+   "amount": 5.143,
+   "label": "geri cevirme en gece_dalga",
+   "at": "2026-11-18T02:37:51",
+   "billed": true
+  },
+  {
+   "kind": "tts_chars",
+   "amount": 77,
+   "label": "Suna en gece_kart #1",
+   "at": "2026-11-18T02:37:52",
+   "billed": true,
+   "out": "game/assets/audio/voice/en/gece_kart.mp3",
+   "backTranscription": {
+    "heard": "Your chapa is crackling. Pick a card. They're all good cards. Some are better.",
+    "ratio": 0.98
+   }
+  },
+  {
+   "kind": "stt_seconds",
+   "amount": 5.5,
+   "label": "geri cevirme en gece_kart",
+   "at": "2026-11-18T02:37:54",
+   "billed": true
+  },
+  {
+   "kind": "tts_chars",
+   "amount": 61,
+   "label": "Suna en gece_gidak #1",
+   "at": "2026-11-18T02:37:55",
+   "billed": true,
+   "out": "game/assets/audio/voice/en/gece_gidak.mp3",
+   "backTranscription": {
+    "heard": "Your Kedak is pony-sized now. It seems to have picked a side.",
+    "ratio": 0.966
+   }
+  },
+  {
+   "kind": "stt_seconds",
+   "amount": 4.357,
+   "label": "geri cevirme en gece_gidak",
+   "at": "2026-11-18T02:37:58",
+   "billed": true
+  },
+  {
+   "kind": "tts_chars",
+   "amount": 67,
+   "label": "Suna en safak #1",
+   "at": "2026-11-18T02:37:59",
+   "billed": true,
+   "out": "game/assets/audio/voice/en/safak.mp3",
+   "backTranscription": {
+    "heard": "Dawn, the swelling is over. Whatever's still standing, we can sell.",
+    "ratio": 1.0
+   }
+  },
+  {
+   "kind": "stt_seconds",
+   "amount": 4.786,
+   "label": "geri cevirme en safak",
+   "at": "2026-11-18T02:38:01",
+   "billed": true
+  },
+  {
+   "kind": "tts_chars",
+   "amount": 103,
+   "label": "Suna en hasat_basla #1",
+   "at": "2026-11-18T02:38:02",
+   "billed": true,
+   "out": "game/assets/audio/voice/en/hasat_basla.mp3",
+   "backTranscription": {
+    "heard": "Harvest five turnips with the mower head. Swollen ones give double once they deflate. Nobody knows why.",
+    "ratio": 1.0
+   }
+  },
+  {
+   "kind": "stt_seconds",
+   "amount": 7.357,
+   "label": "geri cevirme en hasat_basla",
+   "at": "2026-11-18T02:38:05",
+   "billed": true
+  },
+  {
+   "kind": "tts_chars",
+   "amount": 70,
+   "label": "Suna en yemek_basla #1",
+   "at": "2026-11-18T02:38:07",
+   "billed": true,
+   "out": "game/assets/audio/voice/en/yemek_basla.mp3",
+   "backTranscription": {
+    "heard": "Build a grill, cook a meal, eat it. The cooperative has banned hunger.",
+    "ratio": 1.0
+   }
+  },
+  {
+   "kind": "stt_seconds",
+   "amount": 5.0,
+   "label": "geri cevirme en yemek_basla",
+   "at": "2026-11-18T02:38:09",
+   "billed": true
+  },
+  {
+   "kind": "tts_chars",
+   "amount": 76,
+   "label": "Suna en bakir_kil_basla #1",
+   "at": "2026-11-18T02:38:10",
+   "billed": true,
+   "out": "game/assets/audio/voice/en/bakir_kil_basla.mp3",
+   "backTranscription": {
+    "heard": "Ore from the copper vein, clay from the lakeshore. The pickhead takes both.",
+    "ratio": 0.993
+   }
+  },
+  {
+   "kind": "stt_seconds",
+   "amount": 5.429,
+   "label": "geri cevirme en bakir_kil_basla",
+   "at": "2026-11-18T02:38:13",
+   "billed": true
+  },
+  {
+   "kind": "tts_chars",
+   "amount": 83,
+   "label": "Suna en firin_basla #1",
+   "at": "2026-11-18T02:38:14",
+   "billed": true,
+   "out": "game/assets/audio/voice/en/firin_basla.mp3",
+   "backTranscription": {
+    "heard": "Build a stone kiln and smelt the copper. If the chimney smokes, that's a good sign.",
+    "ratio": 1.0
+   }
+  },
+  {
+   "kind": "stt_seconds",
+   "amount": 5.929,
+   "label": "geri cevirme en firin_basla",
+   "at": "2026-11-18T02:38:16",
+   "billed": true
+  },
+  {
+   "kind": "tts_chars",
+   "amount": 74,
+   "label": "Suna en civi_basla #1",
+   "at": "2026-11-18T02:38:17",
+   "billed": true,
+   "out": "game/assets/audio/voice/en/civi_basla.mp3",
+   "backTranscription": {
+    "heard": "Make a nail gun and some nails at the workbench. Don't ask how that works.",
+    "ratio": 1.0
+   }
+  },
+  {
+   "kind": "stt_seconds",
+   "amount": 5.286,
+   "label": "geri cevirme en civi_basla",
+   "at": "2026-11-18T02:38:20",
+   "billed": true
+  },
+  {
+   "kind": "tts_chars",
+   "amount": 98,
+   "label": "Suna en kasa_basla #1",
+   "at": "2026-11-18T02:38:21",
+   "billed": true,
+   "out": "game/assets/audio/voice/en/kasa_basla.mp3",
+   "backTranscription": {
+    "heard": "Crated goods sell better. Fill a crate and wheel it to the ramp in a barrow. I'll write the label.",
+    "ratio": 1.0
+   }
+  },
+  {
+   "kind": "stt_seconds",
+   "amount": 7.0,
+   "label": "geri cevirme en kasa_basla",
+   "at": "2026-11-18T02:38:23",
+   "billed": true
+  },
+  {
+   "kind": "tts_chars",
+   "amount": 131,
+   "label": "Suna en barinak_basla #1",
+   "at": "2026-11-18T02:38:24",
+   "billed": true,
+   "out": "game/assets/audio/voice/en/barinak_basla.mp3",
+   "backTranscription": {
+    "heard": "Now, a roof. Foundation, walls, a door, a roof, and a sleeping bag inside. It isn't raining, but the cooperative likes precautions.",
+    "ratio": 1.0
+   }
+  },
+  {
+   "kind": "stt_seconds",
+   "amount": 9.357,
+   "label": "geri cevirme en barinak_basla",
+   "at": "2026-11-18T02:38:28",
+   "billed": true
+  },
+  {
+   "kind": "tts_chars",
+   "amount": 129,
+   "label": "Suna en siradaki_is #1",
+   "at": "2026-11-18T02:38:29",
+   "billed": true,
+   "out": "game/assets/audio/voice/en/siradaki_is.mp3",
+   "backTranscription": {
+    "heard": "Your ledger is open. 240 work orders. Next, grow five swollen crops. The cooperative isn't impatient, slightly.",
+    "ratio": 0.895
+   }
+  },
+  {
+   "kind": "stt_seconds",
+   "amount": 9.214,
+   "label": "geri cevirme en siradaki_is",
+   "at": "2026-11-18T02:38:33",
+   "billed": true
+  },
+  {
+   "kind": "tts_chars",
+   "amount": 129,
+   "label": "Suna en siradaki_is #2",
+   "at": "2026-11-18T02:38:34",
+   "billed": true,
+   "out": "game/assets/audio/voice/en/siradaki_is.mp3",
+   "backTranscription": {
+    "heard": "Your ledger is open. 240 work orders. Next, grow five swollen crops. The cooperative isn't impatient, slightly.",
+    "ratio": 0.895
+   }
+  },
+  {
+   "kind": "stt_seconds",
+   "amount": 9.214,
+   "label": "geri cevirme en siradaki_is",
+   "at": "2026-11-18T02:38:38",
+   "billed": true
   }
  ],
  "state": {

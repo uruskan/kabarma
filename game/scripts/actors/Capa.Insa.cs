@@ -50,7 +50,7 @@ public partial class Capa
         var at = _ghost.GlobalPosition; float yaw = _ghostYaw;
         _ghost.QueueFree(); _ghost = null; _ghostId = null;
         bool furniture = def.Slots > 0 || def.Spawn || def.LightRange > 0; // Sandik, Uyku Tulumu, Mesale: ekonomi (entegrasyon)
-        if (def.Station == null && def.Id != "ocak" && !furniture) { _d.PlaceProp(def, at, yaw); return; } // Director.Pen.cs: Yemlik, Folluk, Ahsap Kapi
+        if (PenSystem.IsPenProp(def.Id) || (def.Station == null && def.Id != "ocak" && !furniture)) { _d.PlaceProp(def, at, yaw); return; } // Director.Pen.cs: Yemlik, Folluk, Ahsap Kapi
         if (def.Id == "ocak") _d.PlaceOcak(at);
         else if (def.Station != null) _d.PlaceStation(def, at, yaw);
         else _d.PlaceFurniture(def, at, yaw); // Sandik, Uyku Tulumu, Mesale (Director.Economy.cs)

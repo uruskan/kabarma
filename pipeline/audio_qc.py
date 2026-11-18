@@ -149,17 +149,25 @@ def samples_stats(a, rate):
 
 
 def seam(a, rate):
-    """Dongu dikisi: son ve ilk 50 ms'nin duzey farki; dikisteki atlamanin tipik ornek farkina orani."""
+    """
+    Dongu dikisi: son ve ilk 50 ms'nin duzey farki; dikisteki atlamanin tipik ornek farkina orani.
+    seam_ref_db: sesin kendi icinde komsu 50 ms pencereleri arasindaki duzey farkinin %95'i. Citirti, kemirme gibi
+    sesler an be an birkac dB oynar; dikis ancak sesin kendi oynamasindan buyukse dikis olarak duyulur.
+    """
     n = int(rate * 0.05)
     if len(a) < 4 * n:
-        return {"seam_level_db": None, "seam_jump": None}
+        return {"seam_level_db": None, "seam_jump": None, "seam_ref_db": None}
+    floor = -60.0  # cok sessiz pencereler farki sisirmesin
     head, tail = a[:n], a[-n:]
-    lvl = abs(db(rms(head)) - db(rms(tail)))
+    lvl = abs(max(floor, db(rms(head))) - max(floor, db(rms(tail))))
+    levels = [max(floor, db(rms(a[i:i + n]))) for i in range(0, len(a) - n + 1, n)]
+    adj = sorted(abs(levels[i + 1] - levels[i]) for i in range(len(levels) - 1))
+    ref = adj[min(len(adj) - 1, int(len(adj) * 0.95))] if adj else 0.0
     step = 37
     diffs = sorted(abs(a[i + 1] - a[i]) for i in range(0, len(a) - 1, step))
     typical = max(1.0, statistics.median(diffs[len(diffs) // 2:]))  # ust yarinin ortancasi: sessiz yerler saymasin
     jump = abs(a[0] - a[-1]) / typical
-    return {"seam_level_db": round(lvl, 2), "seam_jump": round(jump, 2)}
+    return {"seam_level_db": round(lvl, 2), "seam_jump": round(jump, 2), "seam_ref_db": round(ref, 2)}
 
 
 def envelope(a, rate, hop_s=0.01):
@@ -225,6 +233,9 @@ def classify(path, data):
     if "music" in parts:
         if stem.startswith("cayir"):
             return "music_day", stem, "muzik", False
+        layers = {Path(l.get("file", "")).name for l in data.get("music", {}).get("kabarma", {}).get("layers", [])}
+        if p.name in layers:
+            return "music_layer", stem, "muzik", True  # tek enstruman katmani: hep toplamiyla birlikte calar
         if stem.startswith("kabarma"):
             return "music_kabarma", stem, "muzik", True
         return "music", stem, "muzik", False
@@ -266,8 +277,8 @@ def judge(r, data):
         out.append({"level": level, "check": name, "msg": msg})
 
     kind = r["kind"]
-    base = "loop" if r["loop"] and kind not in ("music_kabarma",) else ("voice" if kind == "voice" else ("music" if kind.startswith("music") else "sfx"))
-    lo, hi = LIMITS["duration_s"].get(kind, LIMITS["duration_s"].get(base, (0.0, 1e9)))
+    base = "loop" if r["loop"] and kind not in ("music_kabarma", "music_layer") else ("voice" if kind == "voice" else ("music" if kind.startswith("music") else "sfx"))
+    lo, hi = LIMITS["duration_s"].get("music_kabarma" if kind == "music_layer" else kind, LIMITS["duration_s"].get(base, (0.0, 1e9)))
     d = r["duration_s"]
     if d is None:
         add("KALDI", "sure", "okunamadi")
@@ -284,8 +295,11 @@ def judge(r, data):
     if tail is not None and tail > LIMITS["tail_silence_s"][base]:
         add("KALDI", "son_sessizlik", f"{tail:.3f} sn > {LIMITS['tail_silence_s'][base]}")
     if r["loop"]:
-        if r.get("seam_level_db") is not None and r["seam_level_db"] > LIMITS["seam_level_db"]:
-            add("KALDI", "dikis_duzey", f"bas/son duzey farki {r['seam_level_db']} dB")
+        seam_lim = max(LIMITS["seam_level_db"], r.get("seam_ref_db") or 0.0)
+        # Katmanin tek basina duzey dikisi anlamsiz (bas notasi olcu basinda calar, sonda susar); katmanlarin
+        # toplaminin dikisi layer_alignment'ta denetlenir. Ornek atlamasi (tik) katmanda da denetlenir.
+        if kind != "music_layer" and r.get("seam_level_db") is not None and r["seam_level_db"] > seam_lim:
+            add("KALDI", "dikis_duzey", f"bas/son duzey farki {r['seam_level_db']} dB > {seam_lim:.2f} (sesin kendi oynamasi {r.get('seam_ref_db')} dB)")
         if r.get("seam_jump") is not None and r["seam_jump"] > LIMITS["seam_jump"]:
             add("KALDI", "dikis_atlama", f"dikiste atlama {r['seam_jump']} x tipik")
     if kind in ("sfx", "ui", "loop"):
@@ -335,35 +349,102 @@ def group_checks(results, verdicts):
     return summary
 
 
-def layer_alignment(results, pcms, verdicts):
-    layers = sorted([r for r in results if r["kind"] == "music_kabarma"], key=lambda r: r["file"])
-    out = {}
+def layer_alignment(results, pcms, verdicts, data, files):
+    """
+    Kabarma katmanlari oyunda ayni karede baslar ve birlikte doner. Denetim:
+    - boy: kodu cozulmus ornek sayilari birebir esit (degilse her turda birbirinden kayarlar) -> KALDI;
+    - toplam: katmanlarin toplami tam parca gibi denetlenir (dongu dikisi, tempo) -> KALDI;
+    - zarf kaymasi: farkli enstrumanlarin vurus zarflari arasindaki kayma, yalniz bilgi (ayni ayristirmadan gelen
+      koklerde yaniltici: bas ve ezgi farkli vuruslarda calar).
+    """
+    by_file = {r["file"]: (f, r) for f, r in zip(files, results)}
+    layers = sorted([r for r in results if r["kind"] == "music_layer"], key=lambda r: r["file"])
+    out = {"offsets_ms_info": {}}
     if len(layers) < 2:
         return out
+    who = "(Kabarma katmanlari)"
+    counts = {r["file"]: native(by_file[r["file"]][0])[1] for r in layers}
+    out["samples"] = counts
+    if len(set(counts.values())) > 1:
+        verdicts.append((who, {"level": "KALDI", "check": "katman_boyu", "msg": f"ornek sayilari esit degil: {counts}"}))
     base = layers[0]
-    durs = [r["duration_s"] for r in layers if r["duration_s"]]
-    if durs and max(durs) - min(durs) > 0.05:
-        verdicts.append(("(Kabarma katmanlari)", {"level": "KALDI", "check": "katman_boyu", "msg": f"katman sureleri esit degil: {durs}"}))
     for r in layers[1:]:
-        off = align_offset_ms(pcms[base["file"]], pcms[r["file"]], PCM_RATE)
-        out[r["file"]] = off
-        if off is not None and abs(off) > LIMITS["layer_offset_ms"]:
-            verdicts.append((r["file"], {"level": "KALDI", "check": "vurus_hizasi", "msg": f"{base['file']} ile {off} ms kayik"}))
+        out["offsets_ms_info"][r["file"]] = align_offset_ms(pcms[base["file"]], pcms[r["file"]], PCM_RATE)
+    n = min(len(pcms[r["file"]]) for r in layers)
+    total = array.array("h", (max(-32768, min(32767, sum(pcms[r["file"]][i] for r in layers))) for i in range(n)))
+    sm = seam(total, PCM_RATE)
+    t = tempo(total, PCM_RATE)
+    out["sum"] = {**sm, "tempo_bpm": t}
+    lim = max(LIMITS["seam_level_db"], sm.get("seam_ref_db") or 0.0)
+    if sm["seam_level_db"] is not None and sm["seam_level_db"] > lim:
+        verdicts.append((who, {"level": "KALDI", "check": "toplam_dikis", "msg": f"toplamin bas/son duzey farki {sm['seam_level_db']} dB > {lim:.2f}"}))
+    if sm["seam_jump"] is not None and sm["seam_jump"] > LIMITS["seam_jump"]:
+        verdicts.append((who, {"level": "KALDI", "check": "toplam_atlama", "msg": f"toplamin dikisinde atlama {sm['seam_jump']} x tipik"}))
+    want = data.get("music", {}).get("kabarma", {}).get("bpm", 0)
+    if want and t and not any(abs(t * f - want) <= want * LIMITS["tempo_tol"] for f in (0.5, 1.0, 2.0)):
+        verdicts.append((who, {"level": "KALDI", "check": "toplam_tempo", "msg": f"toplamin temposu {t} BPM, veri {want} BPM"}))
     return out
 
 
+FIXABLE = ("tepe", "bas_sessizlik", "son_sessizlik", "dikis_duzey", "dikis_atlama")
+
+
 def needs_fix(r):
-    """Yalniz KALDI'da duzeltilir: UYARI icin kayipli yeniden kodlama yapilmaz (dongu dikisi bozulmasin)."""
-    return any(c["level"] == "KALDI" and c["check"] in ("tepe", "bas_sessizlik", "son_sessizlik") for c in r["checks"])
+    """Yalniz KALDI'da duzeltilir: UYARI icin kayipli yeniden kodlama yapilmaz."""
+    return any(c["level"] == "KALDI" and c["check"] in FIXABLE for c in r["checks"])
+
+
+def seam_failed(r):
+    """Capraz gecisle onarilacak dongu. Kabarma katmanlari asla: boy degisir, katmanlar birbirinden kayar."""
+    return (r.get("loop") and r.get("kind") != "music_layer"
+            and any(c["level"] == "KALDI" and c["check"] in ("dikis_duzey", "dikis_atlama") for c in r["checks"]))
+
+
+def native(path):
+    """(ornek hizi, kanal basina ornek sayisi): kodu cozerek, mp3 basindaki kodlayici gecikmesi dusulmus hali."""
+    sr = int(run(["ffprobe", "-v", "error", "-select_streams", "a:0", "-show_entries", "stream=sample_rate", "-of", "csv=p=0", str(path)]).stdout.strip())
+    r = subprocess.run(["ffmpeg", "-hide_banner", "-loglevel", "error", "-i", str(path), "-ac", "1", "-f", "s16le", "-"], capture_output=True)
+    return sr, len(r.stdout) // 2
+
+
+def loop_xfade(src, out, xfade_s=0.5, share=0.2):
+    """
+    Dongu dikisi onarimi: sonun C ornegi basa esit guclu capraz gecisle bindirilir, dongu C kadar kisalir.
+    Cikti = [son C (sonen) + bas C (yukselen)] + orijinal[C : N-C]. Ciktinin son ornegi orijinalde N-C-1, ilk ornegi
+    N-C: dikis tanim geregi komsu iki ornektir. C = en cok xfade_s, en cok surenin share kadari.
+    """
+    sr, n = native(src)
+    c = int(min(xfade_s * sr, n * share))
+    if c < int(0.02 * sr):
+        return None
+    cut = n - c
+    graph = (f"[0:a]asplit=2[x][y];[x]atrim=start_sample={cut},asetpts=PTS-STARTPTS[t];"
+             f"[y]atrim=end_sample={cut},asetpts=PTS-STARTPTS[b];[t][b]acrossfade=ns={c}:c1=qsin:c2=qsin[o]")
+    res = run(["ffmpeg", "-hide_banner", "-loglevel", "error", "-y", "-i", str(src), "-filter_complex", graph, "-map", "[o]",
+               "-c:a", "libmp3lame", "-q:a", "2", str(out)])
+    if res.returncode != 0 or not Path(out).exists() or Path(out).stat().st_size == 0:
+        print(f"DIKIS ONARIMI BASARISIZ {src}: {res.stderr.strip()[:300]}")
+        return None
+    return out
 
 
 def fix(path, r, out_dir):
     """
-    Bas sessizligini 10 ms'ye, son sessizligi 100 ms'ye kirpar (donguler kirpilmaz); gercek tepe -1 dBTP ustundeyse
-    -1,5'e indirir. Duzeltilmis dosyanin yolu; ffmpeg basarisizsa None (asil dosyaya dokunulmaz).
+    Bas sessizligini 10 ms'ye, son sessizligi 100 ms'ye kirpar (donguler kirpilmaz); dongu dikisi KALDI ise capraz
+    gecisle onarir (loop_xfade); gercek tepe -1 dBTP ustundeyse -1,5'e indirir. Duzeltilmis dosyanin yolu; ffmpeg
+    basarisizsa None (asil dosyaya dokunulmaz).
     """
     out = Path(out_dir) / Path(r["file"]).relative_to("game/assets/audio") if r["file"].startswith("game/assets/audio/") else Path(out_dir) / Path(path).name
     out.parent.mkdir(parents=True, exist_ok=True)
+    if seam_failed(r):
+        xf = out.with_name(out.stem + ".xfade" + out.suffix)
+        if loop_xfade(path, xf) is None:
+            return None
+        tp_x = ebur128(xf)["true_peak_dbtp"]
+        if tp_x is None or tp_x <= LIMITS["true_peak_dbtp"]:
+            shutil.move(str(xf), str(out))
+            return out
+        path, r = xf, {**r, "true_peak_dbtp": tp_x}  # capraz gecis tepeyi asti: asagida indirilir
     filters = []
     if not r["loop"]:
         start = max(0.0, (r["lead_silence_s"] or 0) - 0.01)
@@ -372,8 +453,9 @@ def fix(path, r, out_dir):
         filters.append(f"afade=t=out:st={max(0.0, end - start - 0.02):.3f}:d=0.02")
     tp = r["true_peak_dbtp"]
     gain = -1.5 - tp if tp is not None and tp > LIMITS["true_peak_dbtp"] else None
-    # mp3'e yeniden kodlama tepeyi ~0,5 dB geri tasiyabilir: olc, sinirin ustundeyse farki kadar daha indir (en cok 3 deneme).
-    for _ in range(3):
+    # mp3'e yeniden kodlama tepeyi ~0,5 dB geri tasiyabilir (sinirdaki bir dosyayi da asabilir): her kodlamadan sonra
+    # olc, sinirin ustundeyse farki kadar indirip yeniden kodla (en cok 4 deneme).
+    for _ in range(4):
         cmd = ["ffmpeg", "-hide_banner", "-loglevel", "error", "-y", "-i", str(path)]
         af = filters + ([f"volume={gain:.2f}dB"] if gain is not None else [])
         if af:
@@ -383,12 +465,12 @@ def fix(path, r, out_dir):
         if res.returncode != 0 or not out.exists() or out.stat().st_size == 0:
             print(f"DUZELTME BASARISIZ {path}: {res.stderr.strip()[:300]}")
             return None
-        if gain is None:
-            break
         got = ebur128(out)["true_peak_dbtp"]
         if got is None or got <= LIMITS["true_peak_dbtp"]:
             break
-        gain -= got - (-1.5)
+        gain = (gain or 0.0) - (got - (-1.5))
+    if Path(path).name.endswith(".xfade" + out.suffix):
+        Path(path).unlink(missing_ok=True)  # capraz gecisin ara dosyasi
     return out
 
 
@@ -407,12 +489,12 @@ def main():
     for f in files:
         r, a = check_file(f, data, verdicts)
         results.append(r)
-        if r["kind"] == "music_kabarma":
+        if r["kind"] == "music_layer":
             pcms[r["file"]] = a
         mark = "KALDI" if any(c["level"] == "KALDI" for c in r["checks"]) else ("UYARI" if r["checks"] else "gecti")
         print(f"{mark:6} {r['file']}  {r['duration_s'] or 0:.2f}s  tp={r['true_peak_dbtp']}  M={r['lufs_m_max']}")
     summary = group_checks(results, verdicts)
-    summary["layer_offsets_ms"] = layer_alignment(results, pcms, verdicts)
+    summary["layers"] = layer_alignment(results, pcms, verdicts, data, files)
     fails = [v for v in verdicts if v[1]["level"] == "KALDI"]
     warns = [v for v in verdicts if v[1]["level"] == "UYARI"]
     summary.update({"files": len(results), "fail": len(fails), "warn": len(warns),
@@ -436,8 +518,16 @@ def main():
     tempos = [f"{r['file']}: {r['tempo_bpm']} BPM" for r in results if r.get("tempo_bpm")]
     if tempos:
         lines += ["", "Tempo kestirimi: " + ", ".join(tempos) + f" (veri: Kabarma {data.get('music', {}).get('kabarma', {}).get('bpm')} BPM)."]
-    if summary["layer_offsets_ms"]:
-        lines += ["", "Kabarma katman kaymasi (ms): " + ", ".join(f"{k}: {v}" for k, v in summary["layer_offsets_ms"].items())]
+    lay = summary["layers"]
+    if lay.get("samples"):
+        lines += ["", "Kabarma katmanlari: ornek sayilari " + ", ".join(f"{Path(k).name} {v}" for k, v in lay["samples"].items())
+                  + f"; toplam: dikis {lay['sum']['seam_level_db']} dB (sesin kendi oynamasi {lay['sum']['seam_ref_db']} dB), "
+                  f"atlama {lay['sum']['seam_jump']}x, tempo {lay['sum']['tempo_bpm']} BPM."]
+        lines += ["Zarf kaymasi (yalniz bilgi; farkli enstrumanlarda yaniltici): "
+                  + ", ".join(f"{Path(k).name}: {v} ms" for k, v in lay["offsets_ms_info"].items())]
+    group_fails = [f"{v[0]}: {v[1]['level']} {v[1]['check']}: {v[1]['msg']}" for v in verdicts if v[0].startswith("(")]
+    if group_fails:
+        lines += ["", "Grup denetimleri:"] + [f"- {g}" for g in group_fails]
     (out / "audio_qc.md").write_text("\n".join(lines) + "\n", encoding="utf-8")
     print(f"\n{summary['files']} dosya, {summary['passed']} gecti, {summary['fail']} KALDI, {summary['warn']} UYARI -> {out / 'audio_qc.md'}")
 
