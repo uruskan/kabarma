@@ -45,6 +45,7 @@ public class PowerTests
         Assert.Null(f.Def("tezgah")); // guc istemeyen istasyon ag parcasi degil
         Assert.Equal(0f, f.ConsumerWatts("tezgah"));
         Assert.Equal("consumer", f.Def("bicki")!.Kind);
+        foreach (var (id, w) in d.Research.Watts) Assert.Equal(w, f.ConsumerWatts(id)); // tek kaynak: research.json watts (zincir)
     }
 
     [Fact]

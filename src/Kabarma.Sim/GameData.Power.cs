@@ -45,7 +45,11 @@ public sealed class PowerFile
     public float PlateRadius { get; set; } = 0.8f;
     public WindDef Wind { get; set; } = new();
     public List<PowerDeviceDef> Devices { get; set; } = new();
-    /// <summary>Guc isteyen istasyonlar (zincir): yerlestirilebilir kimligi -> W.</summary>
+    /// <summary>
+    /// Guc isteyen istasyonlar (istasyon kimligi -> W). Veride degil: research.json "watts" (zincir akisi) GameData.Power
+    /// okunurken buraya baglanir; tek kaynak orasi.
+    /// </summary>
+    [System.Text.Json.Serialization.JsonIgnore]
     public Dictionary<string, float> Consumers { get; set; } = new();
 
     /// <summary>Kimligin parca tanimi; guc isteyen istasyon icin tuketici tanimi uretir; ikisi de degilse null.</summary>
@@ -66,6 +70,18 @@ public sealed class PowerFile
 
 public sealed partial class GameData
 {
+    PowerFile _power = new();
+
+    /// <summary>power.json; guc isteyen istasyonlarin W'i research.json "watts"tan baglanir (ilk okumada).</summary>
     [DataFile("power.json")]
-    public PowerFile Power { get; private set; } = new();
+    public PowerFile Power
+    {
+        get
+        {
+            if (_power.Consumers.Count == 0 && Research?.Watts is { Count: > 0 } w)
+                foreach (var (id, watts) in w) _power.Consumers[id] = watts;
+            return _power;
+        }
+        private set => _power = value;
+    }
 }

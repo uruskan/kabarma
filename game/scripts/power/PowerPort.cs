@@ -4,14 +4,10 @@ using Kabarma.Sim;
 namespace Kabarma.Game;
 
 /// <summary>
-/// Guc isteyen istasyonun agdaki ucu (tuketici arayuzu; CLAUDE.md M2 "guc baglanma notu"). Watt degeri
-/// power.json "consumers" tablosunda (yerlestirilebilir kimligi -> W); tabloda olmayan istasyon icin Attach null doner ve
-/// istasyon her zamanki gibi calisir. Istasyon kullanimi:
-/// <code>
-///   _Ready:     Power = _d.Power?.Attach(this, Def.Id);
-///   _Process:   bool canWork = Power?.Gate(Queue.Active != null) ?? true;   // false iken sira ilerlemez
-///   _ExitTree:  Power?.Detach();
-/// </code>
+/// Guc isteyen istasyonun agdaki ucu (tuketici arayuzu; CLAUDE.md M2 "guc baglanma notu"). Watt degeri research.json
+/// "watts" tablosunda (istasyon kimligi -> W); tabloda olmayan istasyon guc istemez. PowerSystem.SyncStations her
+/// istasyona ucu kendisi acar ve StationQueue.PowerOk'u baglar; istasyon kodu degismez. Etiket: _d.Power?.PortOf(st)?.Status.
+/// Istasyon disi bir tuketici (or. ileride bir makine dugumu) icin elle: Attach(owner, id), her kare Gate(calisiyor), cikista Detach().
 /// Kablo Kablo esyasiyla istasyona elle cekilir (soket: istasyonun ustu). Oncelik ve durum: Kablo eldeyken istasyona E.
 /// Durum Sim'de (GameState.Power, PowerNode); bu sinif yalniz kimligi tutar.
 /// </summary>

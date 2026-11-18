@@ -140,9 +140,44 @@ public partial class PowerSystem : Node3D
 
     // ---------------------------------------------------------------- her kare
 
+    readonly Dictionary<Station, PowerPort> _stationPorts = new();
+
+    /// <summary>
+    /// Guc isteyen istasyonlar (research.json "watts"): kurulunca uc acilir ve StationQueue.PowerOk baglanir (zincir'in
+    /// kancasi; istasyon dosyasina dokunulmaz). Sira yalniz o istasyonun ucu beslenirken ilerler; is yokken talep yok.
+    /// Ayni turden iki istasyon ayni sirayi paylasir: sirayi isleten (ilk) istasyonun ucu gecerli.
+    /// </summary>
+    void SyncStations()
+    {
+        foreach (var st in _d.Stations)
+        {
+            if (!IsInstanceValid(st) || st.Def.Station == null || _stationPorts.ContainsKey(st)) continue;
+            var port = Attach(st, st.Def.Station);
+            if (port == null) continue;
+            _stationPorts[st] = port;
+            var q = st.Queue;
+            q.PowerOk = () =>
+            {
+                var first = _d.Stations.FirstOrDefault(s => IsInstanceValid(s) && s.Queue == q);
+                return first != null && _stationPorts.TryGetValue(first, out var p) && p.Powered;
+            };
+            GD.Print($"POWER station {st.Def.Id} {port.Watts:0} W node={port.NodeId}");
+        }
+        foreach (var (st, port) in _stationPorts.ToList())
+        {
+            if (!IsInstanceValid(st) || !st.IsInsideTree()) { _stationPorts.Remove(st); continue; }
+            var n = Net.Get(port.NodeId);
+            if (n != null) n.Wants = st.Queue.Active != null;
+        }
+    }
+
+    /// <summary>Istasyonun guc ucu (guc istemiyorsa null).</summary>
+    public PowerPort PortOf(Station st) => st != null && _stationPorts.TryGetValue(st, out var p) ? p : null;
+
     public override void _Process(double delta)
     {
         float dt = (float)delta;
+        SyncStations();
         Occupancy();
         _d.State.TickPower(dt);
         SyncCables();
