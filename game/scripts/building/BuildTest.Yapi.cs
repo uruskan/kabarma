@@ -131,7 +131,7 @@ public partial class BuildTest
         _bs.Fell -= OnFell;
         Check(fell == walls.Count, $"temel sokulunce {fell}/{walls.Count} duvar coktu");
         await Look(c + new Vector3(16, y + 8, 18), c + new Vector3(0, 6, 0), 2);
-        for (int i = 0; i < 30; i++) await Physics();
+        for (int i = 0; i < 100; i++) await Physics();
         ShotM2("yapi_cokme.png");
     }
 
