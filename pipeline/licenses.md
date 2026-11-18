@@ -71,6 +71,7 @@ Hepsi koddan, kredisiz ve lisans sorunu yok. Gerçekleri yaratik2 akışının a
 | Tarih | Kaynak | Dosyalar | Not |
 |---|---|---|---|
 | 18 Kasım 2026 | `pipeline/gen_kesif.py` (kendi kodumuz, Blender 5.3 ilkel parçalar; kredi yok, üçüncü taraf varlık yok) | `game/assets/models/koru/{koru_agac,dev_mantar,kutuk,demir,recine,guhercile}.glb`, `game/assets/models/kesif/{seyir_kulesi,yabani_bahce,yuva,enkaz}.glb`, `game/assets/models/placeables/mancinik.glb` | Dokusuz düz renk; `biomes.json`'da `placeholder` işaretli. `F:\Assets`'teki orman varlıkları (Polyhaven, Fab köknar paketleri) fotogerçekçi olduğu için stile uymadı, kullanılmadı. Yerlerine Tripo üretim isteği raporda |
+| 18 Kasım 2026 (oyuk, M3) | `pipeline/gen_kesif.py` `oyuk_agzi` ve koddan (`game/scripts/world/OyukRoom.cs`, `OyukGuardians.cs`, MeshKit) | `game/assets/models/kesif/oyuk_agzi.glb`; Oyuk odası, delikler, tıkaç kayası, sandık, kandil, Köstebek Bey, Yarasa Yumağı | Projenin kendi eseri, kredi yok. **Yer tutucu** (`oyuk.json` ve `biomes.json` `placeholder`) |
 
 ## Yapı kiti malzemeleri: Kerpiç-Taş, Çelik Sac, Mayalı Beton (M2, 18 Kasım 2026)
 
