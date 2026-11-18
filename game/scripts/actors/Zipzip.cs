@@ -234,7 +234,7 @@ public partial class Zipzip : Node3D
         else if (!chasePlayer && _target == null && TickKazan(dt, pos, dist)) eating = true; // Zipzip.Kabaran.cs: Maya Kazani
 
         // Ziplama hareketi (sicramayan Kabaran yurur: Zipzip.Kabaran.cs)
-        if (Walks) WalkStep(dt, goal, eating ? 0f : dist, slow);
+        if (Walks) WalkStep(dt, goal, eating ? 0f : dist, slow, chasePlayer ? null : _target != null ? "crop" : "kazan");
         else if (_hopT <= 0 && dist > 0.5f + Radius * 0.7f)
         {
             _hopT = _hopDur / slow;
