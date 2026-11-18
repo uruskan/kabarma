@@ -68,7 +68,17 @@ public partial class KabarmaTest : Node
         var n = _d.Night;
         switch (_stage)
         {
-            case 0: // oyun serbest
+            case 0: // ilk gece (senaryo, --skip=night ile hemen) biter, satis adimi gecer, rapor kapanir, oyun serbest
+                _killT -= dt;
+                if (_killT <= 0)
+                {
+                    _killT = 1f;
+                    if (_d.NightActive && n?.Plan == null)
+                        foreach (var z in Zipzip.All.ToArray()) if (!z.Dead && z.IsInsideTree()) z.Hit(99999, false, Vector3.Zero, 0, false);
+                    if (_d.Phase == Director.Act.Dawn && _stageT > 4f) _d.State.Scenario.Report("sell");
+                    if (_d.Hud.ReportOpen) _d.Hud.HideReport();
+                    if ((int)_stageT % 30 == 0) GD.Print($"KABARMA wait phase={_d.Phase} night={_d.NightActive} report={_d.Hud.ReportOpen}");
+                }
                 if (_d.Phase != Director.Act.Free || _stageT < 2f) return;
                 Check(_d.State.UnlockedKs == 1, $"baslangic KS {_d.State.UnlockedKs}");
                 Check(_d.StartKabarma(KabarmaKind.Full, 1), "tam Kabarma baslamadi");

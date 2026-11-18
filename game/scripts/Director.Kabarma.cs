@@ -50,6 +50,10 @@ public partial class Director
     /// <summary>Takvim (GDD 2): her N. gece ya da Can calindiysa gun batiminda tam Kabarma.</summary>
     void OnKabarmaDusk(int day)
     {
+        // Otomatik koşular (--test, --bot) takvimden Kabarma başlatmaz: uzun günlü botları (hayvan, tarim) bozmasın.
+        // Takvimi denemek için --kabarma_takvim.
+        bool automated = (Main.Args.ContainsKey("test") || Main.Args.ContainsKey("bot")) && !Main.Args.ContainsKey("kabarma_takvim");
+        if (automated && _bellKs == 0) return;
         int every = Data.Kabarma.Full.EveryDays;
         bool due = _bellKs > 0 || (every > 0 && day - State.Kabarma.LastDay >= every);
         if (!due || NightActive || Phase != Act.Free) return;
