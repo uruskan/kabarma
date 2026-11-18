@@ -54,16 +54,13 @@ public partial class OyukTest : Node
     IEnumerable<double> Shot(string name, Vector3? look = null)
     {
         if (!Main.Args.TryGetValue("oyuk_shots", out var dir) || string.IsNullOrEmpty(dir) || DisplayServer.GetName() == "headless") yield break;
-        if (look is { } l && _d.Player.Yaw != null)
-        {
-            var to = l - _d.Player.GlobalPosition;
-            _d.Player.Yaw.Rotation = new Vector3(0, Mathf.Atan2(-to.X, -to.Z), 0); // kamera agaci -Z'ye bakar
-        }
-        for (int i = 0; i < 8; i++) yield return 0.02;
+        _d.Player.AimOverride = look; // botun kamera yolu (Player.cs): nisan noktasina doner
+        for (int i = 0; i < 45; i++) yield return 0.02;
         DirAccess.MakeDirRecursiveAbsolute(dir);
         var img = GetViewport().GetTexture().GetImage();
         var path = dir.Replace('\\', '/').TrimEnd('/') + "/" + name + ".png";
         img.SavePng(path);
+        _d.Player.AimOverride = null;
         GD.Print($"OYUK shot {path}");
     }
 
@@ -171,6 +168,7 @@ public partial class OyukTest : Node
         Check(b != null && !b.Scattered, "yumak toplu");
         if (b == null) yield break;
         Check(Target(r1.Center + Vector3.Up * 5f) == null, "toplu yumak hedef degil");
+        Put(r1.Center + Vector3.Back * 6f);
         foreach (var w in Shot("yarasa_toplu", r1.Center + Vector3.Up * r1.Guardian.HangHeight)) yield return w;
         float hurt0 = O.Hurt;
         for (int i = 0; i < 120 && O.Hurt <= hurt0; i++) yield return 0.05;
