@@ -519,7 +519,7 @@ Yabani yaratıklar, açık arazideki Holding ekipleri ve kervanları, Oyuk koruy
 **M3 uygulaması:**
 - Yabani yaratıklar ortak hasar sisteminden geçer (§16.1).
 - Çapa başlığının türü ve yaratığın zayıflığı ya da direnci hasarı değiştirir.
-- Durumlar gündüz de işler; yanık ya da zehirle ölen yaratık da düşer.
+- Durumlar gündüz de işler; yanık ya da zehirle ölen yaratık da düşer, yanık yakındaki yaratıklara yayılır. (M3 açığı: donma ve sersemin yavaşlatması yabani yaratığın yürüyüşüne henüz bağlı değil.)
 - Gündüz kart yoktur. Bu yüzden durumlar şimdilik gece kartlarından, alan etkilerinden ve Azmanların saldırılarından gelir.
 
 ### 16.3.1 Azmanlar (M3: Azman Homur ve Azman Bozuk)

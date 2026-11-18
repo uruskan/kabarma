@@ -113,10 +113,13 @@ public partial class CombatSystem : Node
         var wl = _d.Wildlife;
         if (wl == null || _d.NetClient) return;
         float dt = (float)delta;
+        var areas = new List<CombatArea>();
         foreach (var c in wl.Creatures.ToList())
         {
             if (!IsInstanceValid(c) || c.Dead) continue;
-            if (c.TickCombat(Data, dt) <= 0 || !c.Dead) continue;
+            float dealt = c.TickCombat(Data, dt, areas);
+            Areas(c, areas);
+            if (dealt <= 0 || !c.Dead) continue;
             GD.Print($"WILD {c.Def.Id}#{c.State.Id} down (status)");
             Events.RaiseWildActed(c.Def.Id, "Down", c.GlobalPosition.X, c.GlobalPosition.Z);
             c.QueueFree();
