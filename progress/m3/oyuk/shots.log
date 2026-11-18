@@ -24,10 +24,9 @@ BOOT Kabarma MVP
 TARIM wild=22
 HELD capa
 MUSIC Silence -> Day
-ZIPZIP herd size=3 at=13,21 herds=1
-ZIPZIP herd size=2 at=-14,-30 herds=2
-ZIPZIP herd size=3 at=-19,-11 herds=3
-WILDLIFE spawn gidak herd=4 at=-30,139
+ZIPZIP herd size=3 at=-18,-37 herds=1
+ZIPZIP herd size=2 at=-4,-36 herds=2
+ZIPZIP herd size=3 at=-15,17 herds=3
 WILDLIFE spawn homur herd=1 at=-15,9
 WILDLIFE spawn homur herd=1 at=-19,13
 WILDLIFE spawn dalli herd=1 at=35,15
@@ -72,8 +71,8 @@ OYUK plug hole=4 state=Trapped
 OYUK ok delikler tikandi 5/5
 OYUK ok butun delikler tikali: sikisti (Trapped)
 OYUK shot C:/Users/uruskan/Documents/GitHub/kabarma/.claude/worktrees/m2-dunya-9fd4f9/progress/m3/oyuk/shots/kostebek_sikisti.png
-OYUK cleared oyuk_altin_cayir_0 guardian=kostebek_bey tier=0
 SUNA line=giris_2 voice=yes
+OYUK cleared oyuk_altin_cayir_0 guardian=kostebek_bey tier=0
 OYUK ok Kostebek Bey yenildi, Oyuk temiz
 OYUK ok Events.OyukCleared 1
 OYUK chest oyuk_altin_cayir_0#0 copper_ingot=3,scrap=4,nadir_cip=1
@@ -89,7 +88,6 @@ OYUK ok agzin yanina cikti
 EXPLORE found ata_tasi_sis_korusu_0 at=-212,219
 EXPLORE found enkaz_sis_korusu_1 at=-151,238
 EXPLORE found oyuk_sis_korusu_0 at=-172,215
-WILDLIFE spawn dalli herd=3 at=-81,238
 OYUK shot C:/Users/uruskan/Documents/GitHub/kabarma/.claude/worktrees/m2-dunya-9fd4f9/progress/m3/oyuk/shots/koru_oyuk_agzi.png
 OYUK enter oyuk_sis_korusu_0 guardian=yarasa_yumagi tier=0 cleared=False
 OYUK ok Koru Oyuguna giris
@@ -105,7 +103,6 @@ OYUK shot C:/Users/uruskan/Documents/GitHub/kabarma/.claude/worktrees/m2-dunya-9
 OYUK cleared oyuk_sis_korusu_0 guardian=yarasa_yumagi tier=0
 OYUK ok Yarasa Yumagi yenildi, Oyuk temiz
 OYUK exit oyuk_sis_korusu_0
-WILDLIFE spawn findikci herd=2 at=-261,170
 OYUK enter oyuk_sis_korusu_0 guardian=yarasa_yumagi tier=0 cleared=True
 OYUK ok temiz Oyukta dovus yok
 OYUK exit oyuk_sis_korusu_0
@@ -113,7 +110,7 @@ OYUK ok temiz Oyuk 2
 OYUK RESULT ok checks=passed hurt=6 rooms=6
 Godot_v4.7.2-stable_mono_win64_console.exe : WARNING: 4 ObjectDB instances were leaked at exit (run with `--verbose` 
 for details).
-At line:2 char:1
+At line:4 char:1
 + & $G --audio-driver Dummy --path game -- --test=oyuk --oyuk_shots=C:\ ...
 + ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     + CategoryInfo          : NotSpecified: (WARNING: 4 Obje...` for details).:String) [], RemoteException
