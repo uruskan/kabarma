@@ -104,6 +104,8 @@ public partial class RanchSystem : Node
             if (ag.Host is WildCreature wc && IsInstanceValid(wc))
             {
                 wc.State.Tamed = ag.Animal.Tame; // yaratik2 sozlesmesi: State.Tamed hayvan akisinda
+                wc.HusbandryPens = _d.Pens;
+                if (ag.Animal.Tame) wc.State.Hp = wc.Def.Hp; // evcil hayvan kalici olmez (GDD 9.5): kacak atisla dusmesin
                 if (_d.Wildlife != null && !wc.Dead && !_d.Wildlife.Creatures.Contains(wc)) _d.Wildlife.Creatures.Add(wc); // kayit yuklemesi listeyi bosaltir
             }
         _acc += (float)delta;
@@ -244,7 +246,7 @@ public partial class RanchSystem : Node
     /// </summary>
     void OnWildActed(string species, string what, float x, float z)
     {
-        if (what != "Took" || species != "sinsi") return;
+        if (what != "Took" || species != "sinsi" || !TutorialDone) return; // ilk gunun yumurtasi (bot, senaryo) calinmaz
         const float r = 8f;
         var nest = Ranch.Nests.Where(n => n.Eggs > 0 && (n.X - x) * (n.X - x) + (n.Z - z) * (n.Z - z) < r * r)
             .OrderBy(n => (n.X - x) * (n.X - x) + (n.Z - z) * (n.Z - z)).FirstOrDefault();
