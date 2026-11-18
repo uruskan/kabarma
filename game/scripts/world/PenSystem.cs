@@ -202,6 +202,18 @@ public partial class PenSystem : Node
 
     // ---------- Kapilar ----------
 
+    /// <summary>
+    /// E: kapiyi ve ayni yere (0,5 m) ust uste kurulmus kapilari birlikte acar ya da kapatir. Ust uste iki kapi (ikinci
+    /// yerlestirme) ayri durursa biri hep kapali kalir, duvar gecilmez ve en yakini secen E kapiyi titretir.
+    /// </summary>
+    void ToggleGateGroup(Gate g)
+    {
+        bool open = !g.Open;
+        foreach (var x in Gates.Where(x => x.Leaves.Count > 0 && x.Piece.GlobalPosition.DistanceTo(g.Piece.GlobalPosition) < 0.5f).ToList())
+            SetGate(x, open);
+        SetGate(g, open);
+    }
+
     public void SetGate(Gate g, bool open)
     {
         if (g.Open == open) return;
@@ -343,7 +355,7 @@ public partial class PenSystem : Node
         {
             float d = D(g.Piece.GlobalPosition);
             if (d >= bestD) continue;
-            bestD = d; var gg = g; act = () => SetGate(gg, !gg.Open); lab = g.Open ? "Kapıyı kapat" : "Kapıyı aç";
+            bestD = d; var gg = g; act = () => ToggleGateGroup(gg); lab = g.Open ? "Kapıyı kapat" : "Kapıyı aç";
         }
         label = lab;
         _nearD = bestD;

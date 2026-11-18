@@ -32,6 +32,7 @@ public partial class SavasHayvanTest : Node
     int _rideStage, _bellStage, _nightStage;
     PenShape _pen;
     bool _stoppedAtWall;
+    float _diagT;
 
     public SavasHayvanTest(Director d) { _d = d; Name = "SavasHayvanTest"; ProcessPriority = 1000; /* botun (Done sonrasi MoveOverride = 0) ardindan */ }
 
@@ -115,6 +116,8 @@ public partial class SavasHayvanTest : Node
                 // 5 sn duz yuru (agildan uzaga)
                 var away = P.GlobalPosition - new Vector3(_pen.Centroid.X, P.GlobalPosition.Y, _pen.Centroid.Z); away.Y = 0;
                 P.MoveOverride = away.LengthSquared() > 0.01f ? away.Normalized() : Vector3.Forward;
+                _diagT -= dt;
+                if (_diagT <= 0) { _diagT = 1f; Say($"diag ride p={P.GlobalPosition} v={P.Velocity.Length():0.00} mo={P.MoveOverride} lock={P.MovementLocked} ui={P.UiCapture} down={P.Down} phys={P.IsPhysicsProcessing()} mode={P.ProcessMode} paused={GetTree().Paused} speed={P.SpeedMult:0.00} floor={P.IsOnFloor()}"); }
                 if (_st < 5f) return;
                 P.MoveOverride = Vector3.Zero;
                 float moved = new Vector2(P.GlobalPosition.X - _rideStart.X, P.GlobalPosition.Z - _rideStart.Z).Length();
@@ -166,6 +169,8 @@ public partial class SavasHayvanTest : Node
                 _bellStage = 2; _st = 0;
                 return;
             default:
+                _diagT -= (float)GetProcessDeltaTime();
+                if (_diagT <= 0) { _diagT = 5f; Say($"diag bell dalli={_dalli.Host.GlobalPosition} called={_dalli.Animal.Called} tame={_dalli.Animal.Tame} reg={_dalli.Animal.Registered} driven={_dalli.Driven} gate={gate?.Open} inpen={_d.Pens.PenAt(_dalli.Host.GlobalPosition) != null} call=({_dalli.Animal.CallX:0.0},{_dalli.Animal.CallZ:0.0}) cmd={_dalli.Animal.Command} hidden={_dalli.Animal.Hidden}"); }
                 if (!_dalli.Animal.Registered && _st < 90f) return;
                 Check(_dalli.Animal.Registered && !_dalli.Animal.Called, $"zille agila dondu ve kayit oldu ({_st:0} sn)");
                 if (gate != null) _d.Pens.SetGate(gate, false);

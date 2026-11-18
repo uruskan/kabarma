@@ -15,6 +15,8 @@ public partial class WildCreature : IHusbandryHost
     bool _hDriven;
     /// <summary>Agil duvarlari (RanchSystem atar; yabani yaratik bilmez).</summary>
     public PenSystem HusbandryPens;
+    /// <summary>Duvar kirpma yaricapi (bilesenin Radius'u; kapi acikligindan gecebilsin).</summary>
+    public float HusbandryRadius = 0.3f;
 
     public string SpeciesId => Def.Id;
     public float HpFraction => Def.Hp > 0 ? Mathf.Clamp(State.Hp / Def.Hp, 0f, 1f) : 1f;
@@ -36,7 +38,7 @@ public partial class WildCreature : IHusbandryHost
         if (d.Length() > 0.01f)
         {
             var next = pos + d.Normalized() * Mathf.Min(d.Length(), speed * dt + 0.05f);
-            if (HusbandryPens?.FirstHit(pos, next, 0.3f * (Def.Rig?.Height ?? 0.8f)) is WallHit h)
+            if (HusbandryPens?.FirstHit(pos, next, HusbandryRadius) is WallHit h)
                 goal = new Vector3(h.Point.X, pos.Y, h.Point.Z);
         }
         float walk = Def.Speed * (Def.Wild?.WalkSpeedMult ?? 0.5f);
