@@ -427,22 +427,22 @@
       "license": "Tripo API çıktısı; ticari kullanım ücretli plana bağlı (URETIM §9); plan kaydı pipeline/licenses.md'de yok, doğrulanmadı",
       "criteria": [
         {"id": 1, "name": "doku", "pass": true, "value": "3 renk haritasi, en buyuk 1024 px (sinir 1024)", "note": ""},
-        {"id": 2, "name": "poligon", "pass": true, "value": "13838 / 20000 ucgen", "note": ""},
+        {"id": 2, "name": "poligon", "pass": true, "value": "13408 / 20000 ucgen", "note": ""},
         {
           "id": 3,
           "name": "kalinlik",
           "pass": false,
-          "value": "cubuk/diken alani %4.4 (izin %2, sinir 0.0648 m, en ince 0.0001 m); levha payi %78.0; eski kutu olcusu 0.151",
+          "value": "cubuk/diken alani %4.7 (izin %2, sinir 0.0648 m, en ince 0.0001 m); levha payi %76.8; eski kutu olcusu 0.005",
           "note": "ince boru çerçeve, tutamak kolları ve bacaklar; onarımla düzelmez, yeniden üretim isteği (uretim_istegi.md)"
         },
         {
           "id": 4,
           "name": "butunluk",
           "pass": true,
-          "value": "manifold disi 0, delik kenari 0, ters sarimli kenar 0, negatif hacimli parca 0, havada 0, ayrik parca 3",
+          "value": "manifold disi 0, delik kenari 0, ters sarimli kenar 0, negatif hacimli parca 0, havada 0, ayrik parca 11",
           "note": ""
         },
-        {"id": 5, "name": "olcek_eksen", "pass": true, "value": "boy 0.85 m (hedef 0.85), taban z 0.0, orta [0.0, 0.0], on +X", "note": ""},
+        {"id": 5, "name": "olcek_eksen", "pass": true, "value": "boy 0.763 m (hedef 0.7628), taban z 0.0, orta [0.0, 0.0], on +X", "note": ""},
         {"id": 6, "name": "siluet", "pass": true, "score": 9, "note": "64 px: tekne, ön teker ve iki sap; el arabası sınıfı net"},
         {
           "id": 7,
@@ -453,25 +453,25 @@
         },
         {"id": 8, "name": "okunaklilik", "pass": null, "score": null, "note": "oyunda yok (oynanışı ekonomi akışında); puanlanamaz"}
       ],
-      "notes": "Model +X'e bakar (teker önde). wheel_pivot: dingil, Godot'ta yerel Z ekseni; wheel onun çocuğu (yerel konum 0). handle_l/handle_r tutamak ortası (el IK hedefi), handle ikisinin ortası, load_slot teknenin ortası (yük nesnesi). Havada kalan iki kırıntı parça atıldı (--drop tripo_part_7: teknenin 7,7 cm altında; tripo_part_8: sağ tutamaktan 2,7 cm uzakta).",
+      "notes": "Model +X'e bakar (teker önde). wheel_pivot: dingil, Godot'ta yerel Z ekseni; wheel onun çocuğu (yerel konum 0). handle_l/handle_r tutamak ortası (el IK hedefi), handle ikisinin ortası, load_slot teknenin ortası (yük nesnesi). Havada kalan iki kırıntı parça atıldı (--drop tripo_part_7: teknenin 7,7 cm altında; tripo_part_8: sağ tutamaktan 2,7 cm uzakta). 18 Kasım (varlık akışı): yan dosyalar (LOD, kabuk, ikon, kart, rapor) oyuncu akışının düzelttiği modelden (pipeline/fix_cart_handles.py) pipeline/refresh_cart.py ile yeniden üretildi; ham kaynaktan run_golden.py bu düzeltmeyi siler. Boy düzeltmeden sonra 0,763 m (öndeki sap kalktı): ölçek korunur, 0,85'e zorlanmaz (el işaretleri ve pushReach bu ölçeğe göre). Üçgen 13.408 (sadeleştirilmiş yamalı kova; bütçe sınıfı üst sınırı 14.000 altında). handle_l/handle_r düğümleri grip_markers.py ile yeniden yazıldı (değişmedi). 3 yassı delik-yaması kabuğu ters yüz sayılmaz (flat_shells).",
       "model": "res://assets/models/el_arabasi/el_arabasi.glb",
       "budgetClass": "arac",
       "forward": "+X",
-      "tris": 13838,
-      "sizeM": [1.081, 0.836, 0.85],
+      "tris": 13408,
+      "sizeM": [1.08, 0.753, 0.763],
       "lods": [
-        {"tris": 13838, "tex": 1024, "path": "res://assets/models/el_arabasi/el_arabasi.glb"},
-        {"tris": 6710, "tex": 512, "path": "res://assets/models/el_arabasi/el_arabasi_lod1.glb"},
-        {"tris": 2682, "tex": 256, "path": "res://assets/models/el_arabasi/el_arabasi_lod2.glb"}
+        {"tris": 13403, "tex": 1024, "path": "res://assets/models/el_arabasi/el_arabasi.glb"},
+        {"tris": 6511, "tex": 512, "path": "res://assets/models/el_arabasi/el_arabasi_lod1.glb"},
+        {"tris": 2611, "tex": 256, "path": "res://assets/models/el_arabasi/el_arabasi_lod2.glb"}
       ],
       "hull": "res://assets/models/el_arabasi/el_arabasi_hull.tres",
       "icon": "res://assets/models/el_arabasi/el_arabasi_icon.png",
       "card": "progress/m1/varlik/kart/el_arabasi.png",
       "parts": ["body", "frame", "wheel"],
       "sockets": [
-        {"name": "wheel_pivot", "pos": [0.288, 0.211, -0.083]},
-        {"name": "handle", "pos": [0.021, 0.292, -0.065]},
-        {"name": "load_slot", "pos": [0.0, 0.602, -0.0]}
+        {"name": "wheel_pivot", "pos": [0.288, 0.211, -0.042]},
+        {"name": "handle", "pos": [0.021, 0.292, -0.025]},
+        {"name": "load_slot", "pos": [0.0, 0.558, -0.0]}
       ]
     },
     {
