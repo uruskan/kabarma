@@ -1,8 +1,8 @@
-namespace Kabarma.Sim;
+﻿namespace Kabarma.Sim;
 
 // Genler, ıslah, Alaca, gunduz zararlisi: crops.json "genetics" (GDD 8.2, 8.3).
 
-public sealed class MutationStep
+public sealed class CropMutationStep
 {
     public int Delta { get; set; }
     public float P { get; set; }
@@ -29,7 +29,7 @@ public sealed class GeneticsRules
 {
     public int GeneMin { get; set; } = 1;
     public int GeneMax { get; set; } = 10;
-    public List<MutationStep> Mutation { get; set; } = new();
+    public List<CropMutationStep> Mutation { get; set; } = new();
     public int WildMin { get; set; } = 1;
     public int WildMax { get; set; } = 3;
     public float CrossRadius { get; set; }
