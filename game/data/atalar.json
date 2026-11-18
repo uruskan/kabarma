@@ -4,6 +4,8 @@
   "teamHpPerExtra": 0.5,
   "phaseShiftSeconds": 1.5,
   "arriveSeconds": 2.5,
+  "abandonSeconds": 20,
+  "_arena": "Arena yeri dunya2'nin Ata Tasi kesif noktasidir (biomes.json biyom pois ata_tasi + spawns.atalar arenaRadius; AtaArena.Resolve) arazinin icindeyse; arena.center ve arena.radius yalniz yedek (Sis Korusu'nun noktasi arazi buyuyene dek disarida). stone ve pillars merkeze gore.",
   "atalar": [
     {
       "id": "koca_pofuduk",

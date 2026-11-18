@@ -145,6 +145,8 @@ public sealed class AtalarFile
     public float PhaseShiftSeconds { get; set; } = 1.5f;
     /// <summary>Ata'nin inisi (sn): bu surede hasar almaz, saldirmaz.</summary>
     public float ArriveSeconds { get; set; } = 2.5f;
+    /// <summary>Oyuncu arenanin leash yaricapindan bu kadar sn uzak kalirsa Ata cekilir (dovus biter, adak geri gelmez).</summary>
+    public float AbandonSeconds { get; set; } = 20f;
     public List<AtaDef> Atalar { get; set; } = new();
     public List<AtaAddDef> Adds { get; set; } = new();
     public List<SealDef> Seals { get; set; } = new();
