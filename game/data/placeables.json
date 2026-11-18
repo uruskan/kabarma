@@ -11,7 +11,14 @@
     { "id": "mesale", "name": "Meşale", "lightRange": 6.0, "radius": 0.4 },
     { "id": "ahsap_kapi", "name": "Ahşap Kapı", "model": "res://assets/models/yerlestirilebilir/ahsap_kapi.glb", "radius": 0.8 },
     { "id": "yemlik", "name": "Yemlik", "model": "res://assets/models/yerlestirilebilir/yemlik.glb", "radius": 0.8 },
-    { "id": "folluk", "name": "Folluk", "model": "res://assets/models/yerlestirilebilir/folluk.glb", "radius": 0.7 }
+    { "id": "folluk", "name": "Folluk", "model": "res://assets/models/yerlestirilebilir/folluk.glb", "radius": 0.7 },
+    { "id": "direk", "name": "Direk", "radius": 0.35 },
+    { "id": "salter", "name": "Şalter", "radius": 0.45 },
+    { "id": "ruzgar_gulu", "name": "Rüzgâr Gülü", "radius": 0.9 },
+    { "id": "hayvan_carki", "name": "Hayvan Çarkı", "radius": 1.0 },
+    { "id": "elektrik_lambasi", "name": "Elektrik Lambası", "radius": 0.35 },
+    { "id": "dugme", "name": "Düğme", "radius": 0.35 },
+    { "id": "basinc_plakasi", "name": "Basınç Plakası", "radius": 0.6 }
   ],
   "planWheel": ["kare_temel", "ucgen_temel", "duvar", "yarim_duvar", "pencereli_duvar", "kapi_kasasi", "kare_zemin", "duz_cati", "egimli_cati", "merdiven", "cit", "bahce_kapisi"],
   "buildCosts": {

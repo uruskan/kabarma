@@ -19,6 +19,15 @@
     { "id": "kargo_kasasi", "name": "Kargo Kasası", "station": "paketleme", "category": "yuk", "in": {}, "out": 1, "seconds": 3.0, "load": true },
     { "id": "tas_firin", "name": "Taş Fırın", "station": "tezgah", "category": "yapi", "in": { "stone": 15, "clay": 5 }, "out": 1, "seconds": 6.0 },
     { "id": "ocakbasi", "name": "Ocakbaşı", "station": "tezgah", "category": "yapi", "in": { "stone": 8, "wood": 4 }, "out": 1, "seconds": 5.0 },
-    { "id": "paketleme", "name": "Paketleme Tezgâhı", "station": "tezgah", "category": "yapi", "in": { "wood": 8 }, "out": 1, "seconds": 5.0 }
+    { "id": "paketleme", "name": "Paketleme Tezgâhı", "station": "tezgah", "category": "yapi", "in": { "wood": 8 }, "out": 1, "seconds": 5.0 },
+    { "id": "bakir_tel", "name": "Bakır Tel", "station": "tezgah", "category": "malzeme", "in": { "copper_ingot": 1 }, "out": 2, "seconds": 2.0 },
+    { "id": "kablo", "name": "Kablo", "station": "tezgah", "category": "guc", "in": { "bakir_tel": 1, "fiber": 1 }, "out": 2, "seconds": 2.0 },
+    { "id": "direk", "name": "Direk", "station": "", "category": "guc", "in": { "wood": 4, "bakir_tel": 1 }, "out": 1, "seconds": 2.0 },
+    { "id": "salter", "name": "Şalter", "station": "tezgah", "category": "guc", "in": { "wood": 2, "bakir_tel": 2 }, "out": 1, "seconds": 3.0 },
+    { "id": "ruzgar_gulu", "name": "Rüzgâr Gülü", "station": "tezgah", "category": "guc", "in": { "wood": 12, "bakir_tel": 4 }, "out": 1, "seconds": 6.0 },
+    { "id": "hayvan_carki", "name": "Hayvan Çarkı", "station": "tezgah", "category": "guc", "in": { "wood": 16, "bakir_tel": 2 }, "out": 1, "seconds": 6.0 },
+    { "id": "elektrik_lambasi", "name": "Elektrik Lambası", "station": "tezgah", "category": "guc", "in": { "wood": 2, "bakir_tel": 1 }, "out": 1, "seconds": 3.0 },
+    { "id": "dugme", "name": "Düğme", "station": "tezgah", "category": "guc", "in": { "wood": 1, "bakir_tel": 1 }, "out": 1, "seconds": 2.0 },
+    { "id": "basinc_plakasi", "name": "Basınç Plakası", "station": "tezgah", "category": "guc", "in": { "stone": 2, "bakir_tel": 1 }, "out": 1, "seconds": 2.0 }
   ]
 }

@@ -83,3 +83,5 @@ M1 tablosu M1 akışlarınındır; M2 akışları aşağıdakilerdir. Kurallar a
 | ilerleme | Opus medium | iş emirleri altyapısı ve ilk 12 zincir (`Orders*.cs`, `orders.json`), Ustalık (`src/Kabarma.Sim/Mastery*.cs`, `data/mastery.json`, `Hud.Mastery*.cs`) |
 | dunya2 | Opus medium | Sis Korusu biyomu, harita ve Seyir Kulesi, mancınık, T1–T2 keşif noktaları; `World*.cs`, `biomes.json`, `Hud.Map*.cs` |
 | girdi, varlik, ses | M1 oturumları | M1'deki sahiplikleri sürer (girdi testleri, varlık hattı, ses) |
+
+**Güç bağlanma notu (guc):** Güç isteyen istasyon `game/data/power.json` `consumers` tablosuna satır ekler (yerleştirilebilir kimliği → W; tabloda olmayan güç istemez, her zamanki gibi çalışır). `Station` içinde üç satır: `_Ready`: `Power = _d.Power?.Attach(this, Def.Id);` · `_Process`: `bool canWork = Power?.Gate(Queue.Active != null) ?? true;` (false iken `Queue.Tick` çağrılmaz; etiket için `Power.Status`) · `_ExitTree`: `Power?.Detach();` (sözleşme `game/scripts/power/PowerPort.cs`, durum `GameState.Power`).

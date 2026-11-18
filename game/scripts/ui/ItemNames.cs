@@ -31,6 +31,16 @@ public static class ItemNames
         ["mesale"] = "Meşale",
         ["yemlik"] = "Yemlik",
         ["folluk"] = "Folluk",
+        ["bakir_tel"] = "Bakır Tel", // guc akisi (ICERIK 12 M2)
+        ["kablo"] = "Kablo",
+        ["direk"] = "Direk",
+        ["salter"] = "Şalter",
+        ["ruzgar_gulu"] = "Rüzgâr Gülü",
+        ["hayvan_carki"] = "Hayvan Çarkı",
+        ["aku_mk1"] = "Akü Mk1",
+        ["elektrik_lambasi"] = "Elektrik Lambası",
+        ["dugme"] = "Düğme",
+        ["basinc_plakasi"] = "Basınç Plakası",
         ["ocakbasi"] = "Ocakbaşı",
         ["kargo_rampasi"] = "Kargo Rampası",
         // Karar 23 (kemer akisi): kemer aletleri ve uretilen yerlestirilebilirler.
