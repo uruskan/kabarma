@@ -1,0 +1,20 @@
+﻿KARTLAR stage 1 t=6.2
+KARTLAR OK   ilk teklifin ilki Catal (GDD 24)
+KARTLAR stage 2 t=36.3
+KARTLAR OK   U ile yenileme (kalan 1)
+KARTLAR OK   K surgun kipini acti
+KARTLAR shot kart_teklifi_surgun
+KARTLAR OK   X ile suru_cobani surgun edildi
+KARTLAR OK   surgun edilen kart havuzda yok
+KARTLAR OK   Z ile kart secildi
+KARTLAR OK   Cam Top can tavani 60.000004 (taban 100)
+KARTLAR OK   Kabuk 10 hasari emdi (can 4.6656017 -> 4.6656017, kalkan 20)
+KARTLAR OK   Yumurta Topu 2 kez vurdu
+KARTLAR stage 3 t=110.0
+KARTLAR OK   safakta can tavani tabana dondu (100)
+KARTLAR OK   safakta kartlar sondu
+KARTLAR OK   rapor listesi: cam_top:1,gubre_mayini:1,kabuk:1,kule_asiri_yuku:1,yumurta_topu:1
+KARTLAR OK   acik kartlar: 20 + ebeveynleri bastan acik 4 asi (24)
+KARTLAR stage 4 t=110.5
+KARTLAR shot kart_defteri
+KARTLAR RESULT ok=13 fail=0

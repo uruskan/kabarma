@@ -89,6 +89,9 @@
     "card_1": { "name": "1. kart", "kb": ["Z"], "pad": ["DPad:Left"] },
     "card_2": { "name": "2. kart", "kb": ["X"], "pad": ["DPad:Up"] },
     "card_3": { "name": "3. kart", "kb": ["C"], "pad": ["DPad:Right"] },
+    "card_reroll": { "name": "Kartları yenile (gecede 2)", "kb": ["U"], "pad": ["DPad:Down"] },
+    "card_book": { "name": "Kart Defteri", "kb": ["O"], "padVia": "bag" },
+    "card_banish": { "name": "Kart sürgün et: bas, sonra kartı seç (gecede 2)", "kb": ["K"], "pad": ["LB"] },
     "head_1": { "name": "Kemer 1. yuva", "kb": ["1"], "padVia": "belt_next" },
     "head_2": { "name": "Kemer 2. yuva", "kb": ["2"], "padVia": "belt_next" },
     "head_3": { "name": "Kemer 3. yuva", "kb": ["3"], "padVia": "belt_next" },
@@ -107,7 +110,10 @@
     "camera_zoom_out": { "name": "Kamerayı uzaklaştır (normal kip; Ctrl ya da Alt + tekerlek)", "kb": ["Wheel:Down"], "padVia": "camera_mode" },
     "controls_panel": { "name": "Tuş atamaları", "kb": ["F2"], "pad": ["Back"] },
     "pause_menu": { "name": "Duraklat: Kaydet ve Çıkış", "kb": ["Escape"], "pad": ["Start"] },
-    "scan": { "name": "Tarayıcı: baktığını tara (Veri)", "kb": ["T"], "pad": ["DPad:Up"] }
+    "scan": { "name": "Tarayıcı: baktığını tara (Veri)", "kb": ["J"], "pad": ["DPad:Up"] },
+    "ability_1": { "name": "Güç (1. yuva)", "kb": ["Alt"], "pad": ["DPad:Left"] },
+    "ability_2": { "name": "Güç (2. yuva, Kurbağa Ağa ile açılır)", "kb": ["CapsLock"], "pad": ["DPad:Right"] },
+    "ulti": { "name": "Ulti (Maya ölçeri dolunca)", "kb": ["Ctrl"], "pad": ["R3"] }
   },
   "hints": {
     "menu_pick": { "name": "Menüden seç", "kb": "1–9", "pad": "✚ + Ⓐ" },

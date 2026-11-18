@@ -25,7 +25,7 @@ public sealed partial class GameState
         Farm.Swelled += p =>
         {
             Orders.Report("swollen_crop");
-            if (Night is { Phase: not NightPhase.Dawn } n && p.Swollen != null) n.RecordSwell(p.Swollen);
+            if (Night is { Phase: not NightPhase.Dawn } n && p.Swollen != null) { n.RecordSwell(p.Swollen); n.Hand.OnCropSwell(); } // Hand: Hasat Senligi (kartlar)
         };
         Farm.Eaten += _ => Night?.RecordEaten();
         Sold += (_, _) => Orders.Report("cargo_sold");

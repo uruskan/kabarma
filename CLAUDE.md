@@ -97,6 +97,8 @@ M3 (URETIM §6): tam Kabarma ve savaş, dünya hâlâ Altın Çayır + Sis Korus
 
 **Sözleşmeler (erken main'e alınır):** `savas` ortak hasar, sağlık ve durum arayüzünü (`Combat*`), `kabarma3` dalga ve Kabaran arayüzünü (`Wave*`), `yolbulma` akış alanı sorgusunu (`FlowField*`) ilk iş olarak yazar ve main'e alır, CLAUDE.md'ye iki satırlık bağlanma notu ekler. O birleşene kadar ötekiler yerel, işaretli bir geçici arayüz kullanır.
 
+**Akış alanına bağlanma (yolbulma, birleşti; TEKNIK §8.1):** Yön için `_d.Flow?.Steer(pos, "crop" | "crop:<aile>" | "kazan" | kendi anahtarın)` (null: pencere dışı ya da yol yok, doğrudan yürü); kırılacak engel için `_d.Flow.Sample(key, pos)` → `Blocked`, `Blocker` (sahip kimliği; `FlowFieldSystem.OwnerNode(id)` yapı parçasını verir), `BlockerKind`; hasarı veren sensin. Kendi hedef kümen için `_d.Flow.SetGoals(key, noktalar)`; kendi engelin (tuzak, kule, kapı; tür `flowfield.json` `breakCost` anahtarı, açık kapı `doorOpen`) için `_d.Flow.StampBox(kimlik, tür, merkez, yarıX, yarıZ, yön)` / `Unstamp(kimlik)`; Holding için `_d.Flow.FindPath(a, b)` (kırma maliyetli A*). Alan yalnız host'ta işler, türetilmiş veridir (kayda ve ağa bölüm gerekmez).
+
 | Akış (oturum) | Model | Sahip olduğu dosyalar ve işler |
 |---|---|---|
 | savas (boss) | Opus medium | GDD §16.1 hasar ve durumlar, §16.3 gündüz savaşı: `src/Kabarma.Sim/Combat*.cs`, `Status*.cs`, `data/combat.json`, `game/scripts/combat/`; Azman Homur ve Azman Bozuk (ICERIK §4.2): `Azman*.cs`, `data/azman.json` |
@@ -109,3 +111,6 @@ M3 (URETIM §6): tam Kabarma ve savaş, dünya hâlâ Altın Çayır + Sis Korus
 | cip (ilerleme) | Sonnet 5.5 | ICERIK §6.3: 24 çip × 4 nadirlik, Çapa'ya takma, düşme kaynakları; `src/Kabarma.Sim/Chip*.cs`, `data/chips.json`, `Hud.Chips*.cs` |
 | savas-hayvan (hayvan) | Opus medium | GDD §9.5 Kabarma'da hayvanlar, savaş hayvanları ve binek; `Husbandry.Combat*.cs`, `Mount*.cs` (M2 işi bittikten sonra) |
 | oyuk (dunya2) | Opus medium | Köstebek Bey ve Yarasa Yumağı (ICERIK §4.3) ve Oyuk alanları; `Oyuk*.cs`, `data/oyuk.json`, `World*.cs`'e satır |
+
+**Kabarma bağlanma notu (kabarma3):** Başlatma `State.StartKabarma(State.KabarmaSpecFor(KabarmaKind.Full|Small|Drill, ks, oyuncu, x, z))` (Çan/takvim, Maya Feneri, Tatbikat); plan `Waves.Compose` (`src/Kabarma.Sim/Wave.cs`), gece `KabarmaNight` (`Plan`, `TakeDue`, `Kazan`, `DamageKazan`, `ReportGosteri(GosteriEvent)`, `CreditKill`, olaylar `DorukStarted`/`Ended(KabarmaEnd)`), kalıcı `State.Kabarma` (kayıt bölümü `kabarma`).
+Gece düşmanını bulmak ve vurmak için yalnız `Kabarans.Near(nokta, yarıçap)` ve `Kabarans.Hit(k, hasar, kaynak, itme, saldıran, çevre, gece)` (`game/scripts/night/Kabarans.cs`, aktör `IKabaran`); vuruş geçici, savaş sözleşmesi gelince yalnız `Kabarans.Hit` değişir. Azman Doruk'ta `WaveSlot.Azman` yerinden doğar (savaş).

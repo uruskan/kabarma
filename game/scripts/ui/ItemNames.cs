@@ -101,7 +101,12 @@ public static class ItemNames
         ["iron_ore"] = "Demir Cevheri",
         ["saltpeter"] = "Güherçile",
         ["scrap"] = "Hurda",
+        // cip (M3): cip uretim malzemeleri (ICERIK 27, 36); tur ve nadirlik adlari chips.json
+        ["maya_kesesi"] = "Maya Kesesi",
+        ["holding_parcasi"] = "Holding Parçası",
         ["mancinik"] = "Mancınık",
+        ["maya_feneri"] = "Maya Feneri", // gucler M3
+        ["maya_kesesi"] = "Maya Kesesi", // gucler M3 (ICERIK 2 #36)
         // tarim (M2): Cayir ve Koru'nun ekinleri, tohumlari, Alaca urunleri (GDD 8.3), Korkuluk
         ["pumpkin"] = "Kabak",
         ["sunflower"] = "Ayçiçeği",
@@ -133,6 +138,11 @@ public static class ItemNames
         ["sourberry_benekli"] = "Benekli Ekşilik", ["sourberry_altin"] = "Altın Ekşilik", ["sourberry_aurora"] = "Aurora Ekşilik",
         ["hazelnut_benekli"] = "Benekli Fındık", ["hazelnut_altin"] = "Altın Fındık", ["hazelnut_aurora"] = "Aurora Fındık",
         ["garlic_benekli"] = "Benekli Sarımsak", ["garlic_altin"] = "Altın Sarımsak", ["garlic_aurora"] = "Aurora Sarımsak",
+        // savunma (M3): kuleler ve tuzaklar (defense.json)
+        ["civi_kulesi"] = "Çivi Kulesi", ["sapan_kulesi"] = "Sapan Kulesi", ["sacma_kulesi"] = "Saçma Kulesi",
+        ["diken_tarlasi"] = "Diken Tarlası", ["yapiskan_zemin"] = "Yapışkan Zemin", ["firlatma_pedi"] = "Fırlatma Pedi", ["cukur_kapagi"] = "Çukur Kapağı",
+        // holding akisi (M3, GDD §19.4): baskin ganimeti. Holding Parcasi satilmaz (ICERIK §2.1 #27).
+        ["holding_parcasi"] = "Holding Parçası", ["holding_plani"] = "Holding Planı", ["nadir_hayvan"] = "Nadir cins hayvan",
     };
 
     public static string Of(string id) => Names.TryGetValue(id, out var n) ? n : id;

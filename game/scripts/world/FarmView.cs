@@ -39,6 +39,19 @@ public partial class FarmView : Node3D
     public static (int x, int y) Cell(Vector3 world) => (Mathf.FloorToInt(world.X), Mathf.FloorToInt(world.Z));
     public Vector3 CellCenter(int x, int y) => _world.Ground(new Vector3(x + 0.5f, 0, y + 0.5f));
 
+    /// <summary>kabarma3: sartli en yakin ekili hucre (Kabaran kendi ailesinin ekinine gider, GDD 14.3).</summary>
+    public PlotView NearestPlanted(Vector3 from, System.Func<Plot, bool> accept)
+    {
+        PlotView best = null; float bd = float.MaxValue;
+        foreach (var v in _views.Values)
+        {
+            if (!v.Plot.Planted || v.Plot.Wild || v.Claimed || !accept(v.Plot)) continue;
+            float d = v.GlobalPosition.DistanceSquaredTo(from);
+            if (d < bd) { bd = d; best = v; }
+        }
+        return best;
+    }
+
     public PlotView NearestPlanted(Vector3 from, bool swollenOnly = false)
     {
         PlotView best = null; float bd = float.MaxValue;
