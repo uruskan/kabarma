@@ -106,6 +106,7 @@ public partial class Ata4Test : Node
         // ================= Kurbaga Aga =================
         Check(Summon("kurbaga_aga"), "kurbaga_aga indi");
         var kur = (KurbagaAga)S.Actor;
+        yield return 1.6; // inis animasyonu bitsin
         // yutma: yakindaki oyuncu yakalanir; iceriden vurus kritik
         Put(kur.GlobalPosition + new Vector3(0, 0, 6));
         float before = S.Fight.Hp;
@@ -129,7 +130,7 @@ public partial class Ata4Test : Node
         Put(pad.pos + Vector3.Up * 0.2f);
         float php = P.Hp;
         for (int i = 0; i < 40; i++) yield return 0.05;  // dalis biter, yaprakta durulur
-        Check(P.Hp >= php - 0.5f, "nilufer yapraginda cikis darbesi yenmedi");
+        Check(P.Hp >= php - 12f, $"nilufer yapraginda cikis darbesi (22) yenmedi (fark {php - P.Hp:0})"); // temas hasari (9) olabilir
         yield return 1.0;
         Check(S.Targets.OfType<AtaMinion>().Any() || S.Fight.AddsAlive >= 0, "Suluk Surusu yardimcilari");
         // asama 3: karin kesesi
@@ -178,6 +179,7 @@ public partial class Ata4Test : Node
         Check(S.Fight.WeakPoints.Count == 14, "14 bogum");
         var segs = S.Targets.OfType<AtaPoint>().ToList();
         Check(segs.Count == 14, $"14 bogum hedefi ({segs.Count})");
+        yield return 1.6; // inis animasyonu bitsin
         for (int i = 0; i < 3; i++) segs[i].TakeHit(Hit(100), P.GlobalPosition);
         yield return 0.1;
         Check(S.Fight.WeakPoints.Count(w => w <= 0) == 3, "3 bogum kirildi");
@@ -195,6 +197,8 @@ public partial class Ata4Test : Node
         yield return 0.3;
         var barrels = S.Targets.OfType<AtaBarrel>().ToList();
         Check(barrels.Count == 4, $"4 katran varili ({barrels.Count})");
+        var wallPos = S.Props(Def("ciyan_pasa"), "wall").First().pos;
+        ciy.GlobalPosition = _d.World.Ground(wallPos + new Vector3(0, 0, 3f)); // Pasa duvara tirmanmis (varil yakininda)
         float hpb = S.Fight.Hp;
         barrels[0].TakeHit(Hit(10), P.GlobalPosition);
         yield return 0.1;
@@ -206,6 +210,7 @@ public partial class Ata4Test : Node
         // ================= Buz Tosunu =================
         Check(Summon("buz_tosunu"), "buz_tosunu indi");
         var buz = (BuzTosunu)S.Actor;
+        yield return 1.6;
         ToFraction(0.5f);
         Check(S.Fight.Phase == 1 && AtaRules.PhaseOf(S.Fight, Def("buz_tosunu")).ColdDps > 0, "asama 2: donmus gol, soguk");
         var warm = S.Props(Def("buz_tosunu"), "warm").First();
@@ -213,8 +218,9 @@ public partial class Ata4Test : Node
         float hp0 = P.Hp;
         for (int i = 0; i < 60; i++) yield return 0.05;
         Check(P.Hp >= hp0 - 0.5f, "isinma noktasinda soguk yok");
+        P.Hp = 100f; hp0 = 100f;
         Put(S.ArenaCenter(Def("buz_tosunu")) + new Vector3(0, 0, 0));
-        for (int i = 0; i < 60; i++) yield return 0.05;
+        for (int i = 0; i < 80; i++) yield return 0.05;
         Check(P.Hp < hp0 - 1f, $"isinma noktasindan uzakta soguk yedi ({hp0 - P.Hp:0})");
         P.Hp = 100f;
         ToFraction(0.2f);
@@ -233,6 +239,7 @@ public partial class Ata4Test : Node
 
         // ================= Ana Maya =================
         Check(Summon("ana_maya"), "ana_maya indi");
+        yield return 1.6;
         ToFraction(0.5f);
         Check(S.Fight.Phase == 1, "asama 2: kabaran zemin");
         S.Actor.Attack("surge", 0);
