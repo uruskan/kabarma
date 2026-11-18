@@ -23,7 +23,6 @@ public class WildTests
             Assert.Contains(c.Wild.Active, new[] { "day", "night", "always" });
             Assert.False(string.IsNullOrEmpty(c.Biome), c.Id);
             Assert.True(c.Speed > 0 && c.Hp > 0, c.Id);
-            Assert.True(c.Wild.HerdMax >= c.Wild.HerdMin && c.Wild.HerdMin >= 1, c.Id);
         }
     }
 
@@ -51,24 +50,17 @@ public class WildTests
     }
 
     [Fact]
-    public void Spawn_rows_reference_wild_creatures_and_valid_rings()
+    public void Every_new_species_has_a_spawn_row_in_its_home_biome()
     {
-        var rows = D.Biomes.Biomes.Values.SelectMany(b => b.Spawns).ToList();
-        Assert.NotEmpty(rows);
-        foreach (var r in rows)
+        // Dogma semasi dunya2'nin (biomes.json spawns.creatures, SpawnTable); yaratik2 satir ekler.
+        foreach (var c in D.Creatures.Creatures.Where(c => c.Wild != null || c.Swarm != null))
         {
-            Assert.True(WildSpawns.Spawnable(D, r), r.Creature);
-            Assert.True(r.Groups >= 1 && r.MaxDistance > r.MinDistance && r.RespawnSeconds > 0, r.Creature);
-            ulong rand = 5;
-            for (int i = 0; i < 50; i++)
-            {
-                var (x, z) = WildSpawns.Point(r, 10, -10, ref rand);
-                float d = MathF.Sqrt((x - 10) * (x - 10) + (z + 10) * (z + 10));
-                Assert.InRange(d, r.MinDistance - 0.01f, r.MaxDistance + 0.01f);
-            }
+            Assert.True(D.Biomes.Biomes.ContainsKey(c.Biome), $"{c.Id}: biyom {c.Biome}");
+            var row = D.Biomes.Biomes[c.Biome].Spawns.Creatures.FirstOrDefault(r => r.Creature == c.Id);
+            Assert.True(row != null, $"{c.Id}: {c.Biome} dogma satiri yok");
+            Assert.True(row!.Group[0] >= 1 && row.MaxGroups >= 1 && row.Respawn > 0, c.Id);
         }
     }
-
     static (WildHerdState h, WildState s) Spawn(CreatureDef c, float x = 0, float z = 0) =>
         (new WildHerdState { HomeX = x, HomeZ = z, WanderX = x, WanderZ = z, Rand = 11 }, new WildState { X = x, Z = z, Hp = c.Hp, Rand = 3 });
 
@@ -247,5 +239,23 @@ public class WildTests
         // Gece kovanina doner
         var night = Swarms.Step(v, hive, new SwarmSense { PlayerX = 50, PlayerZ = 50, Night = true }, Dt);
         Assert.Equal(WildMode.Sleep, night.Mode);
+    }
+
+    [Fact]
+    public void Wildlife_save_section_round_trips()
+    {
+        var c = D.Creature("dalli");
+        var (h, s) = Spawn(c, 3, 4);
+        for (float t = 0; t < 5; t += Dt) Tick(c, h, s, new WildSense { PlayerX = 100, PlayerZ = 0 });
+        var sw = new SwarmState(); Swarms.Init(D.Creature("vizviz"), sw, 7, 8, 5);
+        var save = new WildlifeSave { NextId = 12, Rand = 99, Respawn = { ["sis_korusu:dalli"] = 40f } };
+        save.Groups.Add(new WildGroupSave { Biome = "sis_korusu", Creature = "dalli", Herd = h, Members = { new WildMemberSave { State = s, Y = 1.5f, Yaw = 0.3f } } });
+        save.Groups.Add(new WildGroupSave { Biome = "sis_korusu", Creature = "vizviz", Swarm = sw });
+        var json = JsonSerializer.Serialize(save);
+        var back = JsonSerializer.Deserialize<WildlifeSave>(json)!;
+        Assert.Equal(json, JsonSerializer.Serialize(back));
+        Assert.Equal(s.X, back.Groups[0].Members[0].State.X);
+        Assert.Equal(h.WanderX, back.Groups[0].Herd!.WanderX);
+        Assert.Equal(sw.Seed, back.Groups[1].Swarm!.Seed);
     }
 }

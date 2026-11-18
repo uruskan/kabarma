@@ -1,0 +1,17 @@
+{
+  "_not": "Tohum Carki (GDD §13, ICERIK §18). Cevirme cost Kredi ya da alacaCost Alaca urun (tarim akisi gelince); gunun ilk cevirmesi bedava (freePerDay). rewards: weight yuzde agirlik, value beklenen deger icin Kredi karsiligi (ICERIK §18). kind: credits (amounts esit olasilikla), items (cantaya kapsulle), token (sistemi henuz olmayan odul: Kooperatif deposunda sayilir; yer tutucu). Beklenen deger = cost × targetEv. ekonomi2 akisi.",
+  "cost": 500,
+  "alacaCost": 3,
+  "freePerDay": 1,
+  "targetEv": 0.85,
+  "rewards": [
+    { "id": "kredi", "name": "Kredi", "kind": "credits", "weight": 40, "amounts": [50, 100, 175] },
+    { "id": "tohum_paketi", "name": "Tohum paketi (gen 3–6)", "kind": "items", "weight": 22, "value": 450, "items": { "turnip_seed": 10 } },
+    { "id": "cip", "name": "Çip (Sıradan ya da Nadir)", "kind": "token", "weight": 15, "value": 300 },
+    { "id": "yumurta", "name": "Yumurta", "kind": "token", "weight": 8, "value": 1500 },
+    { "id": "kozmetik", "name": "Kozmetik", "kind": "token", "weight": 8, "value": 500 },
+    { "id": "destansi_cip", "name": "Destansı çip", "kind": "token", "weight": 4, "value": 1200 },
+    { "id": "kart_jetonu", "name": "Kart jetonu", "kind": "token", "weight": 2.5, "value": 800 },
+    { "id": "alaca_tohum", "name": "Alaca tohum", "kind": "token", "weight": 0.5, "value": 2000 }
+  ]
+}

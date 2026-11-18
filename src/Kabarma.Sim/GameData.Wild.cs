@@ -2,7 +2,7 @@ namespace Kabarma.Sim;
 
 // Yabani yaratiklarin gunduz tavri (GDD §16.2 "Gunduz tavri", ICERIK §3.8), sururler (TEKNIK §6 "Sururler"),
 // koddan govdeler (bodies.json; Tripo modeli gelene kadar isaretli yer tutucu, URETIM §2.2 E yedegi) ve
-// biyom dogma satirlari (biomes.json "spawns").
+// biyom dogma satirlari dunya2'nin semasinda (biomes.json spawns.creatures, GameData.Explore.cs CreatureSpawnDef).
 
 /// <summary>Tavir: ICERIK §3.8. shy urkek, calm sakin, raider yagmaci, predator yirtici, nocturnal gececi, swarm suru.</summary>
 public static class WildStance
@@ -17,8 +17,6 @@ public sealed class WildDef
     public string Stance { get; set; } = WildStance.Calm;
     /// <summary>"day", "night" ya da "always": disarida oldugu saatler. Disinda uyur ya da sahneden cekilir.</summary>
     public string Active { get; set; } = "day";
-    public int HerdMin { get; set; } = 1;
-    public int HerdMax { get; set; } = 1;
     public float WanderRadius { get; set; } = 6f;
     public float WalkSpeedMult { get; set; } = 0.5f;
     public float RunSpeedMult { get; set; } = 1f;
@@ -127,20 +125,6 @@ public sealed class BodyDef
 public sealed class BodiesFile
 {
     public Dictionary<string, BodyDef> Bodies { get; set; } = new();
-}
-
-/// <summary>Biyomun dogma satiri (biomes.json "spawns"): hangi tur, kac grup, Ocak'a uzaklik araligi.</summary>
-public sealed class SpawnDef
-{
-    public string Creature { get; set; } = "";
-    public int Groups { get; set; } = 1;
-    public float MinDistance { get; set; } = 30f;
-    public float MaxDistance { get; set; } = 120f;
-    /// <summary>Eksilen grubun yerine yenisinin gelme suresi (sn).</summary>
-    public float RespawnSeconds { get; set; } = 90f;
-    /// <summary>Bolge merkezi [x, z] ve yaricap (bos: Ocak cevresi halkasi). Koru gibi alt bolgeler icin.</summary>
-    public List<float> Center { get; set; } = new();
-    public float Radius { get; set; }
 }
 
 public sealed partial class GameData

@@ -6,32 +6,43 @@ using Kabarma.Sim;
 namespace Kabarma.Game;
 
 /// <summary>
-/// Yabani yaratiklar (ICERIK §3.8): biyomun dogma satirlarina (biomes.json "spawns") gore suruler ve sururler kurar,
-/// eksileni respawnSeconds sonra yeniler. Kabarma gecesi hepsi cayirdan kacip cekilir (dalga olarak gelirler, GDD §14.2);
-/// normal gecede gunduzculer uyur, gececiler uyanir (WildBrain.Awake). Butun durum bu dugumde (statik yok, TEKNIK §9).
+/// Yabani yaratiklar (ICERIK §3.8): dunya2'nin dogma tablosuna (biomes.json spawns.creatures, Sim SpawnTable ve BiomeMap)
+/// gore suruler ve sururler kurar. Aktoru yaratik2'de olan satirlar (creatures.json wild ya da swarm) burada dogar;
+/// Zipzip ZipzipMeadow'da kalir. Oyuncudan DespawnDistance'tan uzaklasan suru kalkar, satirin Respawn suresi sonra yenisi
+/// gelebilir. Kabarma gecesi hepsi cayirdan kacip cekilir (dalga olarak gelirler, GDD §14.2); normal gecede gunduzculer
+/// uyur, gececiler uyanir (WildBrain.Awake). Butun durum bu dugumde (statik yok, TEKNIK §9).
 /// </summary>
 public partial class Wildlife : Node3D
 {
+    /// <summary>Dogma yeri oyuncuya en cok bu kadar uzak olur; suru bundan uzaklasinca kalkar (m).</summary>
+    const float SpawnDistance = 170f, DespawnDistance = 240f, NearPlayer = 25f, ScanSeconds = 2f;
     readonly Director _d;
     readonly IWildWorld _world;
     public readonly List<WildCreature> Creatures = new();
     public readonly List<WildSwarm> Swarms = new();
-    readonly List<(SpawnDef row, List<Node3D> members)> _groups = new();
-    readonly Dictionary<SpawnDef, float> _respawn = new();
+    readonly List<(CreatureSpawnDef row, List<Node3D> members)> _groups = new();
+    readonly Dictionary<CreatureSpawnDef, float> _respawn = new();
+    readonly Rng _rng;
+    SpawnTable _table;
     ulong _rand;
     int _nextId = 1;
-    float _leaveT = -1;
+    float _leaveT = -1, _scanT;
+    /// <summary>Kendi dogma dongusu. dunya2'nin Godot dogurucusu gelince false yapilip Spawn fabrika olarak kullanilir.</summary>
+    public bool OwnSpawning = true;
 
     public Wildlife(Director d)
     {
         _d = d;
         _world = new DirectorWildWorld(d);
         _rand = GD.Randi() | 1UL;
+        _rng = new Rng(_rand);
     }
 
     public IWildWorld World => _world;
 
-    List<SpawnDef> Rows => _d.Data.Biomes.Biomes.Values.SelectMany(b => b.Spawns).Where(r => WildSpawns.Spawnable(_d.Data, r)).ToList();
+    /// <summary>Aktoru bu dugumde olan tur (dogma satiri buraya gelir).</summary>
+    public bool Knows(string creature) =>
+        _d.Data.Creatures.Creatures.FirstOrDefault(c => c.Id == creature) is { } c && (c.Wild != null || c.Swarm != null);
 
     public override void _Process(double delta)
     {
@@ -39,6 +50,7 @@ public partial class Wildlife : Node3D
         Creatures.RemoveAll(c => !IsInstanceValid(c) || c.Dead);
         Swarms.RemoveAll(s => !IsInstanceValid(s) || s.Dead);
         foreach (var g in _groups) g.members.RemoveAll(m => !IsInstanceValid(m) || m is WildCreature { Dead: true } || m is WildSwarm { Dead: true });
+        foreach (var g in _groups.Where(g => g.members.Count == 0)) _respawn[g.row] = g.row.Respawn;
         _groups.RemoveAll(g => g.members.Count == 0);
         // Surunun lideri olmeyen ilk uye
         foreach (var g in _groups)
@@ -66,35 +78,39 @@ public partial class Wildlife : Node3D
             return;
         }
         _leaveT = -1;
+        foreach (var k in _respawn.Keys.ToList()) _respawn[k] -= dt;
+        if (!OwnSpawning) return;
 
-        foreach (var row in Rows)
+        _scanT -= dt;
+        if (_scanT > 0) return;
+        _scanT = ScanSeconds;
+        var pp = _d.Player.GlobalPosition with { Y = 0 };
+        // Uzaklasan suru kalkar (yeri bosalir, satirin suresi sonra yenisi gelebilir).
+        foreach (var g in _groups.Where(g => g.members.All(m => m.GlobalPosition.DistanceTo(pp) > DespawnDistance)).ToList())
         {
-            int have = _groups.Count(g => g.row == row);
-            if (have >= row.Groups) continue;
-            _respawn.TryGetValue(row, out var t);
-            t -= dt;
-            if (t > 0) { _respawn[row] = t; continue; }
-            _respawn[row] = row.RespawnSeconds;
-            var o = _d.OcakPos;
-            var (x, z) = WildSpawns.Point(row, o.X, o.Z, ref _rand);
-            var at = new Vector3(x, 0, z);
-            // Oyuncunun dibinde belirmesin
-            if (at.DistanceTo(_d.Player.GlobalPosition with { Y = 0 }) < 20f) { _respawn[row] = 2f; continue; }
-            SpawnGroup(row, at);
+            foreach (var m in g.members) m.QueueFree();
+            _groups.Remove(g);
+            _respawn[g.row] = g.row.Respawn;
+        }
+        _table ??= new SpawnTable(_d.Data.Biomes, _d.State.BiomeMap);
+        bool night = _d.State.Calendar.IsNight;
+        var o2 = _d.OcakPos;
+        foreach (var biome in _d.Data.Biomes.Biomes.Keys)
+        {
+            var row = _table.Pick(biome, night, _rng, r => _groups.Count(g => g.row == r) + (_respawn.TryGetValue(r, out var rt) && rt > 0 ? r.MaxGroups : 0), Knows);
+            if (row == null) continue;
+            var at = _table.Place(biome, row, _rng, o2.X, o2.Z, null, 60);
+            if (at == null) continue;
+            var p = new Vector3(at.Value.x, 0, at.Value.z);
+            float d = p.DistanceTo(pp);
+            if (d > SpawnDistance || d < NearPlayer) continue;
+            var members = Spawn(_d.Data.Creature(row.Creature), p, count: SpawnTable.GroupSize(row, _rng));
+            _groups.Add((row, members));
+            _respawn[row] = 0;
         }
     }
-
-    /// <summary>Satirin turunden bir suru (ya da suru varligi) kurar.</summary>
-    public List<Node3D> SpawnGroup(SpawnDef row, Vector3 at)
-    {
-        var def = _d.Data.Creature(row.Creature);
-        var members = Spawn(def, at);
-        if (row != null) _groups.Add((row, members));
-        return members;
-    }
-
     /// <summary>at noktasinda turun bir surusunu kurar (dogma satirindan ve gorunus sinamasindan).</summary>
-    public List<Node3D> Spawn(CreatureDef def, Vector3 at, bool display = false)
+    public List<Node3D> Spawn(CreatureDef def, Vector3 at, bool display = false, int count = 1)
     {
         var list = new List<Node3D>();
         at = _world.Ground(at);
@@ -111,7 +127,7 @@ public partial class Wildlife : Node3D
         }
         if (def.Wild == null) return list;
         var herd = new WildHerdState { Id = _nextId++, Species = def.Id, HomeX = at.X, HomeZ = at.Z, WanderX = at.X, WanderZ = at.Z, Rand = _rand ^ (ulong)_nextId * 0x9E3779B97F4A7C15UL | 1UL };
-        int n = WildBrain.HerdSize(def.Wild, ref _rand);
+        int n = Mathf.Max(1, count);
         for (int i = 0; i < n; i++)
         {
             float a = i * 2.4f, r = i == 0 ? 0 : 1.2f + 0.5f * i;

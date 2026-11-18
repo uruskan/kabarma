@@ -113,8 +113,6 @@ public static class WildBrain
     /// <summary>Kabarma gecesi yabaniler sahneden cekilir; dalga olarak gelirler (GDD Â§14.2).</summary>
     public static bool Present(bool kabarmaNight) => !kabarmaNight;
 
-    public static int HerdSize(WildDef w, ref ulong rand) =>
-        Math.Max(1, (int)MathF.Floor(WildRandom.Range(ref rand, w.HerdMin, w.HerdMax + 1 - 1e-4f)));
 
     static float Dist(float ax, float az, float bx, float bz) => MathF.Sqrt((ax - bx) * (ax - bx) + (az - bz) * (az - bz));
 

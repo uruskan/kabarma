@@ -149,24 +149,3 @@ public static class Swarms
 
     static float Dist(float ax, float az, float bx, float bz) => MathF.Sqrt((ax - bx) * (ax - bx) + (az - bz) * (az - bz));
 }
-
-/// <summary>Biyom dogma satirlari (biomes.json "spawns"): nokta secimi ve suru boyu.</summary>
-public static class WildSpawns
-{
-    /// <summary>Satirin halkasinda (Ocak cevresi) ya da bolgesinde (Center, Radius) rastgele nokta [x, z].</summary>
-    public static (float X, float Z) Point(SpawnDef row, float ocakX, float ocakZ, ref ulong rand)
-    {
-        float a = WildRandom.Next(ref rand) * MathF.Tau;
-        if (row.Center.Count >= 2 && row.Radius > 0)
-        {
-            float r = MathF.Sqrt(WildRandom.Next(ref rand)) * row.Radius;
-            return (row.Center[0] + MathF.Cos(a) * r, row.Center[1] + MathF.Sin(a) * r);
-        }
-        float d = WildRandom.Range(ref rand, row.MinDistance, row.MaxDistance);
-        return (ocakX + MathF.Cos(a) * d, ocakZ + MathF.Sin(a) * d);
-    }
-
-    /// <summary>Satirin turu oyunda var mi (veride tanimli, yabani ya da suru tavri var).</summary>
-    public static bool Spawnable(GameData data, SpawnDef row) =>
-        data.Creatures.Creatures.Any(c => c.Id == row.Creature && (c.Wild != null || c.Swarm != null));
-}

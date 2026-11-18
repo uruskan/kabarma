@@ -18,13 +18,14 @@ public partial class Director
     {
         Wildlife = new Wildlife(this) { Name = "Wildlife" };
         AddChild(Wildlife);
+        Save.Add(SaveSection.Json("wildlife", 1, Wildlife.Capture, Wildlife.Apply, SaveOrder.Spawn)); // kayit sozlesmesi (Wildlife.Save.cs)
         if (Main.Args.TryGetValue("creatureview", out var v) && v is "wild" or "normal" or "swollen" or "both" or "kick")
             Wildlife.ProcessMode = ProcessModeEnum.Disabled;
     }
 
     List<CreatureDef> WildSpecies()
     {
-        var all = Data.Creatures.Creatures.Where(c => (c.Wild != null && c.Rig != null && CreatureBody.IsCode(c.Rig.Model)) || c.Swarm != null).ToList();
+        var all = Data.Creatures.Creatures.Where(c => (c.Wild != null && c.Rig != null) || c.Swarm != null).ToList();
         if (Main.Args.TryGetValue("species", out var s)) { var want = s.Split(','); all = all.Where(c => want.Contains(c.Id)).ToList(); }
         return all;
     }
@@ -79,7 +80,7 @@ public partial class Director
         if (def == null) return;
         var pp = Player.GlobalPosition;
         var at = World.Ground(pp + new Vector3(0, 0, 14f));
-        var members = Wildlife.Spawn(def, at);
+        var members = Wildlife.Spawn(def, at, count: 3);
         void Follow()
         {
             if (!IsInstanceValid(cam)) return;

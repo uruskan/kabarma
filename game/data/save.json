@@ -1,0 +1,14 @@
+{
+  "_": "Kayit ve yukleme (TEKNIK 9, 9.1). Yollar user:// altinda; sinamalar yalniz testRoot altina yazar.",
+  "formatVersion": 1,
+  "root": "user://saves",
+  "testRoot": "user://test",
+  "worldFile": "world.kbs",
+  "manifestFile": "manifest.json",
+  "characterFile": "character.kbs",
+  "backups": 5,
+  "maxWorldBytes": 31457280,
+  "autosaveMinutes": 5,
+  "slots": 6,
+  "defaultSlot": "yuva1"
+}

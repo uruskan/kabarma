@@ -5,7 +5,7 @@ namespace Kabarma.Sim;
 /// Uyuyunca normal gece atlanir; Kabarma gecesi atlanamaz. Isigi dunya katmani <see cref="TimeOfDay"/> ve
 /// <see cref="Part"/> ile cizer; burada yalnizca saat var.
 /// </summary>
-public sealed class Calendar
+public sealed partial class Calendar
 {
     readonly CalendarFile _def;
 
