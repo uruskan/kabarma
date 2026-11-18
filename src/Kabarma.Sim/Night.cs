@@ -67,13 +67,20 @@ public sealed class CardOffer
 }
 
 /// <summary>Kabarma gecesi: asamalar, dalgalar, Oz, seviye, kart secimi, Gosteri carpani (GDD 14, 15).</summary>
-public sealed class KabarmaNight
+public sealed partial class KabarmaNight
 {
     readonly GameData _data;
     readonly NightDef _def;
     readonly Rng _rng;
-    readonly Dictionary<string, int> _ranks = new();
     readonly List<float> _recentKills = new();
+    /// <summary>Kart eli (kartlar akisi, Card.Hand.cs): teklif, rutbe, asi, Nisan ve kart savas kurallari.</summary>
+    public CardHand Hand { get; }
+    /// <summary>Son oldurmenin kart etkileri (Geri Sayim, Maya Bombasi).</summary>
+    public KillResult LastKill { get; private set; }
+    /// <summary>Son isabetin kart etkileri (durumlar, sisirme, can emme).</summary>
+    public HitResult LastHit { get; private set; }
+    /// <summary>Borc: safakta Kooperatif'e giden Maya.</summary>
+    public float MayaToKooperatif { get; private set; }
 
     public NightPhase Phase { get; private set; } = NightPhase.Alarm;
     public float PhaseTime { get; private set; }
@@ -88,10 +95,10 @@ public sealed class KabarmaNight
     public int Kills { get; private set; }
     public float Maya { get; private set; }
     public bool Swelled { get; private set; }
-    public CardOffer? Offer { get; private set; }
+    public CardOffer? Offer => Hand.Offer;
     public readonly Queue<int> PendingLevels = new();
-    public CombatStats Stats { get; } = new();
-    public IReadOnlyDictionary<string, int> Ranks => _ranks;
+    public CombatStats Stats => Hand.Stats;
+    public IReadOnlyDictionary<string, int> Ranks => Hand.Ranks;
     public int SpawnedThisWave { get; private set; }
 
     public event Action? SwellNow, DawnNow;
@@ -110,9 +117,12 @@ public sealed class KabarmaNight
     public float PickupRadius => Stats.PickupRadius(_data.Kabarma.OzPickupRadius);
 
     /// <param name="memberCard">Uye tipinin baslangic karti (GDD 23). Gece tanimi izin vermezse verilmez (GDD 24: ilk gece).</param>
-    public KabarmaNight(GameData data, NightDef def, ulong seed, string? memberCard = null)
+    public KabarmaNight(GameData data, NightDef def, ulong seed, string? memberCard = null, CardBook? book = null)
     {
         _data = data; _def = def; _rng = new Rng(Scramble(seed));
+        Hand = new CardHand(data, _rng, book);
+        Hand.Taken += (c, r) => CardTaken?.Invoke(c, r);
+        Hand.LevelsGranted += GrantLevels;
         Gosteri = data.Kabarma.Gosteri.Min;
         PeakGosteri = Gosteri;
         if (def.MemberStartCard && !string.IsNullOrEmpty(memberCard)) Grant(memberCard);
@@ -148,11 +158,11 @@ public sealed class KabarmaNight
 
     public void RecordSwell(SizeClassDef size) => SwollenBySize[size.Id] = SwollenBySize.GetValueOrDefault(size.Id) + 1;
     public void RecordEaten() { if (Phase != NightPhase.Dawn) CropsEaten++; }
-    public void RecordPlayerDown() { if (Phase != NightPhase.Dawn) PlayerDowns++; }
+    public void RecordPlayerDown() { if (Phase != NightPhase.Dawn) { PlayerDowns++; if (Plan != null) Gosteri = _data.Kabarma.Gosteri.Min; } } // GDD 14.5: olunce sifirlanir (tam Kabarma)
     public void RecordAnimalSwell(int n = 1) => AnimalsSwollen += n;
 
     public WaveDef? CurrentWave => WaveIndex >= 0 && WaveIndex < _def.Waves.Count ? _def.Waves[WaveIndex] : null;
-    public float HpMult => MathF.Pow(_data.Kabarma.HpGrowth, Ks - 1);
+    public float HpMult => MathF.Pow(_data.Kabarma.HpGrowth, Ks - 1) * Hand.EnemyHpMult;
     public float DamageMult => MathF.Pow(_data.Kabarma.DamageGrowth, Ks - 1);
 
     /// <summary>GDD 15: n. seviye esigi = 20 x n^1,5 (toplam Oz).</summary>
@@ -175,8 +185,8 @@ public sealed class KabarmaNight
         TotalTime += dt;
         PhaseTime += dt;
         var g = _data.Kabarma.Gosteri;
-        Gosteri = Math.Max(g.Min, Gosteri - g.DecayPerSecond * dt);
-        if (Offer != null) Offer.Age += dt;
+        Gosteri = Math.Max(g.Min, Gosteri - g.DecayPerSecond * Hand.GosteriDecayMult * dt);
+        Hand.TickOffer(dt);
 
         switch (Phase)
         {
@@ -200,7 +210,7 @@ public sealed class KabarmaNight
     {
         if (Phase != NightPhase.Waves) return;
         var w = CurrentWave!;
-        if (SpawnedThisWave < w.Count) return;
+        if (SpawnedThisWave < w.Count || PendingSpawns > 0) return; // PendingSpawns: tasan kuyruk (Night.Wave.cs)
         CollectAll(); // M1 karari 19: dalga bitince yerde kalan Oz oyuncuya ucar
         if (WaveIndex == _def.Waves.Count - 1) EnterDawn();
         else if (PhaseTime < w.Seconds) PhaseTime = w.Seconds; // bir sonraki dalgaya kisa aradan sonra gec
@@ -214,6 +224,8 @@ public sealed class KabarmaNight
         SpawnedThisWave = 0;
         if (WaveIndex >= _def.Waves.Count) { EnterDawn(); return; }
         Phase = NightPhase.Waves;
+        Hand.OnWaveStart(); // Kumarbaz
+        OnWaveBegin(WaveIndex); // Night.Wave.cs: plan kuyrugu, Doruk
         WaveStarted?.Invoke(WaveIndex, _def.Waves[WaveIndex]);
     }
 
@@ -223,13 +235,13 @@ public sealed class KabarmaNight
         CollectAll(); // safakta yerde Oz kalmaz (kayip yok)
         Phase = NightPhase.Dawn;
         PhaseTime = 0;
-        Offer = null;
         PendingLevels.Clear();
-        // GDD 15: safakta butun kartlar soner. Rapor icin once listesi alinir.
-        CardsAtDawn = _ranks.Select(kv => new TakenCard(kv.Key, _data.Cards.Cards.FirstOrDefault(c => c.Id == kv.Key)?.Name ?? kv.Key, kv.Value))
-                            .OrderByDescending(c => c.Rank).ThenBy(c => c.Name, StringComparer.Ordinal).ToList();
-        _ranks.Clear();
-        Stats.Reset();
+        OnDawnBegin(); // Night.Wave.cs: bitis nedeni, kuyruk duser, Kazan (Borc'tan once)
+        // GDD 15: safakta butun kartlar soner (Nisan puanlari verilir). Rapor icin once listesi alinir.
+        var (cards, debt) = Hand.Dawn();
+        CardsAtDawn = cards;
+        MayaToKooperatif = Maya * debt; // Borc
+        Maya -= MayaToKooperatif;
         DawnNow?.Invoke();
     }
 
@@ -245,13 +257,15 @@ public sealed class KabarmaNight
         _recentKills.RemoveAll(t => TotalTime - t > g.StreakWindow);
         if (_recentKills.Count >= g.StreakKills)
         {
-            Gosteri = Math.Min(g.Max, Gosteri + g.StreakBonus);
+            Gosteri = Math.Min(g.Max + Hand.GosteriCapAdd, Gosteri + g.StreakBonus);
             _recentKills.Clear();
         }
         PeakGosteri = Math.Max(PeakGosteri, Gosteri);
+        LastKill = Hand.OnKill();
 
-        Maya += c.Weight * _data.Kabarma.MayaPerWeight * (1f + _data.Kabarma.MayaKsFactor * Ks) * Gosteri;
-        var mote = new OzMote { Id = ++_nextMote, X = x, Z = z, Value = c.Weight * _data.Kabarma.OzPerWeight * Gosteri };
+        // MayaMult: Night.Wave.cs (ekinsiz gece, tatbikat); Hand.MayaMult: Yem karti
+        Maya += c.Weight * _data.Kabarma.MayaPerWeight * (1f + _data.Kabarma.MayaKsFactor * Ks) * Gosteri * MayaMult * Hand.MayaMult;
+        var mote = new OzMote { Id = ++_nextMote, X = x, Z = z, Value = c.Weight * _data.Kabarma.OzPerWeight * Gosteri * Hand.OzMult };
         _motes.Add(mote);
         return mote;
     }
@@ -300,102 +314,55 @@ public sealed class KabarmaNight
 
     public void TryOpenOffer()
     {
-        if (Offer != null || PendingLevels.Count == 0 || Phase == NightPhase.Dawn) return;
-        PendingLevels.Dequeue();
-        // GDD 24: ilk gecenin ilk teklifinde Catal her zaman var (ilk sirada: 20 sn'de secilmezse ilki alinir).
-        string? forced = OffersOpened == 0 ? _def.FirstOfferCard : null;
-        OffersOpened++;
-        Offer = new CardOffer { Cards = RollOffer(forced) };
-    }
-
-    /// <summary>
-    /// GDD 15: acik havuzdan 3 farkli kart, nadirlik agirligiyla; 5. rutbedeki kart gelmez.
-    /// <paramref name="forced"/> verilirse (ve havuzdaysa) o kart ilk siraya konur, kalanlar agirlikla secilir.
-    /// </summary>
-    public List<CardDef> RollOffer(string? forced = null)
-    {
-        var pool = _data.Cards.Cards.Where(c => Rank(c.Id) < _data.Cards.MaxRank).ToList();
-        var picked = new List<CardDef>();
-        var must = string.IsNullOrEmpty(forced) ? null : pool.FirstOrDefault(c => c.Id == forced);
-        if (must != null) { picked.Add(must); pool.Remove(must); }
-        while (picked.Count < _data.Cards.OfferSize && pool.Count > 0)
+        // Teklif edilecek kart yoksa (GDD 15.1) seviye bosa gider ve siradakine gecilir.
+        while (Offer == null && PendingLevels.Count > 0 && Phase != NightPhase.Dawn)
         {
-            float total = pool.Sum(c => (float)_data.Cards.RarityWeights.GetValueOrDefault(c.Rarity, 1));
-            float r = _rng.NextFloat() * total;
-            int i = 0;
-            for (; i < pool.Count - 1; i++)
-            {
-                r -= _data.Cards.RarityWeights.GetValueOrDefault(pool[i].Rarity, 1);
-                if (r < 0) break;
-            }
-            picked.Add(pool[i]);
-            pool.RemoveAt(i);
+            PendingLevels.Dequeue();
+            // GDD 24: ilk gecenin ilk teklifinde Catal her zaman var (ilk sirada: 20 sn'de secilmezse ilki alinir).
+            string? forced = OffersOpened == 0 ? _def.FirstOfferCard : null;
+            OffersOpened++;
+            Hand.Open(forced);
         }
-        return picked;
     }
 
-    public int Rank(string id) => _ranks.GetValueOrDefault(id);
+    /// <summary>Borc: seviyeler hemen siraya girer, gecenin seviye sinirina sayilmaz (GDD 15.1).</summary>
+    void GrantLevels(int n)
+    {
+        for (int i = 0; i < n; i++)
+        {
+            Level++;
+            PendingLevels.Enqueue(Level);
+            LevelUp?.Invoke(Level);
+        }
+        TryOpenOffer();
+    }
 
-    public bool ShouldAutoPick => Offer != null && Offer.Age >= _data.Cards.AutoPickSeconds;
+    /// <summary>GDD 15, 15.1: acik havuzdan 3 farkli kart (CardHand.RollOffer). forced verilirse ilk siraya konur.</summary>
+    public List<CardDef> RollOffer(string? forced = null) => Hand.RollOffer(forced);
+
+    public int Rank(string id) => Hand.Rank(id);
+
+    public bool ShouldAutoPick => Hand.ShouldAutoPick;
 
     public CardDef? Choose(int index)
     {
-        if (Offer == null || index < 0 || index >= Offer.Cards.Count) return null;
-        var card = Offer.Cards[index];
-        Offer = null;
-        Take(card);
-        TryOpenOffer();
+        var card = Hand.Choose(index);
+        if (card != null) TryOpenOffer();
         return card;
     }
 
     /// <summary>Teklif disindan bir karti bir rutbe verir (uye tipinin baslangic karti, sinamalar). Safaktan sonra islemez.</summary>
-    public CardDef? Grant(string id)
-    {
-        if (Phase == NightPhase.Dawn) return null;
-        var card = _data.Cards.Cards.FirstOrDefault(c => c.Id == id) ?? throw new InvalidDataException($"Bilinmeyen kart: {id}");
-        if (Rank(id) >= _data.Cards.MaxRank) return null;
-        Take(card);
-        return card;
-    }
+    public CardDef? Grant(string id) => Phase == NightPhase.Dawn ? null : Hand.Grant(id);
 
-    void Take(CardDef card)
-    {
-        _ranks[card.Id] = Rank(card.Id) + 1;
-        CardsCount++;
-        Apply(card);
-        CardTaken?.Invoke(card, _ranks[card.Id]);
-    }
+    public int CardsCount => Hand.CardsCount;
 
-    public int CardsCount { get; private set; }
-
-    void Apply(CardDef c)
-    {
-        switch (c.Stat)
-        {
-            case "projectiles": Stats.Projectiles += (int)c.PerRank; break;
-            case "bounces": Stats.Bounces += (int)c.PerRank; break;
-            case "fireRate": Stats.FireRateMult += c.PerRank; break;
-            case "size": Stats.SizeMult += c.PerRank; break;
-            case "burnChance": Stats.BurnChance += c.PerRank; break;
-            case "freezeChance": Stats.FreezeChance += c.PerRank; break;
-            case "critChance": Stats.CritChance += c.PerRank; break;
-            case "knockback": Stats.KnockbackMult += c.PerRank; break;
-            case "pickupRange": Stats.PickupRangeMult += c.PerRank; break;
-            case "moveSpeed": Stats.MoveSpeedMult += c.PerRank; break;
-            default: throw new InvalidDataException($"Bilinmeyen kart etkisi: {c.Stat}");
-        }
-    }
-
-    /// <summary>Tek isabetin hasari. Kritik ve zayif nokta carpanlari burada.</summary>
+    /// <summary>Tek isabetin hasari. Kritik, zayif nokta ve kart carpanlari CardHand.RollHit'te; durumlar LastHit'te.</summary>
     public (float damage, bool crit) RollHit(WeaponDef w, bool weakPoint, float weakMult)
     {
-        float dmg = Stats.Damage(w.Damage);
-        bool crit = _rng.Chance(Stats.Crit(w.CritChance));
-        if (crit) dmg *= w.CritMult;
-        if (weakPoint) dmg *= weakMult;
-        dmg = MathF.Round(dmg);
-        if (Phase != NightPhase.Dawn) DamageDealt += dmg;
-        return (dmg, crit);
+        var h = Hand.RollHit(w, weakPoint, weakMult);
+        LastHit = h;
+        if (Phase != NightPhase.Dawn) DamageDealt += h.Damage;
+        return (h.Damage, h.Crit);
     }
 
     public bool RollBurn() => _rng.Chance(Stats.BurnChance);

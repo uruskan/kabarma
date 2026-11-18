@@ -108,9 +108,11 @@ public partial class Director : Node3D
         WireScenario(); // Director.Scenario.cs: olay -> adim sayaci
         InitEconomy();  // Director.Economy.cs: odeme, kargo, yerlestirilebilirler
         InitPower();    // power/Director.Power.cs: guc agi, Kablo, sinyal (guc akisi)
+        InitDefense();  // defense/Director.Defense.cs: kuleler ve tuzaklar (savunma M3)
         WireNightAndDay(); // Director.Calendar.cs: takvim, uyku, Defter olaylari
         InitExplore();     // Director.Explore.cs: harita, kesif noktalari, Seyir Kulesi, mancinik (dunya2)
         WireProgress();    // Director.Progress.cs: Ustalik XP'si, is emri olculeri, basarim ve odul bildirimleri
+        WireChips();       // Director.Chips.cs: cip kilidi (Kabarma) ve dusme kaynaklari
         State.Farm.Eaten += p => { GD.Print($"EATEN plot {p.X},{p.Y}"); Sfx.Play("pop", FarmView.CellCenter(p.X, p.Y), -2f); };
         Pod.BeginHatchIntro(this); // Pod.Hatch.cs: kapak acilir, Suna giris repliklerini soyler (PLAN 1.4, 0:00)
         InitNet(); // Director.Net.cs (ortak): --coop varsa NetSync; tek oyuncuda null

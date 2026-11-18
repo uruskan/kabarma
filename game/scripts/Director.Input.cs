@@ -93,6 +93,7 @@ public partial class Director
             if (Input.IsActionJustPressed("card_1")) ChooseCard(0);
             if (Input.IsActionJustPressed("card_2")) ChooseCard(1);
             if (Input.IsActionJustPressed("card_3")) ChooseCard(2);
+        if (Input.IsActionJustPressed("card_book") && !Hud.MenuOpen && !NightActive) Hud.OpenCardBook(); // kartlar: Kart Defteri (Hud.Cards.cs)
             Player.CameraInput(!zoomMod || Hud.WheelOpen); // oyuncu akisi: V / R3 kip; Ctrl / Alt + tekerlek yakinlastirir
         }
         _menuWasOpen = Hud.MenuOpen;
@@ -221,6 +222,7 @@ public partial class Director
         if (InteractVehicle()) return; // Director.Vehicles.cs: Cekirge ATV'ye bin / in (yaratik2)
         if (InteractEconomy()) return; // Director.Economy.cs: El Arabasi, Sandik, Uyku Tulumu
         if (InteractPower()) return; // power/Director.Power.cs: guc parcasi ayari, Dugme
+        if (InteractDefense()) return; // defense/Director.Defense.cs: kule doldur / onar, Cukur Kapagi (savunma M3)
         var st = StationInFocus();
         // Gidak istasyondan yakinsa E Gidak'a gider (istasyonun dibinde dolasan Gidak beslenebilsin).
         bool gidakFirst = st != null && Gidak.Visible && !Gidak.Tame
