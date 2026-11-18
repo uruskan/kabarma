@@ -1,5 +1,6 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
+using System.Linq;
 using Godot;
 using Kabarma.Sim;
 
@@ -16,7 +17,8 @@ namespace Kabarma.Game;
 /// </summary>
 public partial class World
 {
-    public const int ControlRes = 512;
+    /// <summary>Denetim dokusu cozunurlugu: 300 m dunyada 512, 640 m dunyada 1024 (~0,6 m/doku hucresi).</summary>
+    public int ControlRes { get; private set; } = 512;
     public ImageTexture ControlTex { get; private set; }
     public ImageTexture HeightTex { get; private set; }
     public NoiseTexture2D MacroNoise { get; private set; }
@@ -68,6 +70,7 @@ public partial class World
     void BuildGroundLayers()
     {
         LoadLayers();
+        ControlRes = Size > 400 ? 1024 : 512;
         MacroNoise = new NoiseTexture2D
         {
             Width = 512, Height = 512, Seamless = true, GenerateMipmaps = true,
@@ -91,13 +94,15 @@ public partial class World
         var bare = new FastNoiseLite { Seed = T.Seed + 45, Frequency = 0.045f, FractalOctaves = 3 };
         var paths = Biomes.World.Paths;
         float pw = Biomes.World.PathWidth;
+        float pathReach = PathsReach(paths) + pw * 2f + 1f; // patikalardan uzak hucrede mesafe hesaplanmaz
+        var second = OtherBiomes.Select(b => b.id).FirstOrDefault();
         for (int z = 0; z < ControlRes; z++)
         for (int x = 0; x < ControlRes; x++)
         {
             var w = CtlWorld(x, z);
             float r = 0, g = 0, a = 0; // a once "ot yok" olarak toplanir, sonra ot sikligina doner
             // Patikalar: kenari gurultuyle titreyen toprak seridi, ortasi daha cignenmis.
-            float dp = PathDistance(paths, w);
+            float dp = w.Length() > pathReach ? 1e9f : PathDistance(paths, w);
             if (dp < pw * 2f)
             {
                 float half = pw * 0.5f * (0.75f + 0.5f * (edge.GetNoise2D(w.X, w.Y) * 0.5f + 0.5f));
@@ -128,6 +133,8 @@ public partial class World
             dens *= 1f - Mathf.SmoothStep(24f, 34f, slope + bare.GetNoise2D(w.X * 3f, w.Y * 3f) * 4f);
             if (HasLake) dens *= Mathf.SmoothStep(WaterLevel + 0.05f, WaterLevel + 0.3f, HeightAt(w.X, w.Y));
             dens *= Mathf.SmoothStep(-0.55f, -0.2f, bare.GetNoise2D(w.X, w.Y));
+            // Biyom: orman tabaninda ot seyrek (biomes.json terrain.grassDensity, dunya2).
+            if (second != null) dens *= Mathf.Lerp(1f, Biomes.Biomes[second].Terrain.GrassDensity, Map.Weight(second, w.X, w.Y));
             int i = (z * ControlRes + x) * 4;
             _ctl[i] = (byte)(Mathf.Clamp(r, 0, 1) * 255);
             _ctl[i + 1] = (byte)(Mathf.Clamp(g, 0, 1) * 255);
@@ -136,6 +143,13 @@ public partial class World
         }
         _ctlImg = Image.CreateFromData(ControlRes, ControlRes, false, Image.Format.Rgba8, _ctl);
         ControlTex = ImageTexture.CreateFromImage(_ctlImg);
+    }
+
+    static float PathsReach(List<List<List<float>>> paths)
+    {
+        float r = 0;
+        foreach (var line in paths) foreach (var p in line) r = Mathf.Max(r, new Vector2(p[0], p[1]).Length());
+        return r;
     }
 
     static float PathDistance(List<List<List<float>>> paths, Vector2 p)
@@ -207,6 +221,7 @@ public partial class World
         m.SetShaderParameter("tint_dry", TintFor(Pal("ground", Palette.Ground).Lerp(new Color(0.78f, 0.72f, 0.5f), 0.35f), CimenMean, 0.4f));
         m.SetShaderParameter("maya_a", Palette.MayaTeal);
         m.SetShaderParameter("maya_b", Palette.MayaViolet);
+        SetBiomeUniforms(m, grass: false); // World.Biomes.cs: Koru zemini (dunya2)
         return m;
     }
 }

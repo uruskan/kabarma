@@ -132,6 +132,7 @@ public partial class WorldShots : Node
         {
             W.ForceTime(time);
             _cam = W.ShowBookmark(W.Bookmark(bm), _cam, _d.OcakPos);
+            W.SnapBiomeMix(_cam.GlobalPosition); // dunya2: Koru yer iminde Koru isigi (oyun yavaslatilmisken _Process gec kalir)
         }
         _wait++;
         // GPU cizim suresi (gorsel-dunya): yer imi basina son karelerin ortalamasi, kademe karsilastirmasi icin.
@@ -153,7 +154,7 @@ public partial class WorldShots : Node
     {
         _finished = true;
         int main = _saved.Count(p => !p.Contains("/deck/"));
-        bool ok = main == 16;
+        bool ok = main == W.Biomes.World.Bookmarks.Count * World.ShotTimes.Length; // M1: 4 x 4; M2: 6 yer imi (dunya2)
         GD.Print($"SHOTS RESULT {(ok ? "ok" : "fail")} main={main} deck={_saved.Count - main} quick={_quick}");
         GetTree().Quit(ok ? 0 : 1);
     }

@@ -201,17 +201,18 @@ public class FarmM2Tests
     }
 
     /// <summary>
-    /// 100 buyume gunu: 4x4 tarla, her gun sulanir, olgun hasat edilir, Tohum Kaydi'ndan yeniden ekilir (en iyi soy once),
-    /// kovan var (caprazlama). Bereket 0-100'de kalir, tohum hic bitmez, genler secilimle yukselir, Alaca bulunur.
+    /// 100 oyun gunu (GDD 2: 22 dk gunduz + 8 dk gece, calendar.json): 4x4 tarla (Salgam, Bugday, Domates, Mantar),
+    /// her sabah sulanir, olgun hasat edilir, Tohum Kaydi'ndan yeniden ekilir (en iyi soy once), kovan var (caprazlama).
+    /// Mantar yalniz gece buyur. Bereket 0-100'de kalir, tohum hic bitmez, genler secilimle yukselir, Alaca bulunur.
     /// </summary>
     [Fact]
-    public void Hundred_day_field_simulation_is_self_sustaining_and_breeding_improves_genes()
+    public void Hundred_game_day_field_simulation_is_self_sustaining_and_breeding_improves_genes()
     {
         var d = Data();
         var f = new Farm(d);
         var bag = new Inventory(400, 100_000);
         var rng = new Rng(100);
-        string[] rows = { "turnip", "wheat", "tomato", "garlic" };
+        string[] rows = { "turnip", "wheat", "tomato", "mushroom" };
         for (int x = 0; x < 4; x++)
             for (int y = 0; y < 4; y++)
             {
@@ -222,11 +223,13 @@ public class FarmM2Tests
         f.SetPollinators(new[] { (2f, 2f) });
         double startSum = f.Plots.Average(p => p.Genes.Sum);
         int harvests = 0, produce = 0;
-        float day = d.Crops.GrowDaySeconds;
+        float light = d.Calendar.DaylightMinutes * 60f, dark = d.Calendar.NightMinutes * 60f;
         for (int dayN = 0; dayN < 100; dayN++)
         {
             foreach (var p in f.Plots) f.Water(p.X, p.Y);
-            for (float t = 0; t < day; t += 0.5f) f.Tick(0.5f, light: true);
+            for (float t = 0; t < light; t += 0.5f) f.Tick(0.5f, light: true);
+            foreach (var p in f.Plots) f.Water(p.X, p.Y); // aksam sulamasi: mantar gunduz kurur, gece buyur
+            for (float t = 0; t < dark; t += 0.5f) f.Tick(0.5f, light: false);
             foreach (var p in f.Plots.ToList())
             {
                 Assert.InRange(p.Fertility, 0f, 100f);
@@ -246,7 +249,8 @@ public class FarmM2Tests
             }
         }
         double endSum = f.Plots.Average(p => p.Genes.Sum);
-        Assert.True(harvests >= 16 * 100 / 5, $"hasat {harvests}"); // 2-2,5 gunluk ekinler, islak toprak x0,8 ve dusen Bereketle ~4 gunde bir
+        Assert.True(harvests >= 16 * 99, $"hasat {harvests}"); // her kare her oyun gunu olgunlasir (mantar gece), ertesi sabah bicilir
+        Assert.True(f.Log.Best.ContainsKey("mushroom"));
         Assert.True(produce > harvests);
         Assert.True(endSum > startSum + 4, $"gen toplami {startSum:0.0} -> {endSum:0.0}");
         Assert.True(f.Log.Crosses > 0);

@@ -24,6 +24,7 @@ public static class AtaArena
         var t = b.World.Terrain;
         float half = t.Size * 0.5f;
         float edge = t.EdgeStart > 0 ? Math.Min(t.EdgeStart, half) : half;
-        return MathF.Sqrt(x * x + z * z) + radius <= edge && Math.Abs(x) + radius <= half && Math.Abs(z) + radius <= half;
+        // Kenar yukselisi kare (World.BaseHeight: max(|x|,|z|) EdgeStart'tan sonra; dunya2), daire degil.
+        return Math.Max(Math.Abs(x), Math.Abs(z)) + radius <= edge;
     }
 }

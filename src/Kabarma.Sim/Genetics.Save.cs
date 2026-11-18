@@ -17,12 +17,15 @@ public sealed class PlotGeneticsSave
     public float RegrowT { get; set; }
 }
 
+/// <summary>
+/// Secili tohum (Farm.Selected) kaydedilmez: oyuncu basinadir ve bu bolum ortak oyunda kayit koprusuyle host'tan her
+/// istemciye gider (NetSync.Save.cs); kaydedilse host'un secimi istemcininkini ezerdi.
+/// </summary>
 public sealed class FarmGeneticsSave
 {
     public SeedLedger Seeds { get; set; } = new();
     public BreedingLog Log { get; set; } = new();
     public float Time { get; set; }
-    public string Selected { get; set; } = "turnip";
     public List<PlotGeneticsSave> Plots { get; set; } = new();
 }
 
@@ -30,7 +33,7 @@ public sealed partial class Farm
 {
     public FarmGeneticsSave SaveGenetics() => new()
     {
-        Seeds = Seeds, Log = Log, Time = Time, Selected = Selected,
+        Seeds = Seeds, Log = Log, Time = Time,
         Plots = _plots.Values.OrderBy(p => p.X).ThenBy(p => p.Y)
             .Where(p => p.Wild || p.Alaca != null || p.PestDamage > 0 || p.PrevFamily != null || p.RotationBonus || p.Regrowing || p.RegrowT > 0)
             .Select(p => new PlotGeneticsSave
@@ -46,7 +49,6 @@ public sealed partial class Farm
         Seeds = s.Seeds ?? new SeedLedger();
         Log = s.Log ?? new BreedingLog();
         Time = s.Time;
-        Selected = string.IsNullOrEmpty(s.Selected) ? "turnip" : s.Selected;
         foreach (var e in s.Plots ?? new())
         {
             var p = Get(e.X, e.Y);

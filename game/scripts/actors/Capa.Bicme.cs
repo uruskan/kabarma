@@ -46,7 +46,8 @@ public partial class Capa
         foreach (var tp in trees)
         {
             int w = _d.Data.Tool.WoodPerChop;
-            _d.State.Backpack.Add("wood", w);
+            string wood = _d.World.TreeWood(tp); // dunya2: Koru agaci Sert Odun verir (biomes.json decor "wood")
+            _d.State.Backpack.Add(wood, w);
             var at = new Vector3(tp.X, aim.Y, tp.Z);
             FeelHit("bicme_agac", at, Palette.Plant);
             FeelDebris("bicme_odun", at, Palette.Wood);
@@ -54,7 +55,7 @@ public partial class Capa
             foreach (var treeMesh in _d.World.TreeChunksAt(tp)) // ornek bulunamayan parca sessizce gecer
                 Squash.KickInstance(treeMesh, treeMesh.ToLocal(tp), a, F.Squash.Seconds, F.Squash.Wobbles);
             Fx.FlyTo(at, () => _d.Player.BackpackPoint.GlobalPosition, Palette.Wood, 0.12f);
-            Events.RaiseGathered("wood", w);
+            Events.RaiseGathered(wood, w);
         }
 
         // Ot, cali ve yabani bugday (World.Resources.cs, dunya akisi): Lif ya da Bugday, geri gelmez; vurus basina biomes.json "perHit".

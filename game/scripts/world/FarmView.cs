@@ -44,7 +44,7 @@ public partial class FarmView : Node3D
         PlotView best = null; float bd = float.MaxValue;
         foreach (var v in _views.Values)
         {
-            if (!v.Plot.Planted || (swollenOnly && v.Plot.Swollen == null)) continue;
+            if (!v.Plot.Planted || v.Plot.Wild || (swollenOnly && v.Plot.Swollen == null)) continue; // gece dalgasi tapudaki ekine gelir, yabaniye degil
             if (v.Claimed) continue;
             float d = v.GlobalPosition.DistanceSquaredTo(from);
             if (d < bd) { bd = d; best = v; }

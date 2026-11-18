@@ -45,7 +45,7 @@ public class GeneticsSaveTests
         Assert.True(b.Farm.Get(30, 30)!.Wild);
         Assert.Equal(a.Farm.Get(4, 0)!.PestDamage, b.Farm.Get(4, 0)!.PestDamage);
         Assert.Equal(a.Farm.Seeds.CountFor("tomato"), b.Farm.Seeds.CountFor("tomato"));
-        Assert.Equal("tomato", b.Farm.Selected);
+        Assert.Equal("turnip", b.Farm.Selected); // secili tohum oyuncu basina, kayda ve ortak oyun koprusune girmez
 
         // Ayni komutlarla ayni yere varir (koruma ve yabani sayac dahil)
         var ra = new Rng(5); var rb = new Rng(5);
