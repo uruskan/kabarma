@@ -282,7 +282,17 @@ public partial class Zipzip : Node3D
     }
 
     /// <summary>Ezilip esneme (yay), ziplama yuksekligi, isabet parlamasi, sisme shader'i.</summary>
+    /// <summary>TickLook'un toplam suresi (Stopwatch tik; ProcessTicks'in icinde).</summary>
+    public static long LookTicks;
+
     void TickLook(float dt, float baseScale, float hopH)
+    {
+        long t0 = System.Diagnostics.Stopwatch.GetTimestamp();
+        TickLookInner(dt, baseScale, hopH);
+        LookTicks += System.Diagnostics.Stopwatch.GetTimestamp() - t0;
+    }
+
+    void TickLookInner(float dt, float baseScale, float hopH)
     {
         _body.Position = new Vector3(0, hopH, 0);
         _squash = Mathf.Max(0, _squash - dt * 4f);
