@@ -176,7 +176,10 @@ public partial class Hud
         ItemIcon(r.Id, CMidX + 38, y + 3, CRowH - 6, CRowH - 6, ok ? 1f : 0.5f, false);
         float tx = CMidX + 38 + CRowH + 4, tw = CMidW - (tx - CMidX) - 110;
         Text(Fit(T.Upper(r.Name) + (r.Out > 1 ? $" ×{r.Out}" : ""), tw, 19, true, true), tx, y + 6, 19, ok ? T.Ink : T.A(T.Ink, 0.75f), true, true);
-        // Ikinci satir: malzeme (eksik kirmizi) ya da neden yapilamaz
+        // Ikinci satir: malzeme (eksik kirmizi) ya da neden yapilamaz. Secili satirin mavisinde kirmizi okunmaz: orada
+        // eksik parlak beyaz, yetenler soluk (eksigin ayrintisi sag panelde kirmizi).
+        var bad = sel ? T.Ink : T.Red;
+        var good = sel ? T.A(T.Ink, 0.55f) : T.A(T.Ink, 0.8f);
         float cx = tx;
         if (!unlocked) Text($"Kilitli: ilk {ItemNames.Of(r.UnlockOn)} ile açılır", cx, y + 33, 15, T.Muted);
         else
@@ -186,12 +189,12 @@ public partial class Hud
                 int have = _d.State.Backpack.Count(item);
                 string part = $"{n} {ItemNames.Of(item)}  ";
                 if (cx + Measure(part, 15) > tx + tw) { Text("…", cx, y + 33, 15, T.Muted); break; }
-                cx += Text(part, cx, y + 33, 15, have >= n ? T.A(T.Ink, 0.8f) : T.Red);
+                cx += Text(part, cx, y + 33, 15, have >= n ? good : bad);
             }
             if (r.In.Count == 0) Text("malzemesiz", cx, y + 33, 15, T.A(T.Ink, 0.7f));
         }
         // Sag: istasyon ya da sure
-        if (needSt != null) TextIn(T.Upper($"{ItemNames.Of(needSt)} gerekir"), CMidX, y + 8, CMidW - 10, 14, T.Red, HorizontalAlignment.Right, true, true);
+        if (needSt != null) TextIn(T.Upper($"{ItemNames.Of(needSt)} gerekir"), CMidX, y + 8, CMidW - 10, 14, bad, HorizontalAlignment.Right, true, true);
         else TextIn(CraftRules.IsHand(r) ? "ELDE" : T.Upper(ItemNames.Of(r.Station)), CMidX, y + 8, CMidW - 10, 13, T.Muted, HorizontalAlignment.Right, true, true);
         TextIn($"{r.Seconds:0.#} SN", CMidX, y + 32, CMidW - 10, 15, T.A(T.Ink, 0.8f), HorizontalAlignment.Right, true, true);
     }

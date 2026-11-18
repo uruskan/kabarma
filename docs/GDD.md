@@ -134,7 +134,7 @@ Ocak üssün kalbidir. İşlevleri: tapu alanı, doğma noktası, Çan, Maya Kaz
 
 - **Taşıma dengesi:** Her parça en yakın temele olan destek mesafesini hesaplar. Açıklık aşılırsa parça yerleşmez. Desteği yıkılan parçalar fizik nesnesi olarak düşer ve altındakini yere serer.
 - **Yerinde yükseltme:** İnşa Planı eldeyken parçaya bakıp E basılı tutulur (yükselt, onar, sök çarkı); aradaki malzeme farkı ödenir.
-- **Onarım:** Hasar oranında malzemenin %25'i. **Söküm:** tapu içinde %100, dışında %50 iade.
+- **Onarım:** Hasar oranında malzemenin %25'i. **Söküm:** tapu içinde %100, dışında %50 iade. M1: sökülen yerleştirilebilir (Tezgâh, Sandık vb.) eşyanın kendisi olarak çantaya döner; tapu dışı %50 kuralı yerleştirilebilirde M2'de (sahibin onayını bekliyor).
 - **Boyama:** 16 renk, parça başına.
 - **Kapalı alan:** Üstü ve çevresi kapalı hacim ısıyı, konforu ve yağmuru etkiler.
 - **Plan modu:** Parçalar hayalet olarak bırakılır; ekip üyeleri malzemeyi getirince tamamlanır.
