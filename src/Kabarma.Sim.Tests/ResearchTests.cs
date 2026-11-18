@@ -222,6 +222,48 @@ public class ResearchTests
         Assert.Empty(q.Recipes);
     }
 
+    [Fact]
+    public void Ata_core_raises_the_ocak_tier()
+    {
+        var s = new GameState(Data());
+        Assert.Equal(0, s.Research.TryUpgradeOcak(s.Backpack));
+        s.Backpack.Add("cayir_cekirdegi", 1);
+        Assert.Equal(2, s.Research.TryUpgradeOcak(s.Backpack));
+        Assert.Equal(0, s.Backpack.Count("cayir_cekirdegi"));
+        Assert.Contains("ocak:2", s.Known);
+    }
+
+    [Fact]
+    public void Research_and_multi_job_stations_survive_save_and_load()
+    {
+        var d = Data();
+        var a = new GameState(d);
+        a.Research.AddVeri(40, "test");
+        a.Research.Scan("creature", "zipzip");
+        a.Research.Research("bicki", true);
+        a.Research.SetOcakTier(2);
+        a.Backpack.Add("copper_ore", 2); a.Backpack.Add("clay", 2); a.Backpack.Add("fiber", 1); a.Backpack.Add("wood", 5);
+        var f = a.QueueFor("tas_firin");
+        f.Enqueue(R(d, "copper_ingot"), a.Backpack);
+        f.Enqueue(R(d, "brick"), a.Backpack);
+        f.Tick(1.5f, a.Backpack);
+        var rs = a.Research.Save();
+        var st = f.Save();
+        var b = new GameState(d);
+        foreach (var k in a.Known) b.Known.Add(k); // "core" bolumu
+        b.Research.Load(rs);
+        b.QueueFor("tas_firin").Load(st);
+        Assert.Equal(a.Research.Veri, b.Research.Veri);
+        Assert.Equal(2, b.Research.OcakTier);
+        Assert.Contains("ocak:2", b.Known);
+        Assert.Equal(new[] { "zipzip" }, b.Research.Scanned);
+        var g = b.QueueFor("tas_firin");
+        Assert.Equal(new[] { "copper_ingot", "brick" }, g.Jobs.Select(j => j.Recipe.Id));
+        Assert.Equal(f.Progress, g.Progress, 3);
+        var back = g.Cancel(b.Backpack);                 // yakit da kayittan gelir
+        Assert.Equal(2, back["wood"]);
+    }
+
     // ---------- Envanter ----------
 
     [Fact]

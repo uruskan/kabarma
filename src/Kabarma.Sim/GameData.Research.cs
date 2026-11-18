@@ -44,6 +44,8 @@ public sealed class ResearchFile
     public List<int> CostByTier { get; set; } = new();
     public List<ResearchNodeDef> Nodes { get; set; } = new();
     public int OcakTierStart { get; set; } = 1;
+    /// <summary>Basamaga cikaran Cekirdek esyasi (indeks basamak; Ata odulu, atalar.json).</summary>
+    public List<string> TierCores { get; set; } = new();
     /// <summary>Tapu yaricapi (m), basamak 1'den baslayarak (GDD §6).</summary>
     public List<float> ClaimRadius { get; set; } = new();
     /// <summary>El tarifleri de Sandiktan alir mi (GDD §5: hayir).</summary>

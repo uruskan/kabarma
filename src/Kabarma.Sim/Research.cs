@@ -29,7 +29,7 @@ public sealed class ResearchState
     {
         _def = def;
         _known = known;
-        SetOcakTier(Math.Max(1, def.OcakTierStart));
+        OcakTier = Math.Max(1, def.OcakTierStart); // baslangic basamagi Known'a yazilmaz (kayit gidis-donusu); 'ocak:1' kilidi kullanilmaz
     }
 
     public ResearchFile Def => _def;
@@ -82,6 +82,31 @@ public sealed class ResearchState
         return true;
     }
 
+    /// <summary>
+    /// Ocak basamak yukseltme (GDD §6): bir sonraki basamagin Cekirdegi (research.json tierCores; Ata odulu) depodaysa
+    /// harcanir ve basamak yukselir. Donen: yeni basamak (yukselmediyse 0).
+    /// </summary>
+    public int TryUpgradeOcak(IItemStore store)
+    {
+        int next = OcakTier + 1;
+        if (next >= _def.TierCores.Count) return 0;
+        var core = _def.TierCores[next];
+        if (string.IsNullOrEmpty(core) || store.Count(core) < 1 || !store.Remove(core, 1)) return 0;
+        SetOcakTier(next);
+        return next;
+    }
+
+    public ResearchSave Save() => new() { Veri = Veri, OcakTier = OcakTier, Scanned = Scanned.OrderBy(x => x, StringComparer.Ordinal).ToList() };
+
+    /// <summary>Sessiz yukleme (olay yaymaz); arastirilanlar Known ile ("core" bolumu) gelir.</summary>
+    public void Load(ResearchSave s)
+    {
+        Veri = Math.Max(0, s.Veri);
+        OcakTier = Math.Max(1, s.OcakTier);
+        Scanned.Clear(); // basamak kilitleri Known ile ('core' bolumu) gelir
+        foreach (var x in s.Scanned) Scanned.Add(x);
+    }
+
     /// <summary>Taranabilir tur mu (kind + id: "creature"/"gidak", "mineral"/"clay").</summary>
     public ScanEntryDef? ScanEntry(string kind, string id) => _def.Scan.Entries.FirstOrDefault(e => e.Kind == kind && e.Id == id);
 
@@ -96,10 +121,21 @@ public sealed class ResearchState
     }
 }
 
+/// <summary>Arastirma kaydi (TEKNIK 9.1): Veri, Ocak basamagi, Ansiklopedi. Arastirilan dugumler Known'da.</summary>
+public sealed class ResearchSave
+{
+    public int Veri { get; set; }
+    public int OcakTier { get; set; } = 1;
+    public List<string> Scanned { get; set; } = new();
+}
+
 /// <summary>GameState parcasi: arastirma, Ocak basamagi, istasyon kuyruklari ve ambardan uretim deposu.</summary>
 public sealed partial class GameState
 {
     ResearchState? _research;
+
+    [SaveSection("research", 1, Order = SaveOrder.Progress, Covers = new[] { nameof(Research) })]
+    ResearchSave ResearchSection { get => Research.Save(); set => Research.Load(value ?? new ResearchSave()); }
 
     /// <summary>Ilk eriside kurulur; Known'u paylasir (arastirilanlar ve basamak orada).</summary>
     public ResearchState Research => _research ??= new ResearchState(Data.Research, Known);
@@ -108,7 +144,6 @@ public sealed partial class GameState
     public StationQueue QueueFor(string station)
     {
         if (!Stations.TryGetValue(station, out var q)) Stations[station] = q = new StationQueue(Data, station) { Known = Known };
-        _ = Research; // "ocak:1" Known'a girsin
         return q;
     }
 

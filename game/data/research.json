@@ -14,6 +14,8 @@
   ],
   "_not_ocak": "Ocak basamagi baslangicta 1 (GDD §6). Tapu yaricapi basamak basina (m, GDD §6): ambardan uretimin Sandik yaricapi.",
   "ocakTierStart": 1,
+  "_not_cores": "Ocak basamak yukseltme (GDD §6): indeks basamak. Cekirdek Ata odulu (atalar.json reward.items); Ocak'in yanina gelince takilir.",
+  "tierCores": ["", "", "cayir_cekirdegi", "koru_cekirdegi", "sazlik_cekirdegi", "kanyon_cekirdegi", "ayaz_cekirdegi"],
   "claimRadius": [40, 60, 80, 110, 140, 180],
   "_not_ambar": "Ambardan uretim (GDD §5): istasyon tarifi cantada eksik kalani tapu icindeki Sandiklardan alir; el tarifi yalniz cantadan. stationQueueMax: istasyon basina sira (is satiri).",
   "handFromStorage": false,
