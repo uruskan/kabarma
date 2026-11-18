@@ -429,6 +429,21 @@ public class HusbandryTests
     }
 
     [Fact]
+    public void Ranch_save_restores_genes_happiness_young_and_manure()
+    {
+        var (r0, s0, pen, a, b) = HappyPair(seed: 21);
+        for (int i = 0; i < 400; i++) { foreach (var f in r0.Feeders) f.Amount = f.Capacity; r0.Tick(120, new[] { pen }, _ => true); }
+        Assert.True(r0.Animals.Count > 2); // yavru var
+        var reg0 = new SaveRegistry().AddRange(s0.SaveSections());
+        var game = reg0.Capture(SaveScope.World);
+        var s1 = new GameState(TestData.Load(), 21);
+        new SaveRegistry().AddRange(s1.SaveSections()).Restore(game);
+        string Sig(GameState s) => string.Join(";", s.Ranch.Animals.Select(x => $"{x.Id}:{x.Species}:{x.Genes}:{x.Happiness:0.00}:{x.AgeDays:0.00}:{x.Registered}:{x.Trust}:{x.MotherId}:{string.Join(",", x.Pending.Select(p => p.Item + p.Count))}"))
+            + $"|{s.Ranch.Clock:0}|{s.Ranch.NextId}|{s.Ranch.Rng.State}|{s.Ranch.Manure.Sum(m => m.Count)}";
+        Assert.Equal(Sig(s0), Sig(s1));
+    }
+
+    [Fact]
     public void Hundred_day_pen_is_deterministic_for_a_seed()
     {
         Assert.Equal(HundredDays(77).sig, HundredDays(77).sig);
