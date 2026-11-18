@@ -656,7 +656,7 @@ Kimlik sütunu `game/data/recipes.json` ve `placeables.json` içindeki kimliktir
 
 Araştırma ağacı (T2, her biri 25 Veri): Bıçkı ve Dokuma Tezgâhı köktür; Değirmen, Kasap Tezgâhı, Kuluçka ve Oyma İskelesi Bıçkı'yı; Araç Atölyesi Bıçkı ve Değirmen'i; Filtre Maskesi Dokuma Tezgâhı'nı ister.
 
-Yeni ham kaynak kimlikleri (toplama yerini dunya2 ve hayvan akışları kurar): Demir Cevheri `iron_ore`, Sert Odun `hardwood`, Reçine `resin`, Güherçile `saltpeter`, Hurda `scrap`, Yün `wool`, Deri `leather`. Yığın: Odun Kömürü, Kerpiç, Bakır Tel, Demir Külçe, Kereste, Kumaş ve Un ara üründür (20).
+Yeni ham kaynak kimlikleri (toplama yerini dunya2 ve hayvan akışları kurar): Demir Cevheri `iron_ore`, Sert Odun `hard_wood`, Reçine `resin`, Güherçile `saltpeter`, Hurda `scrap`, Yün `yun`, Deri `deri`. Yığın: Odun Kömürü, Kerpiç, Bakır Tel, Demir Külçe, Kereste, Kumaş ve Un ara üründür (20).
 
 ## 12. Güç, sinyal ve taşıma parçaları (43)
 
@@ -887,6 +887,24 @@ Her adım Kredi ve Veri verir. Zincirin son adımı sütundaki ödülü de verir
 
 **İş emri adım ödülleri** (1. adımdan 5. adıma): 100 · 400 · 1.500 · 6.000 · 25.000 Kredi ve 10 · 20 · 40 · 70 · 100 Veri. **KS ilk geçiş primi:** `200 × KS` Kredi.
 
+**M2 ölçü kaynakları (ilk 12 zincir; `orders.json` `measures`).** Üç kip: **toplam** (her olay sayılır), **farklı** (farklı anahtar sayısı), **tepe** (ulaşılan en yüksek değer; Defter açılınca o âna dek ulaşılan tepeyle başlar). Zincirler Defter açılınca sayar (Çıraklık baştan); Defter açılmadan biten adımın ödülü Defter açılınca toplu ödenir. Genel sayaçlar (`OrderBook.Stats`) zincirden bağımsız her zaman sayar; başarımlar onlara bakar.
+
+| Ölçü | Kip | Kim bildirir | Durum |
+|---|---|---|---|
+| `planted`, `swollen_crop`, `cargo_sold`, `kabarma_survived` | toplam | `GameState` (Farm ve Kargo olayları) | M2'de bağlı |
+| `swollen_m` `swollen_l` `swollen_xl` | toplam (M ve üstü, L ve üstü, XL) | `GameState` (Farm.Swelled) | M2'de bağlı; "ilk M" = M ya da büyüğü |
+| `crop_kind` | farklı (ekin kimliği) | `GameState` (hasat, kabarma) | M2'de bağlı |
+| `animal_registered`, `tamed_species`, `herd_size`, `animal_product` | toplam, farklı (tür), tepe (kayıtlı hayvan), toplam | `Director.Progress.cs` (`AnimalPenned`, `Laid`) | M2'de bağlı; hayvan akışı yeni olay eklerse aynı çağrıları yapar |
+| `plant_gene` | tepe (en yüksek bitki geni puanı) | tarım akışı: `Orders.Level("plant_gene", v)` | tarım bağlar |
+| `alaca_crop` | toplam | tarım akışı: `Orders.Report("alaca_crop")` | tarım bağlar |
+| `animal_gene` | tepe | hayvan akışı | hayvan bağlar |
+| `mount_m` | toplam (**metre**; hedefler 1.000, 10.000 ...) | binek (savaş hayvanları ve binek M3) | M3 |
+| `animal_kills` | toplam | savaş hayvanları | M3 |
+| `ata_defeated` | toplam | Ata akışı (boss) | boss bağlar |
+
+**Zincir ödülleri** (kart, üye, kozmetik, plan, eşya): `OrderBook.Granted` kümesine `tür:kimlik` olarak yazılır (`plan:maya_feneri`, `card:bereket`, `member:coban`, `item:semaver`, `cosmetic:duduk_kaplama`); ödülün sahibi sistem (kartlar M3, üyeler, kozmetik) bu kümeyi okuyup kendi tarafını açar. Adım ödülü Kredi ve Veri hesaba doğrudan geçer; Kargo satışı sayılmaz, Hasat Raporu'na girmez.
+
+**Başarımlar:** 48 zincirin tamamlanması (`chain_<zincir>`) + İlk Gece + Maya Hâkimi; `achievements.json`. M2'de 12 zincir + 2 = 14 tanımlı; zincirler 48'e tamamlandıkça 50'ye çıkar (`total` 50). Steam'e bağlama M6: kimlik API adı olur.
 **Borsa kategorileri (12):** Tahıl · Kök ve Kabakgil · Meyve · Baharat ve Çay · Mantar · Yağ ve Yakıt · Lif ve Kumaş · Süt, Yumurta, Bal · Et ve Deri · Maden ve Külçe · İşlenmiş Mal · Yemek. Kabarık ürün kendi ekininin kategorisinde satılır. Maya ve Holding Parçası satılmaz.
 
 **Satış taban fiyatları** (birim başına, kalite ★1):
@@ -934,6 +952,9 @@ Her kademede iki özellikten biri seçilir (A / B).
 | **Savaş** | Keskin Nişan: kritik +%5 / Kalın Deri: can +15 | Hızlı Dolum: başlık anında değişir / Soğukkanlı: hasar alınca Gösteri düşmez | Zayıf Nokta: kese hasarı ×2,5 / İnatçı: baygınlık süresi 45 sn | Yenileme +1 / Sürgün +1 | Cephanelik: gündüz cephane harcanmaz / İlk Kart: gecenin ilk kartı 2. rütbeden başlar |
 | **Sürüş** | Hafif Ayak: yakıt −%20 / Sağlam Kasa: araç canı +%25 | Yol Tutuş: araç zor devrilir / Çekici: römork kapasitesi +%50 | Gazcı: araç hızı +%10 / Ezici: ezme hasarı ×2 | Tamir Çantası: sürerken araç onarılır / Vinç Ustası: vinç iki kat hızlı, XL kaldırır | Kaskadör: araç havadayken Gösteri kazanır / Filo: ikinci araç seni izler |
 
+**Ustalık etki kimlikleri (`mastery.json`).** Her özelliğin `effects` listesi `{stat, op, value}`: `add` toplanır (`0,15` = +%15; sayısal özelliklerde birim sayıdır: `max_hp` +15), `set` değer olur (`cable_len` 16). Dal seviyesinin +%1'i dalın `levelStat` kimliğine gider: Kazı `dig_speed`, Hasat `gather_yield`, Çiftçilik `crop_yield`, Hayvancılık `tame_rate`, Mühendislik `craft_speed`, Aşçılık `food_duration`, Savaş `damage`, Sürüş `vehicle_speed`. Sistemler `Mastery.Sum("kimlik")`, `Mult`, `Set` ya da `Has("özellik")` ile sorar. **T1–T2 = 10. ve 20. seviye özellikleri** (32 özellik, `live`): sayıları M2'de veride; M2'de oyuna bağlı olanlar: `dig_speed`, `ore_yield`, `wood_yield`, `gather_yield`, `wild_plant_yield` (toplama), `crop_yield`, `crop_growth` (tarla). Kalan T1–T2 özelliklerinin sayıları hazır; ilgili sistem (güç, yemek, araç, hayvan) kendi akışında `Sum` çağırır. 30–50. seviye özellikleri seçilir ve kaydedilir; etkileri ilgili sistemle gelir (`live` yanlış).
+
+**XP kaynakları (`mastery.json` `xp`; denge M7).** Kazı: taş, kil 2, bakır cevheri 4. Hasat: odun, lif, buğday 2. Çiftçilik: ekme 2, hasat 3, kabarma 6. Hayvancılık: ağıla kayıt 25, ürün 4, evcilleşme 40. Mühendislik: üretim 4, istasyon kurma 10, yapı parçası 2. Aşçılık: pişirme 6, yeme 1. Savaş: öldürme 2, kabarık öldürme 6. Sürüş: her 100 m 2.
 ## 20. Basamak zincirinin doğrulaması
 
 Her basamakta ilerlemek için gereken her şeyin girdisi, o basamakta ya da daha öncesinde elde edilebilir olmalı. Aşağıda zincir baştan sona yürünüyor.

@@ -1,4 +1,4 @@
-# Kabarma sinama kosucusu (Windows PowerShell 5.1 ve PowerShell 7).
+﻿# Kabarma sinama kosucusu (Windows PowerShell 5.1 ve PowerShell 7).
 # Derler, Sim testlerini kosar, botu ve insa sinamasini basliksiz calistirir (zaman asimiyla), RESULT satirlarini
 # okur, GECTI/KALDI tablosu basar. Herhangi bir hata: cikis kodu 1.
 #
@@ -26,6 +26,7 @@ param(
 )
 
 if (-not $PSBoundParameters.ContainsKey('Only')) { $Only += 'gece' } # gecehud: --test=gece varsayilan adimlara eklenir
+if (-not $PSBoundParameters.ContainsKey('Only')) { $Only += 'ilerleme' } # ilerleme: --test=ilerleme varsayilan adimlara eklenir
 $ErrorActionPreference = 'Continue'
 if (-not $PSBoundParameters.ContainsKey('Only')) { $Only += 'world' } # dunya sinamasi (--test=world), varsayilan listede
 $Only = @($Only | ForEach-Object { $_ -split ',' } | ForEach-Object { $_.Trim() } | Where-Object { $_ })
@@ -33,7 +34,9 @@ if (-not $PSBoundParameters.ContainsKey('Only')) { $Only += 'audio' } # ses akis
 if (-not $PSBoundParameters.ContainsKey('Only')) { $Only += 'creatures' }
 if (-not $PSBoundParameters.ContainsKey('Only')) { $Only += 'camera' } # oyuncu akisi: --test=camera varsayilan adimlarda
 if (-not $PSBoundParameters.ContainsKey('Only')) { $Only += 'grip' } # oyuncu akisi: --test=grip varsayilan adimlarda
+if (-not $PSBoundParameters.ContainsKey('Only')) { $Only += 'zincir' } # zincir M2: --test=zincir (bot T2 urununu arastirir ve uretir)
 if (-not $PSBoundParameters.ContainsKey('Only')) { $Only += 'ekonomi' }  # ekonomi sinamasi (--test=ekonomi) varsayilan kosuda
+if (-not $PSBoundParameters.ContainsKey('Only')) { $Only += 'borsa' }    # ekonomi2: Borsa, Katalog, Cark (--test=borsa)
 if (-not $PSBoundParameters.ContainsKey('Only')) { $Only += 'coop' }  # ortak: host + 3 istemci (ENet), senkron < 1 cm; steam yalniz -Only steam
 $Root = Split-Path -Parent $PSScriptRoot
 Set-Location $Root
@@ -193,8 +196,12 @@ if ($Only -contains 'world') {
     }
 }
 
+if (-not $PSBoundParameters.ContainsKey('Only')) { $Only += 'boss' } # boss akisi: --test=boss varsayilan adimlarda
+if ($Only -contains 'boss') { if (-not $G) { $G = Find-Godot }; Invoke-GodotTest 'boss' '--test=boss' ([Math]::Max($BotTimeout, 900)) { param($r) $res = ($r.Text -split "`r?`n" | Where-Object { $_ -match '^RESULT ' } | Select-Object -Last 1); if (-not $res) { $res = 'RESULT satiri yok' }; [pscustomobject]@{ Ok = ($res -match '^RESULT ok'); Detail = ($res -replace ' t=[0-9.]+.*$', '') } } } # boss akisi: bot iki Ata'yi bulur ve yener (--test=boss)
 if ($Only -contains 'camera') { if (-not $G) { $G = Find-Godot }; Invoke-GodotTest 'camera' '--test=camera --mute' 300 { param($r) $res = ($r.Text -split "`r?`n" | Where-Object { $_ -match '^RESULT ' } | Select-Object -Last 1); if (-not $res) { $res = 'RESULT satiri yok' }; [pscustomobject]@{ Ok = ($res -match '^RESULT ok'); Detail = $res } } } # oyuncu akisi: kamera (--test=camera)
 if ($Only -contains 'grip') { if (-not $G) { $G = Find-Godot }; Invoke-GodotTest 'grip' '--test=grip --mute' 300 { param($r) $res = ($r.Text -split "`r?`n" | Where-Object { $_ -match '^RESULT ' } | Select-Object -Last 1); if (-not $res) { $res = 'RESULT satiri yok' }; [pscustomobject]@{ Ok = ($res -match '^RESULT ok'); Detail = $res } } } # oyuncu akisi: Capa elde, namlu nisanda, araba iki elle (--test=grip)
+if (-not $PSBoundParameters.ContainsKey('Only') -and -not ($Only -contains 'tarim')) { $Only += 'tarim' } # tarim (M2): --test=tarim varsayilan adimlarda
+if ($Only -contains 'tarim') { if (-not $G) { $G = Find-Godot }; Invoke-GodotTest 'tarim' "--test=tarim --fast=4 --mute" $BotTimeout { param($r) $res = ($r.Text -split "`r?`n" | Where-Object { $_ -match '^RESULT ' } | Select-Object -Last 1); if (-not $res) { $res = 'RESULT satiri yok' }; [pscustomobject]@{ Ok = ($res -match '^RESULT ok'); Detail = ($res -replace ' t=[0-9.]+$', '') } } } # tarim (M2): bot ikinci ekini (yabani tohumdan) eker, korur, hasat eder
 if ($Only -contains 'creatures') {
     Invoke-GodotTest 'creatures' '--test=creatures' 300 {
         param($r)
@@ -230,6 +237,8 @@ if ($Only -contains 'ekonomi') {
     }
 }
 
+if ($Only -contains 'borsa') { if (-not $G) { $G = Find-Godot }; $bo = Join-Path $RunDir 'borsa'; New-Item -ItemType Directory -Force $bo | Out-Null; Invoke-GodotTest 'borsa' "--test=borsa --fast=4 --test_out=`"$bo`"" 300 { param($r) $ok = $false; $detail = 'BORSA RESULT satiri yok'; if ($r.Text -match 'BORSA RESULT ok=(\d+) fail=(\d+)') { $ok = [int]$Matches[2] -eq 0; $detail = "ok=$($Matches[1]) fail=$($Matches[2])" }; [pscustomobject]@{ Ok = $ok; Detail = $detail } } } # ekonomi2: Borsa, Katalog, Cark (--test=borsa)
+if ($Only -contains 'zincir') { if (-not $G) { $G = Find-Godot }; Invoke-GodotTest 'zincir' "--test=zincir --fast=4 --mute" $BotTimeout { param($r) $res = ($r.Text -split "`r?`n" | Where-Object { $_ -match '^ZINCIR RESULT ' } | Select-Object -Last 1); if (-not $res) { $res = 'ZINCIR RESULT satiri yok' }; [pscustomobject]@{ Ok = ($res -match 'fail=0'); Detail = ($res -replace '^ZINCIR RESULT ', '') } } } # zincir M2: arastirma ve T2 uretimi (ZincirTest.cs)
 if (($Only -contains 'gece') -and -not $G) { $G = Find-Godot }
 if ($Only -contains 'gece') {
     # gecehud: ilk gece kartlari, Hasat Raporu, Defter, envanter, takvim ve uyku, F1'den Kucuk Kabarma (game/scripts/GeceHudTest.cs)
@@ -241,6 +250,16 @@ if ($Only -contains 'gece') {
     }
 }
 
+if ($Only -contains 'ilerleme') {
+    # ilerleme: is emri odemesi, Defter alt sekmeleri, Ustalik secimi, basarim (game/scripts/IlerlemeTest.cs)
+    if (-not $G) { $G = Find-Godot }
+    Invoke-GodotTest 'ilerleme' "--test=ilerleme --mute" $BotTimeout {
+        param($r)
+        $res = ($r.Text -split "`r?`n" | Where-Object { $_ -match '^ILERLEME RESULT ' } | Select-Object -Last 1)
+        if (-not $res) { $res = 'ILERLEME RESULT satiri yok' }
+        [pscustomobject]@{ Ok = ($res -match '^ILERLEME RESULT ok'); Detail = ($res -replace ' t=[0-9.]+$', '') }
+    }
+}
 if ($Only -contains 'coop') { if (-not $G) { $G = Find-Godot }; Invoke-GodotTest 'coop' '--test=coop' ([math]::Max($BotTimeout, 600)) { param($r) $res = ($r.Text -split "`r?`n" | Where-Object { $_ -match '^COOP RESULT ' } | Select-Object -Last 1); if (-not $res) { $res = 'COOP RESULT satiri yok' }; [pscustomobject]@{ Ok = ($res -match '^COOP RESULT ok'); Detail = ($res -replace '^COOP RESULT ', '' -replace ' t=[0-9.]+', '') } } } # ortak: host 3 istemciyi kendisi baslatir (net/CoopTest.cs); istemci gunlukleri .tools/run/test/coop_client_N.log
 if ($Only -contains 'steam') { if (-not $G) { $G = Find-Godot }; Invoke-GodotTest 'steam' '--test=steam' 120 { param($r) $res = ($r.Text -split "`r?`n" | Where-Object { $_ -match '^STEAM RESULT ' } | Select-Object -Last 1); if (-not $res) { $res = 'STEAM RESULT satiri yok' }; [pscustomobject]@{ Ok = ($res -match '^STEAM RESULT ok'); Detail = ($res -replace '^STEAM RESULT ', '') } } } # ortak: tek surec Steam baslatma ve lobi (Steam acik olmali); varsayilan listede yok
 
