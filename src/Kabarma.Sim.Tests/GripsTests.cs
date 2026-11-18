@@ -53,5 +53,8 @@ public class GripsTests
         Assert.Equal("handle_l", cart.Left.Node);
         AssertFrame("araba sag", cart.Right.Pos, cart.Right.Bar, cart.Right.Fingers);
         AssertFrame("araba sol", cart.Left.Pos, cart.Left.Bar, cart.Left.Fingers);
+        // Saplar modelin dugumleri (pipeline/grip_markers.py): elle konum yok. Itme uzakligi kol boyunda.
+        Assert.All(new[] { cart.Right.Pos, cart.Left.Pos }, p => Assert.All(p, v => Assert.Equal(0f, v)));
+        Assert.InRange(cart.PushReach, 0.05f, 0.7f);
     }
 }

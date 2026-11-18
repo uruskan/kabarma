@@ -1,0 +1,14 @@
+﻿# pipeline/grip_markers.py -- el_arabasi (ilk kosu: duzeltme + isaretler; ikinci kosu: degismedi)
+CARTFIX ok el_arabasi duzeltildi: body: once arkada yan -0.29 m, onde ust uclar yan +0.05 m; simdi arkada yan -0.29, +0.29 m, kova body -yan yarisindan aynalandi (8475 ucgen, dikiste 329 kose, 440 ucgen kesildi); delik yamalari: aynalanmis yama (ileri +0.15, yan -0.20, delik ~0.09 m, 205 ucgen, yuzeye oturan kose %82, iki yari farki -11.7..+7.4 mm); ozgun yama (ileri +0.15, yan +0.20, delik ~0.09 m, 186 ucgen, yuzeye oturan kose %82, iki yari farki -11.0..+7.4 mm); ileri uzunluk 1.081 -> 1.080 m
+MARKER ok el_arabasi handle_l=(-0.483, +0.720, -0.327) handle_r=(-0.483, +0.720, +0.244) saplar yan -0.29 / +0.29 m; l: cap 3.8 cm egim 28d avucta capraz 26d yukseklik 0.720; r: cap 3.8 cm egim 28d avucta capraz 26d yukseklik 0.720
+CARTFIX ok el_arabasi degismedi: body: arkada zaten simetrik iki sap (yan -0.29, +0.29 m); dokunulmadi
+
+# --test=grip (araba bolumu)
+GRIP cart model sag=(-0.2859478, 0.72042, -0.48309708) sol=(0.2859516, 0.72042, -0.48309803) kesit sag=3.0x5.0cm sol=3.0x5.0cm arka_uc=-0.540 kenar=0.717 on_ust=0.721
+GRIP cart sag=1.1/0.0cm sol=0.1/0.0cm (yururken/dururken) eksen=0.0/0.0d kol=0.547 omuz_onde=0.077 omuz-sap_dikey=0.414 yana=0.110 itme_ideal=0.340 pushReach=0.340 sap_onde=0.343 egim=3.2d
+RESULT ok grip checks=67 cart=sag 1.1cm sol 0.1cm
+
+# --test=ekonomi
+ECON OK   araba oyuncunun onunde (0.82 m)
+ECON ECONOMY RESULT ok=82 fail=0
+ECONOMY RESULT ok=82 fail=0

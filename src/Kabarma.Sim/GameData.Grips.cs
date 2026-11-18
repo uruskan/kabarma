@@ -64,6 +64,10 @@ public sealed class HeldItemDef
     /// <summary>Alcak hazir tutusun agirligi (0: el animasyondaki yonunde kalir, 1: tam).</summary>
     public float CarryAlign { get; set; } = 1f;
     public BackMountDef? Back { get; set; }
+    /// <summary>Iki elle itilen nesne (El Arabasi): saplarin avuc ortasi oyuncu merkezinin bu kadar onunde (m, yatayda).
+    /// Kol yanda hafif one sarkar: omzun onu + kolun (omuzdan el soketine) %92'sinin dikey ve yana payi cikinca kalan;
+    /// --test=grip olculen kol ve omuzdan hesaplar, bu sayi ondan 4 cm'den fazla sapamaz.</summary>
+    public float PushReach { get; set; } = 0.3f;
 }
 
 public sealed class GripsFile

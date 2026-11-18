@@ -8,6 +8,7 @@ namespace Kabarma.Game;
 ///   --aim            govde onundeki bir noktaya surekli nisan (AimOverride): kol IK'si ve el hizalama
 ///   --closeup=ACI    oyuncunun yakinindan bakan kamera; ACI govdeye gore (0 on, 90 sag, 180 arka, -90 sol)
 ///   --closeup_h=M --closeup_d=M  yakin kameranin yuksekligi ve uzakligi (varsayilan 0,3 ve 1,7; ustten: 2,4 ve 0,6)
+///   --closeup_fwd=M --closeup_lookh=M  bakilan nokta govdenin M onunde / yerden M yukarida (varsayilan 0 ve 1,0; araba icin)
 ///   --firehold       tetigi basili tutar (Capa isini acik; --aim ile govde onundeki noktaya)
 ///   --aimdist=M --aimh=M  --aim noktasinin uzakligi ve yuksekligi (varsayilan 12 ve 1,3; isin menzil icinde gorunur)
 ///   --headcycle      1,5 sn'de bir sonraki Capa basligi (baslik degisiminde Capa elde kalir mi)
@@ -134,7 +135,9 @@ public partial class Player
             float r = Mathf.DegToRad(deg);
             // Yerdeyken (ragdoll) govde kapsulu yerinde kalir, beden savrulur: kamera kalcaya bakar, biraz yukaridan.
             bool down = Down && Rig != null;
-            var look = down ? Rig.HipsPosition + Vector3.Up * 0.1f : GlobalPosition + Vector3.Up * 1.0f + right * 0.18f;
+            float Arg(string k, float def) => a.TryGetValue(k, out var s) && float.TryParse(s, System.Globalization.NumberStyles.Float, System.Globalization.CultureInfo.InvariantCulture, out var v) ? v : def;
+            var look = down ? Rig.HipsPosition + Vector3.Up * 0.1f
+                : GlobalPosition + Vector3.Up * Arg("closeup_lookh", 1.0f) + right * 0.18f + fwd * Arg("closeup_fwd", 0f);
             float ch = a.TryGetValue("closeup_h", out var hs) && float.TryParse(hs, System.Globalization.NumberStyles.Float, System.Globalization.CultureInfo.InvariantCulture, out var hv) ? hv : 0.3f;
             float cd = a.TryGetValue("closeup_d", out var ds) && float.TryParse(ds, System.Globalization.NumberStyles.Float, System.Globalization.CultureInfo.InvariantCulture, out var dv) ? dv : 1.7f;
             _closeCam.GlobalPosition = look + (fwd * Mathf.Cos(r) + right * Mathf.Sin(r)) * (down ? 2.0f : cd) + Vector3.Up * (down ? 1.1f : ch);

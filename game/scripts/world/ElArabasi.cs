@@ -19,6 +19,7 @@ public partial class ElArabasi : RigidBody3D
     public SwollenCrop Load { get; private set; }
     public bool Pushed { get; private set; }
     Vector3 _size = new(0.8f, 0.85f, 1.8f);
+    float _gripBack, _pushReach; // saplarin avuc ortasi merkezin bu kadar arkasinda; itilirken oyuncunun bu kadar onunde
     float _savedSprint, _savedMult;
     float _settleT;
     Label3D _label;
@@ -62,6 +63,11 @@ public partial class ElArabasi : RigidBody3D
             _size = aabb.Size;
             root.Position = new Vector3(-aabb.GetCenter().X, -aabb.Position.Y, -aabb.GetCenter().Z);
         }
+        // Saplar (oyuncu akisi): modelin handle_r/handle_l dugumleri (pipeline/grip_markers.py). Itilirken araba bunlara
+        // gore yerlesir: saplarin avuc ortasi oyuncunun grips.json el_arabasi.pushReach kadar onunde.
+        var hs = new[] { "handle_r", "handle_l" }.Select(n => FindChild(n, true, false) as Node3D).Where(n => n != null).ToList();
+        _gripBack = hs.Count == 2 ? -hs.Average(n => ToLocal(n.GlobalPosition).Z) : _size.Z * 0.5f;
+        _pushReach = _d.Data.Grips.Items.TryGetValue("el_arabasi", out var gd) ? gd.PushReach : 0.3f;
         AddChild(new CollisionShape3D { Shape = new BoxShape3D { Size = _size * new Vector3(0.85f, 0.8f, 0.85f) }, Position = new Vector3(0, _size.Y * 0.45f, 0) });
         _label = new Label3D
         {
@@ -193,9 +199,9 @@ public partial class ElArabasi : RigidBody3D
             if (p.Down) { Release(); return; }
             float yaw = p.Visual.Rotation.Y;
             var fwd = new Vector3(Mathf.Sin(yaw), 0, Mathf.Cos(yaw));
-            // 0,3 m bosluk: arabanin arka ucu (saplar) govdenin ~0,3 m onunde, kollarin yetistigi yerde (oyuncu akisi;
-            // eskiden 0,8, eski uzun modelde 0,1; yeni Tripo arabasi 1,08 m). Oyuncu itilen arabaya carpmaz (Player.Grip.cs).
-            var center = p.GlobalPosition + fwd * (_size.Z * 0.5f + 0.3f);
+            // Saplarin avuc ortasi oyuncunun pushReach onunde, kollarin yanda sarktigi yerde (oyuncu akisi; eskiden sabit
+            // 0,8 / 0,1 / 0,3 m bosluk). Oyuncu itilen arabaya carpmaz (Player.Grip.cs).
+            var center = p.GlobalPosition + fwd * (_gripBack + _pushReach);
             var front = center + fwd * (_size.Z * 0.45f);
             var back = center - fwd * (_size.Z * 0.45f);
             float hf = _d.World.HeightAt(front.X, front.Z), hb = _d.World.HeightAt(back.X, back.Z);

@@ -38,6 +38,16 @@ public partial class Player
     public float MuzzleAimDeg { get; private set; }
     public float CartGapR { get; private set; } = -1f;
     public float CartGapL { get; private set; } = -1f;
+    /// <summary>Araba itilirken el soketinin bar ve parmak eksenleri ile sap dugumununkiler arasi en buyuk aci (derece).</summary>
+    public float CartAxisDegR { get; private set; } = -1f;
+    public float CartAxisDegL { get; private set; } = -1f;
+    /// <summary>Sag kolun omuzdan (RightArm) dirsege, bilege ve el soketine boyu (kemik boylari; poza bagli degil).</summary>
+    public float ArmLengthR => Rig == null ? 0f
+        : Rig.BoneOrigin("RightArm").DistanceTo(Rig.BoneOrigin("RightForeArm")) + Rig.BoneOrigin("RightForeArm").DistanceTo(Rig.BoneOrigin("RightHand"))
+          + Rig.BoneOrigin("RightHand").DistanceTo(SocketWorld(Rig.HandWorld, _sockR).Origin);
+
+    static float AxisDeg(Transform3D a, Transform3D b) =>
+        Mathf.RadToDeg(Mathf.Max(a.Basis.Y.Normalized().AngleTo(b.Basis.Y.Normalized()), a.Basis.Z.Normalized().AngleTo(b.Basis.Z.Normalized())));
     public bool CapaInHand => _capa != null && !(_capaOnBack || _cart != null);
     /// <summary>Capa dugumu (cercevesi namlu: koku namlu ucu, +Z namlu ekseni) ve tutamagi bu cercevede.</summary>
     public Node3D CapaNode => _capa;
@@ -167,8 +177,12 @@ public partial class Player
         var sockR = SocketWorld(hand, _sockR);
         if (_cart != null)
         {
+            var sockL = SocketWorld(Rig.BoneWorld("LeftHand"), _sockL);
+            _grips.Items.TryGetValue("el_arabasi", out var cd);
             CartGapR = _cartR != null ? sockR.Origin.DistanceTo(_cartR.GlobalPosition) : -1f;
-            CartGapL = _cartL != null ? SocketWorld(Rig.BoneWorld("LeftHand"), _sockL).Origin.DistanceTo(_cartL.GlobalPosition) : -1f;
+            CartGapL = _cartL != null ? sockL.Origin.DistanceTo(_cartL.GlobalPosition) : -1f;
+            CartAxisDegR = _cartR != null && cd?.Right != null ? AxisDeg(sockR, GripWorld(_cartR, cd.Right)) : -1f;
+            CartAxisDegL = _cartL != null && cd?.Left != null ? AxisDeg(sockL, GripWorld(_cartL, cd.Left)) : -1f;
         }
         if ((_capaOnBack || _cart != null) && Rig.Body.HasBag)
         {

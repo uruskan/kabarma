@@ -17,8 +17,11 @@ namespace Kabarma.Game;
 ///     bar ve parmak eksenleri &lt; 10 derece; nisanliyken namlu dugumunun +Z'si ile nisan yonu arasi &lt; 10 derece;
 ///     nisansizken namlu govdenin onune bakar ve Capa yerde degil (tutamak dizden yukarida).
 ///     Ayrica gercek tetikle (AimOverride yok) Kazma ve Bicme isini acikken ayni olculer.
-///  3. El Arabasi: modelde sap dugumleri (handle_r, handle_l) varsa iki el iki sapa &lt; 3 cm. Yoksa "cart=yok" yazilir
-///     (model kusuru; pipeline/grip_markers.py arkada simetrik sap cifti bulamazsa dugum koymaz) ve basarisiz sayilmaz.
+///  3. El Arabasi: modelde sap dugumleri (handle_r, handle_l) var (pipeline/fix_cart_handles.py + grip_markers.py).
+///     Model: dugumlerde bar'a dik kesit avuc boyunda (2-7 cm), iki sap simetrik, ayni yukseklikte ve hizada, arka uctan
+///     12 cm icinde, sag sap oyuncunun sagi; kovanin onunde sap yok (on ust kose kenardan en fazla 2 cm yukarida).
+///     Itme (yururken ve dururken): iki el soketi iki sap dugumune &lt; 3 cm, eksenler &lt; 10 derece; saplar oyuncunun
+///     pushReach onunde; pushReach olculen omuz ve koldan hesaplanan degerden &lt; 4 cm sapar.
 /// Sonuc: "RESULT ok ..." ya da "RESULT fail ...", cikis kodu 0/1.
 /// </summary>
 public partial class GripTest : Node
@@ -218,40 +221,114 @@ public partial class GripTest : Node
         await Seconds(0.3f);
     }
 
-    /// <summary>3. El Arabasi: iki el iki sapa.</summary>
+    /// <summary>3. El Arabasi: model (sap dugumleri meshin gercek saplarinda, simetrik, onde sap yok), iki el iki sapa,
+    /// itme uzakligi olculen koldan.</summary>
     async Task Cart()
     {
+        // Araba yuksekligini araziden alir (ElArabasi._PhysicsProcess): sinama zemini yerine ekonomi sinamasinin duz yeri.
+        var site = _d.World.Ground(_d.OcakPos + new Vector3(10, 0, -4));
+        P.GlobalPosition = site + Vector3.Up * 0.05f;
+        P.Velocity = Vector3.Zero;
+        await Seconds(0.5f);
         var f = (P.Visual.GlobalBasis.Z with { Y = 0 }).Normalized();
         var cart = new ElArabasi(_d);
         _d.AddChild(cart);
-        cart.GlobalTransform = new Transform3D(new Basis(Vector3.Up, Mathf.Atan2(f.X, f.Z)), P.GlobalPosition + f * 2.4f + Vector3.Down * 0.05f);
+        cart.GlobalTransform = new Transform3D(new Basis(Vector3.Up, Mathf.Atan2(f.X, f.Z)), _d.World.Ground(P.GlobalPosition + f * 2.4f));
         await Physics(2);
-        bool nodes = cart.FindChild("handle_r", true, false) != null && cart.FindChild("handle_l", true, false) != null;
+        var hr = cart.FindChild("handle_r", true, false) as Node3D;
+        var hl = cart.FindChild("handle_l", true, false) as Node3D;
+        bool nodes = hr != null && hl != null;
+        Check(nodes, "El Arabasi modelinde handle_r/handle_l dugumu yok (pipeline/grip_markers.py el_arabasi)");
+        if (nodes) CartModel(cart, hr, hl);
         cart.Grab();
         P.MoveOverride = f;
         await Seconds(0.6f);
-        float r = 0, l = 0;
+        float r = 0, l = 0, ar = 0, al = 0;
         for (int i = 0; i < Engine.PhysicsTicksPerSecond; i++)
         {
             await Physics(1);
             r = Mathf.Max(r, P.CartGapR);
             l = Mathf.Max(l, P.CartGapL);
+            ar = Mathf.Max(ar, P.CartAxisDegR);
+            al = Mathf.Max(al, P.CartAxisDegL);
         }
         P.MoveOverride = null;
-        Check(!P.CapaInHand, "araba itilirken Capa sirtta degil");
-        if (!nodes)
+        await Seconds(0.6f);
+        float rs = 0, ls = 0;
+        for (int i = 0; i < Engine.PhysicsTicksPerSecond / 2; i++)
         {
-            _cart = "yok";
-            GD.Print("GRIP cart=yok: El Arabasi modelinde handle_r/handle_l dugumu yok (arkada simetrik sap cifti yok; pipeline/grip_markers.py). Olcum yapilmadi.");
+            await Physics(1);
+            rs = Mathf.Max(rs, P.CartGapR);
+            ls = Mathf.Max(ls, P.CartGapL);
         }
-        else
+        Check(!P.CapaInHand, "araba itilirken Capa sirtta degil");
+        if (nodes)
         {
-            _cart = $"sag {r * 100:0.0}cm sol {l * 100:0.0}cm";
-            Check(r >= 0 && r < MaxGap && l >= 0 && l < MaxGap, $"araba: eller saplarda degil (sag {r * 100:0.0}, sol {l * 100:0.0} cm)");
-            GD.Print($"GRIP cart sag={r * 100:0.0}cm sol={l * 100:0.0}cm");
+            _cart = $"sag {Mathf.Max(r, rs) * 100:0.0}cm sol {Mathf.Max(l, ls) * 100:0.0}cm";
+            Check(r >= 0 && r < MaxGap && l >= 0 && l < MaxGap, $"araba (yururken): eller saplarda degil (sag {r * 100:0.0}, sol {l * 100:0.0} cm)");
+            Check(rs >= 0 && rs < MaxGap && ls >= 0 && ls < MaxGap, $"araba (dururken): eller saplarda degil (sag {rs * 100:0.0}, sol {ls * 100:0.0} cm)");
+            Check(ar >= 0 && ar < MaxDeg && al >= 0 && al < MaxDeg, $"araba: el eksenleri sap dugumunden {ar:0.0} / {al:0.0} derece");
+            // Itme uzakligi: kol yanda hafif one sarkar (omuzdan el soketine kolun PushArm'i). Omuz ve kol olculur.
+            var pos = P.GlobalPosition;
+            var bf = (P.Visual.GlobalBasis.Z with { Y = 0 }).Normalized();
+            var br = Vector3.Up.Cross(bf).Normalized();
+            var sh = P.Rig.BoneOrigin("RightArm");
+            var gw = hr.GlobalPosition;
+            float len = P.ArmLengthR, fs = (sh - pos).Dot(bf), dy = sh.Y - gw.Y, dl = Mathf.Abs((gw - pos).Dot(br) - (sh - pos).Dot(br));
+            float k = len * PushArm;
+            float ideal = fs + Mathf.Sqrt(Mathf.Max(0f, k * k - dy * dy - dl * dl));
+            float have = (gw - pos).Dot(bf);
+            float want = _d.Data.Grips.Items["el_arabasi"].PushReach;
+            Check(k > Mathf.Sqrt(dy * dy + dl * dl), $"araba: saplar kolun yetisemeyecegi kadar asagida (kol {len:0.00} m, omuz-sap dikey {dy:0.00}, yana {dl:0.00} m)");
+            Check(Mathf.Abs(want - ideal) < 0.04f, $"araba: pushReach {want:0.00} m, olculen koldan hesaplanan {ideal:0.00} m");
+            Check(Mathf.Abs(have - want) < 0.03f, $"araba: sap oyuncunun {have:0.00} m onunde, pushReach {want:0.00} m");
+            GD.Print($"GRIP cart sag={r * 100:0.0}/{rs * 100:0.0}cm sol={l * 100:0.0}/{ls * 100:0.0}cm (yururken/dururken) eksen={ar:0.0}/{al:0.0}d " +
+                     $"kol={len:0.000} omuz_onde={fs:0.000} omuz-sap_dikey={dy:0.000} yana={dl:0.000} itme_ideal={ideal:0.000} pushReach={want:0.000} " +
+                     $"sap_onde={have:0.000} egim={_d.World.SlopeAt(site.X, site.Z):0.0}d");
         }
         cart.Release();
         cart.QueueFree();
         await Physics(2);
+    }
+
+    const float PushArm = 0.92f; // itiste kol boyunun bu kadari (dirsek hafif bukuk; yururken omuz sallanir, IK'ye pay)
+
+    /// <summary>Arabanin sap dugumleri meshin gercek saplarinda mi: kesit avuc boyunda, iki sap simetrik, ayni yukseklikte
+    /// ve hizada, arkanin ucunda; kovanin onunde sap kalmamis.</summary>
+    void CartModel(ElArabasi cart, Node3D hr, Node3D hl)
+    {
+        var inv = cart.GlobalTransform.AffineInverse();
+        var pts = new List<Vector3>();
+        foreach (var mi in cart.FindChildren("*", "MeshInstance3D", true, false).OfType<MeshInstance3D>())
+        {
+            var t = inv * mi.GlobalTransform;
+            for (int s = 0; s < mi.Mesh.GetSurfaceCount(); s++)
+                foreach (var v in (Vector3[])mi.Mesh.SurfaceGetArrays(s)[(int)Mesh.ArrayType.Vertex]) pts.Add(t * v);
+        }
+        Check(pts.Count > 1000, $"araba meshi bos ({pts.Count} kose)");
+        if (pts.Count == 0) return;
+        var R = inv * hr.GlobalTransform;
+        var L = inv * hl.GlobalTransform;
+        string sec = "";
+        foreach (var (name, g) in new[] { ("sag", R), ("sol", L) })
+        {
+            // Sap az koseli: bar'a dik 3 cm'lik dilimde dugumun dort yaninda yuzey var, kesit avuc boyunda.
+            var gi = g.AffineInverse();
+            var sl = pts.Select(p => gi * p).Where(q => Mathf.Abs(q.Y) < 0.015f && new Vector2(q.X, q.Z).Length() < 0.06f).ToList();
+            float wx = sl.Count > 0 ? sl.Max(q => q.X) - sl.Min(q => q.X) : 0f, wz = sl.Count > 0 ? sl.Max(q => q.Z) - sl.Min(q => q.Z) : 0f;
+            bool inside = sl.Count > 0 && sl.Min(q => q.X) < -0.008f && sl.Max(q => q.X) > 0.008f && sl.Min(q => q.Z) < -0.008f && sl.Max(q => q.Z) > 0.008f;
+            Check(sl.Count >= 4 && inside && wx > 0.02f && wx < 0.07f && wz > 0.02f && wz < 0.07f,
+                $"araba {name} sap dugumu avuc boyunda bir sapin icinde degil (kesitte {sl.Count} kose, {wx:0.000} x {wz:0.000} m)");
+            sec += $" {name}={wx * 100:0.0}x{wz * 100:0.0}cm";
+        }
+        float minZ = pts.Min(p => p.Z);
+        float rim = pts.Where(p => Mathf.Abs(p.Z) < 0.2f).Max(p => p.Y);
+        float frontTop = pts.Where(p => p.Z > 0.15f).Max(p => p.Y);
+        Check(Mathf.Abs(R.Origin.X + L.Origin.X) < 0.02f && Mathf.Abs(R.Origin.Y - L.Origin.Y) < 0.01f && Mathf.Abs(R.Origin.Z - L.Origin.Z) < 0.01f,
+            $"araba saplari simetrik degil (sag {R.Origin}, sol {L.Origin})");
+        Check(R.Origin.X < 0 && L.Origin.X > 0 && R.Origin.X - L.Origin.X < -0.35f, $"araba saplari yanlis yanda ya da cok yakin (sag x {R.Origin.X:0.00}, sol x {L.Origin.X:0.00})");
+        Check(R.Origin.Z < minZ + 0.12f, $"araba saplari arkada degil (sap z {R.Origin.Z:0.00}, arka uc {minZ:0.00})");
+        Check(frontTop < rim + 0.02f, $"kovanin onunde sap kaliyor (on ust {frontTop:0.00} m, kenar {rim:0.00} m)");
+        GD.Print($"GRIP cart model sag={R.Origin} sol={L.Origin} kesit{sec} arka_uc={minZ:0.000} kenar={rim:0.000} on_ust={frontTop:0.000}");
     }
 }

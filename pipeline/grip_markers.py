@@ -15,8 +15,12 @@ Olcum modelin gercek geometrisinden (Godot ekseni: +Y yukari):
     muzzle  namlu ucu: en ondeki 1 cm'lik kesitin ortasi; +Z namlu ekseni (uc kesit ile 5 cm gerideki kesitten), +Y yukari.
             Namlu ekseni modelin en uzun yatay ekseni; yonu tutamagin karsi tarafi.
   el_arabasi
-    handle_r, handle_l   arkadaki iki sapin avuc ortasi (uctan HANDLE_IN iceride); +Y sap ekseni (one dogru),
-            +Z parmak bogumlari (asagi ve disa). On, tekerlegin oldugu yon; sag = ileri x yukari.
+    once pipeline/fix_cart_handles.py: saplar capraz koselerdeyse (Tripo f2eb82e) kova arka sapli yarisindan
+            aynalanir, iki sap arkaya simetrik gelir; zaten simetrikse dokunulmaz.
+    handle_r, handle_l   arkadaki iki sapin avuc ortasi: sap ucunun ana ekseni uzerinde, uctan HANDLE_IN iceride.
+            +Z parmaklar (bilekten bogumlara): asagi ve FINGER_OUT kadar disa (kol yanda sarkar, bilek duz);
+            +Y sapin buna dik izdusumu (one dogru; sap uca dogru yukselir, avucun icinden capraz gecer).
+            On, tekerlegin oldugu yon; sag = ileri x yukari. Sap kesiti avuc boyunda olmali (2-6 cm).
             Arkada simetrik bir sap cifti yoksa isaret YAZILMAZ ve betik basarisiz olur (model kusuru raporlanir).
 
 Varsayimlar dogrulanir; tutmazsa "MARKER fail <ad>: neden" yazar, o modele dokunmaz ve cikis kodu 1 olur.
@@ -29,6 +33,9 @@ import bpy
 import numpy as np
 from mathutils import Matrix
 
+sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
+import fix_cart_handles  # noqa: E402  El Arabasi'nin capraz saplari (olcmeden once duzeltilir)
+
 ROOT = os.path.abspath(os.path.join(os.path.dirname(__file__), ".."))
 MODELS = os.path.join(ROOT, "game", "assets", "models")
 TAG = "grip_markers"
@@ -38,7 +45,8 @@ STEP = 0.01          # dilim kalinligi (m)
 BODY_WIDEN = 0.8     # tutamagin ust ucu: dilimin yan yari genisligi govdeninkinin bu oranina ulasinca
 FIST_HALF = 0.045    # avuc ortasi tutamak ust ucundan bu kadar asagida (oyuncu elinin yari yuksekligi, m)
 GAP = 0.025          # dilimde tutamagi tetikten ayiran bosluk (m; tutamak ici bos bir kabuk, yan yuzunde koseler seyrek)
-HANDLE_IN = 0.07     # arabada avuc ortasi sap ucundan bu kadar iceride (m)
+HANDLE_IN = 0.06     # arabada avuc ortasi sap ucundan bu kadar iceride (yari avuc + 1,5 cm, m)
+FINGER_OUT = 0.15    # arabada parmaklar asagi ve bu oranda disa (saplar omuzlardan genis: kol hafif aciktir)
 
 
 class Fail(Exception):
@@ -191,31 +199,45 @@ def measure_cart(P, per):
     right = np.cross(fwd, UP)
     s, lat, y = P @ fwd, P @ right, P[:, 1]
     L = ext[ax]
+    band = np.abs(s - (s.min() + s.max()) / 2) < 0.25 * L
+    mid = (lat[band].min() + lat[band].max()) / 2      # kovanin yana ortasi
     rear = (s < s.min() + 0.15 * L) & (y > lo[1] + 0.5 * H)
     cl = clusters_1d(lat[rear], 0.05)
-    found = ", ".join(f"yan {(a + b) / 2:+.2f} m" for a, b, _ in cl)
+    found = ", ".join(f"yan {(a + b) / 2 - mid:+.2f} m" for a, b, _ in cl)
     # Arka disindaki ust uclar (sap gibi cikan parcalar) bilgi icin
     top = y > hi[1] - 0.1 * H
     tops = clusters_1d(s[top], 0.08)
-    where = "; ".join(f"ileri {(a + b) / 2:+.2f} m yan {lat[top][i].mean():+.2f} m" for a, b, i in tops)
+    where = "; ".join(f"ileri {(a + b) / 2:+.2f} m yan {lat[top][i].mean() - mid:+.2f} m" for a, b, i in tops)
     req(len(cl) == 2, f"arkada simetrik sap cifti yok: arkada {len(cl)} sap ucu ({found}); en ust uclar: {where}")
     (a1, b1, i1), (a2, b2, i2) = sorted(cl, key=lambda k: k[0])
-    m1, m2 = (a1 + b1) / 2, (a2 + b2) / 2
-    req(abs(m1 + m2) < 0.1 and 0.25 < m2 - m1 < 0.9, f"saplar simetrik degil ({m1:+.2f}, {m2:+.2f} m)")
+    m1, m2 = (a1 + b1) / 2 - mid, (a2 + b2) / 2 - mid
+    req(abs(m1 + m2) < 0.05 and 0.25 < m2 - m1 < 0.9, f"saplar simetrik degil ({m1:+.2f}, {m2:+.2f} m)")
     R = P[rear]
-    out = {}
+    out, info = {}, []
     for name, idx, sgn in (("handle_l", i1, -1.0), ("handle_r", i2, 1.0)):
+        # Sap ucu bir cubuk: arka bolgedeki koselerin ana ekseni (one dogru), kesiti eksene uzaklik
         pts = R[idx]
-        ps = pts @ fwd
-        tip = pts[ps < ps.min() + 0.02].mean(0)
-        near = P[(np.linalg.norm(P - tip, axis=1) < 0.25) & (np.abs(lat - tip @ right) < 0.06)]
-        c = near.mean(0)
-        u, sv, vt = np.linalg.svd(near - c)
+        c = pts.mean(0)
+        _, sv, vt = np.linalg.svd(pts - c)
+        req(sv[0] > 2.5 * sv[1], f"{name}: sap ucu cubuk degil (tekil degerler {sv[0]:.2f}, {sv[1]:.2f})")
         stick = unit(vt[0] if vt[0] @ fwd > 0 else -vt[0])
-        grip = tip + stick * HANDLE_IN
-        fingers = -UP + right * sgn
-        out[name] = (grip, stick, fingers)
-    return out, f"saplar yan {m1:+.2f} / {m2:+.2f} m"
+        t = (pts - c) @ stick
+        diam = 2 * float(np.median(np.linalg.norm((pts - c) - np.outer(t, stick), axis=1)))
+        req(0.02 < diam < 0.06, f"{name}: sap avuc boyunda degil (cap {diam:.3f} m)")
+        req(t.max() - t.min() > 2 * HANDLE_IN, f"{name}: sap ucu kisa ({t.max() - t.min():.3f} m)")
+        slope = np.degrees(np.arcsin(np.clip(-stick[1], -1, 1)))
+        req(slope < 45, f"{name}: sap cok dik ({slope:.0f} derece)")
+        # Avuc ortasi sapin ekseninde, uctan HANDLE_IN iceride. Parmaklar (bilekten bogumlara) asagi ve biraz disa:
+        # kol yanda sarkar, bilek duz kalir; sap avucun icinden capraz gecer (bar, sapin parmaklara dik izdusumu).
+        grip = c + stick * (t.min() + HANDLE_IN)
+        fingers = unit(-UP + right * sgn * FINGER_OUT)
+        bar = unit(stick - fingers * (stick @ fingers))
+        out[name] = (grip, bar, fingers)
+        info.append(f"{name[-1]}: cap {diam * 100:.1f} cm egim {slope:.0f}d avucta capraz {np.degrees(np.arccos(np.clip(bar @ stick, -1, 1))):.0f}d "
+                    f"yukseklik {grip[1]:.3f}")
+    gl_, gr_ = out["handle_l"][0], out["handle_r"][0]
+    req(abs(gl_[1] - gr_[1]) < 0.01 and abs((gl_ - gr_) @ fwd) < 0.01, "iki sapin avuc ortasi ayni yukseklikte ve hizada degil")
+    return out, f"saplar yan {m1:+.2f} / {m2:+.2f} m; " + "; ".join(info)
 
 
 # ---------------------------------------------------------------- GLB
@@ -274,6 +296,10 @@ def main():
         path = os.path.join(MODELS, key, f"{key}.glb")
         try:
             req(os.path.exists(path), f"dosya yok {path}")
+            if key == "el_arabasi":
+                # Saplar capraz koselerdeyse (Tripo f2eb82e) once arkaya simetrik getirilir; zaten simetrikse dokunulmaz.
+                changed, msg = fix_cart_handles.fix(path, check)
+                print(f"CARTFIX ok {key} {'duzeltildi' if changed else 'degismedi'}: {msg}", flush=True)
             P, per = load_points(path)
             if key == "capa":
                 markers, info = measure_capa(P)
@@ -285,7 +311,7 @@ def main():
             if not check:
                 patch(path, markers)
             print(f"MARKER ok {key} {desc} {info}{' (yalniz olcum)' if check else ''}", flush=True)
-        except Fail as e:
+        except (Fail, fix_cart_handles.Fail) as e:
             bad += 1
             print(f"MARKER fail {key}: {e}", flush=True)
     sys.stdout.flush()
