@@ -82,6 +82,7 @@ public partial class AnimalCard : Control
         bool tame = a.Tame;
         int rows = tame ? 6 : 3;
         float h = pad * 2 + S(34) + rows * line;
+        DrawRect(new Rect2(x, y, w, h), new Color(Palette.NightDeep, 0.85f)); // okunurluk: parlak cimenin ustunde koyu taban
         DrawRect(new Rect2(x, y, w, h), T.Panel);
         DrawRect(new Rect2(x, y, S(4), h), tame ? Palette.CoopBlue : Palette.Warning);
         float cx = x + pad + S(4), cy = y + pad;
@@ -119,6 +120,7 @@ public partial class AnimalCard : Control
         float w = S(420), x = S(24), y = S(110), pad = S(14), line = S(26);
         var members = pen == null ? new[] { ag.Animal } : _r.Ranch.Animals.Where(a => a.Registered && a.HiveId == 0 && pen.Contains(new P2(a.X, a.Z))).ToArray();
         float h = pad * 2 + S(36) + line * (3 + members.Length);
+        DrawRect(new Rect2(x, y, w, h), new Color(Palette.NightDeep, 0.85f)); // okunurluk: parlak cimenin ustunde koyu taban
         DrawRect(new Rect2(x, y, w, h), T.Panel);
         float cx = x + pad, cy = y + pad;
         Txt(T.Upper(pen == null ? "Ağılda değil" : $"Ağıl · {pen.Cells(_d.Data.Pen.CellArea)} hücre"), cx, cy, 24, T.Ink, true, true);

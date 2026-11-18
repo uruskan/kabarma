@@ -349,7 +349,7 @@ public partial class RanchSystem : Node
             var name = r.Def.Roles.FirstOrDefault(x => x.Id == role)?.Name ?? role;
             items.Add(new($"Rol: {name}{(a.Role == role ? "  ✓" : "")}", () => a.Role != role, () => { if (r.SetRole(a, role)) OpenPanel(ag); }));
         }
-        foreach (var c in r.Def.Commands)
+        foreach (var c in ag.Passive ? new List<NamedId>() : r.Def.Commands) // ilk gunun Gidak'i kendi yolunu yurur
             items.Add(new($"Komut: {c.Name}{(a.Command == c.Id ? "  ✓" : "")}", () => true, () =>
             {
                 bool ok = r.Command(a, c.Id, Ranch.Rng);
