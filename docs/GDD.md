@@ -96,7 +96,9 @@ Oyuncunun ana aleti. Bütün işler ve silahlar başlık olarak takılır. Çapa
 - **Yerleştirilebilirler** (Tezgâh, Taş Fırın, Ocakbaşı, Paketleme, Sandık, Uyku Tulumu, Meşale, Yemlik, Folluk, Ahşap Kapı, Kargo Rampası) üretilince envantere eşya olarak girer; kemerden seçilip kurulur. M1'de elde: Tezgâh 5 sn, Meşale 1 sn, Uyku Tulumu, Sandık, Yemlik, Folluk, Ahşap Kapı 3'er sn; Tezgâh'ta: Taş Fırın 6 sn, Ocakbaşı ve Paketleme Tezgâhı 5'er sn. Bedeller ICERIK §10.2 ve §20'deki gibi. Ocak kapsülden gelir (başlangıçta çantada, kemerden kurulur). Kargo Rampası üretilmez: ilk günden kapsül rampaya döner.
 - Yığın: kaynak 50, ara ürün 20, yemek 10.
 - **Yük nesneleri** çantaya girmez; dünyada fiziksel durur: kabarık ürün, kargo kasası, büyük leş, kuluçkalık yumurta (yuvadan alınan; Gıdak yumurtası sıradan eşyadır, çantaya girer), paketlenmiş makine ve araç, Ata ganimeti. Çekim başlığıyla, birkaç kişiyle, hayvanla, vinçle ya da araçla taşınır.
-- **Ambardan üretim:** Tapu içinde Ocak'a bağlı bütün depolardaki malzeme tezgâhlarda doğrudan kullanılır.
+- **Ambardan üretim:** Tapu içinde Ocak'a bağlı bütün depolardaki malzeme tezgâhlarda doğrudan kullanılır. Kural (M2): istasyon tarifinin malzemesi ve yakıtı önce çantadan, eksik kalan tapu yarıçapındaki (§6) Sandıklardan alınır; ürün çantaya, çanta doluysa aynı Sandıklara girer, ikisi de doluysa iş bekler. El tarifleri yalnız çantadan. İptal edilen işin malzemesi aynı yolla geri döner.
+- **İstasyon kuyruğu:** Her istasyonun kendi kuyruğu vardır (en çok 8 iş, farklı tarifler sıra bekler); oyuncu uzaklaşsa da işler.
+- **Envanter düzeni:** Sandık menüsünde "Çantayı sırala" (aynı eşyanın yarım yığınlarını birleştirir, türe göre dizer) ve "Aynılarını koy" (Sandık'ta zaten bulunan eşyaların hepsini çantadan Sandık'a taşır, Rust'taki hızlı yığma).
 
 ## 6. Ocak ve tapu
 
@@ -164,6 +166,14 @@ Ocak üssün kalbidir. İşlevleri: tapu alanı, doğma noktası, Çan, Maya Kaz
 - **Bereket:** Her hasat −8 (kök ekinleri −10, Katran Fasulyesi +5). Kompost +30, gübre +20, kimyasal gübre +50. Boş kare günde +3. Bir karede art arda farklı aile ekmek +%10 verim.
 - **Su:** Hortum, yağmur, yağmurlama (4 m yarıçap, boru ve su kaynağı ister), damla hattı.
 - **Gündüz zararlıları:** Zıpzıp, Fındıkçı ve küçük Çekirge grupları olgun ekine gelir. Korkuluk (10 m), çit, bekçi hayvan ya da kule önler.
+  - Zararlı ekini bir lokmada yemez. Her ısırık Zarar'ı `0,10 × (1 − 0,05 × D)` artırır. Zarar 1'e varınca ekin yenmiş olur. Hasat verimi `× (1 − Zarar)` olur.
+  - Sarımsak, kendi karesine ve 8 komşu kareye zararlı getirmez.
+- **Özel ekinler** ([ICERIK.md](ICERIK.md) §5):
+  - Mantar yalnız karanlıkta büyür (gece ya da çatı altı).
+  - Böğürtlen ve Fındık kalıcı çalıdır. Hasattan sonra Genç evreye döner ve "sonra günde bir / iki günde bir" kuralıyla yeniden olgunlaşır.
+  - Buğdayın ürünü `wheat`, Lifotu'nun ürünü `fiber` kaynağıdır.
+- **Gün birimi:** Ekin süreleri (olgunlaşma, kalıcı çalının yenilenmesi, boş karenin +3 Bereketi, yabani bitkinin yeniden bitmesi) **büyüme günü** ile sayılır. Büyüme günü `crops.json growDaySeconds` değeridir (şimdilik 37,5 sn; Şalgam'ın 2 günü 75 sn). Kabarık ürünün sönmesi takvim gününe bağlıdır (§2).
+- **Yabani bitki:** Tapu dışında kendiliğinden biten olgun ekindir. Biçmeyle ürün ve yabani tohum verir. Kabarmaz. Hasattan 2 büyüme günü sonra yeniden biter.
 
 ### 8.3 Genler ve ıslah
 
@@ -172,6 +182,19 @@ Her tohumun dört geni var (1–10): **V** verim, **H** hız, **D** dayanıklıl
 - **Çaprazlama:** Aynı aileden iki bitki en fazla 2 m arayla ekiliyse ve 12 m içinde Vızvız kovanı varsa, hasat edilen tohumun her geni ebeveyn ortalamasıdır, üstüne mutasyon: %70 değişmez, %20 +1, %8 −1, %2 +2.
 - **Aşı Tezgâhı (T5):** Bir tohumdaki seçilen tek geni başka tohuma aktarır; kaynak tohum harcanır.
 - **Alaca:** Her hasatta Benekli 1/40, Altın 1/250, Aurora 1/2.000. Alaca tohum %50 olasılıkla Alaca verir. Satışta ×3, ×10, ×50; kabarık hâlinin kendine özgü görünüşü olur.
+  - Zar ekimde atılır. Böylece bitki büyürken ve kabarıkken Alaca olduğu görünür; olasılık her yetişen bitki için aynıdır.
+  - Alaca hasadın ürünü ayrı eşyadır (`<ekin>_benekli`, `_altin`, `_aurora`). Tohumları Alaca tohumdur.
+- **Kalıtım (çaprazlama yokken):** Hasat edilen her tohum, bitkinin genlerini alır ve üstüne aynı mutasyon zarı atılır.
+- **Yuvarlama ve sınır:** Ebeveyn ortalaması buçukluysa (ör. 2,5) yarı yarıya aşağı ya da yukarı yuvarlanır. Mutasyondan sonra gen 1–10 arasında kalır.
+- **D'nin etkisi:**
+  - Nem eşikleri (20 ve 40) `0,5 × (D − 1)` aşağı iner. Kalite yıldızı için 20 eşiği değişmez.
+  - Bant dışı hız `0,25 + 0,03 × (D − 1)` olur.
+  - Zararlı ısırığı yukarıdaki gibidir.
+- **Tohum soyu:** Çantada tohum yalnız adet ve kimlikle durur. Genleri ve Alaca'sı tapunun **Tohum Kaydı**'nda tutulur.
+  - Ekerken o türün en iyi kaydı kullanılır. Alaca kayıt önce gelir, sonra gen toplamı en yüksek olan.
+  - Kaydı olmayan tohum (kapsülden, satın alınmış ya da başka yoldan gelen) ekinin taban genleriyle ekilir.
+  - Tohumu olmayan kayıt bekler; ilk tohum geldiğinde kullanılır.
+- **Islah notları:** Defter'in Islah sayfası her türün en iyi genlerini, son mutasyonları ve Alaca buluşlarını yazar.
 
 ### 8.4 Kabarma'da tarla
 
@@ -192,15 +215,27 @@ Cam parçalarla kapatılmış hacme Sera Kontrol Ünitesi konunca içerideki sı
 - **Otçullar ve küçükler:** Sevdiği yem atılır. Her yiyişte güven çubuğu dolar; koşmak ve ateş etmek çubuğu sıfırlar. Dolunca oyuncuyu izler; ağıla girince kayıt olur.
 - **Ağıl:** Çit, bahçe kapısı, duvar ya da kapı parçalarından kapalı bir halka; en az 1 hücre (9 m²), çatı gerekmez. Kapılar E ile açılıp kapanır; açık kapı geçilir. Halkanın içindeki hayvan kayıt olur. Tür başına gereken alan veridedir (Gıdak 4 m²).
 - **Yırtıcılar ve büyükler:** Önce canı %25'in altına indirilip Çekim ya da Zıpkın ile tutulur, sonra beslenir.
-- **Yumurtadan:** Hu, Koşar, Paytak ve Kızgın yuvadan alınan yumurtayla Kuluçka'da çıkar.
+- **Yumurtadan:** Hu, Koşar, Paytak ve Kızgın yuvadan alınan yumurtayla Kuluçka'da çıkar. Yavru evcil doğar.
+- **Kovan:** Vızvız ağıla girmez. Sevdiği yemle güvenen sürü bir Arı Kovanı'na yerleşir ve orada kayıt olur.
+- Tür başına yol, yem sayısı ve alan `husbandry.json`'da. Homur, Dallı ve Vıcık otçul yolundan evcilleşir; Bozuk yırtıcı yolundan.
+- **Kaçma:** Mutluluğu eşiğin altında kalan hayvan, bir süre sonra açık kapıdan ağılı terk eder. Kaydı düşer, güveni yarıya iner; yeniden yemle kazanılır. Eşik ve süre veride.
 
 ### 9.2 İhtiyaçlar ve mutluluk
 
 Yemlik (türe göre yem), suluk, çatı, tür başına alan. Mutluluk (0–100) karşılanan ihtiyaçlardan, okşamaktan ve gübreyi toplamaktan gelir. Mutluluk ürün kalitesini ve üremeyi belirler.
 
+- Mutluluk bir hedefe doğru günde belli bir hızla kayar. Hedef, karşılanan ihtiyaçların ağırlıkları toplamıdır.
+- Okşama günde bir kez ek puan verir. Ağılda biriken her toplanmamış gübre puan düşürür.
+- Ürün yalnız Yemlik'te türün yemi varken çıkar; ihtiyaçlar ürünü durdurmaz. Mutluluk miktarı (kalite çarpanı) ve sıklığı değiştirir, U geni de sıklığı.
+- Ağırlıklar, aralıklar ve eşikler `husbandry.json`'da.
+
 ### 9.3 Genler ve üreme
 
 Dört gen (1–10): **B** boyut (can, yük), **U** uysallık (komut dinleme, ürün sıklığı), **V** ürün verimi, **K** kabarma gücü (kabarık hâlin canı ve hasarı). Kalıtım ve Alaca kuralları tarımdakiyle aynı. İki yetişkin, 60 ve üstü mutluluk ve boş yer varsa 2–4 günde yavru gelir.
+
+- **Genin hesabı:** Yavrunun her geni ebeveyn ortalamasıdır, yarım yukarı yuvarlanır. Üstüne §8.3'teki mutasyon gelir. Sonuç 1–10'a kırpılır.
+- **Yavru:** Evcil ve kayıtlı doğar. Yetişkin olana kadar (gün sayısı veride) ürün vermez, üremez.
+- **Yer:** Ağıl alanı, içindeki hayvanların tür alanları toplamıdır; yavru da yer kaplar.
 
 ### 9.4 Roller
 
@@ -216,6 +251,10 @@ Her hayvana bir rol atanır:
 | Savaşçı | Savaş Ağılı'nda bekler; Kabarma'da kabarıp savaşır |
 
 Komutlar: izle, bekle, işaretlediğime saldır, dön. Uysallığı düşük hayvan bazen dinlemez.
+
+- Türün alabileceği roller `husbandry.json`'da ([ICERIK.md](ICERIK.md) §3'ten).
+- Dinleme olasılığı U geniyle artar.
+- B geni can, heybe ve binek hızına eklenir.
 
 ### 9.5 Kabarma'da hayvanlar
 
@@ -270,14 +309,19 @@ Hasat Robotu, Ekim Robotu, otomatik yemlik, Sağım-Kırkım Kolu, Yumurta Topla
 | Katalog | **Kredi** ile tohum, yumurta, araç gövdesi, süs, kozmetik |
 | Ganimet | Çipler, kart jetonları, güçler (Kadim Taş), Holding planları |
 
+**Araştırma kuralı (M2):** Araştırma Araştırma Masası'nın yanında yapılır: Üretim panelinde araştırmayla kilitli satırın düğmesi "ARAŞTIR · n VERİ" olur. Bedel kalemin basamağına göre sabittir ([ICERIK.md](ICERIK.md) §0). Ağaçta önceki düğüm gerekir ([ICERIK.md](ICERIK.md) §11.1); Ocak basamağı gerekmez, ilerlemeyi malzeme (ör. Koru'nun demiri) ve Veri sınırlar. Açılma sütunu "Ata" olan istasyon Ocak o basamağa çıkınca açılır. **Tarayıcı** (§4): bakılan yaratık, bitki ya da maden türü ilk kez taranınca Veri verir (yaratık 15, bitki 8, maden 6, ağaç 5); Ansiklopedi'ye yazılır.
+
 ## 13. Ekonomi
 
 - **Kredi kaynakları:** kargo satışı, iş emri ödülü, Holding silosu, enkaz kasaları.
 - **Kargo:** Ürünler Paketleme Tezgâhı'nda kargo kasasına konur (20 yığın). Kasa yük nesnesidir (25 kg); değeri içindekilerin satış değerinin toplamıdır. Kargo Rampası 1–6 kasa ya da bir kabarık ürün alır ve fırlatır; ödeme 60 saniye sonra gelir.
 - **Fiyat:** `taban × kalite (1,0 / 1,3 / 1,7) × Alaca (3 / 10 / 50) × Borsa × doygunluk`. Taban fiyat, katalog fiyatı ve ödül kuralları: [ICERIK.md](ICERIK.md) §18.
-- **Borsa:** 12 kategori. Her kategorinin çarpanı günde ±0,15 oynar, 0,6 ile 1,6 arasında kalır. Her gün bir kategori "sıcak"tır (×2).
-- **Doygunluk:** Aynı kategoriden satılan her kasa o kategoriyi %3 düşürür (taban %40); günde %15 geri gelir. Tek ürüne yüklenmek cezalanır.
-- **Tohum Çarkı:** Bir çevirme 500 Kredi ya da 3 Alaca ürün; günün ilk çevirmesi bedava. Ödüller: nadir tohum, yumurta, çip, kart jetonu, kozmetik, kredi. Beklenen değer harcananın %85'i.
+- **Borsa:** 12 kategori. Her kategorinin çarpanı günde ±0,15 oynar (artı 1,0'a doğru %10 çekim), 0,6 ile 1,6 arasında kalır. Her gün bir kategori "sıcak"tır (×2); ×2 bu sınırın üstüne biner, yani Borsa çarpanı 0,6 ile 3,2 arasındadır. Borsa Kargo Rampası'nın terminalindedir; her kategorinin son 30 günlük çarpanı görünür.
+- **Borsanın açılışı:** İlk Kabarma'nın şafağına kadar bütün çarpanlar 1,0, sıcak kategori yok, doygunluk tam; öğretici satışlar (ilk kabarık şalgam 120 Kredi) nötr fiyattandır. Fiyatlar takvimin ilk gün değişiminde (ilk şafaktan sonraki sabah) oynamaya başlar.
+- **Doygunluk:** Aynı kategoriden satılan her kasa o kategoriyi %3 düşürür (taban %40); her sabah 0,15 eklenerek geri gelir (en fazla 1,0). Karışık kasa içindeki her kategoriyi bir kez düşürür; kabarık ürün kendi kategorisini bir kez düşürür. Tek ürüne yüklenmek cezalanır.
+- **Fiyat kilidi:** Kasanın ve kabarık ürünün değeri fırlatma anındaki fiyatla belirlenir; 60 saniyelik ödeme gecikmesinde fiyat değişmez.
+- **Katalog:** Kargo Rampası terminalinden Krediyle alınır. Küçük kalemler (tohum, yumurta, süs) gökten kapsülle Ocak'ın yanına iner (20 sn); araç gövdesi Kargo Rampası'na iner (40 sn). Kapsül E ile açılır, içi çantaya geçer; sığmayan kapsülde kalır.
+- **Tohum Çarkı:** Bir çevirme 500 Kredi ya da 3 Alaca ürün; günün ilk çevirmesi bedava (takvim günü başına bir). Ödüller: nadir tohum, yumurta, çip, kart jetonu, kozmetik, kredi. Beklenen değer harcananın %85'i (ödüllerin Kredi karşılığı ICERIK §18). Sistemi henüz olmayan ödüller (çip, kart jetonu, kozmetik, yumurta, Alaca tohum) Kooperatif deposunda sayılır ve sistemleri gelince oradan alınır.
 - **Cüzdan ekipçe ortaktır.**
 - **İş emirleri:** 48 zincir, her biri 5 adım. Suna okur, Defter'de durur.
 
@@ -389,6 +433,24 @@ Yabani yaratıklar, açık arazideki Holding ekipleri ve kervanları, Oyuk koruy
 - **Ödül:** Çekirdek (Ocak basamağı), Mühür (kalıcı ekip bonusu), bir ulti ya da özel ödül, ganimet.
 - **Kabarık Ata:** Yenilen Ata aynı adak ve `KS × 50` Maya ile yeniden çağrılır; gücü seçilen KS'ye göre ölçeklenir, üst basamak çip malzemesi verir.
 - Ayrıntılar: [ICERIK.md](ICERIK.md) §4.
+
+### 18.1 M2 uygulaması (Koca Pofuduk, Boynuzlu Dede)
+
+Sayılar `data/atalar.json`'da; kural `src/Kabarma.Sim/Ata*.cs`, Godot katmanı `game/scripts/boss/`.
+
+- **Bulunma ve çağırma:** Ata Taşı ve sunağı arenanın kenarında durur; haritada açıklıktır (`biomes.json` `clearings`). Adak sunağa tek tek konur. Çanta eşyası etkileşimle sunulur; kabarık ürün Çekim'le sunağa bırakılır. Adak tamamlanınca Ata arenanın ortasına iner. Yenilen Ata aynı adakla yeniden çağrılmaz; Kabarık Ata M4'te gelir.
+- **Aşamalar:** Can oranı aşama eşiğinin altına inince sonraki aşama başlar. Geçişte Ata 1,5 saniye hasar almaz ve kabarır.
+- **Koca Pofuduk:**
+  - **Aşama 1:** Sezdirip hücum eder; yün yumağı atar. Yumak oyuncuyu sektirir.
+  - **Aşama 2:** Yün zırhı hasarı azaltır. Biçme vuruşu zırhı kırkar; yanık da zırhı yer. Yumaklardan küçük Pofuduklar çıkar.
+  - **Aşama 3:** Çıplak ve hızlıdır. Hücumda arenanın taş sütununa toslarsa sersemler; sersemken aldığı hasar artar.
+- **Boynuzlu Dede:**
+  - **Aşama 1:** Dallardan koruyucular düşer; sis koyulaşır.
+  - **Aşama 2:** Yerden kök dalgası halkaları yayılır; zıplayan oyuncuya değmez. Boynuzdaki iki ışıyan kovan zayıf noktadır: kırılan kovan Dede'yi sersemletir.
+  - **Aşama 3:** Boynuz kırılır ve parçaları yere düşer. Parçalar Çekim'le alınıp Dede'ye fırlatılınca büyük hasar verir. Silah hasarı azalır.
+- **Kural:** Özel mekanikler dövüşü hızlandırır, kapı değildir. Her aşama Tırpan Işını ya da Çivi Tabancası ile tek başına bitirilebilir.
+- **Ödül:** Çekirdek ve ganimet çantaya girer. Mühür, ulti ve açılan içerik Sim'deki Ata ilerlemesine yazılır. Mühür etkisinin oranını tarım ve yapı kuralları buradan okur.
+- **M2 sınaması:** Adak bileşenlerinin çoğu henüz başka akışlarda: Yün, Demir Külçe, Reçine, kabarık mantar. Bu yüzden `--test=boss` botu Ata Taşı'na yürür ve Ata'yı F1 geliştirici çağırmasıyla indirir. Adak kuralı Sim testlerinde sınanır. Dövüşte eşya, can ya da hasar verilmez.
 
 ## 19. Bereket Holding (rakipler)
 

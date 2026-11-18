@@ -64,6 +64,7 @@ public partial class Capa
     {
         if (_ghost != null) _ghost.Visible = false;
         _d.Build?.Hide();
+        _d.Power?.CancelTool(); // guc: Kablo elden inince secim biter
     }
 
     /// <summary>Eldeki yerlestirilebiliri hayaletin yerine kurar; cantadan 1 duser.</summary>
@@ -77,6 +78,7 @@ public partial class Capa
         _d.State.Backpack.Remove(def.Id, 1);
         var at = _ghost.GlobalPosition; float yaw = _ghostYaw;
         _ghost.QueueFree(); _ghost = null; _ghostId = null;
+        if (_d.PlacePower(def, at, yaw)) return; // guc akisi: guc ve sinyal parcalari (power/Director.Power.cs)
         bool furniture = def.Slots > 0 || def.Spawn || def.LightRange > 0; // Sandik, Uyku Tulumu, Mesale: ekonomi (entegrasyon)
         if (PenSystem.IsPenProp(def.Id) || (def.Station == null && def.Id != "ocak" && !furniture)) { _d.PlaceProp(def, at, yaw); return; } // Director.Pen.cs: Yemlik, Folluk, Ahsap Kapi
         if (def.Id == "ocak") _d.PlaceOcak(at);

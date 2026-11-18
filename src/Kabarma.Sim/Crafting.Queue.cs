@@ -17,7 +17,7 @@ public static class CraftRules
         IsHand(r) || nearStations.Contains(r.Station) ? null : r.Station;
 
     /// <summary>Bu adet icin eksik malzemeler: (esya, eldeki, gereken). Bossa malzeme tamam.</summary>
-    public static List<(string item, int have, int need)> Missing(RecipeDef r, int count, Inventory inv)
+    public static List<(string item, int have, int need)> Missing(RecipeDef r, int count, IItemStore inv)
     {
         var l = new List<(string, int, int)>();
         foreach (var (item, n) in r.In)
@@ -29,7 +29,7 @@ public static class CraftRules
     }
 
     /// <summary>Cantadaki malzemeyle kac adet yapilabilir (girdisiz tarif icin <paramref name="cap"/>).</summary>
-    public static int Affordable(RecipeDef r, Inventory inv, int cap)
+    public static int Affordable(RecipeDef r, IItemStore inv, int cap)
     {
         int n = cap;
         foreach (var (item, need) in r.In) if (need > 0) n = Math.Min(n, inv.Count(item) / need);
@@ -45,7 +45,7 @@ public static class CraftRules
 /// adet, sure dolunca urun cantaya girer. Iptal edilen isin kalan adetlerinin malzemesi geri doner. Canta doluysa is
 /// bekler (urun kaybolmaz). Duz ve seriye dokulebilir (TEKNIK 9).
 /// </summary>
-public sealed class CraftQueue
+public sealed partial class CraftQueue
 {
     public sealed class Job
     {
@@ -74,7 +74,7 @@ public sealed class CraftQueue
     public float SecondsLeft => _jobs.Select((j, i) => j.Recipe.Seconds * (j.Left - (i == 0 ? j.Progress : 0f))).Sum();
 
     /// <summary>Tarifi <paramref name="count"/> adet siraya koyar, malzemeyi hemen alir. Kuyruk dolu, kilitli ya da malzeme yetmiyorsa false.</summary>
-    public bool Enqueue(RecipeDef r, int count, Inventory inv)
+    public bool Enqueue(RecipeDef r, int count, IItemStore inv)
     {
         if (count < 1 || r.Load || !IsUnlocked(r)) return false;
         // Ayni tarif sondaysa ona eklenir (Rust: ayni satir buyur); yoksa yeni is ister.
@@ -89,7 +89,7 @@ public sealed class CraftQueue
     }
 
     /// <returns>Bu tikte biten adet.</returns>
-    public int Tick(float dt, Inventory inv)
+    public int Tick(float dt, IItemStore inv)
     {
         int done = 0;
         Blocked = false;
@@ -117,7 +117,7 @@ public sealed class CraftQueue
     /// Isi iptal eder: kalan adetlerin (suren dahil) malzemesi cantaya geri doner. Donen: geri verilen (esya, adet);
     /// canta doluysa sigmayan kisim donende eksik kalir (Godot onu yere birakir).
     /// </summary>
-    public Dictionary<string, int> Cancel(int index, Inventory inv)
+    public Dictionary<string, int> Cancel(int index, IItemStore inv)
     {
         var back = new Dictionary<string, int>();
         if (index < 0 || index >= _jobs.Count) return back;

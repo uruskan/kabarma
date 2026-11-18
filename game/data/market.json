@@ -1,0 +1,39 @@
+{
+  "_not": "Borsa (GDD §13, ICERIK §18). Kategori carpani gunde ±dailyStep oynar, 1,0'a dogru revert kadar cekilir, [min, max] icinde kalir; sicak kategori ×hotMult (sinirin ustune biner). Doygunluk: kasa basina -saturationPerCrate (taban saturationFloor), her sabah +saturationRecovery. Ilk Kabarma safagina kadar notr (GDD §13 'Borsanin acilisi'). items: urun -> kategori; yazilmayan yemek 'yemek', digeri defaultCategory. ekonomi2 akisi.",
+  "dailyStep": 0.15,
+  "revert": 0.1,
+  "min": 0.6,
+  "max": 1.6,
+  "hotMult": 2.0,
+  "saturationPerCrate": 0.03,
+  "saturationFloor": 0.4,
+  "saturationRecovery": 0.15,
+  "historyDays": 30,
+  "defaultCategory": "islenmis",
+  "foodCategory": "yemek",
+  "categories": [
+    { "id": "tahil", "name": "Tahıl" },
+    { "id": "kok", "name": "Kök ve Kabakgil" },
+    { "id": "meyve", "name": "Meyve" },
+    { "id": "baharat", "name": "Baharat ve Çay" },
+    { "id": "mantar", "name": "Mantar" },
+    { "id": "yag", "name": "Yağ ve Yakıt" },
+    { "id": "lif", "name": "Lif ve Kumaş" },
+    { "id": "sut", "name": "Süt, Yumurta, Bal" },
+    { "id": "et", "name": "Et ve Deri" },
+    { "id": "maden", "name": "Maden ve Külçe" },
+    { "id": "islenmis", "name": "İşlenmiş Mal" },
+    { "id": "yemek", "name": "Yemek" }
+  ],
+  "items": {
+    "turnip": "kok",
+    "wheat": "tahil",
+    "egg": "sut",
+    "copper_ore": "maden",
+    "copper_ingot": "maden",
+    "civi": "islenmis",
+    "kozde_salgam": "yemek",
+    "haslanmis_yumurta": "yemek",
+    "sebze_corbasi": "yemek"
+  }
+}

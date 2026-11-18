@@ -88,6 +88,7 @@ public partial class Director
                 if (sel >= 0 && sel < pieces.Count) Capa.SelectPiece(pieces[sel]);
             }
             if (Input.IsActionJustPressed("build_rotate") && Capa.CurrentPlaceable != "") Capa.RotateGhost();
+            if (Input.IsActionJustPressed("build_rotate") && Capa.HeldItem == Data.Power.CableItem) Power?.ToggleMode(); // guc: Kablo eldeyken R guc/sinyal
             // Kartlar (kolda ✚ sol/yukari/sag): menu acikken ✚ menuyu tasir, kart secmez.
             if (Input.IsActionJustPressed("card_1")) ChooseCard(0);
             if (Input.IsActionJustPressed("card_2")) ChooseCard(1);
@@ -198,6 +199,7 @@ public partial class Director
     public void Interact()
     {
         if (InteractEconomy()) return; // Director.Economy.cs: El Arabasi, Sandik, Uyku Tulumu
+        if (InteractPower()) return; // power/Director.Power.cs: guc parcasi ayari, Dugme
         var st = Stations.Where(s => s.InReach(Player.GlobalPosition)).OrderBy(s => s.GlobalPosition.DistanceTo(Player.GlobalPosition)).FirstOrDefault();
         // Gidak istasyondan yakinsa E Gidak'a gider (istasyonun dibinde dolasan Gidak beslenebilsin).
         bool gidakFirst = st != null && Gidak.Visible && !Gidak.Tame
