@@ -24,13 +24,6 @@ public sealed class PlayerSave
 
 public sealed class PlayersSave { public List<PlayerSave> Players { get; set; } = new(); }
 
-public sealed class PieceSave
-{
-    public string Id { get; set; } = "";
-    public float[] Xf { get; set; } = new float[12];
-    public float Hp { get; set; }
-}
-
 /// <summary>Istasyon, Ocak, mobilya (Sandik, Uyku Tulumu, Mesale), agil nesnesi (Yemlik, Folluk, Ahsap Kapi).</summary>
 public sealed class PlacedSave
 {
@@ -44,8 +37,8 @@ public sealed class PlacedSave
 
 public sealed class GateSave
 {
-    /// <summary>Parcanin yapi listesindeki sirasi (build.pieces ile ayni sira).</summary>
-    public int Piece { get; set; }
+    /// <summary>Yapi parcasinin Sim kimligi (GameState.Build, yapi akisinin "build" bolumu).</summary>
+    public int Sid { get; set; }
     public bool Open { get; set; }
 }
 
@@ -129,10 +122,12 @@ public partial class Director
     /// <summary>Godot katmaninin bolumleri (InitSave'den bir kez).</summary>
     void RegisterGodotSections()
     {
-        Save.Add(SaveSection.Json("build.pieces", 1, CapturePieces, ApplyPieces, SaveOrder.Spawn));
+        // Yapi parcalari yapi akisinin: Sim "build" bolumu + "build.view" (AfterRestore'da dugumleri kurar). Agil parcalara
+        // baglandigi icin agil bolumleri okunanlari saklar, isi kendi AfterRestore'unda (build.view'den sonra) yapar.
+        PenPropsSaved = null; PenGroundSaved = null;
         Save.Add(SaveSection.Json("placeables", 1, CapturePlaced, ApplyPlaced, SaveOrder.Spawn + 10));
-        Save.Add(SaveSection.Json("pen.props", 1, CaptureProps, ApplyProps, SaveOrder.Spawn + 20));
-        Save.Add(SaveSection.Json("pen.ground", 1, CapturePenGround, ApplyPenGround, SaveOrder.Spawn + 30));
+        Save.Add(SaveSection.Json<List<PlacedSave>>("pen.props", 1, CaptureProps, l => PenPropsSaved = l, SaveOrder.Spawn + 20, afterRestore: ApplyPenAfterBuild));
+        Save.Add(SaveSection.Json<PenGroundSave>("pen.ground", 1, CapturePenGround, s => PenGroundSaved = s, SaveOrder.Spawn + 30));
         Save.Add(SaveSection.Json("world.resources", 1, CaptureWorldRes, ApplyWorldRes, SaveOrder.Spawn + 40));
         Save.Add(SaveSection.Json("loads", 1, CaptureLoads, ApplyLoads, SaveOrder.Spawn + 50, afterRestore: AdoptRampCrates));
         Save.Add(SaveSection.Json("player", 1, CapturePlayer, ApplyPlayer, SaveOrder.State + 10));
@@ -140,18 +135,19 @@ public partial class Director
         Save.Add(SaveSection.Json("director", 1, CaptureDirector, ApplyDirector, SaveOrder.Progress + 10));
     }
 
-    // ---------- yapi parcalari ----------
+    // ---------- yapi parcalari (yapi akisinin bolumleri) ----------
 
-    List<BuildPiece> LivePieces() => Build?.System?.Pieces.Where(p => IsInstanceValid(p) && !p.IsQueuedForDeletion()).ToList() ?? new();
+    List<PlacedSave> PenPropsSaved;
+    PenGroundSave PenGroundSaved;
 
-    List<PieceSave> CapturePieces() => LivePieces().Select(p => new PieceSave { Id = p.Def.Id, Xf = Xf(p.GlobalTransform), Hp = p.Hp }).ToList();
-
-    void ApplyPieces(List<PieceSave> list)
+    /// <summary>pen.props AfterRestore: build.view parcalari kurduktan sonra agil kapilari, nesneleri ve yumurtalari.</summary>
+    void ApplyPenAfterBuild()
     {
-        var sys = Build?.System;
-        if (sys == null) { if (list.Count > 0) GD.PushWarning($"LOAD build.pieces: yapi sistemi yok, {list.Count} parca atlandi"); return; }
-        foreach (var p in list)
-            if (sys.LoadPiece(p.Id, Xf(p.Xf), p.Hp) == null) GD.PushWarning($"LOAD parca kurulamadi {p.Id}");
+        if (Pens == null) return;
+        Pens.RelinkPieces(); // RebuildFromGraph olay yaymaz: kapilar ve halkalar yeni dugumlerden
+        if (PenPropsSaved != null) ApplyProps(PenPropsSaved);
+        if (PenGroundSaved != null) ApplyPenGround(PenGroundSaved);
+        PenPropsSaved = null; PenGroundSaved = null;
     }
 
     // ---------- yerlestirilebilirler ----------
@@ -229,13 +225,9 @@ public partial class Director
     {
         var s = new PenGroundSave();
         if (Pens == null) return s;
-        var pieces = LivePieces();
         foreach (var (piece, open) in Pens.GateStates)
-        {
-            int i = pieces.IndexOf(piece);
-            if (i >= 0 && open) s.Gates.Add(new GateSave { Piece = i, Open = true });
-        }
-        s.Gates.Sort((a, b) => a.Piece.CompareTo(b.Piece));
+            if (open && piece.Sid > 0 && !piece.IsQueuedForDeletion()) s.Gates.Add(new GateSave { Sid = piece.Sid, Open = true });
+        s.Gates.Sort((a, b) => a.Sid.CompareTo(b.Sid));
         foreach (var e in Pens.GroundEggs.Where(IsInstanceValid)) s.Eggs.Add(Rec("egg", e.Product, e));
         return s;
     }
@@ -244,8 +236,7 @@ public partial class Director
     {
         if (Pens == null) return;
         Pens.RebuildNow(); // halkalar ve duvar-parca eslemesi (kapi durumlari ona yazilir)
-        var pieces = LivePieces();
-        foreach (var g in s.Gates) if (g.Piece >= 0 && g.Piece < pieces.Count) Pens.LoadGate(pieces[g.Piece], g.Open);
+        foreach (var g in s.Gates) if (Build?.System?.ById(g.Sid) is BuildPiece p) Pens.LoadGate(p, g.Open);
         foreach (var e in s.Eggs) Pens.LoadEgg(e.Content, V(e.Pos));
     }
 

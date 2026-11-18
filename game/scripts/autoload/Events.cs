@@ -50,6 +50,25 @@ public static class Events
     public static event Action<string, string> Laid;
     /// <summary>Suna bir repligi soyledi (scenario.json "lines" kimligi). Seslendirme buna baglanir.</summary>
     public static event Action<string> SunaSaid;
+    /// <summary>Yapi parcasi yerinde yukseltildi (sekil kimligi, yeni malzeme; GDD 7). Yayan: BuildBridge.Yapi.cs.</summary>
+    public static event Action<string, string> PieceUpgraded;
+    /// <summary>Plan modu parcasinin malzemesi tamamlandi ve kuruldu (sekil kimligi). Yayan: BuildBridge.Yapi.cs.</summary>
+    public static event Action<string> PlanCompleted;
+    /// <summary>Katalogdan satin alindi (kalem, Kredi). Yayan: Director.EconomyMarket.cs (ekonomi2).</summary>
+    public static event Action<string, int> CatalogBought;
+    /// <summary>Katalog ya da cark teslimati acildi, icindekiler alindi (kaynak, adet). Yayan: Director.EconomyMarket.cs.</summary>
+    public static event Action<string, int> Delivered;
+    /// <summary>Tohum Carki cevrildi (odul kimligi, Kredi odulu). Yayan: Director.EconomyMarket.cs.</summary>
+    public static event Action<string, int> WheelSpun;
+    public static void RaiseCatalogBought(string entry, int credits) => CatalogBought?.Invoke(entry, credits);
+    public static void RaiseDelivered(string source, int n) => Delivered?.Invoke(source, n);
+    public static void RaiseWheelSpun(string reward, int credits) => WheelSpun?.Invoke(reward, credits);
+    /// <summary>Ata yenildi (atalar.json kimligi). Yayan: AtaSystem (boss akisi).</summary>
+    public static event Action<string> AtaDefeated;
+    /// <summary>Ata'nin asamasi degisti (kimlik, 0'dan asama). Yayan: AtaSystem.</summary>
+    public static event Action<string, int> AtaPhase;
+    public static void RaiseAtaDefeated(string id) => AtaDefeated?.Invoke(id);
+    public static void RaiseAtaPhase(string id, int phase) => AtaPhase?.Invoke(id, phase);
     /// <summary>Yabani yaratik davranisi (tur, olay: Alerted/Fled/Warned/Struck/Took/Slept/Woke, x, z). Yayan: Wildlife (yaratik2). Etkiyi sahibi uygular: ekin tarim, yumurta hayvan (ICERIK §3.8).</summary>
     public static event Action<string, string, float, float> WildActed;
     public static void RaiseWildActed(string species, string what, float x, float z) => WildActed?.Invoke(species, what, x, z);
@@ -58,6 +77,8 @@ public static class Events
     public static void RaiseAnimalPenned(string species) => AnimalPenned?.Invoke(species);
     public static void RaiseLaid(string product, string where) => Laid?.Invoke(product, where);
     public static void RaiseSunaSaid(string lineId) => SunaSaid?.Invoke(lineId);
+    public static void RaisePieceUpgraded(string id, string material) => PieceUpgraded?.Invoke(id, material);
+    public static void RaisePlanCompleted(string id) => PlanCompleted?.Invoke(id);
 
     public static void RaiseStationPlaced(string id) => StationPlaced?.Invoke(id);
     public static void RaisePiecePlaced(string id) => PiecePlaced?.Invoke(id);
@@ -87,5 +108,8 @@ public static class Events
         Paid = null;
         Deconstructed = null;
         PenChanged = null; AnimalPenned = null; Laid = null; SunaSaid = null;
+        PieceUpgraded = null; PlanCompleted = null;
+        CatalogBought = null; Delivered = null; WheelSpun = null; // ekonomi2
+        AtaDefeated = null; AtaPhase = null;
     }
 }

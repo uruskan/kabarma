@@ -26,7 +26,7 @@ Main `f38521f` üstünde. Soru: bir oyunu geri kurmak için gereken değişken d
 | Dünya | tutam `Tuft.Left` | `World.Resources.cs:26` | G | `world.tufts`: sıra → kalan | Aynı |
 | Dünya | ağaç | `Capa.Bicme.cs` | — | yok (sonsuz, durumsuz) | — |
 | Dünya | yeniden doğma sayacı | — | — | henüz yok (GDD §21: 5–10 gün); dunya2 eklerken bölüm yazar | Evet (Sim) |
-| Yapı | parçalar `_pieces`: `Def.Id`, dönüşüm, `Hp`, `_serial` | `BuildSystem.cs:90-94` | G | `build.pieces`: `EntityRecord` listesi, seri sırasıyla | Durum Sim'e (`Structure*.cs`, yapi akışı); kurulum `PlaceAt` ile, `Hp` sonra |
+| Yapı | parçalar `_pieces`: `Def.Id`, dönüşüm, `Hp`, `_serial` | `BuildSystem.cs:90-94` | G | yapi akışının `build` bölümü devraldı (kayit'ın `build.pieces`'ı kaldırıldı; ağıl kapıları Sim kimliğiyle) | Durum Sim'e (`Structure*.cs`, yapi akışı); kurulum `PlaceAt` ile, `Hp` sonra |
 | Yerleştirilebilir | istasyonlar, Ocak, mobilya (Sandık, Uyku Tulumu, Meşale) | `Director.Menus.cs:10,62`, `Director.Economy.cs:45` | G | `placeables`: `EntityRecord` | Hayır; `Place*`'e "yükleniyor" bayrağı (olay, ses, efekt, `RespawnPoint` yok) |
 | Yerleştirilebilir | kapsül rampası `Pod.IsRamp` | `Pod.cs:11` | G | `placeables` içinde parametre | Hayır |
 | İstasyon | kuyruklar: tür başına tek `StationQueue` (`Active`, `Progress`, `Queued`, `_fuel`) | `Crafting.cs:13-63` | S | `stations` | Zaten Sim; `Restore` gerekli |
@@ -74,7 +74,7 @@ Sıfırlama tek yerde: `game/scripts/save/GameStatics.cs` (`GameStatics.Reset()`
 | Bölüm | Kapsam | Sıra | Yer |
 |---|---|---|---|
 | `world.settings` | GDD §25 dünya ayarı | Spawn−50 | `GameState.Save.cs` |
-| `build.pieces` | yapı parçaları: kimlik, dönüşüm, can | Spawn | `save/Director.SaveSections.cs` |
+| `build` + `build.view` | yapı parçaları (malzeme, plan, can): yapi akışının Sim bölümü; düğümler `RebuildFromGraph` ile (AfterRestore) | Spawn | `StructurePlanBook.cs`, `building/BuildBridge.Yapi.cs` (yapi) |
 | `placeables` | Ocak, istasyonlar, mobilya, Sandık içi | Spawn+10 | aynı |
 | `pen.props` | Yemlik yemi, Folluk yumurtası, Ahşap Kapı | Spawn+20 | aynı |
 | `pen.ground` | açık bahçe kapıları, yerdeki yumurta | Spawn+30 | aynı |

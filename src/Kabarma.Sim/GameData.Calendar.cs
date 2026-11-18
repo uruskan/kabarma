@@ -24,39 +24,6 @@ public sealed class CalendarFile
     public DayPartDef NightPart { get; set; } = new();
 }
 
-public sealed class OrderStepDef
-{
-    public string Goal { get; set; } = "";
-    public string Measure { get; set; } = "";
-    public int Target { get; set; } = 1;
-}
-
-public sealed class OrderChainDef
-{
-    public string Id { get; set; } = "";
-    public string Name { get; set; } = "";
-    public string Group { get; set; } = "";
-    public string Measure { get; set; } = "";
-    /// <summary>"start": oyun basindan sayar; "defter": Defter acilinca (ilk Hasat Raporu) sayar.</summary>
-    public string OpensAt { get; set; } = "defter";
-    public string Reward { get; set; } = "";
-    public List<OrderStepDef> Steps { get; set; } = new();
-}
-
-public sealed class OrderRewardsDef
-{
-    public List<int> Credits { get; set; } = new();
-    public List<int> Veri { get; set; } = new();
-}
-
-public sealed class OrdersFile
-{
-    public int ChainsTotal { get; set; }
-    public int StepsPerChain { get; set; }
-    public OrderRewardsDef StepRewards { get; set; } = new();
-    public List<OrderChainDef> Chains { get; set; } = new();
-}
-
 public sealed class HudFile
 {
     /// <summary>Pusulanin gosterdigi yatay aci (derece).</summary>
@@ -71,9 +38,6 @@ public sealed partial class GameData
 {
     [DataFile("calendar.json")]
     public CalendarFile Calendar { get; private set; } = new();
-
-    [DataFile("orders.json")]
-    public OrdersFile Orders { get; private set; } = new();
 
     [DataFile("hud.json")]
     public HudFile Hud { get; private set; } = new();

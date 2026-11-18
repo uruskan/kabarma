@@ -266,12 +266,22 @@ public sealed class ChainSave
     public bool Opened { get; set; }
     public SortedDictionary<string, int> Counts { get; set; } = new(StringComparer.Ordinal);
     public List<bool> Done { get; set; } = new();
+    /// <summary>"farkli" olculerin gorulen anahtarlari (ilerleme akisi).</summary>
+    public SortedDictionary<string, List<string>> Keys { get; set; } = new(StringComparer.Ordinal);
 }
 
 public sealed class OrdersSave
 {
     public bool DefterOpen { get; set; }
     public List<ChainSave> Chains { get; set; } = new();
+    // ilerleme akisi
+    public string PinnedId { get; set; } = "";
+    public List<string> Pending { get; set; } = new();
+    public List<string> Granted { get; set; } = new();
+    public SortedDictionary<string, int> Stats { get; set; } = new(StringComparer.Ordinal);
+    public SortedDictionary<string, List<string>> StatKeys { get; set; } = new(StringComparer.Ordinal);
+    public int CreditsPaid { get; set; }
+    public int VeriPaid { get; set; }
 }
 
 public sealed partial class ChainState
@@ -281,6 +291,7 @@ public sealed partial class ChainState
         Id = Def.Id, Opened = Opened,
         Counts = new SortedDictionary<string, int>(Counts, StringComparer.Ordinal),
         Done = _done.ToList(),
+        Keys = new SortedDictionary<string, List<string>>(Keys.ToDictionary(k => k.Key, k => k.Value.OrderBy(x => x, StringComparer.Ordinal).ToList()), StringComparer.Ordinal),
     };
 
     public void Load(ChainSave s)
@@ -289,15 +300,32 @@ public sealed partial class ChainState
         Counts.Clear();
         foreach (var (k, v) in s.Counts) Counts[k] = v;
         for (int i = 0; i < _done.Length; i++) _done[i] = i < s.Done.Count && s.Done[i];
+        Keys.Clear();
+        foreach (var (k, v) in s.Keys) Keys[k] = new HashSet<string>(v);
     }
 }
 
 public sealed partial class OrderBook
 {
-    public OrdersSave Save() => new() { DefterOpen = DefterOpen, Chains = _chains.Select(c => c.Save()).ToList() };
+    public OrdersSave Save() => new()
+    {
+        DefterOpen = DefterOpen, Chains = _chains.Select(c => c.Save()).ToList(),
+        PinnedId = PinnedId, Pending = _pending.ToList(), Granted = Granted.OrderBy(x => x, StringComparer.Ordinal).ToList(),
+        Stats = new SortedDictionary<string, int>(Stats, StringComparer.Ordinal),
+        StatKeys = new SortedDictionary<string, List<string>>(StatKeys.ToDictionary(k => k.Key, k => k.Value.OrderBy(x => x, StringComparer.Ordinal).ToList()), StringComparer.Ordinal),
+        CreditsPaid = CreditsPaid, VeriPaid = VeriPaid,
+    };
+
+    /// <summary>Sessiz yukleme: olay yaymaz, odeme yapmaz.</summary>
     public void Load(OrdersSave s)
     {
         DefterOpen = s.DefterOpen;
+        PinnedId = s.PinnedId ?? "";
+        _pending.Clear(); _pending.AddRange(s.Pending ?? new());
+        Granted.Clear(); foreach (var g in s.Granted ?? new()) Granted.Add(g);
+        Stats.Clear(); foreach (var (k, v) in s.Stats ?? new()) Stats[k] = v;
+        StatKeys.Clear(); foreach (var (k, v) in s.StatKeys ?? new()) StatKeys[k] = new HashSet<string>(v);
+        CreditsPaid = s.CreditsPaid; VeriPaid = s.VeriPaid;
         foreach (var c in s.Chains) Chain(c.Id)?.Load(c);
     }
 }

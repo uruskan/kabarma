@@ -41,8 +41,12 @@ public partial class Bot : Node
         RegisterBuild();     // Bot.Build.cs: odun, yapi
         RegisterIlkgun();    // Bot.Ilkgun.cs: ilk gun (GDD 24): mine (kapak), tezgah, tarla, agil, gidak, night (agil kapisi)
         RegisterZincir();    // Bot.Zincir.cs (entegrasyon): yemek, firin, civi, kasa, barinak
+        RegisterMarket();    // Bot.Market.cs (ekonomi2): katalog (rampadan tohum al, kapsulu ac)
+        RegisterYapi();      // Bot.Yapi.cs (M2 yapi): yukselt (duvari Kerpic-Tas'a)
+        RegisterUretim();    // Bot.Uretim.cs (zincir M2): arastir_t2 (--test=zincir; senaryoda yok)
         _steps["end"] = StepEnd;
         RegisterCoop();      // Bot.Coop.cs (ortak): --test=coop'ta butun adimlar ortak bot
+        RegisterTarim();     // Bot.Tarim.cs (tarim M2): yalniz --test=tarim; ikinci ekin, Korkuluk, yabani tohum
     }
 
     Player P => _d.Player;
@@ -99,7 +103,8 @@ public partial class Bot : Node
         {
             _done = true;
             var s = _d.State;
-            GD.Print($"RESULT ok credits={s.Credits} eggs={s.Eggs} kills={_d.Night?.Kills} cards={_d.Night?.CardsCount} maya={_d.Night?.Maya:0} stations={_d.Stations.Count} harvests={_d.Harvests} skipped={_d.SkippedIds} t={_t:0.0}");
+            if (OrdersCheck() is string orderWhy) { GD.Print($"RESULT fail orders {orderWhy} t={_t:0.0}"); GetTree().Quit(1); return; } // Bot.Ilerleme.cs: ilk is emri zinciri
+            GD.Print($"RESULT ok ciraklik={s.Orders.Chain("ciraklik")!.DoneCount}/5 veri={s.Research.Veri} credits={s.Credits} eggs={s.Eggs} kills={_d.Night?.Kills} cards={_d.Night?.CardsCount} maya={_d.Night?.Maya:0} stations={_d.Stations.Count} harvests={_d.Harvests} skipped={_d.SkippedIds} t={_t:0.0}");
         }
     }
 

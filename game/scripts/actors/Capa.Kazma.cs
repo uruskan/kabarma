@@ -18,7 +18,7 @@ public partial class Capa
     public void MineRock(Rock rock, float dt, Vector3 hitPoint)
     {
         if (_d.Net?.ForwardMine(rock, _t.MineRate * dt, hitPoint) == true) return; // ortak: istemcide host'a istek
-        int got = rock.Mine(_t.MineRate * dt);
+        int got = rock.Mine(_t.MineRate * dt * _d.State.Mastery.Mult("dig_speed")); // Ustalik: Kazi seviyesi, Hizli Matkap
         var src = F.Source("kazma");
         _mineDebrisT -= dt;
         if (_mineDebrisT <= 0f) { _mineDebrisT = src.DebrisInterval; FeelDebris("kazma", hitPoint, Palette.Rock); }

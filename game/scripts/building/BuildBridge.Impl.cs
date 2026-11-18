@@ -25,7 +25,7 @@ public partial class BuildBridge
     {
         _sys = new BuildSystem { Name = "BuildSystem" };
         _d.AddChild(_sys);
-        _sys.Init(_d, p => _d.World.HeightAt(p.X, p.Z));
+        _sys.Init(_d, p => _d.World.HeightAt(p.X, p.Z), null, _d.State.Build.Graph, _d.Data);
         _sys.ExcludeFromAim(_d.Player);
         _sys.SetActive(false);
         Register(Sok);
@@ -33,8 +33,9 @@ public partial class BuildBridge
         foreach (var p in _sys.Kit.Pieces) Register(p.Id);
         _sys.Placed += piece => GD.Print($"BUILT {piece.Def.Id} pieces={_sys.Pieces.Count}");
         // Sokum sirasinda desteksiz kalip dusen parcalar da iade edilir (malzeme kaybolmaz).
-        _sys.Fell += (piece, _) => { if (_removing) _fallRefund["wood"] = _fallRefund.GetValueOrDefault("wood") + CostOf(piece.Def.Id); };
+        _sys.Fell += (piece, _) => AddFallRefund(piece);
         GD.Print($"BUILD kit pieces={_sys.Kit.Pieces.Count}");
+        InitYapi(); // BuildBridge.Yapi.cs: malzeme, yukseltme, plan modu, Plan Defteri (M2)
     }
 
     BuildRulesDef Rules => _d.Data.Economy.Build;
@@ -56,6 +57,7 @@ public partial class BuildBridge
 
     partial void TickImpl(Player p, Vector3 aim, bool place)
     {
+        if (PlanTick(p, aim, place)) return; // BuildBridge.Yapi.cs: plan modu, plan parcasi, Plan Defteri
         var mode = _d.Capa.CurrentPlaceable;
         if (mode is Sok or Onar) { if (_sys.Active) _sys.SetActive(false); ToolTick(p, aim, place, mode == Sok); return; }
         Highlight(null, false);
@@ -66,8 +68,8 @@ public partial class BuildBridge
         string id = _sys.Selected?.Id ?? "";
         int cost = CostOf(id);
         int wood = _d.State.Backpack.Count("wood");
-        bool inClaim = cur != null && _d.Ocak != null && Structures.InClaim(cur.Xf.Origin.X - _d.OcakPos.X, cur.Xf.Origin.Z - _d.OcakPos.Z, Ocak.ClaimRadius);
-        string why = cur == null ? "" : !cur.Valid ? cur.Reason : !inClaim ? "tapunun dışı" : wood < cost ? $"odun yetmiyor ({wood}/{cost})" : "";
+        // M2: kurma tapu disinda da serbest (GDD 7); orada sokum iadesi %50 (BuildBridge.Yapi.cs RefundFor).
+        string why = cur == null ? "" : !cur.Valid ? cur.Reason : wood < cost ? $"odun yetmiyor ({wood}/{cost})" : "";
         _d.Hud.Hint($"İnşa: {NameOf(id)} ({cost} Odun){(why != "" ? "  ·  " + why : "")}  ·  {{act:build_wheel}} basılı: parça  ·  {{act:build_rotate}}: döndür  ·  {{act:interact}} basılı: onar / sök", 0.2f);
         if (!place || cur == null) return;
         if (why != "") { Sfx.Play("hit", null, -10f); return; }
@@ -118,7 +120,7 @@ public partial class BuildBridge
 
     static (string id, string name, Dictionary<string, int> cost) Describe(BuildBridge b, Node3D t) => t switch
     {
-        BuildPiece bp => (bp.Def.Id, bp.Def.Name, Wood(b.CostOf(bp.Def.Id))),
+        BuildPiece bp => (bp.Def.Id, bp.Def.Name, b.PieceCost(bp)),
         // Karar 23: yerlestirilebilir sokulunce esyanin kendisi cantaya doner (kemerden yeniden kurulur).
         Station st => (st.Def.Id, st.Def.Name, new Dictionary<string, int> { [st.Def.Id] = 1 }),
         Furniture f => (f.Def.Id, f.Def.Name, new Dictionary<string, int> { [f.Def.Id] = 1 }),
@@ -149,7 +151,7 @@ public partial class BuildBridge
     string SokPreview(Node3D t, out bool ok)
     {
         var (_, name, cost) = Describe(this, t);
-        var refund = Structures.Refund(cost, Rules);
+        var refund = RefundFor(t, cost);
         string block = SokBlock(t);
         if (block == "" && !Fits(refund)) block = "çanta dolu";
         ok = block == "";
@@ -160,8 +162,8 @@ public partial class BuildBridge
     {
         ok = false;
         if (t is not BuildPiece bp) return $"{Describe(this, t).name}: hasarsız";
-        float max = _sys.Kit.PieceHp;
-        var cost = Structures.RepairCost(Wood(CostOf(bp.Def.Id)), bp.Hp, max, Rules);
+        float max = _sys.MaxHp(bp);
+        var cost = Structures.RepairCost(PieceCost(bp), bp.Hp, max, Rules);
         if (cost.Count == 0) return $"{bp.Def.Name}: hasarsız";
         bool afford = cost.All(kv => _d.State.Backpack.Count(kv.Key) >= kv.Value);
         ok = afford;
@@ -174,7 +176,7 @@ public partial class BuildBridge
         if (t == null || SokBlock(t) != "") return false;
         if (_d.Net?.ForwardRemove(t) == true) return true; // ortak: host soker ve iade eder
         var (id, _, cost) = Describe(this, t);
-        var refund = Structures.Refund(cost, Rules);
+        var refund = RefundFor(t, cost);
         if (!Fits(refund)) return false;
         var at = t.GlobalPosition;
         Highlight(null, false);
@@ -214,8 +216,8 @@ public partial class BuildBridge
     {
         if (t is not BuildPiece bp) return false;
         if (_d.Net?.ForwardRepair(t) == true) return true; // ortak: host onarir
-        float max = _sys.Kit.PieceHp;
-        var cost = Structures.RepairCost(Wood(CostOf(bp.Def.Id)), bp.Hp, max, Rules);
+        float max = _sys.MaxHp(bp);
+        var cost = Structures.RepairCost(PieceCost(bp), bp.Hp, max, Rules);
         if (cost.Count == 0 || cost.Any(kv => _d.State.Backpack.Count(kv.Key) < kv.Value)) return false;
         foreach (var (item, n) in cost) _d.State.Backpack.Remove(item, n);
         bp.Hp = max;
@@ -229,7 +231,7 @@ public partial class BuildBridge
     public float Damage(BuildPiece piece, float amount)
     {
         if (piece == null || !IsInstanceValid(piece)) return 0;
-        piece.Hp = Structures.ApplyDamage(piece.Hp, _sys.Kit.PieceHp, amount, Rules);
+        piece.Hp = Structures.ApplyDamage(piece.Hp, _sys.MaxHp(piece), amount, Rules);
         return piece.Hp;
     }
 

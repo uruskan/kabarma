@@ -50,6 +50,19 @@ public partial class PenSystem
     /// <summary>Kayittan kurulan parcalardan agil halkalarini simdi hesaplar (normalde bir sonraki karede).</summary>
     internal void RebuildNow() { if (_dirty) Rebuild(); }
 
+    /// <summary>
+    /// Kayittan sonra yapi dugumleri yeniden kuruldu (BuildSystem.RebuildFromGraph Placed yaymaz): kapi kayitlari yeni
+    /// dugumlerden kurulur, halkalar yeniden hesaplanir.
+    /// </summary>
+    internal void RelinkPieces()
+    {
+        _gates.Clear();
+        var sys = _d.Build?.System;
+        if (sys != null) foreach (var p in sys.Pieces) if (IsInstanceValid(p) && !p.IsQueuedForDeletion()) OnPlaced(p);
+        _dirty = true;
+        Rebuild();
+    }
+
     internal IEnumerable<(BuildPiece piece, bool open)> GateStates => _gates.Where(kv => IsInstanceValid(kv.Key)).Select(kv => (kv.Key, kv.Value.Open));
 
     /// <summary>Bahce kapisini aninda acar/kapatir (kanat donusu ve carpisma; ses yok).</summary>
@@ -102,24 +115,6 @@ public partial class FarmView
             if (p.Planted) v.OnPlanted();
             if (p.Planted && p.Swollen != null) v.OnSwelled();
         }
-    }
-}
-
-public partial class BuildSystem
-{
-    /// <summary>
-    /// Kayittaki parcayi aynen kurar: kurallar destek baglarini bulmak icin degerlendirilir, ama donusum kayittaki gibi
-    /// kalir ve gecerlilik aranmaz (parca kurulurken gecerliydi). Placed olayi yayilir (agil duvarlari icin gerekli).
-    /// </summary>
-    internal BuildPiece LoadPiece(string id, Transform3D xf, float hp)
-    {
-        var def = Kit[id];
-        if (def == null) return null;
-        var p = Evaluate(def, xf, "snap");
-        p.Xf = xf;
-        var piece = Spawn(p);
-        piece.Hp = hp;
-        return piece;
     }
 }
 

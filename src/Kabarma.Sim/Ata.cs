@@ -28,6 +28,8 @@ public sealed class AtaFight
     public int AddsAlive { get; set; }
     /// <summary>Kalan zayif nokta canlari (Dede'nin kovanlari).</summary>
     public List<float> WeakPoints { get; set; } = new();
+    /// <summary>Zayif noktalarin acik kalacagi sure (sn); AtaPhaseDef.WeakWindow 0 ise kullanilmaz.</summary>
+    public float WeakOpenT { get; set; }
     /// <summary>Yerde, alinmamis boynuz parcasi sayisi (bilgi).</summary>
     public int ShardsDropped { get; set; }
     public int TeamSize { get; set; } = 1;

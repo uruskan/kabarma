@@ -24,6 +24,7 @@
     { "id": "oyma_iskelesi", "name": "Oyma İskelesi", "station": "oyma_iskelesi", "radius": 1.4 },
     { "id": "suluk", "name": "Suluk", "radius": 0.8 },
     { "id": "kasinma_fircasi", "name": "Kaşınma Fırçası", "radius": 0.5 },
+    { "_not": "tarim (M2): Korkuluk, 10 m icindeki ekine gunduz zararlisi gelmez (GDD 8.2, crops.json genetics.scarecrowRadius). Gorunus koddan (KorkulukVisual, YER TUTUCU).", "id": "korkuluk", "name": "Korkuluk", "radius": 0.4 },
     { "id": "ari_kovani", "name": "Arı Kovanı", "radius": 0.6 },
     { "id": "direk", "name": "Direk", "radius": 0.35 },
     { "id": "salter", "name": "Şalter", "radius": 0.45 },
