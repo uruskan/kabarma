@@ -110,7 +110,10 @@
     "camera_zoom_out": { "name": "Kamerayı uzaklaştır (normal kip; Ctrl ya da Alt + tekerlek)", "kb": ["Wheel:Down"], "padVia": "camera_mode" },
     "controls_panel": { "name": "Tuş atamaları", "kb": ["F2"], "pad": ["Back"] },
     "pause_menu": { "name": "Duraklat: Kaydet ve Çıkış", "kb": ["Escape"], "pad": ["Start"] },
-    "scan": { "name": "Tarayıcı: baktığını tara (Veri)", "kb": ["J"], "pad": ["DPad:Up"] }
+    "scan": { "name": "Tarayıcı: baktığını tara (Veri)", "kb": ["J"], "pad": ["DPad:Up"] },
+    "ability_1": { "name": "Güç (1. yuva)", "kb": ["Alt"], "pad": ["DPad:Left"] },
+    "ability_2": { "name": "Güç (2. yuva, Kurbağa Ağa ile açılır)", "kb": ["CapsLock"], "pad": ["DPad:Right"] },
+    "ulti": { "name": "Ulti (Maya ölçeri dolunca)", "kb": ["Ctrl"], "pad": ["R3"] }
   },
   "hints": {
     "menu_pick": { "name": "Menüden seç", "kb": "1–9", "pad": "✚ + Ⓐ" },

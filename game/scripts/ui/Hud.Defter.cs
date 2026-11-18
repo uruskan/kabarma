@@ -14,9 +14,9 @@ public partial class Hud
 {
     int _defterTab;   // 0 Is emirleri, 1 Ustalik, 2 Basarimlar
     int _defterSel;   // sekmedeki secili satir
-    static readonly string[] DefterTabNames = { "İŞ EMİRLERİ", "USTALIK", "BAŞARIMLAR" };
+    static readonly string[] DefterTabNames = { "İŞ EMİRLERİ", "USTALIK", "BAŞARIMLAR", "ÇİPLER" };
 
-    /// <summary>Acik Defter alt sekmesi: 0 Is emirleri, 1 Ustalik, 2 Basarimlar.</summary>
+    /// <summary>Acik Defter alt sekmesi: 0 Is emirleri, 1 Ustalik, 2 Basarimlar, 3 Cipler.</summary>
     public int DefterTab => _defterTab;
 
     /// <summary>Defter sayfasindaki yazilarin tamami (sinama ve goruntu denetimi).</summary>
@@ -50,6 +50,7 @@ public partial class Hud
         {
             case 1: BuildMasteryPage(); break;
             case 2: BuildAchievementsPage(); break;
+            case 3: BuildChipsPage(); break; // Hud.Chips.cs
             default: BuildOrdersPage(); break;
         }
         DefterIslah(); // tarim (M2): Islah notlari, Hud.DefterIslah.cs

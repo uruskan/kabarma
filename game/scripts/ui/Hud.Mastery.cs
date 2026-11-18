@@ -37,6 +37,7 @@ public partial class Hud
         {
             0 => s.Orders.Chains.Count(c => c.Opened),
             1 => s.Mastery.Branches.Count,
+            3 => ChipEntries().Count, // Hud.Chips.cs
             _ => s.Achievements.All.Count,
         };
         int move = JPd("ui_down", "move_back") ? 1 : JPd("ui_up", "move_forward") ? -1 : 0;
@@ -47,6 +48,7 @@ public partial class Hud
             var chain = s.Orders.Chains.Where(c => c.Opened).ElementAtOrDefault(_defterSel);
             if (chain != null && !chain.Done && s.Orders.Pin(chain.Def.Id)) { Hint($"Takip: {chain.Def.Name}", 1.5f); Sfx.Play("place", null, -12f); RebuildDefter(); }
         }
+        else if (_defterTab == 3 && JPd("ui_accept")) ChipsAccept(); // Hud.Chips.cs
         else if (_defterTab == 1)
         {
             var b = s.Mastery.Branches.ElementAtOrDefault(_defterSel);

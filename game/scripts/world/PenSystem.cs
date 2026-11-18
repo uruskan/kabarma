@@ -134,7 +134,15 @@ public partial class PenSystem : Node
         _walls.Where(w => w.Gate && w.Open && PenRules.DistanceToWall(w, new P2(p.X, p.Z)) < within)
             .OrderBy(w => PenRules.DistanceToWall(w, new P2(p.X, p.Z))).FirstOrDefault();
 
-    public IEnumerable<Gate> Gates => _gates.Values;
+    /// <summary>Yasayan kapilar: Forget'siz silinen parca (yapi yukseltmesi, ayni yere ikinci yerlestirme) eski kaydi birakir.</summary>
+    public IEnumerable<Gate> Gates
+    {
+        get
+        {
+            foreach (var k in _gates.Keys.Where(k => !IsInstanceValid(k) || k.IsQueuedForDeletion()).ToList()) { _gates.Remove(k); _dirty = true; }
+            return _gates.Values;
+        }
+    }
 
     /// <summary>
     /// Duvarlarin arasindan yol: dogrudan gidilebiliyorsa hedefin kendisi, degilse agil koselerinin disindan (ve icinden)
