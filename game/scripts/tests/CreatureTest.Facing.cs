@@ -28,30 +28,19 @@ public partial class CreatureTest
         return true;
     }
 
-    /// <summary>Modelin onu, frame uzayinda yatay vektor; bulunamazsa null.</summary>
+    /// <summary>Modelin onu, frame uzayinda yatay vektor; bulunamazsa null. Adaylar sirayla denenir, yatay uzunlugu yeterli ilk aday secilir.</summary>
     static Vector3? RestFront(CreatureRig rig, Node3D frame)
     {
-        Vector3 f;
-        if (BoneRest(rig, "head", frame, out var head) && BoneRest(rig, "tail", frame, out var tail)) f = head - tail;
-        else if (BoneRest(rig, "foot_l", frame, out var foot) && BoneRest(rig, "calf_l", frame, out var calf)) f = foot - calf;
-        else if (BoneRest(rig, "foot_l", frame, out foot) && BoneRest(rig, "shin_l", frame, out var shin)) f = foot - shin;
-        else
-        {
-            // Yedek (kuyrugu olmayan ya da ayak ucu bilegin altinda duran modeller: Zipzip, Pofuduk): sol-sag kemik cifti.
-            // Model +Z'ye bakarken sol +X'tedir; on = (sol - sag) x Yukari.
-            f = default;
-            foreach (var pair in new[] { "thigh", "upperarm", "back", "front", "wing" })
-                if (BoneRest(rig, pair + "_l", frame, out var l) && BoneRest(rig, pair + "_r", frame, out var r) && (l - r).Length() > 0.02f)
-                {
-                    f = (l - r).Cross(Vector3.Up);
-                    break;
-                }
-            if (f == default) return null;
-        }
-        f.Y = 0;
-        return f.Length() < 0.02f ? null : f.Normalized();
+        static Vector3? Flat(Vector3 v) { v.Y = 0; return v.Length() < 0.02f ? null : v.Normalized(); }
+        // 1) bas - kuyruk; 2) ayak ucu - bilek (cift ayakli; dinlenmede ayak bilegin altindaysa yatay fark yoktur);
+        // 3) sol-sag kemik cifti: model +Z'ye bakarken sol +X'tedir, on = (sol - sag) x Yukari.
+        if (BoneRest(rig, "head", frame, out var head) && BoneRest(rig, "tail", frame, out var tail) && Flat(head - tail) is { } a) return a;
+        foreach (var (foot, knee) in new[] { ("foot_l", "calf_l"), ("foot_l", "shin_l") })
+            if (BoneRest(rig, foot, frame, out var f) && BoneRest(rig, knee, frame, out var k) && Flat(f - k) is { } b) return b;
+        foreach (var pair in new[] { "thigh", "upperarm", "back", "front", "wing" })
+            if (BoneRest(rig, pair + "_l", frame, out var l) && BoneRest(rig, pair + "_r", frame, out var r) && Flat((l - r).Cross(Vector3.Up)) is { } c) return c;
+        return null;
     }
-
     void CheckFacing(GameData data, PoseLibrary poses)
     {
         int n = 0;
