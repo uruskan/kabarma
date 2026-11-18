@@ -51,3 +51,13 @@ Sahibin varlık kitaplığından (`F:\Assets`, yalnız okundu) kopyalanıp `pipe
 | `toprak` (2K), `tarla` (1K, üstüne koddan eğatlar) | `F:\Assets\forest_floor_wgyhdgy_4k` (Megascans) | Fab Standart Lisans (Megascans) | Klasörde lisans alanı yok; ana oturumun bildirdiği lisans. Sahip doğrulamalı |
 | `kaya` (2K) | `F:\Assets\cracked_nordic_coastal_rock_ukohaj0mw_4k` (Megascans) | Fab Standart Lisans (Megascans) | Aynı not |
 | `kum` (1K) | `F:\Assets\beach_sand_uinladeo_4k` (Megascans) | Fab Standart Lisans (Megascans) | Aynı not |
+
+## Hayvan akışı (M2) yer tutucuları
+
+Hepsi koddan, kredisiz ve lisans sorunu yok. Gerçekleri yaratik2 akışının aktörleri ve modelleri; onlar gelince yer tutucular kalkar.
+
+| Varlık | Kaynak | Lisans | Not |
+|---|---|---|---|
+| Homur, Dallı, Hu, Vıcık, Bozuk, Vızvız gövdeleri | `game/scripts/husbandry/TameablePlaceholder.cs` (MeshKit küre/yastık) | Proje kodu | YER TUTUCU; renk ve boy `husbandry.json` |
+| Suluk, Kaşınma Fırçası, Arı Kovanı | `Station.MakeVisual` kutusu (model yok) | Proje kodu | YER TUTUCU; model üretim isteği raporda |
+| Gübre yığını | `RanchSystem.PilesSync` (MeshKit küre) | Proje kodu | YER TUTUCU |

@@ -62,6 +62,7 @@ public partial class PenSystem : Node
             var hp = _walls.Select(PieceOf).Where(p => p != null && IsInstanceValid(p)).Select(p => p.Hp).DefaultIfEmpty(0).Min();
             GD.Print($"FENCE night hits={FenceHits} lowest_hp={hp:0}/{_d.Build?.System?.Kit.PieceHp ?? 0:0} knocked_over={KnockedOver}");
         };
+        BindSave(); // PenSystem.Save.cs: "pen.props" kayit bolumu
         var sys = _d.Build?.System;
         if (sys == null) return;
         sys.Placed += OnPlaced;
@@ -238,7 +239,7 @@ public partial class PenSystem : Node
     // ---------- Yerlestirilebilirler ----------
 
     /// <summary>Agil sisteminin kurdugu yerlestirilebilirler (Capa.Insa bunlari PlaceProp'a yollar; Sandik, Uyku Tulumu, Mesale ekonomi'nin).</summary>
-    public static bool IsPenProp(string id) => id is "ahsap_kapi" or "yemlik" or "folluk";
+    public static bool IsPenProp(string id) => id is "ahsap_kapi" or "yemlik" or "folluk" or "suluk" or "kasinma_fircasi" or "ari_kovani"; // M2 hayvan: Suluk, Firca, Kovan
 
     public PenProp PlaceProp(PlaceableDef def, Vector3 at, float yaw)
     {
@@ -246,6 +247,7 @@ public partial class PenSystem : Node
         _d.AddChild(prop);
         prop.GlobalPosition = at;
         prop.Rotation = new Vector3(0, yaw, 0);
+        prop.SyncSim(); // Sim nesnesinin konumu (agil uyeligi konumdan)
         if (def.Id == "ahsap_kapi" && FreeKasaNear(at) is BuildPiece kasa) prop.FitInto(kasa, _gates[kasa]);
         _props.Add(prop);
         Sfx.Play("place", at, 0f);
@@ -324,7 +326,7 @@ public partial class PenSystem : Node
             float d = D(pr.GlobalPosition);
             if (d >= bestD + 0.01f) continue;
             if (pr.Nest != null && pr.Nest.Eggs > 0) { bestD = d; var pp = pr; act = () => pp.Collect(); lab = $"Folluk: {pr.Nest.Eggs} yumurtayı al"; }
-            else if (pr.Feeder != null && pr.Feeder.Room > 0 && _d.State.Backpack.Count(pr.Feeder.Food) > 0) { bestD = d; var pp = pr; act = () => pp.Fill(); lab = $"Yemlik'e {ItemNames.Of(pr.Feeder.Food)} koy"; }
+            else if (pr.Feeder != null && pr.Feeder.Room > 0 && FoodFor(pr) is string food) { bestD = d; var pp = pr; act = () => pp.Fill(); lab = $"Yemlik'e {ItemNames.Of(food)} koy"; }
             else if (pr.Kasa != null) { bestD = d; var pp = pr; act = () => pp.ToggleDoor(); lab = pr.DoorOpen ? "Kapıyı kapat" : "Kapıyı aç"; }
         }
         foreach (var g in _gates.Values.Where(g => g.Leaves.Count > 0 && IsInstanceValid(g.Piece)))
@@ -334,7 +336,47 @@ public partial class PenSystem : Node
             bestD = d; var gg = g; act = () => SetGate(gg, !gg.Open); lab = g.Open ? "Kapıyı kapat" : "Kapıyı aç";
         }
         label = lab;
+        _nearD = bestD;
         return act;
+    }
+
+    /// <summary>Menzildeki en yakin agil nesnesinin uzakligi (yoksa sonsuz): RanchSystem hayvanla kiyaslar.</summary>
+    public float NearestDistance(Vector3 p)
+    {
+        return Nearest(p, out _) == null ? float.MaxValue : _nearD;
+    }
+
+    float _nearD = float.MaxValue;
+
+    /// <summary>
+    /// Yemlik'e konacak yem (M2): doluysa kendi yemi; bossa agilindaki kayitli hayvanlarin (ya da izleyen evcillerin)
+    /// sevdigi ve cantada olan ilk yem. Yoksa null.
+    /// </summary>
+    public string FoodFor(PenProp pr)
+    {
+        var f = pr.Feeder;
+        var bag = _d.State.Backpack;
+        if (f.Amount > 0) return bag.Count(f.Food) > 0 ? f.Food : null;
+        var ranch = _d.State.Ranch;
+        var pen = PenAt(pr.GlobalPosition);
+        var wants = ranch.Animals.Where(a => a.Tame && ranch.Rules.Known(a.Species) && (pen == null || !a.Registered || pen.Contains(new P2(a.X, a.Z))))
+            .OrderByDescending(a => a.Registered).Select(a => ranch.Rules.Species(a.Species).Food).Distinct();
+        // Bu agilda baska Yemlik ayni yemi zaten tasiyorsa digerini sec (Gidak bugdayi + Pofuduk salgami).
+        var taken = pen == null ? new HashSet<string>() : PropsIn(pen, "yemlik").Where(y => y != pr && y.Feeder.Amount > 0).Select(y => y.Feeder.Food).ToHashSet();
+        return wants.Where(w => bag.Count(w) > 0).OrderBy(w => taken.Contains(w)).FirstOrDefault()
+            ?? (bag.Count(f.Food) > 0 ? f.Food : null);
+    }
+
+    /// <summary>Yere dusen urun (Folluk yoksa ya da doluysa; Ranch olayi).</summary>
+    public void DropOnGround(string product, Vector3 at)
+    {
+        var egg = new EggPickup { Product = product };
+        _d.AddChild(egg);
+        egg.GlobalPosition = _d.World.Ground(at);
+        _eggs.Add(egg);
+        Fx.Text3D(at + Vector3.Up * 1.0f, ItemNames.Of(product), Palette.OffWhite, 48, 1f, 1.2f);
+        Sfx.Play("pickup", at, -4f);
+        GD.Print($"EGG laid ground at {at}");
     }
 
     void PickEgg(EggPickup e)

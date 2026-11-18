@@ -1,0 +1,456 @@
+Godot Engine v4.7.2.stable.mono.official.ed1daf0bf - https://godotengine.org
+
+TEST hayvan
+MUSIC ready day=yes layers=3/3 bar=2.00s
+PLAYER model anims: carry,cheer,crouch_walk,eat,getup_back_pose,getup_front_pose,hurt,idle,jump,jump_air,jump_land,jump_start,kneel,knockdown,plant,push,run,shock_fall,sleep,sprint,walk,walk_casual,wave
+AUDIO sounds=60 playable=60 variant_files=180 m0_only=0 silent=0 placeholder=0
+AUDIO ok 60/60
+POFUDUK anims: pose/attack1,pose/attack2,pose/eat,pose/hit,pose/idle,pose/rest,pose/run,pose/walk,preset_quadruped_walk
+BUILD kit pieces=28
+BOOT Kabarma MVP
+HELD capa
+MUSIC Silence -> Day
+ZIPZIP herd size=2 at=-23,16 herds=1
+ZIPZIP herd size=2 at=-21,18 herds=2
+ZIPZIP herd size=3 at=-18,-6 herds=3
+RANCH start animals=11 agents=11
+BOT step mine t=1.0
+SUNA line=giris_1 voice=yes
+HATCH intro done
+SUNA line=giris_2 voice=yes
+STEP mine -> odun t=10.1
+BOT step odun t=10.7
+SUNA line=tas_bitti voice=yes
+STEP odun -> ocak t=11.6
+BOT step ocak t=16.6
+HELD ocak
+STEP ocak -> tezgah t=12.5
+BOT step tezgah t=20.1
+HELD -
+QUEUED tezgah x1
+BOT craft tezgah row=0
+SUNA line=odun_basla voice=yes
+PRODUCED tezgah civi=40 ingot=0 soup=0
+HELD tezgah
+BOT place tezgah at (-2.5, 0, 4.5)
+PLACED tezgah at (-2.5, 0, 4.5)
+STEP tezgah -> tarla t=14.5
+BOT step tarla t=28.3
+HELD capa
+SUNA line=ocak_basla voice=yes
+ORDER ciraklik step=1 done (defter kapali)
+STEP tarla -> agil t=16.0
+BOT step agil t=34.0
+HELD insa_plani
+SUNA line=ocak_bitti voice=yes
+BOT aim cit err=1.41 valid=True reason= mode=ground
+BOT aim cit err=0.74 valid=True reason= mode=ground
+BOT aim cit err=0.44 valid=True reason= mode=ground
+BOT place cit at (-4.5575514, 0, -9.2878)
+BUILT cit pieces=1
+SUNA line=tezgah_basla voice=yes
+BOT place cit at (-3.0557404, 0, -7.7829485)
+BUILT cit pieces=2
+BOT place bahce_kapisi at (-3.0557404, 0, -4.7829485)
+BUILT bahce_kapisi pieces=3
+SUNA line=tarla_basla voice=yes
+BOT place cit at (-4.5557404, 0, -3.2829487)
+BUILT cit pieces=4
+BOT place cit at (-6.0557404, 0, -4.782949)
+BUILT cit pieces=5
+BOT aim cit err=2.12 valid=True reason= mode=snap
+BOT place cit at (-6.0557404, 0, -7.782949)
+BUILT cit pieces=6
+PEN area=18.0 cells=2 walls=6 gate=True gidak=4
+STEP agil -> gidak t=20.8
+GIDAK appears at (0.47979248, 0, 1.5810128)
+BOT step gidak t=53.4
+HELD capa
+SUNA line=tarla_bitti voice=yes
+QUEUED folluk x1
+BOT craft folluk row=5
+PRODUCED folluk civi=40 ingot=0 soup=0
+HELD folluk
+SUNA line=agil_basla voice=yes
+BOT place folluk at (-5.25574, 0, -6.882949)
+PLACED folluk at (-5.25574, 0, -6.882949)
+HELD capa
+SUNA line=agil_bitti voice=yes
+QUEUED yemlik x1
+BOT craft yemlik row=4
+PRODUCED yemlik civi=40 ingot=0 soup=0
+HELD yemlik
+SUNA line=gidak_basla voice=yes
+BOT place yemlik at (-4.5557404, 0, -8.382949)
+PLACED yemlik at (-4.5557404, 0, -8.382949)
+FEEDER +10 wheat -> 10
+HELD -
+HELD capa
+GIDAK fed trust=1.00 tame=True
+GATE bahce_kapisi open
+GIDAK penned area=18.0 cells=2
+STEP gidak -> night t=32.0
+EGG laid nest at (-2.8684437, 0, -3.171368)
+MUSIC Day -> Silence
+SUNA line=gidak_bitti voice=yes
+BOT step night t=98.0
+NEST collected 1 eggs=1
+GATE bahce_kapisi closed
+NIGHT start n=1
+FIRSTNIGHT ripen=9
+MUSIC Silence -> Kabarma
+SUNA line=kabarma_basla voice=yes
+NIGHT swell crops=9
+SUNA line=gece_alarm voice=yes
+SUNA line=gece_kabarma voice=yes
+NIGHT wave 1 count=3
+GIDAK kick to=-0.53,-0.85
+SUNA line=gece_gidak voice=yes
+GIDAK kick to=-0.41,-0.91
+GIDAK kick to=-0.23,-0.97
+SUNA line=gece_dalga voice=yes
+GIDAK kick to=-0.99,-0.12
+GIDAK kick to=1.00,0.00
+GIDAK kick to=-0.12,0.99
+FENCE hit cit_5 hp=394/400 hits=1
+GIDAK kick to=-0.66,-0.75
+GIDAK kick to=-0.44,-0.90
+GIDAK kick to=-0.31,-0.95
+BOT fence watch done hits=1 t=40.0
+GIDAK kick to=-0.07,-1.00
+SUNA line=gece_kart voice=yes
+NIGHT card catal rank=1
+NIGHT wave 2 count=7
+GIDAK kick to=-1.00,-0.08
+MUSIC layers=2 bar=7
+GIDAK kick to=-0.98,0.20
+GIDAK kick to=-0.26,-0.97
+GIDAK kick to=-0.26,-0.97
+GIDAK kick to=0.01,-1.00
+GIDAK kick to=-0.97,0.23
+GIDAK kick to=-0.91,0.41
+GIDAK kick to=-0.73,-0.69
+GIDAK kick to=-0.63,-0.77
+GIDAK kick to=-0.52,-0.86
+GIDAK kick to=-0.22,-0.98
+GIDAK kick to=0.09,-1.00
+NIGHT card keskin_goz rank=1
+NIGHT wave 3 count=11
+GIDAK kick to=-0.86,-0.50
+GIDAK kick to=-0.58,-0.82
+MUSIC layers=3 bar=13
+GIDAK kick to=-0.55,0.84
+GIDAK kick to=0.82,-0.58
+GIDAK kick to=-0.22,-0.98
+GIDAK kick to=-0.99,-0.14
+GIDAK kick to=-0.90,-0.44
+GIDAK kick to=-0.99,-0.13
+GIDAK kick to=-0.93,-0.36
+GIDAK kick to=-0.93,0.36
+GIDAK kick to=-0.99,0.17
+GIDAK kick to=-0.98,-0.20
+GIDAK kick to=-0.92,0.40
+GIDAK kick to=-0.51,0.86
+ORDER ciraklik step=4 done (defter kapali)
+CALENDAR morning day=2
+NIGHT oz picked=0 auto=21
+NIGHT dawn kills=21 level=3 maya=48 cards=2 statsBase=True
+NIGHT swollenLeft=9
+FENCE night hits=7 lowest_hp=370/400 knocked_over=0
+STEP night -> sell t=70.1
+MUSIC Kabarma -> Day
+SUNA line=safak voice=yes
+BOT step sell t=244.5
+ORDER ciraklik step=3 done (defter kapali)
+PAID turnip S +120 credits=120
+SOLD turnip S +120 credits=120 instant=True
+STEP sell -> hasat t=70.7
+BOT step hasat t=246.9
+STEP hasat -> yemek t=71.0
+HARVEST 5 total=5 turnips=35
+BOT step yemek t=248.0
+SUNA line=kargo_basla voice=yes
+REPORT shown night=1 kills=21 maya=48 level=3 cards=keskin_goz:1,catal:1 swollen=9 eaten=0 sold=120 defter=True
+SUNA line=kargo_bitti voice=yes
+QUEUED ocakbasi x1
+SUNA line=siradaki_is voice=yes
+PRODUCED ocakbasi civi=40 ingot=0 soup=0
+HELD ocakbasi
+BOT place ocakbasi at (-9, 0, -1)
+PLACED ocakbasi at (-9, 0, -1)
+HELD -
+QUEUED sebze_corbasi x1
+SUNA line=yemek_basla voice=yes
+PRODUCED sebze_corbasi civi=40 ingot=0 soup=1
+HELD sebze_corbasi
+ATE sebze_corbasi
+STEP yemek -> bakir_kil t=76.8
+HELD -
+BOT step bakir_kil t=271.2
+HELD capa
+SUNA line=yemek_basla voice=yes
+SUNA line=bakir_kil_basla voice=yes
+ZIPZIP herd size=2 at=30,4 herds=1
+ZIPZIP herd size=3 at=29,17 herds=2
+ZIPZIP herd size=2 at=8,38 herds=3
+STEP bakir_kil -> firin t=82.2
+SUNA line=firin_basla voice=yes
+BOT step firin t=293.2
+QUEUED tas_firin x1
+PRODUCED tas_firin civi=40 ingot=0 soup=0
+HELD tas_firin
+TAS_FIRIN parts: base,body,chimney,panel,door,door_handle door=True
+BOT place tas_firin at (-5, 0, 9)
+TAS_FIRIN parts: base,body,chimney,panel,door,door_handle door=True
+PLACED tas_firin at (-5, 0, 9)
+HELD capa
+QUEUED copper_ingot x1
+STEP firin -> civi t=97.0
+PRODUCED copper_ingot civi=40 ingot=1 soup=0
+SUNA line=civi_basla voice=yes
+BOT step civi t=352.2
+QUEUED copper_ingot x1
+PRODUCED copper_ingot civi=40 ingot=2 soup=0
+EGG laid nest egg
+QUEUED civi_tabancasi x1
+PRODUCED civi_tabancasi civi=40 ingot=0 soup=0
+QUEUED copper_ingot x1
+PRODUCED copper_ingot civi=40 ingot=1 soup=0
+QUEUED civi x1
+STEP civi -> kasa t=109.7
+PRODUCED civi civi=60 ingot=0 soup=0
+SUNA line=kasa_basla voice=yes
+BOT step kasa t=403.0
+QUEUED paketleme x1
+PRODUCED paketleme civi=60 ingot=0 soup=0
+HELD paketleme
+BOT place paketleme at (1.5, 0, 8)
+PLACED paketleme at (1.5, 0, 8)
+HELD -
+PACKED turnip x33
+QUEUED kargo_kasasi
+CRATE 1 value=480 stacks=1
+PRODUCED kargo_kasasi civi=60 ingot=0 soup=0
+HELD capa
+RAMP load crate 1 pad=1
+SOLD kargo_kasasi x1 +480 instant=False
+STEP kasa -> barinak t=116.0
+SUNA line=barinak_basla voice=yes
+BOT step barinak t=428.3
+QUEUED uyku_tulumu x1
+BOT craft uyku_tulumu row=2
+PRODUCED uyku_tulumu civi=60 ingot=0 soup=0
+HELD uyku_tulumu
+BOT place uyku_tulumu at (10.5, 0, 1)
+PLACED uyku_tulumu at (10.5, 0, 1)
+HELD capa
+HELD insa_plani
+BUILT kare_temel pieces=7
+HELD capa
+HELD insa_plani
+BOT built duvar (7) at (6.214165, 0.35, 1.5969257) target=(6.214165, 0.34919998, 0.5469258)
+BUILT duvar pieces=8
+PEN area=18.0 cells=2 walls=6 gate=True gidak=4
+HELD capa
+BOT built duvar (8) at (6.214165, 0.35, 0.096925735) target=(7.264165, 0.34919998, 1.5969257)
+HELD insa_plani
+BUILT duvar pieces=9
+PEN area=18.0 cells=2 walls=6 gate=True gidak=4
+HELD capa
+BOT built duvar (9) at (7.714165, 0.35, 1.5969257) target=(5.1641655, 0.34919998, 1.5969257)
+HELD insa_plani
+BOT shelter wait duvar: valid=True reason= mode=snap
+BUILT duvar pieces=10
+PEN area=18.0 cells=2 walls=6 gate=True gidak=4
+HELD capa
+HELD insa_plani
+BOT built kapi_kasasi (10) at (4.714165, 0.35, 1.5969257) target=(6.214165, 0.34919998, 2.6469257)
+BUILT kapi_kasasi pieces=11
+PEN area=18.0 cells=2 walls=6 gate=True gidak=4
+PEN area=9.0 cells=1 walls=4 gate=True gidak=2
+HELD capa
+QUEUED ahsap_kapi x1
+BOT craft ahsap_kapi row=6
+PRODUCED ahsap_kapi civi=60 ingot=0 soup=0
+HELD ahsap_kapi
+BOT place ahsap_kapi at (6.214165, 0, 3.0969257)
+PLACED ahsap_kapi at (6.214165, 0.35, 3.0969257)
+HELD capa
+HELD insa_plani
+BOT built duz_cati (11) at (6.214165, 0.35, 3.0969257) target=(6.214165, 3.34, 1.5969257)
+BUILT duz_cati pieces=12
+STEP barinak -> end t=130.1
+CHAIN done
+BOT step end t=484.5
+BOT hayvan stage=0 trust=0.00 reg=False turnip=0 happy=50 pending=0 timer=0
+HELD capa
+HARVEST 2 total=7 turnips=14
+PAID kargo_kasasi x1 +480 credits=600
+RANCH fed pofuduk trust=0.33 tame=False
+BOT hayvan stage=2 trust=0.33 reg=False turnip=13 happy=50 pending=0 timer=0
+RANCH fed pofuduk trust=0.67 tame=False
+RANCH fed pofuduk trust=1.00 tame=True
+GATE bahce_kapisi open
+BOT hayvan stage=3 trust=1.00 reg=False turnip=11 happy=50 pending=0 timer=0
+BOT hayvan stage=3 trust=1.00 reg=False turnip=11 happy=50 pending=0 timer=0
+RANCH registered pofuduk id=1 genes=B3 U3 V1 K3
+BOT hayvan stage=4 trust=1.00 reg=True turnip=11 happy=50 pending=0 timer=0
+BOT hayvan stage=4 trust=1.00 reg=True turnip=11 happy=50 pending=0 timer=4
+BOT hayvan stage=4 trust=1.00 reg=True turnip=11 happy=50 pending=0 timer=8
+BOT hayvan stage=4 trust=1.00 reg=True turnip=11 happy=49 pending=0 timer=12
+BOT hayvan stage=4 trust=1.00 reg=True turnip=11 happy=49 pending=0 timer=16
+BOT hayvan stage=4 trust=1.00 reg=True turnip=11 happy=49 pending=0 timer=20
+BOT hayvan stage=4 trust=1.00 reg=True turnip=11 happy=49 pending=0 timer=24
+BOT hayvan stage=4 trust=1.00 reg=True turnip=11 happy=49 pending=0 timer=28
+EGG laid nest egg
+BOT hayvan stage=4 trust=1.00 reg=True turnip=11 happy=49 pending=0 timer=33
+BOT hayvan stage=4 trust=1.00 reg=True turnip=11 happy=48 pending=0 timer=37
+BOT hayvan stage=4 trust=1.00 reg=True turnip=11 happy=48 pending=0 timer=41
+BOT hayvan stage=4 trust=1.00 reg=True turnip=11 happy=48 pending=0 timer=45
+BOT hayvan stage=4 trust=1.00 reg=True turnip=11 happy=48 pending=0 timer=49
+BOT hayvan stage=4 trust=1.00 reg=True turnip=11 happy=48 pending=0 timer=53
+BOT hayvan stage=4 trust=1.00 reg=True turnip=11 happy=48 pending=0 timer=57
+BOT hayvan stage=4 trust=1.00 reg=True turnip=11 happy=47 pending=0 timer=61
+BOT hayvan stage=4 trust=1.00 reg=True turnip=11 happy=47 pending=0 timer=65
+BOT hayvan stage=4 trust=1.00 reg=True turnip=11 happy=47 pending=0 timer=69
+BOT hayvan stage=4 trust=1.00 reg=True turnip=11 happy=47 pending=0 timer=73
+BOT hayvan stage=4 trust=1.00 reg=True turnip=11 happy=47 pending=0 timer=77
+BOT hayvan stage=4 trust=1.00 reg=True turnip=11 happy=47 pending=0 timer=81
+BOT hayvan stage=4 trust=1.00 reg=True turnip=11 happy=46 pending=0 timer=85
+BOT hayvan stage=4 trust=1.00 reg=True turnip=11 happy=46 pending=0 timer=89
+BOT hayvan stage=4 trust=1.00 reg=True turnip=11 happy=46 pending=0 timer=93
+BOT hayvan stage=4 trust=1.00 reg=True turnip=11 happy=46 pending=0 timer=97
+BOT hayvan stage=4 trust=1.00 reg=True turnip=11 happy=46 pending=0 timer=101
+BOT hayvan stage=4 trust=1.00 reg=True turnip=11 happy=46 pending=0 timer=106
+BOT hayvan stage=4 trust=1.00 reg=True turnip=11 happy=45 pending=0 timer=110
+BOT hayvan stage=4 trust=1.00 reg=True turnip=11 happy=45 pending=0 timer=114
+BOT hayvan stage=4 trust=1.00 reg=True turnip=11 happy=45 pending=0 timer=118
+BOT hayvan stage=4 trust=1.00 reg=True turnip=11 happy=45 pending=0 timer=122
+BOT hayvan stage=4 trust=1.00 reg=True turnip=11 happy=45 pending=0 timer=126
+BOT hayvan stage=4 trust=1.00 reg=True turnip=11 happy=45 pending=0 timer=130
+BOT hayvan stage=4 trust=1.00 reg=True turnip=11 happy=44 pending=0 timer=134
+BOT hayvan stage=4 trust=1.00 reg=True turnip=11 happy=44 pending=0 timer=138
+BOT hayvan stage=4 trust=1.00 reg=True turnip=11 happy=44 pending=0 timer=142
+BOT hayvan stage=4 trust=1.00 reg=True turnip=11 happy=44 pending=0 timer=146
+BOT hayvan stage=4 trust=1.00 reg=True turnip=11 happy=44 pending=0 timer=150
+BOT hayvan stage=4 trust=1.00 reg=True turnip=11 happy=44 pending=0 timer=150
+BOT hayvan stage=4 trust=1.00 reg=True turnip=11 happy=43 pending=0 timer=150
+BOT hayvan stage=4 trust=1.00 reg=True turnip=11 happy=43 pending=0 timer=150
+BOT hayvan stage=4 trust=1.00 reg=True turnip=11 happy=43 pending=0 timer=150
+BOT hayvan stage=4 trust=1.00 reg=True turnip=11 happy=43 pending=0 timer=150
+EGG laid nest egg
+BOT hayvan stage=4 trust=1.00 reg=True turnip=11 happy=43 pending=0 timer=150
+BOT hayvan stage=4 trust=1.00 reg=True turnip=11 happy=43 pending=0 timer=150
+BOT hayvan stage=4 trust=1.00 reg=True turnip=11 happy=42 pending=0 timer=150
+BOT hayvan stage=4 trust=1.00 reg=True turnip=11 happy=42 pending=0 timer=150
+BOT hayvan stage=4 trust=1.00 reg=True turnip=11 happy=42 pending=0 timer=150
+BOT hayvan stage=4 trust=1.00 reg=True turnip=11 happy=42 pending=0 timer=150
+BOT hayvan stage=4 trust=1.00 reg=True turnip=11 happy=42 pending=0 timer=150
+BOT hayvan stage=4 trust=1.00 reg=True turnip=11 happy=42 pending=0 timer=150
+BOT hayvan stage=4 trust=1.00 reg=True turnip=11 happy=41 pending=0 timer=150
+BOT hayvan stage=4 trust=1.00 reg=True turnip=11 happy=41 pending=0 timer=150
+BOT hayvan stage=4 trust=1.00 reg=True turnip=11 happy=41 pending=0 timer=150
+BOT hayvan stage=4 trust=1.00 reg=True turnip=11 happy=41 pending=0 timer=150
+BOT hayvan stage=4 trust=1.00 reg=True turnip=11 happy=41 pending=0 timer=150
+BOT hayvan stage=4 trust=1.00 reg=True turnip=11 happy=41 pending=0 timer=150
+BOT hayvan stage=4 trust=1.00 reg=True turnip=11 happy=40 pending=0 timer=150
+BOT hayvan stage=4 trust=1.00 reg=True turnip=11 happy=40 pending=0 timer=150
+BOT hayvan stage=4 trust=1.00 reg=True turnip=11 happy=40 pending=0 timer=150
+BOT hayvan stage=4 trust=1.00 reg=True turnip=11 happy=40 pending=0 timer=150
+BOT hayvan stage=4 trust=1.00 reg=True turnip=11 happy=40 pending=0 timer=150
+BOT hayvan stage=4 trust=1.00 reg=True turnip=11 happy=40 pending=0 timer=150
+BOT hayvan stage=4 trust=1.00 reg=True turnip=11 happy=39 pending=0 timer=150
+BOT hayvan stage=4 trust=1.00 reg=True turnip=11 happy=39 pending=0 timer=150
+BOT hayvan stage=4 trust=1.00 reg=True turnip=11 happy=39 pending=0 timer=150
+BOT hayvan stage=4 trust=1.00 reg=True turnip=11 happy=39 pending=0 timer=150
+BOT hayvan stage=4 trust=1.00 reg=True turnip=11 happy=39 pending=0 timer=150
+BOT hayvan stage=4 trust=1.00 reg=True turnip=11 happy=39 pending=0 timer=150
+BOT hayvan stage=4 trust=1.00 reg=True turnip=11 happy=38 pending=0 timer=150
+BOT hayvan stage=4 trust=1.00 reg=True turnip=11 happy=38 pending=0 timer=150
+BOT hayvan stage=4 trust=1.00 reg=True turnip=11 happy=38 pending=0 timer=150
+BOT hayvan stage=4 trust=1.00 reg=True turnip=11 happy=38 pending=0 timer=150
+BOT hayvan stage=4 trust=1.00 reg=True turnip=11 happy=38 pending=0 timer=150
+BOT hayvan stage=4 trust=1.00 reg=True turnip=11 happy=38 pending=0 timer=150
+BOT hayvan stage=4 trust=1.00 reg=True turnip=11 happy=37 pending=0 timer=150
+BOT hayvan stage=4 trust=1.00 reg=True turnip=11 happy=37 pending=0 timer=150
+EGG laid nest egg
+BOT hayvan stage=4 trust=1.00 reg=True turnip=11 happy=37 pending=0 timer=150
+BOT hayvan stage=4 trust=1.00 reg=True turnip=11 happy=37 pending=0 timer=150
+BOT hayvan stage=4 trust=1.00 reg=True turnip=11 happy=37 pending=0 timer=150
+BOT hayvan stage=4 trust=1.00 reg=True turnip=11 happy=37 pending=0 timer=150
+BOT hayvan stage=4 trust=1.00 reg=True turnip=11 happy=36 pending=0 timer=150
+BOT hayvan stage=4 trust=1.00 reg=True turnip=11 happy=36 pending=0 timer=150
+BOT hayvan stage=4 trust=1.00 reg=True turnip=11 happy=36 pending=0 timer=150
+BOT hayvan stage=4 trust=1.00 reg=True turnip=11 happy=36 pending=0 timer=150
+BOT hayvan stage=4 trust=1.00 reg=True turnip=11 happy=36 pending=0 timer=150
+BOT hayvan stage=4 trust=1.00 reg=True turnip=11 happy=36 pending=0 timer=150
+BOT hayvan stage=4 trust=1.00 reg=True turnip=11 happy=35 pending=0 timer=150
+BOT hayvan stage=4 trust=1.00 reg=True turnip=11 happy=35 pending=0 timer=150
+BOT hayvan stage=4 trust=1.00 reg=True turnip=11 happy=35 pending=0 timer=150
+BOT hayvan stage=4 trust=1.00 reg=True turnip=11 happy=35 pending=0 timer=150
+BOT hayvan stage=4 trust=1.00 reg=True turnip=11 happy=35 pending=0 timer=150
+BOT hayvan stage=4 trust=1.00 reg=True turnip=11 happy=35 pending=0 timer=150
+BOT hayvan stage=4 trust=1.00 reg=True turnip=11 happy=34 pending=0 timer=150
+BOT hayvan stage=4 trust=1.00 reg=True turnip=11 happy=34 pending=0 timer=150
+BOT hayvan stage=4 trust=1.00 reg=True turnip=11 happy=34 pending=0 timer=150
+BOT hayvan stage=4 trust=1.00 reg=True turnip=11 happy=34 pending=0 timer=150
+BOT hayvan stage=4 trust=1.00 reg=True turnip=11 happy=34 pending=0 timer=150
+BOT hayvan stage=4 trust=1.00 reg=True turnip=11 happy=34 pending=0 timer=150
+BOT hayvan stage=4 trust=1.00 reg=True turnip=11 happy=33 pending=0 timer=150
+BOT hayvan stage=4 trust=1.00 reg=True turnip=11 happy=33 pending=0 timer=150
+BOT hayvan stage=4 trust=1.00 reg=True turnip=11 happy=33 pending=0 timer=150
+BOT hayvan stage=4 trust=1.00 reg=True turnip=11 happy=33 pending=0 timer=150
+BOT hayvan stage=4 trust=1.00 reg=True turnip=11 happy=33 pending=0 timer=150
+MUSIC day silence 177s
+BOT hayvan stage=4 trust=1.00 reg=True turnip=11 happy=33 pending=0 timer=150
+BOT hayvan stage=4 trust=1.00 reg=True turnip=11 happy=32 pending=0 timer=150
+BOT hayvan stage=4 trust=1.00 reg=True turnip=11 happy=32 pending=0 timer=150
+BOT hayvan stage=4 trust=1.00 reg=True turnip=11 happy=32 pending=0 timer=150
+BOT hayvan stage=4 trust=1.00 reg=True turnip=11 happy=32 pending=0 timer=150
+BOT hayvan stage=4 trust=1.00 reg=True turnip=11 happy=32 pending=0 timer=150
+BOT hayvan stage=4 trust=1.00 reg=True turnip=11 happy=32 pending=0 timer=150
+BOT hayvan stage=4 trust=1.00 reg=True turnip=11 happy=31 pending=0 timer=150
+EGG laid nest egg
+RANCH product gidak tuy x1
+BOT hayvan stage=4 trust=1.00 reg=True turnip=11 happy=31 pending=0 timer=150
+BOT hayvan stage=4 trust=1.00 reg=True turnip=11 happy=31 pending=0 timer=150
+BOT hayvan stage=4 trust=1.00 reg=True turnip=11 happy=31 pending=0 timer=150
+BOT hayvan stage=4 trust=1.00 reg=True turnip=11 happy=31 pending=0 timer=150
+BOT hayvan stage=4 trust=1.00 reg=True turnip=11 happy=31 pending=0 timer=150
+BOT hayvan stage=4 trust=1.00 reg=True turnip=11 happy=30 pending=0 timer=150
+BOT hayvan stage=4 trust=1.00 reg=True turnip=11 happy=30 pending=0 timer=150
+BOT hayvan stage=4 trust=1.00 reg=True turnip=11 happy=30 pending=0 timer=150
+BOT hayvan stage=4 trust=1.00 reg=True turnip=11 happy=30 pending=0 timer=150
+BOT hayvan stage=4 trust=1.00 reg=True turnip=11 happy=30 pending=0 timer=150
+BOT hayvan stage=4 trust=1.00 reg=True turnip=11 happy=30 pending=0 timer=150
+BOT hayvan stage=4 trust=1.00 reg=True turnip=11 happy=29 pending=0 timer=150
+BOT hayvan stage=4 trust=1.00 reg=True turnip=11 happy=29 pending=0 timer=150
+BOT hayvan stage=4 trust=1.00 reg=True turnip=11 happy=29 pending=0 timer=150
+BOT hayvan stage=4 trust=1.00 reg=True turnip=11 happy=29 pending=0 timer=150
+BOT hayvan stage=4 trust=1.00 reg=True turnip=11 happy=29 pending=0 timer=150
+BOT hayvan stage=4 trust=1.00 reg=True turnip=11 happy=29 pending=0 timer=150
+BOT hayvan stage=4 trust=1.00 reg=True turnip=11 happy=28 pending=0 timer=150
+BOT hayvan stage=4 trust=1.00 reg=True turnip=11 happy=28 pending=0 timer=150
+BOT hayvan stage=4 trust=1.00 reg=True turnip=11 happy=28 pending=0 timer=150
+BOT hayvan stage=4 trust=1.00 reg=True turnip=11 happy=28 pending=0 timer=150
+BOT hayvan stage=4 trust=1.00 reg=True turnip=11 happy=28 pending=0 timer=150
+BOT hayvan stage=4 trust=1.00 reg=True turnip=11 happy=28 pending=0 timer=150
+BOT hayvan stage=4 trust=1.00 reg=True turnip=11 happy=27 pending=0 timer=150
+BOT hayvan stage=4 trust=1.00 reg=True turnip=11 happy=27 pending=0 timer=150
+BOT hayvan stage=4 trust=1.00 reg=True turnip=11 happy=27 pending=0 timer=150
+BOT hayvan stage=4 trust=1.00 reg=True turnip=11 happy=27 pending=0 timer=150
+BOT hayvan stage=4 trust=1.00 reg=True turnip=11 happy=27 pending=0 timer=150
+BOT hayvan stage=4 trust=1.00 reg=True turnip=11 happy=27 pending=0 timer=150
+BOT hayvan stage=4 trust=1.00 reg=True turnip=11 happy=26 pending=0 timer=150
+BOT hayvan stage=4 trust=1.00 reg=True turnip=11 happy=26 pending=0 timer=150
+BOT hayvan stage=4 trust=1.00 reg=True turnip=11 happy=26 pending=0 timer=150
+BOT hayvan stage=4 trust=1.00 reg=True turnip=11 happy=26 pending=0 timer=150
+BOT hayvan stage=4 trust=1.00 reg=True turnip=11 happy=26 pending=0 timer=150
+EGG laid nest egg
+BOT hayvan stage=4 trust=1.00 reg=True turnip=11 happy=26 pending=0 timer=150
+BOT hayvan stage=4 trust=1.00 reg=True turnip=11 happy=25 pending=0 timer=150
+BOT hayvan stage=4 trust=1.00 reg=True turnip=11 happy=25 pending=0 timer=150
+BOT hayvan stage=4 trust=1.00 reg=True turnip=11 happy=25 pending=0 timer=150
+BOT hayvan stage=4 trust=1.00 reg=True turnip=11 happy=25 pending=0 timer=150
+BOT hayvan stage=4 trust=1.00 reg=True turnip=11 happy=25 pending=0 timer=150
+BOT hayvan stage=4 trust=1.00 reg=True turnip=11 happy=25 pending=0 timer=150

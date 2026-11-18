@@ -1,6 +1,7 @@
 {
   "_not": "Hayvancilik (GDD 9.1-9.4; ICERIK 3.1-3.2 evcil rol, urun ve sevdigi yem; ICERIK 2.2 hayvansal kaynaklar; ICERIK 10.2 Suluk, Kasinma Fircasi, Ari Kovani; ICERIK 11 Kulucka). Cayir ve Koru'nun 8 evcil turu. Gidak'in ilk gun kurallari (ogretici guven, ilk yumurta, Folluk) pen.json'da; buradaki gidak satiri onunla ayni alan, yem ve urunu tasir (DataTests denetler). Sureler oyun saniyesi; bir oyun gunu calendar.json'dan (30 dk).",
   "_belgesiz": "Belgede sayisi olmayanlar (hayvan akisi, M2): mutluluk agirliklari, hizi, okşama ve gubre puani, kalite basamaklari; urun ve is araliklari (Gidak yumurtasi haric: 180 sn URETIM 6 M1); tur basina guven yemi, alan (Gidak 4 haric), heybe (Dalli 16 haric); kacma esigi ve suresi; yetiskinlik gunu; komut dinleme; B geninin can, heybe ve hiz katkisi; Kulucka suresi; Suluk sigasi. Sahip oynayinca ayarlanir.",
+  "_yer_tutucu": "Homur, Dalli, Hu, Vicik, Bozuk, Vizviz govdeleri koddan (TameablePlaceholder, renk/boy/hiz asagida); gubre yigini kure. Suluk, Kasinma Fircasi, Ari Kovani modelleri koddan (pipeline/hayvan_props_kit.py, kredisiz). Yaratik2'nin aktorleri ve uretim istegindeki modeller gelince kalkar (pipeline/licenses.md).",
   "happiness": {
     "start": 50,
     "base": 10,

@@ -193,6 +193,7 @@ public sealed class Ranch
             if (!Rules.Known(a.Species)) continue;
             if (a.Id == 0) Adopt(a);
             if (a.Happiness < 0) a.Happiness = def.Happiness.Start;
+            if (a.Tame && a.Role == "") a.Role = Rules.Species(a.Species).Roles.FirstOrDefault() ?? ""; // ilk gunun Gidak'i CoopRules ile evcillesir
             a.AgeDays += days;
             if (!a.Registered) continue;
             var s = Rules.Species(a.Species);
@@ -253,8 +254,8 @@ public sealed class Ranch
                 a.Laid += n;
                 for (int i = 0; i < n; i++)
                 {
-                    var target = CoopRules.Place(pen == null ? Array.Empty<Nest>() : Nests.Where(x => In(pen, x.X, x.Z)), out _);
-                    ev.Add(new RanchEvent(target == LayTarget.Nest ? RanchEventKind.Nested : RanchEventKind.Grounded, a.Id, p.Item, 1));
+                    var target = CoopRules.Place(pen == null ? Array.Empty<Nest>() : Nests.Where(x => In(pen, x.X, x.Z)), out var nest);
+                    ev.Add(new RanchEvent(target == LayTarget.Nest ? RanchEventKind.Nested : RanchEventKind.Grounded, a.Id, p.Item, 1, nest?.Id ?? 0));
                 }
                 continue;
             }

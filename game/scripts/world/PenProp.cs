@@ -28,9 +28,28 @@ public partial class PenProp : Node3D
     {
         _d = d; _pens = pens; Def = def;
         Name = def.Id;
-        var coop = d.State.Coop;
-        if (def.Id == "yemlik") { Feeder = new Feeder { Food = d.Data.Pen.Animals[0].Food, Capacity = d.Data.Pen.FeederCapacity }; coop.Feeders.Add(Feeder); }
-        if (def.Id == "folluk") { Nest = new Nest { Slots = d.Data.Pen.NestSlots }; coop.Nests.Add(Nest); }
+        // M2: Sim nesneleri Ranch'tan (kimlikli, konumlu; agil uyeligi konumdan). Konum PenSystem.PlaceProp'ta SyncSim ile.
+        var ranch = d.State.Ranch;
+        if (def.Id == "yemlik") { Feeder = ranch.AddFeeder(0, 0); Feeder.Food = d.Data.Pen.Animals[0].Food; }
+        if (def.Id == "folluk") Nest = ranch.AddNest(0, 0);
+        if (def.Id == "suluk") Trough = ranch.AddTrough(0, 0);
+        if (def.Id == "kasinma_fircasi") Brush = ranch.AddBrush(0, 0);
+        if (def.Id == "ari_kovani") Hive = ranch.AddHive(0, 0);
+    }
+
+    public Trough Trough { get; }
+    public Brush Brush { get; }
+    public Hive Hive { get; }
+
+    /// <summary>Sim nesnesinin konumunu dugumun konumuna esitler.</summary>
+    public void SyncSim()
+    {
+        float x = GlobalPosition.X, z = GlobalPosition.Z;
+        if (Feeder != null) { Feeder.X = x; Feeder.Z = z; }
+        if (Nest != null) { Nest.X = x; Nest.Z = z; }
+        if (Trough != null) { Trough.X = x; Trough.Z = z; }
+        if (Brush != null) { Brush.X = x; Brush.Z = z; }
+        if (Hive != null) { Hive.X = x; Hive.Z = z; }
     }
 
     public override void _Ready()
@@ -99,7 +118,9 @@ public partial class PenProp : Node3D
     /// <summary>Yemlik'e cantadan yem koyar.</summary>
     public void Fill()
     {
-        int n = CoopRules.Fill(Feeder, _d.State.Backpack);
+        var food = _pens.FoodFor(this);
+        if (food == null) return;
+        int n = HusbandryRules.Fill(Feeder, _d.State.Backpack, food); // M2: bos Yemlik konan yemin turunu alir
         if (n <= 0) return;
         Bounce();
         Fx.FlyTo(_d.Player.BackpackPoint.GlobalPosition, () => GlobalPosition + Vector3.Up * 0.6f, Palette.Warning, 0.1f);
@@ -126,10 +147,12 @@ public partial class PenProp : Node3D
     {
         float dt = (float)delta;
         bool near = new Vector2(_d.Player.GlobalPosition.X - GlobalPosition.X, _d.Player.GlobalPosition.Z - GlobalPosition.Z).Length() < _d.Data.Pen.InteractRange + 1f;
-        _label.Text = Feeder != null ? $"{Def.Name}\n{ItemNames.Of(Feeder.Food)} {Feeder.Amount}/{Feeder.Capacity}"
+        _label.Text = Feeder != null ? (Feeder.Amount == 0 ? $"{Def.Name}\nBoş" : $"{Def.Name}\n{ItemNames.Of(Feeder.Food)} {Feeder.Amount}/{Feeder.Capacity}")
             : Nest != null ? $"{Def.Name}\nYumurta {Nest.Eggs}/{Nest.Slots}"
+            : Trough != null ? $"{Def.Name}\nSu {Trough.Water:0}/{Trough.Capacity}"
+            : Hive != null ? $"{Def.Name}\n{(Hive.AnimalId == 0 ? "Boş" : "Vızvız yerleşti")}"
             : Kasa == null && Def.Id == "ahsap_kapi" ? $"{Def.Name}\nKapı Kasası'na oturur" : Def.Name;
-        _label.Visible = near || Feeder != null || Nest != null;
+        _label.Visible = near || Feeder != null || Nest != null || Trough != null || Hive != null;
         _label.Modulate = near ? Palette.Warning : Palette.OffWhite;
         if (_bounce > 0)
         {

@@ -42,6 +42,7 @@ public partial class Bot : Node
         RegisterIlkgun();    // Bot.Ilkgun.cs: ilk gun (GDD 24): mine (kapak), tezgah, tarla, agil, gidak, night (agil kapisi)
         RegisterZincir();    // Bot.Zincir.cs (entegrasyon): yemek, firin, civi, kasa, barinak
         _steps["end"] = StepEnd;
+        RegisterHayvan();    // Bot.Hayvan.cs (--test=hayvan): end'den once Pofuduk'u evcillestir, sutunu al
     }
 
     Player P => _d.Player;

@@ -34,6 +34,7 @@ if (-not $PSBoundParameters.ContainsKey('Only')) { $Only += 'creatures' }
 if (-not $PSBoundParameters.ContainsKey('Only')) { $Only += 'camera' } # oyuncu akisi: --test=camera varsayilan adimlarda
 if (-not $PSBoundParameters.ContainsKey('Only')) { $Only += 'grip' } # oyuncu akisi: --test=grip varsayilan adimlarda
 if (-not $PSBoundParameters.ContainsKey('Only')) { $Only += 'ekonomi' }  # ekonomi sinamasi (--test=ekonomi) varsayilan kosuda
+if (-not $PSBoundParameters.ContainsKey('Only')) { $Only += 'hayvan' }   # hayvan akisi: zincir + Pofuduk evcillestir, sutunu al (--test=hayvan)
 $Root = Split-Path -Parent $PSScriptRoot
 Set-Location $Root
 $GamePath = Join-Path $Root 'game'
@@ -153,6 +154,19 @@ if ($Only -contains 'bot') {
         $res = ($r.Text -split "`r?`n" | Where-Object { $_ -match '^RESULT ' } | Select-Object -Last 1)
         if (-not $res) { $res = 'RESULT satiri yok' }
         [pscustomobject]@{ Ok = ($res -match '^RESULT ok'); Detail = ($res -replace ' t=[0-9.]+$', '') }
+    }
+}
+
+if ($Only -contains 'hayvan') {
+    if (-not $G) { $G = Find-Godot }
+    Invoke-GodotTest 'hayvan' '--test=hayvan --fast=4 --quit_after=1300 --mute' ([Math]::Max($BotTimeout, 900)) {
+        param($r)
+        $lines = $r.Text -split "`r?`n"
+        $res = ($lines | Where-Object { $_ -match '^RESULT ' } | Select-Object -Last 1)
+        $hv = ($lines | Where-Object { $_ -match '^HAYVAN ok' } | Select-Object -Last 1)
+        if (-not $res) { $res = 'RESULT satiri yok' }
+        if (-not $hv) { $hv = 'HAYVAN satiri yok' }
+        [pscustomobject]@{ Ok = ($res -match '^RESULT ok') -and ($hv -match '^HAYVAN ok'); Detail = (($hv -replace ' t=[0-9.]+$', '') + ' | ' + ($res -replace ' t=[0-9.]+$', '')) }
     }
 }
 
