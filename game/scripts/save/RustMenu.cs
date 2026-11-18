@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Globalization;
+using System.Linq;
 using Godot;
 using Kabarma.Sim;
 using T = Kabarma.Game.UiTheme;
@@ -123,6 +124,10 @@ void fragment() { COLOR = vec4(textureLod(screen_texture, SCREEN_UV, 3.0).rgb * 
         l.AddThemeColorOverride("font_color", c);
         return l;
     }
+
+    /// <summary>Sinama: yazisi bu onekle baslayan dugme (sol sutun ya da icerik paneli).</summary>
+    public Button FindButton(string prefix) =>
+        Root?.FindChildren("*", "Button", true, false).OfType<Button>().FirstOrDefault(b => b.Text.StartsWith(prefix, StringComparison.Ordinal) && !b.IsQueuedForDeletion());
 
     protected void ClearContent()
     {

@@ -139,3 +139,9 @@ public static partial class Sfx
         _beam = null; _beamId = null; _music = null; _d = null; _root = null;
     }
 }
+
+public partial class Hud
+{
+    /// <summary>Kayit yuklendi: toplanan esya akisinin cantayi yeniden ornekler (sessiz yukleme sahte '+N' gostermesin).</summary>
+    internal void AfterLoad() => SnapshotBackpack();
+}

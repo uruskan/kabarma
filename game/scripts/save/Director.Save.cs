@@ -52,7 +52,22 @@ public partial class Director
         Saver = new SaveService(this) { Name = "SaveService" };
         AddChild(Saver);
         if (Bot == null && (!automation || Main.Args.ContainsKey("pausemenu"))) AddChild(new PauseMenu(this)); // Esc: Kaydet ve Cikis (bot ve sinama kosularinda yok)
+        LoadCharacter();
         if (PendingLoad != null) CallDeferred(nameof(ApplyPendingLoad));
+    }
+
+    /// <summary>
+    /// Karakter dosyasi (TEKNIK 9: Ustalik, Nisan, Ansiklopedi, kozmetik; dunyalar arasi tasinir) hem yeni oyunda hem
+    /// yuklemede okunur. Karakter bolumleri sahibi sistemin kurulumunda (_Ready, InitSave'den once) kaydolmus olur.
+    /// </summary>
+    void LoadCharacter()
+    {
+        var store = Store;
+        if (store == null) return;
+        var ch = store.ReadCharacter();
+        if (ch == null) return;
+        try { GD.Print($"CHARACTER {Save.Restore(ch, SaveScope.Character)}"); }
+        catch (Exception e) { GD.PushError($"CHARACTER okunamadi: {e.Message}"); }
     }
 
     /// <summary>Kurulumdan sonraki ilk karede: kaydi yerine koy, gorunumleri yenile.</summary>
@@ -62,16 +77,21 @@ public partial class Director
         if (g == null) return;
         try
         {
+            if (g.Manifest.Seed != 0 && g.Manifest.Seed != State.Seed) throw new SaveException($"kayit tohumu {g.Manifest.Seed}, oyun {State.Seed}");
             LastRestore = Save.Restore(g);
         }
         catch (Exception e)
         {
+            // Yarim kurulmus dunya kaydi ezmesin: bu oyunda kayit kapanir, oyuncu menuye doner.
             GD.PushError($"LOAD basarisiz: {e.Message}");
             LastRestore = null;
+            SaveRoot = null;
             Loaded?.Invoke();
+            if (GetParent() is Main m) m.CallDeferred(Main.MethodName.ReturnToMenuWith, $"Kayıt yüklenemedi: {e.Message}");
             return;
         }
         FarmView.Rebuild();
+        Hud?.AfterLoad();
         Saver.OnLoaded(g.Manifest);
         GD.Print($"LOAD ok day={g.Manifest.Day} {LastRestore}");
         Loaded?.Invoke();
@@ -102,6 +122,16 @@ public partial class Director
         m.SavedUtc = DateTime.UtcNow.ToString("yyyy-MM-ddTHH:mm:ssZ");
         m.PlaySeconds = Saver?.PlaySeconds ?? 0;
         return Save.Capture(SaveScope.World, m);
+    }
+
+    /// <summary>
+    /// Kayit oncesi oyuncunun elindekini birakir: tutulan yuk yere, itilen araba durur (cikista kaydin alinabilmesi icin).
+    /// Gece surerken kayit yine alinmaz.
+    /// </summary>
+    public void ReleaseForSave()
+    {
+        if (Capa.Held != null) Capa.Drop();
+        foreach (var c in Carts.Where(c => IsInstanceValid(c) && c.Pushed).ToList()) c.Release();
     }
 
     public SaveStore Store => SaveRoot == null ? null : new SaveStore(ProjectSettings.GlobalizePath(SaveRoot), Data.Save);

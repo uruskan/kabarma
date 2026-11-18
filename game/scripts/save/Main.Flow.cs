@@ -11,6 +11,7 @@ namespace Kabarma.Game;
 public partial class Main
 {
     MainMenu _menu;
+    string _menuNotice;
     GameData _menuData;
 
     /// <summary>Main._Ready'den: argumansiz acilista (ya da --menu) ana menuyu kurar. Kurduysa true.</summary>
@@ -24,7 +25,8 @@ public partial class Main
     void OpenMainMenu()
     {
         _menuData ??= GameData.Load(f => FileAccess.GetFileAsString("res://data/" + f));
-        _menu = new MainMenu(this, _menuData);
+        _menu = new MainMenu(this, _menuData) { Notice = _menuNotice };
+        _menuNotice = null;
         AddChild(_menu);
         GD.Print("MENU main");
     }
@@ -49,6 +51,13 @@ public partial class Main
     {
         EndGame();
         OpenMainMenu();
+    }
+
+    /// <summary>Yukleme basarisiz: oyunu kapatir, menude nedeni gosterir.</summary>
+    public void ReturnToMenuWith(string notice)
+    {
+        _menuNotice = notice;
+        ReturnToMenu();
     }
 
     /// <summary>Sinama ve ortak oyun icin: oyunu ayni surecte bir kayittan bastan kurar (sahne bastan yuklenir).</summary>
@@ -94,6 +103,8 @@ public partial class Main
     {
         if (what != NotificationWMCloseRequest) return;
         var s = _dir?.Saver;
-        if (s != null && s.Enabled) s.SaveNow("cikis", quiet: true); // gece ya da elde yuk varsa alinamaz: son kayit kalir
+        if (s == null || !s.Enabled) return;
+        _dir.ReleaseForSave(); // elde yuk, itilen araba birakilir
+        if (!s.SaveNow("cikis", quiet: true)) GD.Print($"SAVE cikista alinamadi ({s.LastError}): son kayit gecerli"); // gece suruyorsa
     }
 }

@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using System.Linq;
 using Godot;
 using Kabarma.Sim;
@@ -14,6 +15,8 @@ public partial class MainMenu : RustMenu
     readonly GameData _data;
     readonly SaveStore _store;
     string _confirm; // uzerine yazma onayi bekleyen yuva
+    /// <summary>Acilista gosterilecek uyari (yukleme basarisiz).</summary>
+    public string Notice { get; set; }
 
     public MainMenu(Main main, GameData data)
     {
@@ -36,8 +39,15 @@ public partial class MainMenu : RustMenu
         Item("Ortak oyun", () => _main.OpenCoop(this), coop, "yakında");
         Item("Ayarlar", ShowSettings);
         Item("Çıkış", () => GetTree().Quit());
-        if (latest != null) ShowLatest(latest); else ShowNew();
+        if (Notice != null) { ClearContent(); Header("Uyarı", Notice); }
+        else if (latest != null) ShowLatest(latest); else ShowNew();
         FocusFirst();
+        // Gorsel sinama (--menu_auto=load): Yukle panelini gosterir, sonra en son kaydi acar.
+        if (Main.Args.GetValueOrDefault("menu_auto") == "load" && latest != null)
+        {
+            GetTree().CreateTimer(1.0).Timeout += ShowLoad;
+            GetTree().CreateTimer(3.5).Timeout += () => Load(latest);
+        }
     }
 
     void ShowLatest(string slot)

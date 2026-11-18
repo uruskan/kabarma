@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Godot;
 using Kabarma.Sim;
+using static Kabarma.Game.SaveMath;
 
 namespace Kabarma.Game;
 
@@ -97,29 +98,33 @@ public sealed class DirectorSave
     public bool PodRamp { get; set; }
 }
 
-public partial class Director
+/// <summary>Kayit bolumlerinin Godot tipi <-> duz dizi cevirileri (Director partial'larinda ad cakismasin diye ayri sinif).</summary>
+public static class SaveMath
 {
-    static float[] V(Vector3 v) => new[] { v.X, v.Y, v.Z };
-    static Vector3 V(float[] a) => a == null || a.Length < 3 ? Vector3.Zero : new Vector3(a[0], a[1], a[2]);
+    public static float[] V(Vector3 v) => new[] { v.X, v.Y, v.Z };
+    public static Vector3 V(float[] a) => a == null || a.Length < 3 ? Vector3.Zero : new Vector3(a[0], a[1], a[2]);
 
-    static float[] Xf(Transform3D t) => new[]
+    public static float[] Xf(Transform3D t) => new[]
     {
         t.Basis.Column0.X, t.Basis.Column0.Y, t.Basis.Column0.Z, t.Basis.Column1.X, t.Basis.Column1.Y, t.Basis.Column1.Z,
         t.Basis.Column2.X, t.Basis.Column2.Y, t.Basis.Column2.Z, t.Origin.X, t.Origin.Y, t.Origin.Z,
     };
 
-    static Transform3D Xf(float[] a) => a == null || a.Length < 12 ? Transform3D.Identity
+    public static Transform3D Xf(float[] a) => a == null || a.Length < 12 ? Transform3D.Identity
         : new Transform3D(new Vector3(a[0], a[1], a[2]), new Vector3(a[3], a[4], a[5]), new Vector3(a[6], a[7], a[8]), new Vector3(a[9], a[10], a[11]));
 
-    static EntityRecord Rec(string kind, string content, Node3D n) => new()
+    public static EntityRecord Rec(string kind, string content, Node3D n) => new()
     {
         Kind = kind, Content = content, Pos = V(n.GlobalPosition),
         Rot = new[] { n.Quaternion.X, n.Quaternion.Y, n.Quaternion.Z, n.Quaternion.W },
     };
 
-    static float YawOf(EntityRecord e) => e.Rot is { Length: 4 } r ? new Quaternion(r[0], r[1], r[2], r[3]).GetEuler().Y : 0f;
+    public static float YawOf(EntityRecord e) => e.Rot is { Length: 4 } r ? new Quaternion(r[0], r[1], r[2], r[3]).GetEuler().Y : 0f;
+}
 
-    PlaceableDef Placeable(string id) => Data.Tool.Placeables.FirstOrDefault(p => p.Id == id);
+public partial class Director
+{
+    PlaceableDef SavedPlaceable(string id) => Data.Tool.Placeables.FirstOrDefault(p => p.Id == id);
 
     /// <summary>Godot katmaninin bolumleri (InitSave'den bir kez).</summary>
     void RegisterGodotSections()
@@ -175,7 +180,7 @@ public partial class Director
                 Ocak.Rotation = new Vector3(0, yaw, 0);
                 continue;
             }
-            var def = Placeable(p.E.Content);
+            var def = SavedPlaceable(p.E.Content);
             if (def == null) { GD.PushWarning($"LOAD yerlestirilebilir yok {p.E.Content}"); continue; }
             if (p.E.Kind == "station")
             {
@@ -211,7 +216,7 @@ public partial class Director
         if (Pens == null) return;
         foreach (var p in list)
         {
-            var def = Placeable(p.E.Content);
+            var def = SavedPlaceable(p.E.Content);
             if (def == null) continue;
             var prop = Pens.LoadProp(def, V(p.E.Pos), YawOf(p.E));
             if (prop.Feeder != null) prop.Feeder.Amount = p.Amount;
@@ -325,7 +330,7 @@ public partial class Director
             var n = new CargoCrateNode(this, crate);
             AddChild(n);
             n.GlobalPosition = V(p.E.Pos);
-            n.Quaternion = QuatOf(p.E);
+            n.Quaternion = SavedQuat(p.E);
             n.OnRamp = p.E.Params.ContainsKey("ramp");
             if (CartOf(p.E) is ElArabasi cart) cart.TryLoad(n, out _);
         }
@@ -337,12 +342,12 @@ public partial class Director
             var crop = MakeSwollen(e.Content, size, scale);
             AddChild(crop);
             crop.GlobalPosition = V(e.Pos);
-            crop.Quaternion = QuatOf(e);
+            crop.Quaternion = SavedQuat(e);
             if (CartOf(e) is ElArabasi cart) cart.TryLoad(crop, out _);
         }
     }
 
-    static Quaternion QuatOf(EntityRecord e) => e.Rot is { Length: 4 } r ? new Quaternion(r[0], r[1], r[2], r[3]).Normalized() : Quaternion.Identity;
+    static Quaternion SavedQuat(EntityRecord e) => e.Rot is { Length: 4 } r ? new Quaternion(r[0], r[1], r[2], r[3]).Normalized() : Quaternion.Identity;
 
     /// <summary>Tarladan sokulmus kabarik urunun yeniden kurulumu (PlotView.Lift ile ayni model ve isilti).</summary>
     SwollenCrop MakeSwollen(string cropId, SizeClassDef size, float scale)

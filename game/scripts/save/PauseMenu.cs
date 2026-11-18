@@ -35,8 +35,10 @@ public partial class PauseMenu : RustMenu
 
     public override void _UnhandledInput(InputEvent e)
     {
-        if (!e.IsActionPressed("ui_cancel") || e.IsEcho()) return;
-        if (Visible) { Close(); GetViewport().SetInputAsHandled(); return; }
+        if (e.IsEcho()) return;
+        bool pause = InputMap.HasAction("pause_menu") && e.IsActionPressed("pause_menu");
+        if (Visible && (pause || e.IsActionPressed("ui_cancel"))) { Close(); GetViewport().SetInputAsHandled(); return; }
+        if (!pause) return; // kolun B'si (ui_cancel) menu acmaz; Esc ve Start (pause_menu) acar
         var h = _d.Hud;
         if (h == null || h.MenuOpen || h.WheelOpen || h.ReportOpen || h.CraftTyping || (_d.ControlsPanel?.Visible ?? false)) return;
         OpenMenu();
@@ -86,9 +88,21 @@ public partial class PauseMenu : RustMenu
         if (s.LastError != null && s.Enabled) Content.AddChild(Text($"Son kayıt hatası: {s.LastError}", 18, UiTheme.Red));
     }
 
-    void Leave(bool toDesktop)
+    void Leave(bool toDesktop, bool force = false)
     {
-        if (_d.Saver.Enabled) _d.Saver.SaveNow("cikis", quiet: true);
+        if (_d.Saver.Enabled && !force)
+        {
+            _d.ReleaseForSave();
+            if (!_d.Saver.SaveNow("cikis", quiet: true))
+            {
+                // Gece surerken kayit alinmaz: oyuncu kaydedilmeden cikacagini bilsin ve onaylasin.
+                ClearContent();
+                Header("Kaydedilemedi", $"Şu an kayıt alınamıyor: {_d.Saver.LastError}. Son kayıt: {(_d.Saver.SavesWritten > 0 ? "bu oturumda" : "önceki otomatik kayıt")}.");
+                Row("Yine de çık (son kayıttan devam edilir)", () => Leave(toDesktop, force: true));
+                Row("Vazgeç", ShowStatus);
+                return;
+            }
+        }
         GetTree().Paused = false;
         if (toDesktop) { GetTree().Quit(); return; }
         if (_d.GetParent() is Main m) m.CallDeferred(Main.MethodName.ReturnToMenu);
