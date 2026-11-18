@@ -6,8 +6,11 @@ sol eski, sag yeni). Goruntuler `--test=shots --shots_quick` (bot yok, us bos), 
 
 ## Ne degisti
 
-- **Arazi** (`terrain.gdshader`, `World.Ground.cs`): bes dosenebilir PBR katmani (cimen, toprak, kaya, kum, tarla),
-  koddan uretildi (`pipeline/gen_terrain_textures.py`, kredi yok; lisans notu `assets/textures/terrain/KAYNAK.md`).
+- **Arazi** (`terrain.gdshader`, `World.Ground.cs`): bes dosenebilir PBR katmani (cimen, toprak, kaya, kum, tarla).
+  Dokular sahibin kitapligindaki taramalardan (`F:\Assets`, yalniz okundu): cimen Poly Haven `leafy_grass` (CC0),
+  toprak/kaya/kum Megascans; tarla = toprak taramasi + koddan egatlar. `pipeline/import_terrain_scans.py` 2K (cimen,
+  toprak, kaya) ve 1K (kum, tarla) paketler, renkleri Altin Cayir paletine ceker. Lisans satirlari
+  `pipeline/licenses.md`, ayrinti `assets/textures/terrain/KAYNAK.md`. Koddan yedek: `pipeline/gen_terrain_textures.py`.
   Denetim dokusu: patikalar (`biomes.json` `paths`), aciklik, gol kiyisi kumu, surulmus tarla (`World.MarkSoil`,
   FarmView'dan). Katmanlar kendi yukseklikleriyle karisir; iki olcekli tekrar kirici; buyuk olcekte yesil/altin
   lekeler (biyom paletinden carpan); egimde uc duzlemli kaya; su kenarinda islaklik. Maya damarlari korundu.
@@ -38,8 +41,14 @@ ClearGrass), `Main.cs` (Tests'e `gfxab` satiri), `WorldShots.cs` (cikti klasoru,
   tutmazsa yedek kademe `orta`. Bos
   makinede: `--test=perf` (4 yer imi) ve `--test=gfxab` (hangi ozellik ne kadar). 11,1 ms'yi asarsa ilk adaylar:
   uzak ot halkasi (`grassFar`), 4 bolmeli golge, `terrainDetail`.
-- **agy kullanilamadi**: komut izin sinifinda reddedildi. Dokular koddan; gercek fotograf tabanli dokular ayni dosya
-  adlari ve kanal duzeniyle konabilir (KAYNAK.md). Uretim istegi gerekirse: 5 dosenebilir arazi dokusu.
+- **Megascans lisansi dogrulanmali**: uc Megascans klasorunde (`forest_floor_wgyhdgy`, `cracked_nordic_coastal_rock`,
+  `beach_sand_uinladeo`) lisans alani yok; ana oturumun bildirdigi "Fab Standart Lisans" yazildi. Sahip dogrulamali.
+  Poly Haven cimen CC0 (json'da yaziyor).
+- Arazi dizileri sikistirmasiz RGBA8 (2 dizi x 5 katman x 2048², mip ile ~220 MB VRAM). Bellek sorun olursa: dusuk
+  kademede 1K'ya indirme ya da BPTC. Depoya ~115 MB PNG eklendi (LFS yok).
+- `sonra/` koddan dokularla cekildi; taramali hali `tarama/` (4 yer imi x ogle, gun batimi; ayni kameralar). Genel
+  renk ayni, yakinda daha dogal ayrinti, patika daha kahverengi.
+- agy kullanilamadi (izin sinifinda reddedildi); gerek kalmadi.
 - Agaclar, kayalar ve sus bitkileri hala toon/duz renkli (gorsel-model akisinin isi); yeni isikla birlikte en cok
   goze batan sey bunlar.
 - Gun batiminda on plan biraz karanlik; `gunbatimi.ambient` 0.5 -> 0.6 denenebilir.
