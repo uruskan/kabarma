@@ -37,7 +37,10 @@ Sahibin kararı 24 (18 Kasım 2026): ana oturum M2'den M7'ye sormadan ilerler; a
 
 | İstek | Hat | Adet | Tahmin | Durum |
 |---|---|---|---|---|
-| Taş Fırın, ağaçlar | Tripo web | — | — | sahibin Tripo web girişi bekleniyor |
+| Ağaçlar (meşe, huş, turuncu, koru, ladin, çalı) | Tripo web | 7 iş + 1 yeniden doku | 405 | üretildi (18 Kasım). Ham dosyalar `.tools/tripo_web/agaclar/`; bitki oturumu hattan geçirip bağlıyor |
+| Dalga 1: dev mantar, kütük, demir, reçine, güherçile, yuva, enkaz, oyuk ağzı | Tripo web | 8 iş + 1 yeniden doku | 460 | üretildi (18 Kasım). Ham dosyalar `.tools/tripo_web/dalga1/`, istemler `istemler.md`; bitki bağlıyor |
+| Homur (yaratık denemesi) | Tripo web | 1 iş + iskelet | 55 + ? | model üretildi, iskelet ve yaratik2 doğrulaması bekliyor; öteki 6 tür ve Atalar bundan sonra |
+| Taş Fırın, kuleler, tuzaklar, istasyonlar | Tripo web | — | — | sırada. Hareketli parçası olanlar (kule başı, kapak, mancınık kolu) önce parçalama planı ister |
 
 ## 17 Kasım 2026, akşam: M1 eksik denetimi
 
