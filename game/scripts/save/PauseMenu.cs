@@ -30,7 +30,7 @@ public partial class PauseMenu : RustMenu
         Item("Ayarlar", ShowSettings);
         Item("Ana menü", () => Leave(toDesktop: false), _d.GetParent() is Main);
         Item("Masaüstüne çık", () => Leave(toDesktop: true));
-        if (Main.Args.ContainsKey("showpause")) GetTree().CreateTimer(2.0, processAlways: true).Timeout += OpenMenu; // gorsel sinama
+        if (Main.Args.ContainsKey("showpause")) GetTree().CreateTimer(2.0, processAlways: true).Timeout += ShotAndQuit; // gorsel sinama
     }
 
     public override void _UnhandledInput(InputEvent e)
@@ -41,6 +41,21 @@ public partial class PauseMenu : RustMenu
         if (h == null || h.MenuOpen || h.WheelOpen || h.ReportOpen || h.CraftTyping || (_d.ControlsPanel?.Visible ?? false)) return;
         OpenMenu();
         GetViewport().SetInputAsHandled();
+    }
+
+    /// <summary>--showpause: menuyu acar, goruntuyu progress/shots/ altina yazar, cikar (oyun duraklayinca Main --shots calismaz).</summary>
+    void ShotAndQuit()
+    {
+        OpenMenu();
+        GetTree().CreateTimer(1.0, processAlways: true).Timeout += () =>
+        {
+            var dir = ProjectSettings.GlobalizePath("res://").TrimEnd('/') + "/../progress/shots";
+            DirAccess.MakeDirRecursiveAbsolute(dir);
+            string pre = Main.Args.TryGetValue("shot_prefix", out var p) ? p : "pause";
+            GetViewport().GetTexture().GetImage().SavePng($"{dir}/{pre}_esc.png");
+            GD.Print($"SCREENSHOT {dir}/{pre}_esc.png");
+            GetTree().Quit();
+        };
     }
 
     void OpenMenu()

@@ -20,13 +20,19 @@ public partial class RustMenu : CanvasLayer
 
     protected RustMenu() { Layer = 50; }
 
+    const string BlurShader = @"shader_type canvas_item;
+uniform sampler2D screen_texture : hint_screen_texture, filter_linear_mipmap;
+void fragment() { COLOR = vec4(textureLod(screen_texture, SCREEN_UV, 3.0).rgb * 0.38, 1.0); }";
+
     /// <summary>Iskeleti kurar. dimBackground: oyunun ustunde yari saydam (Esc), degilse koyu zemin (ana menu).</summary>
     protected void Build(string title, string subtitle, bool dimBackground)
     {
         Root = new Control { Name = "Root", Theme = T.Theme };
         Root.SetAnchorsPreset(Control.LayoutPreset.FullRect);
         AddChild(Root);
-        var bg = new ColorRect { Color = dimBackground ? T.A(T.Shade, 0.82f) : T.Shade, MouseFilter = Control.MouseFilterEnum.Stop };
+        // Esc: oyunun ustunde bulanik ve koyu (Rust); ana menu: koyu duz zemin.
+        var bg = new ColorRect { Color = dimBackground ? new Color(0, 0, 0, 1) : T.Shade, MouseFilter = Control.MouseFilterEnum.Stop };
+        if (dimBackground) bg.Material = new ShaderMaterial { Shader = new Shader { Code = BlurShader } };
         bg.SetAnchorsPreset(Control.LayoutPreset.FullRect);
         Root.AddChild(bg);
         if (!dimBackground)
@@ -34,7 +40,7 @@ public partial class RustMenu : CanvasLayer
             // Zeminde sicak bir isik ve ince serit: Rust'un fotografli zemini yerine sade, ozgun bir kompozisyon.
             var glow = new ColorRect { Color = T.A(T.Brick, 0.10f), MouseFilter = Control.MouseFilterEnum.Ignore };
             glow.SetAnchorsPreset(Control.LayoutPreset.RightWide);
-            glow.OffsetLeft = -T.Px(760);
+            glow.OffsetLeft = -T.Px(900);
             Root.AddChild(glow);
             var stripe = new ColorRect { Color = T.A(T.Warning, 0.85f), MouseFilter = Control.MouseFilterEnum.Ignore };
             stripe.SetAnchorsPreset(Control.LayoutPreset.LeftWide);
