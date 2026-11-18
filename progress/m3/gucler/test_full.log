@@ -1,0 +1,78 @@
+tools/test.ps1  2026-11-18 20:37  git b3db128
+
+[PASS] build  exit=0 warnings=0 errors=0
+[PASS] sim  exit=0 Passed!  - Failed:     0, Passed:   424, Skipped:     0, Total:   424, Duration: 19 s - Kabarma.Sim.Tests.dll (net8.0)
+[PASS] bench  exit=0 1000 gun 3.746 sn, ayrilan 59.3 MB, tepe 91.1 MB (Release, 3x3)
+[PASS] bot  exit=0 RESULT ok ciraklik=4/5 veri=140 credits=8096 eggs=1 kills=21 cards=2 maya=48 stations=4 harvests=5 skipped=-
+[PASS] hayvan  exit=0 HAYVAN ok species=pofuduk sut=1 yun=0 happiness=45 genes=B3 U3 V1 K3 | RESULT ok ciraklik=4/5 veri=140 credits=8096 eggs=4 kills=21 cards=2 maya=48 stations=4 harvests=7 skipped=-
+[PASS] buildtest  exit=0 placed=95 failed=0 pieces=88
+[PASS] audio  exit=0 ok sounds=60 playable=60 variant_files=180 buses=6 layers_loaded=3/3 day_music=yes
+[FAIL] world  exit=1 WORLD RESULT fail 7
+      --- son satirlar: C:\Users\uruskan\Documents\GitHub\kabarma\.claude\worktrees\m2-guc-cae6e2\.tools\run\test\world.log
+      WORLD koru_area_m2~44604 koru_mean_h=16.0 koru_max_h=23.3
+      WORLD pois=16 seyir_kulesi_altin_cayir_0@105,40 ata_tasi_altin_cayir_0@64,36 seyir_kulesi_sis_korusu_0@-46,287 ata_tasi_sis_korusu_0@-212,219
+      WORLD fog_chunks=27 shafts=44 fog_meadow=0.0011 fog_koru=0.0045
+      WORLD note=build_ms ayni makinede ~15 Godot oturumu varken olculdu
+      WORLD FAIL koru decor koru_agac placed 0/120
+      WORLD FAIL koru decor dev_mantar placed 0/50
+      WORLD FAIL koru decor kutuk placed 0/26
+      WORLD FAIL koru trees 2
+      WORLD FAIL koru trees do not give hard_wood
+      WORLD FAIL tower seyir_kulesi_altin_cayir_0 has no model
+      WORLD FAIL tower seyir_kulesi_sis_korusu_0 has no model
+      WORLD RESULT fail 7
+[PASS] explore  exit=0 EXPLORE RESULT ok
+[PASS] boss  exit=0 RESULT ok boss defeated=koca_pofuduk,boynuzlu_dede fights=koca_pofuduk:53,boynuzlu_dede:62 player_hp=48 shears=4 pillar_stuns=1 shard_hits=3 wave_jumps=1 seals=bereketli_toprak,derin_kok
+[PASS] camera  exit=0 RESULT ok camera checks=73
+[PASS] grip  exit=0 RESULT ok grip checks=67 cart=sag 1.1cm sol 0.1cm
+[PASS] tarim  exit=0 RESULT ok tarim crop=wheat item=21 alaca=5 seeds=7 ledger=7 best=V2 H1 D3 M2 korkuluk=1 protected=2
+[PASS] creatures  exit=0 RESULT ok creatures=10 wild=11 clips=80 posed=74
+[PASS] latency  exit=0 RESULT ok heads=7/7 budget_max_ms=33.3 wall_med_ms=47.6 wall_max_ms=149.5 hitstop=ok
+[PASS] ekonomi  exit=0 ok=82 fail=0
+[PASS] borsa  exit=0 ok=25 fail=0
+[PASS] zincir  exit=0 ok=8 fail=0 veri=2 t=204
+[PASS] gece  exit=0 GECE RESULT ok checks=2261 nights=2 day=3
+[PASS] ilerleme  exit=0 ILERLEME RESULT ok checks=15 credits=6100 veri=80
+[PASS] coop  exit=0 ok players=4 max_diff_mm=1.835 pieces=4 foundations=4 late_join=1 plots=4 tilled=4 crafted=4 revives=1 voice_frames=25 creatures_spawned=34 rejected=0 corrections=0
+[PASS] input_kbm  exit=0 RESULT ok ciraklik=4/5 veri=140 credits=8402 eggs=1 kills=21 cards=2 maya=48 stations=4 harvests=8 skipped=- olay=8471 basis=151 cark=37 menu=0 fare=7229 yanadim=2
+[FAIL] input_pad  exit=1 RESULT fail input stuck step=gidak age=240 device=Pad op=- queue=0 aimErr=27.0deg miss=2.59m aim=(-20.668356, -0.011753321, -7.381777) hit=(-21.577347, -0.38679814, -6.991106) node=TerrainBody muzzle->hit=1.0 pos=(-20.772282, -0.29156357, -7.492114) move=(0, 0, 0) fire=True/False pressed=False head=Bicme menu=False wheel=False lock=False look=(-0.4666666, 0) sent=axis:RightX=-0.59999996 bag=5/20 events=3960
+      --- son satirlar: C:\Users\uruskan\Documents\GitHub\kabarma\.claude\worktrees\m2-guc-cae6e2\.tools\run\test\input_pad.log
+      TARIM bite plot=5,1 crop=turnip damage=0.27
+      TARIM bite plot=5,1 crop=turnip damage=0.36
+      TARIM bite plot=5,1 crop=turnip damage=0.45
+      TARIM bite plot=5,1 crop=turnip damage=0.54
+      TARIM bite plot=5,1 crop=turnip damage=0.63
+      TARIM bite plot=5,1 crop=turnip damage=0.72
+      TARIM bite plot=5,1 crop=turnip damage=0.81
+      TARIM bite plot=5,1 crop=turnip damage=0.90
+      TARIM bite plot=5,1 crop=turnip damage=0.99
+      TARIM eaten plot=5,1 crop=turnip
+      EATEN plot 5,1
+      RESULT fail input stuck step=gidak age=240 device=Pad op=- queue=0 aimErr=27.0deg miss=2.59m aim=(-20.668356, -0.011753321, -7.381777) hit=(-21.577347, -0.38679814, -6.991106) node=TerrainBody muzzle->hit=1.0 pos=(-20.772282, -0.29156357, -7.492114) move=(0, 0, 0) fire=True/False pressed=False head=Bicme menu=False wheel=False lock=False look=(-0.4666666, 0) sent=axis:RightX=-0.59999996 bag=5/20 events=3960
+
+sinama     sonuc  sure(sn)  ayrinti
+------     -----  --------  -------
+build      PASS        5.2  exit=0 warnings=0 errors=0
+sim        PASS       22.6  exit=0 Passed!  - Failed:     0, Passed:   424, Skipped:     0, Total:   424, Duration: 19 s - Kabarma.Sim.Tests.dll (net8.0)
+bench      PASS        8.9  exit=0 1000 gun 3.746 sn, ayrilan 59.3 MB, tepe 91.1 MB (Release, 3x3)
+bot        PASS      242.6  exit=0 RESULT ok ciraklik=4/5 veri=140 credits=8096 eggs=1 kills=21 cards=2 maya=48 stations=4 harvests=5 skipped=-
+hayvan     PASS      220.3  exit=0 HAYVAN ok species=pofuduk sut=1 yun=0 happiness=45 genes=B3 U3 V1 K3 | RESULT ok ciraklik=4/5 veri=140 credits=8096 eggs=4 kills=21 cards=2 maya=48 stations=4 harvests=7 skipped=-
+buildtest  PASS       14.2  exit=0 placed=95 failed=0 pieces=88
+audio      PASS        6.5  exit=0 ok sounds=60 playable=60 variant_files=180 buses=6 layers_loaded=3/3 day_music=yes
+world      FAIL       10.2  exit=1 WORLD RESULT fail 7
+explore    PASS       36.2  exit=0 EXPLORE RESULT ok
+boss       PASS       82.5  exit=0 RESULT ok boss defeated=koca_pofuduk,boynuzlu_dede fights=koca_pofuduk:53,boynuzlu_dede:62 player_hp=48 shears=4 pillar_stuns=1 shard_hits=3 wave_jumps=1 seals=bereketli_toprak,derin_kok
+camera     PASS       33.8  exit=0 RESULT ok camera checks=73
+grip       PASS       40.5  exit=0 RESULT ok grip checks=67 cart=sag 1.1cm sol 0.1cm
+tarim      PASS       54.4  exit=0 RESULT ok tarim crop=wheat item=21 alaca=5 seeds=7 ledger=7 best=V2 H1 D3 M2 korkuluk=1 protected=2
+creatures  PASS        3.4  exit=0 RESULT ok creatures=10 wild=11 clips=80 posed=74
+latency    PASS       65.4  exit=0 RESULT ok heads=7/7 budget_max_ms=33.3 wall_med_ms=47.6 wall_max_ms=149.5 hitstop=ok
+ekonomi    PASS       72.8  exit=0 ok=82 fail=0
+borsa      PASS       40.2  exit=0 ok=25 fail=0
+zincir     PASS       62.7  exit=0 ok=8 fail=0 veri=2 t=204
+gece       PASS       61.5  exit=0 GECE RESULT ok checks=2261 nights=2 day=3
+ilerleme   PASS       20.6  exit=0 ILERLEME RESULT ok checks=15 credits=6100 veri=80
+coop       PASS       99.9  exit=0 ok players=4 max_diff_mm=1.835 pieces=4 foundations=4 late_join=1 plots=4 tilled=4 crafted=4 revives=1 voice_frames=25 creatures_spawned=34 rejected=0 corrections=0
+input_kbm  PASS      168.3  exit=0 RESULT ok ciraklik=4/5 veri=140 credits=8402 eggs=1 kills=21 cards=2 maya=48 stations=4 harvests=8 skipped=- olay=8471 basis=151 cark=37 menu=0 fare=7229 yanadim=2
+input_pad  FAIL       85.5  exit=1 RESULT fail input stuck step=gidak age=240 device=Pad op=- queue=0 aimErr=27.0deg miss=2.59m aim=(-20.668356, -0.011753321, -7.381777) hit=(-21.577347, -0.38679814, -6.991106) node=TerrainBody muzzle->hit=1.0 pos=(-20.772282, -0.29156357, -7.492114) move=(0, 0, 0) fire=True/False pressed=False head=Bicme menu=False wheel=False lock=False look=(-0.4666666, 0) sent=axis:RightX=-0.59999996 bag=5/20 events=3960
+TEST FAIL (2)

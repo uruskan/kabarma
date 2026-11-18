@@ -1,0 +1,13 @@
+GUCLER start pos=(7.7003236, 0.0003124997, -12.570832) stone=(-10, 1.0914179, 40) unlocked=0
+GUCLER state Walk t=3.0
+GUCLER state Press t=9.7
+GUCLER trial started kadim_atilma
+GUCLER state Rings t=10.3
+GUCLER trial won t=7.7 unlocked=atilma slot0=atilma
+GUCLER state Dash t=17.7
+GUCLER dash moved=9.36 charge 100->75.0 cd=7.2 uses=1
+GUCLER state Drill t=20.0
+GUCLER drill spawned=10 alive=10 dist 67.2->38.8
+GUCLER state Fener t=30.0
+GUCLER fener fener_1 lit=False night=False ks=1
+GUCLER RESULT ok unlocked=atilma trials=kadim_atilma:won uses=1 drill_spawned=10 feners=1 t=31
