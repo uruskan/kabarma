@@ -1,0 +1,23 @@
+{
+  "_not": "Guc agi ve temel sinyal (GDD §11.1, §11.2; ICERIK §12 'M2 bedelleri'; URETIM §6 M2). Bedeller recipes.json'da (tarifin kimligi parcanin kimligi), gorunus placeables.json'da. kind: generator (source: wind | animal | fixed), battery, pole, switch, consumer, button, plate. sockets: guc kablosu soketi (sinyal teli saymaz). signalIn: sinyal teliyle surulebilir. Guc isteyen istasyonlarin W'i burada degil, research.json 'watts' (zincir akisi; istasyon kimligi -> W); tabloda olmayan istasyon guc istemez. Zaman: Wh oyun saatiyle (calendar.json: bir gun 30 gercek dk = 24 oyun saati).",
+  "cableMaxLength": 12.0,
+  "cableItem": "kablo",
+  "signalMax": 100,
+  "priorityMin": 1,
+  "priorityMax": 5,
+  "priorityDefault": 3,
+  "buttonSeconds": 1.0,
+  "plateRadius": 0.8,
+  "_not_wind": "Ruzgar katsayisi 0..1: min + (1-min) * (0.5 + 0.5 * (0.6 sin(2pi t/periodA) + 0.4 sin(2pi t/periodB))); t oyun saniyesi. min 0.1: Ruzgar Gulu en dusuk 8 W (lamba 5 W yanar).",
+  "wind": { "min": 0.1, "periodA": 2400.0, "periodB": 970.0 },
+  "devices": [
+    { "id": "ruzgar_gulu", "kind": "generator", "source": "wind", "watts": 80, "sockets": 2, "tier": 2 },
+    { "id": "hayvan_carki", "kind": "generator", "source": "animal", "watts": 40, "sockets": 2, "tier": 2, "animalRadius": 1.6 },
+    { "id": "aku_mk1", "kind": "battery", "capacityWh": 500, "watts": 200, "sockets": 2, "tier": 2 },
+    { "id": "direk", "kind": "pole", "sockets": 4, "tier": 2 },
+    { "id": "salter", "kind": "switch", "sockets": 2, "signalIn": true, "tier": 2 },
+    { "id": "elektrik_lambasi", "kind": "consumer", "watts": 5, "sockets": 1, "signalIn": true, "lightRange": 8.0, "tier": 2 },
+    { "id": "dugme", "kind": "button", "sockets": 0, "tier": 2 },
+    { "id": "basinc_plakasi", "kind": "plate", "sockets": 0, "tier": 2 }
+  ]
+}

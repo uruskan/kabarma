@@ -19,6 +19,7 @@ public partial class Capa
         var muzzle = _d.Player.Muzzle.GlobalPosition;
         if (muzzle.DistanceTo(aim) > _t.MowRange) return 0;
         FeelFire("bicme", muzzle, HeadColors[1]); // supurme: geri tepme, sarsinti
+        if (_d.Net?.ForwardMow(aim) == true) return 0; // ortak: istemcide hasat host'ta
 
         // Olgun ekin
         int n = 0;
