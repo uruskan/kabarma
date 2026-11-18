@@ -1,0 +1,786 @@
+Godot Engine v4.7.2.stable.mono.official.ed1daf0bf - https://godotengine.org
+
+TEST kabarma
+MUSIC ready day=yes layers=3/3 bar=2.00s
+WORLD decor kaya_duz box=36 outside=108
+WORLD decor kaya_dik box=17 outside=42
+WORLD pois 22: seyir_kulesi_altin_cayir_0@105,40 ata_tasi_altin_cayir_0@64,36 yabani_bahce_altin_cayir_0@-145,2 yuva_altin_cayir_0@143,192 yuva_altin_cayir_1@-231,-56 enkaz_altin_cayir_0@-69,179 enkaz_altin_cayir_1@84,195 enkaz_altin_cayir_2@-139,-84 oyuk_altin_cayir_0@-202,-106 oyuk_altin_cayir_1@-45,-226 oyuk_altin_cayir_2@165,215 seyir_kulesi_sis_korusu_0@-46,287 ata_tasi_sis_korusu_0@-212,219 yabani_bahce_sis_korusu_0@-53,256 yuva_sis_korusu_0@-200,189 yuva_sis_korusu_1@-88,230 enkaz_sis_korusu_0@-257,293 enkaz_sis_korusu_1@-151,238 enkaz_sis_korusu_2@-235,110 oyuk_sis_korusu_0@-172,215 oyuk_sis_korusu_1@-280,237 oyuk_sis_korusu_2@-276,130
+PLAYER model anims: carry,cheer,crouch_walk,eat,getup_back_pose,getup_front_pose,hurt,idle,jump,jump_air,jump_land,jump_start,kneel,knockdown,plant,push,run,shock_fall,sleep,sprint,walk,walk_casual,wave
+AUDIO sounds=60 playable=60 variant_files=180 m0_only=0 silent=0 placeholder=0
+AUDIO ok 60/60
+POFUDUK anims: pose/attack1,pose/attack2,pose/eat,pose/hit,pose/idle,pose/rest,pose/run,pose/walk,preset_quadruped_walk
+BUILD kit pieces=28
+ATALAR arenas=koca_pofuduk@64,36/r18:ata_tasi_altin_cayir_0,boynuzlu_dede@-212,219/r20:ata_tasi_sis_korusu_0
+OYUK rooms 6: oyuk_altin_cayir_0(kostebek_bey t0)@1000 oyuk_altin_cayir_1(kostebek_bey t1)@1120 oyuk_altin_cayir_2(kostebek_bey t2)@1240 oyuk_sis_korusu_0(yarasa_yumagi t0)@1360 oyuk_sis_korusu_1(yarasa_yumagi t1)@1480 oyuk_sis_korusu_2(yarasa_yumagi t2)@1600
+BOOT Kabarma MVP
+TARIM wild=22
+KADIM stones kadim_atilma@-10,40,y1.1 kadim_kalkan@48,-62,y20.7 kadim_sok@-150,170,y13.7 kadim_yem@-175,140,y12.6 kadim_sifa@-130,205,y14.0
+STEP mine -> odun t=10.3
+STEP odun -> ocak t=10.3
+STEP ocak -> tezgah t=10.4
+STEP tezgah -> tarla t=10.4
+ORDER ciraklik step=1 done (defter kapali)
+STEP tarla -> agil t=10.4
+STEP agil -> gidak t=10.4
+GIDAK appears at (-12, 0, 9)
+STEP gidak -> night t=10.4
+HELD capa
+SUNA line=tas_bitti voice=yes
+WILDLIFE spawn gidak herd=2 at=-68,-49
+KABARMA wait phase=Dusk night=False report=False
+FLOW window center=0,0 size=160
+WILDLIFE spawn homur herd=1 at=-15,9
+WILDLIFE spawn homur herd=1 at=-19,13
+WILDLIFE spawn dalli herd=1 at=35,15
+WILDLIFE spawn dalli herd=1 at=39,10
+WILDLIFE spawn vicik herd=1 at=-11,-35
+WILDLIFE spawn vicik herd=1 at=-8,-39
+WILDLIFE spawn bozuk herd=1 at=45,-39
+WILDLIFE spawn vizviz swarm at=27,21
+WILDLIFE spawn hu herd=1 at=-25,-17
+RANCH start animals=11 agents=11
+WILDLIFE spawn gidak herd=3 at=22,-77
+WILDLIFE spawn homur herd=1 at=144,17
+HATCH intro done
+NIGHT start n=1
+FIRSTNIGHT ripen=0
+MUSIC Silence -> Kabarma
+WILDLIFE leave creatures=14 swarms=1
+SUNA line=odun_basla voice=yes
+NIGHT swell crops=9
+WILDLIFE leave creatures=8 swarms=1
+WILDLIFE leave creatures=8 swarms=1
+SUNA line=ocak_basla voice=yes
+NIGHT wave 1 count=3
+WILDLIFE leave creatures=8 swarms=1
+SUNA line=ocak_bitti voice=yes
+WILDLIFE leave creatures=8 swarms=1
+SUNA line=tezgah_basla voice=yes
+WILDLIFE leave creatures=8 swarms=1
+KABARMA wait phase=Night night=True report=False
+WILDLIFE leave creatures=8 swarms=1
+SUNA line=tarla_basla voice=yes
+WILDLIFE leave creatures=8 swarms=1
+WILDLIFE leave creatures=8 swarms=1
+SUNA line=tarla_bitti voice=yes
+NIGHT wave 2 count=7
+WILDLIFE leave creatures=8 swarms=1
+SUNA line=agil_basla voice=yes
+MUSIC layers=2 bar=4
+WILDLIFE leave creatures=8 swarms=1
+WILDLIFE leave creatures=8 swarms=1
+SUNA line=agil_bitti voice=yes
+WILDLIFE leave creatures=8 swarms=1
+NIGHT card catal rank=1
+WILDLIFE leave creatures=8 swarms=1
+SUNA line=gidak_basla voice=yes
+KABARMA wait phase=Night night=True report=False
+WILDLIFE leave creatures=8 swarms=1
+SUNA line=gidak_bitti voice=yes
+WILDLIFE leave creatures=8 swarms=1
+WILDLIFE leave creatures=8 swarms=1
+SUNA line=kabarma_basla voice=yes
+WILDLIFE leave creatures=8 swarms=1
+SUNA line=giris_1 voice=yes
+NIGHT wave 3 count=11
+WILDLIFE leave creatures=8 swarms=1
+MUSIC layers=3 bar=9
+WILDLIFE leave creatures=8 swarms=1
+SUNA line=giris_2 voice=yes
+WILDLIFE leave creatures=8 swarms=1
+KABARMA wait phase=Night night=True report=False
+SUNA line=gece_alarm voice=yes
+WILDLIFE leave creatures=8 swarms=1
+NIGHT card kule_asiri_yuku rank=1
+WILDLIFE leave creatures=8 swarms=1
+SUNA line=gece_kabarma voice=yes
+WILDLIFE leave creatures=8 swarms=1
+SUNA line=gece_gidak voice=yes
+WILDLIFE leave creatures=8 swarms=1
+WILDLIFE leave creatures=8 swarms=1
+SUNA line=gece_dalga voice=yes
+ACHIEVEMENT ilk_gece
+ORDER ciraklik step=4 done (defter kapali)
+CALENDAR morning day=2
+NIGHT oz picked=0 auto=21
+NIGHT dawn kills=21 level=3 maya=48 cards=2 statsBase=True
+NIGHT swollenLeft=9
+FENCE night hits=0 lowest_hp=0/400 knocked_over=0
+STEP night -> sell t=36.1
+CHIP added tasarruf rare id=1
+MUSIC Kabarma -> Day
+STEP sell -> hasat t=36.2
+WILDLIFE spawn cekirge swarm at=-56,-142
+SUNA line=gece_kart voice=yes
+ORDER PAID ciraklik 1 credits=100 veri=10
+ORDER PAID ciraklik 4 credits=6000 veri=70
+REPORT shown night=1 kills=21 maya=48 level=3 cards=kule_asiri_yuku:1,catal:1 swollen=9 eaten=0 sold=0 defter=True
+KABARMA start kind=Full ks=1 players=1 families=root:9
+KABARMA stage 1 t=116.0
+MUSIC Day -> Silence
+WILDLIFE spawn homur herd=2 at=47,-56
+SUNA line=safak voice=yes
+WILDLIFE spawn sinsi herd=1 at=161,34
+KABARMA plan ks=1 waves=9 slots=137 hpx=1.00 maya=1.0
+NIGHT start n=2 replay
+RANCH kabarma fighters=0 hidden=0
+MUSIC Silence -> Kabarma
+WILDLIFE leave creatures=11 swarms=2
+KABARMA stage 2 t=122.0
+SUNA line=kargo_basla voice=yes
+WILDLIFE leave creatures=8 swarms=1
+KABARMA perf wave=0 active=0 swarms=0 pending=0 frameMs=61.6 fps=133
+WILDLIFE leave creatures=8 swarms=1
+SUNA line=kargo_bitti voice=yes
+NIGHT swell crops=0
+KABARMA perf wave=0 active=0 swarms=0 pending=0 frameMs=59.0 fps=133
+WILDLIFE leave creatures=8 swarms=1
+SUNA line=siradaki_is voice=yes
+KABARMA perf wave=0 active=0 swarms=0 pending=0 frameMs=56.9 fps=138
+WILDLIFE leave creatures=8 swarms=1
+KABARMA perf wave=0 active=0 swarms=0 pending=0 frameMs=59.6 fps=136
+WILDLIFE leave creatures=8 swarms=1
+SUNA line=hasat_basla voice=yes
+WILDLIFE leave creatures=8 swarms=1
+KABARMA perf wave=0 active=0 swarms=0 pending=0 frameMs=60.4 fps=136
+WILDLIFE leave creatures=8 swarms=0
+KABARMA perf wave=0 active=0 swarms=0 pending=0 frameMs=57.0 fps=136
+SUNA line=gece_alarm voice=yes
+WILDLIFE leave creatures=8 swarms=0
+KABARMA perf wave=0 active=0 swarms=0 pending=0 frameMs=59.7 fps=136
+WILDLIFE leave creatures=8 swarms=0
+SUNA line=gece_kabarma voice=yes
+KABARMA perf wave=0 active=0 swarms=0 pending=0 frameMs=56.4 fps=137
+WILDLIFE leave creatures=8 swarms=0
+SUNA line=gece_gidak voice=yes
+WILDLIFE leave creatures=8 swarms=0
+KABARMA perf wave=0 active=0 swarms=0 pending=0 frameMs=61.8 fps=136
+WILDLIFE leave creatures=8 swarms=0
+KABARMA perf wave=0 active=0 swarms=0 pending=0 frameMs=61.0 fps=136
+WILDLIFE leave creatures=8 swarms=0
+KABARMA perf wave=0 active=0 swarms=0 pending=0 frameMs=58.4 fps=133
+WILDLIFE leave creatures=8 swarms=0
+KABARMA perf wave=0 active=0 swarms=0 pending=0 frameMs=60.6 fps=132
+WILDLIFE leave creatures=8 swarms=0
+WILDLIFE leave creatures=8 swarms=0
+KABARMA perf wave=0 active=0 swarms=0 pending=0 frameMs=59.1 fps=132
+WILDLIFE leave creatures=8 swarms=0
+KABARMA perf wave=0 active=0 swarms=0 pending=0 frameMs=59.0 fps=134
+WILDLIFE leave creatures=8 swarms=0
+KABARMA perf wave=0 active=0 swarms=0 pending=0 frameMs=57.5 fps=134
+WILDLIFE leave creatures=8 swarms=0
+KABARMA perf wave=0 active=0 swarms=0 pending=0 frameMs=60.5 fps=140
+WILDLIFE leave creatures=8 swarms=0
+WILDLIFE leave creatures=8 swarms=0
+KABARMA perf wave=0 active=0 swarms=0 pending=0 frameMs=60.6 fps=134
+WILDLIFE leave creatures=8 swarms=0
+KABARMA perf wave=0 active=0 swarms=0 pending=0 frameMs=60.2 fps=134
+WILDLIFE leave creatures=8 swarms=0
+KABARMA perf wave=0 active=0 swarms=0 pending=0 frameMs=60.3 fps=130
+WILDLIFE leave creatures=8 swarms=0
+KABARMA perf wave=0 active=0 swarms=0 pending=0 frameMs=57.6 fps=136
+WILDLIFE leave creatures=8 swarms=0
+WILDLIFE leave creatures=8 swarms=0
+KABARMA perf wave=0 active=0 swarms=0 pending=0 frameMs=61.0 fps=136
+WILDLIFE leave creatures=8 swarms=0
+KABARMA perf wave=0 active=0 swarms=0 pending=0 frameMs=61.2 fps=132
+WILDLIFE leave creatures=8 swarms=0
+KABARMA perf wave=0 active=0 swarms=0 pending=0 frameMs=61.8 fps=132
+WILDLIFE leave creatures=8 swarms=0
+NIGHT wave 1 count=17
+SUNA line=gece_dalga voice=yes
+KABARMA perf wave=1 active=1 swarms=0 pending=16 frameMs=63.1 fps=129
+WILDLIFE leave creatures=8 swarms=0
+WILDLIFE leave creatures=8 swarms=0
+KABARMA perf wave=1 active=1 swarms=0 pending=14 frameMs=58.7 fps=131
+WILDLIFE leave creatures=8 swarms=0
+KABARMA perf wave=1 active=0 swarms=0 pending=13 frameMs=59.6 fps=131
+WILDLIFE leave creatures=8 swarms=0
+KABARMA perf wave=1 active=0 swarms=0 pending=11 frameMs=59.7 fps=135
+WILDLIFE leave creatures=8 swarms=0
+KABARMA perf wave=1 active=0 swarms=0 pending=9 frameMs=56.9 fps=138
+WILDLIFE leave creatures=8 swarms=0
+WILDLIFE leave creatures=8 swarms=0
+KABARMA perf wave=1 active=0 swarms=0 pending=7 frameMs=64.9 fps=138
+WILDLIFE leave creatures=8 swarms=0
+KABARMA perf wave=1 active=0 swarms=0 pending=5 frameMs=57.2 fps=128
+WILDLIFE leave creatures=8 swarms=0
+KABARMA perf wave=1 active=0 swarms=0 pending=3 frameMs=61.9 fps=128
+WILDLIFE spawn cekirge swarm at=23,40
+WILDLIFE leave creatures=8 swarms=1
+KABARMA perf wave=1 active=0 swarms=0 pending=1 frameMs=58.5 fps=135
+WILDLIFE leave creatures=8 swarms=0
+SUNA line=gece_kart voice=yes
+WILDLIFE leave creatures=8 swarms=0
+KABARMA perf wave=1 active=0 swarms=0 pending=0 frameMs=26.6 fps=133
+WILDLIFE leave creatures=8 swarms=0
+KABARMA perf wave=1 active=0 swarms=0 pending=0 frameMs=17.9 fps=137
+WILDLIFE leave creatures=8 swarms=0
+KABARMA perf wave=1 active=0 swarms=0 pending=0 frameMs=17.5 fps=136
+WILDLIFE leave creatures=8 swarms=0
+NIGHT wave 2 count=14
+KABARMA perf wave=2 active=0 swarms=0 pending=13 frameMs=17.8 fps=138
+WILDLIFE spawn cekirge swarm at=-7,-45
+WILDLIFE leave creatures=8 swarms=1
+MUSIC layers=2 bar=14
+NIGHT card miknatis rank=1
+WILDLIFE leave creatures=8 swarms=0
+KABARMA perf wave=2 active=0 swarms=0 pending=11 frameMs=20.2 fps=117
+WILDLIFE leave creatures=8 swarms=0
+KABARMA perf wave=2 active=1 swarms=0 pending=9 frameMs=21.0 fps=122
+WILDLIFE leave creatures=8 swarms=0
+KABARMA perf wave=2 active=0 swarms=0 pending=8 frameMs=18.0 fps=139
+WILDLIFE leave creatures=8 swarms=0
+KABARMA perf wave=2 active=0 swarms=0 pending=6 frameMs=18.5 fps=133
+WILDLIFE leave creatures=8 swarms=0
+NIGHT card miknatis rank=2
+WILDLIFE leave creatures=8 swarms=0
+KABARMA perf wave=2 active=0 swarms=0 pending=5 frameMs=17.6 fps=132
+WILDLIFE leave creatures=8 swarms=0
+KABARMA perf wave=2 active=1 swarms=0 pending=3 frameMs=17.6 fps=135
+WILDLIFE leave creatures=8 swarms=0
+KABARMA perf wave=2 active=0 swarms=0 pending=2 frameMs=17.3 fps=138
+WILDLIFE leave creatures=8 swarms=0
+KABARMA perf wave=2 active=0 swarms=0 pending=0 frameMs=17.6 fps=132
+WILDLIFE leave creatures=8 swarms=0
+NIGHT card tez_el rank=1
+WILDLIFE leave creatures=8 swarms=0
+KABARMA perf wave=2 active=0 swarms=0 pending=0 frameMs=17.5 fps=138
+WILDLIFE leave creatures=8 swarms=0
+KABARMA perf wave=2 active=0 swarms=0 pending=0 frameMs=17.3 fps=136
+WILDLIFE leave creatures=8 swarms=0
+NIGHT wave 3 count=15
+KABARMA perf wave=3 active=0 swarms=0 pending=14 frameMs=17.2 fps=139
+WILDLIFE leave creatures=8 swarms=0
+MUSIC layers=3 bar=26
+KABARMA perf wave=3 active=0 swarms=0 pending=13 frameMs=17.4 fps=136
+WILDLIFE leave creatures=8 swarms=0
+NIGHT card kiragi rank=1
+WILDLIFE leave creatures=8 swarms=0
+KABARMA perf wave=3 active=0 swarms=0 pending=11 frameMs=17.4 fps=140
+WILDLIFE leave creatures=8 swarms=0
+KABARMA perf wave=3 active=0 swarms=0 pending=9 frameMs=17.1 fps=141
+WILDLIFE spawn cekirge swarm at=30,31
+WILDLIFE leave creatures=8 swarms=0
+KABARMA perf wave=3 active=0 swarms=0 pending=8 frameMs=17.4 fps=139
+WILDLIFE leave creatures=8 swarms=0
+KABARMA perf wave=3 active=0 swarms=0 pending=6 frameMs=17.2 fps=140
+WILDLIFE leave creatures=8 swarms=0
+NIGHT card cevik rank=1
+WILDLIFE leave creatures=8 swarms=0
+KABARMA perf wave=3 active=0 swarms=0 pending=4 frameMs=17.5 fps=140
+WILDLIFE leave creatures=8 swarms=0
+KABARMA perf wave=3 active=0 swarms=0 pending=3 frameMs=17.2 fps=137
+WILDLIFE leave creatures=8 swarms=0
+KABARMA perf wave=3 active=0 swarms=0 pending=1 frameMs=17.5 fps=138
+WILDLIFE leave creatures=8 swarms=0
+KABARMA perf wave=3 active=0 swarms=0 pending=0 frameMs=17.6 fps=138
+WILDLIFE leave creatures=8 swarms=0
+NIGHT card catal rank=1
+WILDLIFE leave creatures=8 swarms=0
+KABARMA perf wave=3 active=0 swarms=0 pending=0 frameMs=18.5 fps=129
+WILDLIFE leave creatures=8 swarms=0
+KABARMA perf wave=3 active=0 swarms=0 pending=0 frameMs=18.4 fps=130
+NIGHT wave 4 count=14
+WILDLIFE leave creatures=8 swarms=0
+KABARMA perf wave=4 active=1 swarms=0 pending=12 frameMs=17.6 fps=139
+WILDLIFE leave creatures=8 swarms=0
+KABARMA perf wave=4 active=0 swarms=0 pending=11 frameMs=17.5 fps=137
+WILDLIFE leave creatures=8 swarms=0
+NIGHT card catal rank=2
+WILDLIFE leave creatures=8 swarms=0
+KABARMA perf wave=4 active=1 swarms=0 pending=9 frameMs=17.4 fps=140
+WILDLIFE leave creatures=8 swarms=0
+KABARMA perf wave=4 active=0 swarms=0 pending=8 frameMs=17.4 fps=138
+WILDLIFE leave creatures=8 swarms=0
+KABARMA perf wave=4 active=0 swarms=0 pending=6 frameMs=17.4 fps=138
+WILDLIFE leave creatures=8 swarms=0
+KABARMA perf wave=4 active=0 swarms=0 pending=5 frameMs=17.2 fps=138
+WILDLIFE leave creatures=8 swarms=0
+NIGHT card saglam rank=1
+WILDLIFE leave creatures=8 swarms=0
+KABARMA perf wave=4 active=0 swarms=0 pending=3 frameMs=17.3 fps=139
+WILDLIFE leave creatures=8 swarms=0
+KABARMA perf wave=4 active=0 swarms=0 pending=2 frameMs=17.2 fps=139
+WILDLIFE leave creatures=8 swarms=0
+WILDLIFE spawn cekirge swarm at=30,35
+KABARMA perf wave=4 active=0 swarms=0 pending=0 frameMs=20.6 fps=115
+WILDLIFE leave creatures=8 swarms=0
+KABARMA perf wave=4 active=0 swarms=0 pending=0 frameMs=17.4 fps=140
+WILDLIFE leave creatures=8 swarms=0
+NIGHT card tokmak rank=1
+WILDLIFE leave creatures=8 swarms=0
+KABARMA perf wave=4 active=0 swarms=0 pending=0 frameMs=17.5 fps=137
+NIGHT wave 5 count=21
+WILDLIFE leave creatures=8 swarms=0
+KABARMA perf wave=5 active=0 swarms=0 pending=20 frameMs=17.4 fps=134
+WILDLIFE leave creatures=8 swarms=0
+KABARMA perf wave=5 active=0 swarms=0 pending=18 frameMs=17.4 fps=139
+WILDLIFE leave creatures=8 swarms=0
+KABARMA perf wave=5 active=1 swarms=0 pending=15 frameMs=17.5 fps=137
+WILDLIFE leave creatures=8 swarms=0
+NIGHT card cevik rank=2
+WILDLIFE leave creatures=8 swarms=0
+KABARMA perf wave=5 active=0 swarms=0 pending=13 frameMs=17.4 fps=139
+WILDLIFE leave creatures=8 swarms=0
+KABARMA perf wave=5 active=0 swarms=0 pending=11 frameMs=17.7 fps=138
+WILDLIFE leave creatures=8 swarms=0
+KABARMA perf wave=5 active=0 swarms=0 pending=8 frameMs=17.3 fps=139
+WILDLIFE leave creatures=8 swarms=0
+KABARMA perf wave=5 active=0 swarms=0 pending=6 frameMs=17.5 fps=137
+WILDLIFE leave creatures=8 swarms=0
+NIGHT card tokmak rank=2
+WILDLIFE leave creatures=8 swarms=0
+KABARMA perf wave=5 active=0 swarms=0 pending=4 frameMs=17.5 fps=137
+WILDLIFE leave creatures=8 swarms=0
+KABARMA perf wave=5 active=0 swarms=0 pending=1 frameMs=17.5 fps=138
+WILDLIFE leave creatures=8 swarms=0
+KABARMA perf wave=5 active=0 swarms=0 pending=0 frameMs=17.5 fps=137
+WILDLIFE leave creatures=8 swarms=0
+KABARMA perf wave=5 active=0 swarms=0 pending=0 frameMs=17.3 fps=139
+WILDLIFE leave creatures=8 swarms=0
+NIGHT card tirpan_carki rank=1
+WILDLIFE leave creatures=8 swarms=0
+KABARMA perf wave=5 active=0 swarms=0 pending=0 frameMs=17.3 fps=139
+NIGHT wave 6 count=16
+WILDLIFE leave creatures=8 swarms=0
+KABARMA perf wave=6 active=0 swarms=0 pending=15 frameMs=17.4 fps=137
+WILDLIFE leave creatures=8 swarms=0
+KABARMA perf wave=6 active=0 swarms=0 pending=13 frameMs=17.5 fps=136
+WILDLIFE leave creatures=8 swarms=0
+KABARMA perf wave=6 active=0 swarms=0 pending=11 frameMs=17.5 fps=138
+WILDLIFE leave creatures=8 swarms=0
+NIGHT card kiragi rank=2
+WILDLIFE leave creatures=8 swarms=0
+KABARMA perf wave=6 active=1 swarms=0 pending=9 frameMs=17.3 fps=137
+WILDLIFE leave creatures=8 swarms=0
+KABARMA perf wave=6 active=0 swarms=0 pending=8 frameMs=17.3 fps=137
+WILDLIFE leave creatures=8 swarms=0
+KABARMA perf wave=6 active=0 swarms=0 pending=6 frameMs=17.5 fps=134
+WILDLIFE leave creatures=8 swarms=0
+KABARMA perf wave=6 active=0 swarms=0 pending=4 frameMs=17.3 fps=139
+WILDLIFE leave creatures=8 swarms=0
+WILDLIFE spawn vizviz swarm at=36,28
+NIGHT card saglam rank=2
+WILDLIFE leave creatures=8 swarms=0
+KABARMA perf wave=6 active=1 swarms=0 pending=2 frameMs=17.2 fps=137
+WILDLIFE leave creatures=8 swarms=0
+KABARMA perf wave=6 active=0 swarms=0 pending=0 frameMs=17.6 fps=137
+WILDLIFE leave creatures=8 swarms=0
+KABARMA perf wave=6 active=0 swarms=0 pending=0 frameMs=18.1 fps=136
+WILDLIFE leave creatures=8 swarms=0
+KABARMA perf wave=6 active=0 swarms=0 pending=0 frameMs=17.4 fps=139
+WILDLIFE leave creatures=8 swarms=0
+NIGHT card yayli_taban rank=1
+NIGHT wave 7 count=17
+WILDLIFE leave creatures=8 swarms=0
+KABARMA perf wave=7 active=0 swarms=0 pending=16 frameMs=17.6 fps=137
+WILDLIFE leave creatures=8 swarms=0
+KABARMA perf wave=7 active=0 swarms=0 pending=15 frameMs=17.5 fps=137
+WILDLIFE leave creatures=8 swarms=0
+KABARMA perf wave=7 active=0 swarms=0 pending=13 frameMs=17.5 fps=138
+WILDLIFE leave creatures=8 swarms=0
+KABARMA perf wave=7 active=0 swarms=0 pending=11 frameMs=17.5 fps=139
+WILDLIFE leave creatures=8 swarms=0
+NIGHT card yayli_taban rank=2
+WILDLIFE spawn cekirge swarm at=-37,21
+WILDLIFE leave creatures=8 swarms=0
+KABARMA perf wave=7 active=0 swarms=0 pending=9 frameMs=17.8 fps=133
+WILDLIFE leave creatures=8 swarms=0
+KABARMA perf wave=7 active=0 swarms=0 pending=7 frameMs=17.8 fps=136
+WILDLIFE leave creatures=8 swarms=0
+KABARMA perf wave=7 active=0 swarms=0 pending=5 frameMs=17.6 fps=136
+WILDLIFE leave creatures=8 swarms=0
+KABARMA perf wave=7 active=0 swarms=0 pending=3 frameMs=17.5 fps=137
+WILDLIFE leave creatures=8 swarms=0
+NIGHT card yenilenme rank=1
+WILDLIFE leave creatures=8 swarms=0
+KABARMA perf wave=7 active=1 swarms=0 pending=1 frameMs=17.8 fps=133
+WILDLIFE leave creatures=8 swarms=0
+KABARMA perf wave=7 active=0 swarms=0 pending=0 frameMs=17.5 fps=137
+WILDLIFE leave creatures=8 swarms=0
+KABARMA perf wave=7 active=0 swarms=0 pending=0 frameMs=17.0 fps=142
+WILDLIFE leave creatures=8 swarms=0
+KABARMA perf wave=7 active=0 swarms=0 pending=0 frameMs=17.0 fps=143
+WILDLIFE leave creatures=8 swarms=0
+NIGHT card saglam rank=3
+NIGHT wave 8 count=15
+KABARMA perf wave=8 active=0 swarms=0 pending=14 frameMs=17.0 fps=142
+WILDLIFE leave creatures=8 swarms=0
+WILDLIFE leave creatures=8 swarms=0
+KABARMA perf wave=8 active=0 swarms=0 pending=12 frameMs=17.0 fps=143
+WILDLIFE leave creatures=8 swarms=0
+KABARMA perf wave=8 active=0 swarms=0 pending=11 frameMs=17.0 fps=141
+WILDLIFE leave creatures=8 swarms=0
+KABARMA perf wave=8 active=0 swarms=0 pending=9 frameMs=17.0 fps=141
+WILDLIFE leave creatures=8 swarms=0
+NIGHT card gubre_mayini rank=1
+WILDLIFE spawn cekirge swarm at=1,-42
+KABARMA perf wave=8 active=0 swarms=0 pending=7 frameMs=17.0 fps=139
+WILDLIFE leave creatures=8 swarms=0
+WILDLIFE spawn cekirge swarm at=6,45
+WILDLIFE leave creatures=8 swarms=0
+KABARMA perf wave=8 active=0 swarms=0 pending=6 frameMs=17.0 fps=141
+WILDLIFE leave creatures=8 swarms=0
+KABARMA perf wave=8 active=0 swarms=0 pending=4 frameMs=17.0 fps=142
+WILDLIFE leave creatures=8 swarms=0
+KABARMA perf wave=8 active=0 swarms=0 pending=2 frameMs=17.0 fps=141
+WILDLIFE leave creatures=8 swarms=0
+NIGHT card kiragi rank=3
+KABARMA perf wave=8 active=0 swarms=0 pending=1 frameMs=17.0 fps=141
+WILDLIFE leave creatures=8 swarms=0
+WILDLIFE leave creatures=8 swarms=0
+KABARMA perf wave=8 active=0 swarms=0 pending=0 frameMs=17.0 fps=142
+WILDLIFE leave creatures=8 swarms=0
+KABARMA perf wave=8 active=0 swarms=0 pending=0 frameMs=17.0 fps=140
+WILDLIFE leave creatures=8 swarms=0
+KABARMA perf wave=8 active=0 swarms=0 pending=0 frameMs=17.0 fps=138
+KABARMA doruk slots=8 azman=False
+NIGHT wave 9 count=8
+WILDLIFE leave creatures=8 swarms=0
+NIGHT card yenilenme rank=2
+KABARMA perf wave=9 active=0 swarms=0 pending=7 frameMs=17.3 fps=141
+WILDLIFE leave creatures=8 swarms=0
+WILDLIFE leave creatures=8 swarms=0
+KABARMA perf wave=9 active=0 swarms=0 pending=7 frameMs=17.3 fps=139
+WILDLIFE spawn vizviz swarm at=17,-40
+WILDLIFE leave creatures=8 swarms=0
+KABARMA perf wave=9 active=0 swarms=0 pending=6 frameMs=17.5 fps=138
+WILDLIFE leave creatures=8 swarms=0
+KABARMA perf wave=9 active=0 swarms=0 pending=5 frameMs=17.5 fps=136
+WILDLIFE leave creatures=8 swarms=0
+NIGHT card tez_el rank=2
+KABARMA perf wave=9 active=0 swarms=0 pending=5 frameMs=17.4 fps=138
+WILDLIFE leave creatures=8 swarms=0
+WILDLIFE leave creatures=8 swarms=0
+KABARMA perf wave=9 active=0 swarms=0 pending=4 frameMs=17.4 fps=137
+WILDLIFE leave creatures=8 swarms=0
+KABARMA perf wave=9 active=0 swarms=0 pending=4 frameMs=17.3 fps=139
+WILDLIFE leave creatures=8 swarms=0
+KABARMA perf wave=9 active=0 swarms=0 pending=3 frameMs=17.5 fps=138
+WILDLIFE leave creatures=8 swarms=0
+NIGHT card kule_asiri_yuku rank=1
+KABARMA perf wave=9 active=0 swarms=0 pending=3 frameMs=17.4 fps=137
+WILDLIFE leave creatures=8 swarms=0
+WILDLIFE leave creatures=8 swarms=0
+KABARMA perf wave=9 active=0 swarms=0 pending=2 frameMs=17.2 fps=138
+WILDLIFE leave creatures=8 swarms=0
+KABARMA perf wave=9 active=1 swarms=0 pending=1 frameMs=17.4 fps=137
+WILDLIFE leave creatures=8 swarms=0
+KABARMA perf wave=9 active=0 swarms=0 pending=1 frameMs=17.3 fps=138
+WILDLIFE leave creatures=8 swarms=0
+NIGHT card yenilenme rank=3
+ORDER ciraklik step=3 done
+ORDER PAID ciraklik 3 credits=1500 veri=40
+KABARMA end reason=Dawn ks=1 kills=128 maya=748 kazan=600/600 highest=1
+NIGHT oz picked=0 auto=128
+NIGHT dawn kills=128 level=29 maya=748 cards=24 statsBase=True replay
+FENCE night hits=0 lowest_hp=0/400 knocked_over=0
+CHIP added itici common id=2
+MUSIC Kabarma -> Day
+KABARMA ks1 kills=128 maya=748 species=bozuk,dalli,findikci,gidak,homur,hu,pofuduk,sinsi,vicik,zipzip walked=6.6
+KABARMA stage 3 t=768.1
+WILDLIFE spawn homur herd=1 at=61,94
+WILDLIFE spawn cekirge swarm at=-26,136
+REPORT shown night=2 kills=128 maya=748 level=29 cards=kiragi:3,saglam:3,yenilenme:3,miknatis:2,tez_el:2,tokmak:2,yayli_taban:2,catal:2,cevik:2,gubre_mayini:1,kule_asiri_yuku:1,tirpan_carki:1 swollen=0 eaten=0 sold=150 defter=False
+WILDLIFE spawn pofuduk herd=3 at=-79,116
+WILDLIFE spawn homur herd=1 at=61,134
+SUNA line=hasat_basla voice=yes
+KABARMA start kind=Full ks=2 players=1 families=root:9
+KABARMA stage 4 t=776.2
+MUSIC Day -> Silence
+WILDLIFE spawn sinsi herd=1 at=-101,-30
+KABARMA plan ks=2 waves=9 slots=153 hpx=1.15 maya=1.0
+NIGHT start n=3 replay
+RANCH kabarma fighters=0 hidden=0
+MUSIC Silence -> Kabarma
+WILDLIFE leave creatures=14 swarms=1
+KABARMA stage 5 t=782.3
+KABARMA perf wave=0 active=0 swarms=0 pending=0 frameMs=19.2 fps=137
+SUNA line=gece_alarm voice=yes
+WILDLIFE leave creatures=8 swarms=0
+KABARMA perf wave=0 active=0 swarms=0 pending=0 frameMs=57.9 fps=132
+WILDLIFE leave creatures=8 swarms=0
+NIGHT swell crops=0
+SUNA line=gece_kabarma voice=yes
+KABARMA perf wave=0 active=0 swarms=0 pending=0 frameMs=60.2 fps=136
+WILDLIFE leave creatures=8 swarms=0
+SUNA line=gece_gidak voice=yes
+KABARMA perf wave=0 active=0 swarms=0 pending=0 frameMs=57.3 fps=136
+WILDLIFE leave creatures=8 swarms=0
+WILDLIFE leave creatures=8 swarms=0
+KABARMA perf wave=0 active=0 swarms=0 pending=0 frameMs=59.7 fps=137
+WILDLIFE leave creatures=8 swarms=0
+KABARMA perf wave=0 active=0 swarms=0 pending=0 frameMs=60.5 fps=135
+WILDLIFE leave creatures=8 swarms=0
+KABARMA perf wave=0 active=0 swarms=0 pending=0 frameMs=57.2 fps=135
+WILDLIFE leave creatures=8 swarms=0
+KABARMA perf wave=0 active=0 swarms=0 pending=0 frameMs=61.9 fps=135
+WILDLIFE leave creatures=8 swarms=0
+WILDLIFE leave creatures=8 swarms=0
+KABARMA perf wave=0 active=0 swarms=0 pending=0 frameMs=58.3 fps=134
+WILDLIFE leave creatures=8 swarms=0
+KABARMA perf wave=0 active=0 swarms=0 pending=0 frameMs=60.0 fps=134
+WILDLIFE leave creatures=8 swarms=0
+KABARMA perf wave=0 active=0 swarms=0 pending=0 frameMs=59.0 fps=134
+WILDLIFE leave creatures=8 swarms=0
+KABARMA perf wave=0 active=0 swarms=0 pending=0 frameMs=59.8 fps=134
+WILDLIFE leave creatures=8 swarms=0
+WILDLIFE leave creatures=8 swarms=0
+KABARMA perf wave=0 active=0 swarms=0 pending=0 frameMs=60.7 fps=133
+WILDLIFE leave creatures=8 swarms=0
+KABARMA perf wave=0 active=0 swarms=0 pending=0 frameMs=59.3 fps=135
+WILDLIFE leave creatures=8 swarms=0
+KABARMA perf wave=0 active=0 swarms=0 pending=0 frameMs=60.5 fps=135
+WILDLIFE leave creatures=8 swarms=0
+KABARMA perf wave=0 active=0 swarms=0 pending=0 frameMs=59.6 fps=134
+WILDLIFE leave creatures=8 swarms=0
+WILDLIFE leave creatures=8 swarms=0
+KABARMA perf wave=0 active=0 swarms=0 pending=0 frameMs=60.1 fps=132
+WILDLIFE leave creatures=8 swarms=0
+KABARMA perf wave=0 active=0 swarms=0 pending=0 frameMs=57.0 fps=132
+WILDLIFE leave creatures=8 swarms=0
+KABARMA perf wave=0 active=0 swarms=0 pending=0 frameMs=60.7 fps=136
+WILDLIFE leave creatures=8 swarms=0
+KABARMA perf wave=0 active=0 swarms=0 pending=0 frameMs=58.3 fps=136
+WILDLIFE leave creatures=8 swarms=0
+WILDLIFE leave creatures=8 swarms=0
+KABARMA perf wave=0 active=0 swarms=0 pending=0 frameMs=59.1 fps=137
+WILDLIFE leave creatures=8 swarms=0
+KABARMA perf wave=0 active=0 swarms=0 pending=0 frameMs=59.5 fps=135
+WILDLIFE leave creatures=8 swarms=0
+KABARMA perf wave=0 active=0 swarms=0 pending=0 frameMs=57.9 fps=135
+WILDLIFE leave creatures=8 swarms=0
+KABARMA perf wave=0 active=0 swarms=0 pending=0 frameMs=61.9 fps=135
+WILDLIFE leave creatures=8 swarms=0
+NIGHT wave 1 count=16
+SUNA line=gece_dalga voice=yes
+WILDLIFE leave creatures=8 swarms=0
+KABARMA perf wave=1 active=1 swarms=0 pending=15 frameMs=58.5 fps=134
+WILDLIFE leave creatures=8 swarms=0
+KABARMA perf wave=1 active=3 swarms=0 pending=13 frameMs=59.1 fps=134
+GIDAK kick to=-0.25,-0.97
+WILDLIFE leave creatures=8 swarms=0
+GIDAK kick to=-0.36,-0.93
+KABARMA perf wave=1 active=5 swarms=0 pending=11 frameMs=58.4 fps=136
+WILDLIFE leave creatures=8 swarms=0
+GIDAK kick to=-0.31,-0.95
+EATEN plot 5,1
+GIDAK kick to=-0.23,-0.97
+EATEN plot 4,0
+KABARMA perf wave=1 active=6 swarms=0 pending=10 frameMs=59.4 fps=136
+WILDLIFE leave creatures=8 swarms=0
+WILDLIFE leave creatures=8 swarms=0
+EATEN plot 5,-1
+EATEN plot 4,-1
+EATEN plot 3,0
+KABARMA perf wave=1 active=7 swarms=0 pending=8 frameMs=60.1 fps=135
+EATEN plot 5,0
+WILDLIFE leave creatures=8 swarms=0
+GIDAK kick to=-0.17,0.99
+KABARMA perf wave=1 active=9 swarms=0 pending=6 frameMs=58.2 fps=134
+EATEN plot 4,1
+GIDAK kick to=-0.52,0.86
+WILDLIFE leave creatures=8 swarms=0
+EATEN plot 3,1
+GIDAK kick to=-0.30,0.95
+KABARMA perf wave=1 active=11 swarms=0 pending=4 frameMs=59.4 fps=134
+GIDAK kick to=-0.32,0.95
+WILDLIFE leave creatures=8 swarms=0
+GIDAK kick to=-0.39,0.92
+KABARMA perf wave=1 active=13 swarms=0 pending=2 frameMs=60.8 fps=136
+WILDLIFE leave creatures=8 swarms=0
+GIDAK kick to=-0.80,0.60
+WILDLIFE spawn cekirge swarm at=-44,13
+GIDAK kick to=-0.68,0.74
+KABARMA end reason=KazanToppled ks=2 kills=1 maya=1 kazan=0/600 highest=1
+NIGHT oz picked=0 auto=1
+NIGHT dawn kills=1 level=0 maya=1 cards=0 statsBase=True replay
+FENCE night hits=0 lowest_hp=0/400 knocked_over=0
+CHIP added akim rare id=3
+MUSIC Kabarma -> Day
+KABARMA ks2 toppled t=161 maya=1
+KABARMA stage 6 t=942.9
+WILDLIFE spawn homur herd=1 at=87,-33
+REPORT shown night=3 kills=1 maya=1 level=0 cards= swollen=0 eaten=8 sold=0 defter=False
+WILDLIFE spawn gidak herd=3 at=60,89
+SUNA line=hasat_basla voice=yes
+KABARMA start kind=Small ks=4 players=1 families=root:1
+KABARMA stage 7 t=951.0
+MUSIC Day -> Silence
+WILDLIFE spawn pofuduk herd=3 at=-145,30
+KABARMA plan ks=2 waves=3 slots=28 hpx=1.15 maya=1.0
+NIGHT start n=4 replay
+RANCH kabarma fighters=0 hidden=0
+MUSIC Silence -> Kabarma
+WILDLIFE leave creatures=15 swarms=0
+KABARMA stage 8 t=957.0
+KABARMA perf wave=0 active=0 swarms=0 pending=0 frameMs=58.8 fps=130
+SUNA line=gece_alarm voice=yes
+WILDLIFE leave creatures=8 swarms=0
+NIGHT swell crops=0
+KABARMA perf wave=0 active=0 swarms=0 pending=0 frameMs=58.9 fps=135
+WILDLIFE leave creatures=8 swarms=0
+SUNA line=gece_kabarma voice=yes
+KABARMA perf wave=0 active=0 swarms=0 pending=0 frameMs=59.4 fps=137
+WILDLIFE leave creatures=8 swarms=0
+SUNA line=gece_gidak voice=yes
+WILDLIFE leave creatures=8 swarms=0
+KABARMA perf wave=0 active=0 swarms=0 pending=0 frameMs=60.3 fps=137
+NIGHT wave 1 count=11
+SUNA line=gece_dalga voice=yes
+WILDLIFE leave creatures=8 swarms=0
+KABARMA perf wave=1 active=0 swarms=0 pending=10 frameMs=57.5 fps=134
+WILDLIFE leave creatures=8 swarms=0
+KABARMA perf wave=1 active=0 swarms=0 pending=9 frameMs=58.5 fps=136
+WILDLIFE leave creatures=8 swarms=0
+KABARMA perf wave=1 active=0 swarms=0 pending=8 frameMs=62.0 fps=136
+WILDLIFE leave creatures=8 swarms=0
+WILDLIFE leave creatures=8 swarms=0
+KABARMA perf wave=1 active=1 swarms=0 pending=6 frameMs=61.5 fps=132
+WILDLIFE leave creatures=8 swarms=0
+KABARMA perf wave=1 active=0 swarms=0 pending=5 frameMs=57.6 fps=132
+WILDLIFE leave creatures=8 swarms=0
+KABARMA perf wave=1 active=0 swarms=0 pending=4 frameMs=59.4 fps=134
+WILDLIFE leave creatures=8 swarms=0
+KABARMA perf wave=1 active=0 swarms=0 pending=3 frameMs=59.9 fps=135
+WILDLIFE leave creatures=8 swarms=0
+KABARMA perf wave=1 active=0 swarms=0 pending=1 frameMs=59.7 fps=135
+WILDLIFE leave creatures=8 swarms=0
+WILDLIFE spawn cekirge swarm at=46,3
+SUNA line=gece_kart voice=yes
+WILDLIFE leave creatures=8 swarms=0
+KABARMA perf wave=1 active=0 swarms=0 pending=0 frameMs=37.2 fps=135
+WILDLIFE leave creatures=8 swarms=0
+KABARMA perf wave=1 active=0 swarms=0 pending=0 frameMs=17.7 fps=134
+NIGHT wave 2 count=8
+WILDLIFE leave creatures=8 swarms=0
+MUSIC layers=2 bar=6
+KABARMA perf wave=2 active=0 swarms=0 pending=7 frameMs=17.7 fps=136
+WILDLIFE leave creatures=8 swarms=0
+WILDLIFE leave creatures=8 swarms=0
+KABARMA perf wave=2 active=0 swarms=0 pending=6 frameMs=17.6 fps=135
+NIGHT card tez_el rank=1
+WILDLIFE leave creatures=8 swarms=0
+KABARMA perf wave=2 active=0 swarms=0 pending=5 frameMs=17.8 fps=138
+WILDLIFE leave creatures=8 swarms=0
+KABARMA perf wave=2 active=0 swarms=0 pending=4 frameMs=17.8 fps=133
+WILDLIFE leave creatures=8 swarms=0
+KABARMA perf wave=2 active=0 swarms=0 pending=3 frameMs=17.2 fps=140
+WILDLIFE leave creatures=8 swarms=0
+WILDLIFE spawn vizviz swarm at=20,40
+WILDLIFE leave creatures=8 swarms=0
+KABARMA perf wave=2 active=0 swarms=0 pending=2 frameMs=17.4 fps=136
+NIGHT card yayli_taban rank=1
+WILDLIFE spawn cekirge swarm at=12,43
+WILDLIFE leave creatures=8 swarms=0
+KABARMA perf wave=2 active=0 swarms=0 pending=1 frameMs=17.7 fps=135
+WILDLIFE leave creatures=8 swarms=0
+KABARMA perf wave=2 active=0 swarms=0 pending=0 frameMs=17.5 fps=140
+WILDLIFE leave creatures=8 swarms=0
+KABARMA perf wave=2 active=0 swarms=0 pending=0 frameMs=17.6 fps=137
+WILDLIFE leave creatures=8 swarms=0
+NIGHT wave 3 count=9
+MUSIC layers=3 bar=15
+WILDLIFE leave creatures=8 swarms=0
+KABARMA perf wave=3 active=0 swarms=0 pending=8 frameMs=17.5 fps=137
+NIGHT card suru_cobani rank=1
+WILDLIFE leave creatures=8 swarms=0
+KABARMA perf wave=3 active=0 swarms=0 pending=7 frameMs=21.6 fps=136
+WILDLIFE leave creatures=8 swarms=0
+KABARMA perf wave=3 active=0 swarms=0 pending=6 frameMs=58.4 fps=139
+WILDLIFE leave creatures=8 swarms=0
+KABARMA perf wave=3 active=0 swarms=0 pending=5 frameMs=59.8 fps=139
+WILDLIFE leave creatures=8 swarms=0
+KABARMA perf wave=3 active=0 swarms=0 pending=4 frameMs=59.5 fps=134
+WILDLIFE leave creatures=8 swarms=0
+WILDLIFE leave creatures=8 swarms=0
+KABARMA perf wave=3 active=0 swarms=0 pending=3 frameMs=59.3 fps=134
+WILDLIFE leave creatures=8 swarms=0
+KABARMA perf wave=3 active=0 swarms=0 pending=2 frameMs=58.7 fps=135
+WILDLIFE leave creatures=8 swarms=0
+KABARMA perf wave=3 active=0 swarms=0 pending=1 frameMs=58.5 fps=136
+WILDLIFE spawn cekirge swarm at=42,-18
+WILDLIFE leave creatures=8 swarms=1
+KABARMA end reason=Dawn ks=2 kills=24 maya=159 kazan=/ highest=1
+NIGHT oz picked=0 auto=24
+NIGHT dawn kills=24 level=3 maya=159 cards=3 statsBase=True replay
+FENCE night hits=0 lowest_hp=0/400 knocked_over=0
+CHIP added damar_goren rare id=4
+MUSIC Kabarma -> Day
+KABARMA small kills=24
+KABARMA stage 9 t=1110.4
+WILDLIFE spawn sinsi herd=1 at=66,23
+REPORT shown night=4 kills=24 maya=159 level=3 cards=suru_cobani:1,tez_el:1,yayli_taban:1 swollen=0 eaten=0 sold=0 defter=False
+SUNA line=hasat_basla voice=yes
+KABARMA start kind=Drill ks=1 players=1 families=root:1
+KABARMA stage 10 t=1118.5
+MUSIC Day -> Silence
+KABARMA plan ks=1 waves=9 slots=131 hpx=1.00 maya=0.0
+NIGHT start n=5 replay
+RANCH kabarma fighters=0 hidden=0
+MUSIC Silence -> Kabarma
+WILDLIFE leave creatures=9 swarms=0
+SUNA line=gece_alarm voice=yes
+KABARMA perf wave=0 active=0 swarms=0 pending=0 frameMs=58.7 fps=132
+WILDLIFE leave creatures=8 swarms=0
+WILDLIFE leave creatures=8 swarms=0
+KABARMA perf wave=0 active=0 swarms=0 pending=0 frameMs=61.1 fps=135
+NIGHT swell crops=0
+SUNA line=gece_kabarma voice=yes
+WILDLIFE leave creatures=8 swarms=0
+KABARMA perf wave=0 active=0 swarms=0 pending=0 frameMs=59.6 fps=135
+SUNA line=gece_gidak voice=yes
+WILDLIFE leave creatures=8 swarms=0
+KABARMA perf wave=0 active=0 swarms=0 pending=0 frameMs=58.8 fps=132
+WILDLIFE leave creatures=8 swarms=0
+KABARMA perf wave=0 active=0 swarms=0 pending=0 frameMs=58.3 fps=137
+WILDLIFE leave creatures=8 swarms=0
+WILDLIFE leave creatures=8 swarms=0
+KABARMA perf wave=0 active=0 swarms=0 pending=0 frameMs=60.6 fps=137
+WILDLIFE leave creatures=8 swarms=0
+KABARMA perf wave=0 active=0 swarms=0 pending=0 frameMs=58.5 fps=134
+WILDLIFE leave creatures=8 swarms=0
+KABARMA perf wave=0 active=0 swarms=0 pending=0 frameMs=60.7 fps=133
+WILDLIFE leave creatures=8 swarms=0
+KABARMA perf wave=0 active=0 swarms=0 pending=0 frameMs=60.6 fps=133
+WILDLIFE leave creatures=8 swarms=0
+WILDLIFE leave creatures=8 swarms=0
+KABARMA perf wave=0 active=0 swarms=0 pending=0 frameMs=61.4 fps=132
+WILDLIFE leave creatures=8 swarms=0
+KABARMA perf wave=0 active=0 swarms=0 pending=0 frameMs=57.8 fps=132
+WILDLIFE leave creatures=8 swarms=0
+KABARMA perf wave=0 active=0 swarms=0 pending=0 frameMs=61.3 fps=134
+WILDLIFE leave creatures=8 swarms=0
+KABARMA perf wave=0 active=0 swarms=0 pending=0 frameMs=59.9 fps=134
+WILDLIFE leave creatures=8 swarms=0
+WILDLIFE leave creatures=8 swarms=0
+KABARMA perf wave=0 active=0 swarms=0 pending=0 frameMs=59.3 fps=134
+WILDLIFE leave creatures=8 swarms=0
+KABARMA perf wave=0 active=0 swarms=0 pending=0 frameMs=60.7 fps=136
+WILDLIFE leave creatures=8 swarms=0
+KABARMA perf wave=0 active=0 swarms=0 pending=0 frameMs=60.9 fps=129
+WILDLIFE leave creatures=8 swarms=0
+KABARMA perf wave=0 active=0 swarms=0 pending=0 frameMs=59.6 fps=129
+WILDLIFE leave creatures=8 swarms=0
+WILDLIFE leave creatures=8 swarms=0
+KABARMA perf wave=0 active=0 swarms=0 pending=0 frameMs=58.0 fps=134
+WILDLIFE leave creatures=8 swarms=0
+KABARMA perf wave=0 active=0 swarms=0 pending=0 frameMs=62.1 fps=134
+WILDLIFE leave creatures=8 swarms=0
+KABARMA perf wave=0 active=0 swarms=0 pending=0 frameMs=59.3 fps=134
+WILDLIFE leave creatures=8 swarms=0
+KABARMA perf wave=0 active=0 swarms=0 pending=0 frameMs=62.6 fps=131
+WILDLIFE leave creatures=8 swarms=0
+WILDLIFE leave creatures=8 swarms=0
+KABARMA perf wave=0 active=0 swarms=0 pending=0 frameMs=59.5 fps=131
+WILDLIFE leave creatures=8 swarms=0
+KABARMA perf wave=0 active=0 swarms=0 pending=0 frameMs=61.8 fps=134
+WILDLIFE leave creatures=8 swarms=0
+KABARMA perf wave=0 active=0 swarms=0 pending=0 frameMs=60.4 fps=130
+NIGHT wave 1 count=16
+SUNA line=gece_dalga voice=yes
+WILDLIFE leave creatures=8 swarms=0
+KABARMA perf wave=1 active=0 swarms=0 pending=14 frameMs=64.2 fps=130
+WILDLIFE leave creatures=8 swarms=0
+KABARMA RESULT ok checks=16 species=10 t=1251
