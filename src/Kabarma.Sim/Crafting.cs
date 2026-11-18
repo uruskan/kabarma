@@ -1,21 +1,50 @@
 namespace Kabarma.Sim;
 
 /// <summary>
-/// Istasyon uretimi (GDD 11, ICERIK §11, §20): tarif malzemeyi cantadan alir, yakitli istasyon is basina yakit yakar,
-/// sure dolunca urunu verir. Yuk urunu (tarif "load") cantaya girmez: Produced olayi dunyaya cikarir.
-/// Kilitli tarif (UnlockOn) o esya ilk alinana kadar siraya girmez (GDD 12 Kesif). Ambardan uretim M2'de.
+/// Istasyon uretimi (GDD 5, 11; ICERIK §11, §20): tarif malzemeyi depodan (canta ya da canta + Sandiklar, GDD §5 ambardan
+/// uretim) alir, yakitli istasyon is basina yakit yakar, sure dolunca urunu ayni depoya koyar (yer yoksa is bekler).
+/// Yuk urunu (tarif "load") cantaya girmez: Produced olayi dunyaya cikarir. Istasyonun kendi kuyrugu vardir: farkli
+/// tarifler sirayla islenir (en cok research.json stationQueueMax is). Kilitli tarif (UnlockOn) Known'da yoksa siraya
+/// girmez: ilk alinan esya (GDD 12 Kesif), "arastirma:x" (Arastirma) ya da "ocak:n" (Ocak basamagi).
+/// Durum duz ve seriye dokulebilir (TEKNIK §9): isler (tarif, kalan adet, harcanan yakitlar) ve ilerleme.
 /// </summary>
 public sealed class StationQueue
 {
+    public sealed class Job
+    {
+        public RecipeDef Recipe { get; init; } = new();
+        /// <summary>Kalan adet (suren dahil).</summary>
+        public int Left { get; set; }
+        /// <summary>Kalan her adet icin harcanmis yakit (null: yakitsiz); iptalde geri verilir.</summary>
+        public List<string?> Fuel { get; } = new();
+    }
+
     readonly GameData _data;
+    readonly List<Job> _jobs = new();
     public string Station { get; }
     public PlaceableDef? Def { get; }
-    public RecipeDef? Active { get; private set; }
-    public float Progress { get; private set; }   // 0..1
-    public int Queued { get; private set; }
+    public IReadOnlyList<Job> Jobs => _jobs;
+    /// <summary>Suren isin tarifi; sira bossa null.</summary>
+    public RecipeDef? Active => _jobs.Count > 0 ? _jobs[0].Recipe : null;
+    /// <summary>Suren adedin ilerlemesi 0..1.</summary>
+    public float Progress { get; private set; }
+    /// <summary>Suren isin kalan adedi (suren dahil).</summary>
+    public int Queued => _jobs.Count > 0 ? _jobs[0].Left : 0;
+    /// <summary>Butun islerin kalan adedi.</summary>
+    public int QueuedTotal => _jobs.Sum(j => j.Left);
+    /// <summary>Urun depoya sigmadigi icin bekliyor.</summary>
+    public bool Blocked { get; private set; }
+    public int MaxJobs => Math.Max(1, _data.Research.StationQueueMax);
     public event Action<RecipeDef, int>? Produced;
-    /// <summary>Oyuncunun simdiye kadar eline gecen esyalar (GameState.Known). Null: hepsi acik.</summary>
+    /// <summary>Oyuncunun simdiye kadar eline gecen esyalar ve acilan kilitler (GameState.Known). Null: hepsi acik.</summary>
     public ISet<string>? Known { get; set; }
+    /// <summary>
+    /// Guc (GDD §11.1; guc akisi baglar): false donerse istasyon durur. Null: guc kurali yok, calisir (research.json watts
+    /// guc ag main'e girene kadar uygulanmaz).
+    /// </summary>
+    public Func<bool>? PowerOk { get; set; }
+    /// <summary>Istasyonun istedigi guc (W); 0: gucsuz calisir.</summary>
+    public int Watts => _data.Research.Watts.GetValueOrDefault(Station);
 
     public StationQueue(GameData data, string station)
     {
@@ -26,75 +55,99 @@ public sealed class StationQueue
 
     public IEnumerable<RecipeDef> Recipes => _data.Tool.Recipes.Where(r => r.Station == Station);
 
-    public static bool CanAfford(RecipeDef r, Inventory inv) => r.In.All(kv => inv.Count(kv.Key) >= kv.Value);
+    public static bool CanAfford(RecipeDef r, IItemStore inv) => r.In.All(kv => inv.Count(kv.Key) >= kv.Value);
 
     public bool IsUnlocked(RecipeDef r) => r.UnlockOn == null || Known == null || Known.Contains(r.UnlockOn);
 
     /// <summary>Is basina yakilacak yakit (istasyon yakitsizsa null). Tarif yakiti girdi olarak da istiyorsa ikisi toplanir.</summary>
-    public string? FuelFor(RecipeDef r, Inventory inv)
+    public string? FuelFor(RecipeDef r, IItemStore inv)
     {
         if (Def == null || Def.FuelPerJob <= 0 || Def.Fuel.Count == 0) return null;
         return Def.Fuel.FirstOrDefault(f => inv.Count(f) - r.In.GetValueOrDefault(f) >= Def.FuelPerJob) ?? Def.Fuel[0];
     }
 
-    public bool HasFuel(RecipeDef r, Inventory inv)
+    public bool HasFuel(RecipeDef r, IItemStore inv)
     {
         var f = FuelFor(r, inv);
         return f == null || inv.Count(f) - r.In.GetValueOrDefault(f) >= Def!.FuelPerJob;
     }
 
     /// <summary>Malzeme, yakit ve kilit tamam mi.</summary>
-    public bool CanMake(RecipeDef r, Inventory inv) => IsUnlocked(r) && CanAfford(r, inv) && HasFuel(r, inv);
+    public bool CanMake(RecipeDef r, IItemStore inv) => IsUnlocked(r) && CanAfford(r, inv) && HasFuel(r, inv);
 
-    /// <summary>Malzemeyi ve yakiti hemen alir ve siraya ekler (oyuncu istasyondan uzaklassa da uretim surer).</summary>
-    public bool Enqueue(RecipeDef r, Inventory inv)
+    /// <summary>Sira dolu mu (bu tarif sondaki isle birlesemiyorsa).</summary>
+    public bool Full(RecipeDef r) => _jobs.Count >= MaxJobs && _jobs[^1].Recipe.Id != r.Id;
+
+    /// <summary>
+    /// Malzemeyi ve yakiti hemen alir ve siraya ekler (oyuncu istasyondan uzaklassa da uretim surer). Ayni tarif sondaysa
+    /// ona eklenir (Rust: ayni satir buyur); yoksa yeni is.
+    /// </summary>
+    public bool Enqueue(RecipeDef r, IItemStore inv)
     {
-        if (r.Station != Station || !CanMake(r, inv)) return false;
-        if (Active != null && Active.Id != r.Id) return false; // MVP: istasyon basina tek tur sira
+        if (r.Station != Station || !CanMake(r, inv) || Full(r)) return false;
         var fuel = FuelFor(r, inv); // yakit, girdiler alinmadan secilir (FuelFor girdiyi zaten ayirir)
         foreach (var kv in r.In) inv.Remove(kv.Key, kv.Value);
         if (fuel != null && Def != null) inv.Remove(fuel, Def.FuelPerJob);
-        _fuel.Add(fuel);
-        Active = r;
-        Queued++;
+        var tail = _jobs.Count > 0 && _jobs[^1].Recipe.Id == r.Id ? _jobs[^1] : null;
+        if (tail == null) { tail = new Job { Recipe = r }; _jobs.Add(tail); }
+        tail.Left++;
+        tail.Fuel.Add(fuel);
         return true;
     }
 
-    readonly List<string?> _fuel = new();
-
     /// <summary>
-    /// Siradaki butun isleri iptal eder (karar 23: iptal malzemeyi geri verir): kalan adetlerin girdisi ve yakiti cantaya
+    /// Siradaki butun isleri iptal eder (karar 23: iptal malzemeyi geri verir): kalan adetlerin girdisi ve yakiti depoya
     /// doner, sure sifirlanir. Donen: geri verilen (esya, adet).
     /// </summary>
-    public Dictionary<string, int> Cancel(Inventory inv)
+    public Dictionary<string, int> Cancel(IItemStore inv)
     {
         var back = new Dictionary<string, int>();
-        if (Active == null || Queued == 0) return back;
-        void Give(string item, int n) { int a = inv.Add(item, n); if (a > 0) back[item] = back.GetValueOrDefault(item) + a; }
-        foreach (var kv in Active.In) Give(kv.Key, kv.Value * Queued);
-        for (int i = _fuel.Count - Queued; i < _fuel.Count; i++) if (i >= 0 && _fuel[i] is string f && Def != null) Give(f, Def.FuelPerJob);
-        _fuel.Clear();
-        Active = null; Queued = 0; Progress = 0;
+        while (_jobs.Count > 0) foreach (var (k, v) in Cancel(_jobs.Count - 1, inv)) back[k] = back.GetValueOrDefault(k) + v;
         return back;
     }
 
-    /// <returns>Bu tikte biten adet.</returns>
-    public int Tick(float dt, Inventory inv)
+    /// <summary>Tek isi iptal eder; malzemesi ve yakiti depoya doner. Donen: geri verilen.</summary>
+    public Dictionary<string, int> Cancel(int index, IItemStore inv)
     {
-        if (Active == null || Queued == 0) return 0;
-        Progress += dt / Math.Max(0.01f, Active.Seconds);
+        var back = new Dictionary<string, int>();
+        if (index < 0 || index >= _jobs.Count) return back;
+        var j = _jobs[index];
+        _jobs.RemoveAt(index);
+        if (index == 0) { Progress = 0; Blocked = false; }
+        void Give(string item, int n) { int a = inv.Add(item, n); if (a > 0) back[item] = back.GetValueOrDefault(item) + a; }
+        foreach (var kv in j.Recipe.In) Give(kv.Key, kv.Value * j.Left);
+        if (Def != null) foreach (var f in j.Fuel) if (f != null) Give(f, Def.FuelPerJob);
+        return back;
+    }
+
+    /// <summary>Kuyrugun kalan suresi (sn).</summary>
+    public float SecondsLeft => _jobs.Select((j, i) => j.Recipe.Seconds * (j.Left - (i == 0 ? Progress : 0f))).Sum();
+
+    /// <returns>Bu tikte biten adet.</returns>
+    public int Tick(float dt, IItemStore inv)
+    {
+        Blocked = false;
+        if (_jobs.Count == 0) return 0;
+        if (PowerOk != null && !PowerOk()) return 0;
         int done = 0;
-        while (Progress >= 1f && Queued > 0)
+        float left = dt;
+        while (_jobs.Count > 0 && left > 0f)
         {
-            Progress -= 1f;
-            Queued--;
-            var r = Active!;
-            if (!r.Load) inv.Add(r.Id, r.Out);
+            var j = _jobs[0];
+            float secs = Math.Max(0.01f, j.Recipe.Seconds);
+            float need = (1f - Progress) * secs;
+            if (left < need) { Progress += left / secs; break; }
+            // Adet bitiyor: urun depoya sigmazsa bekler (kaybolmaz).
+            if (!j.Recipe.Load && inv.Room(j.Recipe.Id) < j.Recipe.Out) { Progress = 1f; Blocked = true; break; }
+            left -= need;
+            Progress = 0f;
+            if (!j.Recipe.Load) inv.Add(j.Recipe.Id, j.Recipe.Out);
+            j.Left--;
+            if (j.Fuel.Count > 0) j.Fuel.RemoveAt(0);
+            if (j.Left <= 0) _jobs.RemoveAt(0);
             done++;
-            if (Queued == 0) { Active = null; Progress = 0; }
-            Produced?.Invoke(r, r.Out);
+            Produced?.Invoke(j.Recipe, j.Recipe.Out);
         }
-        if (Queued == 0) { Active = null; Progress = 0; _fuel.Clear(); }
         return done;
     }
 }

@@ -575,7 +575,7 @@ Kare Temel · Üçgen Temel · Kazık Temel · Duvar · Yarım Duvar · Alçak D
 | 2 | Bıçkı | Kereste | 20 W | A |
 | 2 | Değirmen | Un, yağ | 20 W | A |
 | 2 | Dokuma Tezgâhı | Kumaş, termal kumaş | — | A |
-| 2 | Araştırma Masası | Veri harcama | — | Ata |
+| 1 | Araştırma Masası | Veri harcama | — | B |
 | 2 | Kasap Tezgâhı | Büyük leşi parçalama | — | A |
 | 2 | Kuluçka | Yumurtadan yavru | 40 W | A |
 | 2 | Araç Atölyesi | Araç ve eklenti | 60 W | A |
@@ -605,6 +605,33 @@ Kare Temel · Üçgen Temel · Kazık Temel · Duvar · Yarım Duvar · Alçak D
 | 3 | Kompostör | Artık ve gübreden kompost | 20 W | A |
 | 4 | Paketleyici | Depodan kasa doldurur, rampaya yollar | 60 W | A |
 | 4 | Sondaj Kulesi | Zengin Yatak'tan sürekli cevher | 200 W | A |
+
+**Açılma sütunundaki "Ata":** Ata'nın verdiği Çekirdek Ocak'ı bir basamak yükseltir ([GDD.md](GDD.md) §6, §12); istasyon o basamakta açılır. Demirci Ocağı T2'de (Koca Pofuduk), Yüksek Fırın T3'te, Cam Ocağı T4'te, Kristal Kesici T5'te, Maya Dökümhanesi T6'da.
+
+**Araştırma Masası T1'dedir** (M2 belge düzeltmesi, 18 Kasım 2026): §0'da T1 araştırması 10 Veri; masa T2'de ve Ata ile açılsaydı T2'nin araştırmalı istasyonları (Bıçkı, Dokuma…) Koca Pofuduk'tan önce hiç açılamazdı. Masa Tezgâh'ta üretilir.
+
+### 11.1 T1–T2 istasyon bedelleri ve tarifleri (M2)
+
+Kimlik sütunu `game/data/recipes.json` ve `placeables.json` içindeki kimliktir; başka akışlar bu kimlikleri kullanır. Hepsi Tezgâh'ta üretilir. Watt'lar güç ağı main'e girene kadar uygulanmaz (istasyon güçsüz çalışır).
+
+| İstasyon | Kimlik | Bedel | Açılma | Tarifleri (girdi → ürün, süre) |
+|---|---|---|---|---|
+| Kömür Ocağı | `komur_ocagi` | 10 Taş + 10 Kil | K: ilk Kil | Odun Kömürü (`charcoal`): 2 Odun → 1, 6 sn |
+| Taş Fırın | `tas_firin` | 15 Taş + 5 Kil | B | + Kerpiç (`brick`): 2 Kil + 1 Lif → 1, 5 sn, yakıtlı |
+| Tezgâh | `tezgah` | 10 Odun + 5 Taş | B | + Bakır Tel (`copper_wire`): 1 Bakır Külçe → 2, 3 sn (K: ilk Bakır Külçe) · Filtre Maskesi (`filtre_maskesi`): 4 Kumaş + 4 Odun Kömürü + 2 Demir Külçe (A) |
+| Araştırma Masası | `arastirma_masasi` | 12 Odun + 6 Taş + 4 Bakır Tel | B | — (Veri harcanır, [GDD.md](GDD.md) §12) |
+| Demirci Ocağı | `demirci_ocagi` | 20 Taş + 10 Bakır Külçe + 5 Kil | Ata (Ocak T2) | Demir Külçe (`iron_ingot`): 2 Demir Cevheri + 1 Odun Kömürü → 1, 6 sn · Saçma (`sacma`): 1 Demir Külçe → 20, 3 sn; iş başına 1 yakıt (Odun Kömürü ya da Odun) |
+| Bıçkı | `bicki` | 5 Demir Külçe + 10 Odun + 2 Bakır Tel | A | Kereste (`plank`): 2 Odun → 1, 3 sn |
+| Değirmen | `degirmen` | 10 Kereste + 4 Demir Külçe + 10 Taş | A (Bıçkı'dan sonra) | Un (`flour`): 2 Buğday → 1, 4 sn |
+| Dokuma Tezgâhı | `dokuma_tezgahi` | 12 Odun + 4 Bakır Tel + 6 Lif | A | Kumaş (`cloth`): 3 Lif → 1, 4 sn |
+| Kasap Tezgâhı | `kasap_tezgahi` | 6 Kereste + 2 Demir Külçe | A (Bıçkı'dan sonra) | büyük leş (hayvan akışı) |
+| Kuluçka | `kulucka` | 8 Kereste + 4 Demir Külçe + 2 Bakır Tel | A (Bıçkı'dan sonra) | yumurtadan yavru (hayvan akışı) |
+| Araç Atölyesi | `arac_atolyesi` | 10 Demir Külçe + 10 Kereste + 4 Bakır Tel | A (Bıçkı ve Değirmen'den sonra) | Çekirge (yaratik2 akışı) |
+| Oyma İskelesi | `oyma_iskelesi` | 12 Kereste + 4 Demir Külçe | A (Bıçkı'dan sonra) | dev ürün → yapı (M3) |
+
+Araştırma ağacı (T2, her biri 25 Veri): Bıçkı ve Dokuma Tezgâhı köktür; Değirmen, Kasap Tezgâhı, Kuluçka ve Oyma İskelesi Bıçkı'yı; Araç Atölyesi Bıçkı ve Değirmen'i; Filtre Maskesi Dokuma Tezgâhı'nı ister.
+
+Yeni ham kaynak kimlikleri (toplama yerini dunya2 ve hayvan akışları kurar): Demir Cevheri `iron_ore`, Sert Odun `hardwood`, Reçine `resin`, Güherçile `saltpeter`, Hurda `scrap`, Yün `wool`, Deri `leather`. Yığın: Odun Kömürü, Kerpiç, Bakır Tel, Demir Külçe, Kereste, Kumaş ve Un ara üründür (20).
 
 ## 12. Güç, sinyal ve taşıma parçaları (43)
 
@@ -855,10 +882,11 @@ Her basamakta ilerlemek için gereken her şeyin girdisi, o basamakta ya da daha
 | **Başlangıç** | Ocak, 6 iş başlığı, Tırpan Işını, Sırt Yazıcısı, 12 Şalgam tohumu, 10 Buğday (yem) | İniş kapsülünde. Kapsülün kendisi ilk Kargo Rampası'na dönüşür. | ✔ |
 | **T1** | Tezgâh (10 Odun + 5 Taş) · Taş Fırın (15 Taş + 5 Kil) · Kömür Ocağı (10 Taş + 10 Kil) · Ocakbaşı (8 Taş + 4 Odun) · Paketleme Tezgâhı (8 Odun) · El Arabası (Tezgâh: 12 Odun + 4 Taş). Taş Fırın ve Ocakbaşı iş başına 1 yakıt yakar (Odun ya da Odun Kömürü). | Hepsi Çayır | ✔ |
 | | Bakır Külçe (Taş Fırın: 2 Bakır Cevheri + 1 Odun) → Çivi Tabancası (Tezgâh: 2 Bakır Külçe + 4 Odun; tarifi ilk Bakır Külçe'de açılır), Çivi (Tezgâh: 1 Bakır Külçe → 20), Bakır Tel | Bakır Cevheri: Çayır | ✔ |
+| | Araştırma Masası (Tezgâh: 12 Odun + 6 Taş + 4 Bakır Tel) · Odun Kömürü · Kerpiç | Hepsi Çayır; Veri: tarama ([GDD.md](GDD.md) §4) ve iş emirleri | ✔ |
 | | **Adak: Dev Yemlik** (5 Kabarık Şalgam + 10 Yün + 20 Bakır Külçe) | Kabarık Şalgam: bir Kabarma · Yün: Pofuduk (Çayır, Şalgam ile evcilleşir) · Bakır: Çayır | ✔ Tarım, hayvancılık ve Kabarma'dan geçiyor |
 | **T2** | Demirci Ocağı (20 Taş + 10 Bakır Külçe + 5 Kil) | Çayır | ✔ |
 | | Demir Külçe (2 Demir Cevheri + 1 Odun Kömürü) | Demir: Koru (tehlikesiz girilir) | ✔ |
-| | Bıçkı, Değirmen, Dokuma, Araştırma Masası, Kuluçka, Araç Atölyesi | Demir, Kereste, Bakır Tel, Taş | ✔ |
+| | Bıçkı, Değirmen, Dokuma, Kuluçka, Araç Atölyesi (bedeller §11.1; Bıçkı ve Dokuma Kereste istemez, Dokuma Demir de istemez: Kereste Bıçkı'dan çıkar) | Demir, Kereste, Bakır Tel, Taş | ✔ |
 | | Çekirge (15 Demir Külçe + 6 Reçine + 4 Bakır Tel); yakıt Bitkisel Yağ | Reçine: Koru · Yağ: Ayçiçeği (Çayır) + Değirmen | ✔ |
 | | Hayvan Çarkı, Rüzgâr Gülü, Akü Mk1 (5 Bakır + 5 Demir + 3 Ekşilik) | Ekşilik: Koru | ✔ |
 | | Çapa Mk.II (10 Demir Külçe + 2 Ata Yünü) | Ata Yünü: Koca Pofuduk | ✔ |
