@@ -422,6 +422,7 @@ public partial class NetSync
         at = D.World.Ground(at);
         a.Bag.Remove(id, 1);
         // Capa.Insa.cs TryPlace ile ayni dallanma.
+        if (D.PlacePower(def, at, yaw)) { Flush(); return; } // guc akisi: guc parcasi "power" bolumuyle cogalir (PowerSystem.Net.cs)
         bool furniture = def.Slots > 0 || def.Spawn || def.LightRange > 0;
         if (PenSystem.IsPenProp(def.Id) || (def.Station == null && def.Id != "ocak" && !furniture)) D.PlaceProp(def, at, yaw);
         else if (def.Id == "ocak") D.PlaceOcak(at);

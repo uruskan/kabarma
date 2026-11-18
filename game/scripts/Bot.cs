@@ -47,6 +47,7 @@ public partial class Bot : Node
         _steps["end"] = StepEnd;
         RegisterCoop();      // Bot.Coop.cs (ortak): --test=coop'ta butun adimlar ortak bot
         RegisterTarim();     // Bot.Tarim.cs (tarim M2): yalniz --test=tarim; ikinci ekin, Korkuluk, yabani tohum
+        RegisterPower();     // Bot.Power.cs (guc): yalniz --test=power'da "end" guc adimina uzar
     }
 
     Player P => _d.Player;

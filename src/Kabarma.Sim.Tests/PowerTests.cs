@@ -36,8 +36,9 @@ public class PowerTests
         Assert.Equal(500f, f.Def("aku_mk1")!.CapacityWh);
         Assert.Equal(new[] { "wood", "copper_wire" }, d.Tool.RecipeFor("ruzgar_gulu")!.In.Keys); // Bakir Tel: zincir'in copper_wire tarifi
         Assert.Equal(2, d.Tool.RecipeFor("kablo")!.Out);
-        // her yerlestirilebilir guc parcasinin tarifi ve tanimi var; tarifi olmayan Aku Mk1 yerlestirilebilir degil (Demir yok)
-        foreach (var dev in f.Devices.Where(x => x.Id != "aku_mk1"))
+        // her guc parcasinin tarifi ve yerlestirilebilir satiri var (Aku Mk1: ICERIK 20 bedeli, Demir Kulce + Eksilik)
+        Assert.Equal(new[] { "copper_ingot", "iron_ingot", "sourberry" }, d.Tool.RecipeFor("aku_mk1")!.In.Keys);
+        foreach (var dev in f.Devices)
         {
             Assert.NotNull(d.Tool.RecipeFor(dev.Id));
             Assert.Contains(d.Tool.Placeables, p => p.Id == dev.Id);

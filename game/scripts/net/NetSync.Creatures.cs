@@ -48,7 +48,14 @@ public partial class NetSync
 
     void TickCreatures(double now)
     {
-        if (now >= _creatureScan) { _creatureScan = now + 1.0; ScanCreatures(); }
+        if (now >= _creatureScan) { _creatureScan = now + 1.0; ScanCreatures(); ScanDynamic(); }
+    }
+
+    /// <summary>Kimlikten dugum: 0x8000 biti sonradan doganlar (NetSync.Spawns.cs), digerleri kurulus sirasi.</summary>
+    Node3D CreatureNode(ushort id)
+    {
+        if ((id & DynBit) != 0) return DynNode(id);
+        return id < _creatures.Count && GodotObject.IsInstanceValid(_creatures[id]) ? _creatures[id] : null;
     }
 
     void WriteCreatures(NetWriter w, NetActor to, double now)
@@ -66,6 +73,7 @@ public partial class NetSync
             var p = n.GlobalPosition;
             list.Add(new CreatureFrame { Id = (ushort)i, X = p.X, Y = p.Y, Z = p.Z, Yaw = n.GlobalRotation.Y, State = (byte)(n.Visible ? 1 : 0) });
         }
+        WriteDynamicFrames(list, to, now); // NetSync.Spawns.cs
         w.U16((ushort)list.Count);
         foreach (var f in list) f.Write(w, Cfg.PosPerMetre);
     }
@@ -78,9 +86,8 @@ public partial class NetSync
         for (int i = 0; i < n; i++)
         {
             var f = CreatureFrame.Read(r, Cfg.PosPerMetre);
-            if (f.Id >= _creatures.Count) continue;
-            var node = _creatures[f.Id];
-            if (!GodotObject.IsInstanceValid(node)) continue;
+            var node = CreatureNode(f.Id);
+            if (node == null) continue;
             node.Visible = (f.State & 1) != 0;
             var to = new Vector3(f.X, f.Y, f.Z);
             var from = _creatureLerp.TryGetValue(f.Id, out var l) ? node.GlobalPosition : to;
@@ -95,9 +102,9 @@ public partial class NetSync
         double now = Now;
         foreach (var (id, l) in _creatureLerp)
         {
-            if (id >= _creatures.Count || !GodotObject.IsInstanceValid(_creatures[id])) continue;
+            var n = CreatureNode(id);
+            if (n == null) continue;
             float k = l.t1 > l.t0 ? Mathf.Clamp((float)((now - l.t0) / (l.t1 - l.t0)), 0f, 1f) : 1f;
-            var n = _creatures[id];
             n.GlobalPosition = l.from.Lerp(l.to, k);
             n.GlobalRotation = new Vector3(n.GlobalRotation.X, Mathf.LerpAngle(l.yawFrom, l.yawTo, k), n.GlobalRotation.Z);
         }
