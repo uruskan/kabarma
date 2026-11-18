@@ -44,6 +44,9 @@ public sealed class FlowField
     bool _full = true;
     bool _job, _jobFull;
     int _jobTouched;
+    // Onarim asamalari (karelere bolunur): 1 alt agac, 2 tohum, 3 yayilim.
+    int _phase, _seedIdx, _gen;
+    readonly List<int> _changed = new(), _jobGoalsAdded = new();
     readonly List<int> _goalsRemoved = new(), _goalsAdded = new();
 
     public string Key { get; }
@@ -101,15 +104,24 @@ public sealed class FlowField
     /// </summary>
     public int Step(int budget, int maxRepairCells = 4096)
     {
-        int used = 0;
         if (!_job)
         {
             if (!Dirty) return 0;
             if (_full || _seen < _g.LogStart || _g.LogEnd - _seen > maxRepairCells) BeginFull();
-            else used += BeginRepair();
+            else BeginRepair();
         }
-        used += Run(Math.Max(1, budget - used));
-        if (_pq.Count == 0) Finish();
+        int used = 0;
+        budget = Math.Max(1, budget);
+        while (_job && used < budget)
+        {
+            if (_phase == 1) used += Subtree(budget - used);
+            else if (_phase == 2) used += Seed(budget - used);
+            else
+            {
+                used += Run(budget - used);
+                if (_pq.Count == 0) Finish();
+            }
+        }
         return Math.Max(1, used);
     }
 
@@ -131,7 +143,7 @@ public sealed class FlowField
         _full = false;
         _goalsRemoved.Clear();
         _goalsAdded.Clear();
-        _job = true; _jobFull = true; _jobTouched = 0;
+        _job = true; _jobFull = true; _jobTouched = 0; _phase = 3;
     }
 
     void Finish()
@@ -143,19 +155,26 @@ public sealed class FlowField
         if (_jobFull) Recomputes++; else Repairs++;
     }
 
-    /// <summary>Gunlukteki degisen hucrelerden ve hedef farkindan artimli onarimi kurar (arka tamponda). Donen: etkilenen.</summary>
-    int BeginRepair()
+    /// <summary>
+    /// Gunlukteki degisen hucrelerden ve hedef farkindan artimli onarimi baslatir (arka tamponda): kokleri koyar; alt
+    /// agac (Subtree), tohumlar (Seed) ve yayilim (Run) butceyle karelere bolunur. Hedef farki ise alinir ve silinir;
+    /// is surerken gelen fark sonraki ise kalir.
+    /// </summary>
+    void BeginRepair()
     {
         Array.Copy(_dist, _bd, _dist.Length);
         Array.Copy(_parent, _bp, _parent.Length);
-        var changed = new HashSet<int>(_g.ChangesSince(_seen));
+        _changed.Clear();
+        foreach (int c in _g.ChangesSince(_seen)) if (_mark[c] != -2) { _changed.Add(c); _mark[c] = -2; } // tekillestir
         _seen = _g.LogEnd;
-        int gen = ++_markGen;
+        int gen = _gen = ++_markGen;
         int S = _g.Size;
-        // 1. Kokler: degisen hucre, cevresinde capraz geldigi yolu o hucrenin kosesinden gecenler, kalkan hedefler.
+        // Kokler: degisen hucre, cevresinde capraz geldigi yolu o hucrenin kosesinden gecenler, kalkan hedefler.
         _stack.Clear();
+        _affected.Clear();
         void Root(int i) { if (_mark[i] != gen) { _mark[i] = gen; _stack.Push(i); } }
-        foreach (int c in changed)
+        foreach (int c in _changed) _mark[c] = 0;
+        foreach (int c in _changed)
         {
             Root(c);
             int cx = c % S, cz = c / S;
@@ -168,12 +187,23 @@ public sealed class FlowField
             }
         }
         foreach (int g in _goalsRemoved) Root(g);
-        // 2. Alt agac: ebeveyni etkilenen olan her hucre etkilenir.
-        _affected.Clear();
-        while (_stack.Count > 0)
+        _jobGoalsAdded.Clear();
+        _jobGoalsAdded.AddRange(_goalsAdded);
+        _goalsRemoved.Clear();
+        _goalsAdded.Clear();
+        _pq.Clear();
+        _job = true; _jobFull = false; _jobTouched = 0; _phase = 1; _seedIdx = 0;
+    }
+
+    /// <summary>Asama 1: ebeveyni etkilenen her hucre etkilenir (alt agac). Bitince etkilenenler silinir.</summary>
+    int Subtree(int budget)
+    {
+        int used = 0, S = _g.Size, gen = _gen;
+        while (used < budget && _stack.Count > 0)
         {
             int u = _stack.Pop();
             _affected.Add(u);
+            used++;
             int ux = u % S, uz = u / S;
             for (int k = 0; k < 8; k++)
             {
@@ -183,11 +213,24 @@ public sealed class FlowField
                 if (_bp[n] == u && _mark[n] != gen) { _mark[n] = gen; _stack.Push(n); }
             }
         }
-        foreach (int a in _affected) { _bd[a] = Inf; _bp[a] = -1; }
-        // 3. Tohumlar: etkilenenlerin etkilenmemis komsulari, degisen hucrelerin cevresi, hedefler.
-        _pq.Clear();
-        foreach (int a in _affected)
+        if (_stack.Count == 0)
         {
+            foreach (int a in _affected) { _bd[a] = Inf; _bp[a] = -1; }
+            used += _affected.Count / 8;
+            _phase = 2;
+        }
+        _jobTouched += used;
+        return used;
+    }
+
+    /// <summary>Asama 2: etkilenenlerin etkilenmemis komsulari, sonra degisen hucrelerin cevresi ve eklenen hedefler.</summary>
+    int Seed(int budget)
+    {
+        int used = 0, S = _g.Size, gen = _gen;
+        while (used < budget && _seedIdx < _affected.Count)
+        {
+            int a = _affected[_seedIdx++];
+            used++;
             if (_goals.Contains(a)) { _bd[a] = 0; _pq.Enqueue(a, 0); continue; }
             int ax = a % S, az = a / S;
             for (int k = 0; k < 8; k++)
@@ -198,7 +241,8 @@ public sealed class FlowField
                 if (_mark[n] != gen && _bd[n] != Inf) _pq.Enqueue(n, _bd[n]);
             }
         }
-        foreach (int c in changed)
+        if (_seedIdx < _affected.Count) return used;
+        foreach (int c in _changed)
         {
             if (_bd[c] != Inf) _pq.Enqueue(c, _bd[c]);
             int cx = c % S, cz = c / S;
@@ -210,11 +254,10 @@ public sealed class FlowField
                 if (_bd[n] != Inf) _pq.Enqueue(n, _bd[n]);
             }
         }
-        foreach (int g in _goalsAdded) { if (_goals.Contains(g)) { _bd[g] = 0; _bp[g] = -1; _pq.Enqueue(g, 0); } }
-        _goalsRemoved.Clear();
-        _goalsAdded.Clear();
-        _job = true; _jobFull = false; _jobTouched = _affected.Count;
-        return _affected.Count;
+        foreach (int g in _jobGoalsAdded) { if (_goals.Contains(g)) { _bd[g] = 0; _bp[g] = -1; _pq.Enqueue(g, 0); } }
+        used += _changed.Count;
+        _phase = 3;
+        return used;
     }
 
     /// <summary>

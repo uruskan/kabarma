@@ -34,7 +34,11 @@ akış tiki 5,13 ms görüldüğü için tik bütçesi 1500 hücreye indirildi (
 
 İlk ölçümde onarım tikleri en kötü 37–54 ms idi (bir duvar 160 m pencerede 3 700–10 000 hücreye dokunur, tam hesap
 25 600 hücre ~12 ms). Hesap artık arka tamponda, tikte en çok `maxCellsPerTick` hücre; bitince takas, o zamana dek
-eski alan geçerli. Birim testleri: iş sürerken gelen değişimle dilimli onarım = tam hesap; tik hücre bütçesine uyar.
+eski alan geçerli. Yalnız yayılımı bölmek yetmedi: 8 süreçte en kötü tik 4,95 ms kaldı, çünkü onarımın kurulumu
+(alt ağaç + tohumlar) bütçesizdi ve tek başına 3,2 ms'ye çıkıyordu. Kurulum da üç aşamalı ve bütçeli yapıldı: Sim
+kıyasında kurulum tiki en çok 0,1 ms, yayılım dilimi en çok 2,1 ms (yüklü makinede, Debug).
+Birim testleri: iş sürerken gelen değişimle dilimli onarım = tam hesap (300 rastgele adım, 37 hücrelik dilimler);
+tik hücre bütçesine uyar.
 
 ## İlk gün botu
 

@@ -83,10 +83,10 @@ public class FlowFieldTests
         Assert.True(s.Cost < Def.BreakOf("wall"), $"cost {s.Cost}");
         // Kapi kapali (door) olunca aralik da kirma ister; acik kapi (doorOpen) yurunur.
         g.Stamp(2, "door", new[] { g.Index(16, 3) });
-        set.Tick(10);
+        set.Tick(10, int.MaxValue);
         Assert.True(set.Sample("crop", x, z).Cost >= Def.BreakOf("door"));
         g.Stamp(2, "doorOpen", new[] { g.Index(16, 3) });
-        set.Tick(10);
+        set.Tick(10, int.MaxValue);
         Assert.True(set.Sample("crop", x, z).Cost < Def.BreakOf("wall"));
     }
 
@@ -155,7 +155,7 @@ public class FlowFieldTests
         var (x, z) = W(g, 17, 16);
         Assert.True(set.Sample("crop", x, z).DirX > 0.9f); // yakin ekin dogu
         set.SetGoals("crop", new[] { W(g, 4, 16) }); // dogudaki yendi
-        set.Tick(10);
+        set.Tick(10, int.MaxValue);
         Assert.True(set.Sample("crop", x, z).DirX < -0.9f);
         Assert.Equal(13 * g.OpenCost, set.Sample("crop", x, z).Cost);
     }
