@@ -37,7 +37,7 @@
       "wild": { "stance": "shy", "active": "day", "wanderRadius": 7, "walkSpeedMult": 0.5, "runSpeedMult": 1.6, "alertRadius": 8, "fleeRadius": 4.5, "fleeSeconds": 2.5, "pauseMin": 1.5, "pauseMax": 4, "idleShare": 0.3, "grazeShare": 0.55 }
     },
     {
-      "id": "pofuduk", "name": "Pofuduk", "archetype": "tank", "weight": 3, "speed": 1.1, "swollenScale": 2.4,
+      "id": "pofuduk", "name": "Pofuduk", "archetype": "tank", "weight": 3, "hp": 150, "damage": 8, "speed": 1.1, "swollenScale": 2.4,
       "rig": {
         "plan": "quadruped", "model": "res://assets/models/pofuduk/pofuduk.glb", "height": 0.75, "yaw": -90, "triBudget": 8000,
         "bones": {
