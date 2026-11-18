@@ -39,7 +39,7 @@ Bu bölüm sahibin kurallarıdır ve yukarıdaki Genex sözleşmesiyle çelişti
 
 ## Paralel çalışma
 
-- Aynı anda birkaç oturum, her biri kendi worktree dalında çalışır. Dalları main'e **ana oturum** birleştirir (sahibin kararı, 18 Kasım 2026); alt oturum kendi dalına commit eder, main'e yazmaz. İşe başlamadan ve bitirmeden önce güncel main'i kendi dalına birleştir. Her dal kendi başına derlenmeli ve yeşil olmalı; başka bir akışın henüz yazmadığı koda dayanma.
+- Aynı anda birkaç oturum, her biri kendi worktree dalında çalışır. **Her akış kendi dalını main'e kendisi alır** (sahibin kararı 25, 18 Kasım 2026; eski "ana oturum birleştirir" kuralının yerine): iş bitince ya da sağlam bir ara noktada, her şey commit edilmişken `powershell -NoProfile -ExecutionPolicy Bypass -File tools/integrate.ps1` koşar. Betik güncel main'i dala birleştirir, derleme ve Sim testlerini koşar, main'i atomik olarak dalın ucuna ilerletir; çatışmayı akış çözer. Ana çalışma kopyası main'i detached tutar, içinde `git checkout main` yapılmaz. İşe başlarken de güncel main'i kendi dalına birleştir. Her dal kendi başına derlenmeli ve yeşil olmalı; başka bir akışın henüz yazmadığı koda dayanma.
 - Dosya sahipliği aşağıda. Başka akışın dosyasına dokunman gerekiyorsa küçük, yerel değişiklik yap ve raporda say. Ortak noktalar (`Bot` kurucusundaki `Register` listesi, `WireScenario`, `Events.cs`, `ItemNames.cs`, `Main.Tests`, `tools/test.ps1`, `Capa.Process` içindeki başlık anahtarı, `Hud`/`Director`/`World` `_Ready`/`_Process`, `data/*.json` dizilerine yeni öğe) yalnızca **satır ekleyerek** değişir; var olan satırı yeniden düzenleme.
 - **Ortak kimlikler** (değiştirme, yeniden adlandırma; yeni kimlik satır eklenerek gelir): kaynak `stone`, `wood`, `fiber`, `clay`, `copper_ore`, `copper_ingot`, `wheat`, `egg` (çanta eşyası), `turnip`, `turnip_seed`, `civi` · ürün `civi_tabancasi`, `el_arabasi`, `kargo_kasasi`, `kozde_salgam`, `haslanmis_yumurta`, `sebze_corbasi` · yerleştirilebilir/istasyon `ocak`, `tezgah`, `tas_firin`, `paketleme`, `ocakbasi`, `kargo_rampasi`, `ahsap_kapi`, `sandik`, `uyku_tulumu`, `mesale`, `yemlik`, `folluk`. Türkçe adları `game/scripts/ui/ItemNames.cs`.
 - **Yer tutucu kaynaklar:** `World.Placeholders.cs` kil, bakır, lif ve yabani buğday için geçici düğümler kurar (Kazma ve Biçme ile toplanır). Diğer akışlar bunları gerçek oyun yolundan toplar; dunya akışı gerçekleriyle değiştirir.
@@ -47,7 +47,7 @@ Bu bölüm sahibin kurallarıdır ve yukarıdaki Genex sözleşmesiyle çelişti
 - **Botu dürüst tut:** kaynak oyun yolundan gelir; bot için eşya verme, adım silme ya da atlama yok. Gevşettiğin her bot adımını raporda yaz. Aynı anda çok oturum Godot koşturduğu için bot zaman aşımı olabilir: hata ayıklamadan önce `-BotTimeout` büyütüp yeniden koş.
 - Yeni işi yeni dosyalara koy (partial class, yeni test dosyası, yeni veri dosyası, yeni `pipeline/*.py`).
 - Kredi gerektiren üretim (model, iskelet, klip, ses, müzik, görsel) alt oturumda **çalıştırılmaz**: istemleri ve betiği hazırla, dry-run tahminini çıkar, ana oturuma "üretim isteği" olarak bildir.
-- Bitince: `tools/test.ps1` yeşil. Kendi dalına commit et, push etme. Kanıt `progress/m1/<akış>/` altına (ekran görüntüsü, log). Raporun sonunda PLAN §7.2 koşullarını teslim başına yaz.
+- Bitince: `tools/test.ps1` yeşil. Kendi dalına commit et, `tools/integrate.ps1` ile main'e al, push etme. Kanıt `progress/m1/<akış>/` altına (ekran görüntüsü, log). Raporun sonunda PLAN §7.2 koşullarını teslim başına yaz.
 
 | Akış | Sahip olduğu dosyalar ve işler |
 |---|---|
@@ -64,9 +64,9 @@ Bu bölüm sahibin kurallarıdır ve yukarıdaki Genex sözleşmesiyle çelişti
 
 ## M2 akışları (18 Kasım 2026)
 
-M1 tablosu M1 akışlarınındır; M2 akışları aşağıdakilerdir. Kurallar aynı: kendi dalında çalış, başta ve sonda main'i birleştir, kredi harcama (üretim isteğini `docs/PROGRESS.md` "Kredi kuyruğu"na yazdırmak için ana oturuma bildir), yer tutucuyu işaretle, `Sim`'e giren her durum düz ve serileştirilebilir (TEKNIK §9). Ortak dosyalara yalnız satır ekle. Aynı anda çok oturum Godot koşturduğu için bot ve Godot testlerinde `-BotTimeout 900` kullan.
+M1 tablosu M1 akışlarınındır; M2 akışları aşağıdakilerdir. Kurallar aynı: kendi dalında çalış, başta main'i birleştir, ara noktalarda ve sonda `tools/integrate.ps1` ile main'e al, kredi harcama (üretim isteğini `docs/PROGRESS.md` "Kredi kuyruğu"na yazdırmak için ana oturuma bildir), yer tutucuyu işaretle, `Sim`'e giren her durum düz ve serileştirilebilir (TEKNIK §9). Ortak dosyalara yalnız satır ekle. Aynı anda çok oturum Godot koşturduğu için bot ve Godot testlerinde `-BotTimeout 900` kullan.
 
-**Kayıt sözleşmesi:** `kayit` akışı önce Godot düğümlerinde duran durumu denetler ve bir anlık görüntü sözleşmesi (bölüm arayüzü) yazar; ana oturum onu erken birleştirir. O birleşene kadar akışlar durumlarını düz `Sim` sınıflarında tutar; birleşince kendi bölümlerini satır ekleyerek bağlar. Birleşmemiş koda dayanma.
+**Kayıt sözleşmesi:** `kayit` akışı önce Godot düğümlerinde duran durumu denetler ve bir anlık görüntü sözleşmesi (bölüm arayüzü) yazar; onu `tools/integrate.ps1` ile erken main'e alır. O birleşene kadar akışlar durumlarını düz `Sim` sınıflarında tutar; birleşince kendi bölümlerini satır ekleyerek bağlar. Birleşmemiş koda dayanma.
 
 | Akış | Model | Sahip olduğu dosyalar ve işler |
 |---|---|---|
