@@ -197,6 +197,7 @@ public partial class Director
 
     public void Interact()
     {
+        if (ExploreInteract()) return; // Director.Explore.cs: Seyir Kulesi, mancinik, yuva (dunya2)
         if (InteractEconomy()) return; // Director.Economy.cs: El Arabasi, Sandik, Uyku Tulumu
         var st = Stations.Where(s => s.InReach(Player.GlobalPosition)).OrderBy(s => s.GlobalPosition.DistanceTo(Player.GlobalPosition)).FirstOrDefault();
         // Gidak istasyondan yakinsa E Gidak'a gider (istasyonun dibinde dolasan Gidak beslenebilsin).

@@ -91,6 +91,38 @@ public partial class World
                 _rocks.Add(rock);
             }
         }
+        // Diger biyomlar (Sis Korusu: Demir, Recine, Guhercile, tas): kendi tohumu, biyomun derininde (dunya2).
+        foreach (var (id, b) in OtherBiomes)
+        {
+            var brng = new RandomNumberGenerator { Seed = (ulong)(T.Seed + 23 + 1000 * (b.Seed + 1)) };
+            foreach (var node in b.Nodes)
+                foreach (var s in BiomeNodeSpots(node, id, brng))
+                {
+                    int units = node.Units.Count >= 2 ? brng.RandiRange(node.Units[0], node.Units[1]) : 1;
+                    float size = brng.RandfRange(node.Size[0], node.Size.Count > 1 ? node.Size[1] : node.Size[0]);
+                    var rock = new Rock(units, size, seed++, node.Item, node.Model) { Name = $"{id}_{node.Id}_{seed}" };
+                    AddChild(rock);
+                    rock.GlobalPosition = Ground(s) + Vector3.Down * node.Sink * size;
+                    _rocks.Add(rock);
+                }
+        }
+    }
+
+    /// <summary>Biyomun icinde (agirlik >= 0,7), golden, aciklik ve kesif noktalarindan, dik yamactan uzak dugum yerleri.</summary>
+    IEnumerable<Vector3> BiomeNodeSpots(NodeDef node, string biome, RandomNumberGenerator rng)
+    {
+        float half = Size / 2f - 8f;
+        int made = 0;
+        for (int tries = 0; tries < node.ScatterCount * 60 && made < node.ScatterCount; tries++)
+        {
+            var p = new Vector3(rng.RandfRange(-half, half), 0, rng.RandfRange(-half, half));
+            if (Map.Weight(biome, p.X, p.Z) < 0.7f || InClearing(p) || InPoiClear(p)) continue;
+            float d = p.Length();
+            if (node.ScatterDistance.Count >= 2 && (d < node.ScatterDistance[0] || d > node.ScatterDistance[1])) continue;
+            if (ShoreDistance(p.X, p.Z) < node.LakeClear || SlopeAt(p.X, p.Z) > node.ScatterSlope) continue;
+            made++;
+            yield return p;
+        }
     }
 
     /// <summary>Dunyaya serpilen ek dugumler: Ocak'a ScatterDistance araliginda, golden, aciklik ve dik yamactan uzak.</summary>

@@ -106,6 +106,7 @@ public partial class Director : Node3D
         WireScenario(); // Director.Scenario.cs: olay -> adim sayaci
         InitEconomy();  // Director.Economy.cs: odeme, kargo, yerlestirilebilirler
         WireNightAndDay(); // Director.Calendar.cs: takvim, uyku, Defter olaylari
+        InitExplore();     // Director.Explore.cs: harita, kesif noktalari, Seyir Kulesi, mancinik (dunya2)
         State.Farm.Eaten += p => { GD.Print($"EATEN plot {p.X},{p.Y}"); Sfx.Play("pop", FarmView.CellCenter(p.X, p.Y), -2f); };
         Pod.BeginHatchIntro(this); // Pod.Hatch.cs: kapak acilir, Suna giris repliklerini soyler (PLAN 1.4, 0:00)
 

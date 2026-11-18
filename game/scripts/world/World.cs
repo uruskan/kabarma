@@ -37,6 +37,9 @@ public partial class World : Node3D
         _noise = new FastNoiseLite { Seed = T.Seed, Frequency = T.NoiseFrequency, FractalOctaves = 3, NoiseType = FastNoiseLite.NoiseTypeEnum.Perlin };
         _hillNoise = new FastNoiseLite { Seed = T.Seed + 1, Frequency = T.HillFrequency, FractalOctaves = 2, NoiseType = FastNoiseLite.NoiseTypeEnum.Perlin };
         _shoreNoise = new FastNoiseLite { Seed = T.Seed + 2, Frequency = 0.08f, NoiseType = FastNoiseLite.NoiseTypeEnum.Perlin };
+        Map = new BiomeMap(Data.Biomes);
+        Pois = PoiPlacer.Place(Data.Biomes, Map);
+        BuildBiomeNoise(); // World.Biomes.cs: biyom terimleri (Sis Korusu)
         BuildHeights();
         BuildGroundLayers();
         BuildTerrain();
@@ -46,6 +49,8 @@ public partial class World : Node3D
         BuildDecor();
         BuildResources();
         BuildGrass();
+        BuildAtmosphere(); // World.Fog.cs: Koru sis katmanlari ve isik huzmeleri
+        BuildPois();       // World.Pois.cs: kesif noktalari
         ApplyGraphics();
         ApplyTime();
     }
@@ -67,7 +72,7 @@ public partial class World : Node3D
             float dp = new Vector2(wx - T.Peak[0], wz - T.Peak[1]).Length() / T.PeakRadius;
             peak = T.PeakHeight * Mathf.Exp(-dp * dp) * Mathf.SmoothStep(T.HillStart, T.HillStart + 25f, d);
         }
-        return n * flat + hills + edge + peak;
+        return n * flat + hills + edge + peak + BiomeHeight(wx, wz);
     }
 
     void BuildHeights()
@@ -77,6 +82,7 @@ public partial class World : Node3D
         for (int z = 0; z <= Cells; z++)
             _h[x, z] = BaseHeight(x - Cells / 2f, z - Cells / 2f);
         CarveLake();
+        FlattenPois(); // World.Pois.cs: kesif noktasi duzlestirmesi (TEKNIK 7.2)
     }
 
     public float HeightAt(float wx, float wz)
@@ -100,40 +106,53 @@ public partial class World : Node3D
         return Mathf.RadToDeg(Mathf.Atan(Mathf.Sqrt(dx * dx + dz * dz)));
     }
 
-    /// <summary>Indeksli ArrayMesh (301 x 301 kose). Renk ve doku terrain.gdshader'da (World.Ground.cs katmanlari).</summary>
+    /// <summary>Gorsel arazi parcasi (m, TEKNIK §7 "64 m'lik parcalar"): gorus konisi parca parca eler.</summary>
+    public const int TerrainChunk = 64;
+
+    /// <summary>
+    /// Indeksli ArrayMesh'ler: (Cells + 1)^2 kose, 64 m'lik parcalara bolunmus ("Terrain" altinda). Renk ve doku
+    /// terrain.gdshader'da (World.Ground.cs katmanlari). Carpisma tek yukseklik seklidir.
+    /// </summary>
     void BuildTerrain()
     {
         int n = Cells + 1;
-        var verts = new Vector3[n * n];
-        var norms = new Vector3[n * n];
-        for (int z = 0; z < n; z++)
-        for (int x = 0; x < n; x++)
-        {
-            int i = z * n + x;
-            float wx = x - Cells / 2f, wz = z - Cells / 2f;
-            verts[i] = new Vector3(wx, _h[x, z], wz);
-            float hl = _h[Mathf.Max(x - 1, 0), z], hr = _h[Mathf.Min(x + 1, Cells), z];
-            float hd = _h[x, Mathf.Max(z - 1, 0)], hu = _h[x, Mathf.Min(z + 1, Cells)];
-            norms[i] = new Vector3(-(hr - hl) * 0.5f, 1f, -(hu - hd) * 0.5f).Normalized();
-        }
-        var idx = new int[Cells * Cells * 6];
-        int k = 0;
-        for (int z = 0; z < Cells; z++)
-        for (int x = 0; x < Cells; x++)
-        {
-            int a = z * n + x, b = a + 1, c = a + n, d = c + 1;
-            idx[k++] = a; idx[k++] = b; idx[k++] = c;
-            idx[k++] = b; idx[k++] = d; idx[k++] = c;
-        }
-        var arrays = new Godot.Collections.Array();
-        arrays.Resize((int)Mesh.ArrayType.Max);
-        arrays[(int)Mesh.ArrayType.Vertex] = verts;
-        arrays[(int)Mesh.ArrayType.Normal] = norms;
-        arrays[(int)Mesh.ArrayType.Index] = idx;
-        var mesh = new ArrayMesh();
-        mesh.AddSurfaceFromArrays(Mesh.PrimitiveType.Triangles, arrays);
         _groundMat = TerrainMaterial();
-        AddChild(new MeshInstance3D { Mesh = mesh, MaterialOverride = _groundMat, Name = "Terrain" });
+        var root = new Node3D { Name = "Terrain" };
+        AddChild(root);
+        for (int cz = 0; cz < Cells; cz += TerrainChunk)
+        for (int cx = 0; cx < Cells; cx += TerrainChunk)
+        {
+            int w = Mathf.Min(TerrainChunk, Cells - cx), d = Mathf.Min(TerrainChunk, Cells - cz);
+            int m = w + 1;
+            var verts = new Vector3[m * (d + 1)];
+            var norms = new Vector3[verts.Length];
+            for (int z = 0; z <= d; z++)
+            for (int x = 0; x <= w; x++)
+            {
+                int gx = cx + x, gz = cz + z, i = z * m + x;
+                verts[i] = new Vector3(gx - Cells / 2f, _h[gx, gz], gz - Cells / 2f);
+                float hl = _h[Mathf.Max(gx - 1, 0), gz], hr = _h[Mathf.Min(gx + 1, Cells), gz];
+                float hd = _h[gx, Mathf.Max(gz - 1, 0)], hu = _h[gx, Mathf.Min(gz + 1, Cells)];
+                norms[i] = new Vector3(-(hr - hl) * 0.5f, 1f, -(hu - hd) * 0.5f).Normalized();
+            }
+            var idx = new int[w * d * 6];
+            int k = 0;
+            for (int z = 0; z < d; z++)
+            for (int x = 0; x < w; x++)
+            {
+                int a = z * m + x, b = a + 1, c = a + m, e = c + 1;
+                idx[k++] = a; idx[k++] = b; idx[k++] = c;
+                idx[k++] = b; idx[k++] = e; idx[k++] = c;
+            }
+            var arrays = new Godot.Collections.Array();
+            arrays.Resize((int)Mesh.ArrayType.Max);
+            arrays[(int)Mesh.ArrayType.Vertex] = verts;
+            arrays[(int)Mesh.ArrayType.Normal] = norms;
+            arrays[(int)Mesh.ArrayType.Index] = idx;
+            var mesh = new ArrayMesh();
+            mesh.AddSurfaceFromArrays(Mesh.PrimitiveType.Triangles, arrays);
+            root.AddChild(new MeshInstance3D { Mesh = mesh, MaterialOverride = _groundMat, Name = $"T_{cx / TerrainChunk}_{cz / TerrainChunk}" });
+        }
 
         var body = new StaticBody3D { Name = "TerrainBody" };
         var shape = new HeightMapShape3D { MapWidth = n, MapDepth = n };

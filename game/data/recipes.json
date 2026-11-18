@@ -19,6 +19,7 @@
     { "id": "kargo_kasasi", "name": "Kargo Kasası", "station": "paketleme", "category": "yuk", "in": {}, "out": 1, "seconds": 3.0, "load": true },
     { "id": "tas_firin", "name": "Taş Fırın", "station": "tezgah", "category": "yapi", "in": { "stone": 15, "clay": 5 }, "out": 1, "seconds": 6.0 },
     { "id": "ocakbasi", "name": "Ocakbaşı", "station": "tezgah", "category": "yapi", "in": { "stone": 8, "wood": 4 }, "out": 1, "seconds": 5.0 },
-    { "id": "paketleme", "name": "Paketleme Tezgâhı", "station": "tezgah", "category": "yapi", "in": { "wood": 8 }, "out": 1, "seconds": 5.0 }
+    { "id": "paketleme", "name": "Paketleme Tezgâhı", "station": "tezgah", "category": "yapi", "in": { "wood": 8 }, "out": 1, "seconds": 5.0 },
+    { "id": "mancinik", "name": "Mancınık", "station": "", "category": "yapi", "in": { "wood": 24, "fiber": 10, "copper_ingot": 2 }, "out": 1, "seconds": 4.0 }
   ]
 }
