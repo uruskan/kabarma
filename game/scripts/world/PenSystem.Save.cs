@@ -21,7 +21,11 @@ public partial class PenSystem
     {
         if (_saveBound) return;
         _saveBound = true;
-        _d.Save.Add(SaveSection.Json("pen.props", 1, CaptureProps, ApplyProps, SaveOrder.Spawn));
+        // kayit: yapi parcalari build.view AfterRestore'unda kuruluyor; kapilar kasalarina otursun diye uygulama ondan sonra
+        // (AfterRestore sirasi Order, sonra kimlik: "build.view" < "pen.props"). RelinkPieces save/SavePartials.cs'te.
+        List<EntityRecord> saved = null;
+        _d.Save.Add(SaveSection.Json<List<EntityRecord>>("pen.props", 1, CaptureProps, l => saved = l, SaveOrder.Spawn,
+            afterRestore: () => { if (saved == null) return; RelinkPieces(); ApplyProps(saved); saved = null; }));
     }
 
     static string F(float v) => v.ToString("R", CultureInfo.InvariantCulture);

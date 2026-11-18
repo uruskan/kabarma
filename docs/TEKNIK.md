@@ -100,6 +100,28 @@ kabarma/
 - Adanmış sunucu, aynı Godot projesinin başsız derlemesidir. Ayrı bir özel sunucu yazılmıyor, çünkü yük, araç ve ragdoll fiziği iki tarafta da aynı motoru ister.
 - `Kabarma.Tools/SimRunner`, Godot olmadan binlerce oyun gününü simüle eder; denge testleri bununla koşar.
 
+### 3.1 Hasar sözleşmesi (M3, `savas` akışı)
+
+Kural `src/Kabarma.Sim/Combat.cs` ve `Status.cs`, sayılar `data/combat.json` ([GDD.md](GDD.md) §16.1).
+
+- **Can taşıyan her şey bir `CombatBody` gömer.** Yaratık, Ata, Azman, Kabaran, kule, hayvan ve oyuncu buna dahildir. Gövde düz bir sınıftır: can, zırh puanı, kütle, profil, takım, Kabarık ve durum listesi. Sahibinin kendi kayıt ve ağ bölümüyle taşınır; yeni `GameState` özelliği gerekmez.
+- **İsabet:** `Combat.Apply(data, body, new CombatHit(miktar, tür, takım) { Procs, Knock, ... }, areas)`.
+  - Miktar önceden atılmış hasardır: kritik ve zayıf nokta çarpanı `Night.RollHit` ya da `Combat.Raw` ile uygulanmış olur.
+  - Azaltma sırası sabittir: profil çarpanı → zırh `z/(z+100)` → kalkan ve dost ateşi.
+  - Türün durumu kendiliğinden eklenir: Ateş → Yanık, Buz → Donma, Şok → Sersem ve zincir, Zehir → Zehir, Maya → Kabarık. Kart şansı `Procs` ile eklenir.
+- **Zaman:** her karede `Combat.Tick(data, body, dt, areas)` çağrılır. Yanık ve zehir hasarını işler, zırh bu hasarı azaltmaz.
+- **Sorgular:**
+  - `Status.SpeedMult`: Donma %40 yavaşlatır; Kilit ve Sersem 0 yapar.
+  - `Status.CanAct`, `Combat.Heal` (zehirliyken iyileşme yok), `Combat.Knock` (kütleye göre itme).
+- **Alan etkileri:** Sim komşu bilmez. Yanık sıçraması, şok zinciri ve Kabarık patlaması `CombatArea` olarak döner. Godot katmanı (`game/scripts/combat/`) gövdenin konumunda hedef seçer ve `Combat.ApplyArea` çağırır.
+- **Türün zayıflığı ve direnci** `combat.json` `profiles` içindedir; anahtar yaratık, Ata ya da Azman kimliğidir. Yeni tür bir satır ekler.
+- **Çapa başlığının hasar türü** `combat.json` `weaponTypes` içindedir.
+
+**Bağlanma notu (`kabarma3`, `savunma`, `kartlar`, `gucler`, `holding`, `savas-hayvan` için):**
+
+1. Sim durumunuza `CombatBody` gömün. İsabeti `Combat.Apply`, zamanı `Combat.Tick` ile işleyin, hareketi `Status.SpeedMult` ile çarpın. Kendi `BurnT`/`FreezeT` sayacınızı tutmayın.
+2. Kartın durum şansı `CombatHit.Procs`'a, kulenin ve tuzağın türü `CombatHit.Type`'a, yeni türün profili `combat.json` `profiles`'a gider. Dönen `CombatArea` listesini konuma göre `Combat.ApplyArea` ile komşulara uygulayın.
+
 ## 4. Varlık modeli
 
 - Ağdaki her nesnenin bir `net_id`'si ve bir tanımlayıcısı vardır: `{tür, içerik kimliği, parametreler, dönüşüm}`. Tanımlayıcı nesneyi iki tarafta da aynı kurmaya yeter (Oduncu'da kanıtlandı).
@@ -222,6 +244,8 @@ Host ya da sunucu yetkilidir. İstemci istekleri mesafe, bekleme süresi ve enva
 - **Kimlikle başvuru:** kayıtta düğüm ya da nesne başvurusu yoktur. İçerik `data/` kimliğiyle (`tezgah`, `gidak`), dünyadaki örnek `State.Ids.New()`'dan alınmış `ulong` örnek kimliğiyle anılır; kimlik bir daha kullanılmaz, kayıtla saklanır ve ağdaki `net_id` ile aynıdır (§4). Örnek tanımlayıcısı `EntityRecord`: `{id, tür, içerik, konum, dönüş, parametreler}`. Kişisel durum (çanta, kemer, dayanıklılık) oyuncu kimliğine göre listededir (bugün tek oyuncu).
 - **Yükleme sırası:** önce dünyada var olanlar kurulur (`SaveOrder.Spawn`), sonra sistem durumu (`SaveOrder.State`), en son ilerleme sayaçları (`SaveOrder.Progress`: senaryo, Defter, Known, kredi). `Read` durumu **sessizce** yerine koyar: olay yaymaz, `Add`/`Plant` gibi sayaç ilerleten yolları kullanmaz. Görünümler kanca (`AfterRestore`) içinde yenilenir. Kayıtta olmayan bölüm yeni oyun değeriyle kalır; tanınmayan bölüm silinmeden taşınır; gelecekteki bir sürüm yüklenmez.
 - **Göç:** bölüm sürümü artınca her eski sürüm için bir adım (`[SaveMigration("kimlik", from)]` ya da `Migrate`) ve bir birim testi zorunlu; `SaveContractTests` eksik adımı yakalar. `GameState`'e eklenen her özellik ya bir bölümce kapsanır (`Covers`) ya da testteki geçici listeye yazılır; yoksa test kırılır.
+- **Yükleme akışı (Godot):** yükleme, sahneyi baştan kurup kaydı üstüne koymaktır: `Main.StartGame`/`Main.Reload` eski `Director`'ı ağaçtan hemen çıkarır, `GameStatics.Reset` statikleri sıfırlar, yeni `Director` `PendingLoad` ile kurulur (kapsül açılışı oynatılmaz) ve ilk karede `Save.Restore` + görünüm yenilemesi yapılır. Godot düğümleri kayıttan **sessiz** kurulur (`game/scripts/save/SavePartials.cs`: ses, efekt ve senaryo olayı yok). Gece sürerken, rapor açıkken, elde yük ya da itilen araba varken kayıt alınmaz; otomatik kayıt ilk uygun ana kayar. Kayıt yüklenince `KabarmaNight` yoktur (kartlar şafakta biter).
+- **Ana menü ve Esc:** argümansız açılış (OYNA.bat) Rust tarzı ana menüyü gösterir: Devam, Yeni oyun (dünya ayarı GDD §25 + yuva), Yükle (yuva, tarih, oyun günü, süre), Ortak oyun (`Main` partial'ında `CoopEntry`/`CoopOpen`, ortak akışı doldurur), Ayarlar, Çıkış. Oyunda Esc: Devam, Kaydet, Ayarlar, Ana menü ve Masaüstüne çık (ikisi de kaydeder). Otomasyon argümanlı koşular menüyü görmez.
 - **Ağ:** aynı `Capture`/`Restore` bellekte bayt dizisiyle de çalışır; sonradan katılma (§5.4) dosyasız anlık görüntü kullanır.
 - **Kayda hazır yazım (M1'den itibaren):** Kayıt ve ortak oyun M2'de gelir; M1'de yazılan kod onlar için yeniden yazılmasın diye: `Sim`'e giren her yeni durum düz, serileştirilebilir sınıftır (Godot tipi, düğüm başvurusu ya da olay aboneliği tutmaz; kimlikle başvurur). Godot katmanına yeni statik durum eklenmez: statikler kayıt yüklenince sıfırlanmaz ve aynı süreçte koşan host ile istemciyi birbirine karıştırır ([PLAN.md](PLAN.md) §7.2).
 

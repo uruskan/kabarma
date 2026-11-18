@@ -416,6 +416,14 @@ Hasar türleri: Darbe, Kesme, Ateş, Buz, Şok, Zehir, Maya. Her yaratığın za
 - **Zırh:** `azaltma = zırh / (zırh + 100)`.
 - **Zayıf nokta:** Kabarmış yaratıklarda parlayan maya kesesi; vuruş ×2.
 - **Dost ateşi** kapalıdır (dünya ayarı). İtme, fırlatma ve ezilme her zaman açıktır.
+- **M3 uygulaması:** Sayılar `data/combat.json`'da, kural `src/Kabarma.Sim/Combat.cs` ve `Status.cs`'te; bağlanma [TEKNIK.md](TEKNIK.md) §3.1'de.
+  - Azaltma sırası: türün zayıflık ya da direnç çarpanı → zırh → kalkan ve dost ateşi.
+  - Yanık ve zehir hasarını zırh azaltmaz.
+  - Donma 3 yığında 2 saniye kilitler.
+  - Şok zinciri en çok iki hedefe sıçrar, hasarın %60'ını taşır ve yeniden sıçramaz.
+  - Zehir yığılır.
+  - Kabarık, azami canın üçte biri kadar Maya hasarıyla %200 boya varır ve patlar: çevreye azami canın yarısı kadar Darbe hasarı verir, kendi de o kadar hasar alır.
+  - Çapa başlıklarında Tırpan Işını Kesme, Çivi Tabancası Darbe hasarı verir.
 
 ### 16.2 Düşman davranışları
 
