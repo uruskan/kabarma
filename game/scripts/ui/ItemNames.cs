@@ -31,6 +31,15 @@ public static class ItemNames
         ["mesale"] = "Meşale",
         ["yemlik"] = "Yemlik",
         ["folluk"] = "Folluk",
+        ["kablo"] = "Kablo", // guc akisi (ICERIK 12 M2)
+        ["direk"] = "Direk",
+        ["salter"] = "Şalter",
+        ["ruzgar_gulu"] = "Rüzgâr Gülü",
+        ["hayvan_carki"] = "Hayvan Çarkı",
+        ["aku_mk1"] = "Akü Mk1",
+        ["elektrik_lambasi"] = "Elektrik Lambası",
+        ["dugme"] = "Düğme",
+        ["basinc_plakasi"] = "Basınç Plakası",
         ["ocakbasi"] = "Ocakbaşı",
         ["kargo_rampasi"] = "Kargo Rampası",
         // boss akisi (M2, GDD §18): Ata odulleri ve Ata Tasi.

@@ -95,6 +95,7 @@ public partial class ModelLineup : Node3D
         // Yaratiklar oyundaki gibi: creatures.json modeli, rig boyuna (height) olceklenir
         foreach (var c in _data.Creatures.Creatures)
         {
+            if (c.Rig == null || CreatureBody.IsCode(c.Rig.Model)) continue; // koddan govde ve suruler (yaratik2): model dosyasi yok
             var def = c;
             yield return new(def.Id, () => Sized(Assets.Load(def.Rig.Model), def.Rig.Height), PX);
         }

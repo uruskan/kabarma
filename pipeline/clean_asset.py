@@ -661,6 +661,11 @@ for e in bm.edges:
     if len(ls) == 2 and ls[0].vert == ls[1].vert:
         inverted += 1
 neg_volume = 0
+neg_detail = []
+flat_shells = []
+_bb = [v.co for v in bm.verts]
+flat_eps = 2e-4 * ((max(p.x for p in _bb) - min(p.x for p in _bb)) * (max(p.y for p in _bb) - min(p.y for p in _bb)) *
+                   (max(p.z for p in _bb) - min(p.z for p in _bb)))  # kutu hacminin 1/5000'i
 for comp in parts:
     cs = set(comp)
     fs = {f for v in comp for f in v.link_faces}
@@ -671,8 +676,14 @@ for comp in parts:
         vs = [v.co for v in f.verts]
         for i in range(1, len(vs) - 1):
             vol += vs[0].dot(vs[i].cross(vs[i + 1])) / 6.0
-    if vol < 0:
+    if vol < 0 and abs(vol) < flat_eps:
+        # neredeyse sifir hacim: iki kati ust uste yassi kabuk (ornegin El Arabasi'nin delik yamasi + kapanan kenari).
+        # Sarim yonu sayisal olarak anlamsiz; ters yuz sayilmaz, raporda ayri yazilir.
+        flat_shells.append({"verts": len(comp), "volume": round(vol, 7)})
+    elif vol < 0:
         neg_volume += 1
+        c0 = sum((v.co for v in comp), Vector()) / len(comp)
+        neg_detail.append({"verts": len(comp), "volume": round(vol, 6), "center": [round(x, 3) for x in c0]})
 
 # Havada kalan parca: diger parcalara en yakin uzakligi > %1 en uzun kenar, gomulu degil, tabani yerden yukarida.
 floating = [{k: v for k, v in fl.items() if k not in ("index", "area", "move")} for fl in find_floating(bm, parts, longest)]
@@ -781,7 +792,7 @@ report["checks"] = {
     "4_integrity": {"pass": nonman == 0 and census["boundary"] == 0 and inverted == 0 and neg_volume == 0 and not floating,
                     "non_manifold_edges": nonman, "boundary_edges": census["boundary"], "inverted_faces": inverted,
                     "inverted_note": "ters sarimli kenar sayisi",
-                    "negative_volume_parts": neg_volume, "floating_parts": floating, "loose_parts": len(parts)},
+                    "negative_volume_parts": neg_volume, "negative_volume_detail": neg_detail, "flat_shells": flat_shells, "floating_parts": floating, "loose_parts": len(parts)},
     "5_scale_axis": {"pass": abs(size.z - args.height) < 0.02 and abs(mn.z) < 0.01 and abs((mn.x + mx.x) / 2) < 0.02 and abs((mn.y + mx.y) / 2) < 0.02,
                      "height": round(size.z, 3), "target": args.height, "base_z": round(mn.z, 4),
                      "center_xy": [round((mn.x + mx.x) / 2, 4), round((mn.y + mx.y) / 2, 4)], "forward": args.forward,

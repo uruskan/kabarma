@@ -184,6 +184,27 @@ Oyuncu iskeletini ve animasyonlarını kullanırlar; kırmızı tulumludurlar.
 | Mekanik | Kule ve drone kurar, sabotaj yapar | Ark başlığı, tamir |
 | Müdür | Genel Merkez boss'u | Zırhlı araç, bütün başlıklar |
 
+### 3.8 Çayır ve Koru'nun gündüz tavrı (M2)
+
+[GDD.md](GDD.md) §16.2'deki arketiplerin kabarmamış, yabani hâli. Sayılar `data/creatures.json` `wild` alanında; sürü boyu ve doğma satırları `data/biomes.json` `spawns.creatures` alanında (dunya2 şeması). Etkiler (ekin kaybı, yumurta çalma, gündüz savaşı) sahibi olan sistemden geçer: ekin [GDD.md](GDD.md) §8.1 (`dayEats`), hayvan §9, savaş M3. M2'de yaratık yaklaşır, niyetini gösterir ve olayı bildirir.
+
+| Tür | Tavır | Sürü | Ne zaman | Gündüz davranışı |
+|---|---|---|---|---|
+| Gıdak | ürkek | 2–4 | gündüz | Gezinir, gagalar; koşana kaçar (ağıl davranışı hayvancılıkta) |
+| Pofuduk | sakin | 2–3 | gündüz | Otlar; vurulunca kısa kaçar |
+| Homur | yağmacı | 1–2 | gündüz | Otlar; olgun ekin görünce ona koşar; ateş edilince kaçar |
+| Zıpzıp | yağmacı | 2–3 | gündüz | Olgun ekine gelir, koklar; oyuncu yaklaşınca kaçar |
+| Çekirge Sürüsü | sürü | 1 küme | gündüz | Tek varlık; tahıl ekinine akar, üstünde döner; ateşle dağılır |
+| Sinsi | gececi | 1 | gece | Gündüz çalılıkta uyur; gece kümese ve yumurtaya sokulur |
+| Dallı | ürkek | 2–4 | gündüz | Otlar; 12 m'de başını kaldırır, 9 m'de sürü kaçar |
+| Hu | gececi | 1–2 | gece | Gündüz ağaçta uyur; gece süzülüp küçük avı kollar |
+| Vıcık | sakin | 1–2 | her zaman | Yavaş kayar, mantar otlar; arkasında iz bırakır |
+| Bozuk | yırtıcı | 1 | her zaman | Dolaşır; 14 m'de kükreyip uyarır, 8 m'de hücum edip pençe savurur |
+| Vızvız | sürü | 1 kovan + küme | gündüz | Kovan çevresinde çiçekten çiçeğe; kovana yaklaşana sokar |
+| Fındıkçı | yağmacı | 2–3 | gündüz | Ekili tohuma sokulur, yanağına doldurup kaçar |
+
+**Gövde:** Vıcık sürüngen planını, Hu kuş planını, Fındıkçı iki ayak planını, Homur, Sinsi, Dallı ve Bozuk dört ayak planını kullanır. Çekirge Sürüsü ve Vızvız kemiksiz sürü üyeleridir (tek mesh, örneklenir). Tripo modeli gelene kadar gövdeler koddan, işaretli yer tutucudur (`data/bodies.json`).
+
 ## 4. Atalar, Azmanlar, koruyucular
 
 ### 4.1 Atalar (6)
@@ -649,7 +670,24 @@ Yeni ham kaynak kimlikleri (toplama yerini dunya2 ve hayvan akışları kurar): 
 | Uyarı (2) | Siren · Sinyal Lambası |
 | Taşıma (9) | Bant · Ayırıcı · Birleştirici · Kol · Boru · Pompa · Drone İstasyonu (6 drone, 80 m) · Teleferik İstasyonu · Teleferik Direği |
 
-Sinyal parçaları T3'te (basit) ve T4'te (sensörler, kapılar) açılır. Bant ve kol T3, drone ve teleferik T5.
+Sinyal parçaları T3'te (basit) ve T4'te (sensörler, kapılar) açılır; yalnız Düğme ve Basınç Plakası T2'dedir (URETIM §6 M2 listesi; ilk güç ağını açıp kapatmak için). Bant ve kol T3, drone ve teleferik T5.
+
+**M2 bedelleri ve değerleri** (güç akışı, 18 Kasım 2026). İlk güç Koru'dan önce kurulabilsin diye Rüzgâr Gülü, Hayvan Çarkı ve dağıtım parçaları yalnız Çayır malzemesi ister (Bıçkı'nın 20 W'ı Kereste'den önce gelmeli). Akü Mk1 §20'deki bedeliyle kalır; tarifi Demir Külçe ve Ekşilik oyuna girince eklenir. Kablo iki soket arasına elle çekilir (GDD §11.1): her çekilen kablo 1 Kablo harcar, sökülünce geri verir; sinyal teli aynı Kablo'dan, ince çekilir.
+
+| Parça | Bedel (yer) | Değer |
+|---|---|---|
+| Bakır Tel (`copper_wire`) | Tezgâh: 1 Bakır Külçe → 2 | (§2.3, §11.1; zincir akışının tarifi) |
+| Kablo | Tezgâh: 1 Bakır Tel + 1 Lif → 2 | en fazla 12 m |
+| Direk | El: 4 Odun + 1 Bakır Tel | 4 soket |
+| Şalter | Tezgâh: 2 Odun + 2 Bakır Tel | ağı böler; sinyal bağlıysa sinyal > 0 iken kapalı (iletir) |
+| Rüzgâr Gülü | Tezgâh: 12 Odun + 4 Bakır Tel | 0–80 W, rüzgârla değişir |
+| Hayvan Çarkı | Tezgâh: 16 Odun + 2 Bakır Tel | 40 W, içinde hayvan varken |
+| Akü Mk1 | 5 Bakır Külçe + 5 Demir Külçe + 3 Ekşilik (§20) | 500 Wh, en fazla 200 W |
+| Elektrik Lambası (§10.2) | Tezgâh: 2 Odun + 1 Bakır Tel | 5 W, 8 m ışık; sinyal bağlıysa sinyal > 0 iken yanar |
+| Düğme | Tezgâh: 1 Odun + 1 Bakır Tel | basınca 1 sn 100 sinyal |
+| Basınç Plakası | Tezgâh: 2 Taş + 1 Bakır Tel | üstünde oyuncu ya da yaratık varken 100 sinyal |
+
+Soket: üretici, akü ve şalter 2, tüketici 1, Direk 4; sinyal teli soket saymaz. Öncelik: tüketici başına 1 (en önemli) – 5, varsayılan 3; üretim ve akü talebi karşılamazsa 5'ten başlayarak kapanır (GDD §11.1). Sigorta Kutusu M4'te, o zamana dek öncelik tüketicinin E menüsünden ayarlanır.
 
 ## 13. Kuleler (8) ve tuzaklar (8)
 

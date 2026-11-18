@@ -14,6 +14,7 @@ public static class PlaceableVisuals
 
     public static Node3D Make(PlaceableDef def)
     {
+        if (PowerVisuals.Has(def.Id)) return PowerVisuals.Make(def.Id); // guc akisi: koddan modeller (power/PowerVisuals.cs)
         switch (def.Id)
         {
             case "ocak": return new Ocak();

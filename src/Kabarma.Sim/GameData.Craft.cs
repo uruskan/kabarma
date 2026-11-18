@@ -48,7 +48,10 @@ public sealed partial class ToolFile
     public bool IsFood(string id) => Foods.Any(f => f.Id == id);
 
     /// <summary>Elde tutulabilen esya: kemer aleti, yerlestirilebilir ya da yemek. Kemere kendiliginden yalniz bunlar girer.</summary>
-    public bool IsHoldable(string id) => IsTool(id) || IsPlaceable(id) || IsFood(id);
+    public bool IsHoldable(string id) => IsTool(id) || IsPlaceable(id) || IsFood(id) || HeldItems.Contains(id);
+
+    /// <summary>Cantada duran ama elde kullanilan obur esyalar (guc: Kablo, sokete elle cekilir; GDD 11.1).</summary>
+    public List<string> HeldItems { get; set; } = new();
 
     /// <summary>
     /// Yerlestirilebilirin bedeli: onu ureten tarifin girdisi (karar 23: bedel artik tariftedir). Tarif yoksa placeables.json

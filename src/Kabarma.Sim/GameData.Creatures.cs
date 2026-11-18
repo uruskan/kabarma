@@ -30,6 +30,12 @@ public sealed class CreatureDef
     public RigDef? Rig { get; set; }
     public SwellDef Swell { get; set; } = new();
     public DayHerdDef? Day { get; set; }
+    /// <summary>Yerli oldugu biyom (biomes.json kimligi).</summary>
+    public string Biome { get; set; } = "";
+    /// <summary>Gunduz tavri (GDD §16.2, ICERIK §3.8). Yoksa tur kendi aktoruyle yonetilir (Zipzip, Gidak).</summary>
+    public WildDef? Wild { get; set; }
+    /// <summary>Suru turu: kemiksiz uyeler, tek varlik (Cekirge Surusu, Vizviz).</summary>
+    public SwarmDef? Swarm { get; set; }
 }
 
 /// <summary>Model, govde plani, kemik eslemesi ve 8 klip yuvasinin kaynagi (SANAT-SES §4, URETIM §2.2 E).</summary>
