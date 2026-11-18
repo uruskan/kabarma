@@ -1,52 +1,41 @@
 {
   "name": "agac",
-  "label": "Cayir agaci (Jacaranda Tree, yesil yaprak)",
-  "kind": "tree",
+  "label": "Cayir agaci: mese (Tripo web H3.1, stilize yari gercekci)",
+  "kind": "tripo_tree",
   "source": {
-    "zip": "F:/Assets/verdant_trail.zip",
-    "cache": "verdant_trail",
-    "members": [
-      "verdant_trail.blend",
-      "textures/jacaranda_tree_*"
-    ],
-    "file": "verdant_trail.blend"
+    "dir": "{main}/.tools/tripo_web/agaclar",
+    "file": "kabarma_agac_mese.glb"
   },
-  "license": "Poly Haven CC0 (jacaranda_tree, Rico Cilliers ve Rob Tuytel)",
+  "license": "Tripo web (sahibin hesabi; uretilen varlik sahibin)",
   "height_target": 5.0,
   "lods": [
     {
       "path": "res://assets/models/agac/agac.glb",
-      "tris": 7999,
-      "tex": 1024,
+      "tris": 5400,
+      "tex": 2048,
       "surfaces": 2
     },
     {
       "path": "res://assets/models/agac/agac_lod1.glb",
-      "tris": 3799,
-      "tex": 512,
+      "tris": 3099,
+      "tex": 1024,
       "surfaces": 2
     },
     {
       "path": "res://assets/models/agac/agac_lod2.glb",
-      "tris": 1399,
-      "tex": 256,
+      "tris": 1100,
+      "tex": 512,
       "surfaces": 2
     }
   ],
   "size_m": [
-    6.476,
-    5.04,
-    5.032
+    5.086,
+    3.969,
+    5.104
   ],
   "hull_points": 64,
-  "trunk_radius_m": 0.353,
-  "instances": 6015,
-  "prototypes": [
-    "jacaranda_tree_leaves_a",
-    "jacaranda_tree_leaves_b",
-    "jacaranda_tree_leaves_c",
-    "jacaranda_tree_leaves_d",
-    "jacaranda_tree_leaves_e"
-  ],
-  "tris": 7999
+  "trunk_radius_m": 0.522,
+  "clusters": 900,
+  "leaf_faces": 1622707,
+  "tris": 5400
 }

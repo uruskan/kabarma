@@ -1,53 +1,41 @@
 {
   "name": "turuncu_agac",
-  "label": "Turuncu agac (Island Tree 01, sonbahar tonu)",
-  "kind": "tree",
+  "label": "Turuncu agac (Tripo web H3.1)",
+  "kind": "tripo_tree",
   "source": {
-    "zip": "F:/Assets/verdant_trail.zip",
-    "cache": "verdant_trail",
-    "members": [
-      "verdant_trail.blend",
-      "textures/island_tree_01*"
-    ],
-    "file": "verdant_trail.blend"
+    "dir": "{main}/.tools/tripo_web/agaclar",
+    "file": "kabarma_turuncu_agac.glb"
   },
-  "license": "Poly Haven CC0 (island_tree_01, Rico Cilliers ve Rob Tuytel)",
+  "license": "Tripo web (sahibin hesabi; uretilen varlik sahibin)",
   "height_target": 4.8,
   "lods": [
     {
       "path": "res://assets/models/turuncu_agac/turuncu_agac.glb",
-      "tris": 3668,
-      "tex": 1024,
+      "tris": 5399,
+      "tex": 2048,
       "surfaces": 2
     },
     {
       "path": "res://assets/models/turuncu_agac/turuncu_agac_lod1.glb",
-      "tris": 2567,
-      "tex": 512,
+      "tris": 3099,
+      "tex": 1024,
       "surfaces": 2
     },
     {
       "path": "res://assets/models/turuncu_agac/turuncu_agac_lod2.glb",
-      "tris": 1299,
-      "tex": 256,
+      "tris": 1099,
+      "tex": 512,
       "surfaces": 2
     }
   ],
   "size_m": [
-    4.942,
-    4.777,
-    4.853
+    5.129,
+    4.669,
+    4.882
   ],
   "hull_points": 64,
-  "trunk_radius_m": 0.431,
-  "instances": 834,
-  "prototypes": [
-    "island_tree_01_branches_a",
-    "island_tree_01_branches_b",
-    "island_tree_01_branches_c",
-    "island_tree_01_branches_d",
-    "island_tree_01_leaves_b",
-    "island_tree_01_leaves_c"
-  ],
-  "tris": 3668
+  "trunk_radius_m": 0.579,
+  "clusters": 900,
+  "leaf_faces": 1696501,
+  "tris": 5399
 }

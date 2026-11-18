@@ -3,6 +3,194 @@
   "out": "game/assets/models",
   "items": {
     "agac": {
+      "kind": "tripo_tree",
+      "tree": true,
+      "label": "Cayir agaci: mese (Tripo web H3.1, stilize yari gercekci)",
+      "license": "Tripo web (sahibin hesabi; uretilen varlik sahibin)",
+      "provenance": { "pool": "tripo_web", "service": "Tripo web H3.1 (kredi ana oturumun kaydinda, web havuzu) -> pipeline/build_bitki.py (tripo_tree)", "credits": 0, "date": "2026-11-18" },
+      "source": { "dir": "{main}/.tools/tripo_web/agaclar", "file": "kabarma_agac_mese.glb" },
+      "height": 5.0,
+      "seed": 7,
+      "clusters": 900,
+      "normal_weight": 0.25,
+      "volume_normals": 0.45,
+      "atlas": 4096,
+      "lods": [
+        { "tris": 7800, "wood_tris": 3600, "tex": 2048, "wood_tex": 1024 },
+        { "tris": 3200, "wood_tris": 1300, "tex": 1024, "wood_tex": 512 },
+        { "tris": 1100, "wood_tris": 400, "tex": 512, "wood_tex": 256 }
+      ]
+    },
+    "agac_hus": {
+      "kind": "tripo_tree",
+      "tree": true,
+      "label": "Cayir agaci 2: hus (Tripo web H3.1)",
+      "license": "Tripo web (sahibin hesabi; uretilen varlik sahibin)",
+      "provenance": { "pool": "tripo_web", "service": "Tripo web H3.1 (kredi ana oturumun kaydinda, web havuzu) -> pipeline/build_bitki.py (tripo_tree)", "credits": 0, "date": "2026-11-18" },
+      "source": { "dir": "{main}/.tools/tripo_web/agaclar", "file": "kabarma_agac_hus.glb" },
+      "height": 5.2,
+      "seed": 7,
+      "clusters": 900,
+      "volume_normals": 0.45,
+      "atlas": 4096,
+      "leaf_grade": { "hue": -0.035, "sat": 0.8, "val": 0.82 },
+      "lods": [
+        { "tris": 7800, "wood_tris": 3600, "tex": 2048, "wood_tex": 1024 },
+        { "tris": 3200, "wood_tris": 1300, "tex": 1024, "wood_tex": 512 },
+        { "tris": 1100, "wood_tris": 450, "tex": 512, "wood_tex": 256 }
+      ]
+    },
+    "koru_agac": {
+      "kind": "tripo_tree",
+      "tree": true,
+      "dir": "koru",
+      "label": "Sis Korusu kadim agaci (Tripo web H3.1; yesil yaprakli yeniden dokunmus surum; camgobegi asil yedek)",
+      "license": "Tripo web (sahibin hesabi; uretilen varlik sahibin)",
+      "provenance": { "pool": "tripo_web", "service": "Tripo web H3.1 (kredi ana oturumun kaydinda, web havuzu) -> pipeline/build_bitki.py (tripo_tree)", "credits": 0, "date": "2026-11-18" },
+      "source": { "dir": "{main}/.tools/tripo_web/agaclar", "file": "kabarma_koru_agac_yesil.glb" },
+      "height": 8.0,
+      "seed": 7,
+      "clusters": 900,
+      "volume_normals": 0.45,
+      "atlas": 4096,
+      "leaf_rule": { "hue": [76, 120], "sat_min": 0.55, "min_z": 0.3 },
+      "lods": [
+        { "tris": 7800, "wood_tris": 3600, "tex": 2048, "wood_tex": 1024 },
+        { "tris": 3200, "wood_tris": 1300, "tex": 1024, "wood_tex": 512 },
+        { "tris": 1100, "wood_tris": 450, "tex": 512, "wood_tex": 256 }
+      ]
+    },
+    "koru_ladin": {
+      "kind": "tripo_tree",
+      "tree": true,
+      "label": "Sis Korusu uzun ladini (Tripo web H3.1)",
+      "license": "Tripo web (sahibin hesabi; uretilen varlik sahibin)",
+      "provenance": { "pool": "tripo_web", "service": "Tripo web H3.1 (kredi ana oturumun kaydinda, web havuzu) -> pipeline/build_bitki.py (tripo_tree)", "credits": 0, "date": "2026-11-18" },
+      "source": { "dir": "{main}/.tools/tripo_web/agaclar", "file": "kabarma_koru_ladin.glb" },
+      "height": 12.0,
+      "seed": 7,
+      "clusters": 900,
+      "volume_normals": 0.4,
+      "atlas": 4096,
+      "leaf_rule": { "hue": [75, 165], "sat_min": 0.35 },
+      "lods": [
+        { "tris": 7800, "wood_tris": 3000, "tex": 2048, "wood_tex": 1024 },
+        { "tris": 3200, "wood_tris": 1100, "tex": 1024, "wood_tex": 512 },
+        { "tris": 1100, "wood_tris": 400, "tex": 512, "wood_tex": 256 }
+      ]
+    },
+    "dev_mantar": {
+      "kind": "tripo_prop",
+      "dir": "koru",
+      "label": "Dev mantar (Tripo web H3.1)",
+      "license": "Tripo web (sahibin hesabi; uretilen varlik sahibin)",
+      "provenance": { "pool": "tripo_web", "service": "Tripo web H3.1, 18 Kasim (kredi ana oturumun kaydinda, web havuzu) -> pipeline/build_bitki.py (tripo_prop)", "credits": 0, "date": "2026-11-18" },
+      "source": { "dir": "{main}/.tools/tripo_web/dalga1", "file": "kabarma_dev_mantar.glb" },
+      "height": 2.5,
+      "size_axis": "z",
+      "lods": [
+        { "tris": 5000, "tex": 1024 },
+        { "tris": 2000, "tex": 512 },
+        { "tris": 700, "tex": 256 }
+      ]
+    },
+    "kutuk": {
+      "kind": "tripo_prop",
+      "dir": "koru",
+      "label": "Yosunlu kutuk (Tripo web H3.1)",
+      "license": "Tripo web (sahibin hesabi; uretilen varlik sahibin)",
+      "provenance": { "pool": "tripo_web", "service": "Tripo web H3.1, 18 Kasim (kredi ana oturumun kaydinda, web havuzu) -> pipeline/build_bitki.py (tripo_prop)", "credits": 0, "date": "2026-11-18" },
+      "source": { "dir": "{main}/.tools/tripo_web/dalga1", "file": "kabarma_kutuk.glb" },
+      "height": 3.0,
+      "size_axis": "max",
+      "lods": [
+        { "tris": 5000, "tex": 1024 },
+        { "tris": 2000, "tex": 512 },
+        { "tris": 700, "tex": 256 }
+      ]
+    },
+    "recine": {
+      "kind": "tripo_prop",
+      "dir": "koru",
+      "label": "Recine damari (Tripo web H3.1)",
+      "license": "Tripo web (sahibin hesabi; uretilen varlik sahibin)",
+      "provenance": { "pool": "tripo_web", "service": "Tripo web H3.1, 18 Kasim (kredi ana oturumun kaydinda, web havuzu) -> pipeline/build_bitki.py (tripo_prop)", "credits": 0, "date": "2026-11-18" },
+      "source": { "dir": "{main}/.tools/tripo_web/dalga1", "file": "kabarma_recine.glb" },
+      "height": 0.9,
+      "size_axis": "z",
+      "lods": [
+        { "tris": 3000, "tex": 1024 }
+      ]
+    },
+    "guhercile": {
+      "kind": "tripo_prop",
+      "dir": "koru",
+      "label": "Guhercile (Tripo web H3.1)",
+      "license": "Tripo web (sahibin hesabi; uretilen varlik sahibin)",
+      "provenance": { "pool": "tripo_web", "service": "Tripo web H3.1, 18 Kasim (kredi ana oturumun kaydinda, web havuzu) -> pipeline/build_bitki.py (tripo_prop)", "credits": 0, "date": "2026-11-18" },
+      "source": { "dir": "{main}/.tools/tripo_web/dalga1", "file": "kabarma_guhercile.glb" },
+      "height": 0.8,
+      "size_axis": "z",
+      "lods": [
+        { "tris": 3000, "tex": 1024 }
+      ]
+    },
+    "yuva": {
+      "kind": "tripo_prop",
+      "dir": "kesif",
+      "label": "Yuva (Tripo web H3.1)",
+      "license": "Tripo web (sahibin hesabi; uretilen varlik sahibin)",
+      "provenance": { "pool": "tripo_web", "service": "Tripo web H3.1, 18 Kasim (kredi ana oturumun kaydinda, web havuzu) -> pipeline/build_bitki.py (tripo_prop)", "credits": 0, "date": "2026-11-18" },
+      "source": { "dir": "{main}/.tools/tripo_web/dalga1", "file": "kabarma_yuva.glb" },
+      "height": 1.0,
+      "size_axis": "max",
+      "lods": [
+        { "tris": 3500, "tex": 1024 }
+      ]
+    },
+    "enkaz": {
+      "kind": "tripo_prop",
+      "dir": "kesif",
+      "label": "Enkaz (Tripo web H3.1)",
+      "license": "Tripo web (sahibin hesabi; uretilen varlik sahibin)",
+      "provenance": { "pool": "tripo_web", "service": "Tripo web H3.1, 18 Kasim (kredi ana oturumun kaydinda, web havuzu) -> pipeline/build_bitki.py (tripo_prop)", "credits": 0, "date": "2026-11-18" },
+      "source": { "dir": "{main}/.tools/tripo_web/dalga1", "file": "kabarma_enkaz.glb" },
+      "remesh_voxel": 0.012,
+      "height": 2.5,
+      "size_axis": "max",
+      "lods": [
+        { "tris": 5500, "tex": 1024 }
+      ]
+    },
+    "oyuk_agzi": {
+      "kind": "tripo_prop",
+      "dir": "kesif",
+      "label": "Oyuk agzi (Tripo web H3.1)",
+      "license": "Tripo web (sahibin hesabi; uretilen varlik sahibin)",
+      "provenance": { "pool": "tripo_web", "service": "Tripo web H3.1, 18 Kasim (kredi ana oturumun kaydinda, web havuzu) -> pipeline/build_bitki.py (tripo_prop)", "credits": 0, "date": "2026-11-18" },
+      "source": { "dir": "{main}/.tools/tripo_web/dalga1", "file": "kabarma_oyuk_agzi.glb" },
+      "height": 4.0,
+      "size_axis": "max",
+      "lods": [
+        { "tris": 6000, "tex": 1024 }
+      ]
+    },
+    "demir": {
+      "kind": "tripo_prop",
+      "dir": "koru",
+      "label": "Demir cevheri (Tripo web H3.1)",
+      "license": "Tripo web (sahibin hesabi; uretilen varlik sahibin)",
+      "provenance": { "pool": "tripo_web", "service": "Tripo web H3.1, 18 Kasim (kredi ana oturumun kaydinda, web havuzu) -> pipeline/build_bitki.py (tripo_prop)", "credits": 0, "date": "2026-11-18" },
+      "source": { "dir": "{main}/.tools/tripo_web/dalga1", "file": "kabarma_demir.glb" },
+      "height": 1.0,
+      "size_axis": "max",
+      "lods": [
+        { "tris": 3500, "tex": 1024 }
+      ]
+    },
+    "agac_jakaranda": {
+      "disabled": true,
+      "_not": "Onceki cayir agaci (bitki-pbr, sahip begenmedi); yeniden kurmak icin --only agac_jakaranda",
       "kind": "tree",
       "label": "Cayir agaci (Jacaranda Tree, yesil yaprak)",
       "license": "Poly Haven CC0 (jacaranda_tree, Rico Cilliers ve Rob Tuytel)",
@@ -26,6 +214,27 @@
       ]
     },
     "turuncu_agac": {
+      "kind": "tripo_tree",
+      "tree": true,
+      "label": "Turuncu agac (Tripo web H3.1)",
+      "license": "Tripo web (sahibin hesabi; uretilen varlik sahibin)",
+      "provenance": { "pool": "tripo_web", "service": "Tripo web H3.1 (kredi ana oturumun kaydinda, web havuzu) -> pipeline/build_bitki.py (tripo_tree)", "credits": 0, "date": "2026-11-18" },
+      "source": { "dir": "{main}/.tools/tripo_web/agaclar", "file": "kabarma_turuncu_agac.glb" },
+      "height": 4.8,
+      "seed": 7,
+      "clusters": 900,
+      "volume_normals": 0.45,
+      "atlas": 4096,
+      "leaf_rule": { "hue": [0, 45], "sat_min": 0.8 },
+      "lods": [
+        { "tris": 7800, "wood_tris": 3600, "tex": 2048, "wood_tex": 1024 },
+        { "tris": 3200, "wood_tris": 1300, "tex": 1024, "wood_tex": 512 },
+        { "tris": 1100, "wood_tris": 450, "tex": 512, "wood_tex": 256 }
+      ]
+    },
+    "turuncu_agac_pbr": {
+      "disabled": true,
+      "_not": "Onceki turuncu agac (bitki-pbr, sahip begenmedi)",
       "kind": "tree",
       "label": "Turuncu agac (Island Tree 01, sonbahar tonu)",
       "license": "Poly Haven CC0 (island_tree_01, Rico Cilliers ve Rob Tuytel)",
@@ -49,6 +258,27 @@
       ]
     },
     "cali": {
+      "kind": "tripo_tree",
+      "label": "Cali (Tripo web H3.1; Bicme Lif tutami)",
+      "license": "Tripo web (sahibin hesabi; uretilen varlik sahibin)",
+      "provenance": { "pool": "tripo_web", "service": "Tripo web H3.1 (kredi ana oturumun kaydinda, web havuzu) -> pipeline/build_bitki.py (tripo_tree)", "credits": 0, "date": "2026-11-18" },
+      "source": { "dir": "{main}/.tools/tripo_web/agaclar", "file": "kabarma_cali.glb" },
+      "height": 1.2,
+      "seed": 7,
+      "clusters": 600,
+      "volume_normals": 0.4,
+      "atlas": 4096,
+      "wood_min_faces": 500,
+      "leaf_rule": { "hue": [50, 160], "sat_min": 0.3 },
+      "lods": [
+        { "tris": 3000, "wood_tris": 700, "tex": 2048, "wood_tex": 512 },
+        { "tris": 1500, "wood_tris": 300, "tex": 1024, "wood_tex": 256 },
+        { "tris": 600, "wood_tris": 100, "tex": 512, "wood_tex": 128 }
+      ]
+    },
+    "cali_pbr": {
+      "disabled": true,
+      "_not": "Onceki cali (bitki-pbr, Downy Willow; sahip begenmedi)",
       "kind": "plant",
       "label": "Cali (Megascans Downy Willow VarF)",
       "license": "Quixel Megascans (Fab), sahip dogrulamali",
@@ -131,7 +361,9 @@
         { "replace": [["_LOD2", "_LOD3"]], "tris": 350, "tex": 256 }
       ]
     },
-    "kutuk": {
+    "kutuk_polyhaven": {
+      "disabled": true,
+      "_not": "Poly Haven kutuk (oyunda degildi); koru kutugu artik Tripo (kutuk)",
       "kind": "plant",
       "label": "Kutuk (Poly Haven Tree Stump 02; Sis Korusu ve kesim artigi icin)",
       "license": "Poly Haven CC0 (tree_stump_02, Rob Tuytel)",

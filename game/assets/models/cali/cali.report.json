@@ -1,50 +1,40 @@
 {
   "name": "cali",
-  "label": "Cali (Megascans Downy Willow VarF)",
-  "kind": "plant",
+  "label": "Cali (Tripo web H3.1; Bicme Lif tutami)",
+  "kind": "tripo_tree",
   "source": {
-    "zip": "F:/Assets/Fab/Quixel-Megascans/Plants/Downy-Willow--0e466407-d473-41e2-90ff-f6ff9275d73c/fbx/963e492d-e7ec-4af3-81e2-4c1c14187283/downy_willow_wknlfiuqx_high.zip",
-    "cache": "downy_willow",
-    "members": [
-      "*VarF_LOD2.fbx",
-      "*VarF_LOD3.fbx",
-      "*4K_BaseColor.jpg",
-      "*4K_Opacity.jpg",
-      "*4K_Normal.jpg",
-      "*4K_Roughness.jpg"
-    ],
-    "file": "Downy_Willow_wknlfiuqx_High_wknlfiuqx_VarF_LOD2.fbx",
-    "extra_files": [
-      "Downy_Willow_wknlfiuqx_High_wknlfiuqx_VarF_LOD3.fbx"
-    ]
+    "dir": "{main}/.tools/tripo_web/agaclar",
+    "file": "kabarma_cali.glb"
   },
-  "license": "Quixel Megascans (Fab), sahip dogrulamali",
-  "height_target": 1.1,
+  "license": "Tripo web (sahibin hesabi; uretilen varlik sahibin)",
+  "height_target": 1.2,
   "lods": [
     {
       "path": "res://assets/models/cali/cali.glb",
-      "tris": 2800,
-      "tex": 1024,
-      "surfaces": 1
+      "tris": 1900,
+      "tex": 2048,
+      "surfaces": 2
     },
     {
       "path": "res://assets/models/cali/cali_lod1.glb",
-      "tris": 1400,
-      "tex": 512,
-      "surfaces": 1
+      "tris": 1500,
+      "tex": 1024,
+      "surfaces": 2
     },
     {
       "path": "res://assets/models/cali/cali_lod2.glb",
-      "tris": 798,
-      "tex": 256,
-      "surfaces": 1
+      "tris": 600,
+      "tex": 512,
+      "surfaces": 2
     }
   ],
   "size_m": [
-    1.73,
-    1.631,
-    1.1
+    1.368,
+    1.143,
+    1.211
   ],
-  "hull_points": 51,
-  "tris": 2800
+  "hull_points": 64,
+  "clusters": 600,
+  "leaf_faces": 1664017,
+  "tris": 1900
 }

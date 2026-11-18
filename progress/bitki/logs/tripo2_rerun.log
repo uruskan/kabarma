@@ -1,0 +1,38 @@
+tools/test.ps1  2026-11-19 01:08  git 5053817
+
+[FAIL] hayvan  exit=1 HAYVAN satiri yok | RESULT fail bot did not reach end step=end
+      --- son satirlar: C:\Users\uruskan\Documents\GitHub\kabarma\.claude\worktrees\m1-varlik-72a21b\.tools\run\test\hayvan.log
+      BOT hayvan s4 p=(-2.9210417, 0.0010000238, -5.1727996) pof=(-4.475846, 0, -7.9115143) pen=18 c=P2 { X = -4.5577836, Z = -6.294324, Length = 7.771223 } pens=18@-5,-6/9@6,2 yemlik=wheat:4@-5,-8 bag_yemlik=0 wood=4 gate=True vel=0.0
+      BOT hayvan stage=4 trust=1.00 reg=True turnip=11 happy=26 pending=0 timer=150
+      BOT hayvan s4 p=(-3.0401573, 0.000997519, -5.056396) pof=(-4.7955613, 0, -6.8100505) pen=18 c=P2 { X = -4.5577836, Z = -6.294324, Length = 7.771223 } pens=18@-5,-6/9@6,2 yemlik=wheat:4@-5,-8 bag_yemlik=0 wood=4 gate=True vel=5.0
+      BOT hayvan s4 p=(-3.0401573, 0.000997519, -5.056396) pof=(-4.832187, 0, -6.809503) pen=18 c=P2 { X = -4.5577836, Z = -6.294324, Length = 7.771223 } pens=18@-5,-6/9@6,2 yemlik=wheat:4@-5,-8 bag_yemlik=0 wood=4 gate=True vel=5.0
+      BOT hayvan s4 p=(-3.205399, 0.0009997331, -5.173305) pof=(-4.8688126, 0, -6.8089557) pen=18 c=P2 { X = -4.5577836, Z = -6.294324, Length = 7.771223 } pens=18@-5,-6/9@6,2 yemlik=wheat:4@-5,-8 bag_yemlik=0 wood=4 gate=True vel=2.5
+      BOT hayvan stage=4 trust=1.00 reg=True turnip=11 happy=26 pending=0 timer=150
+      BOT hayvan s4 p=(-3.0499063, 0.0009997541, -5.1164246) pof=(-4.938748, 0, -6.8116207) pen=18 c=P2 { X = -4.5577836, Z = -6.294324, Length = 7.771223 } pens=18@-5,-6/9@6,2 yemlik=wheat:4@-5,-8 bag_yemlik=0 wood=4 gate=True vel=4.7
+      BOT hayvan s4 p=(-3.0499063, 0.0009997541, -5.1164246) pof=(-4.938748, 0, -6.8116207) pen=18 c=P2 { X = -4.5577836, Z = -6.294324, Length = 7.771223 } pens=18@-5,-6/9@6,2 yemlik=wheat:4@-5,-8 bag_yemlik=0 wood=4 gate=True vel=4.7
+      BOT hayvan s4 p=(-3.0504153, 0.0009997541, -5.1730237) pof=(-4.938748, 0, -6.8116207) pen=18 c=P2 { X = -4.5577836, Z = -6.294324, Length = 7.771223 } pens=18@-5,-6/9@6,2 yemlik=wheat:4@-5,-8 bag_yemlik=0 wood=4 gate=True vel=0.0
+      BOT hayvan s4 p=(-3.0504153, 0.0009997541, -5.1730237) pof=(-4.938748, 0, -6.8116207) pen=18 c=P2 { X = -4.5577836, Z = -6.294324, Length = 7.771223 } pens=18@-5,-6/9@6,2 yemlik=wheat:4@-5,-8 bag_yemlik=0 wood=4 gate=True vel=0.0
+      RESULT fail bot did not reach end step=end t=1300.0
+      QUIT t=1300.0
+[FAIL] savashayvan  exit=1 RESULT fail bot did not reach end step=end
+      --- son satirlar: C:\Users\uruskan\Documents\GitHub\kabarma\.claude\worktrees\m1-varlik-72a21b\.tools\run\test\savashayvan.log
+      BOT hayvan fill p=(-4.6248107, 0.0010000298, -7.624642) stand=(-4.557785, 0, -7.1942596) yemlik=(-4.557785, 0, -8.394259) pen=18 inpen=True gate=True vel=0.0 menu=False
+      BOT hayvan stage=4 trust=1.00 reg=True turnip=7 happy=10 pending=0 timer=150
+      BOT hayvan s4 p=(-4.5535264, 0.001000081, -6.1315494) pof=(-5.0149274, 0, -6.70351) pen=18 c=P2 { X = -4.557785, Z = -6.294259, Length = 7.7711716 } pens=18@-5,-6/9@6,2 yemlik=wheat:0@-5,-8 bag_yemlik=0 wood=5 gate=True vel=3.8
+      BOT hayvan fill p=(-4.5535264, 0.001000081, -6.1315494) stand=(-4.557785, 0, -7.1942596) yemlik=(-4.557785, 0, -8.394259) pen=18 inpen=True gate=True vel=3.8 menu=False
+      BOT hayvan s4 p=(-4.8731833, 0.000889237, -6.171514) pof=(-5.007171, 0, -6.713121) pen=18 c=P2 { X = -4.557785, Z = -6.294259, Length = 7.7711716 } pens=18@-5,-6/9@6,2 yemlik=wheat:0@-5,-8 bag_yemlik=0 wood=5 gate=True vel=4.8
+      BOT hayvan fill p=(-4.8731833, 0.000889237, -6.171514) stand=(-4.557785, 0, -7.1942596) yemlik=(-4.557785, 0, -8.394259) pen=18 inpen=True gate=True vel=4.8 menu=False
+      BOT hayvan s4 p=(-4.8731833, 0.000889237, -6.171514) pof=(-4.990469, 0, -6.7411075) pen=18 c=P2 { X = -4.557785, Z = -6.294259, Length = 7.7711716 } pens=18@-5,-6/9@6,2 yemlik=wheat:0@-5,-8 bag_yemlik=0 wood=5 gate=True vel=4.8
+      BOT hayvan fill p=(-4.8731833, 0.000889237, -6.171514) stand=(-4.557785, 0, -7.1942596) yemlik=(-4.557785, 0, -8.394259) pen=18 inpen=True gate=True vel=4.8 menu=False
+      BOT hayvan s4 p=(-5.1500545, 0.0009856265, -6.171431) pof=(-4.973767, 0, -6.7690935) pen=18 c=P2 { X = -4.557785, Z = -6.294259, Length = 7.7711716 } pens=18@-5,-6/9@6,2 yemlik=wheat:0@-5,-8 bag_yemlik=0 wood=5 gate=True vel=4.2
+      BOT hayvan fill p=(-5.1500545, 0.0009856265, -6.171431) stand=(-4.557785, 0, -7.1942596) yemlik=(-4.557785, 0, -8.394259) pen=18 inpen=True gate=True vel=4.2 menu=False
+      RESULT fail bot did not reach end step=end t=2200.0
+      QUIT t=2200.0
+[PASS] coop  exit=0 ok players=4 max_diff_mm=2.176 pieces=4 foundations=4 late_join=1 plots=4 tilled=4 crafted=4 revives=1 voice_frames=25 creatures_spawned=30 rejected=2 corrections=54
+
+sinama     sonuc  sure(sn)  ayrinti
+------     -----  --------  -------
+hayvan     FAIL      341.2  exit=1 HAYVAN satiri yok | RESULT fail bot did not reach end step=end
+savashayvan FAIL      565.7  exit=1 RESULT fail bot did not reach end step=end
+coop       PASS      101.1  exit=0 ok players=4 max_diff_mm=2.176 pieces=4 foundations=4 late_join=1 plots=4 tilled=4 crafted=4 revives=1 voice_frames=25 creatures_spawned=30 rejected=2 corrections=54
+TEST FAIL (2)

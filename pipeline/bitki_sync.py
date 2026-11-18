@@ -16,7 +16,18 @@ MAN = json.load(open(os.path.join(ROOT, 'pipeline', 'bitki_manifest.json'), enco
 ASSETS = os.path.join(ROOT, 'game', 'data', 'assets.json')
 CRIT = {1: 'doku', 2: 'poligon', 3: 'kalinlik', 4: 'butunluk', 5: 'olcek_eksen', 6: 'siluet', 7: 'dil_uyumu', 8: 'okunaklilik'}
 IN_GAME = {
-    'agac': 'World.Decor.cs: Cayir decor "agac" (tac + govde, ruzgar; LOD parcalari World.DecorLod.cs); Bicme Odun',
+    'agac': 'World.Decor.cs: Cayir decor "agac" (mese; tac + govde, ruzgar; LOD parcalari World.DecorLod.cs); Bicme Odun',
+    'agac_hus': 'World.Decor.cs: Cayir decor "agac_hus" (agac havuzunun ikinci turu); Bicme Odun',
+    'koru_agac': 'World.Decor.cs: Sis Korusu decor "koru_agac" (kadim agac); Bicme Sert Odun',
+    'dev_mantar': 'World.Decor.cs: Sis Korusu decor "dev_mantar"',
+    'kutuk': 'World.Decor.cs: Sis Korusu decor "kutuk"',
+    'recine': 'World.Resources.cs: Sis Korusu kaynak dugumu "recine" (Recine)',
+    'guhercile': 'World.Resources.cs: Sis Korusu kaynak dugumu "guhercile" (Guhercile)',
+    'demir': 'World.Resources.cs: Sis Korusu kaynak dugumu "demir" (Demir cevheri)',
+    'yuva':'Kesif noktasi "yuva" (biomes.json landmarks)',
+    'enkaz': 'Kesif noktasi "enkaz" (biomes.json landmarks)',
+    'oyuk_agzi': 'Kesif noktasi "oyuk" agzi (biomes.json landmarks)',
+    'koru_ladin':'World.Decor.cs: Sis Korusu decor "koru_ladin" (uzun ladin, koru havuzunun ikinci turu); Bicme Sert Odun',
     'turuncu_agac': 'World.Decor.cs: Cayir decor "turuncu_agac"; Bicme Odun',
     'cali': 'World.Decor.cs + World.Resources.cs: Cayir decor "cali" (Bicme Lif tutami)',
     'egrelti': 'World.Decor.cs: Cayir ve Sis Korusu decor "egrelti"',
@@ -62,7 +73,7 @@ def main():
             data['assets'].append(e); by_id[name] = e
         e['name'] = e.get('name') if name in IN_GAME and e.get('name') else it.get('label', name)
         e.setdefault('goldenClass', '')
-        cls = BUDGET.get(it['kind'], 'agac' if it['height'] >= 3 else 'esya_kaya')
+        cls = 'agac' if it['kind'] == 'tree' or it['height'] >= 3 else 'esya_kaya'
         e['budgetClass'] = cls
         e['stream'] = 'varlik'
         e['inGame'] = name in IN_GAME
@@ -70,24 +81,27 @@ def main():
         e['ownerApproved'] = False
         e['source'] = {'pool': 'kutuphane', 'service': f"F:\\Assets; pipeline/build_bitki.py ({it['kind']})", 'credits': 0, 'retries': 0,
                        'taskId': '', 'date': '2026-11-18'}
+        e['source'].update(it.get('provenance', {}))  # Tripo web vb.: havuz, servis, kredi (ana oturumun kaydi)
         e['license'] = it.get('license', '') + ' (pipeline/licenses.md, Bitkiler)'
         lim = budgets[cls]
         tex = r['lods'][0]['tex']
         old = {c['id']: c for c in e.get('criteria', [])}
-        card = it['kind'] == 'tree' or any(m.get('clip') or m.get('alpha') or m.get('albedo_alpha') for m in it.get('materials', {}).values())
+        card = it['kind'] in ('tree', 'tripo_tree') or any(m.get('clip') or m.get('alpha') or m.get('albedo_alpha') for m in it.get('materials', {}).values())
         crit = [
             {'id': 1, 'name': CRIT[1], 'pass': tex <= lim['maxTex'], 'value': f"albedo+alfa, normal{', puruzluluk' if it['kind'] != 'tree' else ''}; en buyuk {tex} px (sinir {lim['maxTex']})", 'note': ''},
             {'id': 2, 'name': CRIT[2], 'pass': r['tris'] <= lim['maxTris'], 'value': f"{r['tris']} / {lim['maxTris']} ucgen" + (' (sinif alt sinirinin altinda)' if r['tris'] < lim['minTris'] else ''), 'note': ''},
             {'id': 3, 'name': CRIT[3], 'pass': None, 'value': '', 'note': 'olculmedi: yaprak karti / ince yaprak tasarim geregi levha (alfa makasli)' if card else 'olculmedi (bitki hatti)'},
             {'id': 4, 'name': CRIT[4], 'pass': None, 'value': '', 'note': 'olculmedi: kart dortgenleri acik levha (manifold degil) tasarim geregi' if card else 'olculmedi (bitki hatti)'},
-            {'id': 5, 'name': CRIT[5], 'pass': abs(r['size_m'][2] - it['height']) < 0.02, 'value': f"boy {r['size_m'][2]} m (hedef {it['height']}), taban z 0, orta [0, 0]", 'note': ''},
+            {'id': 5, 'name': CRIT[5], 'pass': abs((max(r['size_m']) if it.get('size_axis') == 'max' else r['size_m'][2]) - it['height']) < 0.02,
+             'value': f"{'en uzun kenar' if it.get('size_axis') == 'max' else 'boy'} {max(r['size_m']) if it.get('size_axis') == 'max' else r['size_m'][2]} m (hedef {it['height']}), taban z 0, orta [0, 0]", 'note': ''},
         ]
         for i in (6, 7, 8):
             crit.append({'id': i, 'name': CRIT[i], 'pass': None, 'value': '', 'score': None,
                          'note': 'sahibin onayini bekliyor (progress/bitki/once ve sonra goruntuleri)'})
         e['criteria'] = crit
         e['status'] = 'yer_tutucu'
-        e['statusNote'] = 'dokulu PBR bitki (bitki-pbr); olcut 3-4 kart icin olculmez, 6-8 sahibin onayini bekliyor'
+        e['statusNote'] = ('Tripo web agaci, yapraklar karta pisirildi (tripo_tree)' if it['kind'] == 'tripo_tree' else 'dokulu PBR bitki (bitki-pbr)') \
+            + '; olcut 3-4 kart icin olculmez, 6-8 sahibin onayini bekliyor'
         e['notes'] = f"kaynak: {it.get('label', name)}"
         e['model'] = r['lods'][0]['path']
         e['forward'] = ''

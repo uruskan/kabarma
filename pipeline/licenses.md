@@ -139,3 +139,30 @@ Ağaçlar ve süs bitkileri, çizgi film Tripo modellerinin yerine dokulu (PBR) 
 | `game/assets/models/ot/ot*.glb` (Lif tutamı) | `cotton_grass_wlykecdia_ue_high` → VarA + VarF LOD1 (Megascans "Cotton Grass") | Fab Standart Lisans (Megascans) | Aynı | ⚠️ Sahip doğrulamalı |
 | `game/assets/models/bugday/bugday*.glb` (yabani buğday) | `dry_grass_tbbqejqr_ue_high` → VarA + VarB LOD1 (Megascans "Dry Grass") | Fab Standart Lisans (Megascans) | Aynı | ⚠️ Sahip doğrulamalı; altın tona çekildi |
 | `game/assets/models/koknar/koknar*.glb`, `koknar_genc/koknar_genc*.glb` (oyunda değil; Sis Korusu için hazır) | `SourceWorld\vegetation\fir_01.glb`, `fir_04.glb` (Fab "Fir trees pack (9 models + LODs and billboards)", `christmass_trees_pack.blend`) | Fab Standart Lisans (Megascans değil) | Aynı | ⚠️ Sahip doğrulamalı (PROVENANCE: Fab sahiplik denetimi geçti) |
+
+## Tripo ağaçları (bitki-pbr, 18 Kasım 2026)
+
+Sahip kütüphane ağaçlarını beğenmedi; ana oturum Tripo web (H3.1, sahibin hesabı, web havuzu) ile stilize yarı gerçekçi ağaçlar üretti. Ham GLB'ler ana kopyanın `.tools/tripo_web/agaclar/` klasöründe (git dışı, salt okunur). Dönüşüm `pipeline/build_bitki.py` `tripo_tree`: yaprak/odun renge göre ayrılır, odun seyreltilip yeniden pişirilir, yaprak kümeleri karta pişirilir. Kredi ana oturumun kaydında; bu akış kredi harcamadı.
+
+| Oyundaki dosya | Kaynak | Lisans | Not |
+|---|---|---|---|
+| `game/assets/models/agac/agac*.glb` | `kabarma_agac_mese.glb` (meşe) | Tripo, sahibin hesabı (üretilen varlık sahibin) | Çayır ağacı |
+| `game/assets/models/agac_hus/agac_hus*.glb` | `kabarma_agac_hus.glb` (huş) | Aynı | Çayır ikinci ağaç; yaprak tonu meşeye yaklaştırıldı |
+| `game/assets/models/turuncu_agac/turuncu_agac*.glb` | `kabarma_turuncu_agac.glb` | Aynı | |
+| `game/assets/models/cali/cali*.glb` | `kabarma_cali.glb` | Aynı | Biçme Lif tutamı |
+| `game/assets/models/koru/koru_agac*.glb` | `kabarma_koru_agac.glb` | Aynı | Sis Korusu; camgöbeği yaprak seçici ton kaydırmayla orman yeşiline (ICERIK §2) |
+| `game/assets/models/koru_ladin/koru_ladin*.glb` | `kabarma_koru_ladin.glb` (uzun ladin) | Aynı | Sis Korusu ikinci ağaç |
+
+### Dalga 1 statik modeller (Tripo web, 18 Kasım 2026)
+Ham GLB'ler `.tools/tripo_web/dalga1/` (git dışı). Dönüşüm `build_bitki.py` `tripo_prop`: kaynaklar seyreltilir, yeni UV açılır, doku yüksek poligondan pişirilir (1K). Lisans: Tripo, sahibin hesabı (üretilen varlık sahibin).
+
+| Oyundaki dosya | Kaynak | Not |
+|---|---|---|
+| `game/assets/models/koru/dev_mantar*.glb` | `kabarma_dev_mantar.glb` | 2,5 m |
+| `game/assets/models/koru/kutuk*.glb` | `kabarma_kutuk.glb` | 3 m uzun |
+| `game/assets/models/koru/recine.glb` | `kabarma_recine.glb` | 0,9 m |
+| `game/assets/models/koru/guhercile.glb` | `kabarma_guhercile.glb` | 0,8 m |
+| `game/assets/models/koru/demir.glb` | `kabarma_demir.glb` | 1 m |
+| `game/assets/models/kesif/yuva.glb` | `kabarma_yuva.glb` | 1 m çap |
+| `game/assets/models/kesif/enkaz.glb` | `kabarma_enkaz.glb` | 2,5 m |
+| `game/assets/models/kesif/oyuk_agzi.glb` | `kabarma_oyuk_agzi.glb` | 4 m |

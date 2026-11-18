@@ -1,0 +1,41 @@
+{
+  "name": "agac_hus",
+  "label": "Cayir agaci 2: hus (Tripo web H3.1)",
+  "kind": "tripo_tree",
+  "source": {
+    "dir": "{main}/.tools/tripo_web/agaclar",
+    "file": "kabarma_agac_hus.glb"
+  },
+  "license": "Tripo web (sahibin hesabi; uretilen varlik sahibin)",
+  "height_target": 5.2,
+  "lods": [
+    {
+      "path": "res://assets/models/agac_hus/agac_hus.glb",
+      "tris": 5400,
+      "tex": 2048,
+      "surfaces": 2
+    },
+    {
+      "path": "res://assets/models/agac_hus/agac_hus_lod1.glb",
+      "tris": 3100,
+      "tex": 1024,
+      "surfaces": 2
+    },
+    {
+      "path": "res://assets/models/agac_hus/agac_hus_lod2.glb",
+      "tris": 1100,
+      "tex": 512,
+      "surfaces": 2
+    }
+  ],
+  "size_m": [
+    4.76,
+    4.179,
+    5.232
+  ],
+  "hull_points": 64,
+  "trunk_radius_m": 0.36,
+  "clusters": 900,
+  "leaf_faces": 1849611,
+  "tris": 5400
+}

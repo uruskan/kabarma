@@ -1,0 +1,38 @@
+{
+  "name": "dev_mantar",
+  "label": "Dev mantar (Tripo web H3.1)",
+  "kind": "tripo_prop",
+  "source": {
+    "dir": "{main}/.tools/tripo_web/dalga1",
+    "file": "kabarma_dev_mantar.glb"
+  },
+  "license": "Tripo web (sahibin hesabi; uretilen varlik sahibin)",
+  "height_target": 2.5,
+  "lods": [
+    {
+      "path": "res://assets/models/koru/dev_mantar.glb",
+      "tris": 5000,
+      "tex": 1024,
+      "surfaces": 1
+    },
+    {
+      "path": "res://assets/models/koru/dev_mantar_lod1.glb",
+      "tris": 2000,
+      "tex": 512,
+      "surfaces": 1
+    },
+    {
+      "path": "res://assets/models/koru/dev_mantar_lod2.glb",
+      "tris": 772,
+      "tex": 256,
+      "surfaces": 1
+    }
+  ],
+  "size_m": [
+    2.118,
+    2.02,
+    2.499
+  ],
+  "hull_points": 64,
+  "tris": 5000
+}

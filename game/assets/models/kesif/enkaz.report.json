@@ -1,0 +1,26 @@
+{
+  "name": "enkaz",
+  "label": "Enkaz (Tripo web H3.1)",
+  "kind": "tripo_prop",
+  "source": {
+    "dir": "{main}/.tools/tripo_web/dalga1",
+    "file": "kabarma_enkaz.glb"
+  },
+  "license": "Tripo web (sahibin hesabi; uretilen varlik sahibin)",
+  "height_target": 2.5,
+  "lods": [
+    {
+      "path": "res://assets/models/kesif/enkaz.glb",
+      "tris": 5499,
+      "tex": 1024,
+      "surfaces": 1
+    }
+  ],
+  "size_m": [
+    2.5,
+    1.06,
+    0.865
+  ],
+  "hull_points": 64,
+  "tris": 5499
+}
