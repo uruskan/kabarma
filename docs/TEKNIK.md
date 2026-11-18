@@ -100,6 +100,28 @@ kabarma/
 - Adanmış sunucu, aynı Godot projesinin başsız derlemesidir. Ayrı bir özel sunucu yazılmıyor, çünkü yük, araç ve ragdoll fiziği iki tarafta da aynı motoru ister.
 - `Kabarma.Tools/SimRunner`, Godot olmadan binlerce oyun gününü simüle eder; denge testleri bununla koşar.
 
+### 3.1 Hasar sözleşmesi (M3, `savas` akışı)
+
+Kural `src/Kabarma.Sim/Combat.cs` ve `Status.cs`, sayılar `data/combat.json` ([GDD.md](GDD.md) §16.1).
+
+- **Can taşıyan her şey bir `CombatBody` gömer.** Yaratık, Ata, Azman, Kabaran, kule, hayvan ve oyuncu buna dahildir. Gövde düz bir sınıftır: can, zırh puanı, kütle, profil, takım, Kabarık ve durum listesi. Sahibinin kendi kayıt ve ağ bölümüyle taşınır; yeni `GameState` özelliği gerekmez.
+- **İsabet:** `Combat.Apply(data, body, new CombatHit(miktar, tür, takım) { Procs, Knock, ... }, areas)`.
+  - Miktar önceden atılmış hasardır: kritik ve zayıf nokta çarpanı `Night.RollHit` ya da `Combat.Raw` ile uygulanmış olur.
+  - Azaltma sırası sabittir: profil çarpanı → zırh `z/(z+100)` → kalkan ve dost ateşi.
+  - Türün durumu kendiliğinden eklenir: Ateş → Yanık, Buz → Donma, Şok → Sersem ve zincir, Zehir → Zehir, Maya → Kabarık. Kart şansı `Procs` ile eklenir.
+- **Zaman:** her karede `Combat.Tick(data, body, dt, areas)` çağrılır. Yanık ve zehir hasarını işler, zırh bu hasarı azaltmaz.
+- **Sorgular:**
+  - `Status.SpeedMult`: Donma %40 yavaşlatır; Kilit ve Sersem 0 yapar.
+  - `Status.CanAct`, `Combat.Heal` (zehirliyken iyileşme yok), `Combat.Knock` (kütleye göre itme).
+- **Alan etkileri:** Sim komşu bilmez. Yanık sıçraması, şok zinciri ve Kabarık patlaması `CombatArea` olarak döner. Godot katmanı (`game/scripts/combat/`) gövdenin konumunda hedef seçer ve `Combat.ApplyArea` çağırır.
+- **Türün zayıflığı ve direnci** `combat.json` `profiles` içindedir; anahtar yaratık, Ata ya da Azman kimliğidir. Yeni tür bir satır ekler.
+- **Çapa başlığının hasar türü** `combat.json` `weaponTypes` içindedir.
+
+**Bağlanma notu (`kabarma3`, `savunma`, `kartlar`, `gucler`, `holding`, `savas-hayvan` için):**
+
+1. Sim durumunuza `CombatBody` gömün. İsabeti `Combat.Apply`, zamanı `Combat.Tick` ile işleyin, hareketi `Status.SpeedMult` ile çarpın. Kendi `BurnT`/`FreezeT` sayacınızı tutmayın.
+2. Kartın durum şansı `CombatHit.Procs`'a, kulenin ve tuzağın türü `CombatHit.Type`'a, yeni türün profili `combat.json` `profiles`'a gider. Dönen `CombatArea` listesini konuma göre `Combat.ApplyArea` ile komşulara uygulayın.
+
 ## 4. Varlık modeli
 
 - Ağdaki her nesnenin bir `net_id`'si ve bir tanımlayıcısı vardır: `{tür, içerik kimliği, parametreler, dönüşüm}`. Tanımlayıcı nesneyi iki tarafta da aynı kurmaya yeter (Oduncu'da kanıtlandı).
