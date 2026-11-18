@@ -70,7 +70,11 @@ public partial class Main : Node3D
             if (eq > 0) Args[s[..eq]] = s[(eq + 1)..]; else Args[s] = "1";
         }
         SetupInput();
-        if (Args.ContainsKey("mute")) Sfx.Muted = true;
+        // Sahibin karari (18 Kasim 2026): otomatik kosular (test, bot, goruntu, sure sinirli kosu) hic ses cikarmaz;
+        // sahip calisirken muzik dinliyor. Sesi duymak gereken bir kosu --ses ile acar.
+        bool automated = Args.ContainsKey("test") || Args.ContainsKey("bot") || Args.ContainsKey("shots") || Args.ContainsKey("quit_after")
+            || Args.ContainsKey("checkcolors") || Args.ContainsKey("gfxab") || Args.ContainsKey("perf");
+        if (Args.ContainsKey("mute") || (automated && !Args.ContainsKey("ses"))) { Args["mute"] = "1"; Sfx.Muted = true; AudioServer.SetBusMute(0, true); }
         if (Args.TryGetValue("shots", out var shots)) _shots.AddRange(shots.Split(',').Select(x => float.Parse(x, System.Globalization.CultureInfo.InvariantCulture)));
         if (Args.TryGetValue("shot_prefix", out var pre)) _prefix = pre;
         if (Args.TryGetValue("quit_after", out var q)) _quitAfter = float.Parse(q, System.Globalization.CultureInfo.InvariantCulture);
