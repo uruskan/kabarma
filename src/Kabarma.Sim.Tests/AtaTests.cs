@@ -256,9 +256,42 @@ public class AtaTests
         Start(Dede, p);
         AtaRules.Reward(p, Dede, bag);
         Assert.Equal(1.2f, p.SealMult(D, "yapi_cani"), 3);
-        AtaRules.Reward(p, Dede, bag); // ikinci yenilgi muhuru ikilemez
+        AtaRules.Reward(p, Dede, bag); // ikinci yenilgi (M4 Kabarik Ata) muhuru ikilemez
         Assert.Equal(1.2f, p.SealMult(D, "yapi_cani"), 3);
         Assert.Equal(2, p.Record("boynuzlu_dede").Defeats);
+    }
+
+    [Fact]
+    public void Arena_follows_dunya2_ata_tasi_when_on_map_else_fallback()
+    {
+        var s = new GameState(TestData.Load());
+        foreach (var def in new[] { Pofuduk, Dede })
+        {
+            var spot = AtaArena.Resolve(s, def);
+            Assert.True(AtaArena.OnMap(s.Data.Biomes, spot.X, spot.Z, spot.Radius), $"{def.Id} arenasi arazinin disinda ({spot.X:0},{spot.Z:0})");
+            var site = s.Spawns.AtaSite(def.Id, s.Pois);
+            if (spot.FromSite) Assert.Equal(site!.Value.site.X, spot.X, 2);
+            else Assert.Equal(def.Arena.Center[0], spot.X, 2);
+        }
+        // Koca Pofuduk'un Ata Tasi dunya2'de elle bu arenaya konmus (biomes.json pois fixed)
+        var koca = AtaArena.Resolve(s, Pofuduk);
+        Assert.True(koca.FromSite);
+        Assert.Equal(Pofuduk.Arena.Center[0], koca.X, 2);
+        Assert.Equal(Pofuduk.Arena.Center[1], koca.Z, 2);
+    }
+
+    [Fact]
+    public void Defeated_ata_cannot_be_summoned_or_offered_again_in_m2()
+    {
+        var p = new AtaProgress();
+        var bag = new Inventory(20, 50);
+        Start(Pofuduk, p);
+        AtaRules.Reward(p, Pofuduk, bag);
+        Assert.Null(AtaRules.Summon(p, D, Pofuduk, 1, force: true)); // Kabarik Ata M4
+        Assert.False(AtaRules.OfferSwollen(p, Pofuduk, "turnip"));
+        bag.Add("yun", 10);
+        Assert.Equal(0, AtaRules.OfferFromBag(p, Pofuduk, bag));
+        Assert.Equal(10, bag.Count("yun"));
     }
 
     [Fact]

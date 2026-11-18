@@ -109,23 +109,24 @@ public partial class PowerSystem : Node3D
         if (added < cables) _d.Hud.Hint("Çanta dolu: Kablo yere düşmedi, kayboldu", 2f);
     }
 
-    /// <summary>Parcayi soker: esya ve kablolari cantaya doner.</summary>
+    /// <summary>Parcayi soker: esya ve kablolari cantaya doner (ortak oyunda host'ta, aktorun cantasina).</summary>
     public void Dismantle(PowerDevice dev)
     {
-        Unregister(dev.NodeId, refund: true);
-        _d.State.Backpack.Add(dev.Def.Id, 1);
-        Fx.Burst(dev.GlobalPosition + Vector3.Up * 0.4f, Palette.Wood, 16, 3f, 0.08f, 0.6f);
-        Sfx.Play("pickup", dev.GlobalPosition, -4f);
-        GD.Print($"POWER dismantle {dev.Def.Id}");
-        dev.QueueFree();
+        Act(Op.Dismantle, dev.NodeId);
         _d.Hud.HideMenu();
     }
 
-    /// <summary>Kayit yuklenince: Sim'deki parcalardan gorunusu yeniden kurar (istasyon uclari istasyonla gelir).</summary>
+    /// <summary>
+    /// Kayit yuklenince ya da ortak oyunda agin bicimi degisince: Sim'deki parcalardan gorunusu yeniden kurar. Istasyon
+    /// uclari SyncStations ile yeniden baglanir (ayni yerdeki sahipsiz ucu kablolariyla geri alir).
+    /// </summary>
     public void Rebuild()
     {
         foreach (var dev in Devices.ToList()) dev.QueueFree();
-        foreach (var k in _owners.Where(kv => kv.Value is PowerDevice).Select(kv => kv.Key).ToList()) _owners.Remove(k);
+        _owners.Clear();
+        _stationPorts.Clear();
+        _pick = -1;
+        HidePreview();
         foreach (var c in _cables.Values) c.QueueFree();
         _cables.Clear(); _cableEnds.Clear();
         foreach (var n in Net.Nodes)
@@ -314,6 +315,7 @@ public partial class PowerSystem : Node3D
         if (have < 1) { _d.Hud.Hint("Kablo yok: Tezgâh → Kablo", 1.5f); Sfx.Play("hit", null, -10f); return true; }
         var err = Net.CanConnect(F, _pick, target, SignalMode);
         if (err != null) { _d.Hud.Hint(err, 1.5f); Sfx.Play("hit", null, -10f); _lastReason = err; GD.Print($"POWER refuse {err}"); return true; }
+        if (ForwardCable(_pick, target, SignalMode)) { Sfx.Play("place", SocketOf(target), -2f); _pick = -1; HidePreview(); return true; } // ortak: host ceker
         var link = Net.Connect(F, _pick, target, SignalMode);
         _d.State.Backpack.Remove(F.CableItem, 1);
         var end = SocketOf(target);
@@ -369,10 +371,8 @@ public partial class PowerSystem : Node3D
 
     public void Press(PowerDevice dev)
     {
-        Net.Press(F, dev.NodeId);
-        dev.Bounce();
+        Act(Op.Press, dev.NodeId);
         Sfx.Play("place", dev.GlobalPosition, -6f);
-        GD.Print($"POWER press {dev.NodeId}");
     }
 
     public void OpenPanel(int id)
@@ -384,24 +384,12 @@ public partial class PowerSystem : Node3D
         var items = new List<Hud.MenuItem>();
         void Re() => OpenPanel(id);
         if (pdef.Kind is "switch" or "consumer" && F.IsDevice(n.Def))
-            items.Add(new Hud.MenuItem(n.On ? "Kapat" : "Aç", () => !(n.SignalWired && pdef.Kind == "switch"), () => { n.On = !n.On; Sfx.Play("place", null, -8f); GD.Print($"POWER toggle {id} on={n.On}"); Re(); }));
+            items.Add(new Hud.MenuItem(n.On ? "Kapat" : "Aç", () => !(n.SignalWired && pdef.Kind == "switch"), () => { Act(Op.Toggle, id); Sfx.Play("place", null, -8f); Re(); }));
         if (pdef.Kind == "consumer")
-            items.Add(new Hud.MenuItem($"Öncelik: {n.Priority}  (1 en önemli, 5 ilk kapanır)", () => true, () =>
-            {
-                n.Priority = n.Priority >= F.PriorityMax ? F.PriorityMin : n.Priority + 1;
-                Sfx.Play("place", null, -12f);
-                Re();
-            }));
+            items.Add(new Hud.MenuItem($"Öncelik: {n.Priority}  (1 en önemli, 5 ilk kapanır)", () => true, () => { Act(Op.Priority, id); Sfx.Play("place", null, -12f); Re(); }));
         if (pdef.Kind == "button" && dev != null) items.Add(new Hud.MenuItem("Bas", () => true, () => { Press(dev); Re(); }));
         int cables = Net.Links.Count(l => l.A == id || l.B == id);
-        items.Add(new Hud.MenuItem($"Kablolarını sök ({cables})", () => cables > 0, () =>
-        {
-            int k = Net.Disconnect(id);
-            Refund(k);
-            Sfx.Play("pickup", null, -6f);
-            GD.Print($"POWER unplug {id} x{k}");
-            Re();
-        }, F.CableItem));
+        items.Add(new Hud.MenuItem($"Kablolarını sök ({cables})", () => cables > 0, () => { Act(Op.Unplug, id); Sfx.Play("pickup", null, -6f); Re(); }, F.CableItem));
         if (dev != null) items.Add(new Hud.MenuItem($"Sök ({dev.Def.Name} ve kabloları çantaya)", () => true, () => Dismantle(dev), dev.Def.Id));
         var stats = Net.StatsOf(id);
         string net = stats == null

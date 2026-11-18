@@ -445,8 +445,9 @@ Yabani yaratıklar, açık arazideki Holding ekipleri ve kervanları, Oyuk koruy
 
 Sayılar `data/atalar.json`'da; kural `src/Kabarma.Sim/Ata*.cs`, Godot katmanı `game/scripts/boss/`.
 
-- **Bulunma ve çağırma:** Ata Taşı ve sunağı arenanın kenarında durur; haritada açıklıktır (`biomes.json` `clearings`). Adak sunağa tek tek konur. Çanta eşyası etkileşimle sunulur; kabarık ürün Çekim'le sunağa bırakılır. Adak tamamlanınca Ata arenanın ortasına iner. Yenilen Ata aynı adakla yeniden çağrılmaz; Kabarık Ata M4'te gelir.
+- **Bulunma ve çağırma:** Arena, biyomun Ata Taşı keşif noktasındadır (`biomes.json` `pois` ve `spawns.atalar`). Nokta henüz arazinin dışındaysa `atalar.json` yedek yeri kullanılır; Sis Korusu'nun noktası bu durumdadır. Ata Taşı ve sunağı arenanın kenarında durur. Adak sunağa tek tek konur. Çanta eşyası etkileşimle sunulur; kabarık ürün Çekim'le sunağa bırakılır. Adak tamamlanınca Ata arenanın ortasına iner. Yenilen Ata aynı adakla yeniden çağrılmaz; Kabarık Ata M4'te gelir.
 - **Aşamalar:** Can oranı aşama eşiğinin altına inince sonraki aşama başlar. Geçişte Ata 1,5 saniye hasar almaz ve kabarır.
+- **Kaçış:** Oyuncu arenadan 20 saniye uzak kalırsa Ata çekilir ve dövüş biter. Adak geri gelmez.
 - **Koca Pofuduk:**
   - **Aşama 1:** Sezdirip hücum eder; yün yumağı atar. Yumak oyuncuyu sektirir.
   - **Aşama 2:** Yün zırhı hasarı azaltır. Biçme vuruşu zırhı kırkar; yanık da zırhı yer. Yumaklardan küçük Pofuduklar çıkar.

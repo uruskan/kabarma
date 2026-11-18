@@ -21,6 +21,8 @@ public partial class AtaSystem : Node3D
     AtalarFile Data => _d.Data.Atalar;
     public AtaProgress Progress => _d.State.Atalar;
     public AtaFight Fight => Progress.Active;
+    /// <summary>Ekip boyu (GDD §18: Ata cani 1 + 0,5 × (n − 1)): ortak oyunda oyuncu sayisi (NetSync), tek oyuncuda 1.</summary>
+    public int TeamSize => _d.Net?.PlayerCount ?? 1;
     /// <summary>Sinama ve rapor: yenilen Atalar (sirayla) ve dovus sureleri.</summary>
     public readonly List<string> DefeatedLog = new();
     /// <summary>Sinama: Dede'ye isabet eden firlatilmis boynuz parcasi, kirkma vurusu, sutun toslamasi.</summary>
@@ -33,7 +35,7 @@ public partial class AtaSystem : Node3D
     {
         foreach (var def in Data.Atalar)
         {
-            var stone = new AtaStone(_d, def) { Name = "AtaTasi_" + def.Id };
+            var stone = new AtaStone(_d, def, new Vector3(Spot(def).X, 0, Spot(def).Z)) { Name = "AtaTasi_" + def.Id };
             AddChild(stone);
             _stones[def.Id] = stone;
             BuildPillars(def);
@@ -43,12 +45,16 @@ public partial class AtaSystem : Node3D
         AddChild(Bar);
         // Kayittan suren dovus geldiyse Ata arenada yeniden kurulur.
         if (Fight != null) CallDeferred(nameof(Respawn));
-        GD.Print($"ATALAR arenas={string.Join(",", Data.Atalar.Select(a => $"{a.Id}@{ArenaCenter(a).X:0},{ArenaCenter(a).Z:0}"))}");
+        GD.Print($"ATALAR arenas={string.Join(",", Data.Atalar.Select(a => $"{a.Id}@{ArenaCenter(a).X:0},{ArenaCenter(a).Z:0}/r{ArenaRadius(a):0}{(Spot(a).FromSite ? ":" + Spot(a).SiteId : ":yedek")}"))}");
     }
 
     void Respawn() { if (Fight != null && Actor == null) SpawnActor(Data.Get(Fight.AtaId), arriving: false); }
 
-    public Vector3 ArenaCenter(AtaDef def) => _d.World.Ground(new Vector3(def.Arena.Center[0], 0, def.Arena.Center[1]));
+    readonly Dictionary<string, AtaArenaSpot> _spots = new();
+    /// <summary>Arena yeri: dunya2'nin Ata Tasi noktasi (arazideyse) ya da atalar.json yedegi (AtaArena.Resolve).</summary>
+    public AtaArenaSpot Spot(AtaDef def) => _spots.TryGetValue(def.Id, out var s) ? s : _spots[def.Id] = AtaArena.Resolve(_d.State, def);
+    public Vector3 ArenaCenter(AtaDef def) => _d.World.Ground(new Vector3(Spot(def).X, 0, Spot(def).Z));
+    public float ArenaRadius(AtaDef def) => Spot(def).Radius;
     public Vector3 StonePos(AtaDef def) => _stones.TryGetValue(def.Id, out var s) ? s.GlobalPosition : ArenaCenter(def);
     public Vector3 AltarPos(AtaDef def) => _stones.TryGetValue(def.Id, out var s) ? s.Altar : ArenaCenter(def);
     public AtaDef Def(string id) => Data.Get(id);
@@ -91,7 +97,7 @@ public partial class AtaSystem : Node3D
         // Oyuncu arenadan uzaklasti: Ata merkezine doner; uzun sure yoksa dovus biter (adak geri gelmez, M2).
         float away = new Vector2(p.GlobalPosition.X - ArenaCenter(def0).X, p.GlobalPosition.Z - ArenaCenter(def0).Z).Length();
         _awayT = away > def0.Arena.Leash ? _awayT + dt : 0f;
-        if (_awayT > 20f) { GD.Print($"ATA abandon {def0.Id}"); _d.Hud.Say($"{def0.Name} ormana çekildi."); Cleanup(); AtaRules.Abandon(Progress); }
+        if (_awayT > Data.AbandonSeconds) { GD.Print($"ATA abandon {def0.Id}"); _d.Hud.Say($"{def0.Name} ormana çekildi."); Cleanup(); AtaRules.Abandon(Progress); }
     }
 
     void AltarTick(AtaDef def, Player p)
@@ -129,7 +135,7 @@ public partial class AtaSystem : Node3D
 
     bool TrySummon(AtaDef def)
     {
-        var f = AtaRules.Summon(Progress, Data, def, 1);
+        var f = AtaRules.Summon(Progress, Data, def, TeamSize);
         if (f == null) return false;
         Arrive(def);
         return true;
@@ -140,7 +146,7 @@ public partial class AtaSystem : Node3D
     {
         if (Fight != null) return false;
         var def = Data.Get(id);
-        if (AtaRules.Summon(Progress, Data, def, 1, force: true) == null) return false;
+        if (AtaRules.Summon(Progress, Data, def, TeamSize, force: true) == null) return false;
         GD.Print($"ATA dev_summon {id}");
         Arrive(def);
         return true;

@@ -268,7 +268,7 @@ public partial class AtaTest : Node
     {
         var c = _sys.ArenaCenter(Cur);
         var off = (P.GlobalPosition - c) with { Y = 0 };
-        if (off.Length() > Cur.Arena.Radius - 1f && P.MoveOverride is Vector3 mv && mv.Dot(off) > 0) P.MoveOverride = (mv - off.Normalized() * mv.Dot(off.Normalized()) * 1.5f);
+        if (off.Length() > _sys.ArenaRadius(Cur) - 1f && P.MoveOverride is Vector3 mv && mv.Dot(off) > 0) P.MoveOverride = (mv - off.Normalized() * mv.Dot(off.Normalized()) * 1.5f);
     }
 
     // ---------- Sonra ----------
