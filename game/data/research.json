@@ -1,0 +1,55 @@
+{
+  "_not": "Arastirma, Tarayici ve ambardan uretim (GDD §5, §12; ICERIK §0, §11.1, §20). Tarif recipes.json'da 'unlockOn': 'arastirma:<dugum>' ile kilitlenir; dugum arastirilinca GameState.Known'a 'arastirma:<dugum>' girer. 'ocak:<n>' Ocak basamagidir (Ata Cekirdegi; boss akisi GameState.SetOcakTier ile yukseltir). Arastirma yalniz 'table' istasyonunun yaninda yapilir.",
+  "table": "arastirma_masasi",
+  "costByTier": [0, 10, 25, 60, 120, 220, 400],
+  "nodes": [
+    { "id": "bicki", "tier": 2, "requires": [] },
+    { "id": "dokuma_tezgahi", "tier": 2, "requires": [] },
+    { "id": "degirmen", "tier": 2, "requires": ["bicki"] },
+    { "id": "kasap_tezgahi", "tier": 2, "requires": ["bicki"] },
+    { "id": "kulucka", "tier": 2, "requires": ["bicki"] },
+    { "id": "oyma_iskelesi", "tier": 2, "requires": ["bicki"] },
+    { "id": "arac_atolyesi", "tier": 2, "requires": ["bicki", "degirmen"] },
+    { "id": "filtre_maskesi", "tier": 2, "requires": ["dokuma_tezgahi"] }
+  ],
+  "_not_ocak": "Ocak basamagi baslangicta 1 (GDD §6). Tapu yaricapi basamak basina (m, GDD §6): ambardan uretimin Sandik yaricapi.",
+  "ocakTierStart": 1,
+  "_not_cores": "Ocak basamak yukseltme (GDD §6): indeks basamak. Cekirdek Ata odulu (atalar.json reward.items); Ocak'in yanina gelince takilir.",
+  "tierCores": ["", "", "cayir_cekirdegi", "koru_cekirdegi", "sazlik_cekirdegi", "kanyon_cekirdegi", "ayaz_cekirdegi"],
+  "claimRadius": [40, 60, 80, 110, 140, 180],
+  "_not_ambar": "Ambardan uretim (GDD §5): istasyon tarifi cantada eksik kalani tapu icindeki Sandiklardan alir; el tarifi yalniz cantadan. stationQueueMax: istasyon basina sira (is satiri).",
+  "handFromStorage": false,
+  "stationQueueMax": 8,
+  "_not_watts": "Guc isteyen istasyonlar (ICERIK §11). guc akisinin tuketici arayuzu main'e girene kadar uygulanmaz; StationQueue.PowerOk null iken istasyon calisir.",
+  "watts": { "bicki": 20, "degirmen": 20, "kulucka": 40, "arac_atolyesi": 60 },
+  "_not_scan": "Tarayici (GDD §4, §12): bakilan turu ilk kez taramak Veri verir ve Ansiklopedi'ye yazar. kind: creature (dugum sinifi), plant (tutam/ekin/agac), mineral (kaya esyasi). range: oyuncudan en uzak (m); pick: nisan noktasina en uzak (m).",
+  "scan": {
+    "range": 14,
+    "pick": 3.0,
+    "entries": [
+      { "id": "gidak", "kind": "creature", "name": "Gıdak", "veri": 15 },
+      { "id": "zipzip", "kind": "creature", "name": "Zıpzıp", "veri": 15 },
+      { "id": "pofuduk", "kind": "creature", "name": "Pofuduk", "veri": 15 },
+      { "id": "tree", "kind": "plant", "name": "Çayır ağacı", "veri": 5 },
+      { "id": "fiber", "kind": "plant", "name": "Lifotu", "veri": 8 },
+      { "id": "wheat", "kind": "plant", "name": "Yabani Buğday", "veri": 8 },
+      { "id": "turnip", "kind": "plant", "name": "Şalgam", "veri": 8 },
+      { "id": "stone", "kind": "mineral", "name": "Taş", "veri": 6 },
+      { "id": "clay", "kind": "mineral", "name": "Kil", "veri": 6 },
+      { "id": "copper_ore", "kind": "mineral", "name": "Bakır damarı", "veri": 6 },
+      { "id": "iron_ore", "kind": "mineral", "name": "Demir damarı", "veri": 6 }
+    ]
+  },
+  "_not_graph": "Tarif grafi testi (TEKNIK §11, ICERIK §20): tarifi olmayan ham kaynaklar ve hangi basamakta elde edildikleri. 'by' kaynagi kuran akistir.",
+  "rawSources": [
+    { "id": "stone", "tier": 1, "by": "dunya" },
+    { "id": "wood", "tier": 1, "by": "dunya" },
+    { "id": "fiber", "tier": 1, "by": "dunya" },
+    { "id": "clay", "tier": 1, "by": "dunya" },
+    { "id": "copper_ore", "tier": 1, "by": "dunya" },
+    { "id": "wheat", "tier": 1, "by": "dunya" },
+    { "id": "turnip", "tier": 1, "by": "tarim" },
+    { "id": "egg", "tier": 1, "by": "hayvan" },
+    { "id": "iron_ore", "tier": 2, "by": "dunya2" }
+  ]
+}
