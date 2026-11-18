@@ -56,6 +56,9 @@ public static class Events
     public static event Action<string, int> AtaPhase;
     public static void RaiseAtaDefeated(string id) => AtaDefeated?.Invoke(id);
     public static void RaiseAtaPhase(string id, int phase) => AtaPhase?.Invoke(id, phase);
+    /// <summary>Yabani yaratik davranisi (tur, olay: Alerted/Fled/Warned/Struck/Took/Slept/Woke, x, z). Yayan: Wildlife (yaratik2). Etkiyi sahibi uygular: ekin tarim, yumurta hayvan (ICERIK §3.8).</summary>
+    public static event Action<string, string, float, float> WildActed;
+    public static void RaiseWildActed(string species, string what, float x, float z) => WildActed?.Invoke(species, what, x, z);
 
     public static void RaisePenChanged(int cells) => PenChanged?.Invoke(cells);
     public static void RaiseAnimalPenned(string species) => AnimalPenned?.Invoke(species);
@@ -82,6 +85,7 @@ public static class Events
     /// <summary>Butun aboneleri birakir.</summary>
     public static void Clear()
     {
+        WildActed = null;
         StationPlaced = null; PiecePlaced = null; Produced = null; Sold = null; CropShipped = null;
         Harvested = null; Gathered = null; Ate = null; CreatureKilled = null; CardPicked = null;
         StepChanged = null; NightStarted = null; Dawn = null;

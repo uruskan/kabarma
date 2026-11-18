@@ -20,7 +20,7 @@ public sealed partial class GameState
     void InitNightAndDay()
     {
         Calendar = new Calendar(Data.Calendar);
-        Orders = new OrderBook(Data.Orders);
+        Orders = new OrderBook(Data.Orders, GrantOrderReward);
         Farm.Planted += _ => Orders.Report("planted");
         Farm.Swelled += p =>
         {
@@ -29,6 +29,7 @@ public sealed partial class GameState
         };
         Farm.Eaten += _ => Night?.RecordEaten();
         Sold += (_, _) => Orders.Report("cargo_sold");
+        InitProgress(); // GameState.Progress.cs: Ustalik, basarimlar, boy olculeri
     }
 
     void OnNightStarted(KabarmaNight n)

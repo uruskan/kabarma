@@ -22,7 +22,7 @@ public sealed class StaminaDef
 /// saniyede Regen dolar; sifira inerse depar, dayaniklilik UnlockAt'e cikana kadar kapanir.
 /// Motordan bagimsiz kural durumudur (GameState.Stamina); Godot katmani her karede Tick cagirir, pano okur.
 /// </summary>
-public sealed class Stamina
+public sealed partial class Stamina
 {
     public StaminaDef Def { get; }
     public float Value { get; private set; }

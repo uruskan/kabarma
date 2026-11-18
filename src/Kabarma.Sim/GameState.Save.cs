@@ -70,6 +70,8 @@ public sealed class PackSave
     public List<string?> Belt { get; set; } = new();
     public int BeltSelected { get; set; } = -1;
     public float TankLiters { get; set; }
+    public StaminaSave Stamina { get; set; } = new();
+    public List<FoodSave> Food { get; set; } = new();
 }
 
 public sealed class PacksSave
@@ -124,7 +126,7 @@ public sealed partial class GameState
         }
     }
 
-    [SaveSection("player.pack", 1, Order = SaveOrder.State, Covers = new[] { nameof(Backpack), nameof(Eggs), nameof(Belt), nameof(Tank) })]
+    [SaveSection("player.pack", 1, Order = SaveOrder.State, Covers = new[] { nameof(Backpack), nameof(Eggs), nameof(Belt), nameof(Tank), nameof(Stamina), nameof(Food) })]
     PacksSave PackSection
     {
         get => new()
@@ -138,6 +140,8 @@ public sealed partial class GameState
                     Belt = Belt.Ids.ToList(),
                     BeltSelected = Belt.Selected,
                     TankLiters = Tank.Liters,
+                    Stamina = Stamina.Save(),
+                    Food = Food.Save(),
                 },
             },
         };
@@ -148,6 +152,8 @@ public sealed partial class GameState
             StackSave.Into(Backpack, p.Backpack); // once canta: Changed yaymaz, kemer kendiliginden dolmaz
             Belt.Load(p.Belt, p.BeltSelected);
             Tank.Restore(p.TankLiters);
+            Stamina.Load(p.Stamina ?? new StaminaSave { Value = Stamina.Max });
+            Food.Load(p.Food ?? new(), id => Data.Tool.Foods.FirstOrDefault(f => f.Id == id));
         }
     }
 }

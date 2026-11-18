@@ -1,11 +1,14 @@
 namespace Kabarma.Sim;
 
 /// <summary>Bir is emri zincirinin ilerlemesi (ICERIK 18: 5 adim). Sayaclar zincir acildiktan sonra sayar.</summary>
-public sealed class ChainState
+public sealed partial class ChainState
 {
     public OrderChainDef Def { get; }
     public bool Opened { get; internal set; }
+    /// <summary>Olcu -> deger (sum: toplam, distinct: farkli anahtar sayisi, peak: en yuksek).</summary>
     public Dictionary<string, int> Counts { get; } = new();
+    /// <summary>"distinct" olculerin gorulen anahtarlari (olcu -> anahtarlar). Duz, kayda hazir.</summary>
+    public Dictionary<string, HashSet<string>> Keys { get; } = new();
     readonly bool[] _done;
 
     public ChainState(OrderChainDef def) { Def = def; _done = new bool[def.Steps.Count]; }
@@ -19,6 +22,8 @@ public sealed class ChainState
     public int DoneCount => _done.Count(d => d);
     /// <summary>Adimin ilerlemesi (hedefte kesilir).</summary>
     public int Progress(int i) => Math.Min(Count(Def.Steps[i].Measure), Def.Steps[i].Target);
+    public bool[] DoneFlags() => (bool[])_done.Clone();
+    internal void SetDone(IList<bool> flags) { for (int i = 0; i < _done.Length && i < flags.Count; i++) _done[i] = flags[i]; }
 
     /// <summary>Yeni biten adimlarin sirasi (her adim bir kez).</summary>
     internal IEnumerable<int> Latch()
@@ -32,19 +37,29 @@ public sealed class ChainState
     }
 }
 
+/// <summary>Odeme geri cagrisi (Kredi, Veri, ne icin): GameState kendi bakiyesine yazar.</summary>
+public delegate void OrderPayout(int credits, int veri, string what);
+
 /// <summary>
-/// Defter: is emri zincirleri (GDD 13, 24; ICERIK 18). Oyun olaylari olcu adiyla bildirilir ("planted", "cargo_sold"...).
+/// Defter: is emri zincirleri (GDD 13, 24; ICERIK 18). Oyun olaylari olcu adiyla bildirilir; uc kip (orders.json "measures"):
+///   sum      Report(olcu, n): her olay toplanir ("planted", "swollen_crop"...).
+///   distinct ReportKey(olcu, anahtar): farkli anahtar sayisi ("crop_kind", "tamed_species").
+///   peak     Level(olcu, deger): en yuksek deger ("herd_size", "plant_gene"); Defter acilinca o ana kadarki tepe alinir.
 /// "Ilk X" adimlari sirasindan bagimsiz isaretlenir (ilk gecede Kabarma kargodan once gelir); siradaki adim ilk bitmemis olandir.
-/// M1: odul odenmez (is emri altyapisi M2); Defter'in ilk sayfasi ve takip satiri.
+/// Adim odulu (Kredi + Veri) Defter aciksa adim biter bitmez, degilse Defter acilinca odenir (sessiz sayim, GDD 24).
+/// Genel sayaclar (Stats) zincirlerden bagimsizdir ve her zaman sayar: basarimlar bunlara bakar.
 /// </summary>
-public sealed class OrderBook
+public sealed partial class OrderBook
 {
     readonly OrdersFile _def;
     readonly List<ChainState> _chains;
+    readonly OrderPayout? _pay;
+    readonly List<string> _pending = new();
 
-    public OrderBook(OrdersFile def)
+    public OrderBook(OrdersFile def, OrderPayout? pay = null)
     {
         _def = def;
+        _pay = pay;
         _chains = def.Chains.Select(c => new ChainState(c) { Opened = c.OpensAt == "start" }).ToList();
     }
 
@@ -52,33 +67,155 @@ public sealed class OrderBook
     public bool DefterOpen { get; private set; }
     public int OrdersTotal => _def.ChainsTotal * _def.StepsPerChain;
     public int ChainsTotal => _def.ChainsTotal;
+    /// <summary>Oyuncunun elle sectigi takip zinciri (bos: otomatik).</summary>
+    public string PinnedId { get; private set; } = "";
+    /// <summary>Genel sayaclar: zincirden bagimsiz, her zaman sayar (basarimlar).</summary>
+    public Dictionary<string, int> Stats { get; } = new();
+    public Dictionary<string, HashSet<string>> StatKeys { get; } = new();
+    /// <summary>Acilan seyler ("kind:id"): sahibi sistem (kart, uye, kozmetik, plan, esya) buradan okur.</summary>
+    public HashSet<string> Granted { get; } = new();
+    /// <summary>Is emri odemelerinin toplami (Kredi, Veri).</summary>
+    public int CreditsPaid { get; private set; }
+    public int VeriPaid { get; private set; }
+    /// <summary>Defter kapaliyken biten, odulu bekleyen adimlar ("zincir:adim").</summary>
+    public IReadOnlyList<string> PendingRewards => _pending;
 
     /// <summary>(zincir, biten adim indeksi).</summary>
     public event Action<ChainState, int>? StepDone;
+    /// <summary>Zincirin 5 adimi da bitti.</summary>
+    public event Action<ChainState>? ChainDone;
+    /// <summary>(zincir, adim indeksi, Kredi, Veri): adim odulu hesaba gecti.</summary>
+    public event Action<ChainState, int, int, int>? RewardPaid;
+    public event Action<ChainState, OrderGrantDef>? GrantMade;
+    /// <summary>(sayac, yeni deger): genel sayac degisti.</summary>
+    public event Action<string, int>? StatChanged;
     public event Action? DefterOpened;
 
     public ChainState? Chain(string id) => _chains.FirstOrDefault(c => c.Def.Id == id);
+
+    string Mode(string measure) => _def.Measures.TryGetValue(measure, out var m) ? m : "sum";
 
     /// <summary>PLAN 1.4: ilk Hasat Raporu'nda Defter acilir; "defter" zincirleri bundan sonra sayar.</summary>
     public void OpenDefter()
     {
         if (DefterOpen) return;
         DefterOpen = true;
-        foreach (var c in _chains) if (c.Def.OpensAt == "defter") c.Opened = true;
+        foreach (var c in _chains)
+        {
+            if (c.Def.OpensAt != "defter") continue;
+            c.Opened = true;
+            // Tepe olculer (aynı anda hayvan, gen puani) simdiye dek ulasilan en yuksek degerle baslar.
+            foreach (var s in c.Def.Steps)
+                if (Mode(s.Measure) == "peak" && Stats.TryGetValue(s.Measure, out int v)) c.Counts[s.Measure] = v;
+            foreach (int i in c.Latch().ToList()) AfterLatch(c, i);
+        }
+        FlushPending();
         DefterOpened?.Invoke();
     }
 
+    /// <summary>sum kipi: olcuyu amount kadar artirir.</summary>
     public void Report(string measure, int amount = 1)
     {
         if (amount <= 0) return;
-        foreach (var c in _chains)
+        SetStat(measure, Stats.GetValueOrDefault(measure) + amount);
+        foreach (var c in Watching(measure))
         {
-            if (!c.Opened || c.Def.Steps.All(s => s.Measure != measure)) continue;
             c.Counts[measure] = c.Count(measure) + amount;
-            foreach (int i in c.Latch().ToList()) StepDone?.Invoke(c, i);
+            LatchAll(c);
         }
     }
 
-    /// <summary>Takip edilen zincir: acik ve bitmemis zincirlerin sonuncusu (Defter acilinca "siradaki is emri").</summary>
-    public ChainState? Tracked => _chains.LastOrDefault(c => c.Opened && !c.Done);
+    /// <summary>distinct kipi: anahtar daha once gorulmediyse sayiyi bir artirir.</summary>
+    public void ReportKey(string measure, string key)
+    {
+        if (string.IsNullOrEmpty(key)) return;
+        var set = StatKeys.TryGetValue(measure, out var s0) ? s0 : StatKeys[measure] = new();
+        if (set.Add(key)) SetStat(measure, set.Count);
+        foreach (var c in Watching(measure))
+        {
+            var keys = c.Keys.TryGetValue(measure, out var k0) ? k0 : c.Keys[measure] = new();
+            if (!keys.Add(key)) continue;
+            c.Counts[measure] = keys.Count;
+            LatchAll(c);
+        }
+    }
+
+    /// <summary>peak kipi: deger o ana kadarki en yuksekten buyukse tepeyi gunceller.</summary>
+    public void Level(string measure, int value)
+    {
+        if (value > Stats.GetValueOrDefault(measure)) SetStat(measure, value);
+        foreach (var c in Watching(measure))
+        {
+            if (value <= c.Count(measure)) continue;
+            c.Counts[measure] = value;
+            LatchAll(c);
+        }
+    }
+
+    IEnumerable<ChainState> Watching(string measure) =>
+        _chains.Where(c => c.Opened && !c.Done && c.Def.Steps.Any(s => s.Measure == measure)).ToList();
+
+    void SetStat(string stat, int value)
+    {
+        Stats[stat] = value;
+        StatChanged?.Invoke(stat, value);
+    }
+
+    void LatchAll(ChainState c)
+    {
+        foreach (int i in c.Latch().ToList()) AfterLatch(c, i);
+    }
+
+    void AfterLatch(ChainState c, int i)
+    {
+        StepDone?.Invoke(c, i);
+        if (DefterOpen) Pay(c, i); else _pending.Add($"{c.Def.Id}:{i}");
+        if (c.Done) ChainDone?.Invoke(c);
+    }
+
+    void FlushPending()
+    {
+        var todo = _pending.ToList();
+        _pending.Clear();
+        foreach (var key in todo)
+        {
+            var p = key.Split(':');
+            var c = Chain(p[0]);
+            if (c != null) Pay(c, int.Parse(p[1]));
+        }
+    }
+
+    void Pay(ChainState c, int i)
+    {
+        int cr = i < _def.StepRewards.Credits.Count ? _def.StepRewards.Credits[i] : 0;
+        int veri = i < _def.StepRewards.Veri.Count ? _def.StepRewards.Veri[i] : 0;
+        CreditsPaid += cr; VeriPaid += veri;
+        _pay?.Invoke(cr, veri, $"{c.Def.Id} {i + 1}");
+        RewardPaid?.Invoke(c, i, cr, veri);
+        foreach (var g in c.Def.Grants.Where(g => g.Step == i + 1))
+            if (Granted.Add($"{g.Kind}:{g.Id}")) GrantMade?.Invoke(c, g);
+    }
+
+    /// <summary>
+    /// Takip edilen zincir (Defter satiri, pusula). Oyuncu sectiyse o; degilse Defter acilana dek Ciraklik, sonra
+    /// Ciraklik'tan sonraki ilk bitmemis acik zincir (Ciraklik'in sonraki adimlari ogretici olarak gozlenir).
+    /// </summary>
+    public ChainState? Tracked
+    {
+        get
+        {
+            if (PinnedId != "" && Chain(PinnedId) is { Opened: true, Done: false } pin) return pin;
+            var first = _chains.FirstOrDefault();
+            if (!DefterOpen) return first is { Opened: true, Done: false } ? first : null;
+            return _chains.Skip(1).FirstOrDefault(c => c.Opened && !c.Done) ?? (first is { Opened: true, Done: false } ? first : null);
+        }
+    }
+
+    /// <summary>Takip zincirini secer ("" otomatik). Acik ve bitmemis degilse false.</summary>
+    public bool Pin(string id)
+    {
+        if (id != "" && Chain(id) is not { Opened: true, Done: false }) return false;
+        PinnedId = id;
+        return true;
+    }
 }

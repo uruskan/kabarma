@@ -71,6 +71,7 @@ public partial class BuildBridge
         _d.Hud.Hint($"İnşa: {NameOf(id)} ({cost} Odun){(why != "" ? "  ·  " + why : "")}  ·  {{act:build_wheel}} basılı: parça  ·  {{act:build_rotate}}: döndür  ·  {{act:interact}} basılı: onar / sök", 0.2f);
         if (!place || cur == null) return;
         if (why != "") { Sfx.Play("hit", null, -10f); return; }
+        if (_d.Net?.ForwardPlace(_sys) == true) return; // ortak: istemcide host kurar, parca bolumle doner
         var piece = _sys.TryPlace();
         if (piece == null) return;
         _d.State.Backpack.Remove("wood", cost);
@@ -171,6 +172,7 @@ public partial class BuildBridge
     public bool Deconstruct(Node3D t)
     {
         if (t == null || SokBlock(t) != "") return false;
+        if (_d.Net?.ForwardRemove(t) == true) return true; // ortak: host soker ve iade eder
         var (id, _, cost) = Describe(this, t);
         var refund = Structures.Refund(cost, Rules);
         if (!Fits(refund)) return false;
@@ -211,6 +213,7 @@ public partial class BuildBridge
     public bool Repair(Node3D t)
     {
         if (t is not BuildPiece bp) return false;
+        if (_d.Net?.ForwardRepair(t) == true) return true; // ortak: host onarir
         float max = _sys.Kit.PieceHp;
         var cost = Structures.RepairCost(Wood(CostOf(bp.Def.Id)), bp.Hp, max, Rules);
         if (cost.Count == 0 || cost.Any(kv => _d.State.Backpack.Count(kv.Key) < kv.Value)) return false;

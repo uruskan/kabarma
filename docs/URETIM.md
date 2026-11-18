@@ -291,7 +291,7 @@ Belgelerin sustuğu ya da çeliştiği yerler için verilen kararlar. Sahibin te
 
 Bütün kalıcı sistemlerin kuralları, T1–T2 içeriğiyle; ardından ortak oyun.
 
-**Teslim:** yapı (taşıma dengesi, yükseltme, plan modu, Plan Defteri) · tarım (genler, çaprazlama, Alaca, zararlılar) · hayvancılık (Çayır ve Koru'nun sekiz evcil türü: Gıdak, Pofuduk, Homur, Dallı, Hu, Vıcık, Bozuk, Vızvız; roller, üreme) · Çayır ve Koru'nun 12 yaratığının tamamı · güç ağı ve temel sinyal · T1–T2 üretim zinciri ve araştırma · envanter, ambardan üretim · ekonomi (borsa, katalog, çark) · iş emirleri altyapısı ve ilk 12 zincir · Ustalık · kayıt ve yükleme · Sis Korusu · Koca Pofuduk ve Boynuzlu Dede · harita, Seyir Kulesi, mancınık · Çekirge · ortak oyun 1–4 (ENet ve Steam), sonradan katılma, sesli sohbet, şok tokadı.
+**Teslim:** yapı (taşıma dengesi, yükseltme, plan modu, Plan Defteri) · tarım (genler, çaprazlama, Alaca, zararlılar) · hayvancılık (Çayır ve Koru'nun sekiz evcil türü: Gıdak, Pofuduk, Homur, Dallı, Hu, Vıcık, Bozuk, Vızvız; roller, üreme) · Çayır ve Koru'nun 12 yaratığının tamamı · güç ağı ve temel sinyal · T1–T2 üretim zinciri ve araştırma · envanter, ambardan üretim · ekonomi (borsa, katalog, çark) · iş emirleri altyapısı ve ilk 12 zincir · Ustalık · kayıt ve yükleme · Sis Korusu · Koca Pofuduk ve Boynuzlu Dede · harita, Seyir Kulesi, mancınık · Çekirge (ATV aracı, [ICERIK.md](ICERIK.md) §14; yaratık olan Çekirge Sürüsü yukarıdaki 12 türün içinde) · ortak oyun 1–4 (ENet ve Steam), sonradan katılma, sesli sohbet, şok tokadı.
 
 **Kabul:**
 - [ ] Birim, içerik ve senaryo testleri yeşil.

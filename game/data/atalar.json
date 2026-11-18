@@ -1,6 +1,6 @@
 {
   "_not": "Atalar (GDD §18, §18.1; ICERIK §4.1). M2: Koca Pofuduk ve Boynuzlu Dede. Arena merkezi [x, z] dunyada (Ocak 0,0); tas ve sutunlar merkeze gore. Can ekip boyuyla 1 + teamHpPerExtra × (n − 1). Asama, can orani hpUntil altina inene dek surer. Hasar sayilari M1 silahlarina gore (Tirpan 14 / 0,42 sn ~ 33 hasar/sn).",
-  "_not_kimlik": "Adak ve odul kimlikleri: wool (Yun, hayvan akisi), iron_ingot (Demir Kulce), resin (Recine), mushroom (Mantar, tarim akisi) henuz main'de yok; kendi akislari ayni kimligi yazmali ya da burasi duzeltilir.",
+  "_not_kimlik": "Adak kimlikleri diger akislarla ayni: yun (hayvan), iron_ingot (zincir, Demirci Ocagi), resin (dunya2), kabarik turnip ve mushroom (tarim). Kabarik urun Cekim ile sunaga birakilir.",
   "teamHpPerExtra": 0.5,
   "phaseShiftSeconds": 1.5,
   "arriveSeconds": 2.5,
@@ -15,7 +15,7 @@
       "offeringName": "Dev Yemlik",
       "offering": [
         { "item": "turnip", "count": 5, "swollen": true },
-        { "item": "wool", "count": 10 },
+        { "item": "yun", "count": 10 },
         { "item": "copper_ingot", "count": 20 }
       ],
       "hp": 1400,

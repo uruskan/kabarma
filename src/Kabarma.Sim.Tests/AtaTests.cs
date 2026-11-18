@@ -51,11 +51,11 @@ public class AtaTests
     {
         var p = new AtaProgress();
         var bag = new Inventory(30, 100);
-        bag.Add("wool", 10); bag.Add("copper_ingot", 25);
+        bag.Add("yun", 10); bag.Add("copper_ingot", 25);
         Assert.Null(AtaRules.Summon(p, D, Pofuduk, 1));
         Assert.Equal(30, AtaRules.OfferFromBag(p, Pofuduk, bag));
         Assert.Equal(5, bag.Count("copper_ingot")); // yalniz eksik kadar
-        Assert.Equal(0, bag.Count("wool"));
+        Assert.Equal(0, bag.Count("yun"));
         Assert.False(AtaRules.OfferingComplete(p, Pofuduk));
         for (int i = 0; i < 5; i++) Assert.True(AtaRules.OfferSwollen(p, Pofuduk, "turnip"));
         Assert.False(AtaRules.OfferSwollen(p, Pofuduk, "turnip")); // fazlasi kabul edilmez
@@ -266,14 +266,14 @@ public class AtaTests
     {
         var p = new AtaProgress();
         var bag = new Inventory(20, 50);
-        bag.Add("wool", 4);
+        bag.Add("yun", 4);
         AtaRules.OfferFromBag(p, Pofuduk, bag);
         var f = Start(Dede, p);
         AtaRules.Damage(f, D, Dede, f.MaxHp * 0.4f, AtaHitKind.Weapon);
         var json = JsonSerializer.Serialize(p);
         var back = JsonSerializer.Deserialize<AtaProgress>(json)!;
         Assert.Equal(json, JsonSerializer.Serialize(back));
-        Assert.Equal(4, back.Record("koca_pofuduk").Offered["wool"]);
+        Assert.Equal(4, back.Record("koca_pofuduk").Offered["yun"]);
         Assert.Equal(f.Hp, back.Active!.Hp, 3);
         Assert.Equal(1, back.Active.Phase);
         Assert.Equal(2, back.Active.WeakPoints.Count);

@@ -62,3 +62,11 @@ Sahibin varlık kitaplığından (`F:\Assets`, yalnız okundu) kopyalanıp `pipe
 | Boynuzlu Dede (`game/scripts/boss/BoynuzluDede.cs`) | Koddan parça model (`MeshKit`: gövde, bacaklar, boyun, baş, sakal, dallı boynuz, fidanlar, iki kovan) | Projenin kendi eseri | Üretim isteği: Ata sınıfı model, dört ayak iskeleti, 6 klip |
 | Ata Taşı ve sunak, arena sütunları, yardımcılar (Yün Yumağı = ölçekli Pofuduk; Koru Bekçisi = koddan fındık), boynuz parçası, yün yumağı, kök halkası (`game/scripts/boss/`) | Koddan (`MeshKit`, Godot ilkel şekilleri) | Projenin kendi eseri | Ata Taşı ICERIK §17 keşif noktası modeli olarak yeniden üretilebilir |
 | Ata sesleri | `audio.json`'daki mevcut sesler (sisme, kabarik_gumleme, firlatma, kaya_kemirme, parca_darbe, kabarmis_patlama, gokyuzu_dalga ...) düşük perdeyle | Yukarıdaki ElevenLabs satırı | Üretim isteği: her Ata'ya kendi teması (SANAT-SES §5 "Atalar 6") ve 6–8 kendi sesi |
+
+## tarim (M2): ekin ve Korkuluk yer tutuculari
+
+| Varlik | Kaynak | Lisans | Not |
+|---|---|---|---|
+| Cayir ve Koru'nun 10 ekini (Bugday, Kabak, Aycicegi, Lifotu, Domates, Sapkali Mantar, Bogurtlen, Eksilik, Findik, Sarimsak) | Koddan: `game/scripts/world/FarmView.Meshes.cs` (`CropVisuals`, MeshKit ilkelleri) | Projenin kendi kodu | YER TUTUCU; uretim istegi: ekin basina 1 Tripo modeli |
+| Korkuluk | Koddan: `KorkulukVisual` (ayni dosya) | Projenin kendi kodu | YER TUTUCU |
+| Alaca gorunusu | Toon golgelendiricinin `tint` degeri | Projenin kendi kodu | Benekli, Altin, Aurora |

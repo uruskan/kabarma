@@ -1,0 +1,63 @@
+{
+  "_not": "Ortak oyun (GDD 22.1, 3.6; TEKNIK 5). Tasima, guncelleme sikligi, hile denetimi payi, baygin kalma ve sok tokadi, sesli sohbet. Belgede sayisi olmayanlar '_belgesiz' ile isaretli.",
+  "protocol": 1,
+  "port": 27015,
+  "maxPlayers": 8,
+  "_maxPlayers": "GDD 22.1: 1-8. M2 kabulu 4 oyuncuyla olculur (URETIM 6 M2).",
+  "frameHz": 20,
+  "_frameHz": "TEKNIK 5.3: oyuncu 20 Hz.",
+  "creatureNearHz": 10,
+  "creatureFarHz": 2,
+  "creatureNearRadius": 120,
+  "_creature": "TEKNIK 5.3: yaratik 120 m icinde 10 Hz, uzakta 2 Hz.",
+  "sectionHz": 5,
+  "_sectionHz": "_belgesiz: Sim bolumlerinin (envanter, yapi, kaya, tutam) degisim denetimi saniyede kac kez.",
+  "digestSeconds": 10,
+  "_digestSeconds": "TEKNIK 5.3: Sim durumu 10 sn'de bir ozet dogrulamasi.",
+  "interpDelay": 0.1,
+  "_interpDelay": "_belgesiz: uzak oyuncu ve yaratik bu kadar geriden ara degerlenir (sn).",
+  "posPerMetre": 256,
+  "_posPerMetre": "_belgesiz: konum 24 bit, metrede 256 adim (3,9 mm; senkron olcutu 1 cm), +-32 km.",
+  "timeoutSeconds": 10,
+  "connectSeconds": 8,
+  "speedSlack": 1.5,
+  "teleportLimit": 6,
+  "_hile": "TEKNIK 5.5: istemci konumu hizla denetlenir. _belgesiz: azami hiz x speedSlack + 1 m pay; asan kare geri alinir (Correction). teleportLimit: uzak oyuncu bundan cok sicrarsa ara degerlenmez, aninda konur.",
+  "ranges": {
+    "_not": "TEKNIK 5.5: istek mesafe denetimi, m. _belgesiz: Capa menzilinin uzerine ag payi.",
+    "mine": 9,
+    "mow": 9,
+    "build": 14,
+    "interact": 4.5
+  },
+  "cooldowns": {
+    "_not": "_belgesiz: ayni istegin en sik gelebilecegi aralik, sn (hile denetimi; Capa'nin kendi hizindan kisa).",
+    "mow": 0.15,
+    "place": 0.12
+  },
+  "downed": {
+    "_not": "GDD 3.6: ortak oyunda can sifirlaninca 30 sn baygin; arkadas sok tokadiyla (E basili, 1,5 sn) %30 canla kaldirir; sure dolarsa olur. Tek oyuncu: gecede bir kez ikinci nefes, %40.",
+    "seconds": 30,
+    "reviveHold": 1.5,
+    "reviveHpFraction": 0.3,
+    "secondWindFraction": 0.4,
+    "reviveRange": 2.5,
+    "_reviveRange": "_belgesiz: tokat icin uzaklik, m."
+  },
+  "voice": {
+    "_not": "GDD 22.1: yakinlik sesli sohbeti, uzak mesafe icin telsiz tusu. TEKNIK 5.4. _belgesiz: ornek hizi, cerceve, uzaklik egrisi.",
+    "sampleRate": 16000,
+    "frameMs": 20,
+    "fullVolumeDistance": 4,
+    "maxDistance": 35,
+    "radioGain": 0.85,
+    "gate": 0.015
+  },
+  "saveBridgeSkip": ["player.pack", "capa", "night"],
+  "_saveBridgeSkip": "Kayit koprusune (NetSync.Save.cs) girmeyen dunya bolumleri: kisisel olanlar (canta, Capa kilitleri: GDD 22.1) ve set'i canli oyunda nesne sifirlayanlar (night: Night=null). Yeni bolum ekleyen akis gerekirse buraya bir satir ekler.",
+  "steam": {
+    "_not": "Steamworks.NET (TEKNIK 1.1, 1.3 adim 3). 480 = Valve'in deneme uygulamasi; magaza kimligi gelince degisir.",
+    "appId": 480,
+    "lobbyType": "friends"
+  }
+}
