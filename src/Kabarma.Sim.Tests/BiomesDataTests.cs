@@ -38,9 +38,9 @@ public class BiomesDataTests
         Assert.Equal(4, t["gunbatimi"].LightElevation);
         Assert.Equal(35, t["kabarma_gecesi"].MoonElevation);
         Assert.Equal(35, t["normal_gece"].MoonElevation);
-        Assert.Equal(("A3CFE6", "F6D7B0", "FFE2B8"), (t["sabah"].SkyTop, t["sabah"].SkyHorizon, t["sabah"].LightColor));
-        Assert.Equal(("8CC8E8", "F3D9A4", "FFF4DE"), (t["ogle"].SkyTop, t["ogle"].SkyHorizon, t["ogle"].LightColor));
-        Assert.Equal(("6E79B0", "F58A5B", "FF9A5C", "F2A878"), (t["gunbatimi"].SkyTop, t["gunbatimi"].SkyHorizon, t["gunbatimi"].LightColor, t["gunbatimi"].Fog));
+        Assert.Equal(("5F98CF", "F4D2AE", "FFD6A6"), (t["sabah"].SkyTop, t["sabah"].SkyHorizon, t["sabah"].LightColor));
+        Assert.Equal(("3E7DC2", "D7E2E2", "FFF5E4"), (t["ogle"].SkyTop, t["ogle"].SkyHorizon, t["ogle"].LightColor));
+        Assert.Equal(("3A4A86", "F48A52", "FF8C4A", "C98466"), (t["gunbatimi"].SkyTop, t["gunbatimi"].SkyHorizon, t["gunbatimi"].LightColor, t["gunbatimi"].Fog));
         Assert.Equal(("1A2238", "5FF0C8", "A9B8E8", "2A3358"), (t["kabarma_gecesi"].SkyTop, t["kabarma_gecesi"].SkyHorizon, t["kabarma_gecesi"].LightColor, t["kabarma_gecesi"].Fog));
         Assert.Equal(("1A2238", "2E3E66"), (t["normal_gece"].SkyTop, t["normal_gece"].SkyHorizon));
         // Sabah sisi ogle sisinin 1,5 kati; gunesli saatlerde gunes diski var, gecelerde yok.
@@ -84,11 +84,11 @@ public class BiomesDataTests
     public void High_preset_is_the_one_in_teknik_10()
     {
         var g = D.Graphics.Preset("yuksek");
-        Assert.Equal((1920, 1080, 1.0f, 2), (g.Width, g.Height, g.Scale, g.Msaa));
-        Assert.Equal((2, 4096, 150f), (g.ShadowSplits, g.ShadowAtlas, g.ShadowDistance));
+        Assert.Equal((1920, 1080, 1.0f, 0, true), (g.Width, g.Height, g.Scale, g.Msaa, g.Smaa));
+        Assert.Equal((4, 4096, 110f), (g.ShadowSplits, g.ShadowAtlas, g.ShadowDistance));
         Assert.True(g.Ssao && g.SsaoHalf && g.Glow && g.DistanceFog && g.HeightFog);
         Assert.False(g.Sdfgi || g.Ssil || g.Ssr || g.VolumetricFog || g.Vsync);
-        Assert.Equal((1.0f, 40f, 0), (g.PlantDensity, g.GrassRadius, g.MaxFps));
+        Assert.Equal((1.0f, 22f, 50f, 0), (g.PlantDensity, g.GrassRadius, g.GrassFar, g.MaxFps));
         Assert.Equal(11.1f, D.Graphics.Perf.BudgetMs);
         Assert.Equal(60f, D.Graphics.Perf.NoonSeconds);
     }

@@ -26,11 +26,15 @@ public partial class WorldShots : Node
     bool _nightDone, _dayDone, _deckQueued, _finished;
     float _savedSpeed = 1f;
     float _batchAt;
+    double _gpuSum;
+    int _gpuN;
     string _outDir;
 
     public override void _Ready()
     {
-        _outDir = ProjectSettings.GlobalizePath("res://").TrimEnd('/') + "/../progress/m1/dunya/shots";
+        // --shots_out=progress/... (depo kokune gore) ciktiyi baska klasore yazar (once/sonra karsilastirmalari).
+        var rel = Main.Args.TryGetValue("shots_out", out var o) && !string.IsNullOrEmpty(o) ? o.Replace('\\', '/').TrimEnd('/') : "progress/m1/dunya/shots";
+        _outDir = System.IO.Path.IsPathRooted(rel) ? rel : ProjectSettings.GlobalizePath("res://").TrimEnd('/') + "/../" + rel;
         DirAccess.MakeDirRecursiveAbsolute(_outDir + "/deck");
     }
 
@@ -49,7 +53,14 @@ public partial class WorldShots : Node
         if (_quick)
         {
             if (_t < 3f) return;
-            if (!_dayDone) { foreach (var tm in World.ShotTimes) Enqueue(tm, ""); _dayDone = true; _nightDone = true; return; }
+            if (!_dayDone)
+            {
+                // --shots_times=ogle,gunbatimi ve --shots_marks=us,gol: hizli denemede yalniz bu saatler ve yer imleri.
+                var times = Main.Args.TryGetValue("shots_times", out var st) ? st.Split(',') : World.ShotTimes;
+                foreach (var tm in times) Enqueue(tm, "");
+                _dayDone = true; _nightDone = true; _deckQueued |= Main.Args.ContainsKey("shots_times");
+                return;
+            }
         }
         else
         {
@@ -101,7 +112,9 @@ public partial class WorldShots : Node
 
     void Enqueue(string time, string sub)
     {
-        foreach (var b in W.Biomes.World.Bookmarks) _queue.Enqueue((b.Id, time, sub));
+        var marks = Main.Args.TryGetValue("shots_marks", out var sm) ? sm.Split(',') : null;
+        foreach (var b in W.Biomes.World.Bookmarks)
+            if (marks == null || System.Array.IndexOf(marks, b.Id) >= 0) _queue.Enqueue((b.Id, time, sub));
         _savedSpeed = _d.SpeedScale;
         _d.SpeedScale = 0.001f; // eylem durur, cizim surer
         // Insa basligi acik kalirsa hayalet ve ipucu kadraja girer: oyuncunun yapacagi gibi Kazma'ya gecilir.
@@ -121,12 +134,16 @@ public partial class WorldShots : Node
             _cam = W.ShowBookmark(W.Bookmark(bm), _cam, _d.OcakPos);
         }
         _wait++;
+        // GPU cizim suresi (gorsel-dunya): yer imi basina son karelerin ortalamasi, kademe karsilastirmasi icin.
+        var vrid = GetViewport().GetViewportRid();
+        if (_wait == 1) { RenderingServer.ViewportSetMeasureRenderTime(vrid, true); _gpuSum = 0; _gpuN = 0; }
+        else if (_wait > 6) { _gpuSum += RenderingServer.ViewportGetMeasuredRenderTimeGpu(vrid); _gpuN++; }
         if (_wait < 12 || _t < _batchAt) return; // golge, SSAO, isik kupu ve arayuz ipucu otursun
         var img = GetViewport().GetTexture().GetImage();
         var path = $"{_outDir}/{(sub == "" ? "" : sub + "/")}{bm}_{time}.png";
         img.SavePng(path);
         _saved.Add(path);
-        GD.Print($"SHOTS saved {path} {img.GetWidth()}x{img.GetHeight()}");
+        GD.Print($"SHOTS saved {path} {img.GetWidth()}x{img.GetHeight()} gpu_ms={(_gpuN > 0 ? _gpuSum / _gpuN : 0):0.00} frames={_gpuN}");
         _queue.Dequeue();
         _wait = 0;
         if (_queue.Count == 0) W.ForceTime(null);

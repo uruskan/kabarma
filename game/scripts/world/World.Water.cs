@@ -92,7 +92,7 @@ public partial class World
         if (!HasLake) return;
         // Duz disk: kiyinin en disindan 2 m tasar; disarida kalan kisim kiyinin altinda kalir (arazi suyun ustunde).
         float r = Lake.Radius + Lake.ShoreNoise + 2f;
-        const int seg = 96, rings = 6;
+        const int seg = 128, rings = 8;
         var st = new SurfaceTool();
         st.Begin(Mesh.PrimitiveType.Triangles);
         st.SetNormal(Vector3.Up);
@@ -112,6 +112,15 @@ public partial class World
         _waterMat.SetShaderParameter("depth_scale", Mathf.Max(0.1f, Lake.Depth * 0.6f));
         _waterMat.SetShaderParameter("foam_width", Lake.FoamWidth);
         _waterMat.SetShaderParameter("clarity", Lake.Clarity);
+        // Dalgacik normalleri ve kopuk gurultusu: dikissiz gurultu dokulari (kod; dosya yok).
+        NoiseTexture2D Waves(int seed, float freq, bool normal) => new()
+        {
+            Width = 512, Height = 512, Seamless = true, GenerateMipmaps = true, AsNormalMap = normal, BumpStrength = 6f,
+            Noise = new FastNoiseLite { Seed = seed, Frequency = freq, FractalOctaves = 4, NoiseType = FastNoiseLite.NoiseTypeEnum.Simplex },
+        };
+        _waterMat.SetShaderParameter("wave_a", Waves(T.Seed + 61, 0.02f, true));
+        _waterMat.SetShaderParameter("wave_b", Waves(T.Seed + 62, 0.035f, true));
+        _waterMat.SetShaderParameter("foam_noise", Waves(T.Seed + 63, 0.03f, false));
         var mi = new MeshInstance3D
         {
             Name = "Lake",

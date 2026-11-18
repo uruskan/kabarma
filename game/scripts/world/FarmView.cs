@@ -17,6 +17,7 @@ public partial class FarmView : Node3D
     {
         Farm = farm; _world = world; _data = data;
         farm.Tilled += p => { var v = new PlotView(p, this); _views[(p.X, p.Y)] = v; AddChild(v); v.GlobalPosition = CellCenter(p.X, p.Y); };
+        farm.Tilled += p => _world.MarkSoil(CellCenter(p.X, p.Y), 0.62f); // zeminde surulmus toprak katmani, ot kalkar (gorsel-dunya)
         farm.Planted += p => View(p)?.OnPlanted();
         farm.Watered += p => View(p)?.OnWatered();
         farm.Swelled += p => View(p)?.OnSwelled();

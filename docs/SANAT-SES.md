@@ -37,13 +37,13 @@ Her biyomun altı ana rengi ve dört gün saati için gökyüzü geçişi var. V
 
 | Saat | Güneş yüksekliği | Gökyüzü tepe → ufuk | Güneş ışığı | Sis |
 |---|---|---|---|---|
-| Sabah | 12°, doğudan | `#A3CFE6` → `#F6D7B0` | `#FFE2B8` | `#F3D9A4`, yoğunluk ×1,5 |
-| Öğle | 62° | `#8CC8E8` → `#F3D9A4` | `#FFF4DE` | `#F3D9A4` |
-| Gün batımı | 4°, batıdan | `#6E79B0` → `#F58A5B` | `#FF9A5C` | `#F2A878` |
+| Sabah | 12°, doğudan | `#5F98CF` → `#F4D2AE` | `#FFD6A6` | `#E9CDAE`, yoğunluk ×1,5 |
+| Öğle | 62° | `#3E7DC2` → `#D7E2E2` | `#FFF5E4` | `#C9D6DA` |
+| Gün batımı | 4°, batıdan | `#3A4A86` → `#F48A52` | `#FF8C4A` | `#C98466` |
 | Kabarma gecesi | Güneş yok; ay 35° | `#1A2238` → `#5FF0C8` (aurora bandı) | Ay `#A9B8E8` | `#2A3358`; zemin damarları Maya paletinde |
 | Normal gece | Güneş yok; ay 35° | `#1A2238` → `#2E3E66` | Ay `#A9B8E8` | `#2A3358` |
 
-M1'in 16 ekran görüntüsü ilk dört satırdandır; normal gece M1'de ışık olarak vardır ama görüntü setine girmez.
+Gündüz renkleri 18 Kasım görsel düzeltmesinde (gorsel-dunya) daha derin gökyüzü ve ince sise çekildi; enerji ve ortam ışığı veride. M1'in 16 ekran görüntüsü ilk dört satırdandır; normal gece M1'de ışık olarak vardır ama görüntü setine girmez.
 
 ## 3. Karakter
 
