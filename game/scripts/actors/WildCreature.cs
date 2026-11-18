@@ -70,7 +70,7 @@ public partial class WildCreature : Node3D
     public bool Loaded => Rig != null;
 
     /// <summary>Tripo modelini rig boyuna olcekler ve tabanini yere oturtur (Gidak ile ayni).</summary>
-    static void FitHeight(Node3D model, float height)
+    internal static void FitHeight(Node3D model, float height)
     {
         Aabb box = new(); bool first = true;
         foreach (var mi in model.FindChildren("*", "MeshInstance3D", true, false).OfType<MeshInstance3D>())

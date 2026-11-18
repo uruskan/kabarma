@@ -1,47 +1,53 @@
 {
   "name": "turuncu_agac",
-  "input": "C:\\Users\\uruskan\\Documents\\GitHub\\kabarma\\.tools\\tripo\\turuncu_agac\\tripo-out\\turuncu-agac-ce10f6ea\\model.glb",
-  "checks": {
-    "1_palette": {
-      "pass": true,
-      "note": "dokulu mod: palet oturtma yapilmadi"
-    },
-    "2_polygon": {
-      "pass": true,
-      "value": 4735,
-      "budget": 7000
-    },
-    "3_thickness": {
-      "pass": true,
-      "min_ratio": 0.828,
-      "note": "parca basina en dar boyut / en uzun kenar"
-    },
-    "4_integrity": {
-      "pass": false,
-      "non_manifold_edges": 36,
-      "boundary_edges": 18,
-      "inward_faces": 962,
-      "loose_parts": 1
-    },
-    "5_scale_axis": {
-      "pass": true,
-      "height": 4.8,
-      "target": 4.8
-    }
+  "label": "Turuncu agac (Island Tree 01, sonbahar tonu)",
+  "kind": "tree",
+  "source": {
+    "zip": "F:/Assets/verdant_trail.zip",
+    "cache": "verdant_trail",
+    "members": [
+      "verdant_trail.blend",
+      "textures/island_tree_01*"
+    ],
+    "file": "verdant_trail.blend"
   },
-  "tris_in": 4755,
-  "welded_verts": 2193,
-  "tex_size": 1024,
-  "source_mean_dE": null,
-  "source_within_dE8": null,
-  "palette_use": "textured (palette snap skipped)",
-  "tris": 4735,
-  "size_m": [
-    4.201,
-    5.072,
-    4.8
+  "license": "Poly Haven CC0 (island_tree_01, Rico Cilliers ve Rob Tuytel)",
+  "height_target": 4.8,
+  "lods": [
+    {
+      "path": "res://assets/models/turuncu_agac/turuncu_agac.glb",
+      "tris": 3668,
+      "tex": 1024,
+      "surfaces": 2
+    },
+    {
+      "path": "res://assets/models/turuncu_agac/turuncu_agac_lod1.glb",
+      "tris": 2567,
+      "tex": 512,
+      "surfaces": 2
+    },
+    {
+      "path": "res://assets/models/turuncu_agac/turuncu_agac_lod2.glb",
+      "tris": 1299,
+      "tex": 256,
+      "surfaces": 2
+    }
   ],
-  "parts": 1,
-  "out": "game/assets/models/turuncu_agac/turuncu_agac.glb",
-  "pass_scripted": false
+  "size_m": [
+    4.942,
+    4.777,
+    4.853
+  ],
+  "hull_points": 64,
+  "trunk_radius_m": 0.431,
+  "instances": 834,
+  "prototypes": [
+    "island_tree_01_branches_a",
+    "island_tree_01_branches_b",
+    "island_tree_01_branches_c",
+    "island_tree_01_branches_d",
+    "island_tree_01_leaves_b",
+    "island_tree_01_leaves_c"
+  ],
+  "tris": 3668
 }

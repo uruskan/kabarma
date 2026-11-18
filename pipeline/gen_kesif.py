@@ -268,7 +268,23 @@ def mancinik():
     box((0.12, 1.2, 0.12), (-1.25, 0, 0.35), mat("accent", 0.6))
     finish("mancinik", "placeables")
 
+def oyuk_agzi():
+    # Oyuk agzi (M3, oyuk akisi; ICERIK §17): kaya tumsek, ortada kararan in, iki yanda tas sutun ve ahsap destek.
+    r = random.Random(41)
+    for k in range(9):
+        a = math.pi * 0.15 + k * (math.pi * 1.7 / 8)
+        ball(1.1 + r.uniform(-0.2, 0.3), (math.cos(a) * 2.0, math.sin(a) * 2.0, 0.7 + r.uniform(0, 0.5)), mat("stone_dark", 0.9), scale=(1.2, 1.0, 0.9), sub=1, rnd=r, jitter=0.25)
+    ball(1.8, (0, 0.6, 1.6), mat("stone", 0.9), scale=(1.6, 1.3, 0.9), sub=2, rnd=r, jitter=0.2)
+    # Karanlik agiz: -Y yuzunde (oyuncu taraf), cokuk ve koyu.
+    ball(1.0, (0, -1.3, 0.8), mat("shadow", 1.0), scale=(1.1, 0.5, 1.0), sub=2, rnd=r, jitter=0.05)
+    for sx in (-1.2, 1.2):
+        cyl(0.14, 0.16, 2.0, (sx, -1.55, 1.0), mat("wood_dark"), seg=8)
+    box((2.8, 0.22, 0.22), (0, -1.55, 2.0), mat("wood"))
+    box((0.5, 0.06, 0.35), (0.9, -1.7, 1.6), mat("accent", 0.6), rot=(0, 0.2, 0))
+    finish("oyuk_agzi", "kesif")
+
 JOBS = {
+    "oyuk_agzi": oyuk_agzi,
     "koru_agac": koru_agac, "dev_mantar": dev_mantar, "kutuk": kutuk,
     "demir": lambda: vein_rock("demir", "stone", "stone_dark", "rust", mat("rust", 0.6, 0.3), seed=11),
     "recine": recine,

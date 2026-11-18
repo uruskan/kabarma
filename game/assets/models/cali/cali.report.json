@@ -1,47 +1,50 @@
 {
   "name": "cali",
-  "input": "C:\\Users\\uruskan\\Documents\\GitHub\\kabarma\\.tools\\tripo\\cali\\tripo-out\\cali-d555cf49\\model.glb",
-  "checks": {
-    "1_palette": {
-      "pass": true,
-      "note": "dokulu mod: palet oturtma yapilmadi"
-    },
-    "2_polygon": {
-      "pass": true,
-      "value": 1937,
-      "budget": 2000
-    },
-    "3_thickness": {
-      "pass": false,
-      "min_ratio": 0.012,
-      "note": "parca basina en dar boyut / en uzun kenar"
-    },
-    "4_integrity": {
-      "pass": false,
-      "non_manifold_edges": 20,
-      "boundary_edges": 7,
-      "inward_faces": 571,
-      "loose_parts": 6
-    },
-    "5_scale_axis": {
-      "pass": true,
-      "height": 1.1,
-      "target": 1.1
-    }
+  "label": "Cali (Megascans Downy Willow VarF)",
+  "kind": "plant",
+  "source": {
+    "zip": "F:/Assets/Fab/Quixel-Megascans/Plants/Downy-Willow--0e466407-d473-41e2-90ff-f6ff9275d73c/fbx/963e492d-e7ec-4af3-81e2-4c1c14187283/downy_willow_wknlfiuqx_high.zip",
+    "cache": "downy_willow",
+    "members": [
+      "*VarF_LOD2.fbx",
+      "*VarF_LOD3.fbx",
+      "*4K_BaseColor.jpg",
+      "*4K_Opacity.jpg",
+      "*4K_Normal.jpg",
+      "*4K_Roughness.jpg"
+    ],
+    "file": "Downy_Willow_wknlfiuqx_High_wknlfiuqx_VarF_LOD2.fbx",
+    "extra_files": [
+      "Downy_Willow_wknlfiuqx_High_wknlfiuqx_VarF_LOD3.fbx"
+    ]
   },
-  "tris_in": 2735,
-  "welded_verts": 1968,
-  "tex_size": 1024,
-  "source_mean_dE": null,
-  "source_within_dE8": null,
-  "palette_use": "textured (palette snap skipped)",
-  "tris": 1937,
+  "license": "Quixel Megascans (Fab), sahip dogrulamali",
+  "height_target": 1.1,
+  "lods": [
+    {
+      "path": "res://assets/models/cali/cali.glb",
+      "tris": 2800,
+      "tex": 1024,
+      "surfaces": 1
+    },
+    {
+      "path": "res://assets/models/cali/cali_lod1.glb",
+      "tris": 1400,
+      "tex": 512,
+      "surfaces": 1
+    },
+    {
+      "path": "res://assets/models/cali/cali_lod2.glb",
+      "tris": 798,
+      "tex": 256,
+      "surfaces": 1
+    }
+  ],
   "size_m": [
-    1.683,
-    1.783,
+    1.73,
+    1.631,
     1.1
   ],
-  "parts": 6,
-  "out": "game/assets/models/cali/cali.glb",
-  "pass_scripted": false
+  "hull_points": 51,
+  "tris": 2800
 }

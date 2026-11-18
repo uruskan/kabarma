@@ -38,7 +38,15 @@
     { "id": "dugme", "name": "Düğme", "radius": 0.35 },
     { "id": "basinc_plakasi", "name": "Basınç Plakası", "radius": 0.6 },
     { "id": "aku_mk1", "name": "Akü Mk1", "radius": 0.6 },
-    { "id": "mancinik", "name": "Mancınık", "model": "res://assets/models/placeables/mancinik.glb", "radius": 1.6, "_not": "GDD 21 hizli seyahat (dunya2): acik duraktan acik duraga firlatir (Explorer.cs). Model pipeline/gen_kesif.py yer tutucu." }
+    { "id": "mancinik", "name": "Mancınık", "model": "res://assets/models/placeables/mancinik.glb", "radius": 1.6, "_not": "GDD 21 hizli seyahat (dunya2): acik duraktan acik duraga firlatir (Explorer.cs). Model pipeline/gen_kesif.py yer tutucu." },
+    { "_not": "savunma (M3): kuleler ve tuzaklar, kural defense.json (GDD 16.4). Model game/assets/models/defense/ (pipeline/build_defense.py, YER TUTUCU).", "id": "civi_kulesi", "name": "Çivi Kulesi", "model": "res://assets/models/defense/civi_kulesi.glb", "radius": 0.7 },
+    { "id": "sapan_kulesi", "name": "Sapan Kulesi", "model": "res://assets/models/defense/sapan_kulesi.glb", "radius": 0.8 },
+    { "id": "sacma_kulesi", "name": "Saçma Kulesi", "model": "res://assets/models/defense/sacma_kulesi.glb", "radius": 0.7 },
+    { "id": "diken_tarlasi", "name": "Diken Tarlası", "model": "res://assets/models/defense/diken_tarlasi.glb", "radius": 0.95 },
+    { "id": "yapiskan_zemin", "name": "Yapışkan Zemin", "model": "res://assets/models/defense/yapiskan_zemin.glb", "radius": 0.95 },
+    { "id": "firlatma_pedi", "name": "Fırlatma Pedi", "model": "res://assets/models/defense/firlatma_pedi.glb", "radius": 0.8 },
+    { "id": "cukur_kapagi", "name": "Çukur Kapağı", "model": "res://assets/models/defense/cukur_kapagi.glb", "radius": 0.9 },
+    { "id": "maya_feneri", "name": "Maya Feneri", "radius": 0.5, "_not": "gucler M3 (GDD 14.6): gunde bir kez 40 m / 4 dk yerel Kabarma. Gorunus koddan (TatbikatSystem.Look, YER TUTUCU)." }
   ],
   "planWheel": ["kare_temel", "ucgen_temel", "duvar", "yarim_duvar", "pencereli_duvar", "kapi_kasasi", "kare_zemin", "duz_cati", "egimli_cati", "merdiven", "cit", "bahce_kapisi"],
   "buildCosts": {

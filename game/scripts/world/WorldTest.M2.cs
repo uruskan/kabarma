@@ -50,7 +50,9 @@ public partial class WorldTest
         Check(mid >= 4, $"no soft transition ({mid} samples)");
 
         // Kesif noktalari.
-        Check(w.Pois.Count == 16, $"pois {w.Pois.Count} != 16");
+        // M2 noktalari 16 + M3 Oyuklar 6 (oyuk akisi; ICERIK 17 "M3: Oyuklar").
+        Check(w.Pois.Count(q => q.Type != "oyuk") == 16, $"M2 pois {w.Pois.Count(q => q.Type != "oyuk")} != 16");
+        Check(w.Pois.Count(q => q.Type == "oyuk") == 6, $"oyuk pois {w.Pois.Count(q => q.Type == "oyuk")} != 6");
         foreach (var poi in w.Pois)
         {
             var type = w.PoiType(poi.Type);

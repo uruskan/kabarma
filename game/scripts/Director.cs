@@ -108,13 +108,18 @@ public partial class Director : Node3D
         WireScenario(); // Director.Scenario.cs: olay -> adim sayaci
         InitEconomy();  // Director.Economy.cs: odeme, kargo, yerlestirilebilirler
         InitPower();    // power/Director.Power.cs: guc agi, Kablo, sinyal (guc akisi)
+        InitDefense();  // defense/Director.Defense.cs: kuleler ve tuzaklar (savunma M3)
+        InitAbilities(); // abilities/Director.Abilities.cs: oyuncu gucleri, Kadim Tas, Maya Feneri, Tatbikat (gucler akisi)
         WireNightAndDay(); // Director.Calendar.cs: takvim, uyku, Defter olaylari
         InitExplore();     // Director.Explore.cs: harita, kesif noktalari, Seyir Kulesi, mancinik (dunya2)
+        InitOyuk();        // Director.Oyuk.cs: Oyuklar, Kostebek Bey, Yarasa Yumagi (oyuk, M3)
         WireProgress();    // Director.Progress.cs: Ustalik XP'si, is emri olculeri, basarim ve odul bildirimleri
+        WireChips();       // Director.Chips.cs: cip kilidi (Kabarma) ve dusme kaynaklari
         State.Farm.Eaten += p => { GD.Print($"EATEN plot {p.X},{p.Y}"); Sfx.Play("pop", FarmView.CellCenter(p.X, p.Y), -2f); };
         Pod.BeginHatchIntro(this); // Pod.Hatch.cs: kapak acilir, Suna giris repliklerini soyler (PLAN 1.4, 0:00)
         InitNet(); // Director.Net.cs (ortak): --coop varsa NetSync; tek oyuncuda null
         InitFlow(); // ai/Director.Flow.cs (yolbulma): akis alani; Ocak kurulunca pencere acilir
+        InitHolding(); // holding/Director.Holding.cs: Bereket Holding kampi, birimleri, kervan, baskin (GDD 19)
 
         if (Main.Args.ContainsKey("bot")) { Bot = new Bot(this); AddChild(Bot); }
         // Sinama: --look=x,y,z:tx,ty,tz sabit bir kameradan bakar (varlik denetimi goruntuleri icin).

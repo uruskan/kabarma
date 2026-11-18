@@ -20,6 +20,7 @@ public partial class Capa
         float dt = WaterCallSeconds();
         if (_d.Player.Muzzle.GlobalPosition.DistanceTo(aim) > _t.WaterRange) return;
         var tank = _d.State.Tank;
+        if (_d.Oyuk?.WaterAt(aim, tank) == true) return; // OyukSystem: Oyuk icinde su deliklere gider (oyuk, M3)
         // Gol: nisan noktasi gol tabanina duser (su yuzeyi carpismasiz), World.IsWater onu taniyor.
         if (_d.World.IsWater(aim)) { FillTank(tank, aim, dt); return; }
         if (!tank.CanWater) { _d.Hud.Hint("Su deposu boş: göle nişan al, dolsun", 0.5f); return; }

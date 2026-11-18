@@ -1,0 +1,85 @@
+Godot Engine v4.7.2.stable.mono.official.ed1daf0bf - https://godotengine.org
+Vulkan 1.4.357 - Forward+ - Using Device #0: NVIDIA - NVIDIA GeForce RTX 2070 SUPER
+
+TEST gucler
+MUSIC ready day=yes layers=3/3 bar=2.00s
+WORLD decor agac box=98 outside=285
+WORLD decor turuncu_agac box=28 outside=84
+WORLD decor cali box=153 outside=450
+WORLD decor ot box=226 outside=660
+WORLD decor bugday box=74 outside=210
+WORLD decor cicek box=240 outside=720
+WORLD decor egrelti box=156 outside=450
+WORLD decor kaya_duz box=36 outside=108
+WORLD decor kaya_dik box=17 outside=42
+WORLD pois 16: seyir_kulesi_altin_cayir_0@105,40 ata_tasi_altin_cayir_0@64,36 yabani_bahce_altin_cayir_0@-145,2 yuva_altin_cayir_0@143,192 yuva_altin_cayir_1@-231,-56 enkaz_altin_cayir_0@-69,179 enkaz_altin_cayir_1@84,195 enkaz_altin_cayir_2@-139,-84 seyir_kulesi_sis_korusu_0@-46,287 ata_tasi_sis_korusu_0@-212,219 yabani_bahce_sis_korusu_0@-53,256 yuva_sis_korusu_0@-200,189 yuva_sis_korusu_1@-88,230 enkaz_sis_korusu_0@-257,293 enkaz_sis_korusu_1@-151,238 enkaz_sis_korusu_2@-235,110
+PLAYER model anims: carry,cheer,crouch_walk,eat,getup_back_pose,getup_front_pose,hurt,idle,jump,jump_air,jump_land,jump_start,kneel,knockdown,plant,push,run,shock_fall,sleep,sprint,walk,walk_casual,wave
+AUDIO sounds=60 playable=60 variant_files=180 m0_only=0 silent=0 placeholder=0
+AUDIO ok 60/60
+POFUDUK anims: pose/attack1,pose/attack2,pose/eat,pose/hit,pose/idle,pose/rest,pose/run,pose/walk,preset_quadruped_walk
+BUILD kit pieces=28
+ATALAR arenas=koca_pofuduk@64,36/r18:ata_tasi_altin_cayir_0,boynuzlu_dede@-212,219/r20:ata_tasi_sis_korusu_0
+BOOT Kabarma MVP
+TARIM wild=22
+KADIM stones kadim_atilma@-10,40,y1.1 kadim_kalkan@48,-62,y20.7 kadim_sok@-150,170,y13.7 kadim_yem@-175,140,y12.6 kadim_sifa@-130,205,y14.0
+HELD capa
+MUSIC Silence -> Day
+ZIPZIP herd size=3 at=3,16 herds=1
+ZIPZIP herd size=3 at=14,26 herds=2
+ZIPZIP herd size=2 at=-24,-33 herds=3
+WILDLIFE spawn homur herd=1 at=-15,9
+WILDLIFE spawn homur herd=1 at=-19,13
+WILDLIFE spawn dalli herd=1 at=35,15
+WILDLIFE spawn dalli herd=1 at=39,10
+WILDLIFE spawn vicik herd=1 at=-11,-35
+WILDLIFE spawn vicik herd=1 at=-8,-39
+WILDLIFE spawn bozuk herd=1 at=45,-39
+WILDLIFE spawn vizviz swarm at=27,21
+WILDLIFE spawn hu herd=1 at=-25,-17
+RANCH start animals=11 agents=11
+SUNA line=giris_1 voice=yes
+GUCLER start pos=(7.7003236, 0.0003124997, -12.570832) stone=(-10, 1.0914179, 40) unlocked=0
+GUCLER state Walk t=3.0
+HATCH intro done
+WILDLIFE spawn pofuduk herd=3 at=99,-69
+SUNA line=giris_2 voice=yes
+GUCLER state Press t=9.7
+KADIM start kadim_atilma trial=parkur
+SHOT C:\Users\uruskan\Documents\GitHub\kabarma\.claude\worktrees\m2-guc-cae6e2\progress\m3\gucler\shots/kadim_tas.png
+GUCLER trial started kadim_atilma
+GUCLER state Rings t=10.3
+KADIM ring 1/6 t=1.4
+KADIM ring 2/6 t=2.5
+SHOT C:\Users\uruskan\Documents\GitHub\kabarma\.claude\worktrees\m2-guc-cae6e2\progress\m3\gucler\shots/parkur_halka.png
+KADIM ring 3/6 t=3.9
+WILDLIFE spawn pofuduk herd=3 at=-90,16
+KADIM ring 4/6 t=5.0
+WILDLIFE spawn homur herd=2 at=95,61
+KADIM ring 5/6 t=6.3
+SUNA line=- voice=no
+KADIM ring 6/6 t=7.7
+KADIM won kadim_atilma ability=atilma fresh=True t=7.7 slots=atilma,
+KADIM stones kadim_atilma@-10,40,y1.1 kadim_kalkan@48,-62,y20.7 kadim_sok@-150,170,y13.7 kadim_yem@-175,140,y12.6 kadim_sifa@-130,205,y14.0
+GUCLER trial won t=7.7 unlocked=atilma slot0=atilma
+GUCLER state Dash t=17.7
+WILDLIFE spawn homur herd=1 at=149,30
+ABILITY use atilma charge=75 meter=0
+SUNA line=- voice=no
+SHOT C:\Users\uruskan\Documents\GitHub\kabarma\.claude\worktrees\m2-guc-cae6e2\progress\m3\gucler\shots/atilma.png
+GUCLER dash moved=9.36 charge 100->75.0 cd=7.2 uses=1
+TATBIKAT start ks=1 pieces=0
+GUCLER state Drill t=20.0
+WILDLIFE spawn gidak herd=4 at=-113,-43
+TATBIKAT wave 1 count=10
+SUNA line=- voice=no
+WILDLIFE spawn findikci herd=2 at=-6,236
+SHOT C:\Users\uruskan\Documents\GitHub\kabarma\.claude\worktrees\m2-guc-cae6e2\progress\m3\gucler\shots/tatbikat_hayalet.png
+GUCLER drill spawned=10 alive=10 dist 67.2->38.8
+TATBIKAT end ks=1 waves=1 spawned=10 repaired=0 reason='test'
+GUCLER state Fener t=30.0
+PLACED maya_feneri at (-8.66945, 2.399007, 73.78909) fener=fener_1
+FENER request ks=1 r=40 s=240 cards<=3 (GECICI: Kucuk Kabarma)
+REPLAY refused phase=Day
+GUCLER fener fener_1 lit=False night=False ks=1
+GUCLER RESULT ok unlocked=atilma trials=kadim_atilma:won uses=1 drill_spawned=10 feners=1 t=31
+SHOT C:\Users\uruskan\Documents\GitHub\kabarma\.claude\worktrees\m2-guc-cae6e2\progress\m3\gucler\shots/maya_feneri.png

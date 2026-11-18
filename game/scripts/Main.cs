@@ -42,6 +42,7 @@ public partial class Main : Node3D
         ["audio"] = m => { m.AddChild(new AudioTest()); return true; }, // ses akisi: kanallar, 60 ses, muzik durumlari
         ["world"] = m => { m.AddChild(new WorldTest()); return true; },
         ["explore"] = m => { Args["explore"] = "1"; Args["mute"] = "1"; Sfx.Muted = true; return false; }, // dunya2: Director + ExploreTest (kule, mancinik, yuva, enkaz, harita)
+        ["oyuk"] = m => { Args["oyuk"] = "1"; Args["mute"] = "1"; Sfx.Muted = true; return false; }, // oyuk (M3): Director + OyukTest (Kostebek Bey, Yarasa Yumagi)
         ["shots"] = m => { Args.TryAdd("preset", "yuksek"); if (!Args.ContainsKey("shots_quick") && !Args.ContainsKey("shots_clip")) Args["bot"] = "1"; m.AddChild(new WorldShots()); return false; },
         ["perf"] = m => { Args.TryAdd("preset", "yuksek"); if (Args.GetValueOrDefault("perf") == "night") Args["bot"] = "1"; m.AddChild(new PerfProbe()); return false; },
         ["gfxab"] = m => { Args.TryAdd("preset", "yuksek"); m.AddChild(new GfxAb()); return false; },
@@ -49,6 +50,8 @@ public partial class Main : Node3D
         ["latency"] = m => { m.AddChild(new LatencyTest()); return false; }, // his olcutleri: girdi->tepki, vurus duraklamasi
         ["ekonomi"] = m => { Args["ekonomi"] = "1"; Args["mute"] = "1"; Sfx.Muted = true; return false; }, // Director + EconomyTest (Director.Economy.cs)
         ["gece"] = m => { Args["skip"] = "night"; Args["gecetest"] = "1"; if (!Args.ContainsKey("fast")) Args["fast"] = "6"; return false; }, // GeceHudTest.cs (gecehud)
+        ["kabarma"] = m => { Args["skip"] = "night"; Args["kabarmatest"] = "1"; if (!Args.ContainsKey("fast")) Args["fast"] = "8"; return false; }, // tests/KabarmaTest.cs (kabarma3): tam/kucuk/tatbikat Kabarma akisi
+        ["cip"] = m => { Args["ciptest"] = "1"; Args["mute"] = "1"; Sfx.Muted = true; return false; }, // CipTest.cs (cip): yuvalar, takma, Defter Cipler sekmesi, dusme, kilit
         ["ilerleme"] = m => { Args["ilerlemetest"] = "1"; Args["mute"] = "1"; Sfx.Muted = true; return false; }, // IlerlemeTest.cs (ilerleme): Defter sekmeleri, Ustalik, basarim, odeme
         ["lineup"] =m => { m.AddChild(new ModelLineup()); return true; }, // gorsel-model: her model ayni isikta (progress/gorsel/model/)
         ["camera"] = m => { m.AddChild(new CameraTest()); return false; }, // oyuncu akisi: kamera kipleri, tekerlek, carpisma, nisan, ayar dosyasi
@@ -59,6 +62,7 @@ public partial class Main : Node3D
         ["hayvan"] = m => { Args["bot"] = "1"; Args["hayvanbot"] = "1"; if (m._quitAfter <= 0) m._quitAfter = 1300; return false; }, // hayvan akisi: zincir + ikinci tur (Bot.Hayvan.cs)
         ["savashayvan"] = m => { Args["bot"] = "1"; Args["hayvanbot"] = "1"; Args["savashayvan"] = "1"; if (m._quitAfter <= 0) m._quitAfter = 2200; return false; }, // M3 savas-hayvan: hayvan botu + Kabarma'da hayvanlar ve binek (husbandry/Husbandry.Combat.Test.cs)
         ["borsa"] = m => { Args["borsatest"] = "1"; Args["mute"] = "1"; Sfx.Muted = true; return false; }, // ekonomi2: Borsa, Katalog, Cark (MarketTest.cs)
+        ["holding"] = m => { Args["holdingtest"] = "1"; Args["mute"] = "1"; Sfx.Muted = true; return false; }, // holding M3: kamp, Perde, kervan, baskinlar (holding/HoldingTest.cs)
         ["boss"] = m => { Args.TryAdd("fast", "3"); Args.TryAdd("mute", "1"); Sfx.Muted = Args["mute"] == "1"; m.AddChild(new AtaTest()); return false; }, // boss akisi: bot iki Ata'yi bulur ve yener (boss/AtaTest.cs)
         ["zincir"] = m => { Args["bot"] = "1"; Args["mute"] = "1"; Sfx.Muted = true; m.AddChild(new ZincirTest()); return false; }, // zincir M2: bot T2 urununu arastirir ve uretir (ZincirTest.cs)
         ["kartlar"] = m => { Args["skip"] = "night"; Args["mute"] = "1"; Sfx.Muted = true; if (!Args.ContainsKey("fast")) Args["fast"] = "6"; m.AddChild(new KartlarTest()); return false; }, // kartlar M3: yenileme, surgun, kartlarin oyun karsiligi (KartlarTest.cs)
@@ -66,7 +70,9 @@ public partial class Main : Node3D
         ["coop"] = m => { CoopTest.Setup(); m.AddChild(new CoopTest()); return false; }, // ortak: host + 3 istemci (ENet), senkron < 1 cm (net/CoopTest.cs)
         ["steam"] = m => { m.AddChild(new SteamTest()); return true; }, // ortak: tek surec Steam baslatma ve lobi (yalniz -Only steam)
         ["power"] = m => { Args["bot"] = "1"; Args["power"] = "1"; if (m._quitAfter <= 0) m._quitAfter = 1500; return false; }, // guc akisi: ilk gun zinciri, sonra uretec + lamba + dugme (Bot.Power.cs)
+        ["gucler"] = m => { Args["guclertest"] = "1"; Args["mute"] = "1"; Sfx.Muted = true; return false; }, // gucler akisi: Kadim Tas parkuru, Atilma, Tatbikat, Fener (abilities/GuclerTest.cs)
         ["powershots"] = m => { Args["powershots"] = "1"; Args["mute"] = "1"; Sfx.Muted = true; return false; }, // guc akisi: parcalar ve kablolar, gunduz/gece goruntusu (progress/m2/guc/)
+        ["savunma"] = m => { Args["savunmatest"] = "1"; Args["mute"] = "1"; Sfx.Muted = true; if (m._quitAfter <= 0) m._quitAfter = 300; return false; }, // savunma M3: kuleler ve tuzaklar (defense/DefenseTest.cs)
         ["input"] = m => { m._inputDevice = InputDriver.ParseDevice(Args.TryGetValue("device", out var d) ? d : "kbm"); if (m._quitAfter <= 0) m._quitAfter = 900; return false; }, // zincir bitince Bot.Hands cikar; bu ust sinir
     };
 
