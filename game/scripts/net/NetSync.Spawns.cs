@@ -77,7 +77,7 @@ public partial class NetSync
 
     void WriteSpawns(NetWriter w, int peer)
     {
-        ScanDynamic();
+        // Tarama TickCreatures'ta saniyede bir (es ve bolum turu basina degil: 220 yaratikta pahali).
         var l = _dyn.OrderBy(kv => kv.Key).ToList();
         w.VarU((uint)l.Count);
         foreach (var (id, (_, kind)) in l) { w.U16(id); w.Str(kind); }

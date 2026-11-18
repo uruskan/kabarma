@@ -219,10 +219,12 @@ public partial class Director
     public void Interact()
     {
         if (ExploreInteract()) return; // Director.Explore.cs: Seyir Kulesi, mancinik, yuva (dunya2)
+        if (OyukInteract()) return; // Director.Oyuk.cs: Oyuk agzi, kapi, sandik, kandil (oyuk, M3)
         if (InteractVehicle()) return; // Director.Vehicles.cs: Cekirge ATV'ye bin / in (yaratik2)
         if (InteractEconomy()) return; // Director.Economy.cs: El Arabasi, Sandik, Uyku Tulumu
         if (InteractPower()) return; // power/Director.Power.cs: guc parcasi ayari, Dugme
         if (InteractDefense()) return; // defense/Director.Defense.cs: kule doldur / onar, Cukur Kapagi (savunma M3)
+        if (InteractAbilities()) return; // abilities/Director.Abilities.cs: Kadim Tas, Maya Feneri, Ocak'ta Tatbikat
         var st = StationInFocus();
         // Gidak istasyondan yakinsa E Gidak'a gider (istasyonun dibinde dolasan Gidak beslenebilsin).
         bool gidakFirst = st != null && Gidak.Visible && !Gidak.Tame

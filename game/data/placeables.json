@@ -26,6 +26,10 @@
     { "id": "kasinma_fircasi", "name": "Kaşınma Fırçası", "model": "res://assets/models/yerlestirilebilir/kasinma_fircasi.glb", "radius": 0.5 },
     { "_not": "tarim (M2): Korkuluk, 10 m icindeki ekine gunduz zararlisi gelmez (GDD 8.2, crops.json genetics.scarecrowRadius). Gorunus koddan (KorkulukVisual, YER TUTUCU).", "id": "korkuluk", "name": "Korkuluk", "radius": 0.4 },
     { "id": "ari_kovani", "name": "Arı Kovanı", "model": "res://assets/models/yerlestirilebilir/ari_kovani.glb", "radius": 0.6 },
+    { "id": "savas_agili_bayragi", "name": "Savaş Ağılı Bayrağı", "model": "res://assets/models/yerlestirilebilir/savas_agili_bayragi.glb", "radius": 0.35 },
+    { "id": "ahir_zili", "name": "Ahır Zili", "model": "res://assets/models/yerlestirilebilir/ahir_zili.glb", "radius": 0.5 },
+    { "id": "baglama_diregi", "name": "Bağlama Direği", "model": "res://assets/models/yerlestirilebilir/baglama_diregi.glb", "radius": 0.3 },
+    { "id": "eyerlik", "name": "Eyerlik", "model": "res://assets/models/yerlestirilebilir/eyerlik.glb", "radius": 0.55 },
     { "id": "direk", "name": "Direk", "radius": 0.35 },
     { "id": "salter", "name": "Şalter", "radius": 0.45 },
     { "id": "ruzgar_gulu", "name": "Rüzgâr Gülü", "radius": 0.9 },
@@ -41,7 +45,8 @@
     { "id": "diken_tarlasi", "name": "Diken Tarlası", "model": "res://assets/models/defense/diken_tarlasi.glb", "radius": 0.95 },
     { "id": "yapiskan_zemin", "name": "Yapışkan Zemin", "model": "res://assets/models/defense/yapiskan_zemin.glb", "radius": 0.95 },
     { "id": "firlatma_pedi", "name": "Fırlatma Pedi", "model": "res://assets/models/defense/firlatma_pedi.glb", "radius": 0.8 },
-    { "id": "cukur_kapagi", "name": "Çukur Kapağı", "model": "res://assets/models/defense/cukur_kapagi.glb", "radius": 0.9 }
+    { "id": "cukur_kapagi", "name": "Çukur Kapağı", "model": "res://assets/models/defense/cukur_kapagi.glb", "radius": 0.9 },
+    { "id": "maya_feneri", "name": "Maya Feneri", "radius": 0.5, "_not": "gucler M3 (GDD 14.6): gunde bir kez 40 m / 4 dk yerel Kabarma. Gorunus koddan (TatbikatSystem.Look, YER TUTUCU)." }
   ],
   "planWheel": ["kare_temel", "ucgen_temel", "duvar", "yarim_duvar", "pencereli_duvar", "kapi_kasasi", "kare_zemin", "duz_cati", "egimli_cati", "merdiven", "cit", "bahce_kapisi"],
   "buildCosts": {

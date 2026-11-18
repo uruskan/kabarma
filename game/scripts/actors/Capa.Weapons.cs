@@ -142,6 +142,7 @@ public partial class Crescent : Node3D
     int _bounces;
     readonly HashSet<Zipzip> _hit = new();
     readonly HashSet<Node3D> _hitWild = new(); // yaratik2
+    readonly HashSet<Node3D> _hitGhost = new(); // gucler: deneme ve Tatbikat hayaletleri
     readonly HashSet<IAtaTarget> _hitAta = new(); // boss akisi: Ata hedefleri (boss/Capa.Ata.cs)
     readonly MeshInstance3D _mesh;
     readonly float _width;
@@ -209,8 +210,10 @@ public partial class Crescent : Node3D
                 }
             }
         }
-        _d.Wildlife?.ProjectileHit(GlobalPosition - _dir * step, GlobalPosition, _width * 0.5f + _w.HitRadius, _w.Damage * _s.SizeMult, _hitWild); // yaratik2: gunduz yabanileri (Wildlife.Hits.cs)
+        _d.Wildlife?.ProjectileHit(GlobalPosition - _dir * step, GlobalPosition, _width * 0.5f + _w.HitRadius, _w.Damage * _s.SizeMult, _hitWild, _d.Data.Combat.WeaponType(_w.Id)); // yaratik2: gunduz yabanileri (Wildlife.Hits.cs)
+        _d.HoldingProjectileHit(GlobalPosition - _dir * step, GlobalPosition, _width * 0.5f + _w.HitRadius, _w.Damage * _s.SizeMult, _hitWild); // holding: kamp, birim, kervan (HoldingWorld.cs)
         foreach (var t in _d.AtaTargetsNear(GlobalPosition, _width * 0.5f + _w.HitRadius)) if (_hitAta.Add(t)) _d.Capa.AtaWeaponHit("tirpan", _w, _s, t, t.Center, _dir, Palette.MayaTeal); // boss akisi
+        while (_d.Abilities?.GhostHitSegment(GlobalPosition - _dir * step, GlobalPosition, _width * 0.5f + _w.HitRadius, _w.Damage * _s.SizeMult, _hitGhost) == true) { } // gucler: hayaletler (abilities/AbilitySystem.cs)
         if (_traveled > _w.Range * _s.SizeMult) QueueFree();
     }
 }
@@ -284,8 +287,10 @@ public partial class Nail : Node3D
             QueueFree();
             return;
         }
-        if (_d.Wildlife != null && _d.Wildlife.ProjectileHit(from, GlobalPosition, _w.HitRadius * _s.SizeMult, _w.Damage * _s.SizeMult)) { QueueFree(); return; } // yaratik2: gunduz yabanileri
+        if (_d.Wildlife != null && _d.Wildlife.ProjectileHit(from, GlobalPosition, _w.HitRadius * _s.SizeMult, _w.Damage * _s.SizeMult, type: _d.Data.Combat.WeaponType(_w.Id))) { QueueFree(); return; } // yaratik2: gunduz yabanileri
+        if (_d.HoldingProjectileHit(from, GlobalPosition, _w.HitRadius * _s.SizeMult, _w.Damage * _s.SizeMult)) { QueueFree(); return; } // holding: kamp, birim, kervan
         if (_d.AtaSegmentHit(from, GlobalPosition, _w.HitRadius * _s.SizeMult) is IAtaTarget ata) { _d.Capa.AtaWeaponHit("civi", _w, _s, ata, ata.Center, _dir, Palette.OffWhite); QueueFree(); return; } // boss akisi
+        if (_d.Abilities?.GhostHitSegment(from, GlobalPosition, _w.HitRadius * _s.SizeMult, _w.Damage * _s.SizeMult) == true) { QueueFree(); return; } // gucler: hayaletler
         if (GlobalPosition.Y < _d.World.HeightAt(GlobalPosition.X, GlobalPosition.Z) + _w.GroundOffset)
         {
             _d.Capa.FeelDebris("civi_zemin", GlobalPosition, Palette.Soil);

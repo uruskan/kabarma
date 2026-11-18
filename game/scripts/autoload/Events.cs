@@ -69,6 +69,9 @@ public static class Events
     public static event Action<string, int> AtaPhase;
     public static void RaiseAtaDefeated(string id) => AtaDefeated?.Invoke(id);
     public static void RaiseAtaPhase(string id, int phase) => AtaPhase?.Invoke(id, phase);
+    /// <summary>Azman yenildi (azman.json kimligi, Oz degeri, x, z). Yayan: AzmanSystem (savas). Oz'u gece akisi birakir.</summary>
+    public static event Action<string, float, float, float> AzmanDefeated;
+    public static void RaiseAzmanDefeated(string id, float oz, float x, float z) => AzmanDefeated?.Invoke(id, oz, x, z);
     /// <summary>Yabani yaratik davranisi (tur, olay: Alerted/Fled/Warned/Struck/Took/Slept/Woke, x, z). Yayan: Wildlife (yaratik2). Etkiyi sahibi uygular: ekin tarim, yumurta hayvan (ICERIK §3.8).</summary>
     public static event Action<string, string, float, float> WildActed;
     public static void RaiseWildActed(string species, string what, float x, float z) => WildActed?.Invoke(species, what, x, z);
@@ -85,10 +88,12 @@ public static class Events
     public static event Action<string> AnimalBorn;
     /// <summary>Hayvan kacti (tur kimligi). Yayan: RanchSystem.</summary>
     public static event Action<string> AnimalEscaped;
+    public static event Action<string> OyukCleared; // oyuk (M3): temizlenen Oyuk kimligi (Magaraci ustaligi)
     public static void RaiseAnimalTamed(string species) => AnimalTamed?.Invoke(species);
     public static void RaiseAnimalCollected(string item, int n) => AnimalCollected?.Invoke(item, n);
     public static void RaiseAnimalBorn(string species) => AnimalBorn?.Invoke(species);
     public static void RaiseAnimalEscaped(string species) => AnimalEscaped?.Invoke(species);
+    public static void RaiseOyukCleared(string oyukId) => OyukCleared?.Invoke(oyukId);
     public static void RaisePieceUpgraded(string id, string material) => PieceUpgraded?.Invoke(id, material);
     public static void RaisePlanCompleted(string id) => PlanCompleted?.Invoke(id);
 
@@ -108,6 +113,13 @@ public static class Events
     public static void RaiseSlept() => Slept?.Invoke();
     public static void RaisePaid(int credits, string what) => Paid?.Invoke(credits, what);
     public static void RaiseDeconstructed(string id) => Deconstructed?.Invoke(id);
+    /// <summary>Bereket Holding (holding, M3): kervan pususu (kamp), oyuncu baskini bir binayi yikti (kamp, bina), cekirdek dustu (kamp). Yayan: HoldingWorld.</summary>
+    public static event Action<int> HoldingAmbushed;
+    public static event Action<int, string> HoldingRaided;
+    public static event Action<int> HoldingCoreDestroyed;
+    public static void RaiseHoldingAmbushed(int camp) => HoldingAmbushed?.Invoke(camp);
+    public static void RaiseHoldingRaided(int camp, string structure) => HoldingRaided?.Invoke(camp, structure);
+    public static void RaiseHoldingCoreDestroyed(int camp) => HoldingCoreDestroyed?.Invoke(camp);
 
     /// <summary>Butun aboneleri birakir.</summary>
     public static void Clear()
@@ -121,8 +133,11 @@ public static class Events
         Deconstructed = null;
         PenChanged = null; AnimalPenned = null; Laid = null; SunaSaid = null;
         AnimalTamed = null; AnimalCollected = null; AnimalBorn = null; AnimalEscaped = null;
+        OyukCleared = null;
         PieceUpgraded = null; PlanCompleted = null;
         CatalogBought = null; Delivered = null; WheelSpun = null; // ekonomi2
         AtaDefeated = null; AtaPhase = null;
+        AzmanDefeated = null; // savas
+        HoldingAmbushed = null; HoldingRaided = null; HoldingCoreDestroyed = null; // holding
     }
 }

@@ -123,6 +123,7 @@ public partial class World
     {
         DecorCounts[key] = placed.Count;
         var chunks = AddChunkedInstances(key, mesh, placed, def.Shadow, def.ViewDistance);
+        AddDecorLods(def, chunks, Mathf.Max(0.05f, mesh.GetAabb().End.Y)); // bitki-pbr: uzak LOD parcalari (World.DecorLod.cs)
         if (def.Tree)
         {
             TreePositions.AddRange(placed.Select(x => x.Origin));
@@ -185,6 +186,7 @@ public partial class World
             if (b.AlbedoTexture != null) { m.SetShaderParameter("albedo_tex", b.AlbedoTexture); m.SetShaderParameter("has_albedo_tex", true); }
             if (b.NormalEnabled && b.NormalTexture != null) { m.SetShaderParameter("normal_tex", b.NormalTexture); m.SetShaderParameter("has_normal_tex", true); }
             m.SetShaderParameter("roughness_value", Mathf.Max(0.6f, b.Roughness));
+            PlantPbr(m, b, def); // bitki-pbr: alfa makasi, puruzluluk dokusu, yaprak arka isigi (World.DecorLod.cs)
         }
         m.SetShaderParameter("wind_strength", def.Wind);
         m.SetShaderParameter("model_height", height);

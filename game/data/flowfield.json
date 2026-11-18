@@ -9,10 +9,10 @@
   "_slope": "_belgesiz: egim derecesi basina ek maliyet (openCost'un katlari degil, dogrudan birim); maxSlopeDegrees ustu gecilmez (ucurum).",
   "waterCost": 40,
   "_waterCost": "_belgesiz: su yuzeyindeki hucre (yuzerek/ziplayarak gecer ama kacinir).",
-  "_breakCost": "TEKNIK 8: duvar hucresi kapali degil, kirma maliyetli. Deger: o hucreye girmek icin acik hucre maliyetine eklenen birim (10 birim = 1 m dolanma). _belgesiz.",
+  "_breakCost": "TEKNIK 8: duvar hucresi kapali degil, kirma maliyetli. Deger: o hucreye girmek icin acik hucre maliyetine eklenen birim (10 birim = 1 m dolanma). _belgesiz. Cit ucuz (4 m): kucuk agil yoldaysa Zipzip dolanmaz, citin ustune atilir (ilk gece cit hucumu, GDD 14.3 'yoldaki yapiyi kirarlar').",
   "breakCost": {
     "wall": 400,
-    "fence": 250,
+    "fence": 40,
     "door": 300,
     "doorOpen": 0,
     "trap": 30,
@@ -35,6 +35,8 @@
   "_blockHeight": "_belgesiz: parcanin alt kenari zeminden bu kadar yuksekse engel degildir, m (ust kat duvari).",
   "maxRecomputesPerTick": 2,
   "_maxRecomputesPerTick": "_belgesiz: bir tikte en cok kac alan yeniden hesaplanir (gerisi sonraki tike kalir; eski alan gecerli kalir).",
+  "maxCellsPerTick": 1500,
+  "_maxCellsPerTick": "_belgesiz: bir tikte butun alanlarda en cok islenen hucre. Hesap arka tamponda karelere bolunur, bitince takas edilir; o zamana dek eski alan gecerli. Olcu: 160 m pencerede tam hesap 25 600 hucre ~12 ms, tek duvar 3 700-10 000 hucre. 3000 hucre tek basina en kotu 1,3 ms, 8 surecli stres kosusunda 5,1 ms olcuildu; 1500 ile pay birakilir (TEKNIK 10: Sim tiki <= 4 ms). Tam hesap ~17 tik (60 FPS'te ~0,3 sn).",
   "rescanSeconds": 0.5,
   "_rescanSeconds": "_belgesiz: Godot tarafi yapi ve hedef farkini bu aralikla tarar."
 }

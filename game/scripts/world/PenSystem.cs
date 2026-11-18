@@ -73,7 +73,7 @@ public partial class PenSystem : Node
     void OnPlaced(BuildPiece p)
     {
         if (!_wallIds.Contains(p.Def.Id)) return;
-        if (_gateIds.Contains(p.Def.Id)) _gates[p] = MakeGate(p);
+        if (_gateIds.Contains(p.Def.Id)) { _gates[p] = MakeGate(p); GD.Print($"GATE add {p.Def.Id} at {p.GlobalPosition} n={_gates.Count}"); }
         _dirty = true;
     }
 
@@ -140,9 +140,13 @@ public partial class PenSystem : Node
         get
         {
             foreach (var k in _gates.Keys.Where(k => !IsInstanceValid(k) || k.IsQueuedForDeletion()).ToList()) { _gates.Remove(k); _dirty = true; }
-            return _gates.Values;
+            if (_dirty) Rebuild();
+            // Agil halkasina ait kapilar once: halkanin disinda kalmis basi bos kapi (kaymis yerlestirme) ilk sayilmaz.
+            return _gates.Values.OrderBy(g => InPen(g) ? 0 : 1).ToList();
         }
     }
+
+    bool InPen(Gate g) => _wallOf.TryGetValue(g.Piece, out var w) && Pens.Any(p => p.Walls.Contains(w.Id));
 
     /// <summary>
     /// Duvarlarin arasindan yol: dogrudan gidilebiliyorsa hedefin kendisi, degilse agil koselerinin disindan (ve icinden)
@@ -202,6 +206,18 @@ public partial class PenSystem : Node
 
     // ---------- Kapilar ----------
 
+    /// <summary>
+    /// E: kapiyi ve 2 m icindeki (ust uste ya da yan yana yanlis kurulmus) kapilari birlikte acar ya da kapatir. Ust uste iki kapi (ikinci
+    /// yerlestirme) ayri durursa biri hep kapali kalir, duvar gecilmez ve en yakini secen E kapiyi titretir.
+    /// </summary>
+    void ToggleGateGroup(Gate g)
+    {
+        bool open = !g.Open;
+        foreach (var x in Gates.Where(x => x.Leaves.Count > 0 && x.Piece.GlobalPosition.DistanceTo(g.Piece.GlobalPosition) < 2.5f).ToList())
+            SetGate(x, open);
+        SetGate(g, open);
+    }
+
     public void SetGate(Gate g, bool open)
     {
         if (g.Open == open) return;
@@ -247,7 +263,8 @@ public partial class PenSystem : Node
     // ---------- Yerlestirilebilirler ----------
 
     /// <summary>Agil sisteminin kurdugu yerlestirilebilirler (Capa.Insa bunlari PlaceProp'a yollar; Sandik, Uyku Tulumu, Mesale ekonomi'nin).</summary>
-    public static bool IsPenProp(string id) => id is "ahsap_kapi" or "yemlik" or "folluk" or "suluk" or "kasinma_fircasi" or "ari_kovani"; // M2 hayvan: Suluk, Firca, Kovan
+    public static bool IsPenProp(string id) => id is "ahsap_kapi" or "yemlik" or "folluk" or "suluk" or "kasinma_fircasi" or "ari_kovani" // M2 hayvan: Suluk, Firca, Kovan
+        or "savas_agili_bayragi" or "ahir_zili" or "baglama_diregi" or "eyerlik"; // M3 hayvan (GDD 9.5)
 
     public PenProp PlaceProp(PlaceableDef def, Vector3 at, float yaw)
     {
@@ -336,12 +353,14 @@ public partial class PenSystem : Node
             if (pr.Nest != null && pr.Nest.Eggs > 0) { bestD = d; var pp = pr; act = () => pp.Collect(); lab = $"Folluk: {pr.Nest.Eggs} yumurtayı al"; }
             else if (pr.Feeder != null && pr.Feeder.Room > 0 && FoodFor(pr) is string food) { bestD = d; var pp = pr; act = () => pp.Fill(); lab = $"Yemlik'e {ItemNames.Of(food)} koy"; }
             else if (pr.Kasa != null) { bestD = d; var pp = pr; act = () => pp.ToggleDoor(); lab = pr.DoorOpen ? "Kapıyı kapat" : "Kapıyı aç"; }
+            else if (_d.Ranch?.PropAction(pr) is var (pa, pl) && pa != null) { bestD = d; act = pa; lab = pl; } // M3: Ahir Zili, Eyerlik (Husbandry.Combat)
         }
         foreach (var g in _gates.Values.Where(g => g.Leaves.Count > 0 && IsInstanceValid(g.Piece)))
         {
-            float d = D(g.Piece.GlobalPosition);
+            // Agil halkasindaki kapi, halkanin disinda kalmis basi bos kapidan once (1 m pay): kosede kaymis kapi E'yi calmaz.
+            float d = D(g.Piece.GlobalPosition) + (InPen(g) ? 0f : 1f);
             if (d >= bestD) continue;
-            bestD = d; var gg = g; act = () => SetGate(gg, !gg.Open); lab = g.Open ? "Kapıyı kapat" : "Kapıyı aç";
+            bestD = d; var gg = g; act = () => ToggleGateGroup(gg); lab = g.Open ? "Kapıyı kapat" : "Kapıyı aç";
         }
         label = lab;
         _nearD = bestD;

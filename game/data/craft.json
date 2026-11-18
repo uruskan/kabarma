@@ -30,6 +30,7 @@
     "wheat": { "text": "yabani buğday, Biçme", "target": "tuft:wheat" },
     "turnip": { "text": "tarlan, olgun şalgamı Biçme ile hasat et", "target": "farm" },
     "egg": { "text": "ağıldaki Gıdak, Folluk'tan E ile", "target": "gidak" },
+    "deri": { "text": "ağıldaki Homur ve Dallı, uzun aralıklı ürün; hayvana E", "target": "gidak" },
     "copper_ingot": { "text": "Taş Fırın'da Bakır Cevheri'nden eritilir", "target": "station:tas_firin" },
     "copper_wire": { "text": "Tezgâh'ta Bakır Külçe'den çekilir", "target": "station:tezgah" },
     "charcoal": { "text": "Kömür Ocağı'nda Odun'dan yakılır", "target": "station:komur_ocagi" },
@@ -37,6 +38,8 @@
     "iron_ingot": { "text": "Demirci Ocağı'nda Demir Cevheri'nden eritilir", "target": "station:demirci_ocagi" },
     "sourberry": { "text": "Ekşilik: Koru ekini, tarlada yetiştir ve Biçme ile hasat et", "target": "farm" },
     "plank": { "text": "Bıçkı'da Odun'dan biçilir", "target": "station:bicki" },
-    "cloth": { "text": "Dokuma Tezgâhı'nda Lif'ten dokunur", "target": "station:dokuma_tezgahi" }
+    "cloth": { "text": "Dokuma Tezgâhı'nda Lif'ten dokunur", "target": "station:dokuma_tezgahi" },
+    "maya_kesesi": { "text": "Kabarma gecesi kabarmış yaratıktan düşer", "target": "farm" },
+    "resin": { "text": "Sis Korusu ağaçlarındaki reçine yumruları, Kazma", "target": "rock:resin" }
   }
 }

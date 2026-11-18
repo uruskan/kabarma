@@ -31,6 +31,8 @@ public partial class FlowFieldSystem : Node
     /// <summary>Son taramanin ve son Tick'in suresi (ms; olcum).</summary>
     public double LastScanMs { get; private set; }
     public double LastTickMs { get; private set; }
+    /// <summary>Son Tick'te guncellenen alan sayisi (0: is yoktu; olcum).</summary>
+    public int LastTickWork { get; private set; }
 
     public FlowFieldSystem(Director d) { _d = d; Name = "FlowField"; }
 
@@ -55,7 +57,7 @@ public partial class FlowFieldSystem : Node
         var grid = new FlowGrid(Def, c.X, c.Z);
         var w = _d.World;
         grid.BuildTerrain((x, z) => w.HeightAt(x, z), (x, z) => w.IsWater(new Vector3(x, w.HeightAt(x, z), z)));
-        Fields = new FlowFieldSet(grid);
+        Fields = new FlowFieldSet(grid) { EagerFirstQuery = false }; // ilk hesap da tik butcesiyle; o arada Steer null (dogrudan yurur)
         _mine.Clear();
         _dirty = true;
         GD.Print($"FLOW window center={c.X:0},{c.Z:0} size={grid.Size}");
@@ -80,7 +82,7 @@ public partial class FlowFieldSystem : Node
             Scans++;
         }
         ulong t1 = Time.GetTicksUsec();
-        Fields.Tick();
+        LastTickWork = Fields.Tick();
         LastTickMs = (Time.GetTicksUsec() - t1) / 1000.0;
     }
 

@@ -52,3 +52,14 @@ Kredi harcayan Tripo istemleri. `gen_golden.sh` M0/M1'in ilk üretimi (bash; bu 
 - `synth_ui.py`: 5 arayüz sesi × 3 sürüm, sentez, kredi yok.
 - `eleven.py`: ElevenLabs üretimi (kredi harcar, sahibin onayıyla). Sahibin onayladığı sınırlar kodda sert sınır; harcama defteri `progress/m1/ses/eleven_ledger.json`. Önce `python pipeline/eleven.py pipeline/requests/m1_audio.json --dry-run`. Katman eşlemesi değişirse, indirilmiş köklerden kredisiz yeniden toplama: `--only stems --reuse-raw --force`.
 - `licenses.md`: ses kaynakları, planlar, üretim tarihleri.
+
+## Bitkiler: `build_bitki.py`, `bitki_sync.py` (bitki-pbr)
+
+```
+blender -b --factory-startup --python-exit-code 1 -P pipeline/build_bitki.py -- [--only agac,cali] [--out <klasör>] [--no_render]
+python pipeline/bitki_sync.py   # raporlardan assets.json; eski Tripo PBR kayıtlarını siler
+```
+
+Ağaç ve süs bitkileri `F:\Assets`'ten (salt okunur; zip'ler ana kopyanın `.tools/bitki_src/` klasörüne bir kez açılır). Ayarlar `bitki_manifest.json`: kaynak, parçalar, boy, malzeme dokuları (`dosya|G` tek kanal), renk ayarı (`grade`: ton, doygunluk, parlaklık, çarpım), LOD üçgen ve doku boyları. `tree` türünde Geometry Nodes yaprak kümeleri karta pişirilir (Cycles, ortografik üstten; albedo + alfa ve normal atlası, kenar taşması), ince dallar ayıklanır, kart normalleri tac hacmine eğilir. Çıktı: `<ad>.glb` (tek mesh düğümü), `_lod1`, `_lod2`, `_hull.tres` (ağaçta yalnız gövde), `_icon.png`, `.report.json`; inceleme görüntüsü ve atlas `progress/bitki/render/`. İçe aktarmadan sonra bu GLB'lerin `.import` dosyasında `meshes/generate_lods=false` kalmalı.
+
+**Tripo GLB (stilize, `kind: "stylized"`):** gelen GLB'yi `source.file` yap, öğe adını biomes.json'daki model adıyla aynı tut (`agac`, `turuncu_agac`, `cali` …), `disabled`'ı sil; şablon `ornek_tripo_agac`. Gömülü dokular (albedo, normal, metallicRoughness G) çıkarılır, LOD'lar yalnız kenar çökertmeyle iner (kapalı mesh'te delik açılmaz), `tree: true` gövde kabuğu çıkarır. İsteğe bağlı `leaf_shell`: taç kitlesinin (boyun `crown_start` üstü) yüzeyine alana göre ince yaprak kartları (atlas kareleri `tiles`, LOD başına `counts`, alfa makaslı, normaller taç hacmine eğik); görünüşe göre açılır ya da `counts` 0 yapılır.

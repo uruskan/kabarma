@@ -193,7 +193,7 @@ Host ya da sunucu yetkilidir. İstemci istekleri mesafe, bekleme süresi ve enva
 2. **Yükseklik haritası.** 5 × 5 km, 1 m örnekleme. Biyoma göre gürültü katmanları, krater çanağı, kıyı yarları, nehir ve göl oyması, keşif noktası düzleştirmesi.
 3. **Keşif noktaları.** Kurallı Poisson dağılımı: tür başına asgari mesafe, biyom ve eğim şartı ([ICERIK.md](ICERIK.md) §17).
 4. **Damarlar ve bitki örtüsü.** Tohumdan; parça (chunk) başına üretilir.
-5. **İç mekânlar** (Oyuklar, Genel Merkez'in içi) hazır sahnelerdir; arazinin 500 m altına yerleştirilir ve kapıdan geçişle girilir. Yükleme ekranı yoktur.
+5. **İç mekânlar** (Oyuklar, Genel Merkez'in içi) hazır sahnelerdir; arazinin 500 m altına yerleştirilir ve kapıdan geçişle girilir. Yükleme ekranı yoktur. Odalar oynanabilir karenin dışındaki xz'lere konur (yükseklik sorgusu xz ile çalışır: `World.HeightAt` oda içinde oda tabanını verir; Çekim, mermi ve yerleştirme bu yüzden içeride de doğru zemini görür). İçerisi karanlıktır: güneş, gök ışığı ve sis kapanır, ışık yalnız odanın kendi kaynaklarından ve oyuncunun getirdiğinden gelir. Ayrıntı `game/data/oyuk.json` (M3).
 
 **Akış:** 64 m'lik parçalar. Oyuncuya 400 m içinde tam ayrıntı, 1,5 km'ye kadar iki kademe düşük ayrıntı, ötesinde biyom başına tek siluet mesh'i. Kat kat ufuk görüntüsü bu siluetlerle ve yükseklik sisiyle kurulur.
 
@@ -226,6 +226,7 @@ Host ya da sunucu yetkilidir. İstemci istekleri mesafe, bekleme süresi ve enva
 - **Holding** aynı maliyet ızgarasında noktadan noktaya kırma maliyetli A* (`FindPath`) kullanır; sürüler ve Kabaranlar akış alanını.
 - **Durum:** alan türetilmiş veridir (arazi + izler + hedefler): kayda yazılmaz, yüklemeden ve sonradan katılmadan sonra yeniden kurulur; yalnız host'ta tutulur (istemcide yaratık kukladır, §5.2). `GameState`'e ve statiklere girmez.
 - **Güncelleme:** iz eklenince ya da hedef kalkınca etkilenen alt ağaç (bu hücreden geçen en kısa yollar) sıfırlanıp sınırından yeniden yayılır; iz kalkınca ya da hedef eklenince değişen hücrelerden iyileşme yayılır. Sonuç tam yeniden hesapla aynıdır (birim testi).
+- **Kare bütçesi:** 160 m pencerede tek bir duvar 3 700–10 000 hücreye dokunabilir (tam hesap 25 600 hücre). Bu yüzden hesap arka tamponda yapılır ve onarımın üç aşaması (etkilenen alt ağaç, sınır tohumları, yayılım) dahil tikte en çok `maxCellsPerTick` hücre işlenir (bütün alanların toplamı); iş bitince ön tamponla takas edilir, o zamana dek sorgular eski alanı okur. İş sürerken gelen değişim sonraki işe kalır; sonuç yine tam hesapla aynıdır (birim testi). Oyunda anahtarın ilk hesabı da bu bütçeyle yapılır; o arada sorgu geçersiz döner ve yaratık doğrudan hedefe yürür (Sim testlerinde ilk sorgu hemen hesaplanır).
 
 ## 9. Kayıt
 

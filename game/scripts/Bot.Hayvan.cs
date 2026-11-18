@@ -30,6 +30,7 @@ public partial class Bot
         {
             if (!_hayvanDone) { StepHayvan(); return; }
             end();
+            if (Done && !quitting && Main.Args.ContainsKey("savashayvan")) { quitting = true; GetParent().AddChild(new SavasHayvanTest(_d)); return; } // M3: bilesen sinamasi (Husbandry.Combat.Test.cs) kendisi cikar
             if (Done && !quitting) { quitting = true; GetTree().CreateTimer(1.0).Timeout += () => GetTree().Quit(0); } // sinama bitti: sure dolmasini bekleme
         };
     }

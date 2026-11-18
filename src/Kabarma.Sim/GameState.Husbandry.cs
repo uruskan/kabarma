@@ -13,6 +13,8 @@ public sealed class RanchSave
     public ulong Rng { get; set; }
     public List<AnimalExtraSave> Animals { get; set; } = new();
     public List<ManurePile> Manure { get; set; } = new();
+    /// <summary>M3: Kabarma suruyor (savas govdeleri ve saklananlar canli).</summary>
+    public bool AtWar { get; set; }
 }
 
 public sealed class AnimalExtraSave
@@ -39,11 +41,30 @@ public sealed class AnimalExtraSave
     public float X { get; set; }
     public float Z { get; set; }
     public string Alaca { get; set; } = "";
+    // M3 (GDD 9.5; v1 icinde eklenen alanlar: eski kayitta yoksa varsayilan, gece disi durum)
+    public CombatBody? War { get; set; }
+    public bool Fainted { get; set; }
+    public int TiredDawns { get; set; }
+    public bool Hidden { get; set; }
+    public bool Scattered { get; set; }
+    public float HomeX { get; set; }
+    public float HomeZ { get; set; }
+    public bool Saddled { get; set; }
+    public int PostId { get; set; }
+    public bool Called { get; set; }
+    public float CallX { get; set; }
+    public float CallZ { get; set; }
 }
 
 public sealed partial class GameState
 {
     Ranch? _ranch;
+
+    static CombatBody CloneBody(CombatBody b) => new()
+    {
+        Hp = b.Hp, MaxHp = b.MaxHp, Armor = b.Armor, Mass = b.Mass, Profile = b.Profile, Team = b.Team, Swell = b.Swell, ShieldT = b.ShieldT,
+        Statuses = (b.Statuses ?? new()).Select(s => new StatusEffect { Kind = s.Kind, T = s.T, Dps = s.Dps, TickT = s.TickT, SpreadT = s.SpreadT, Stacks = s.Stacks }).ToList(),
+    };
 
     /// <summary>
     /// Hayvancilik (GDD 9.1-9.4): Coop'un hayvanlari, Yemlik ve Folluk'u uzerine ihtiyac, mutluluk, gen, ureme, rol,
@@ -59,6 +80,7 @@ public sealed partial class GameState
             Clock = Ranch.Clock,
             NextId = Ranch.NextId,
             Rng = Ranch.Rng.State,
+            AtWar = Ranch.AtWar,
             Manure = Ranch.Manure.Select(m => new ManurePile { Id = m.Id, Count = m.Count, X = m.X, Z = m.Z }).ToList(),
             Animals = Coop.Animals.Select(a => new AnimalExtraSave
             {
@@ -69,6 +91,9 @@ public sealed partial class GameState
                 LastPetDay = a.LastPetDay, LowSeconds = a.LowSeconds, WantsOut = a.WantsOut, BreedTimer = a.BreedTimer,
                 MateId = a.MateId, MotherId = a.MotherId, FatherId = a.FatherId, Bound = a.Bound, HiveId = a.HiveId,
                 Pack = new SortedDictionary<string, int>(a.Pack, StringComparer.Ordinal), X = a.X, Z = a.Z, Alaca = a.Alaca,
+                War = a.War == null ? null : CloneBody(a.War), Fainted = a.Fainted, TiredDawns = a.TiredDawns, Hidden = a.Hidden,
+                Scattered = a.Scattered, HomeX = a.HomeX, HomeZ = a.HomeZ, Saddled = a.Saddled, PostId = a.PostId,
+                Called = a.Called, CallX = a.CallX, CallZ = a.CallZ,
             }).ToList(),
         };
         set
@@ -77,6 +102,7 @@ public sealed partial class GameState
             r.Clock = value.Clock;
             r.NextId = Math.Max(1, value.NextId);
             if (value.Rng != 0) r.Rng.State = value.Rng;
+            r.AtWar = value.AtWar;
             r.Manure.Clear();
             r.Manure.AddRange(value.Manure ?? new());
             var list = value.Animals ?? new();
@@ -92,6 +118,9 @@ public sealed partial class GameState
                 a.Pending = e.Pending ?? new(); a.LastPetDay = e.LastPetDay; a.LowSeconds = e.LowSeconds; a.WantsOut = e.WantsOut;
                 a.BreedTimer = e.BreedTimer; a.MateId = e.MateId; a.MotherId = e.MotherId; a.FatherId = e.FatherId; a.Bound = e.Bound;
                 a.HiveId = e.HiveId; a.Pack = new Dictionary<string, int>(e.Pack ?? new()); a.X = e.X; a.Z = e.Z; a.Alaca = e.Alaca ?? "";
+                a.War = e.War == null ? null : CloneBody(e.War); a.Fainted = e.Fainted; a.TiredDawns = e.TiredDawns; a.Hidden = e.Hidden;
+                a.Scattered = e.Scattered; a.HomeX = e.HomeX; a.HomeZ = e.HomeZ; a.Saddled = e.Saddled; a.PostId = e.PostId;
+                a.Called = e.Called; a.CallX = e.CallX; a.CallZ = e.CallZ; a.Rider = 0;
             }
         }
     }

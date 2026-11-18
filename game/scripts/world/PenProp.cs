@@ -35,7 +35,12 @@ public partial class PenProp : Node3D
         if (def.Id == "suluk") Trough = ranch.AddTrough(0, 0);
         if (def.Id == "kasinma_fircasi") Brush = ranch.AddBrush(0, 0);
         if (def.Id == "ari_kovani") Hive = ranch.AddHive(0, 0);
+        if (def.Id == d.Data.Husbandry.Combat.Flag) Flag = ranch.AddFlag(0, 0); // M3: Savas Agili Bayragi
+        if (def.Id == d.Data.Husbandry.Combat.Post) Post = ranch.AddPost(0, 0); // M3: Baglama Diregi
     }
+
+    public WarFlag Flag { get; }
+    public TiePost Post { get; }
 
     public Trough Trough { get; }
     public Brush Brush { get; }
@@ -50,6 +55,8 @@ public partial class PenProp : Node3D
         if (Trough != null) { Trough.X = x; Trough.Z = z; }
         if (Brush != null) { Brush.X = x; Brush.Z = z; }
         if (Hive != null) { Hive.X = x; Hive.Z = z; }
+        if (Flag != null) { Flag.X = x; Flag.Z = z; }
+        if (Post != null) { Post.X = x; Post.Z = z; }
     }
 
     public override void _Ready()
@@ -151,6 +158,10 @@ public partial class PenProp : Node3D
             : Nest != null ? $"{Def.Name}\nYumurta {Nest.Eggs}/{Nest.Slots}"
             : Trough != null ? $"{Def.Name}\nSu {Trough.Water:0}/{Trough.Capacity}"
             : Hive != null ? $"{Def.Name}\n{(Hive.AnimalId == 0 ? "Boş" : "Vızvız yerleşti")}"
+            : Post != null ? $"{Def.Name}\n{(Post.AnimalId == 0 ? "Boş" : "Hayvan bağlı")}"
+            : Flag != null ? $"{Def.Name}\nSavaş Ağılı"
+            : Post != null ? $"{Def.Name}\n{(Post.AnimalId == 0 ? "Boş" : "Hayvan bağlı")}"
+            : Flag != null ? $"{Def.Name}\nSavaş Ağılı"
             : Kasa == null && Def.Id == "ahsap_kapi" ? $"{Def.Name}\nKapı Kasası'na oturur" : Def.Name;
         _label.Visible = near || Feeder != null || Nest != null || Trough != null || Hive != null;
         _label.Modulate = near ? Palette.Warning : Palette.OffWhite;

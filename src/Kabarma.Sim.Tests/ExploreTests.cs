@@ -81,8 +81,8 @@ public class ExploreTests
             int N(string t) => pois.Count(p => p.Biome == biome && p.Type == t);
             Assert.Equal((1, 1, 1, 2, 3), (N("seyir_kulesi"), N("ata_tasi"), N("yabani_bahce"), N("yuva"), N("enkaz")));
         }
-        // M2'de calismayan turler yerlesmez; her kural turu tanimli.
-        Assert.DoesNotContain(pois, p => d.Biomes.World.PoiTypes[p.Type].Milestone != "M2");
+        // Henuz calismayan turler yerlesmez (M2 noktalari ve M3 Oyuk); her kural turu tanimli.
+        Assert.DoesNotContain(pois, p => d.Biomes.World.PoiTypes[p.Type].Milestone is not ("M2" or "M3"));
         // Kimlikler tekil ve tohumdan kararli.
         Assert.Equal(pois.Count, pois.Select(p => p.Id).Distinct().Count());
         var again = PoiPlacer.Place(Data640().Biomes, new BiomeMap(Data640().Biomes));

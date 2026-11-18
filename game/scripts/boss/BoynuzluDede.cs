@@ -260,14 +260,18 @@ public partial class AtaHive : Node3D, IAtaTarget
         return n as AtaSystem;
     }
 
-    public void TakeWeapon(float dmg, bool crit, Vector3 dir, float knock)
+    /// <summary>Kovan Dede'nin parcasidir: kendi govdesi yok, alan etkisi almaz.</summary>
+    public CombatBody Body => null;
+
+    public CombatResult TakeHit(CombatHit hit, Vector3 from)
     {
-        if (!Alive) return;
+        if (!Alive) return default;
         var sys = FindSys();
-        sys?.DamageWeakPoint(Index, dmg);
-        Fx.DamageNumber(Center + Vector3.Up * 0.5f, dmg, true);
+        sys?.DamageWeakPoint(Index, hit);
+        Fx.DamageNumber(Center + Vector3.Up * 0.5f, hit.Amount, true);
         Fx.Burst(Center, Palette.Warning, 8, 3f, 0.1f, 0.4f, true);
         Squash.Kick(this, 0.25f, 0.25f, 2f);
+        return new CombatResult { Damage = hit.Amount };
     }
 
     public void Break()

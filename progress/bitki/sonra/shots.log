@@ -1,0 +1,823 @@
+﻿Godot Engine v4.7.2.stable.mono.official.ed1daf0bf - https://godotengine.org
+Vulkan 1.4.357 - Forward+ - Using Device #0: NVIDIA - NVIDIA GeForce RTX 2070 SUPER
+
+TEST shots
+MUSIC ready day=yes layers=3/3 bar=2.00s
+Godot_v4.7.2-stable_mono_win64_console.exe : WARNING: 'res://assets/models/egrelti/egrelti.glb': In external resource 
+#0, invalid UID: 'uid://d1gv3afm0kje0' - using text path instead: 
+'res://assets/models/egrelti/egrelti_egrelti_yaprak_albedo.png'.
+At line:1 char:512
++ ... nsole.exe'; & $G --path game -- --test=shots --shots_quick --shots_ti ...
++                 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : NotSpecified: (WARNING: 'res:/...ak_albedo.png'.:String) [], RemoteException
+    + FullyQualifiedErrorId : NativeCommandError
+ 
+   at: open (core/io/resource_format_binary.cpp:1025)
+   C# backtrace (most recent call first):
+       [0] Godot.GodotObject Godot.NativeCalls.godot_icall_3_1268(nint, nint, string, string, int) 
+(/root/godot/modules/mono/glue/GodotSharp/GodotSharp/Generated/NativeCalls.cs:11611)
+       [1] Godot.Resource Godot.ResourceLoader.Load(string, string, Godot.ResourceLoader+CacheMode) 
+(/root/godot/modules/mono/glue/GodotSharp/GodotSharp/Generated/GodotObjects/ResourceLoader.cs:120)
+       [2] T Godot.ResourceLoader.Load<T>(string, string, Godot.ResourceLoader+CacheMode) 
+(/root/godot/modules/mono/glue/GodotSharp/GodotSharp/Core/Extensions/ResourceLoaderExtensions.cs:27)
+       [3] T Godot.GD.Load<T>(string) (/root/godot/modules/mono/glue/GodotSharp/GodotSharp/Core/GD.cs:129)
+       [4] Godot.Node3D Kabarma.Game.Assets.Load(string, bool, Godot.Material) 
+(C:\Users\uruskan\Documents\GitHub\kabarma\.claude\worktrees\m1-varlik-72a21b\game\scripts\fx\Assets.cs:37)
+       [5] Godot.Mesh Kabarma.Game.World.DecorMesh(Kabarma.Sim.DecorDef, System.Single&) 
+(C:\Users\uruskan\Documents\GitHub\kabarma\.claude\worktrees\m1-varlik-72a21b\game\scripts\world\World.Decor.cs:93)
+       [6] void Kabarma.Game.World.BuildDecor() 
+(C:\Users\uruskan\Documents\GitHub\kabarma\.claude\worktrees\m1-varlik-72a21b\game\scripts\world\World.Decor.cs:28)
+       [7] void Kabarma.Game.World._Ready() 
+(C:\Users\uruskan\Documents\GitHub\kabarma\.claude\worktrees\m1-varlik-72a21b\game\scripts\world\World.cs:46)
+       [8] bool Godot.Node.InvokeGodotClassMethod(Godot.NativeInterop.godot_string_name&, 
+Godot.NativeInterop.NativeVariantPtrArgs, Godot.NativeInterop.godot_variant&) 
+(/root/godot/modules/mono/glue/GodotSharp/GodotSharp/Generated/GodotObjects/Node.cs:2660)
+       [9] bool Godot.Node3D.InvokeGodotClassMethod(Godot.NativeInterop.godot_string_name&, 
+Godot.NativeInterop.NativeVariantPtrArgs, Godot.NativeInterop.godot_variant&) 
+(/root/godot/modules/mono/glue/GodotSharp/GodotSharp/Generated/GodotObjects/Node3D.cs:1127)
+       [10] bool Kabarma.Game.World.InvokeGodotClassMethod(Godot.NativeInterop.godot_string_name&, 
+Godot.NativeInterop.NativeVariantPtrArgs, Godot.NativeInterop.godot_variant&) (C:\Users\uruskan\Documents\GitHub\kabarm
+a\.claude\worktrees\m1-varlik-72a21b\game\.godot\mono\temp\obj\Debug\Godot.SourceGenerators\Godot.SourceGenerators.Scri
+ptMethodsGenerator\Kabarma.Game.World_ScriptMethods.generated.cs:450)
+       [11] Godot.NativeInterop.godot_bool Godot.Bridge.CSharpInstanceBridge.Call(nint, 
+Godot.NativeInterop.godot_string_name*, Godot.NativeInterop.godot_variant**, int, 
+Godot.NativeInterop.godot_variant_call_error*, Godot.NativeInterop.godot_variant*) 
+(/root/godot/modules/mono/glue/GodotSharp/GodotSharp/Core/Bridge/CSharpInstanceBridge.cs:24)
+       [12] void Godot.NativeInterop.NativeFuncs.godotsharp_method_bind_ptrcall(nint, nint, System.Void**, 
+System.Void*) (/root/godot/modules/mono/glue/GodotSharp/GodotSharp/Godot.SourceGenerators.Internal/Godot.SourceGenerato
+rs.Internal.UnmanagedCallbacksGenerator/Godot.NativeInterop.NativeFuncs.generated.cs:380)
+       [13] void Godot.NativeCalls.godot_icall_3_912(nint, nint, nint, Godot.NativeInterop.godot_bool, int) 
+(/root/godot/modules/mono/glue/GodotSharp/GodotSharp/Generated/NativeCalls.cs:8061)
+       [14] void Godot.Node.AddChild(Godot.Node, bool, Godot.Node+InternalMode) 
+(/root/godot/modules/mono/glue/GodotSharp/GodotSharp/Generated/GodotObjects/Node.cs:848)
+       [15] void Kabarma.Game.Director._Ready() 
+(C:\Users\uruskan\Documents\GitHub\kabarma\.claude\worktrees\m1-varlik-72a21b\game\scripts\Director.cs:52)
+       [16] bool Godot.Node.InvokeGodotClassMethod(Godot.NativeInterop.godot_string_name&, 
+Godot.NativeInterop.NativeVariantPtrArgs, Godot.NativeInterop.godot_variant&) 
+(/root/godot/modules/mono/glue/GodotSharp/GodotSharp/Generated/GodotObjects/Node.cs:2660)
+       [17] bool Godot.Node3D.InvokeGodotClassMethod(Godot.NativeInterop.godot_string_name&, 
+Godot.NativeInterop.NativeVariantPtrArgs, Godot.NativeInterop.godot_variant&) 
+(/root/godot/modules/mono/glue/GodotSharp/GodotSharp/Generated/GodotObjects/Node3D.cs:1127)
+       [18] bool Kabarma.Game.Director.InvokeGodotClassMethod(Godot.NativeInterop.godot_string_name&, 
+Godot.NativeInterop.NativeVariantPtrArgs, Godot.NativeInterop.godot_variant&) (C:\Users\uruskan\Documents\GitHub\kabarm
+a\.claude\worktrees\m1-varlik-72a21b\game\.godot\mono\temp\obj\Debug\Godot.SourceGenerators\Godot.SourceGenerators.Scri
+ptMethodsGenerator\Kabarma.Game.Director_ScriptMethods.generated.cs:1036)
+       [19] Godot.NativeInterop.godot_bool Godot.Bridge.CSharpInstanceBridge.Call(nint, 
+Godot.NativeInterop.godot_string_name*, Godot.NativeInterop.godot_variant**, int, 
+Godot.NativeInterop.godot_variant_call_error*, Godot.NativeInterop.godot_variant*) 
+(/root/godot/modules/mono/glue/GodotSharp/GodotSharp/Core/Bridge/CSharpInstanceBridge.cs:24)
+       [20] void Godot.NativeInterop.NativeFuncs.godotsharp_method_bind_ptrcall(nint, nint, System.Void**, 
+System.Void*) (/root/godot/modules/mono/glue/GodotSharp/GodotSharp/Godot.SourceGenerators.Internal/Godot.SourceGenerato
+rs.Internal.UnmanagedCallbacksGenerator/Godot.NativeInterop.NativeFuncs.generated.cs:380)
+       [21] void Godot.NativeCalls.godot_icall_3_912(nint, nint, nint, Godot.NativeInterop.godot_bool, int) 
+(/root/godot/modules/mono/glue/GodotSharp/GodotSharp/Generated/NativeCalls.cs:8061)
+       [22] void Godot.Node.AddChild(Godot.Node, bool, Godot.Node+InternalMode) 
+(/root/godot/modules/mono/glue/GodotSharp/GodotSharp/Generated/GodotObjects/Node.cs:848)
+       [23] void Kabarma.Game.Main._Ready() 
+(C:\Users\uruskan\Documents\GitHub\kabarma\.claude\worktrees\m1-varlik-72a21b\game\scripts\Main.cs:95)
+       [24] bool Godot.Node.InvokeGodotClassMethod(Godot.NativeInterop.godot_string_name&, 
+Godot.NativeInterop.NativeVariantPtrArgs, Godot.NativeInterop.godot_variant&) 
+(/root/godot/modules/mono/glue/GodotSharp/GodotSharp/Generated/GodotObjects/Node.cs:2660)
+       [25] bool Godot.Node3D.InvokeGodotClassMethod(Godot.NativeInterop.godot_string_name&, 
+Godot.NativeInterop.NativeVariantPtrArgs, Godot.NativeInterop.godot_variant&) 
+(/root/godot/modules/mono/glue/GodotSharp/GodotSharp/Generated/GodotObjects/Node3D.cs:1127)
+       [26] bool Kabarma.Game.Main.InvokeGodotClassMethod(Godot.NativeInterop.godot_string_name&, 
+Godot.NativeInterop.NativeVariantPtrArgs, Godot.NativeInterop.godot_variant&) (C:\Users\uruskan\Documents\GitHub\kabarm
+a\.claude\worktrees\m1-varlik-72a21b\game\.godot\mono\temp\obj\Debug\Godot.SourceGenerators\Godot.SourceGenerators.Scri
+ptMethodsGenerator\Kabarma.Game.Main_ScriptMethods.generated.cs:70)
+       [27] Godot.NativeInterop.godot_bool Godot.Bridge.CSharpInstanceBridge.Call(nint, 
+Godot.NativeInterop.godot_string_name*, Godot.NativeInterop.godot_variant**, int, 
+Godot.NativeInterop.godot_variant_call_error*, Godot.NativeInterop.godot_variant*) 
+(/root/godot/modules/mono/glue/GodotSharp/GodotSharp/Core/Bridge/CSharpInstanceBridge.cs:24)
+WARNING: 'res://assets/models/egrelti/egrelti.glb': In external resource #1, invalid UID: 'uid://btylhqbb75lyb' - 
+using text path instead: 'res://assets/models/egrelti/egrelti_egrelti_yaprak_rough.png'.
+   at: open (core/io/resource_format_binary.cpp:1025)
+   C# backtrace (most recent call first):
+       [0] Godot.GodotObject Godot.NativeCalls.godot_icall_3_1268(nint, nint, string, string, int) 
+(/root/godot/modules/mono/glue/GodotSharp/GodotSharp/Generated/NativeCalls.cs:11611)
+       [1] Godot.Resource Godot.ResourceLoader.Load(string, string, Godot.ResourceLoader+CacheMode) 
+(/root/godot/modules/mono/glue/GodotSharp/GodotSharp/Generated/GodotObjects/ResourceLoader.cs:120)
+       [2] T Godot.ResourceLoader.Load<T>(string, string, Godot.ResourceLoader+CacheMode) 
+(/root/godot/modules/mono/glue/GodotSharp/GodotSharp/Core/Extensions/ResourceLoaderExtensions.cs:27)
+       [3] T Godot.GD.Load<T>(string) (/root/godot/modules/mono/glue/GodotSharp/GodotSharp/Core/GD.cs:129)
+       [4] Godot.Node3D Kabarma.Game.Assets.Load(string, bool, Godot.Material) 
+(C:\Users\uruskan\Documents\GitHub\kabarma\.claude\worktrees\m1-varlik-72a21b\game\scripts\fx\Assets.cs:37)
+       [5] Godot.Mesh Kabarma.Game.World.DecorMesh(Kabarma.Sim.DecorDef, System.Single&) 
+(C:\Users\uruskan\Documents\GitHub\kabarma\.claude\worktrees\m1-varlik-72a21b\game\scripts\world\World.Decor.cs:93)
+       [6] void Kabarma.Game.World.BuildDecor() 
+(C:\Users\uruskan\Documents\GitHub\kabarma\.claude\worktrees\m1-varlik-72a21b\game\scripts\world\World.Decor.cs:28)
+       [7] void Kabarma.Game.World._Ready() 
+(C:\Users\uruskan\Documents\GitHub\kabarma\.claude\worktrees\m1-varlik-72a21b\game\scripts\world\World.cs:46)
+       [8] bool Godot.Node.InvokeGodotClassMethod(Godot.NativeInterop.godot_string_name&, 
+Godot.NativeInterop.NativeVariantPtrArgs, Godot.NativeInterop.godot_variant&) 
+(/root/godot/modules/mono/glue/GodotSharp/GodotSharp/Generated/GodotObjects/Node.cs:2660)
+       [9] bool Godot.Node3D.InvokeGodotClassMethod(Godot.NativeInterop.godot_string_name&, 
+Godot.NativeInterop.NativeVariantPtrArgs, Godot.NativeInterop.godot_variant&) 
+(/root/godot/modules/mono/glue/GodotSharp/GodotSharp/Generated/GodotObjects/Node3D.cs:1127)
+       [10] bool Kabarma.Game.World.InvokeGodotClassMethod(Godot.NativeInterop.godot_string_name&, 
+Godot.NativeInterop.NativeVariantPtrArgs, Godot.NativeInterop.godot_variant&) (C:\Users\uruskan\Documents\GitHub\kabarm
+a\.claude\worktrees\m1-varlik-72a21b\game\.godot\mono\temp\obj\Debug\Godot.SourceGenerators\Godot.SourceGenerators.Scri
+ptMethodsGenerator\Kabarma.Game.World_ScriptMethods.generated.cs:450)
+       [11] Godot.NativeInterop.godot_bool Godot.Bridge.CSharpInstanceBridge.Call(nint, 
+Godot.NativeInterop.godot_string_name*, Godot.NativeInterop.godot_variant**, int, 
+Godot.NativeInterop.godot_variant_call_error*, Godot.NativeInterop.godot_variant*) 
+(/root/godot/modules/mono/glue/GodotSharp/GodotSharp/Core/Bridge/CSharpInstanceBridge.cs:24)
+       [12] void Godot.NativeInterop.NativeFuncs.godotsharp_method_bind_ptrcall(nint, nint, System.Void**, 
+System.Void*) (/root/godot/modules/mono/glue/GodotSharp/GodotSharp/Godot.SourceGenerators.Internal/Godot.SourceGenerato
+rs.Internal.UnmanagedCallbacksGenerator/Godot.NativeInterop.NativeFuncs.generated.cs:380)
+       [13] void Godot.NativeCalls.godot_icall_3_912(nint, nint, nint, Godot.NativeInterop.godot_bool, int) 
+(/root/godot/modules/mono/glue/GodotSharp/GodotSharp/Generated/NativeCalls.cs:8061)
+       [14] void Godot.Node.AddChild(Godot.Node, bool, Godot.Node+InternalMode) 
+(/root/godot/modules/mono/glue/GodotSharp/GodotSharp/Generated/GodotObjects/Node.cs:848)
+       [15] void Kabarma.Game.Director._Ready() 
+(C:\Users\uruskan\Documents\GitHub\kabarma\.claude\worktrees\m1-varlik-72a21b\game\scripts\Director.cs:52)
+       [16] bool Godot.Node.InvokeGodotClassMethod(Godot.NativeInterop.godot_string_name&, 
+Godot.NativeInterop.NativeVariantPtrArgs, Godot.NativeInterop.godot_variant&) 
+(/root/godot/modules/mono/glue/GodotSharp/GodotSharp/Generated/GodotObjects/Node.cs:2660)
+       [17] bool Godot.Node3D.InvokeGodotClassMethod(Godot.NativeInterop.godot_string_name&, 
+Godot.NativeInterop.NativeVariantPtrArgs, Godot.NativeInterop.godot_variant&) 
+(/root/godot/modules/mono/glue/GodotSharp/GodotSharp/Generated/GodotObjects/Node3D.cs:1127)
+       [18] bool Kabarma.Game.Director.InvokeGodotClassMethod(Godot.NativeInterop.godot_string_name&, 
+Godot.NativeInterop.NativeVariantPtrArgs, Godot.NativeInterop.godot_variant&) (C:\Users\uruskan\Documents\GitHub\kabarm
+a\.claude\worktrees\m1-varlik-72a21b\game\.godot\mono\temp\obj\Debug\Godot.SourceGenerators\Godot.SourceGenerators.Scri
+ptMethodsGenerator\Kabarma.Game.Director_ScriptMethods.generated.cs:1036)
+       [19] Godot.NativeInterop.godot_bool Godot.Bridge.CSharpInstanceBridge.Call(nint, 
+Godot.NativeInterop.godot_string_name*, Godot.NativeInterop.godot_variant**, int, 
+Godot.NativeInterop.godot_variant_call_error*, Godot.NativeInterop.godot_variant*) 
+(/root/godot/modules/mono/glue/GodotSharp/GodotSharp/Core/Bridge/CSharpInstanceBridge.cs:24)
+       [20] void Godot.NativeInterop.NativeFuncs.godotsharp_method_bind_ptrcall(nint, nint, System.Void**, 
+System.Void*) (/root/godot/modules/mono/glue/GodotSharp/GodotSharp/Godot.SourceGenerators.Internal/Godot.SourceGenerato
+rs.Internal.UnmanagedCallbacksGenerator/Godot.NativeInterop.NativeFuncs.generated.cs:380)
+       [21] void Godot.NativeCalls.godot_icall_3_912(nint, nint, nint, Godot.NativeInterop.godot_bool, int) 
+(/root/godot/modules/mono/glue/GodotSharp/GodotSharp/Generated/NativeCalls.cs:8061)
+       [22] void Godot.Node.AddChild(Godot.Node, bool, Godot.Node+InternalMode) 
+(/root/godot/modules/mono/glue/GodotSharp/GodotSharp/Generated/GodotObjects/Node.cs:848)
+       [23] void Kabarma.Game.Main._Ready() 
+(C:\Users\uruskan\Documents\GitHub\kabarma\.claude\worktrees\m1-varlik-72a21b\game\scripts\Main.cs:95)
+       [24] bool Godot.Node.InvokeGodotClassMethod(Godot.NativeInterop.godot_string_name&, 
+Godot.NativeInterop.NativeVariantPtrArgs, Godot.NativeInterop.godot_variant&) 
+(/root/godot/modules/mono/glue/GodotSharp/GodotSharp/Generated/GodotObjects/Node.cs:2660)
+       [25] bool Godot.Node3D.InvokeGodotClassMethod(Godot.NativeInterop.godot_string_name&, 
+Godot.NativeInterop.NativeVariantPtrArgs, Godot.NativeInterop.godot_variant&) 
+(/root/godot/modules/mono/glue/GodotSharp/GodotSharp/Generated/GodotObjects/Node3D.cs:1127)
+       [26] bool Kabarma.Game.Main.InvokeGodotClassMethod(Godot.NativeInterop.godot_string_name&, 
+Godot.NativeInterop.NativeVariantPtrArgs, Godot.NativeInterop.godot_variant&) (C:\Users\uruskan\Documents\GitHub\kabarm
+a\.claude\worktrees\m1-varlik-72a21b\game\.godot\mono\temp\obj\Debug\Godot.SourceGenerators\Godot.SourceGenerators.Scri
+ptMethodsGenerator\Kabarma.Game.Main_ScriptMethods.generated.cs:70)
+       [27] Godot.NativeInterop.godot_bool Godot.Bridge.CSharpInstanceBridge.Call(nint, 
+Godot.NativeInterop.godot_string_name*, Godot.NativeInterop.godot_variant**, int, 
+Godot.NativeInterop.godot_variant_call_error*, Godot.NativeInterop.godot_variant*) 
+(/root/godot/modules/mono/glue/GodotSharp/GodotSharp/Core/Bridge/CSharpInstanceBridge.cs:24)
+WARNING: 'res://assets/models/egrelti/egrelti.glb': In external resource #2, invalid UID: 'uid://cg3odjohgptam' - 
+using text path instead: 'res://assets/models/egrelti/egrelti_egrelti_yaprak_normal.png'.
+   at: open (core/io/resource_format_binary.cpp:1025)
+   C# backtrace (most recent call first):
+       [0] Godot.GodotObject Godot.NativeCalls.godot_icall_3_1268(nint, nint, string, string, int) 
+(/root/godot/modules/mono/glue/GodotSharp/GodotSharp/Generated/NativeCalls.cs:11611)
+       [1] Godot.Resource Godot.ResourceLoader.Load(string, string, Godot.ResourceLoader+CacheMode) 
+(/root/godot/modules/mono/glue/GodotSharp/GodotSharp/Generated/GodotObjects/ResourceLoader.cs:120)
+       [2] T Godot.ResourceLoader.Load<T>(string, string, Godot.ResourceLoader+CacheMode) 
+(/root/godot/modules/mono/glue/GodotSharp/GodotSharp/Core/Extensions/ResourceLoaderExtensions.cs:27)
+       [3] T Godot.GD.Load<T>(string) (/root/godot/modules/mono/glue/GodotSharp/GodotSharp/Core/GD.cs:129)
+       [4] Godot.Node3D Kabarma.Game.Assets.Load(string, bool, Godot.Material) 
+(C:\Users\uruskan\Documents\GitHub\kabarma\.claude\worktrees\m1-varlik-72a21b\game\scripts\fx\Assets.cs:37)
+       [5] Godot.Mesh Kabarma.Game.World.DecorMesh(Kabarma.Sim.DecorDef, System.Single&) 
+(C:\Users\uruskan\Documents\GitHub\kabarma\.claude\worktrees\m1-varlik-72a21b\game\scripts\world\World.Decor.cs:93)
+       [6] void Kabarma.Game.World.BuildDecor() 
+(C:\Users\uruskan\Documents\GitHub\kabarma\.claude\worktrees\m1-varlik-72a21b\game\scripts\world\World.Decor.cs:28)
+       [7] void Kabarma.Game.World._Ready() 
+(C:\Users\uruskan\Documents\GitHub\kabarma\.claude\worktrees\m1-varlik-72a21b\game\scripts\world\World.cs:46)
+       [8] bool Godot.Node.InvokeGodotClassMethod(Godot.NativeInterop.godot_string_name&, 
+Godot.NativeInterop.NativeVariantPtrArgs, Godot.NativeInterop.godot_variant&) 
+(/root/godot/modules/mono/glue/GodotSharp/GodotSharp/Generated/GodotObjects/Node.cs:2660)
+       [9] bool Godot.Node3D.InvokeGodotClassMethod(Godot.NativeInterop.godot_string_name&, 
+Godot.NativeInterop.NativeVariantPtrArgs, Godot.NativeInterop.godot_variant&) 
+(/root/godot/modules/mono/glue/GodotSharp/GodotSharp/Generated/GodotObjects/Node3D.cs:1127)
+       [10] bool Kabarma.Game.World.InvokeGodotClassMethod(Godot.NativeInterop.godot_string_name&, 
+Godot.NativeInterop.NativeVariantPtrArgs, Godot.NativeInterop.godot_variant&) (C:\Users\uruskan\Documents\GitHub\kabarm
+a\.claude\worktrees\m1-varlik-72a21b\game\.godot\mono\temp\obj\Debug\Godot.SourceGenerators\Godot.SourceGenerators.Scri
+ptMethodsGenerator\Kabarma.Game.World_ScriptMethods.generated.cs:450)
+       [11] Godot.NativeInterop.godot_bool Godot.Bridge.CSharpInstanceBridge.Call(nint, 
+Godot.NativeInterop.godot_string_name*, Godot.NativeInterop.godot_variant**, int, 
+Godot.NativeInterop.godot_variant_call_error*, Godot.NativeInterop.godot_variant*) 
+(/root/godot/modules/mono/glue/GodotSharp/GodotSharp/Core/Bridge/CSharpInstanceBridge.cs:24)
+       [12] void Godot.NativeInterop.NativeFuncs.godotsharp_method_bind_ptrcall(nint, nint, System.Void**, 
+System.Void*) (/root/godot/modules/mono/glue/GodotSharp/GodotSharp/Godot.SourceGenerators.Internal/Godot.SourceGenerato
+rs.Internal.UnmanagedCallbacksGenerator/Godot.NativeInterop.NativeFuncs.generated.cs:380)
+       [13] void Godot.NativeCalls.godot_icall_3_912(nint, nint, nint, Godot.NativeInterop.godot_bool, int) 
+(/root/godot/modules/mono/glue/GodotSharp/GodotSharp/Generated/NativeCalls.cs:8061)
+       [14] void Godot.Node.AddChild(Godot.Node, bool, Godot.Node+InternalMode) 
+(/root/godot/modules/mono/glue/GodotSharp/GodotSharp/Generated/GodotObjects/Node.cs:848)
+       [15] void Kabarma.Game.Director._Ready() 
+(C:\Users\uruskan\Documents\GitHub\kabarma\.claude\worktrees\m1-varlik-72a21b\game\scripts\Director.cs:52)
+       [16] bool Godot.Node.InvokeGodotClassMethod(Godot.NativeInterop.godot_string_name&, 
+Godot.NativeInterop.NativeVariantPtrArgs, Godot.NativeInterop.godot_variant&) 
+(/root/godot/modules/mono/glue/GodotSharp/GodotSharp/Generated/GodotObjects/Node.cs:2660)
+       [17] bool Godot.Node3D.InvokeGodotClassMethod(Godot.NativeInterop.godot_string_name&, 
+Godot.NativeInterop.NativeVariantPtrArgs, Godot.NativeInterop.godot_variant&) 
+(/root/godot/modules/mono/glue/GodotSharp/GodotSharp/Generated/GodotObjects/Node3D.cs:1127)
+       [18] bool Kabarma.Game.Director.InvokeGodotClassMethod(Godot.NativeInterop.godot_string_name&, 
+Godot.NativeInterop.NativeVariantPtrArgs, Godot.NativeInterop.godot_variant&) (C:\Users\uruskan\Documents\GitHub\kabarm
+a\.claude\worktrees\m1-varlik-72a21b\game\.godot\mono\temp\obj\Debug\Godot.SourceGenerators\Godot.SourceGenerators.Scri
+ptMethodsGenerator\Kabarma.Game.Director_ScriptMethods.generated.cs:1036)
+       [19] Godot.NativeInterop.godot_bool Godot.Bridge.CSharpInstanceBridge.Call(nint, 
+Godot.NativeInterop.godot_string_name*, Godot.NativeInterop.godot_variant**, int, 
+Godot.NativeInterop.godot_variant_call_error*, Godot.NativeInterop.godot_variant*) 
+(/root/godot/modules/mono/glue/GodotSharp/GodotSharp/Core/Bridge/CSharpInstanceBridge.cs:24)
+       [20] void Godot.NativeInterop.NativeFuncs.godotsharp_method_bind_ptrcall(nint, nint, System.Void**, 
+System.Void*) (/root/godot/modules/mono/glue/GodotSharp/GodotSharp/Godot.SourceGenerators.Internal/Godot.SourceGenerato
+rs.Internal.UnmanagedCallbacksGenerator/Godot.NativeInterop.NativeFuncs.generated.cs:380)
+       [21] void Godot.NativeCalls.godot_icall_3_912(nint, nint, nint, Godot.NativeInterop.godot_bool, int) 
+(/root/godot/modules/mono/glue/GodotSharp/GodotSharp/Generated/NativeCalls.cs:8061)
+       [22] void Godot.Node.AddChild(Godot.Node, bool, Godot.Node+InternalMode) 
+(/root/godot/modules/mono/glue/GodotSharp/GodotSharp/Generated/GodotObjects/Node.cs:848)
+       [23] void Kabarma.Game.Main._Ready() 
+(C:\Users\uruskan\Documents\GitHub\kabarma\.claude\worktrees\m1-varlik-72a21b\game\scripts\Main.cs:95)
+       [24] bool Godot.Node.InvokeGodotClassMethod(Godot.NativeInterop.godot_string_name&, 
+Godot.NativeInterop.NativeVariantPtrArgs, Godot.NativeInterop.godot_variant&) 
+(/root/godot/modules/mono/glue/GodotSharp/GodotSharp/Generated/GodotObjects/Node.cs:2660)
+       [25] bool Godot.Node3D.InvokeGodotClassMethod(Godot.NativeInterop.godot_string_name&, 
+Godot.NativeInterop.NativeVariantPtrArgs, Godot.NativeInterop.godot_variant&) 
+(/root/godot/modules/mono/glue/GodotSharp/GodotSharp/Generated/GodotObjects/Node3D.cs:1127)
+       [26] bool Kabarma.Game.Main.InvokeGodotClassMethod(Godot.NativeInterop.godot_string_name&, 
+Godot.NativeInterop.NativeVariantPtrArgs, Godot.NativeInterop.godot_variant&) (C:\Users\uruskan\Documents\GitHub\kabarm
+a\.claude\worktrees\m1-varlik-72a21b\game\.godot\mono\temp\obj\Debug\Godot.SourceGenerators\Godot.SourceGenerators.Scri
+ptMethodsGenerator\Kabarma.Game.Main_ScriptMethods.generated.cs:70)
+       [27] Godot.NativeInterop.godot_bool Godot.Bridge.CSharpInstanceBridge.Call(nint, 
+Godot.NativeInterop.godot_string_name*, Godot.NativeInterop.godot_variant**, int, 
+Godot.NativeInterop.godot_variant_call_error*, Godot.NativeInterop.godot_variant*) 
+(/root/godot/modules/mono/glue/GodotSharp/GodotSharp/Core/Bridge/CSharpInstanceBridge.cs:24)
+ERROR: Resource file not found: res://assets/models/egrelti/egrelti_egrelti_yaprak_albedo.png (expected type: 
+Texture2D)
+   at: _load (core/io/resource_loader.cpp:325)
+   C# backtrace (most recent call first):
+       [0] Godot.GodotObject Godot.NativeCalls.godot_icall_3_1268(nint, nint, string, string, int) 
+(/root/godot/modules/mono/glue/GodotSharp/GodotSharp/Generated/NativeCalls.cs:11611)
+       [1] Godot.Resource Godot.ResourceLoader.Load(string, string, Godot.ResourceLoader+CacheMode) 
+(/root/godot/modules/mono/glue/GodotSharp/GodotSharp/Generated/GodotObjects/ResourceLoader.cs:120)
+       [2] T Godot.ResourceLoader.Load<T>(string, string, Godot.ResourceLoader+CacheMode) 
+(/root/godot/modules/mono/glue/GodotSharp/GodotSharp/Core/Extensions/ResourceLoaderExtensions.cs:27)
+       [3] T Godot.GD.Load<T>(string) (/root/godot/modules/mono/glue/GodotSharp/GodotSharp/Core/GD.cs:129)
+       [4] Godot.Node3D Kabarma.Game.Assets.Load(string, bool, Godot.Material) 
+(C:\Users\uruskan\Documents\GitHub\kabarma\.claude\worktrees\m1-varlik-72a21b\game\scripts\fx\Assets.cs:37)
+       [5] Godot.Mesh Kabarma.Game.World.DecorMesh(Kabarma.Sim.DecorDef, System.Single&) 
+(C:\Users\uruskan\Documents\GitHub\kabarma\.claude\worktrees\m1-varlik-72a21b\game\scripts\world\World.Decor.cs:93)
+       [6] void Kabarma.Game.World.BuildDecor() 
+(C:\Users\uruskan\Documents\GitHub\kabarma\.claude\worktrees\m1-varlik-72a21b\game\scripts\world\World.Decor.cs:28)
+       [7] void Kabarma.Game.World._Ready() 
+(C:\Users\uruskan\Documents\GitHub\kabarma\.claude\worktrees\m1-varlik-72a21b\game\scripts\world\World.cs:46)
+       [8] bool Godot.Node.InvokeGodotClassMethod(Godot.NativeInterop.godot_string_name&, 
+Godot.NativeInterop.NativeVariantPtrArgs, Godot.NativeInterop.godot_variant&) 
+(/root/godot/modules/mono/glue/GodotSharp/GodotSharp/Generated/GodotObjects/Node.cs:2660)
+       [9] bool Godot.Node3D.InvokeGodotClassMethod(Godot.NativeInterop.godot_string_name&, 
+Godot.NativeInterop.NativeVariantPtrArgs, Godot.NativeInterop.godot_variant&) 
+(/root/godot/modules/mono/glue/GodotSharp/GodotSharp/Generated/GodotObjects/Node3D.cs:1127)
+       [10] bool Kabarma.Game.World.InvokeGodotClassMethod(Godot.NativeInterop.godot_string_name&, 
+Godot.NativeInterop.NativeVariantPtrArgs, Godot.NativeInterop.godot_variant&) (C:\Users\uruskan\Documents\GitHub\kabarm
+a\.claude\worktrees\m1-varlik-72a21b\game\.godot\mono\temp\obj\Debug\Godot.SourceGenerators\Godot.SourceGenerators.Scri
+ptMethodsGenerator\Kabarma.Game.World_ScriptMethods.generated.cs:450)
+       [11] Godot.NativeInterop.godot_bool Godot.Bridge.CSharpInstanceBridge.Call(nint, 
+Godot.NativeInterop.godot_string_name*, Godot.NativeInterop.godot_variant**, int, 
+Godot.NativeInterop.godot_variant_call_error*, Godot.NativeInterop.godot_variant*) 
+(/root/godot/modules/mono/glue/GodotSharp/GodotSharp/Core/Bridge/CSharpInstanceBridge.cs:24)
+       [12] void Godot.NativeInterop.NativeFuncs.godotsharp_method_bind_ptrcall(nint, nint, System.Void**, 
+System.Void*) (/root/godot/modules/mono/glue/GodotSharp/GodotSharp/Godot.SourceGenerators.Internal/Godot.SourceGenerato
+rs.Internal.UnmanagedCallbacksGenerator/Godot.NativeInterop.NativeFuncs.generated.cs:380)
+       [13] void Godot.NativeCalls.godot_icall_3_912(nint, nint, nint, Godot.NativeInterop.godot_bool, int) 
+(/root/godot/modules/mono/glue/GodotSharp/GodotSharp/Generated/NativeCalls.cs:8061)
+       [14] void Godot.Node.AddChild(Godot.Node, bool, Godot.Node+InternalMode) 
+(/root/godot/modules/mono/glue/GodotSharp/GodotSharp/Generated/GodotObjects/Node.cs:848)
+       [15] void Kabarma.Game.Director._Ready() 
+(C:\Users\uruskan\Documents\GitHub\kabarma\.claude\worktrees\m1-varlik-72a21b\game\scripts\Director.cs:52)
+       [16] bool Godot.Node.InvokeGodotClassMethod(Godot.NativeInterop.godot_string_name&, 
+Godot.NativeInterop.NativeVariantPtrArgs, Godot.NativeInterop.godot_variant&) 
+(/root/godot/modules/mono/glue/GodotSharp/GodotSharp/Generated/GodotObjects/Node.cs:2660)
+       [17] bool Godot.Node3D.InvokeGodotClassMethod(Godot.NativeInterop.godot_string_name&, 
+Godot.NativeInterop.NativeVariantPtrArgs, Godot.NativeInterop.godot_variant&) 
+(/root/godot/modules/mono/glue/GodotSharp/GodotSharp/Generated/GodotObjects/Node3D.cs:1127)
+       [18] bool Kabarma.Game.Director.InvokeGodotClassMethod(Godot.NativeInterop.godot_string_name&, 
+Godot.NativeInterop.NativeVariantPtrArgs, Godot.NativeInterop.godot_variant&) (C:\Users\uruskan\Documents\GitHub\kabarm
+a\.claude\worktrees\m1-varlik-72a21b\game\.godot\mono\temp\obj\Debug\Godot.SourceGenerators\Godot.SourceGenerators.Scri
+ptMethodsGenerator\Kabarma.Game.Director_ScriptMethods.generated.cs:1036)
+       [19] Godot.NativeInterop.godot_bool Godot.Bridge.CSharpInstanceBridge.Call(nint, 
+Godot.NativeInterop.godot_string_name*, Godot.NativeInterop.godot_variant**, int, 
+Godot.NativeInterop.godot_variant_call_error*, Godot.NativeInterop.godot_variant*) 
+(/root/godot/modules/mono/glue/GodotSharp/GodotSharp/Core/Bridge/CSharpInstanceBridge.cs:24)
+       [20] void Godot.NativeInterop.NativeFuncs.godotsharp_method_bind_ptrcall(nint, nint, System.Void**, 
+System.Void*) (/root/godot/modules/mono/glue/GodotSharp/GodotSharp/Godot.SourceGenerators.Internal/Godot.SourceGenerato
+rs.Internal.UnmanagedCallbacksGenerator/Godot.NativeInterop.NativeFuncs.generated.cs:380)
+       [21] void Godot.NativeCalls.godot_icall_3_912(nint, nint, nint, Godot.NativeInterop.godot_bool, int) 
+(/root/godot/modules/mono/glue/GodotSharp/GodotSharp/Generated/NativeCalls.cs:8061)
+       [22] void Godot.Node.AddChild(Godot.Node, bool, Godot.Node+InternalMode) 
+(/root/godot/modules/mono/glue/GodotSharp/GodotSharp/Generated/GodotObjects/Node.cs:848)
+       [23] void Kabarma.Game.Main._Ready() 
+(C:\Users\uruskan\Documents\GitHub\kabarma\.claude\worktrees\m1-varlik-72a21b\game\scripts\Main.cs:95)
+       [24] bool Godot.Node.InvokeGodotClassMethod(Godot.NativeInterop.godot_string_name&, 
+Godot.NativeInterop.NativeVariantPtrArgs, Godot.NativeInterop.godot_variant&) 
+(/root/godot/modules/mono/glue/GodotSharp/GodotSharp/Generated/GodotObjects/Node.cs:2660)
+       [25] bool Godot.Node3D.InvokeGodotClassMethod(Godot.NativeInterop.godot_string_name&, 
+Godot.NativeInterop.NativeVariantPtrArgs, Godot.NativeInterop.godot_variant&) 
+(/root/godot/modules/mono/glue/GodotSharp/GodotSharp/Generated/GodotObjects/Node3D.cs:1127)
+       [26] bool Kabarma.Game.Main.InvokeGodotClassMethod(Godot.NativeInterop.godot_string_name&, 
+Godot.NativeInterop.NativeVariantPtrArgs, Godot.NativeInterop.godot_variant&) (C:\Users\uruskan\Documents\GitHub\kabarm
+a\.claude\worktrees\m1-varlik-72a21b\game\.godot\mono\temp\obj\Debug\Godot.SourceGenerators\Godot.SourceGenerators.Scri
+ptMethodsGenerator\Kabarma.Game.Main_ScriptMethods.generated.cs:70)
+       [27] Godot.NativeInterop.godot_bool Godot.Bridge.CSharpInstanceBridge.Call(nint, 
+Godot.NativeInterop.godot_string_name*, Godot.NativeInterop.godot_variant**, int, 
+Godot.NativeInterop.godot_variant_call_error*, Godot.NativeInterop.godot_variant*) 
+(/root/godot/modules/mono/glue/GodotSharp/GodotSharp/Core/Bridge/CSharpInstanceBridge.cs:24)
+ERROR: Resource file not found: res://assets/models/egrelti/egrelti_egrelti_yaprak_rough.png (expected type: Texture2D)
+   at: _load (core/io/resource_loader.cpp:325)
+   C# backtrace (most recent call first):
+       [0] Godot.GodotObject Godot.NativeCalls.godot_icall_3_1268(nint, nint, string, string, int) 
+(/root/godot/modules/mono/glue/GodotSharp/GodotSharp/Generated/NativeCalls.cs:11611)
+       [1] Godot.Resource Godot.ResourceLoader.Load(string, string, Godot.ResourceLoader+CacheMode) 
+(/root/godot/modules/mono/glue/GodotSharp/GodotSharp/Generated/GodotObjects/ResourceLoader.cs:120)
+       [2] T Godot.ResourceLoader.Load<T>(string, string, Godot.ResourceLoader+CacheMode) 
+(/root/godot/modules/mono/glue/GodotSharp/GodotSharp/Core/Extensions/ResourceLoaderExtensions.cs:27)
+       [3] T Godot.GD.Load<T>(string) (/root/godot/modules/mono/glue/GodotSharp/GodotSharp/Core/GD.cs:129)
+       [4] Godot.Node3D Kabarma.Game.Assets.Load(string, bool, Godot.Material) 
+(C:\Users\uruskan\Documents\GitHub\kabarma\.claude\worktrees\m1-varlik-72a21b\game\scripts\fx\Assets.cs:37)
+       [5] Godot.Mesh Kabarma.Game.World.DecorMesh(Kabarma.Sim.DecorDef, System.Single&) 
+(C:\Users\uruskan\Documents\GitHub\kabarma\.claude\worktrees\m1-varlik-72a21b\game\scripts\world\World.Decor.cs:93)
+       [6] void Kabarma.Game.World.BuildDecor() 
+(C:\Users\uruskan\Documents\GitHub\kabarma\.claude\worktrees\m1-varlik-72a21b\game\scripts\world\World.Decor.cs:28)
+       [7] void Kabarma.Game.World._Ready() 
+(C:\Users\uruskan\Documents\GitHub\kabarma\.claude\worktrees\m1-varlik-72a21b\game\scripts\world\World.cs:46)
+       [8] bool Godot.Node.InvokeGodotClassMethod(Godot.NativeInterop.godot_string_name&, 
+Godot.NativeInterop.NativeVariantPtrArgs, Godot.NativeInterop.godot_variant&) 
+(/root/godot/modules/mono/glue/GodotSharp/GodotSharp/Generated/GodotObjects/Node.cs:2660)
+       [9] bool Godot.Node3D.InvokeGodotClassMethod(Godot.NativeInterop.godot_string_name&, 
+Godot.NativeInterop.NativeVariantPtrArgs, Godot.NativeInterop.godot_variant&) 
+(/root/godot/modules/mono/glue/GodotSharp/GodotSharp/Generated/GodotObjects/Node3D.cs:1127)
+       [10] bool Kabarma.Game.World.InvokeGodotClassMethod(Godot.NativeInterop.godot_string_name&, 
+Godot.NativeInterop.NativeVariantPtrArgs, Godot.NativeInterop.godot_variant&) (C:\Users\uruskan\Documents\GitHub\kabarm
+a\.claude\worktrees\m1-varlik-72a21b\game\.godot\mono\temp\obj\Debug\Godot.SourceGenerators\Godot.SourceGenerators.Scri
+ptMethodsGenerator\Kabarma.Game.World_ScriptMethods.generated.cs:450)
+       [11] Godot.NativeInterop.godot_bool Godot.Bridge.CSharpInstanceBridge.Call(nint, 
+Godot.NativeInterop.godot_string_name*, Godot.NativeInterop.godot_variant**, int, 
+Godot.NativeInterop.godot_variant_call_error*, Godot.NativeInterop.godot_variant*) 
+(/root/godot/modules/mono/glue/GodotSharp/GodotSharp/Core/Bridge/CSharpInstanceBridge.cs:24)
+       [12] void Godot.NativeInterop.NativeFuncs.godotsharp_method_bind_ptrcall(nint, nint, System.Void**, 
+System.Void*) (/root/godot/modules/mono/glue/GodotSharp/GodotSharp/Godot.SourceGenerators.Internal/Godot.SourceGenerato
+rs.Internal.UnmanagedCallbacksGenerator/Godot.NativeInterop.NativeFuncs.generated.cs:380)
+       [13] void Godot.NativeCalls.godot_icall_3_912(nint, nint, nint, Godot.NativeInterop.godot_bool, int) 
+(/root/godot/modules/mono/glue/GodotSharp/GodotSharp/Generated/NativeCalls.cs:8061)
+       [14] void Godot.Node.AddChild(Godot.Node, bool, Godot.Node+InternalMode) 
+(/root/godot/modules/mono/glue/GodotSharp/GodotSharp/Generated/GodotObjects/Node.cs:848)
+       [15] void Kabarma.Game.Director._Ready() 
+(C:\Users\uruskan\Documents\GitHub\kabarma\.claude\worktrees\m1-varlik-72a21b\game\scripts\Director.cs:52)
+       [16] bool Godot.Node.InvokeGodotClassMethod(Godot.NativeInterop.godot_string_name&, 
+Godot.NativeInterop.NativeVariantPtrArgs, Godot.NativeInterop.godot_variant&) 
+(/root/godot/modules/mono/glue/GodotSharp/GodotSharp/Generated/GodotObjects/Node.cs:2660)
+       [17] bool Godot.Node3D.InvokeGodotClassMethod(Godot.NativeInterop.godot_string_name&, 
+Godot.NativeInterop.NativeVariantPtrArgs, Godot.NativeInterop.godot_variant&) 
+(/root/godot/modules/mono/glue/GodotSharp/GodotSharp/Generated/GodotObjects/Node3D.cs:1127)
+       [18] bool Kabarma.Game.Director.InvokeGodotClassMethod(Godot.NativeInterop.godot_string_name&, 
+Godot.NativeInterop.NativeVariantPtrArgs, Godot.NativeInterop.godot_variant&) (C:\Users\uruskan\Documents\GitHub\kabarm
+a\.claude\worktrees\m1-varlik-72a21b\game\.godot\mono\temp\obj\Debug\Godot.SourceGenerators\Godot.SourceGenerators.Scri
+ptMethodsGenerator\Kabarma.Game.Director_ScriptMethods.generated.cs:1036)
+       [19] Godot.NativeInterop.godot_bool Godot.Bridge.CSharpInstanceBridge.Call(nint, 
+Godot.NativeInterop.godot_string_name*, Godot.NativeInterop.godot_variant**, int, 
+Godot.NativeInterop.godot_variant_call_error*, Godot.NativeInterop.godot_variant*) 
+(/root/godot/modules/mono/glue/GodotSharp/GodotSharp/Core/Bridge/CSharpInstanceBridge.cs:24)
+       [20] void Godot.NativeInterop.NativeFuncs.godotsharp_method_bind_ptrcall(nint, nint, System.Void**, 
+System.Void*) (/root/godot/modules/mono/glue/GodotSharp/GodotSharp/Godot.SourceGenerators.Internal/Godot.SourceGenerato
+rs.Internal.UnmanagedCallbacksGenerator/Godot.NativeInterop.NativeFuncs.generated.cs:380)
+       [21] void Godot.NativeCalls.godot_icall_3_912(nint, nint, nint, Godot.NativeInterop.godot_bool, int) 
+(/root/godot/modules/mono/glue/GodotSharp/GodotSharp/Generated/NativeCalls.cs:8061)
+       [22] void Godot.Node.AddChild(Godot.Node, bool, Godot.Node+InternalMode) 
+(/root/godot/modules/mono/glue/GodotSharp/GodotSharp/Generated/GodotObjects/Node.cs:848)
+       [23] void Kabarma.Game.Main._Ready() 
+(C:\Users\uruskan\Documents\GitHub\kabarma\.claude\worktrees\m1-varlik-72a21b\game\scripts\Main.cs:95)
+       [24] bool Godot.Node.InvokeGodotClassMethod(Godot.NativeInterop.godot_string_name&, 
+Godot.NativeInterop.NativeVariantPtrArgs, Godot.NativeInterop.godot_variant&) 
+(/root/godot/modules/mono/glue/GodotSharp/GodotSharp/Generated/GodotObjects/Node.cs:2660)
+       [25] bool Godot.Node3D.InvokeGodotClassMethod(Godot.NativeInterop.godot_string_name&, 
+Godot.NativeInterop.NativeVariantPtrArgs, Godot.NativeInterop.godot_variant&) 
+(/root/godot/modules/mono/glue/GodotSharp/GodotSharp/Generated/GodotObjects/Node3D.cs:1127)
+       [26] bool Kabarma.Game.Main.InvokeGodotClassMethod(Godot.NativeInterop.godot_string_name&, 
+Godot.NativeInterop.NativeVariantPtrArgs, Godot.NativeInterop.godot_variant&) (C:\Users\uruskan\Documents\GitHub\kabarm
+a\.claude\worktrees\m1-varlik-72a21b\game\.godot\mono\temp\obj\Debug\Godot.SourceGenerators\Godot.SourceGenerators.Scri
+ptMethodsGenerator\Kabarma.Game.Main_ScriptMethods.generated.cs:70)
+       [27] Godot.NativeInterop.godot_bool Godot.Bridge.CSharpInstanceBridge.Call(nint, 
+Godot.NativeInterop.godot_string_name*, Godot.NativeInterop.godot_variant**, int, 
+Godot.NativeInterop.godot_variant_call_error*, Godot.NativeInterop.godot_variant*) 
+(/root/godot/modules/mono/glue/GodotSharp/GodotSharp/Core/Bridge/CSharpInstanceBridge.cs:24)
+ERROR: Resource file not found: res://assets/models/egrelti/egrelti_egrelti_yaprak_normal.png (expected type: 
+Texture2D)
+   at: _load (core/io/resource_loader.cpp:325)
+   C# backtrace (most recent call first):
+       [0] Godot.GodotObject Godot.NativeCalls.godot_icall_3_1268(nint, nint, string, string, int) 
+(/root/godot/modules/mono/glue/GodotSharp/GodotSharp/Generated/NativeCalls.cs:11611)
+       [1] Godot.Resource Godot.ResourceLoader.Load(string, string, Godot.ResourceLoader+CacheMode) 
+(/root/godot/modules/mono/glue/GodotSharp/GodotSharp/Generated/GodotObjects/ResourceLoader.cs:120)
+       [2] T Godot.ResourceLoader.Load<T>(string, string, Godot.ResourceLoader+CacheMode) 
+(/root/godot/modules/mono/glue/GodotSharp/GodotSharp/Core/Extensions/ResourceLoaderExtensions.cs:27)
+       [3] T Godot.GD.Load<T>(string) (/root/godot/modules/mono/glue/GodotSharp/GodotSharp/Core/GD.cs:129)
+       [4] Godot.Node3D Kabarma.Game.Assets.Load(string, bool, Godot.Material) 
+(C:\Users\uruskan\Documents\GitHub\kabarma\.claude\worktrees\m1-varlik-72a21b\game\scripts\fx\Assets.cs:37)
+       [5] Godot.Mesh Kabarma.Game.World.DecorMesh(Kabarma.Sim.DecorDef, System.Single&) 
+(C:\Users\uruskan\Documents\GitHub\kabarma\.claude\worktrees\m1-varlik-72a21b\game\scripts\world\World.Decor.cs:93)
+       [6] void Kabarma.Game.World.BuildDecor() 
+(C:\Users\uruskan\Documents\GitHub\kabarma\.claude\worktrees\m1-varlik-72a21b\game\scripts\world\World.Decor.cs:28)
+       [7] void Kabarma.Game.World._Ready() 
+(C:\Users\uruskan\Documents\GitHub\kabarma\.claude\worktrees\m1-varlik-72a21b\game\scripts\world\World.cs:46)
+       [8] bool Godot.Node.InvokeGodotClassMethod(Godot.NativeInterop.godot_string_name&, 
+Godot.NativeInterop.NativeVariantPtrArgs, Godot.NativeInterop.godot_variant&) 
+(/root/godot/modules/mono/glue/GodotSharp/GodotSharp/Generated/GodotObjects/Node.cs:2660)
+       [9] bool Godot.Node3D.InvokeGodotClassMethod(Godot.NativeInterop.godot_string_name&, 
+Godot.NativeInterop.NativeVariantPtrArgs, Godot.NativeInterop.godot_variant&) 
+(/root/godot/modules/mono/glue/GodotSharp/GodotSharp/Generated/GodotObjects/Node3D.cs:1127)
+       [10] bool Kabarma.Game.World.InvokeGodotClassMethod(Godot.NativeInterop.godot_string_name&, 
+Godot.NativeInterop.NativeVariantPtrArgs, Godot.NativeInterop.godot_variant&) (C:\Users\uruskan\Documents\GitHub\kabarm
+a\.claude\worktrees\m1-varlik-72a21b\game\.godot\mono\temp\obj\Debug\Godot.SourceGenerators\Godot.SourceGenerators.Scri
+ptMethodsGenerator\Kabarma.Game.World_ScriptMethods.generated.cs:450)
+       [11] Godot.NativeInterop.godot_bool Godot.Bridge.CSharpInstanceBridge.Call(nint, 
+Godot.NativeInterop.godot_string_name*, Godot.NativeInterop.godot_variant**, int, 
+Godot.NativeInterop.godot_variant_call_error*, Godot.NativeInterop.godot_variant*) 
+(/root/godot/modules/mono/glue/GodotSharp/GodotSharp/Core/Bridge/CSharpInstanceBridge.cs:24)
+       [12] void Godot.NativeInterop.NativeFuncs.godotsharp_method_bind_ptrcall(nint, nint, System.Void**, 
+System.Void*) (/root/godot/modules/mono/glue/GodotSharp/GodotSharp/Godot.SourceGenerators.Internal/Godot.SourceGenerato
+rs.Internal.UnmanagedCallbacksGenerator/Godot.NativeInterop.NativeFuncs.generated.cs:380)
+       [13] void Godot.NativeCalls.godot_icall_3_912(nint, nint, nint, Godot.NativeInterop.godot_bool, int) 
+(/root/godot/modules/mono/glue/GodotSharp/GodotSharp/Generated/NativeCalls.cs:8061)
+       [14] void Godot.Node.AddChild(Godot.Node, bool, Godot.Node+InternalMode) 
+(/root/godot/modules/mono/glue/GodotSharp/GodotSharp/Generated/GodotObjects/Node.cs:848)
+       [15] void Kabarma.Game.Director._Ready() 
+(C:\Users\uruskan\Documents\GitHub\kabarma\.claude\worktrees\m1-varlik-72a21b\game\scripts\Director.cs:52)
+       [16] bool Godot.Node.InvokeGodotClassMethod(Godot.NativeInterop.godot_string_name&, 
+Godot.NativeInterop.NativeVariantPtrArgs, Godot.NativeInterop.godot_variant&) 
+(/root/godot/modules/mono/glue/GodotSharp/GodotSharp/Generated/GodotObjects/Node.cs:2660)
+       [17] bool Godot.Node3D.InvokeGodotClassMethod(Godot.NativeInterop.godot_string_name&, 
+Godot.NativeInterop.NativeVariantPtrArgs, Godot.NativeInterop.godot_variant&) 
+(/root/godot/modules/mono/glue/GodotSharp/GodotSharp/Generated/GodotObjects/Node3D.cs:1127)
+       [18] bool Kabarma.Game.Director.InvokeGodotClassMethod(Godot.NativeInterop.godot_string_name&, 
+Godot.NativeInterop.NativeVariantPtrArgs, Godot.NativeInterop.godot_variant&) (C:\Users\uruskan\Documents\GitHub\kabarm
+a\.claude\worktrees\m1-varlik-72a21b\game\.godot\mono\temp\obj\Debug\Godot.SourceGenerators\Godot.SourceGenerators.Scri
+ptMethodsGenerator\Kabarma.Game.Director_ScriptMethods.generated.cs:1036)
+       [19] Godot.NativeInterop.godot_bool Godot.Bridge.CSharpInstanceBridge.Call(nint, 
+Godot.NativeInterop.godot_string_name*, Godot.NativeInterop.godot_variant**, int, 
+Godot.NativeInterop.godot_variant_call_error*, Godot.NativeInterop.godot_variant*) 
+(/root/godot/modules/mono/glue/GodotSharp/GodotSharp/Core/Bridge/CSharpInstanceBridge.cs:24)
+       [20] void Godot.NativeInterop.NativeFuncs.godotsharp_method_bind_ptrcall(nint, nint, System.Void**, 
+System.Void*) (/root/godot/modules/mono/glue/GodotSharp/GodotSharp/Godot.SourceGenerators.Internal/Godot.SourceGenerato
+rs.Internal.UnmanagedCallbacksGenerator/Godot.NativeInterop.NativeFuncs.generated.cs:380)
+       [21] void Godot.NativeCalls.godot_icall_3_912(nint, nint, nint, Godot.NativeInterop.godot_bool, int) 
+(/root/godot/modules/mono/glue/GodotSharp/GodotSharp/Generated/NativeCalls.cs:8061)
+       [22] void Godot.Node.AddChild(Godot.Node, bool, Godot.Node+InternalMode) 
+(/root/godot/modules/mono/glue/GodotSharp/GodotSharp/Generated/GodotObjects/Node.cs:848)
+       [23] void Kabarma.Game.Main._Ready() 
+(C:\Users\uruskan\Documents\GitHub\kabarma\.claude\worktrees\m1-varlik-72a21b\game\scripts\Main.cs:95)
+       [24] bool Godot.Node.InvokeGodotClassMethod(Godot.NativeInterop.godot_string_name&, 
+Godot.NativeInterop.NativeVariantPtrArgs, Godot.NativeInterop.godot_variant&) 
+(/root/godot/modules/mono/glue/GodotSharp/GodotSharp/Generated/GodotObjects/Node.cs:2660)
+       [25] bool Godot.Node3D.InvokeGodotClassMethod(Godot.NativeInterop.godot_string_name&, 
+Godot.NativeInterop.NativeVariantPtrArgs, Godot.NativeInterop.godot_variant&) 
+(/root/godot/modules/mono/glue/GodotSharp/GodotSharp/Generated/GodotObjects/Node3D.cs:1127)
+       [26] bool Kabarma.Game.Main.InvokeGodotClassMethod(Godot.NativeInterop.godot_string_name&, 
+Godot.NativeInterop.NativeVariantPtrArgs, Godot.NativeInterop.godot_variant&) (C:\Users\uruskan\Documents\GitHub\kabarm
+a\.claude\worktrees\m1-varlik-72a21b\game\.godot\mono\temp\obj\Debug\Godot.SourceGenerators\Godot.SourceGenerators.Scri
+ptMethodsGenerator\Kabarma.Game.Main_ScriptMethods.generated.cs:70)
+       [27] Godot.NativeInterop.godot_bool Godot.Bridge.CSharpInstanceBridge.Call(nint, 
+Godot.NativeInterop.godot_string_name*, Godot.NativeInterop.godot_variant**, int, 
+Godot.NativeInterop.godot_variant_call_error*, Godot.NativeInterop.godot_variant*) 
+(/root/godot/modules/mono/glue/GodotSharp/GodotSharp/Core/Bridge/CSharpInstanceBridge.cs:24)
+ERROR: Can't load dependency: 'res://assets/models/egrelti/egrelti_egrelti_yaprak_albedo.png'.
+   at: parse_variant (core/io/resource_format_binary.cpp:444)
+   C# backtrace (most recent call first):
+       [0] Godot.GodotObject Godot.NativeCalls.godot_icall_3_1268(nint, nint, string, string, int) 
+(/root/godot/modules/mono/glue/GodotSharp/GodotSharp/Generated/NativeCalls.cs:11611)
+       [1] Godot.Resource Godot.ResourceLoader.Load(string, string, Godot.ResourceLoader+CacheMode) 
+(/root/godot/modules/mono/glue/GodotSharp/GodotSharp/Generated/GodotObjects/ResourceLoader.cs:120)
+       [2] T Godot.ResourceLoader.Load<T>(string, string, Godot.ResourceLoader+CacheMode) 
+(/root/godot/modules/mono/glue/GodotSharp/GodotSharp/Core/Extensions/ResourceLoaderExtensions.cs:27)
+       [3] T Godot.GD.Load<T>(string) (/root/godot/modules/mono/glue/GodotSharp/GodotSharp/Core/GD.cs:129)
+       [4] Godot.Node3D Kabarma.Game.Assets.Load(string, bool, Godot.Material) 
+(C:\Users\uruskan\Documents\GitHub\kabarma\.claude\worktrees\m1-varlik-72a21b\game\scripts\fx\Assets.cs:37)
+       [5] Godot.Mesh Kabarma.Game.World.DecorMesh(Kabarma.Sim.DecorDef, System.Single&) 
+(C:\Users\uruskan\Documents\GitHub\kabarma\.claude\worktrees\m1-varlik-72a21b\game\scripts\world\World.Decor.cs:93)
+       [6] void Kabarma.Game.World.BuildDecor() 
+(C:\Users\uruskan\Documents\GitHub\kabarma\.claude\worktrees\m1-varlik-72a21b\game\scripts\world\World.Decor.cs:28)
+       [7] void Kabarma.Game.World._Ready() 
+(C:\Users\uruskan\Documents\GitHub\kabarma\.claude\worktrees\m1-varlik-72a21b\game\scripts\world\World.cs:46)
+       [8] bool Godot.Node.InvokeGodotClassMethod(Godot.NativeInterop.godot_string_name&, 
+Godot.NativeInterop.NativeVariantPtrArgs, Godot.NativeInterop.godot_variant&) 
+(/root/godot/modules/mono/glue/GodotSharp/GodotSharp/Generated/GodotObjects/Node.cs:2660)
+       [9] bool Godot.Node3D.InvokeGodotClassMethod(Godot.NativeInterop.godot_string_name&, 
+Godot.NativeInterop.NativeVariantPtrArgs, Godot.NativeInterop.godot_variant&) 
+(/root/godot/modules/mono/glue/GodotSharp/GodotSharp/Generated/GodotObjects/Node3D.cs:1127)
+       [10] bool Kabarma.Game.World.InvokeGodotClassMethod(Godot.NativeInterop.godot_string_name&, 
+Godot.NativeInterop.NativeVariantPtrArgs, Godot.NativeInterop.godot_variant&) (C:\Users\uruskan\Documents\GitHub\kabarm
+a\.claude\worktrees\m1-varlik-72a21b\game\.godot\mono\temp\obj\Debug\Godot.SourceGenerators\Godot.SourceGenerators.Scri
+ptMethodsGenerator\Kabarma.Game.World_ScriptMethods.generated.cs:450)
+       [11] Godot.NativeInterop.godot_bool Godot.Bridge.CSharpInstanceBridge.Call(nint, 
+Godot.NativeInterop.godot_string_name*, Godot.NativeInterop.godot_variant**, int, 
+Godot.NativeInterop.godot_variant_call_error*, Godot.NativeInterop.godot_variant*) 
+(/root/godot/modules/mono/glue/GodotSharp/GodotSharp/Core/Bridge/CSharpInstanceBridge.cs:24)
+       [12] void Godot.NativeInterop.NativeFuncs.godotsharp_method_bind_ptrcall(nint, nint, System.Void**, 
+System.Void*) (/root/godot/modules/mono/glue/GodotSharp/GodotSharp/Godot.SourceGenerators.Internal/Godot.SourceGenerato
+rs.Internal.UnmanagedCallbacksGenerator/Godot.NativeInterop.NativeFuncs.generated.cs:380)
+       [13] void Godot.NativeCalls.godot_icall_3_912(nint, nint, nint, Godot.NativeInterop.godot_bool, int) 
+(/root/godot/modules/mono/glue/GodotSharp/GodotSharp/Generated/NativeCalls.cs:8061)
+       [14] void Godot.Node.AddChild(Godot.Node, bool, Godot.Node+InternalMode) 
+(/root/godot/modules/mono/glue/GodotSharp/GodotSharp/Generated/GodotObjects/Node.cs:848)
+       [15] void Kabarma.Game.Director._Ready() 
+(C:\Users\uruskan\Documents\GitHub\kabarma\.claude\worktrees\m1-varlik-72a21b\game\scripts\Director.cs:52)
+       [16] bool Godot.Node.InvokeGodotClassMethod(Godot.NativeInterop.godot_string_name&, 
+Godot.NativeInterop.NativeVariantPtrArgs, Godot.NativeInterop.godot_variant&) 
+(/root/godot/modules/mono/glue/GodotSharp/GodotSharp/Generated/GodotObjects/Node.cs:2660)
+       [17] bool Godot.Node3D.InvokeGodotClassMethod(Godot.NativeInterop.godot_string_name&, 
+Godot.NativeInterop.NativeVariantPtrArgs, Godot.NativeInterop.godot_variant&) 
+(/root/godot/modules/mono/glue/GodotSharp/GodotSharp/Generated/GodotObjects/Node3D.cs:1127)
+       [18] bool Kabarma.Game.Director.InvokeGodotClassMethod(Godot.NativeInterop.godot_string_name&, 
+Godot.NativeInterop.NativeVariantPtrArgs, Godot.NativeInterop.godot_variant&) (C:\Users\uruskan\Documents\GitHub\kabarm
+a\.claude\worktrees\m1-varlik-72a21b\game\.godot\mono\temp\obj\Debug\Godot.SourceGenerators\Godot.SourceGenerators.Scri
+ptMethodsGenerator\Kabarma.Game.Director_ScriptMethods.generated.cs:1036)
+       [19] Godot.NativeInterop.godot_bool Godot.Bridge.CSharpInstanceBridge.Call(nint, 
+Godot.NativeInterop.godot_string_name*, Godot.NativeInterop.godot_variant**, int, 
+Godot.NativeInterop.godot_variant_call_error*, Godot.NativeInterop.godot_variant*) 
+(/root/godot/modules/mono/glue/GodotSharp/GodotSharp/Core/Bridge/CSharpInstanceBridge.cs:24)
+       [20] void Godot.NativeInterop.NativeFuncs.godotsharp_method_bind_ptrcall(nint, nint, System.Void**, 
+System.Void*) (/root/godot/modules/mono/glue/GodotSharp/GodotSharp/Godot.SourceGenerators.Internal/Godot.SourceGenerato
+rs.Internal.UnmanagedCallbacksGenerator/Godot.NativeInterop.NativeFuncs.generated.cs:380)
+       [21] void Godot.NativeCalls.godot_icall_3_912(nint, nint, nint, Godot.NativeInterop.godot_bool, int) 
+(/root/godot/modules/mono/glue/GodotSharp/GodotSharp/Generated/NativeCalls.cs:8061)
+       [22] void Godot.Node.AddChild(Godot.Node, bool, Godot.Node+InternalMode) 
+(/root/godot/modules/mono/glue/GodotSharp/GodotSharp/Generated/GodotObjects/Node.cs:848)
+       [23] void Kabarma.Game.Main._Ready() 
+(C:\Users\uruskan\Documents\GitHub\kabarma\.claude\worktrees\m1-varlik-72a21b\game\scripts\Main.cs:95)
+       [24] bool Godot.Node.InvokeGodotClassMethod(Godot.NativeInterop.godot_string_name&, 
+Godot.NativeInterop.NativeVariantPtrArgs, Godot.NativeInterop.godot_variant&) 
+(/root/godot/modules/mono/glue/GodotSharp/GodotSharp/Generated/GodotObjects/Node.cs:2660)
+       [25] bool Godot.Node3D.InvokeGodotClassMethod(Godot.NativeInterop.godot_string_name&, 
+Godot.NativeInterop.NativeVariantPtrArgs, Godot.NativeInterop.godot_variant&) 
+(/root/godot/modules/mono/glue/GodotSharp/GodotSharp/Generated/GodotObjects/Node3D.cs:1127)
+       [26] bool Kabarma.Game.Main.InvokeGodotClassMethod(Godot.NativeInterop.godot_string_name&, 
+Godot.NativeInterop.NativeVariantPtrArgs, Godot.NativeInterop.godot_variant&) (C:\Users\uruskan\Documents\GitHub\kabarm
+a\.claude\worktrees\m1-varlik-72a21b\game\.godot\mono\temp\obj\Debug\Godot.SourceGenerators\Godot.SourceGenerators.Scri
+ptMethodsGenerator\Kabarma.Game.Main_ScriptMethods.generated.cs:70)
+       [27] Godot.NativeInterop.godot_bool Godot.Bridge.CSharpInstanceBridge.Call(nint, 
+Godot.NativeInterop.godot_string_name*, Godot.NativeInterop.godot_variant**, int, 
+Godot.NativeInterop.godot_variant_call_error*, Godot.NativeInterop.godot_variant*) 
+(/root/godot/modules/mono/glue/GodotSharp/GodotSharp/Core/Bridge/CSharpInstanceBridge.cs:24)
+ERROR: Failed loading resource: res://.godot/imported/egrelti.glb-3c4f66911b5789c7c452a4fb84838f6f.scn.
+   at: _load (core/io/resource_loader.cpp:317)
+   C# backtrace (most recent call first):
+       [0] Godot.GodotObject Godot.NativeCalls.godot_icall_3_1268(nint, nint, string, string, int) 
+(/root/godot/modules/mono/glue/GodotSharp/GodotSharp/Generated/NativeCalls.cs:11611)
+       [1] Godot.Resource Godot.ResourceLoader.Load(string, string, Godot.ResourceLoader+CacheMode) 
+(/root/godot/modules/mono/glue/GodotSharp/GodotSharp/Generated/GodotObjects/ResourceLoader.cs:120)
+       [2] T Godot.ResourceLoader.Load<T>(string, string, Godot.ResourceLoader+CacheMode) 
+(/root/godot/modules/mono/glue/GodotSharp/GodotSharp/Core/Extensions/ResourceLoaderExtensions.cs:27)
+       [3] T Godot.GD.Load<T>(string) (/root/godot/modules/mono/glue/GodotSharp/GodotSharp/Core/GD.cs:129)
+       [4] Godot.Node3D Kabarma.Game.Assets.Load(string, bool, Godot.Material) 
+(C:\Users\uruskan\Documents\GitHub\kabarma\.claude\worktrees\m1-varlik-72a21b\game\scripts\fx\Assets.cs:37)
+       [5] Godot.Mesh Kabarma.Game.World.DecorMesh(Kabarma.Sim.DecorDef, System.Single&) 
+(C:\Users\uruskan\Documents\GitHub\kabarma\.claude\worktrees\m1-varlik-72a21b\game\scripts\world\World.Decor.cs:93)
+       [6] void Kabarma.Game.World.BuildDecor() 
+(C:\Users\uruskan\Documents\GitHub\kabarma\.claude\worktrees\m1-varlik-72a21b\game\scripts\world\World.Decor.cs:28)
+       [7] void Kabarma.Game.World._Ready() 
+(C:\Users\uruskan\Documents\GitHub\kabarma\.claude\worktrees\m1-varlik-72a21b\game\scripts\world\World.cs:46)
+       [8] bool Godot.Node.InvokeGodotClassMethod(Godot.NativeInterop.godot_string_name&, 
+Godot.NativeInterop.NativeVariantPtrArgs, Godot.NativeInterop.godot_variant&) 
+(/root/godot/modules/mono/glue/GodotSharp/GodotSharp/Generated/GodotObjects/Node.cs:2660)
+       [9] bool Godot.Node3D.InvokeGodotClassMethod(Godot.NativeInterop.godot_string_name&, 
+Godot.NativeInterop.NativeVariantPtrArgs, Godot.NativeInterop.godot_variant&) 
+(/root/godot/modules/mono/glue/GodotSharp/GodotSharp/Generated/GodotObjects/Node3D.cs:1127)
+       [10] bool Kabarma.Game.World.InvokeGodotClassMethod(Godot.NativeInterop.godot_string_name&, 
+Godot.NativeInterop.NativeVariantPtrArgs, Godot.NativeInterop.godot_variant&) (C:\Users\uruskan\Documents\GitHub\kabarm
+a\.claude\worktrees\m1-varlik-72a21b\game\.godot\mono\temp\obj\Debug\Godot.SourceGenerators\Godot.SourceGenerators.Scri
+ptMethodsGenerator\Kabarma.Game.World_ScriptMethods.generated.cs:450)
+       [11] Godot.NativeInterop.godot_bool Godot.Bridge.CSharpInstanceBridge.Call(nint, 
+Godot.NativeInterop.godot_string_name*, Godot.NativeInterop.godot_variant**, int, 
+Godot.NativeInterop.godot_variant_call_error*, Godot.NativeInterop.godot_variant*) 
+(/root/godot/modules/mono/glue/GodotSharp/GodotSharp/Core/Bridge/CSharpInstanceBridge.cs:24)
+       [12] void Godot.NativeInterop.NativeFuncs.godotsharp_method_bind_ptrcall(nint, nint, System.Void**, 
+System.Void*) (/root/godot/modules/mono/glue/GodotSharp/GodotSharp/Godot.SourceGenerators.Internal/Godot.SourceGenerato
+rs.Internal.UnmanagedCallbacksGenerator/Godot.NativeInterop.NativeFuncs.generated.cs:380)
+       [13] void Godot.NativeCalls.godot_icall_3_912(nint, nint, nint, Godot.NativeInterop.godot_bool, int) 
+(/root/godot/modules/mono/glue/GodotSharp/GodotSharp/Generated/NativeCalls.cs:8061)
+       [14] void Godot.Node.AddChild(Godot.Node, bool, Godot.Node+InternalMode) 
+(/root/godot/modules/mono/glue/GodotSharp/GodotSharp/Generated/GodotObjects/Node.cs:848)
+       [15] void Kabarma.Game.Director._Ready() 
+(C:\Users\uruskan\Documents\GitHub\kabarma\.claude\worktrees\m1-varlik-72a21b\game\scripts\Director.cs:52)
+       [16] bool Godot.Node.InvokeGodotClassMethod(Godot.NativeInterop.godot_string_name&, 
+Godot.NativeInterop.NativeVariantPtrArgs, Godot.NativeInterop.godot_variant&) 
+(/root/godot/modules/mono/glue/GodotSharp/GodotSharp/Generated/GodotObjects/Node.cs:2660)
+       [17] bool Godot.Node3D.InvokeGodotClassMethod(Godot.NativeInterop.godot_string_name&, 
+Godot.NativeInterop.NativeVariantPtrArgs, Godot.NativeInterop.godot_variant&) 
+(/root/godot/modules/mono/glue/GodotSharp/GodotSharp/Generated/GodotObjects/Node3D.cs:1127)
+       [18] bool Kabarma.Game.Director.InvokeGodotClassMethod(Godot.NativeInterop.godot_string_name&, 
+Godot.NativeInterop.NativeVariantPtrArgs, Godot.NativeInterop.godot_variant&) (C:\Users\uruskan\Documents\GitHub\kabarm
+a\.claude\worktrees\m1-varlik-72a21b\game\.godot\mono\temp\obj\Debug\Godot.SourceGenerators\Godot.SourceGenerators.Scri
+ptMethodsGenerator\Kabarma.Game.Director_ScriptMethods.generated.cs:1036)
+       [19] Godot.NativeInterop.godot_bool Godot.Bridge.CSharpInstanceBridge.Call(nint, 
+Godot.NativeInterop.godot_string_name*, Godot.NativeInterop.godot_variant**, int, 
+Godot.NativeInterop.godot_variant_call_error*, Godot.NativeInterop.godot_variant*) 
+(/root/godot/modules/mono/glue/GodotSharp/GodotSharp/Core/Bridge/CSharpInstanceBridge.cs:24)
+       [20] void Godot.NativeInterop.NativeFuncs.godotsharp_method_bind_ptrcall(nint, nint, System.Void**, 
+System.Void*) (/root/godot/modules/mono/glue/GodotSharp/GodotSharp/Godot.SourceGenerators.Internal/Godot.SourceGenerato
+rs.Internal.UnmanagedCallbacksGenerator/Godot.NativeInterop.NativeFuncs.generated.cs:380)
+       [21] void Godot.NativeCalls.godot_icall_3_912(nint, nint, nint, Godot.NativeInterop.godot_bool, int) 
+(/root/godot/modules/mono/glue/GodotSharp/GodotSharp/Generated/NativeCalls.cs:8061)
+       [22] void Godot.Node.AddChild(Godot.Node, bool, Godot.Node+InternalMode) 
+(/root/godot/modules/mono/glue/GodotSharp/GodotSharp/Generated/GodotObjects/Node.cs:848)
+       [23] void Kabarma.Game.Main._Ready() 
+(C:\Users\uruskan\Documents\GitHub\kabarma\.claude\worktrees\m1-varlik-72a21b\game\scripts\Main.cs:95)
+       [24] bool Godot.Node.InvokeGodotClassMethod(Godot.NativeInterop.godot_string_name&, 
+Godot.NativeInterop.NativeVariantPtrArgs, Godot.NativeInterop.godot_variant&) 
+(/root/godot/modules/mono/glue/GodotSharp/GodotSharp/Generated/GodotObjects/Node.cs:2660)
+       [25] bool Godot.Node3D.InvokeGodotClassMethod(Godot.NativeInterop.godot_string_name&, 
+Godot.NativeInterop.NativeVariantPtrArgs, Godot.NativeInterop.godot_variant&) 
+(/root/godot/modules/mono/glue/GodotSharp/GodotSharp/Generated/GodotObjects/Node3D.cs:1127)
+       [26] bool Kabarma.Game.Main.InvokeGodotClassMethod(Godot.NativeInterop.godot_string_name&, 
+Godot.NativeInterop.NativeVariantPtrArgs, Godot.NativeInterop.godot_variant&) (C:\Users\uruskan\Documents\GitHub\kabarm
+a\.claude\worktrees\m1-varlik-72a21b\game\.godot\mono\temp\obj\Debug\Godot.SourceGenerators\Godot.SourceGenerators.Scri
+ptMethodsGenerator\Kabarma.Game.Main_ScriptMethods.generated.cs:70)
+       [27] Godot.NativeInterop.godot_bool Godot.Bridge.CSharpInstanceBridge.Call(nint, 
+Godot.NativeInterop.godot_string_name*, Godot.NativeInterop.godot_variant**, int, 
+Godot.NativeInterop.godot_variant_call_error*, Godot.NativeInterop.godot_variant*) 
+(/root/godot/modules/mono/glue/GodotSharp/GodotSharp/Core/Bridge/CSharpInstanceBridge.cs:24)
+ERROR: Failed loading resource: res://assets/models/egrelti/egrelti.glb.
+   at: _load (core/io/resource_loader.cpp:317)
+   C# backtrace (most recent call first):
+       [0] Godot.GodotObject Godot.NativeCalls.godot_icall_3_1268(nint, nint, string, string, int) 
+(/root/godot/modules/mono/glue/GodotSharp/GodotSharp/Generated/NativeCalls.cs:11611)
+       [1] Godot.Resource Godot.ResourceLoader.Load(string, string, Godot.ResourceLoader+CacheMode) 
+(/root/godot/modules/mono/glue/GodotSharp/GodotSharp/Generated/GodotObjects/ResourceLoader.cs:120)
+       [2] T Godot.ResourceLoader.Load<T>(string, string, Godot.ResourceLoader+CacheMode) 
+(/root/godot/modules/mono/glue/GodotSharp/GodotSharp/Core/Extensions/ResourceLoaderExtensions.cs:27)
+       [3] T Godot.GD.Load<T>(string) (/root/godot/modules/mono/glue/GodotSharp/GodotSharp/Core/GD.cs:129)
+       [4] Godot.Node3D Kabarma.Game.Assets.Load(string, bool, Godot.Material) 
+(C:\Users\uruskan\Documents\GitHub\kabarma\.claude\worktrees\m1-varlik-72a21b\game\scripts\fx\Assets.cs:37)
+       [5] Godot.Mesh Kabarma.Game.World.DecorMesh(Kabarma.Sim.DecorDef, System.Single&) 
+(C:\Users\uruskan\Documents\GitHub\kabarma\.claude\worktrees\m1-varlik-72a21b\game\scripts\world\World.Decor.cs:93)
+       [6] void Kabarma.Game.World.BuildDecor() 
+(C:\Users\uruskan\Documents\GitHub\kabarma\.claude\worktrees\m1-varlik-72a21b\game\scripts\world\World.Decor.cs:28)
+       [7] void Kabarma.Game.World._Ready() 
+(C:\Users\uruskan\Documents\GitHub\kabarma\.claude\worktrees\m1-varlik-72a21b\game\scripts\world\World.cs:46)
+       [8] bool Godot.Node.InvokeGodotClassMethod(Godot.NativeInterop.godot_string_name&, 
+Godot.NativeInterop.NativeVariantPtrArgs, Godot.NativeInterop.godot_variant&) 
+(/root/godot/modules/mono/glue/GodotSharp/GodotSharp/Generated/GodotObjects/Node.cs:2660)
+       [9] bool Godot.Node3D.InvokeGodotClassMethod(Godot.NativeInterop.godot_string_name&, 
+Godot.NativeInterop.NativeVariantPtrArgs, Godot.NativeInterop.godot_variant&) 
+(/root/godot/modules/mono/glue/GodotSharp/GodotSharp/Generated/GodotObjects/Node3D.cs:1127)
+       [10] bool Kabarma.Game.World.InvokeGodotClassMethod(Godot.NativeInterop.godot_string_name&, 
+Godot.NativeInterop.NativeVariantPtrArgs, Godot.NativeInterop.godot_variant&) (C:\Users\uruskan\Documents\GitHub\kabarm
+a\.claude\worktrees\m1-varlik-72a21b\game\.godot\mono\temp\obj\Debug\Godot.SourceGenerators\Godot.SourceGenerators.Scri
+ptMethodsGenerator\Kabarma.Game.World_ScriptMethods.generated.cs:450)
+       [11] Godot.NativeInterop.godot_bool Godot.Bridge.CSharpInstanceBridge.Call(nint, 
+Godot.NativeInterop.godot_string_name*, Godot.NativeInterop.godot_variant**, int, 
+Godot.NativeInterop.godot_variant_call_error*, Godot.NativeInterop.godot_variant*) 
+(/root/godot/modules/mono/glue/GodotSharp/GodotSharp/Core/Bridge/CSharpInstanceBridge.cs:24)
+       [12] void Godot.NativeInterop.NativeFuncs.godotsharp_method_bind_ptrcall(nint, nint, System.Void**, 
+System.Void*) (/root/godot/modules/mono/glue/GodotSharp/GodotSharp/Godot.SourceGenerators.Internal/Godot.SourceGenerato
+rs.Internal.UnmanagedCallbacksGenerator/Godot.NativeInterop.NativeFuncs.generated.cs:380)
+       [13] void Godot.NativeCalls.godot_icall_3_912(nint, nint, nint, Godot.NativeInterop.godot_bool, int) 
+(/root/godot/modules/mono/glue/GodotSharp/GodotSharp/Generated/NativeCalls.cs:8061)
+       [14] void Godot.Node.AddChild(Godot.Node, bool, Godot.Node+InternalMode) 
+(/root/godot/modules/mono/glue/GodotSharp/GodotSharp/Generated/GodotObjects/Node.cs:848)
+       [15] void Kabarma.Game.Director._Ready() 
+(C:\Users\uruskan\Documents\GitHub\kabarma\.claude\worktrees\m1-varlik-72a21b\game\scripts\Director.cs:52)
+       [16] bool Godot.Node.InvokeGodotClassMethod(Godot.NativeInterop.godot_string_name&, 
+Godot.NativeInterop.NativeVariantPtrArgs, Godot.NativeInterop.godot_variant&) 
+(/root/godot/modules/mono/glue/GodotSharp/GodotSharp/Generated/GodotObjects/Node.cs:2660)
+       [17] bool Godot.Node3D.InvokeGodotClassMethod(Godot.NativeInterop.godot_string_name&, 
+Godot.NativeInterop.NativeVariantPtrArgs, Godot.NativeInterop.godot_variant&) 
+(/root/godot/modules/mono/glue/GodotSharp/GodotSharp/Generated/GodotObjects/Node3D.cs:1127)
+       [18] bool Kabarma.Game.Director.InvokeGodotClassMethod(Godot.NativeInterop.godot_string_name&, 
+Godot.NativeInterop.NativeVariantPtrArgs, Godot.NativeInterop.godot_variant&) (C:\Users\uruskan\Documents\GitHub\kabarm
+a\.claude\worktrees\m1-varlik-72a21b\game\.godot\mono\temp\obj\Debug\Godot.SourceGenerators\Godot.SourceGenerators.Scri
+ptMethodsGenerator\Kabarma.Game.Director_ScriptMethods.generated.cs:1036)
+       [19] Godot.NativeInterop.godot_bool Godot.Bridge.CSharpInstanceBridge.Call(nint, 
+Godot.NativeInterop.godot_string_name*, Godot.NativeInterop.godot_variant**, int, 
+Godot.NativeInterop.godot_variant_call_error*, Godot.NativeInterop.godot_variant*) 
+(/root/godot/modules/mono/glue/GodotSharp/GodotSharp/Core/Bridge/CSharpInstanceBridge.cs:24)
+       [20] void Godot.NativeInterop.NativeFuncs.godotsharp_method_bind_ptrcall(nint, nint, System.Void**, 
+System.Void*) (/root/godot/modules/mono/glue/GodotSharp/GodotSharp/Godot.SourceGenerators.Internal/Godot.SourceGenerato
+rs.Internal.UnmanagedCallbacksGenerator/Godot.NativeInterop.NativeFuncs.generated.cs:380)
+       [21] void Godot.NativeCalls.godot_icall_3_912(nint, nint, nint, Godot.NativeInterop.godot_bool, int) 
+(/root/godot/modules/mono/glue/GodotSharp/GodotSharp/Generated/NativeCalls.cs:8061)
+       [22] void Godot.Node.AddChild(Godot.Node, bool, Godot.Node+InternalMode) 
+(/root/godot/modules/mono/glue/GodotSharp/GodotSharp/Generated/GodotObjects/Node.cs:848)
+       [23] void Kabarma.Game.Main._Ready() 
+(C:\Users\uruskan\Documents\GitHub\kabarma\.claude\worktrees\m1-varlik-72a21b\game\scripts\Main.cs:95)
+       [24] bool Godot.Node.InvokeGodotClassMethod(Godot.NativeInterop.godot_string_name&, 
+Godot.NativeInterop.NativeVariantPtrArgs, Godot.NativeInterop.godot_variant&) 
+(/root/godot/modules/mono/glue/GodotSharp/GodotSharp/Generated/GodotObjects/Node.cs:2660)
+       [25] bool Godot.Node3D.InvokeGodotClassMethod(Godot.NativeInterop.godot_string_name&, 
+Godot.NativeInterop.NativeVariantPtrArgs, Godot.NativeInterop.godot_variant&) 
+(/root/godot/modules/mono/glue/GodotSharp/GodotSharp/Generated/GodotObjects/Node3D.cs:1127)
+       [26] bool Kabarma.Game.Main.InvokeGodotClassMethod(Godot.NativeInterop.godot_string_name&, 
+Godot.NativeInterop.NativeVariantPtrArgs, Godot.NativeInterop.godot_variant&) (C:\Users\uruskan\Documents\GitHub\kabarm
+a\.claude\worktrees\m1-varlik-72a21b\game\.godot\mono\temp\obj\Debug\Godot.SourceGenerators\Godot.SourceGenerators.Scri
+ptMethodsGenerator\Kabarma.Game.Main_ScriptMethods.generated.cs:70)
+       [27] Godot.NativeInterop.godot_bool Godot.Bridge.CSharpInstanceBridge.Call(nint, 
+Godot.NativeInterop.godot_string_name*, Godot.NativeInterop.godot_variant**, int, 
+Godot.NativeInterop.godot_variant_call_error*, Godot.NativeInterop.godot_variant*) 
+(/root/godot/modules/mono/glue/GodotSharp/GodotSharp/Core/Bridge/CSharpInstanceBridge.cs:24)
+ERROR: Error loading resource: 'res://assets/models/egrelti/egrelti.glb'.
+   at: load (core/core_bind.cpp:82)
+   C# backtrace (most recent call first):
+       [0] Godot.GodotObject Godot.NativeCalls.godot_icall_3_1268(nint, nint, string, string, int) 
+(/root/godot/modules/mono/glue/GodotSharp/GodotSharp/Generated/NativeCalls.cs:11611)
+       [1] Godot.Resource Godot.ResourceLoader.Load(string, string, Godot.ResourceLoader+CacheMode) 
+(/root/godot/modules/mono/glue/GodotSharp/GodotSharp/Generated/GodotObjects/ResourceLoader.cs:120)
+       [2] T Godot.ResourceLoader.Load<T>(string, string, Godot.ResourceLoader+CacheMode) 
+(/root/godot/modules/mono/glue/GodotSharp/GodotSharp/Core/Extensions/ResourceLoaderExtensions.cs:27)
+       [3] T Godot.GD.Load<T>(string) (/root/godot/modules/mono/glue/GodotSharp/GodotSharp/Core/GD.cs:129)
+       [4] Godot.Node3D Kabarma.Game.Assets.Load(string, bool, Godot.Material) 
+(C:\Users\uruskan\Documents\GitHub\kabarma\.claude\worktrees\m1-varlik-72a21b\game\scripts\fx\Assets.cs:37)
+       [5] Godot.Mesh Kabarma.Game.World.DecorMesh(Kabarma.Sim.DecorDef, System.Single&) 
+(C:\Users\uruskan\Documents\GitHub\kabarma\.claude\worktrees\m1-varlik-72a21b\game\scripts\world\World.Decor.cs:93)
+       [6] void Kabarma.Game.World.BuildDecor() 
+(C:\Users\uruskan\Documents\GitHub\kabarma\.claude\worktrees\m1-varlik-72a21b\game\scripts\world\World.Decor.cs:28)
+       [7] void Kabarma.Game.World._Ready() 
+(C:\Users\uruskan\Documents\GitHub\kabarma\.claude\worktrees\m1-varlik-72a21b\game\scripts\world\World.cs:46)
+       [8] bool Godot.Node.InvokeGodotClassMethod(Godot.NativeInterop.godot_string_name&, 
+Godot.NativeInterop.NativeVariantPtrArgs, Godot.NativeInterop.godot_variant&) 
+(/root/godot/modules/mono/glue/GodotSharp/GodotSharp/Generated/GodotObjects/Node.cs:2660)
+       [9] bool Godot.Node3D.InvokeGodotClassMethod(Godot.NativeInterop.godot_string_name&, 
+Godot.NativeInterop.NativeVariantPtrArgs, Godot.NativeInterop.godot_variant&) 
+(/root/godot/modules/mono/glue/GodotSharp/GodotSharp/Generated/GodotObjects/Node3D.cs:1127)
+       [10] bool Kabarma.Game.World.InvokeGodotClassMethod(Godot.NativeInterop.godot_string_name&, 
+Godot.NativeInterop.NativeVariantPtrArgs, Godot.NativeInterop.godot_variant&) (C:\Users\uruskan\Documents\GitHub\kabarm
+a\.claude\worktrees\m1-varlik-72a21b\game\.godot\mono\temp\obj\Debug\Godot.SourceGenerators\Godot.SourceGenerators.Scri
+ptMethodsGenerator\Kabarma.Game.World_ScriptMethods.generated.cs:450)
+       [11] Godot.NativeInterop.godot_bool Godot.Bridge.CSharpInstanceBridge.Call(nint, 
+Godot.NativeInterop.godot_string_name*, Godot.NativeInterop.godot_variant**, int, 
+Godot.NativeInterop.godot_variant_call_error*, Godot.NativeInterop.godot_variant*) 
+(/root/godot/modules/mono/glue/GodotSharp/GodotSharp/Core/Bridge/CSharpInstanceBridge.cs:24)
+       [12] void Godot.NativeInterop.NativeFuncs.godotsharp_method_bind_ptrcall(nint, nint, System.Void**, 
+System.Void*) (/root/godot/modules/mono/glue/GodotSharp/GodotSharp/Godot.SourceGenerators.Internal/Godot.SourceGenerato
+rs.Internal.UnmanagedCallbacksGenerator/Godot.NativeInterop.NativeFuncs.generated.cs:380)
+       [13] void Godot.NativeCalls.godot_icall_3_912(nint, nint, nint, Godot.NativeInterop.godot_bool, int) 
+(/root/godot/modules/mono/glue/GodotSharp/GodotSharp/Generated/NativeCalls.cs:8061)
+       [14] void Godot.Node.AddChild(Godot.Node, bool, Godot.Node+InternalMode) 
+(/root/godot/modules/mono/glue/GodotSharp/GodotSharp/Generated/GodotObjects/Node.cs:848)
+       [15] void Kabarma.Game.Director._Ready() 
+(C:\Users\uruskan\Documents\GitHub\kabarma\.claude\worktrees\m1-varlik-72a21b\game\scripts\Director.cs:52)
+       [16] bool Godot.Node.InvokeGodotClassMethod(Godot.NativeInterop.godot_string_name&, 
+Godot.NativeInterop.NativeVariantPtrArgs, Godot.NativeInterop.godot_variant&) 
+(/root/godot/modules/mono/glue/GodotSharp/GodotSharp/Generated/GodotObjects/Node.cs:2660)
+       [17] bool Godot.Node3D.InvokeGodotClassMethod(Godot.NativeInterop.godot_string_name&, 
+Godot.NativeInterop.NativeVariantPtrArgs, Godot.NativeInterop.godot_variant&) 
+(/root/godot/modules/mono/glue/GodotSharp/GodotSharp/Generated/GodotObjects/Node3D.cs:1127)
+       [18] bool Kabarma.Game.Director.InvokeGodotClassMethod(Godot.NativeInterop.godot_string_name&, 
+Godot.NativeInterop.NativeVariantPtrArgs, Godot.NativeInterop.godot_variant&) (C:\Users\uruskan\Documents\GitHub\kabarm
+a\.claude\worktrees\m1-varlik-72a21b\game\.godot\mono\temp\obj\Debug\Godot.SourceGenerators\Godot.SourceGenerators.Scri
+ptMethodsGenerator\Kabarma.Game.Director_ScriptMethods.generated.cs:1036)
+       [19] Godot.NativeInterop.godot_bool Godot.Bridge.CSharpInstanceBridge.Call(nint, 
+Godot.NativeInterop.godot_string_name*, Godot.NativeInterop.godot_variant**, int, 
+Godot.NativeInterop.godot_variant_call_error*, Godot.NativeInterop.godot_variant*) 
+(/root/godot/modules/mono/glue/GodotSharp/GodotSharp/Core/Bridge/CSharpInstanceBridge.cs:24)
+       [20] void Godot.NativeInterop.NativeFuncs.godotsharp_method_bind_ptrcall(nint, nint, System.Void**, 
+System.Void*) (/root/godot/modules/mono/glue/GodotSharp/GodotSharp/Godot.SourceGenerators.Internal/Godot.SourceGenerato
+rs.Internal.UnmanagedCallbacksGenerator/Godot.NativeInterop.NativeFuncs.generated.cs:380)
+       [21] void Godot.NativeCalls.godot_icall_3_912(nint, nint, nint, Godot.NativeInterop.godot_bool, int) 
+(/root/godot/modules/mono/glue/GodotSharp/GodotSharp/Generated/NativeCalls.cs:8061)
+       [22] void Godot.Node.AddChild(Godot.Node, bool, Godot.Node+InternalMode) 
+(/root/godot/modules/mono/glue/GodotSharp/GodotSharp/Generated/GodotObjects/Node.cs:848)
+       [23] void Kabarma.Game.Main._Ready() 
+(C:\Users\uruskan\Documents\GitHub\kabarma\.claude\worktrees\m1-varlik-72a21b\game\scripts\Main.cs:95)
+       [24] bool Godot.Node.InvokeGodotClassMethod(Godot.NativeInterop.godot_string_name&, 
+Godot.NativeInterop.NativeVariantPtrArgs, Godot.NativeInterop.godot_variant&) 
+(/root/godot/modules/mono/glue/GodotSharp/GodotSharp/Generated/GodotObjects/Node.cs:2660)
+       [25] bool Godot.Node3D.InvokeGodotClassMethod(Godot.NativeInterop.godot_string_name&, 
+Godot.NativeInterop.NativeVariantPtrArgs, Godot.NativeInterop.godot_variant&) 
+(/root/godot/modules/mono/glue/GodotSharp/GodotSharp/Generated/GodotObjects/Node3D.cs:1127)
+       [26] bool Kabarma.Game.Main.InvokeGodotClassMethod(Godot.NativeInterop.godot_string_name&, 
+Godot.NativeInterop.NativeVariantPtrArgs, Godot.NativeInterop.godot_variant&) (C:\Users\uruskan\Documents\GitHub\kabarm
+a\.claude\worktrees\m1-varlik-72a21b\game\.godot\mono\temp\obj\Debug\Godot.SourceGenerators\Godot.SourceGenerators.Scri
+ptMethodsGenerator\Kabarma.Game.Main_ScriptMethods.generated.cs:70)
+       [27] Godot.NativeInterop.godot_bool Godot.Bridge.CSharpInstanceBridge.Call(nint, 
+Godot.NativeInterop.godot_string_name*, Godot.NativeInterop.godot_variant**, int, 
+Godot.NativeInterop.godot_variant_call_error*, Godot.NativeInterop.godot_variant*) 
+(/root/godot/modules/mono/glue/GodotSharp/GodotSharp/Core/Bridge/CSharpInstanceBridge.cs:24)
+WORLD decor model yok: res://assets/models/egrelti/egrelti.glb
+PLAYER model anims: carry,cheer,crouch_walk,eat,getup_back_pose,getup_front_pose,hurt,idle,jump,jump_air,jump_land,jump_start,kneel,knockdown,plant,push,run,shock_fall,sleep,sprint,walk,walk_casual,wave
+AUDIO sounds=60 playable=60 variant_files=180 m0_only=0 silent=0 placeholder=0
+AUDIO ok 60/60
+POFUDUK anims: pose/attack1,pose/attack2,pose/eat,pose/hit,pose/idle,pose/rest,pose/run,pose/walk,preset_quadruped_walk
+BUILD kit pieces=28
+ATALAR arenas=koca_pofuduk@64,36,boynuzlu_dede@-58,-72
+BOOT Kabarma MVP
+TARIM wild=22
+HELD capa
+MUSIC Silence -> Day
+ZIPZIP herd size=2 at=36,6 herds=1
+ZIPZIP herd size=2 at=27,11 herds=2
+ZIPZIP herd size=3 at=-9,14 herds=3
+WILDLIFE spawn gidak herd=4 at=20,111
+WILDLIFE spawn gidak herd=4 at=63,-99
+SUNA line=giris_1 voice=yes
+SHOTS saved C:/Users/uruskan/Documents/GitHub/kabarma/.claude/worktrees/m1-varlik-72a21b/game/../progress/bitki/sonra/kapsul_ogle.png 1920x1080 gpu_ms=10.89 frames=74
+SHOTS saved C:/Users/uruskan/Documents/GitHub/kabarma/.claude/worktrees/m1-varlik-72a21b/game/../progress/bitki/sonra/us_ogle.png 1920x1080 gpu_ms=12.70 frames=6
+SHOTS saved C:/Users/uruskan/Documents/GitHub/kabarma/.claude/worktrees/m1-varlik-72a21b/game/../progress/bitki/sonra/gol_ogle.png 1920x1080 gpu_ms=11.79 frames=6
+SHOTS saved C:/Users/uruskan/Documents/GitHub/kabarma/.claude/worktrees/m1-varlik-72a21b/game/../progress/bitki/sonra/tepe_ogle.png 1920x1080 gpu_ms=10.81 frames=6
+SHOTS saved C:/Users/uruskan/Documents/GitHub/kabarma/.claude/worktrees/m1-varlik-72a21b/game/../progress/bitki/sonra/kapsul_gunbatimi.png 1920x1080 gpu_ms=10.83 frames=6
+SHOTS saved C:/Users/uruskan/Documents/GitHub/kabarma/.claude/worktrees/m1-varlik-72a21b/game/../progress/bitki/sonra/us_gunbatimi.png 1920x1080 gpu_ms=10.82 frames=6
+SHOTS saved C:/Users/uruskan/Documents/GitHub/kabarma/.claude/worktrees/m1-varlik-72a21b/game/../progress/bitki/sonra/gol_gunbatimi.png 1920x1080 gpu_ms=11.24 frames=6
+SHOTS saved C:/Users/uruskan/Documents/GitHub/kabarma/.claude/worktrees/m1-varlik-72a21b/game/../progress/bitki/sonra/tepe_gunbatimi.png 1920x1080 gpu_ms=10.57 frames=6
+SHOTS RESULT fail main=8 deck=0 quick=True
