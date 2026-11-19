@@ -18,10 +18,13 @@ namespace Kabarma.Game;
 /// </summary>
 public partial class CoopTest : Node
 {
-    const int Clients = 3;
+    /// <summary>Toplam oyuncu (host dahil): varsayilan 3; sekiz (M5) icin --clients=8 (8 surec: makine kuralina gore dikkat, test.ps1 varsayilani 3).</summary>
+    static readonly int Clients = Main.Args.TryGetValue("clients", out var cs) && int.TryParse(cs, out var cn) ? System.Math.Clamp(cn, 2, 8) : 3;
     const float LateJoinAt = 35f;   // gercek sn: ilk ikisi kurmaya baslamisken
     const float Timeout = 420f;
     const float SettleSeconds = 3.5f;
+    string _glassProbe = ""; // kale: istemci Cam parca yerlestirir, Cam oder (NetSync.CoopGlassProbe)
+    string _rivProbe = ""; // M5 cekisme: iki takim, gunduz dokunulmazlik, gece baskini (RivalrySystem.CoopProbe)
     int _ataProbe = -1; // -1: denenmedi, 0: baslamadi, 1: host dovusu basladi (ata4: Ata adak ve dovus ortak oyunda)
 
     Director _d;
@@ -45,7 +48,7 @@ public partial class CoopTest : Node
         public int Stone, Built, Mismatches, Applied;
         public int PiecesSeen;
         public HashSet<string> SaveApplied = new();
-        public int VoiceFrom2, VoiceSent, Dynamic, Plots, Ata;
+        public int VoiceFrom2, VoiceSent, Dynamic, Plots, Ata, Ruins;
     }
 
     // Tatbikat (hepsi bitince): host bayilir, Bot 1 sok tokadiyla kaldirir; Bot 2 konusur (sinus, mikrofonsuz).
@@ -153,13 +156,17 @@ public partial class CoopTest : Node
         {
             _drillT += dt;
             int voice = Net.Voice?.Received.Values.Sum() ?? 0; // konusan Bot 2; es kimligi baglanma sirasina gore
-            if ((Net.Revives >= 1 && !_d.Player.Down && voice >= VoiceFrames * 4 / 5) || _drillT > DrillTimeout)
+            if (_glassProbe == "" && (_drillT > 3f)) { var g = Net.CoopGlassProbe(); if (g != null) _glassProbe = g; } // kale: Cam yerlestirme (kare kare, bekleme suresiyle)
+            if (_glassProbe != "" && ((Net.Revives >= 1 && !_d.Player.Down && voice >= VoiceFrames * 4 / 5) || _drillT > DrillTimeout))
             {
                 _collecting = true;
                 _collectT = SettleSeconds;
                 var probeActor = Net.Actors.Values.FirstOrDefault();
                 _ataProbe = probeActor != null && _d.Atalar.CoopProbe(probeActor.Bag) ? 1 : 0;
                 Log($"COOP ata probe={_ataProbe} bag_yun_after={probeActor?.Bag.Count("yun")}");
+                Log($"COOP glass probe: {_glassProbe}");
+                _rivProbe = _d.CoopRivalryProbe();
+                Log($"COOP rivalry probe: {_rivProbe}");
                 Log($"COOP tatbikat bitti revives={Net.Revives} down={_d.Player.Down} voice_from2={voice} t={_drillT:0.0}; durulma {SettleSeconds} sn");
             }
         }
@@ -223,6 +230,7 @@ public partial class CoopTest : Node
         w.VarU((uint)Net.DynamicCount);
         w.VarU((uint)_d.State.Farm.Plots.Count());
         w.U8((byte)(_d.Atalar.Fight != null && _d.Atalar.Actor != null ? 1 : 0)); // ata4: dovus ve kukla goruluyor mu
+        w.VarU((uint)_d.State.Rivalry.Ruins.Count); // M5 cekisme: istemci enkaz planlarini goruyor mu
     }
 
     // ---------- host ----------
@@ -240,7 +248,7 @@ public partial class CoopTest : Node
         rep.Stone = (int)r.VarU(); rep.Built = (int)r.VarU(); rep.Mismatches = (int)r.VarU(); rep.Applied = (int)r.VarU(); rep.PiecesSeen = (int)r.VarU();
         int k = r.U8();
         for (int i = 0; i < k; i++) rep.SaveApplied.Add(r.Str());
-        rep.VoiceFrom2 = (int)r.VarU(); rep.VoiceSent = (int)r.VarU(); rep.Dynamic = (int)r.VarU(); rep.Plots = (int)r.VarU(); rep.Ata = r.U8();
+        rep.VoiceFrom2 = (int)r.VarU(); rep.VoiceSent = (int)r.VarU(); rep.Dynamic = (int)r.VarU(); rep.Plots = (int)r.VarU(); rep.Ata = r.U8(); rep.Ruins = (int)r.VarU();
         _reports[peer] = rep;
         Log($"COOP report peer={peer} stone={rep.Stone} built={rep.Built} pieces={rep.PiecesSeen} applied={rep.Applied} mismatches={rep.Mismatches} save_sections={rep.SaveApplied.Count}/{Net.BridgedSections} voice_heard={rep.VoiceFrom2} voice_sent={rep.VoiceSent} creatures_spawned={rep.Dynamic} plots={rep.Plots}");
     }
@@ -279,6 +287,7 @@ public partial class CoopTest : Node
             }
             if (rep.Built < 1) fails.Add($"peer{c} built nothing");
             if (_ataProbe == 1 && rep.Ata != 1) fails.Add($"peer{c} Ata dovusunu/kuklayi gormedi");
+            if (rep.Ruins != _d.State.Rivalry.Ruins.Count) fails.Add($"peer{c} sees {rep.Ruins} ruins, host {_d.State.Rivalry.Ruins.Count}");
             var actor = Net.Actors.GetValueOrDefault(c);
             if (actor == null || actor.Bag.Count("stone") < 4) fails.Add($"peer{c} mined {actor?.Bag.Count("stone")}");
             if (rep.VoiceSent == 0 && rep.VoiceFrom2 < VoiceFrames * 4 / 5) fails.Add($"peer{c} heard {rep.VoiceFrom2}/{VoiceFrames} voice frames from peer2");
@@ -296,10 +305,13 @@ public partial class CoopTest : Node
         else if (Net.Actors.Values.FirstOrDefault() is { } pa && pa.Bag.Count("copper_ingot") > 0 && pa.Bag.Count("yun") > 0) fails.Add("ata probe: adak istemci cantasindan dusmedi");
         int pieces = _d.Build?.System.Pieces.Count ?? 0;
         int bases = _d.Build?.System.Pieces.Count(p => p.Def.Id == "kare_temel") ?? 0;
-        if (bases < Clients + 1) fails.Add($"host has {bases} foundations, want {Clients + 1}");
+        int ruinedBases = _d.State.Rivalry.Ruins.Count(r => r.Shape == "kare_temel"); // cekisme probu A takiminin temellerini yikti (enkaz plani kaldi)
+        if (!_glassProbe.StartsWith("ok")) fails.Add("glass probe: " + _glassProbe);
+        if (!_rivProbe.StartsWith("ok")) fails.Add("rivalry probe: " + _rivProbe);
+        if (bases + ruinedBases < Clients + 1) fails.Add($"host has {bases} foundations (+{ruinedBases} ruins), want {Clients + 1}");
         bool ok = fails.Count == 0 && maxDiff < 0.01;
         int rejected = Net.RequestsRejected, corr = Net.Corrections;
-        Log($"COOP RESULT {(ok ? "ok" : "fail")} players={Clients + 1} max_diff_mm={maxDiff * 1000:0.000} pieces={pieces} foundations={bases} late_join=1 plots={plots} tilled={tilled} crafted={Net.Actors.Values.Count(x => x.Bag.Count(Bot.CoopCraft) > 0) + (_d.State.Backpack.Count(Bot.CoopCraft) > 0 ? 1 : 0)} revives={Net.Revives} voice_frames={hostVoice} creatures_spawned={Net.DynamicCount} rejected={rejected} corrections={corr} t={_t:0.0}" + (fails.Count > 0 ? " :: " + string.Join("; ", fails.Take(8)) : ""));
+        Log($"COOP RESULT {(ok ? "ok" : "fail")} players={Clients + 1} max_diff_mm={maxDiff * 1000:0.000} pieces={pieces} foundations={bases} late_join=1 plots={plots} tilled={tilled} crafted={Net.Actors.Values.Count(x => x.Bag.Count(Bot.CoopCraft) > 0) + (_d.State.Backpack.Count(Bot.CoopCraft) > 0 ? 1 : 0)} revives={Net.Revives} voice_frames={hostVoice} creatures_spawned={Net.DynamicCount} rejected={rejected} corrections={corr} glass={_glassProbe} rivalry={_rivProbe} ruins={_d.State.Rivalry.Ruins.Count} t={_t:0.0}" + (fails.Count > 0 ? " :: " + string.Join("; ", fails.Take(8)) : ""));
         Finish(ok ? 0 : 1);
     }
 

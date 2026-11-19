@@ -47,6 +47,8 @@ public enum NetMsg : byte
     Fx,
     /// <summary>host→istemci: anlik goruntuye sigmayan yaratik kareleri (paket MTU altinda kalsin; TEKNIK 5.3).</summary>
     Creatures,
+    /// <summary>host→istemci: dunya devri (M5 sekiz). Devralana "sen host olacaksin" (port), ota istemcilere "yeni host sunda" (es, port).</summary>
+    Handover,
 }
 
 /// <summary>Istemci istekleri (TEKNIK 5.5: mesafe, bekleme suresi ve envanter host'ta dogrulanir).</summary>

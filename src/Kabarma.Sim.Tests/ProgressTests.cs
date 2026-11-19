@@ -16,7 +16,7 @@ public class ProgressTests
     public void First_twelve_chains_follow_icerik_18()
     {
         var o = Data().Orders;
-        Assert.Equal(36, o.Chains.Count); // M4 ilerleme4: #13-24 ve #37-48 eklendi (#25-36 M3 payi)
+        Assert.Equal(36, o.Chains.Count); // 12 (M2) + 24 (M4 ilerleme4: #13-24, #37-48); #25-36 M3 payi
         Assert.Equal(new[] { "ciraklik", "salgam_baronu", "yesil_parmak", "islahci", "alaca_bahce", "devler_ligi", "coban", "suru_sahibi", "mandira", "cins_hayvan", "suvari", "savas_agili" },
             o.Chains.Take(12).Select(c => c.Id));
         Assert.All(o.Chains, c => Assert.Equal(5, c.Steps.Count));
@@ -365,7 +365,7 @@ public class ProgressTests
         var s = New();
         var got = new List<string>();
         s.Achievements.UnlockedEvent += a => got.Add(a.Id);
-        Assert.Equal(36 + 2, s.Achievements.Count);              // 48 zincir tamamlaninca 50 (M3 payi 12 zincir eksik)
+        Assert.Equal(36 + 2, s.Achievements.Count);              // 48 zincir tamamlaninca 50
         Assert.Equal(50, s.Achievements.Total);
         s.Orders.Report("kabarma_survived");
         Assert.Equal(new[] { "ilk_gece" }, got);

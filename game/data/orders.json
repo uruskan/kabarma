@@ -1,5 +1,5 @@
 {
-  "_not": "Is emirleri: GDD 13 (48 zincir x 5 adim, Suna okur, Defter'de durur), GDD 24 (Ciraklik zinciri ilk iki saati tasir), ICERIK 18 (zincir tablosu ve adim odulleri), PLAN 1.4 (ilk safakta Defter acilir, siradaki: 5 kabarik urun). M2: ilk 12 zincir (Ciftcilik 6 + Hayvancilik 6); M4 ilerleme4: #13-24 ve #37-48 eklendi (36 zincir); #25-36 (M3 payi) eksik (chainsTotal 48 kalir).",
+  "_not": "Is emirleri: GDD 13 (48 zincir x 5 adim, Suna okur, Defter'de durur), GDD 24 (Ciraklik zinciri ilk iki saati tasir), ICERIK 18 (zincir tablosu ve adim odulleri), PLAN 1.4 (ilk safakta Defter acilir, siradaki: 5 kabarik urun). M2: ilk 12 zincir (Ciftcilik 6 + Hayvancilik 6); M4 ilerleme4: #13-24 ve #37-48 (24 zincir) eklendi (olcu kaynaklari docs/ICERIK.md 18); #25-36 (M3 payi) main'de yok, kalan zincirler ICERIK 18 sirasiyla ICERIK 18 sirasiyla eklenir (chainsTotal 48 kalir).",
   "_odul": "stepRewards ICERIK 18'den (1.-5. adim). Defter acikken adim biter bitmez odenir; Defter'den once biten adimlarin odulu Defter acilinca toplu odenir (sessiz sayim, GDD 24). grants: adim ya da zincir sonunda acilan sey (plan, kart, uye, kozmetik, esya); sahibi sistem OrderBook.Granted listesini okur. Kind: plan | card | member | cosmetic | item.",
   "_olcu": "measures: olcu kimligi -> kip. sum: her olay toplanir. distinct: farkli anahtar sayisi (Report anahtari: ekin, tur). peak: en yuksek deger (Level cagrisi; gen puani, ayni anda hayvan). Hangi sistem hangi olcuyu bildirir: docs/ICERIK.md 18 'M2 olcu kaynaklari'. Bildirilmeyen olcu zinciri ilerletmez, hata vermez.",
   "chainsTotal": 48,
@@ -27,30 +27,30 @@
     "animal_gene": "peak",
     "mount_m": "sum",
     "animal_kills": "sum",
-    "piece_placed": "sum",
+    "build_piece": "sum",
     "power_w": "peak",
-    "machine_items": "sum",
+    "machine_output": "sum",
     "machine_kind": "distinct",
-    "signal_receiver": "peak",
+    "signal_receiver": "sum",
     "comfort": "peak",
-    "tower_opened": "distinct",
+    "seyir_kulesi": "distinct",
     "map_pct": "peak",
     "oyuk_cleared": "distinct",
-    "scan_kind": "distinct",
-    "kadim_stone": "distinct",
+    "scan_entry": "distinct",
+    "kadim_tas": "distinct",
     "wreck_opened": "sum",
     "credits_earned": "sum",
-    "hot_crate": "sum",
+    "hot_cargo": "sum",
     "sold_kind": "distinct",
     "wheel_spin": "sum",
-    "food_kind": "distinct",
-    "alaca_row": "distinct",
+    "dish_kind": "distinct",
+    "alaca_line": "distinct",
     "revive": "sum",
-    "launch": "sum",
-    "knocked_down": "sum",
-    "cargo_ton": "sum",
-    "drive_m": "sum",
-    "photo": "sum"
+    "catapult_flight": "sum",
+    "knockdown": "sum",
+    "cargo_kg": "sum",
+    "vehicle_m": "sum",
+    "photo_frame": "sum"
   },
   "chains": [
     {
@@ -247,63 +247,47 @@
         { "goal": "Hayvanların 5.000 yaratık öldürsün", "measure": "animal_kills", "target": 5000 },
         { "goal": "Hayvanların 20.000 yaratık öldürsün", "measure": "animal_kills", "target": 20000 }
       ]
-    },
-    {
-      "id": "usta",
-      "name": "Usta",
-      "group": "Yapı ve mühendislik",
-      "measure": "Yapı parçası",
-      "opensAt": "defter",
+    }
+    ,{
+      "id": "usta", "name": "Usta", "group": "Yapı ve mühendislik", "measure": "Yapı parçası", "opensAt": "defter",
       "reward": "Plan Defteri +4 yuva",
-      "grants": [ { "step": 5, "kind": "plan", "id": "defter_yuvasi_4", "name": "Plan Defteri +4 yuva" } ],
+      "grants": [ { "step": 5, "kind": "item", "id": "plan_defteri_yuva", "name": "Plan Defteri +4 yuva" } ],
       "steps": [
-        { "goal": "20 yapı parçası kur", "measure": "piece_placed", "target": 20 },
-        { "goal": "100 yapı parçası kur", "measure": "piece_placed", "target": 100 },
-        { "goal": "500 yapı parçası kur", "measure": "piece_placed", "target": 500 },
-        { "goal": "2.000 yapı parçası kur", "measure": "piece_placed", "target": 2000 },
-        { "goal": "8.000 yapı parçası kur", "measure": "piece_placed", "target": 8000 }
+        { "goal": "20 yapı parçası kur", "measure": "build_piece", "target": 20 },
+        { "goal": "100 yapı parçası kur", "measure": "build_piece", "target": 100 },
+        { "goal": "500 yapı parçası kur", "measure": "build_piece", "target": 500 },
+        { "goal": "2.000 yapı parçası kur", "measure": "build_piece", "target": 2000 },
+        { "goal": "8.000 yapı parçası kur", "measure": "build_piece", "target": 8000 }
       ]
     },
     {
-      "id": "elektrikci",
-      "name": "Elektrikçi",
-      "group": "Yapı ve mühendislik",
-      "measure": "Toplam üretim (W)",
-      "opensAt": "defter",
+      "id": "elektrikci", "name": "Elektrikçi", "group": "Yapı ve mühendislik", "measure": "Toplam üretim (W)", "opensAt": "defter",
       "reward": "Kart: Yedek Akü",
       "grants": [ { "step": 5, "kind": "card", "id": "yedek_aku", "name": "Kart: Yedek Akü" } ],
       "steps": [
-        { "goal": "Şebekede 100 W üretim", "measure": "power_w", "target": 100 },
-        { "goal": "Şebekede 500 W üretim", "measure": "power_w", "target": 500 },
-        { "goal": "Şebekede 2.000 W üretim", "measure": "power_w", "target": 2000 },
-        { "goal": "Şebekede 10.000 W üretim", "measure": "power_w", "target": 10000 },
-        { "goal": "Şebekede 50.000 W üretim", "measure": "power_w", "target": 50000 }
+        { "goal": "Şebekende 100 W üret", "measure": "power_w", "target": 100 },
+        { "goal": "Şebekende 500 W üret", "measure": "power_w", "target": 500 },
+        { "goal": "Şebekende 2.000 W üret", "measure": "power_w", "target": 2000 },
+        { "goal": "Şebekende 10.000 W üret", "measure": "power_w", "target": 10000 },
+        { "goal": "Şebekende 50.000 W üret", "measure": "power_w", "target": 50000 }
       ]
     },
     {
-      "id": "otomasyoncu",
-      "name": "Otomasyoncu",
-      "group": "Yapı ve mühendislik",
-      "measure": "Makinelerin ürettiği",
-      "opensAt": "defter",
-      "reward": "Üye: Robot Kâhya (4. adımda) · Altın drone görünümü",
+      "id": "otomasyoncu", "name": "Otomasyoncu", "group": "Yapı ve mühendislik", "measure": "Makinelerin ürettiği", "opensAt": "defter",
+      "reward": "Altın drone görünümü",
       "grants": [ { "step": 4, "kind": "member", "id": "robot_kahya", "name": "Üye: Robot Kâhya" }, { "step": 5, "kind": "cosmetic", "id": "altin_drone", "name": "Altın drone görünümü" } ],
       "steps": [
-        { "goal": "Makineler 50 ürün üretsin", "measure": "machine_items", "target": 50 },
-        { "goal": "Makineler 500 ürün üretsin", "measure": "machine_items", "target": 500 },
-        { "goal": "Makineler 5.000 ürün üretsin", "measure": "machine_items", "target": 5000 },
-        { "goal": "Makineler 50.000 ürün üretsin", "measure": "machine_items", "target": 50000 },
-        { "goal": "Makineler 500.000 ürün üretsin", "measure": "machine_items", "target": 500000 }
+        { "goal": "Makinelerin 50 ürün üretsin", "measure": "machine_output", "target": 50 },
+        { "goal": "Makinelerin 500 ürün üretsin", "measure": "machine_output", "target": 500 },
+        { "goal": "Makinelerin 5.000 ürün üretsin", "measure": "machine_output", "target": 5000 },
+        { "goal": "Makinelerin 50.000 ürün üretsin", "measure": "machine_output", "target": 50000 },
+        { "goal": "Makinelerin 500.000 ürün üretsin", "measure": "machine_output", "target": 500000 }
       ]
     },
     {
-      "id": "kalfa",
-      "name": "Kalfa",
-      "group": "Yapı ve mühendislik",
-      "measure": "Farklı makine",
-      "opensAt": "defter",
-      "reward": "Üye: Makinist (3. adımda) · Krom kaplama",
-      "grants": [ { "step": 3, "kind": "member", "id": "makinist", "name": "Üye: Makinist" }, { "step": 5, "kind": "cosmetic", "id": "capa_krom", "name": "Krom kaplama" } ],
+      "id": "kalfa", "name": "Kalfa", "group": "Yapı ve mühendislik", "measure": "Farklı makine", "opensAt": "defter",
+      "reward": "Krom kaplama",
+      "grants": [ { "step": 3, "kind": "member", "id": "makinist", "name": "Üye: Makinist" }, { "step": 5, "kind": "cosmetic", "id": "kaplama_krom", "name": "Krom kaplama" } ],
       "steps": [
         { "goal": "5 farklı makine kur", "measure": "machine_kind", "target": 5 },
         { "goal": "12 farklı makine kur", "measure": "machine_kind", "target": 12 },
@@ -313,11 +297,7 @@
       ]
     },
     {
-      "id": "mantikci",
-      "name": "Mantıkçı",
-      "group": "Yapı ve mühendislik",
-      "measure": "Bağlanan sinyal alıcısı",
-      "opensAt": "defter",
+      "id": "mantikci", "name": "Mantıkçı", "group": "Yapı ve mühendislik", "measure": "Bağlanan sinyal alıcısı", "opensAt": "defter",
       "reward": "Kart: Tamirci",
       "grants": [ { "step": 5, "kind": "card", "id": "tamirci", "name": "Kart: Tamirci" } ],
       "steps": [
@@ -329,107 +309,79 @@
       ]
     },
     {
-      "id": "mimar",
-      "name": "Mimar",
-      "group": "Yapı ve mühendislik",
-      "measure": "Konfor puanı",
-      "opensAt": "defter",
+      "id": "mimar", "name": "Mimar", "group": "Yapı ve mühendislik", "measure": "Konfor puanı", "opensAt": "defter",
       "reward": "Ata Heykeli seti",
-      "grants": [ { "step": 5, "kind": "item", "id": "ata_heykeli_seti", "name": "Ata Heykeli seti" } ],
+      "grants": [ { "step": 5, "kind": "item", "id": "ata_heykeli", "name": "Ata Heykeli seti" } ],
       "steps": [
-        { "goal": "Konfor puanı 4'e ulaşsın", "measure": "comfort", "target": 4 },
-        { "goal": "Konfor puanı 8'e ulaşsın", "measure": "comfort", "target": 8 },
-        { "goal": "Konfor puanı 12'e ulaşsın", "measure": "comfort", "target": 12 },
-        { "goal": "Konfor puanı 16'e ulaşsın", "measure": "comfort", "target": 16 },
-        { "goal": "Konfor puanı 20'e ulaşsın", "measure": "comfort", "target": 20 }
+        { "goal": "Barınağında 4 konfor puanına ulaş", "measure": "comfort", "target": 4 },
+        { "goal": "Barınağında 8 konfor puanına ulaş", "measure": "comfort", "target": 8 },
+        { "goal": "Barınağında 12 konfor puanına ulaş", "measure": "comfort", "target": 12 },
+        { "goal": "Barınağında 16 konfor puanına ulaş", "measure": "comfort", "target": 16 },
+        { "goal": "Barınağında 20 konfor puanına ulaş", "measure": "comfort", "target": 20 }
       ]
     },
     {
-      "id": "gozcu",
-      "name": "Gözcü",
-      "group": "Keşif",
-      "measure": "Seyir Kulesi",
-      "opensAt": "defter",
+      "id": "gozcu", "name": "Gözcü", "group": "Keşif", "measure": "Seyir Kulesi", "opensAt": "defter",
       "reward": "Yönlü Paraşüt",
       "grants": [ { "step": 5, "kind": "item", "id": "yonlu_parasut", "name": "Yönlü Paraşüt" } ],
       "steps": [
-        { "goal": "1 Seyir Kulesi aç", "measure": "tower_opened", "target": 1 },
-        { "goal": "4 Seyir Kulesi aç", "measure": "tower_opened", "target": 4 },
-        { "goal": "8 Seyir Kulesi aç", "measure": "tower_opened", "target": 8 },
-        { "goal": "13 Seyir Kulesi aç", "measure": "tower_opened", "target": 13 },
-        { "goal": "18 Seyir Kulesi aç", "measure": "tower_opened", "target": 18 }
+        { "goal": "1 Seyir Kulesi'ni aç", "measure": "seyir_kulesi", "target": 1 },
+        { "goal": "4 Seyir Kulesi'ni aç", "measure": "seyir_kulesi", "target": 4 },
+        { "goal": "8 Seyir Kulesi'ni aç", "measure": "seyir_kulesi", "target": 8 },
+        { "goal": "13 Seyir Kulesi'ni aç", "measure": "seyir_kulesi", "target": 13 },
+        { "goal": "18 Seyir Kulesi'ni aç", "measure": "seyir_kulesi", "target": 18 }
       ]
     },
     {
-      "id": "kasif",
-      "name": "Kâşif",
-      "group": "Keşif",
-      "measure": "Açılan harita",
-      "opensAt": "defter",
+      "id": "kasif", "name": "Kâşif", "group": "Keşif", "measure": "Açılan harita", "opensAt": "defter",
       "reward": "Kart: Mıknatıs Nişanı +1",
-      "grants": [ { "step": 5, "kind": "nisan", "id": "miknatis", "name": "Kart: Mıknatıs Nişanı +1" } ],
+      "grants": [ { "step": 5, "kind": "card", "id": "miknatis", "name": "Kart: Mıknatıs Nişanı +1" } ],
       "steps": [
-        { "goal": "Haritanın %10'ini aç", "measure": "map_pct", "target": 10 },
+        { "goal": "Haritanın %10'unu aç", "measure": "map_pct", "target": 10 },
         { "goal": "Haritanın %25'ini aç", "measure": "map_pct", "target": 25 },
-        { "goal": "Haritanın %50'ini aç", "measure": "map_pct", "target": 50 },
+        { "goal": "Haritanın %50'sini aç", "measure": "map_pct", "target": 50 },
         { "goal": "Haritanın %75'ini aç", "measure": "map_pct", "target": 75 },
-        { "goal": "Haritanın %100'ini aç", "measure": "map_pct", "target": 100 }
+        { "goal": "Haritanın %100'ünü aç", "measure": "map_pct", "target": 100 }
       ]
     },
     {
-      "id": "magaraci",
-      "name": "Mağaracı",
-      "group": "Keşif",
-      "measure": "Temizlenen Oyuk",
-      "opensAt": "defter",
+      "id": "magaraci", "name": "Mağaracı", "group": "Keşif", "measure": "Temizlenen Oyuk", "opensAt": "defter",
       "reward": "Kart: Ay Parçası",
       "grants": [ { "step": 5, "kind": "card", "id": "ay_parcasi", "name": "Kart: Ay Parçası" } ],
       "steps": [
-        { "goal": "1 Oyuk temizle", "measure": "oyuk_cleared", "target": 1 },
-        { "goal": "4 Oyuk temizle", "measure": "oyuk_cleared", "target": 4 },
-        { "goal": "8 Oyuk temizle", "measure": "oyuk_cleared", "target": 8 },
-        { "goal": "12 Oyuk temizle", "measure": "oyuk_cleared", "target": 12 },
-        { "goal": "15 Oyuk temizle", "measure": "oyuk_cleared", "target": 15 }
+        { "goal": "1 Oyuk'u temizle", "measure": "oyuk_cleared", "target": 1 },
+        { "goal": "4 Oyuk'u temizle", "measure": "oyuk_cleared", "target": 4 },
+        { "goal": "8 Oyuk'u temizle", "measure": "oyuk_cleared", "target": 8 },
+        { "goal": "12 Oyuk'u temizle", "measure": "oyuk_cleared", "target": 12 },
+        { "goal": "15 Oyuk'u temizle", "measure": "oyuk_cleared", "target": 15 }
       ]
     },
     {
-      "id": "ansiklopedist",
-      "name": "Ansiklopedist",
-      "group": "Keşif",
-      "measure": "Taranan kayıt",
-      "opensAt": "defter",
+      "id": "ansiklopedist", "name": "Ansiklopedist", "group": "Keşif", "measure": "Taranan kayıt", "opensAt": "defter",
       "reward": "Vizör: Gözlüklü",
       "grants": [ { "step": 5, "kind": "cosmetic", "id": "vizor_gozluklu", "name": "Vizör: Gözlüklü" } ],
       "steps": [
-        { "goal": "20 kayıt tara", "measure": "scan_kind", "target": 20 },
-        { "goal": "60 kayıt tara", "measure": "scan_kind", "target": 60 },
-        { "goal": "120 kayıt tara", "measure": "scan_kind", "target": 120 },
-        { "goal": "200 kayıt tara", "measure": "scan_kind", "target": 200 },
-        { "goal": "300 kayıt tara", "measure": "scan_kind", "target": 300 }
+        { "goal": "20 kayıt tara", "measure": "scan_entry", "target": 20 },
+        { "goal": "60 kayıt tara", "measure": "scan_entry", "target": 60 },
+        { "goal": "120 kayıt tara", "measure": "scan_entry", "target": 120 },
+        { "goal": "200 kayıt tara", "measure": "scan_entry", "target": 200 },
+        { "goal": "Bütün kayıtları tara", "measure": "scan_entry", "target": 300 }
       ]
     },
     {
-      "id": "kadim_yol",
-      "name": "Kadim Yol",
-      "group": "Keşif",
-      "measure": "Kadim Taş",
-      "opensAt": "defter",
+      "id": "kadim_yol", "name": "Kadim Yol", "group": "Keşif", "measure": "Kadim Taş", "opensAt": "defter",
       "reward": "Kart: Sadık Gölge",
       "grants": [ { "step": 5, "kind": "card", "id": "sadik_golge", "name": "Kart: Sadık Gölge" } ],
       "steps": [
-        { "goal": "1 Kadim Taş sınamasını geç", "measure": "kadim_stone", "target": 1 },
-        { "goal": "3 Kadim Taş sınamasını geç", "measure": "kadim_stone", "target": 3 },
-        { "goal": "6 Kadim Taş sınamasını geç", "measure": "kadim_stone", "target": 6 },
-        { "goal": "9 Kadim Taş sınamasını geç", "measure": "kadim_stone", "target": 9 },
-        { "goal": "12 Kadim Taş sınamasını geç", "measure": "kadim_stone", "target": 12 }
+        { "goal": "1 Kadim Taş'ı etkinleştir", "measure": "kadim_tas", "target": 1 },
+        { "goal": "3 Kadim Taş'ı etkinleştir", "measure": "kadim_tas", "target": 3 },
+        { "goal": "6 Kadim Taş'ı etkinleştir", "measure": "kadim_tas", "target": 6 },
+        { "goal": "9 Kadim Taş'ı etkinleştir", "measure": "kadim_tas", "target": 9 },
+        { "goal": "12 Kadim Taş'ı etkinleştir", "measure": "kadim_tas", "target": 12 }
       ]
     },
     {
-      "id": "enkazci",
-      "name": "Enkazcı",
-      "group": "Keşif",
-      "measure": "Açılan enkaz",
-      "opensAt": "defter",
+      "id": "enkazci", "name": "Enkazcı", "group": "Keşif", "measure": "Açılan enkaz", "opensAt": "defter",
       "reward": "Kart: Kooperatif Uydusu",
       "grants": [ { "step": 5, "kind": "card", "id": "kooperatif_uydusu", "name": "Kart: Kooperatif Uydusu" } ],
       "steps": [
@@ -441,43 +393,31 @@
       ]
     },
     {
-      "id": "tuccar",
-      "name": "Tüccar",
-      "group": "Ticaret",
-      "measure": "Toplam Kredi",
-      "opensAt": "defter",
-      "reward": "Üye: Muhtar (3. adımda) · Altın tulum",
+      "id": "tuccar", "name": "Tüccar", "group": "Ticaret", "measure": "Toplam Kredi", "opensAt": "defter",
+      "reward": "Altın tulum",
       "grants": [ { "step": 3, "kind": "member", "id": "muhtar", "name": "Üye: Muhtar" }, { "step": 5, "kind": "cosmetic", "id": "tulum_altin", "name": "Altın tulum" } ],
       "steps": [
-        { "goal": "Toplam 1.000 Kredi kazan", "measure": "credits_earned", "target": 1000 },
-        { "goal": "Toplam 10.000 Kredi kazan", "measure": "credits_earned", "target": 10000 },
-        { "goal": "Toplam 100.000 Kredi kazan", "measure": "credits_earned", "target": 100000 },
-        { "goal": "Toplam 1.000.000 Kredi kazan", "measure": "credits_earned", "target": 1000000 },
-        { "goal": "Toplam 10.000.000 Kredi kazan", "measure": "credits_earned", "target": 10000000 }
+        { "goal": "Satıştan toplam 1.000 Kredi kazan", "measure": "credits_earned", "target": 1000 },
+        { "goal": "Satıştan toplam 10.000 Kredi kazan", "measure": "credits_earned", "target": 10000 },
+        { "goal": "Satıştan toplam 100.000 Kredi kazan", "measure": "credits_earned", "target": 100000 },
+        { "goal": "Satıştan toplam 1.000.000 Kredi kazan", "measure": "credits_earned", "target": 1000000 },
+        { "goal": "Satıştan toplam 10.000.000 Kredi kazan", "measure": "credits_earned", "target": 10000000 }
       ]
     },
     {
-      "id": "borsaci",
-      "name": "Borsacı",
-      "group": "Ticaret",
-      "measure": "Sıcak üründen kasa",
-      "opensAt": "defter",
+      "id": "borsaci", "name": "Borsacı", "group": "Ticaret", "measure": "Sıcak üründen kasa", "opensAt": "defter",
       "reward": "Kart: Açgözlü",
       "grants": [ { "step": 5, "kind": "card", "id": "acgozlu", "name": "Kart: Açgözlü" } ],
       "steps": [
-        { "goal": "Sıcak üründen 1 kasa sat", "measure": "hot_crate", "target": 1 },
-        { "goal": "Sıcak üründen 5 kasa sat", "measure": "hot_crate", "target": 5 },
-        { "goal": "Sıcak üründen 20 kasa sat", "measure": "hot_crate", "target": 20 },
-        { "goal": "Sıcak üründen 60 kasa sat", "measure": "hot_crate", "target": 60 },
-        { "goal": "Sıcak üründen 200 kasa sat", "measure": "hot_crate", "target": 200 }
+        { "goal": "1 kasayı sıcak üründen sat", "measure": "hot_cargo", "target": 1 },
+        { "goal": "5 kasayı sıcak üründen sat", "measure": "hot_cargo", "target": 5 },
+        { "goal": "20 kasayı sıcak üründen sat", "measure": "hot_cargo", "target": 20 },
+        { "goal": "60 kasayı sıcak üründen sat", "measure": "hot_cargo", "target": 60 },
+        { "goal": "200 kasayı sıcak üründen sat", "measure": "hot_cargo", "target": 200 }
       ]
     },
     {
-      "id": "cesitci",
-      "name": "Çeşitçi",
-      "group": "Ticaret",
-      "measure": "Satılan farklı ürün",
-      "opensAt": "defter",
+      "id": "cesitci", "name": "Çeşitçi", "group": "Ticaret", "measure": "Satılan farklı ürün", "opensAt": "defter",
       "reward": "Kart: Borç",
       "grants": [ { "step": 5, "kind": "card", "id": "borc", "name": "Kart: Borç" } ],
       "steps": [
@@ -489,147 +429,111 @@
       ]
     },
     {
-      "id": "carkci",
-      "name": "Çarkçı",
-      "group": "Ticaret",
-      "measure": "Çark çevirme",
-      "opensAt": "defter",
+      "id": "carkci", "name": "Çarkçı", "group": "Ticaret", "measure": "Çark çevirme", "opensAt": "defter",
       "reward": "Altın çark",
       "grants": [ { "step": 5, "kind": "cosmetic", "id": "altin_cark", "name": "Altın çark" } ],
       "steps": [
-        { "goal": "Çarkı 1 kez çevir", "measure": "wheel_spin", "target": 1 },
-        { "goal": "Çarkı 10 kez çevir", "measure": "wheel_spin", "target": 10 },
-        { "goal": "Çarkı 50 kez çevir", "measure": "wheel_spin", "target": 50 },
-        { "goal": "Çarkı 150 kez çevir", "measure": "wheel_spin", "target": 150 },
-        { "goal": "Çarkı 500 kez çevir", "measure": "wheel_spin", "target": 500 }
+        { "goal": "Tohum Çarkı'nı 1 kez çevir", "measure": "wheel_spin", "target": 1 },
+        { "goal": "Tohum Çarkı'nı 10 kez çevir", "measure": "wheel_spin", "target": 10 },
+        { "goal": "Tohum Çarkı'nı 50 kez çevir", "measure": "wheel_spin", "target": 50 },
+        { "goal": "Tohum Çarkı'nı 150 kez çevir", "measure": "wheel_spin", "target": 150 },
+        { "goal": "Tohum Çarkı'nı 500 kez çevir", "measure": "wheel_spin", "target": 500 }
       ]
     },
     {
-      "id": "gurme",
-      "name": "Gurme",
-      "group": "Ticaret",
-      "measure": "Pişirilen farklı yemek",
-      "opensAt": "defter",
-      "reward": "Üye: Aşçı (2. adımda) · Çaydanlık süsü",
+      "id": "gurme", "name": "Gurme", "group": "Ticaret", "measure": "Pişirilen farklı yemek", "opensAt": "defter",
+      "reward": "Çaydanlık süsü",
       "grants": [ { "step": 2, "kind": "member", "id": "asci", "name": "Üye: Aşçı" }, { "step": 5, "kind": "cosmetic", "id": "canta_caydanlik", "name": "Çaydanlık süsü" } ],
       "steps": [
-        { "goal": "5 farklı yemek pişir", "measure": "food_kind", "target": 5 },
-        { "goal": "12 farklı yemek pişir", "measure": "food_kind", "target": 12 },
-        { "goal": "20 farklı yemek pişir", "measure": "food_kind", "target": 20 },
-        { "goal": "26 farklı yemek pişir", "measure": "food_kind", "target": 26 },
-        { "goal": "32 farklı yemek pişir", "measure": "food_kind", "target": 32 }
+        { "goal": "5 farklı yemek pişir", "measure": "dish_kind", "target": 5 },
+        { "goal": "12 farklı yemek pişir", "measure": "dish_kind", "target": 12 },
+        { "goal": "20 farklı yemek pişir", "measure": "dish_kind", "target": 20 },
+        { "goal": "26 farklı yemek pişir", "measure": "dish_kind", "target": 26 },
+        { "goal": "32 farklı yemek pişir", "measure": "dish_kind", "target": 32 }
       ]
     },
     {
-      "id": "koleksiyoncu",
-      "name": "Koleksiyoncu",
-      "group": "Ticaret",
-      "measure": "Alaca koleksiyon satırı",
-      "opensAt": "defter",
+      "id": "koleksiyoncu", "name": "Koleksiyoncu", "group": "Ticaret", "measure": "Alaca koleksiyon satırı", "opensAt": "defter",
       "reward": "Aurora tulum",
       "grants": [ { "step": 5, "kind": "cosmetic", "id": "tulum_aurora", "name": "Aurora tulum" } ],
       "steps": [
-        { "goal": "Alaca koleksiyonunda 5 satır doldur", "measure": "alaca_row", "target": 5 },
-        { "goal": "Alaca koleksiyonunda 20 satır doldur", "measure": "alaca_row", "target": 20 },
-        { "goal": "Alaca koleksiyonunda 50 satır doldur", "measure": "alaca_row", "target": 50 },
-        { "goal": "Alaca koleksiyonunda 90 satır doldur", "measure": "alaca_row", "target": 90 },
-        { "goal": "Alaca koleksiyonunda 120 satır doldur", "measure": "alaca_row", "target": 120 }
+        { "goal": "Alaca koleksiyonunda 5 satır doldur", "measure": "alaca_line", "target": 5 },
+        { "goal": "Alaca koleksiyonunda 20 satır doldur", "measure": "alaca_line", "target": 20 },
+        { "goal": "Alaca koleksiyonunda 50 satır doldur", "measure": "alaca_line", "target": 50 },
+        { "goal": "Alaca koleksiyonunda 90 satır doldur", "measure": "alaca_line", "target": 90 },
+        { "goal": "Alaca koleksiyonunda 120 satır doldur", "measure": "alaca_line", "target": 120 }
       ]
     },
     {
-      "id": "can_dostu",
-      "name": "Can Dostu",
-      "group": "Ekip ve şamata",
-      "measure": "Kaldırılan arkadaş (tek oyuncuda: ikinci nefes)",
-      "opensAt": "defter",
+      "id": "can_dostu", "name": "Can Dostu", "group": "Ekip ve şamata", "measure": "Kaldırılan arkadaş", "opensAt": "defter",
       "reward": "Kart: İkinci Nefes",
       "grants": [ { "step": 5, "kind": "card", "id": "ikinci_nefes", "name": "Kart: İkinci Nefes" } ],
       "steps": [
-        { "goal": "1 kez arkadaş kaldır", "measure": "revive", "target": 1 },
-        { "goal": "10 kez arkadaş kaldır", "measure": "revive", "target": 10 },
-        { "goal": "50 kez arkadaş kaldır", "measure": "revive", "target": 50 },
-        { "goal": "150 kez arkadaş kaldır", "measure": "revive", "target": 150 },
-        { "goal": "500 kez arkadaş kaldır", "measure": "revive", "target": 500 }
+        { "goal": "1 arkadaşı kaldır (tek başına: İkinci Nefes)", "measure": "revive", "target": 1 },
+        { "goal": "10 arkadaşı kaldır", "measure": "revive", "target": 10 },
+        { "goal": "50 arkadaşı kaldır", "measure": "revive", "target": 50 },
+        { "goal": "150 arkadaşı kaldır", "measure": "revive", "target": 150 },
+        { "goal": "500 arkadaşı kaldır", "measure": "revive", "target": 500 }
       ]
     },
     {
-      "id": "ucan_uye",
-      "name": "Uçan Üye",
-      "group": "Ekip ve şamata",
-      "measure": "Mancınık uçuşu",
-      "opensAt": "defter",
-      "reward": "Üye: Kaçak (2. adımda) · Planör deseni",
+      "id": "ucan_uye", "name": "Uçan Üye", "group": "Ekip ve şamata", "measure": "Mancınık uçuşu", "opensAt": "defter",
+      "reward": "Planör deseni",
       "grants": [ { "step": 2, "kind": "member", "id": "kacak", "name": "Üye: Kaçak" }, { "step": 5, "kind": "cosmetic", "id": "planor_deseni", "name": "Planör deseni" } ],
       "steps": [
-        { "goal": "Mancınıkla 5 kez uç", "measure": "launch", "target": 5 },
-        { "goal": "Mancınıkla 25 kez uç", "measure": "launch", "target": 25 },
-        { "goal": "Mancınıkla 100 kez uç", "measure": "launch", "target": 100 },
-        { "goal": "Mancınıkla 300 kez uç", "measure": "launch", "target": 300 },
-        { "goal": "Mancınıkla 1.000 kez uç", "measure": "launch", "target": 1000 }
+        { "goal": "Mancınıkla 5 kez uç", "measure": "catapult_flight", "target": 5 },
+        { "goal": "Mancınıkla 25 kez uç", "measure": "catapult_flight", "target": 25 },
+        { "goal": "Mancınıkla 100 kez uç", "measure": "catapult_flight", "target": 100 },
+        { "goal": "Mancınıkla 300 kez uç", "measure": "catapult_flight", "target": 300 },
+        { "goal": "Mancınıkla 1.000 kez uç", "measure": "catapult_flight", "target": 1000 }
       ]
     },
     {
-      "id": "ezilenler_kulubu",
-      "name": "Ezilenler Kulübü",
-      "group": "Ekip ve şamata",
-      "measure": "Yere serilme",
-      "opensAt": "defter",
+      "id": "ezilenler_kulubu", "name": "Ezilenler Kulübü", "group": "Ekip ve şamata", "measure": "Yere serilme", "opensAt": "defter",
       "reward": "Kart: Dikenli Nişanı +1 · Yumurta Kabuğu kask",
-      "grants": [ { "step": 5, "kind": "nisan", "id": "dikenli", "name": "Kart: Dikenli Nişanı +1" }, { "step": 5, "kind": "cosmetic", "id": "kask_yumurta_kabugu", "name": "Yumurta Kabuğu kask" } ],
+      "grants": [ { "step": 5, "kind": "card", "id": "dikenli", "name": "Kart: Dikenli Nişanı +1" }, { "step": 5, "kind": "cosmetic", "id": "kask_yumurta_kabugu", "name": "Yumurta Kabuğu kask" } ],
       "steps": [
-        { "goal": "5 kez yere serilir", "measure": "knocked_down", "target": 5 },
-        { "goal": "25 kez yere serilir", "measure": "knocked_down", "target": 25 },
-        { "goal": "100 kez yere serilir", "measure": "knocked_down", "target": 100 },
-        { "goal": "300 kez yere serilir", "measure": "knocked_down", "target": 300 },
-        { "goal": "1.000 kez yere serilir", "measure": "knocked_down", "target": 1000 }
+        { "goal": "5 kez yere ser", "measure": "knockdown", "target": 5 },
+        { "goal": "25 kez yere ser", "measure": "knockdown", "target": 25 },
+        { "goal": "100 kez yere ser", "measure": "knockdown", "target": 100 },
+        { "goal": "300 kez yere ser", "measure": "knockdown", "target": 300 },
+        { "goal": "1.000 kez yere ser", "measure": "knockdown", "target": 1000 }
       ]
     },
     {
-      "id": "nakliyeci",
-      "name": "Nakliyeci",
-      "group": "Ekip ve şamata",
-      "measure": "Taşınan yük (ton)",
-      "opensAt": "defter",
-      "reward": "Üye: Pehlivan (3. adımda) · Kart: Tokmak Nişanı +1",
-      "grants": [ { "step": 3, "kind": "member", "id": "pehlivan", "name": "Üye: Pehlivan" }, { "step": 5, "kind": "nisan", "id": "tokmak", "name": "Kart: Tokmak Nişanı +1" } ],
+      "id": "nakliyeci", "name": "Nakliyeci", "group": "Ekip ve şamata", "measure": "Taşınan yük (kg)", "opensAt": "defter",
+      "reward": "Kart: Tokmak Nişanı +1",
+      "grants": [ { "step": 3, "kind": "member", "id": "pehlivan", "name": "Üye: Pehlivan" }, { "step": 5, "kind": "card", "id": "tokmak", "name": "Kart: Tokmak Nişanı +1" } ],
       "steps": [
-        { "goal": "1 ton yük taşı", "measure": "cargo_ton", "target": 1 },
-        { "goal": "10 ton yük taşı", "measure": "cargo_ton", "target": 10 },
-        { "goal": "100 ton yük taşı", "measure": "cargo_ton", "target": 100 },
-        { "goal": "1.000 ton yük taşı", "measure": "cargo_ton", "target": 1000 },
-        { "goal": "10.000 ton yük taşı", "measure": "cargo_ton", "target": 10000 }
+        { "goal": "1 ton yük taşı", "measure": "cargo_kg", "target": 1000 },
+        { "goal": "10 ton yük taşı", "measure": "cargo_kg", "target": 10000 },
+        { "goal": "100 ton yük taşı", "measure": "cargo_kg", "target": 100000 },
+        { "goal": "1.000 ton yük taşı", "measure": "cargo_kg", "target": 1000000 },
+        { "goal": "10.000 ton yük taşı", "measure": "cargo_kg", "target": 10000000 }
       ]
     },
     {
-      "id": "sofor",
-      "name": "Şoför",
-      "group": "Ekip ve şamata",
-      "measure": "Araçla yol (km)",
-      "opensAt": "defter",
+      "id": "sofor", "name": "Şoför", "group": "Ekip ve şamata", "measure": "Araçla yol (m)", "opensAt": "defter",
       "reward": "Kart: Minik Biçer",
       "grants": [ { "step": 5, "kind": "card", "id": "minik_bicer", "name": "Kart: Minik Biçer" } ],
       "steps": [
-        { "goal": "Araçla 5 km yol yap", "measure": "drive_m", "target": 5000 },
-        { "goal": "Araçla 50 km yol yap", "measure": "drive_m", "target": 50000 },
-        { "goal": "Araçla 250 km yol yap", "measure": "drive_m", "target": 250000 },
-        { "goal": "Araçla 1.000 km yol yap", "measure": "drive_m", "target": 1000000 },
-        { "goal": "Araçla 5.000 km yol yap", "measure": "drive_m", "target": 5000000 }
+        { "goal": "Araçla 5 km yol git", "measure": "vehicle_m", "target": 5000 },
+        { "goal": "Araçla 50 km yol git", "measure": "vehicle_m", "target": 50000 },
+        { "goal": "Araçla 250 km yol git", "measure": "vehicle_m", "target": 250000 },
+        { "goal": "Araçla 1.000 km yol git", "measure": "vehicle_m", "target": 1000000 },
+        { "goal": "Araçla 5.000 km yol git", "measure": "vehicle_m", "target": 5000000 }
       ]
     },
     {
-      "id": "fotografci",
-      "name": "Fotoğrafçı",
-      "group": "Ekip ve şamata",
-      "measure": "Tabloya çevrilen fotoğraf",
-      "opensAt": "defter",
+      "id": "fotografci", "name": "Fotoğrafçı", "group": "Ekip ve şamata", "measure": "Tabloya çevrilen fotoğraf", "opensAt": "defter",
       "reward": "Altın çerçeve",
       "grants": [ { "step": 5, "kind": "cosmetic", "id": "altin_cerceve", "name": "Altın çerçeve" } ],
       "steps": [
-        { "goal": "1 fotoğrafı tabloya çevir", "measure": "photo", "target": 1 },
-        { "goal": "5 fotoğrafı tabloya çevir", "measure": "photo", "target": 5 },
-        { "goal": "15 fotoğrafı tabloya çevir", "measure": "photo", "target": 15 },
-        { "goal": "30 fotoğrafı tabloya çevir", "measure": "photo", "target": 30 },
-        { "goal": "60 fotoğrafı tabloya çevir", "measure": "photo", "target": 60 }
+        { "goal": "1 fotoğrafı tabloya çevir", "measure": "photo_frame", "target": 1 },
+        { "goal": "5 fotoğrafı tabloya çevir", "measure": "photo_frame", "target": 5 },
+        { "goal": "15 fotoğrafı tabloya çevir", "measure": "photo_frame", "target": 15 },
+        { "goal": "30 fotoğrafı tabloya çevir", "measure": "photo_frame", "target": 30 },
+        { "goal": "60 fotoğrafı tabloya çevir", "measure": "photo_frame", "target": 60 }
       ]
     }
   ]

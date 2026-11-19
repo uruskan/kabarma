@@ -980,6 +980,37 @@ Her adım Kredi ve Veri verir. Zincirin son adımı sütundaki ödülü de verir
 | `animal_kills` | toplam | savaş hayvanları | M3 |
 | `ata_defeated` | toplam | Ata akışı (boss) | boss bağlar |
 
+**M4 ölçü kaynakları (ilerleme4: #13–24 ve #37–48; `orders.json` `measures`).** Zincirler Defter açılınca sayar. Kip: S toplam, F farklı (anahtar), T tepe. Bildirilmeyen ölçü zinciri ilerletmez, hata vermez: kaynak sistem `Orders.Report / ReportKey / Level` çağırınca zincir ilerler.
+
+| Ölçü | Kip | Zincir | Kim bildirir | Durum |
+|---|---|---|---|---|
+| `credits_earned` | S | Tüccar | `GameState` (`Sold`, satış kazancı) | bağlı |
+| `wheel_spin` | S | Çarkçı | `GameState.SpinWheel` | bağlı |
+| `build_piece` | S | Usta | Yapı akışı (parça kurulunca 1) | bağlanacak |
+| `power_w` | T | Elektrikçi | güç şebekesi (şebekenin üretimi, W) | bağlanacak |
+| `machine_output` | S | Otomasyoncu | makineler (bitirilen üretim adedi) | bağlanacak |
+| `machine_kind` | F | Kalfa | istasyon kurma (makine kimliği) | bağlanacak |
+| `signal_receiver` | S | Mantıkçı | sinyal bağlantısı kurulunca | bağlanacak |
+| `comfort` | T | Mimar | barınak konfor puanı | bağlanacak |
+| `seyir_kulesi` | F | Gözcü | Seyir Kulesi açılınca (kule kimliği) | bağlanacak |
+| `map_pct` | T | Kâşif | harita açılma yüzdesi (0–100) | bağlanacak |
+| `oyuk_cleared` | F | Mağaracı | Oyuk temizlenince (Oyuk kimliği) | bağlanacak |
+| `scan_entry` | F | Ansiklopedist | Vizör taraması (kayıt kimliği; son adım 300 = tüm kayıtlar, kabulde eşitlenir) | bağlanacak |
+| `kadim_tas` | F | Kadim Yol | Kadim Taş etkinleşince (taş kimliği) | bağlanacak |
+| `wreck_opened` | S | Enkazcı | enkaz açılınca | bağlanacak |
+| `hot_cargo` | S | Borsacı | sıcak kategoriden kasa satılınca | bağlanacak |
+| `sold_kind` | F | Çeşitçi | Kargo satışı (ürün kimliği) | bağlanacak |
+| `dish_kind` | F | Gurme | yemek pişince (yemek kimliği) | bağlanacak |
+| `alaca_line` | F | Koleksiyoncu | Alaca koleksiyonu (satır kimliği) | bağlanacak |
+| `revive` | S | Can Dostu | kaldırılan arkadaş; tek oyuncuda İkinci Nefes kullanımı | bağlanacak |
+| `catapult_flight` | S | Uçan Üye | mancınık uçuşu | bağlanacak |
+| `knockdown` | S | Ezilenler Kulübü | oyuncu yere serilince | bağlanacak |
+| `cargo_kg` | S | Nakliyeci | taşınan yük (**kg**; hedefler ton × 1.000) | bağlanacak |
+| `vehicle_m` | S | Şoför | araçla yol (**metre**; hedefler km × 1.000) | bağlanacak |
+| `photo_frame` | S | Fotoğrafçı | tabloya çevrilen fotoğraf | bağlanacak |
+
+Zincir ödül kimlikleri: kart `yedek_aku`, `tamirci`, `ay_parcasi`, `sadik_golge`, `kooperatif_uydusu`, `acgozlu`, `borc`, `ikinci_nefes`, `minik_bicer` ve nişan kartları `miknatis`, `dikenli`, `tokmak` (rütbe +1); üye `robot_kahya`, `makinist`, `muhtar`, `asci`, `kacak`, `pehlivan`; kozmetik `altin_drone`, `kaplama_krom`, `vizor_gozluklu`, `tulum_altin`, `altin_cark`, `canta_caydanlik`, `tulum_aurora`, `planor_deseni`, `kask_yumurta_kabugu`, `altin_cerceve`; eşya `plan_defteri_yuva`, `ata_heykeli`, `yonlu_parasut`. Bunlar `OrderBook.Granted` kümesine `tür:kimlik` olarak yazılır; dolap (üye, kozmetik), kartlar ve eşya sistemleri aynı kimliği okur.
+
 **Zincir ödülleri** (kart, üye, kozmetik, plan, eşya): `OrderBook.Granted` kümesine `tür:kimlik` olarak yazılır (`plan:maya_feneri`, `card:bereket`, `member:coban`, `item:semaver`, `cosmetic:duduk_kaplama`); ödülün sahibi sistem (kartlar M3, üyeler, kozmetik) bu kümeyi okuyup kendi tarafını açar. Adım ödülü Kredi ve Veri hesaba doğrudan geçer; Kargo satışı sayılmaz, Hasat Raporu'na girmez.
 
 **Başarımlar:** 48 zincirin tamamlanması (`chain_<zincir>`) + İlk Gece + Maya Hâkimi; `achievements.json`. M2'de 12 zincir + 2 = 14 tanımlı; zincirler 48'e tamamlandıkça 50'ye çıkar (`total` 50). Steam'e bağlama M6: kimlik API adı olur.

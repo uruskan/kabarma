@@ -160,11 +160,11 @@ public partial class DolapTest : Node
         _d.State.Orders.OpenDefter();
         for (int i = 0; i < 20; i++) Events.RaisePiecePlaced("duvar");
         Check(_d.State.Orders.Chain("usta").StepDone(0), "usta zinciri: 20 yapi parcasi 1. adimi bitirdi");
-        Events.RaiseSold("salgam", 1, 100_000);
+        _d.State.Orders.Report("credits_earned", 100_000);
         Check(_d.State.Orders.Chain("tuccar").CurrentStep >= 3 && W.HasMember("muhtar"), "tuccar zinciri: 3. adimda Muhtar dolapta");
-        _d.State.Orders.Report("hot_crate", 200);
+        _d.State.Orders.Report("hot_cargo", 200);
         Check(_d.State.Orders.Chain("borsaci").Done && _d.State.CardBook.IsUnlocked("acgozlu"), "borsaci zinciri: Acgozlu karti acildi");
-        _d.State.Orders.Report("photo", 60);
+        _d.State.Orders.Report("photo_frame", 60);
         Check(W.HasCosmetic("altin_cerceve"), "fotografci zinciri: kozmetik odulu saklandi");
 
         // ---- goruntuler ----

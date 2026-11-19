@@ -49,8 +49,12 @@ public sealed class Wardrobe
     }
 
     /// <summary>Is emri odulu, katalog, cark ya da Genel Merkez: kimlik bilinmiyorsa da saklanir (sonradan gelen veri tanir). Yeni ise true.</summary>
+    /// <summary>Is emri zincirlerinin kullandigi eski kimlikler -> cosmetics.json kimligi.</summary>
+    static readonly Dictionary<string, string> Aliases = new() { ["kaplama_krom"] = "capa_krom" };
+
     public bool Unlock(string kind, string id)
     {
+        if (kind == "cosmetic" && Aliases.TryGetValue(id, out var real)) id = real;
         bool added = kind == "member" ? _members.Add(id) : kind == "cosmetic" && _cosmetics.Add(id);
         if (added) { Unlocked?.Invoke(kind, id); Changed?.Invoke(); }
         return added;

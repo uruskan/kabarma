@@ -12,7 +12,7 @@ public class Ilerleme4Tests
         "usta", "elektrikci", "otomasyoncu", "kalfa", "mantikci", "mimar", "gozcu", "kasif", "magaraci", "ansiklopedist", "kadim_yol", "enkazci",
         "tuccar", "borsaci", "cesitci", "carkci", "gurme", "koleksiyoncu", "can_dostu", "ucan_uye", "ezilenler_kulubu", "nakliyeci", "sofor", "fotografci",
     };
-    static readonly string[] ExtraCosmetics = { "duduk_kaplama", "altin_eyer", "altin_drone", "planor_deseni", "altin_cark", "altin_cerceve" };
+    static readonly string[] ExtraCosmetics = { "kaplama_krom", "duduk_kaplama", "altin_eyer", "altin_drone", "planor_deseni", "altin_cark", "altin_cerceve" };
 
     static GameData D => TestData.Load();
 
@@ -82,10 +82,10 @@ public class Ilerleme4Tests
         var s = new GameState(d);
         s.Orders.GrantMade += (_, g) => { if (g.Kind is "member" or "cosmetic") s.Wardrobe.Unlock(g.Kind, g.Id); };
         s.Orders.OpenDefter();
-        s.Orders.Report("machine_items", 500_000);            // otomasyoncu: 4. adimda Robot Kahya
+        s.Orders.Report("machine_output", 500_000);            // otomasyoncu: 4. adimda Robot Kahya
         Assert.True(s.Wardrobe.HasMember("robot_kahya"));
         Assert.True(s.Wardrobe.HasCosmetic("altin_drone"));
-        for (int i = 0; i < 12; i++) s.Orders.ReportKey("food_kind", $"yemek{i}"); // gurme: 2. adimda Asci
+        for (int i = 0; i < 12; i++) s.Orders.ReportKey("dish_kind", $"yemek{i}"); // gurme: 2. adimda Asci
         Assert.True(s.Wardrobe.HasMember("asci"));
         s.Orders.Report("credits_earned", 100_000);           // tuccar: 3. adimda Muhtar
         Assert.True(s.Wardrobe.HasMember("muhtar"));

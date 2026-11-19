@@ -20,6 +20,7 @@ public partial class Director
         int i = System.Array.IndexOf(cmd, "+connect_lobby");
         if (i >= 0 && i + 1 < cmd.Length && !Main.Args.ContainsKey("coop")) { Main.Args["coop"] = "client"; Main.Args["transport"] = "steam"; Main.Args["connect_lobby"] = cmd[i + 1]; }
         Net = NetSync.TryCreate(this);
+        if (Net != null) Riv.BindNet(); // M5 cekisme: "rivalry" bolumu ve istekleri
         if (Net != null) AddChild(new PlayerList(this) { Name = "PlayerList" });
         AddChild(new NetHotkeys(this) { Name = "NetHotkeys" });
     }

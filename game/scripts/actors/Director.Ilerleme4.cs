@@ -7,7 +7,7 @@ namespace Kabarma.Game;
 /// <summary>
 /// Director, ilerleme4 (M4): zincir odullerinin sahiplerine baglanmasi (kart, Nisan, uye, kozmetik) ve yeni is emri olculerinin
 /// kaynaklari. Kural Sim'dedir (Orders, Wardrobe, CardBook, Catalog); burasi yalniz baglanti.
-/// Bagli olculer: piece_placed, machine_kind, machine_items, food_kind, sold_kind, credits_earned, wheel_spin, oyuk_cleared, knocked_down.
+/// Bagli olculer: build_piece, machine_kind, machine_output, dish_kind, sold_kind, oyuk_cleared, knockdown (credits_earned ve wheel_spin Sim'de).
 /// Baglanmayanlar (ilgili sistem State.Orders.Report / ReportKey / Level cagirir): power_w, signal_receiver, comfort, tower_opened,
 /// map_pct, scan_kind, kadim_stone, wreck_opened, hot_crate, alaca_row, revive, launch, cargo_ton, drive_m, photo.
 /// </summary>
@@ -32,17 +32,16 @@ public partial class Director
         }
 
         // --- yeni olculer ---
-        Events.PiecePlaced += _ => s.Orders.Report("piece_placed");
+        Events.PiecePlaced += _ => s.Orders.Report("build_piece");
         Events.StationPlaced += id => s.Orders.ReportKey("machine_kind", id);
         Events.Produced += (item, n) =>
         {
             if (n <= 0) return;
-            s.Orders.Report("machine_items", n);
-            if (Data.Tool.Foods.Any(f => f.Id == item)) s.Orders.ReportKey("food_kind", item);
+            s.Orders.Report("machine_output", n);
+            if (Data.Tool.Foods.Any(f => f.Id == item)) s.Orders.ReportKey("dish_kind", item);
         };
-        Events.Sold += (item, _, credits) => { s.Orders.ReportKey("sold_kind", item); s.Orders.Report("credits_earned", credits); };
-        Events.CropShipped += (crop, _, credits) => { s.Orders.ReportKey("sold_kind", crop); s.Orders.Report("credits_earned", credits); };
-        Events.WheelSpun += (_, _) => s.Orders.Report("wheel_spin");
+        Events.Sold += (item, _, _) => s.Orders.ReportKey("sold_kind", item);   // credits_earned ve wheel_spin Sim'de (GameState.Night/Market)
+        Events.CropShipped += (crop, _, _) => s.Orders.ReportKey("sold_kind", crop);
         Events.OyukCleared += id => s.Orders.ReportKey("oyuk_cleared", id);
 
         // --- katalog kozmetigi ve Cark ---
@@ -56,7 +55,7 @@ public partial class Director
     void TickProgress4()
     {
         bool down = Player != null && Player.Down;
-        if (down && !_wasKnocked) State.Orders.Report("knocked_down");
+        if (down && !_wasKnocked) State.Orders.Report("knockdown");
         _wasKnocked = down;
     }
 

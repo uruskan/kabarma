@@ -67,8 +67,35 @@ public sealed class NetStressDef
     public float WallToggleSeconds { get; set; } = 2f;
 }
 
+/// <summary>sekiz (M5): oyuncu karelerinin ilgi alani (TEKNIK 5.3, 8 oyuncu). Uzaktaki oyuncunun karesi 20 Hz yerine bolenle seyreltilir.</summary>
+public sealed class NetInterestDef
+{
+    /// <summary>Bu mesafe icinde (m) tam hiz (20 Hz).</summary>
+    public float NearRadius { get; set; } = 80f;
+    /// <summary>NearRadius..MidRadius arasi: MidDivisor'da bir kare (10 Hz).</summary>
+    public float MidRadius { get; set; } = 250f;
+    public int MidDivisor { get; set; } = 2;
+    /// <summary>Daha uzakta: FarDivisor'da bir kare (5 Hz).</summary>
+    public int FarDivisor { get; set; } = 4;
+    /// <summary>Konusan ya da yere dusmus oyuncu mesafeden bagimsiz tam hizda gonderilir (ekipten gorunsun).</summary>
+    public bool AlwaysFullWhenTalkingOrDown { get; set; } = true;
+}
+
+/// <summary>sekiz (M5): dunyayi devretme (TEKNIK 5.4).</summary>
+public sealed class NetHandoverDef
+{
+    /// <summary>Devir yeni host'un dinleyecegi port (eski portun uzerine eklenir; ayni makinede cakismasin).</summary>
+    public int PortOffset { get; set; } = 1;
+    /// <summary>Istemciler yeni host'a bu sure icinde (sn) baglanamazsa oturum biter.</summary>
+    public float ReconnectSeconds { get; set; } = 15f;
+    /// <summary>Devralabilmek icin asgari katilma suresi (sn): daha yeni katilan istemci tam durumu almamis olabilir.</summary>
+    public float MinJoinedSeconds { get; set; } = 5f;
+}
+
 public sealed class NetFile
 {
+    public NetInterestDef Interest { get; set; } = new();
+    public NetHandoverDef Handover { get; set; } = new();
     public int Protocol { get; set; } = 1;
     public int Port { get; set; } = 27015;
     public int MaxPlayers { get; set; } = 8;
