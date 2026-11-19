@@ -116,6 +116,8 @@ Bant kimlikleri (crops.json `band`: `cayir`, `koru`): yeni `sazlik`, `kanyon`, `
 
 Var olan ve bu gruba girmeyen T1–T2: `stone, wood, fiber, clay, copper_ore, scrap, hard_wood, resin, iron_ore, saltpeter, yun, deri, tuy, sut, kurk, bal, balmumu, gubre, sumuk, et, kompost, brick, charcoal, copper_ingot, copper_wire, iron_ingot, plank, cloth, flour, civi, sacma`.
 
+**zincir4 eklemeleri (19 Kasım 2026):** `ark_eki` (Yüksek Fırın'ın ark eki, Tezgâh'ta 10 Çelik + 4 Devre; ilk alınınca `titan_ingot` tarifi açılır, harcanmaz), `kabartma_plani` (Ana Maya'nın ödülü: Kabartma Odası tarifini açar; ata4 düşürür, `research.json` `rawSources` T6 `by: ata4`), tarif girdisi olarak T1–T2 ham kaynak satırları `sunflower`, `saltpeter`, `yun`, `kompost` (`rawSources`'a eklendi). Ham kaynak kimlikleri bu bölümdekilerdir (`titan_ore` vb.); ara ürün tarifinin kimliği ürünün kimliğidir (`celik`, `cam`, `devre` …). Biyom akışı: `rawSources` `by: biyom` satırları (turba, kukurt, kaucuk_sutu, balcik, isil_yosun T3; kum, kuvars, titan_ore, katran, tuz T4; buz, ayaz_kristali T5; ham_maya, obsidyen, isil_cevher T6) düğümlerinin eşya kimliğidir; `craft.json` `sources` hedefi `rock:<kimlik>`.
+
 ## 3. Yaratıklar (ICERIK §3)
 
 Main creatures.json (var): `zipzip, gidak, pofuduk, homur, cekirge, sinsi, dalli, hu, vicik, bozuk, vizviz, findikci`.
@@ -599,3 +601,18 @@ Var (orders.json, #1–12): `ciraklik, salgam_baronu, yesil_parmak, islahci, ala
 | fotografci | Fotoğrafçı | #48 | |
 
 Başarım kimliği kalıbı: `chain_<zincir>` (achievements.json `chainPrefix`); ek başarımlar var: `ilk_gece`, `maya_hakimi`.
+## 19. ata4 eklemeleri (Atalar, Azmanlar, koruyucular; 19 Kasım 2026)
+
+Yeni kimlikler (yukaridaki listede yoktu; ata4 ekledi):
+
+| kimlik | Türkçe ad | not |
+|---|---|---|
+| kabarik_oz | Kabarık Ata Özü | Kabarık Ata ödülü (üst basamak çip malzemesi), `atalar.json` `kabarik.rewardItem`; KS/5 tane |
+| maya | Maya | Kabarık Ata bedeli (KS × 50); eşya kimliği ICERIK §2 #26'dan, Kabarma ödülünü yazan akış verir (`atalar.json` `kabarik.mayaItem`) |
+| azman_kiskaci, azman_kozu, surubasi_postu, azman_hamuru | Azman ödülleri | `azman.json` (örüntü `azman_postu`, `azman_boynuzu`) |
+| destansi_cip | Destansı Çip | Oyuk koruyucusu sandık ödülü (Çamur Devi, Kuvars Akrebi, Buz Aynası), `nadir_cip` örüntüsü |
+| sismik_davul | Sismik Davul | Çıyan Paşa adağı, `research.json` `watts` satırı (200 W); arenada kurulu, kablo çekilir |
+| ata:kabarik_<ata>, oyuk:camur_devi, oyuk:kuvars_akrebi, oyuk:buz_aynasi, ata:kurbaga_aga, ata:ciyan_pasa, ata:buz_tosunu, ata:ana_maya | çip kaynakları | `chips.json` `sources` |
+
+Ata ödül çekirdekleri: `sazlik_cekirdegi`, `kanyon_cekirdegi`, `ayaz_cekirdegi` (§1'de vardı). Ulti: Çıyan Paşa `yorunge_sulamasi`, Buz Tosunu `zaman_durdu` henüz `abilities.json`'da tanımsız; `atalar.json` `reward.pendingUlti` ve `AtaProgress.UltisOwed` taşır (kusam akışı tanımlayınca `ulti`'ye taşınır).
+Kurbağa Ağa'nın ödülü ikinci güç yuvasıdır (`unlocks`: `slot:guc_2`); Çapa: `recipe:capa_mk4` (Kurbağa), `capa_mk5` (Çıyan), `capa_mk6` (Tosunu).

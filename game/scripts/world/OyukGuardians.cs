@@ -17,6 +17,8 @@ public sealed class OyukTarget : IAtaTarget
     readonly Func<bool> _weak;
     public float Radius { get; }
     public Action<float, bool> OnHit;
+    /// <summary>M4: ham isabet (tur ve zehir/ates bilgisi); Camur Devi kurutma ve Akrep catlatma icin once cagrilir.</summary>
+    public Action<CombatHit> OnRaw;
 
     public OyukTarget(Func<Vector3> center, float radius, IOyukFight fight, Func<bool> weak)
     { _center = center; Radius = radius; _fight = fight; _weak = weak; }
@@ -35,7 +37,8 @@ public sealed class OyukTarget : IAtaTarget
     public CombatBody Body => null;
     public CombatResult TakeHit(CombatHit hit, Vector3 from)
     {
-        float got = _fight.Hit(hit.Amount);
+        OnRaw?.Invoke(hit);
+        float got = _fight.Hit(hit.Amount, hit.Type); // M4: tur bilgili (Mole ve Bat eski yola duser)
         OnHit?.Invoke(got, hit.Crit);
         return new CombatResult { Damage = got };
     }

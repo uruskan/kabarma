@@ -15,6 +15,8 @@ public sealed class PlotGeneticsSave
     public bool RotationBonus { get; set; }
     public bool Regrowing { get; set; }
     public float RegrowT { get; set; }
+    public bool Greenhouse { get; set; }
+    public bool Flooded { get; set; }
 }
 
 /// <summary>
@@ -35,11 +37,11 @@ public sealed partial class Farm
     {
         Seeds = Seeds, Log = Log, Time = Time,
         Plots = _plots.Values.OrderBy(p => p.X).ThenBy(p => p.Y)
-            .Where(p => p.Wild || p.Alaca != null || p.PestDamage > 0 || p.PrevFamily != null || p.RotationBonus || p.Regrowing || p.RegrowT > 0)
+            .Where(p => p.Wild || p.Alaca != null || p.PestDamage > 0 || p.PrevFamily != null || p.RotationBonus || p.Regrowing || p.RegrowT > 0 || p.Greenhouse || p.Flooded)
             .Select(p => new PlotGeneticsSave
             {
                 X = p.X, Y = p.Y, Wild = p.Wild, Alaca = p.Alaca, PestDamage = p.PestDamage, PrevFamily = p.PrevFamily,
-                RotationBonus = p.RotationBonus, Regrowing = p.Regrowing, RegrowT = p.RegrowT,
+                RotationBonus = p.RotationBonus, Regrowing = p.Regrowing, RegrowT = p.RegrowT, Greenhouse = p.Greenhouse, Flooded = p.Flooded,
             }).ToList(),
     };
 
@@ -54,7 +56,7 @@ public sealed partial class Farm
             var p = Get(e.X, e.Y);
             if (p == null) continue;
             p.Wild = e.Wild; p.Alaca = e.Alaca; p.PestDamage = e.PestDamage; p.PrevFamily = e.PrevFamily;
-            p.RotationBonus = e.RotationBonus; p.Regrowing = e.Regrowing; p.RegrowT = e.RegrowT;
+            p.RotationBonus = e.RotationBonus; p.Regrowing = e.Regrowing; p.RegrowT = e.RegrowT; p.Greenhouse = e.Greenhouse; p.Flooded = e.Flooded;
         }
         _protT = float.MaxValue; // koruma bir sonraki tikte yeniden hesaplanir
     }

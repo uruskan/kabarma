@@ -58,13 +58,26 @@ public sealed partial class Farm
     }
 
     /// <summary>Sicaklik: biyom bandinda x1, disinda 0,25 + 0,03 x (D-1) (GDD 8.2, 8.3).</summary>
-    public float BandFactor(CropDef? def, int d)
+    public float BandFactor(CropDef? def, int d) => BandFactor(def, d, false);
+
+    /// <summary>Seradaki kare bandi duzeltir (ICERIK 5): greenhouse.bandFactor.</summary>
+    public float BandFactor(CropDef? def, int d, bool greenhouse)
     {
         if (def == null) return 1f;
+        if (greenhouse) return G.Greenhouse.BandFactor;
         string band = G.Bands.TryGetValue(def.Band, out var b) ? b : def.Band;
         if (string.IsNullOrEmpty(G.FarmBand) || band == G.FarmBand) return 1f;
         return Math.Min(1f, G.OutOfBand + G.DBandBonus * Math.Max(0, d - 1));
     }
+
+    /// <summary>Su basmis ekin sig su karesinde x1, baska yerde greenhouse.floodedOutOfWater.</summary>
+    public float FloodFactor(CropDef? def, Plot p) => def?.Flooded == true && !p.Flooded ? G.Greenhouse.FloodedOutOfWater : 1f;
+
+    /// <summary>Biyom bandinda mi (ekilen yer ekinin bandinda; sera ya da ana tapu bandi)?</summary>
+    public bool InBand(CropDef def, bool greenhouse) => BandFactor(def, 1, greenhouse) >= 1f;
+
+    public bool SetGreenhouse(int x, int y, bool on) { var p = Get(x, y); if (p == null) return false; p.Greenhouse = on; return true; }
+    public bool SetFlooded(int x, int y, bool on) { var p = Get(x, y); if (p == null) return false; p.Flooded = on; if (on) p.Moisture = 100f; return true; }
 
     public float FertilityLoss(Plot p)
     {

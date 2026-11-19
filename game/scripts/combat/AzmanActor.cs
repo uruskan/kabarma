@@ -30,6 +30,8 @@ public partial class AzmanActor : Node3D, IAtaTarget
     bool _chargeHitPlayer;
     Vector3 _treeAt;
     bool _hasTree;
+    BuildPiece _ripTarget;
+    float _fireFx, _fireHurt, _mult = 1f;
     public bool Dying { get; private set; }
 
     public AzmanActor(Director d, AzmanSystem sys, AzmanDef def, ulong fightId) { _d = d; _sys = sys; Def = def; FightId = fightId; }
@@ -37,8 +39,8 @@ public partial class AzmanActor : Node3D, IAtaTarget
     AzmanFight Fight => _sys.FightOf(FightId);
     bool Puppet => _d.NetClient;
     public CombatBody Body => Fight?.Body;
-    public Vector3 Center => GlobalPosition + Vector3.Up * Def.Height * 0.5f;
-    public float Radius => Def.Radius;
+    public Vector3 Center => GlobalPosition + Vector3.Up * Def.Height * 0.5f * _mult;
+    public float Radius => Def.Radius * _mult;
     public bool Alive => !Dying && Fight != null && !Fight.Defeated;
     public bool IsWeakPoint => false;
     public string Acting => Fight?.Acting ?? "";
@@ -47,6 +49,9 @@ public partial class AzmanActor : Node3D, IAtaTarget
 
     public override void _Ready()
     {
+        // Bolunme parcasi (Azman Hamur): nesil basina ScaleMult kadar kucuk.
+        _mult = Def.Split != null ? Mathf.Pow(Def.Split.ScaleMult, Fight?.Gen ?? 0) : 1f;
+        Scale = Vector3.One * _mult;
         _visual = new Node3D { Name = "Visual" };
         AddChild(_visual);
         _frame = new Node3D { Name = "Frame" };
@@ -89,7 +94,14 @@ public partial class AzmanActor : Node3D, IAtaTarget
         float top = box.Position.Y + box.Size.Y * 0.8f, len = box.Size.Z, w = box.Size.X;
         var c = box.GetCenter();
         var kitD = new MeshKit();
-        if (Def.Base == "homur")
+        string deco = string.IsNullOrEmpty(Def.Decor) ? Def.Base : Def.Decor;
+        var tint = string.IsNullOrEmpty(Def.Color) ? Palette.Wood : new Color(Def.Color);
+        if (deco is "kiskac" or "kizgin" or "surubasi" or "hamur")
+        {
+            DecorM4(deco, tint, box, kitD);
+            _decor.AddChild(kitD.Instance());
+        }
+        else if (deco == "homur")
         {
             // Semer ve sirttaki kucuk Homurlar (dusunce gizlenir).
             kitD.Pillow(new Vector3(w * 0.7f, w * 0.12f, len * 0.45f), MeshKit.At(c.X, top, c.Z), Palette.HoldingRed.Darkened(0.2f), 0.4f);
@@ -121,6 +133,37 @@ public partial class AzmanActor : Node3D, IAtaTarget
         }
     }
 
+    /// <summary>Yeni Azmanlar' yer tutucu susu (koddan): Kiskac kiskac ve sirt zirhi, Kizgin kor ve koruk, Surubasi buzlu yele, Hamur hamur topaklari.</summary>
+    void DecorM4(string deco, Color tint, Aabb box, MeshKit kit)
+    {
+        float top = box.Position.Y + box.Size.Y * 0.8f, len = box.Size.Z, w = box.Size.X;
+        var c = box.GetCenter();
+        switch (deco)
+        {
+            case "kiskac":
+                foreach (float sx in new[] { -1f, 1f })
+                {
+                    kit.Cylinder(w * 0.05f, w * 0.12f, len * 0.5f, MeshKit.At(new Vector3(c.X + sx * w * 0.42f, box.Position.Y + box.Size.Y * 0.45f, c.Z + len * 0.55f), new Vector3(1.25f, 0, sx * -0.3f)), tint.Lightened(0.15f), 8);
+                    kit.Sphere(w * 0.13f, MeshKit.At(c.X + sx * w * 0.5f, box.Position.Y + box.Size.Y * 0.4f, c.Z + len * 0.8f), tint, 8, 5);
+                }
+                kit.Pillow(new Vector3(w * 0.8f, w * 0.1f, len * 0.5f), MeshKit.At(c.X, top, c.Z - len * 0.1f), tint.Darkened(0.2f), 0.4f); // sirt zirhi: yalniz arkadan delinir
+                break;
+            case "kizgin":
+                for (int i = 0; i < 6; i++) kit.Cylinder(0f, w * 0.07f, w * 0.35f, MeshKit.At(c.X + Mathf.Sin(i * 1.7f) * w * 0.25f, top + w * 0.1f, c.Z + Mathf.Lerp(-len * 0.3f, len * 0.3f, i / 5f)), tint, 6);
+                kit.Sphere(w * 0.06f, MeshKit.At(c.X - w * 0.15f, box.Position.Y + box.Size.Y * 0.7f, c.Z + len * 0.45f), Palette.Warning, 6, 4);
+                kit.Sphere(w * 0.06f, MeshKit.At(c.X + w * 0.15f, box.Position.Y + box.Size.Y * 0.7f, c.Z + len * 0.45f), Palette.Warning, 6, 4);
+                break;
+            case "surubasi":
+                for (int i = 0; i < 8; i++) kit.Cylinder(0f, w * 0.08f, w * 0.4f, MeshKit.At(c.X + Mathf.Sin(i * 1.3f) * w * 0.2f, top + w * 0.1f, c.Z + Mathf.Lerp(len * 0.25f, -len * 0.25f, i / 7f)), tint, 6); // buzlu yele
+                kit.Sphere(w * 0.07f, MeshKit.At(c.X, box.Position.Y + box.Size.Y * 0.75f, c.Z + len * 0.5f), Palette.MayaTeal, 6, 4);
+                break;
+            case "hamur":
+                for (int i = 0; i < 7; i++) kit.Sphere(w * (0.12f + (i % 3) * 0.04f), MeshKit.At(c.X + Mathf.Sin(i * 2.1f) * w * 0.3f, top - w * 0.05f * (i % 2), c.Z + Mathf.Lerp(-len * 0.3f, len * 0.3f, i / 6f)), tint, 8, 5);
+                kit.Sphere(w * 0.15f, MeshKit.At(c.X, box.Position.Y + box.Size.Y * 0.5f, c.Z), Palette.MayaTeal, 8, 5); // cekirdek
+                break;
+        }
+    }
+
     // ---------- Hasar ----------
 
     public CombatResult TakeHit(CombatHit hit, Vector3 from)
@@ -149,6 +192,7 @@ public partial class AzmanActor : Node3D, IAtaTarget
         Squash.Kick(_visual, 0.08f, Def.Telegraph, 3f);
         if (kind == "charge") _chargeDir = ((NearestTarget(out _) - GlobalPosition) with { Y = 0 }).Normalized();
         if (kind == "uproot") _hasTree = FindTree(out _treeAt);
+        if (kind == "rip") _ripTarget = NearestPiece(Def.Rip?.Reach ?? 18f);
     }
 
     public void Attack(string kind)
@@ -160,6 +204,9 @@ public partial class AzmanActor : Node3D, IAtaTarget
             _chargeHitPlayer = false;
             Sfx.Play("kabarik_gumleme", Center, 4f, 0.6f);
         }
+        if (kind == "rip") Rip();
+        if (kind == "ignite") Ignite();
+        if (kind == "howl") Howl();
         if (kind == "uproot")
         {
             _sys.Uproots++;
@@ -239,6 +286,7 @@ public partial class AzmanActor : Node3D, IAtaTarget
             return;
         }
 
+        FireTick(f, dt);
         if (Puppet) { PuppetTick(f, dt); LocalContact(f); return; }
 
         float speedMult = Status.SpeedMult(_d.Data.Combat, f.Body);
@@ -270,6 +318,13 @@ public partial class AzmanActor : Node3D, IAtaTarget
             _arrow.GlobalBasis = Basis.LookingAt(_chargeDir, Vector3.Up);
             _arrow.Scale = new Vector3(1, 1, len);
             if ((int)(_t * 6) != (int)((_t - dt) * 6)) Fx.Burst(GlobalPosition + Vector3.Up * 0.2f, Palette.Soil, 5, 3f, 0.12f, 0.4f);
+        }
+        else if (f.Pending == "rip")
+        {
+            // Kule/yapiya yuru, kiskaci kaldir.
+            var to = _ripTarget != null && IsInstanceValid(_ripTarget) ? _ripTarget.GlobalPosition : GlobalPosition;
+            var d = (to - GlobalPosition) with { Y = 0 };
+            if (d.Length() > Def.Radius + 1.5f) { Step(d.Normalized() * Mathf.Min(d.Length(), Def.MoveSpeed * 1.4f * dt)); Face(d.Normalized(), dt * 4f); }
         }
         else if (f.Pending == "uproot")
         {
@@ -344,6 +399,96 @@ public partial class AzmanActor : Node3D, IAtaTarget
             _rig?.Play("walk", 0.2f, Mathf.Clamp(Def.MoveSpeed / 2.5f, 0.6f, 2f));
         }
         else _rig?.Play("idle", 0.25f);
+    }
+
+    // ---------- M4 (ata4): Kiskac (rip), Kizgin (ignite), Surubasi (howl) ----------
+
+    BuildPiece NearestPiece(float reach)
+    {
+        BuildPiece best = null; float bd = reach;
+        foreach (var p in PiecesNear(GlobalPosition, reach))
+        {
+            float dd = new Vector2(p.GlobalPosition.X - GlobalPosition.X, p.GlobalPosition.Z - GlobalPosition.Z).Length();
+            if (dd < bd) { bd = dd; best = p; }
+        }
+        return best;
+    }
+
+    /// <summary>Azman Kiskac: yakindaki yapi parcasini (kule, duvar) soker; yakindaki oyuncu da kiskaca degebilir.</summary>
+    void Rip()
+    {
+        var r = Def.Rip; if (r == null) return;
+        var piece = _ripTarget != null && IsInstanceValid(_ripTarget) ? _ripTarget : NearestPiece(Def.Radius + r.Radius + 4f);
+        _ripTarget = null;
+        Sfx.Play("parca_darbe", Center, 4f, 0.5f);
+        Squash.Kick(_visual, 0.25f, 0.5f, 3f);
+        if (piece != null && piece.GlobalPosition.DistanceTo(GlobalPosition) < Def.Radius + r.Radius + 5f)
+        {
+            _d.Build.Damage(piece, r.StructureDamage);
+            Fx.Burst(piece.GlobalPosition + Vector3.Up, Palette.Wood, 36, 7f, 0.18f, 0.9f);
+            _d.Player.Shake(0.4f);
+            _sys.Rips++;
+            GD.Print($"AZMAN rip {Def.Id} piece={piece.Def.Id}");
+        }
+        else GD.Print($"AZMAN rip_miss {Def.Id}");
+        var p = _d.Player;
+        if (!p.Down && p.GlobalPosition.DistanceTo(GlobalPosition) < Def.Radius + r.Radius) p.Hurt(r.Damage, GlobalPosition);
+    }
+
+    /// <summary>Azman Kizgin: yangin lekeleri (oyuncu cevresi ve tarla yataklari); Sulama / yagmurlama sondurur.</summary>
+    void Ignite()
+    {
+        var f = Fight; var ig = Def.Ignite; if (f == null || ig == null) return;
+        var pts = new List<(float, float)>();
+        var pl = _d.Player.GlobalPosition;
+        for (int i = 0; i < 2; i++) { float a = GD.Randf() * Mathf.Tau, r = 2f + GD.Randf() * 5f; pts.Add((pl.X + Mathf.Cos(a) * r, pl.Z + Mathf.Sin(a) * r)); }
+        var plots = _d.State.Farm.Plots.ToList();
+        for (int i = 0; i < ig.Patches && plots.Count > 0; i++) { var pp = plots[(int)(GD.Randi() % plots.Count)]; var c = _d.FarmView.CellCenter(pp.X, pp.Y); pts.Add((c.X, c.Z)); }
+        while (pts.Count < ig.Patches) { float a = GD.Randf() * Mathf.Tau, r = 4f + GD.Randf() * 10f; pts.Add((GlobalPosition.X + Mathf.Cos(a) * r, GlobalPosition.Z + Mathf.Sin(a) * r)); }
+        int n = AzmanRules.Ignite(f, Def, pts);
+        _sys.Ignitions += n;
+        Sfx.Play("alev", Center, 2f, 0.7f);
+        Fx.Burst(Center, Palette.Accent, 40, 6f, 0.2f, 0.8f, true);
+        GD.Print($"AZMAN ignite {Def.Id} patches={n}");
+    }
+
+    /// <summary>Surubasi: Ayaz Kurdu cagirir (yer tutucu: sinsi govdesi); olenler sayactan duser.</summary>
+    void Howl()
+    {
+        var f = Fight; var s = Def.Summon; if (f == null || s == null) return;
+        int n = AzmanRules.Howl(f, Def);
+        var rd = new AzmanRidersDef { Creature = s.Creature, Scale = s.Scale, Hp = s.Hp, Damage = s.Damage, Speed = s.Speed };
+        for (int i = 0; i < n; i++)
+        {
+            float a = GD.Randf() * Mathf.Tau;
+            var to = _d.World.Ground(GlobalPosition + new Vector3(Mathf.Cos(a), 0, Mathf.Sin(a)) * (Def.Radius + 2.5f));
+            var wolf = new AzmanRider(_d, rd) { Name = "AyazKurdu" };
+            ulong fid = FightId;
+            wolf.OnGone = () => { var ff = _sys.FightOf(fid); if (ff != null) AzmanRules.SummonDied(ff); };
+            GetParent().AddChild(wolf);
+            wolf.GlobalPosition = to;
+            wolf.Pop(Center + Vector3.Up * Def.Height * 0.4f);
+            _d.Savas.Add(wolf);
+        }
+        _sys.Howls += n;
+        Sfx.Play("kurt_ulumasi", Center, 4f, 0.7f);
+        GD.Print($"AZMAN howl {Def.Id} n={n} alive={f.Summoned}");
+    }
+
+    /// <summary>Yangin lekesi gorseli ve yerel oyuncunun yanmasi (her makinede yerel oyuncu icin).</summary>
+    void FireTick(AzmanFight f, float dt)
+    {
+        if (f.Fires.Count == 0) return;
+        _fireFx -= dt;
+        if (_fireFx <= 0)
+        {
+            _fireFx = 0.15f;
+            foreach (var fr in f.Fires) Fx.Burst(_d.World.Ground(new Vector3(fr.X, 0, fr.Z)) + Vector3.Up * 0.3f, Palette.Accent, 3, 2.5f, 0.2f, 0.7f, true, -2f);
+        }
+        var p = _d.Player;
+        if (p.Down) return;
+        _fireHurt += AzmanRules.FireDamage(f, Def, p.GlobalPosition.X, p.GlobalPosition.Z, dt);
+        if (_fireHurt >= 4f) { p.Hurt(_fireHurt, p.GlobalPosition); _fireHurt = 0; Fx.Text3D(p.GlobalPosition + Vector3.Up * 2f, "YANIK", Palette.Accent, 56, 0.8f, 0.8f); }
     }
 
     void Step(Vector3 by) => GlobalPosition = _d.World.Ground(GlobalPosition + by);

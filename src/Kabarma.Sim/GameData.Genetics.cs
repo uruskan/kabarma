@@ -29,6 +29,24 @@ public sealed class WildRules
     public float MowRadius { get; set; }
 }
 
+/// <summary>Sera (ICERIK 5 bant kurali, 11 Sera Kontrol Unitesi): seradaki kare biyom bandindan bagimsiz buyur. Su basmis ekin yine sig su ister.</summary>
+public sealed class GreenhouseRules
+{
+    public float BandFactor { get; set; } = 1f;
+    /// <summary>Su basmis (flooded) ekin sig su olmayan karede bu carpanla buyur.</summary>
+    public float FloodedOutOfWater { get; set; } = 0.25f;
+}
+
+/// <summary>Asi Tezgahi (ICERIK 11, 200 W): iki tohum kaydi arasinda gen aktarma.</summary>
+public sealed class GraftRules
+{
+    public float Seconds { get; set; } = 8f;
+    /// <summary>Bir asida alicinin geni en fazla bu kadar artar (vericinin genini asmaz).</summary>
+    public int MaxStep { get; set; } = 2;
+    public bool SameFamily { get; set; } = true;
+    public int MinGene { get; set; } = 1;
+}
+
 public sealed class GeneticsRules
 {
     public int GeneMin { get; set; } = 1;
@@ -53,6 +71,8 @@ public sealed class GeneticsRules
     public float FallowPerDay { get; set; }
     public float RegrowFrom { get; set; } = 0.6f;
     public WildRules Wild { get; set; } = new();
+    public GreenhouseRules Greenhouse { get; set; } = new();
+    public GraftRules Graft { get; set; } = new();
     public int MaxNotes { get; set; } = 30;
 
     public AlacaDef? AlacaOf(string? id) => id == null ? null : Alaca.FirstOrDefault(a => a.Id == id);
