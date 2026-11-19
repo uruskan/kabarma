@@ -137,7 +137,7 @@ public partial class EconomyTest : Node
         // yemek etkileri: Kozde Misir (hiz +%5) ve Salgam Suyu (depar bedeli -%20)
         _d.State.Food.Tick(10000f);
         foreach (var id in new[] { "kozde_misir", "salgam_suyu" }) { Bag.Add(id, 1); Check(_d.EatFood(_d.Data.Tool.Foods.Single(x => x.Id == id)), $"yendi: {id}"); }
-        await Frames(3);
+        await Wait(0.4f); // Director._Process isler (fizik kareleri yuk altinda birikebilir)
         Check(Mathf.IsEqualApprox(_d.Player.FoodSpeed, 0.05f), $"yemek: hiz eki oyuncuda ({_d.Player.FoodSpeed})");
         Check(Mathf.IsEqualApprox(_d.State.Stamina.DrainMult, 0.8f), $"yemek: depar bedeli -%20 ({_d.State.Stamina.DrainMult})");
         Check(Mathf.IsEqualApprox(_d.State.Stamina.BonusMax, 60f), $"yemek: azami dayaniklilik +60 ({_d.State.Stamina.BonusMax})");
