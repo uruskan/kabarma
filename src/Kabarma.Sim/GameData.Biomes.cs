@@ -8,6 +8,12 @@ namespace Kabarma.Sim;
 public sealed class TerrainDef
 {
     public int Size { get; set; } = 300;
+    /// <summary>Dunya karesinin merkezi [x, z] (bos = Ocak 0,0). M4 ara adimi: 1800 m dunya kratere yakin merkezlenir.</summary>
+    public List<float> Center { get; set; } = new();
+    /// <summary>M2 cekirdeginin kenari (m): Cayir ve Koru'nun bit bit korunan karesi (0 = yok; tek kare dunya).</summary>
+    public int CoreSize { get; set; }
+    public float CenterX => Center.Count >= 2 ? Center[0] : 0f;
+    public float CenterZ => Center.Count >= 2 ? Center[1] : 0f;
     public int Seed { get; set; } = 4417;
     public float NoiseFrequency { get; set; } = 0.012f;
     public float NoiseAmp { get; set; } = 9f;
@@ -115,7 +121,7 @@ public sealed class DecorDef
     public int Count { get; set; }
     public List<float> Scale { get; set; } = new() { 1f, 1f };
     public float MinDistance { get; set; }
-    public float MaxDistance { get; set; } = 1000f;
+    public float MaxDistance { get; set; } = 100000f;
     /// <summary>Gol kiyisindan en az bu kadar uzak (m); negatifse yalniz kiyiya bu kadar yakin.</summary>
     public float LakeClear { get; set; } = 2f;
     public float Wind { get; set; }
@@ -135,6 +141,10 @@ public sealed class DecorDef
     public int PerHit { get; set; } = 2;
     /// <summary>URETIM §3 "yer tutucu" isareti: SANAT-SES §9'dan gecemeyen varlik (neden). Bos = gecti.</summary>
     public string Placeholder { get; set; } = "";
+    /// <summary>Cekirdegin (M2, 640 m) disindaki ev biyomu bolumu icin adet carpani (Count * OuterScale); 0 = disarida yok.</summary>
+    public float OuterScale { get; set; }
+    /// <summary>Modelin rengine carpilan ton "RRGGBB" (varlik hatti yer tutucusu: ayni model baska biyomda baska renk); bos = degismez.</summary>
+    public string Tint { get; set; } = "";
 }
 
 /// <summary>Elle konmus kume: ussun yakinindaki Lif ve Bugday kumeleri gibi.</summary>
@@ -166,6 +176,9 @@ public sealed class NodeDef
     public int ScatterCount { get; set; }
     public List<float> ScatterDistance { get; set; } = new();
     public float ScatterSlope { get; set; } = 25f;
+    /// <summary>Modelin rengine carpilan ton "RRGGBB" (yer tutucu: ayni kaya modeli baska cevher); bos = degismez.</summary>
+    /// <summary>Modelin rengine carpilan ton "RRGGBB" (yer tutucu: ayni kaya modeli baska cevher); bos = degismez.</summary>
+    public string Tint { get; set; } = "";
     /// <summary>Serpilen dugum gol kiyisindan en az bu kadar uzak (m).</summary>
     public float LakeClear { get; set; } = 4f;
     /// <summary>[yaricap m, en az birim]: Ocak'in bu yaricapinda guvenceli en az birim (ilk gunun ihtiyaci; dunya sinamasi denetler).</summary>
@@ -206,6 +219,8 @@ public sealed class BiomeDef
     public List<PoiRuleDef> Pois { get; set; } = new();
     /// <summary>Bitki ve dugum serpme kutusu [minX, minZ, maxX, maxZ] (m); bos = butun dunya. Cayir'in M1 kutusu ±146.</summary>
     public List<float> Area { get; set; } = new();
+    /// <summary>Kesif noktasi orneklem kutusu [minX, minZ, maxX, maxZ]; bos = dunyanin hepsi. M2 cekirdegi (Cayir, Koru) eski tohum akisini korumak icin ±296 verir.</summary>
+    public List<float> PoiArea { get; set; } = new();
     /// <summary>Kutunun disinda kalan biyom alanina ayni siklikla ek serpme (ayri tohum: kutunun ici M1 ile ayni kalir).</summary>
     public bool FillOutside { get; set; }
     /// <summary>Biyomun kendi tohumu (serpme ve gurultu).</summary>

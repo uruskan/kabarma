@@ -91,6 +91,73 @@ public partial class EconomyTest : Node
         // M2 (ekonomi2): fiyat Borsa × doygunluk da icerir; onceki satislar Kok'u doyurmus olabilir.
         int expect = (int)Math.Round(got * cargo.Pricing.Base("turnip") * _d.Data.Tool.Quality[stars - 1] * _d.State.Market.FactorOf("turnip"), MidpointRounding.AwayFromZero);
         Check(crate != null && cargo.Value(crate) == expect, $"kasa degeri taban × kalite × Borsa ({(crate != null ? cargo.Value(crate) : 0)} = {expect})");
+        await NewCropInGreenhouse();
+        await TarimM4Rules();
+    }
+
+    /// <summary>tarim4 (M4): yemek etkileri oyuncuya, Asi Tezgahi, Sera Kontrol Unitesi ile sera, sig su (test sahnesinde isaretli gecici).</summary>
+    async Task TarimM4Rules()
+    {
+        var f = _d.State.Farm;
+        // yemek etkileri: Kozde Misir (hiz +%5) ve Salgam Suyu (depar bedeli -%20)
+        _d.State.Food.Tick(10000f);
+        foreach (var id in new[] { "kozde_misir", "salgam_suyu" }) { Bag.Add(id, 1); Check(_d.EatFood(_d.Data.Tool.Foods.Single(x => x.Id == id)), $"yendi: {id}"); }
+        await Frames(3);
+        Check(Mathf.IsEqualApprox(_d.Player.FoodSpeed, 0.05f), $"yemek: hiz eki oyuncuda ({_d.Player.FoodSpeed})");
+        Check(Mathf.IsEqualApprox(_d.State.Stamina.DrainMult, 0.8f), $"yemek: depar bedeli -%20 ({_d.State.Stamina.DrainMult})");
+        Check(Mathf.IsEqualApprox(_d.State.Stamina.BonusMax, 60f), $"yemek: azami dayaniklilik +60 ({_d.State.Stamina.BonusMax})");
+        _d.State.Food.Tick(10000f);
+        await Frames(3);
+        Check(Mathf.IsEqualApprox(_d.Player.FoodSpeed, 0f) && Mathf.IsEqualApprox(_d.State.Stamina.DrainMult, 1f), "yemek: bitince etkiler kalkti");
+
+        // Asi Tezgahi: iki turp tohumu kaydi, V geni aktarilir
+        var asi = _d.PlaceStation(Def("asi_tezgahi"), G(-9, 6), 0);
+        f.Seeds.Lots.Clear();
+        f.Seeds.Add("turnip", new Genes { V = 2, H = 3, D = 3, M = 3 }, null, 2);
+        f.Seeds.Add("turnip", new Genes { V = 8, H = 1, D = 1, M = 1 }, null, 2);
+        Bag.Add("turnip_seed", 4);
+        var recv = f.Seeds.Lots.First(l => l.Genes.V == 2); var donor = f.Seeds.Lots.First(l => l.Genes.V == 8);
+        Check(_d.DoGraft(asi, recv, donor, 0) == GraftResult.Ok, "asi: V geni aktarildi");
+        Check(f.Seeds.Lots.Any(l => l.Genes.V == 4 && l.Genes.H == 3), "asi: asili tohum kayitta (V 2 -> 4)");
+        _d.Hud.HideMenu();
+
+        // Sera: Sera Kontrol Unitesi yakinindaki Kanyon/Sazlik ekini banttan bagimsiz; uzaktaki degil
+        int x = 9, y = 12, fx = 19;
+        var unit = _d.PlaceStation(Def("sera_kontrol_unitesi"), _d.FarmView.CellCenter(x + 1, y), 0);
+        await Frames(30); // guc sistemi ucu kendisi baglar; sonra gevset
+        unit.Queue.PowerOk = () => true; // GEVSETILDI guc: sera Kontrol Unitesi 100 W ister; guc kurali guc akisinin testinde
+        Check(f.Till(x, y) && f.Till(fx, y), "sera: iki kare surulup");
+        await Wait(1.6f);
+        Check(f.Get(x, y)!.Greenhouse && !f.Get(fx, y)!.Greenhouse, "sera: kontrol unitesinin yaricapindaki kare sera, uzaktaki degil");
+        // sig su: Sazlik pirinci ancak sig suda tam hizla buyur (biyom akisi gelene dek test isareti)
+        Bag.Add("rice_seed", 2);
+        Check(f.Plant(x, y, "rice", Bag), "sera: pirinc ekildi");
+        float dry = f.GrowthFactor(f.Get(x, y)!, true);
+        f.SetFlooded(x, y, true);
+        float wet = f.GrowthFactor(f.Get(x, y)!, true);
+        Check(wet > dry * 3f, $"sig su: pirinc x{wet / Mathf.Max(dry, 0.001f):0.0} hizli buyur");
+        unit.QueueFree();
+        await Wait(1.6f);
+        Check(!f.Get(x, y)!.Greenhouse, "sera: unite kalkinca kare serasiz");
+    }
+
+    /// <summary>tarim4 (M4): Kanyon ekini (Misir) seradaki karede buyur, Bicme ile hasat edilir (bant disinda sera sart).</summary>
+    async Task NewCropInGreenhouse()
+    {
+        var f = _d.State.Farm;
+        int x = 6, y = 12;
+        Bag.Add("corn_seed", 1);
+        Check(f.Till(x, y), "sera: kare surulup");
+        f.SetGreenhouse(x, y, true);
+        Check(f.Plant(x, y, "corn", Bag), "sera: misir ekildi");
+        f.Water(x, y);
+        for (int i = 0; i < 6000 && f.Get(x, y)!.Stage != CropStage.Mature; i++) { f.Tick(0.5f, true); f.Water(x, y); }
+        Check(f.Get(x, y)!.Stage == CropStage.Mature, "sera: misir banttan bagimsiz olgunlasti");
+        var c = _d.FarmView.CellCenter(x, y);
+        _d.Player.GlobalPosition = c + new Vector3(0, 0.3f, -2.5f);
+        await Frames(4);
+        int n = _d.Capa.Mow(c);
+        Check(n == 1 && (Bag.Count("corn") + Bag.Count("corn", 2) + Bag.Count("corn", 3)) > 0, "sera: misir Bicme ile hasat edildi (cantada)");
     }
 
     bool _finished;
@@ -437,10 +504,17 @@ public partial class EconomyTest : Node
         await Look(bag.GlobalPosition + new Vector3(2.5f, 2f, 3f), bag.GlobalPosition, "ekonomi_uyku_tulumu.png");
 
         float hp0 = _d.Data.Tool.Player.MaxHp;
-        foreach (var food in _d.Data.Tool.Foods) Check(_d.EatFood(food), $"yendi: {food.Id}");
+        foreach (var food in _d.Data.Tool.Foods.Take(3)) Check(_d.EatFood(food), $"yendi: {food.Id}"); // M1 ucu; M4 yemekleri asagida
         await Frames(2);
         Check(Mathf.IsEqualApprox(_d.Player.MaxHp, hp0 + 50f), $"uc yemek: azami can +50 ({_d.Player.MaxHp})");
         Check(Mathf.IsEqualApprox(_d.State.Food.BonusStamina, 40f), "uc yemek: azami dayaniklilik +40 (Sim)");
         Check(_d.State.Food.Active.Count == 3, "uc yemek yuvasi dolu");
+        // tarim4 (M4): yeni bir yemek (Menemen, ICERIK 15 #4) yuvalar bosalinca yenir
+        _d.State.Food.Tick(10000f);
+        await Frames(2);
+        var menemen = _d.Data.Tool.Foods.Single(x => x.Id == "menemen");
+        Bag.Add("menemen", 1);
+        Check(_d.EatFood(menemen), "yendi: menemen (M4 yemegi)");
+        Check(Mathf.IsEqualApprox(_d.State.Food.BonusMaxHp, 25f) && Mathf.IsEqualApprox(_d.State.Food.BonusStamina, 25f), "menemen: Can +25, Dayaniklilik +25");
     }
 }

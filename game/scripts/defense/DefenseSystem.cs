@@ -178,24 +178,24 @@ public partial class DefenseSystem : Node3D
             if (!_zips.TryGetValue(e.Target, out var z) || !IsInstanceValid(z) || z.Dead) continue;
             switch (e.Kind)
             {
-                case TrapFx.Damage: Hurt(e.Target, e.Value, n.GlobalPosition, 0f); Fx.Burst(z.GlobalPosition + Vector3.Up * 0.2f, Palette.Soil, 5, 2f, 0.06f, 0.3f); break;
+                case TrapFx.Damage: Hurt(e.Target, e.Value, n.GlobalPosition, 0f); Vfx.Play("trap_diken", z.GlobalPosition + Vector3.Up * 0.2f); break;
                 case TrapFx.Slow: z.DefenseSlow(e.Seconds); break;
                 case TrapFx.Hold:
                     z.DefenseHold(e.Seconds);
                     if (d.Kind == "pit") z.GlobalPosition = PitSpot(n, d, s.Held.IndexOf(e.Target));
-                    else if (e.Seconds > 1f) { Fx.Burst(z.GlobalPosition + Vector3.Up * 0.2f, new Color("C8D86A"), 10, 2f, 0.1f, 0.5f); Sfx.Play("hit", z.GlobalPosition, -8f, 0.6f); }
+                    else if (e.Seconds > 1f) { Vfx.Play("trap_yapiskan", z.GlobalPosition + Vector3.Up * 0.2f); Sfx.Play("hit", z.GlobalPosition, -8f, 0.6f); }
                     break;
                 case TrapFx.Launch:
                     n.Kick();
                     z.DefenseLaunch(d, G(e.Dir), e.Value);
                     Sfx.Play("firlatma", n.GlobalPosition, -2f, 1.2f);
-                    Fx.Burst(n.GlobalPosition + Vector3.Up * 0.3f, Palette.Wood, 14, 5f, 0.08f, 0.5f);
+                    Vfx.Play("trap_firlatma", n.GlobalPosition + Vector3.Up * 0.3f);
                     break;
                 case TrapFx.Fall:
                     z.DefenseHold(0.5f);
                     z.GlobalPosition = PitSpot(n, d, s.Held.IndexOf(e.Target));
                     Sfx.Play("hit", n.GlobalPosition, -2f, 0.7f);
-                    Fx.Burst(n.GlobalPosition + Vector3.Up * 0.1f, Palette.Soil, 18, 3f, 0.1f, 0.6f);
+                    Vfx.Play("trap_cukur", n.GlobalPosition + Vector3.Up * 0.1f);
                     GD.Print($"DEFENSE pit fall held={s.Held.Count}");
                     break;
                 case TrapFx.Release:

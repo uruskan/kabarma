@@ -54,6 +54,21 @@ public sealed class WildDef
     public float FlyHeight { get; set; }
     /// <summary>Gunduz sahnesinde kabarmis olabilir mi (gorunus sinamasi disinda hayir; Kabarma gecesi dalga olarak gelir).</summary>
     public bool DaySwell { get; set; }
+
+    // --- M4 (yaratik4, ICERIK §3.3-3.6) ---
+    /// <summary>Menzilli vurus (yirtici, AttackRange uzak): "acid" Tukurgen, "fire" Kizgin, "poison" Kivrik, "shock" Cizbiz, "tongue" Vrak. Bos: yakin vurus.</summary>
+    public string Projectile { get; set; } = "";
+    /// <summary>Yerden pusu (Dehliz): hucum edene kadar toprak altinda, yalniz tumsegi gorunur.</summary>
+    public bool Burrow { get; set; }
+    /// <summary>Olunce bu kadar parcaya bolunur (Hamurcuk); parca canlari HP x SplitHpMult, en fazla SplitGenerations kusak.</summary>
+    public int SplitInto { get; set; }
+    public float SplitHpMult { get; set; } = 0.5f;
+    public int SplitGenerations { get; set; } = 2;
+    /// <summary>Kosarken karninin ustunde kayar (Paytak): govde one yatar.</summary>
+    public bool BellySlide { get; set; }
+    /// <summary>Gece suru halinde avlanir (Ayaz Kurdu): dogarken kac tane (gecici dogurucu ve biyom satiri icin bilgi).</summary>
+    public int PackMin { get; set; } = 1;
+    public int PackMax { get; set; } = 1;
 }
 
 /// <summary>Suru turu (TEKNIK §6: merkez, yaricap, uye sayisi, can havuzu, tohum). Uyeler tohumdan hesaplanir, fizik yok.</summary>

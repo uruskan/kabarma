@@ -56,13 +56,17 @@ public partial class Main : Node3D
         ["lineup"] =m => { m.AddChild(new ModelLineup()); return true; }, // gorsel-model: her model ayni isikta (progress/gorsel/model/)
         ["camera"] = m => { m.AddChild(new CameraTest()); return false; }, // oyuncu akisi: kamera kipleri, tekerlek, carpisma, nisan, ayar dosyasi
         ["grip"] = m => { Args["mute"] = "1"; Sfx.Muted = true; m.AddChild(new GripTest()); return false; }, // oyuncu akisi: Capa elde, namlu nisanda, araba iki elle
+        ["vfx"] = m => { Args["mute"] = "1"; Sfx.Muted = true; m.AddChild(new VfxTest()); return false; }, // efekt akisi: kitaplik, durum aurasi, goruntuler (progress/m4/efekt/, pencereli)
+        ["playershots"] = m => { Args["mute"] = "1"; Sfx.Muted = true; m.AddChild(new PlayerShots()); return false; }, // oyuncu2: karakter goruntuleri (progress/oyuncu2/, pencereli kosulur)
         ["kemer"] = m => { Args["bot"] = "1"; if (m._quitAfter <= 0) m._quitAfter = 600; m.AddChild(new KemerShots()); return false; }, // karar 23 kaniti: progress/kemer/*.png
         ["save"] = m => { SaveTest.Prepare(); m.AddChild(new SaveTest(m)); return false; }, // kayit: bot bir gun oynar, kaydeder, sahne bastan yuklenir; fark 0 (save/SaveTest.cs)
         ["menu"] = m => { MenuFlowTest.Prepare(); m.AddChild(new MenuFlowTest(m)); return false; }, // kayit: ana menu -> yeni oyun -> Esc ana menu -> Devam -> kapatma kaydi (save/MenuFlowTest.cs)
         ["hayvan"] = m => { Args["bot"] = "1"; Args["hayvanbot"] = "1"; if (m._quitAfter <= 0) m._quitAfter = 1300; return false; }, // hayvan akisi: zincir + ikinci tur (Bot.Hayvan.cs)
         ["savashayvan"] = m => { Args["bot"] = "1"; Args["hayvanbot"] = "1"; Args["savashayvan"] = "1"; if (m._quitAfter <= 0) m._quitAfter = 2200; return false; }, // M3 savas-hayvan: hayvan botu + Kabarma'da hayvanlar ve binek (husbandry/Husbandry.Combat.Test.cs)
         ["borsa"] = m => { Args["borsatest"] = "1"; Args["mute"] = "1"; Sfx.Muted = true; return false; }, // ekonomi2: Borsa, Katalog, Cark (MarketTest.cs)
+        ["tasima"] = m => { Args["tasimatest"] = "1"; Args["mute"] = "1"; Sfx.Muted = true; return false; }, // tasima M4: Kol, Bant, Drone (power/TasimaTest.cs)
         ["holding"] = m => { Args["holdingtest"] = "1"; Args["mute"] = "1"; Sfx.Muted = true; return false; }, // holding M3: kamp, Perde, kervan, baskinlar (holding/HoldingTest.cs)
+        ["ata4"] = m => { Args.TryAdd("fast", "3"); Args.TryAdd("mute", "1"); Sfx.Muted = true; m.AddChild(new Ata4Test()); return false; }, // ata4 (M4): 4 yeni Ata, Kabarik Atalar, 4 yeni Azman, 3 yeni Oyuk koruyucusu (boss/Ata4Test.cs)
         ["boss"] = m => { Args.TryAdd("fast", "3"); Args.TryAdd("mute", "1"); Sfx.Muted = Args["mute"] == "1"; m.AddChild(new AtaTest()); return false; }, // boss akisi: bot iki Ata'yi bulur ve yener (boss/AtaTest.cs)
         ["savas"] = m => { Args.TryAdd("fast", "3"); Args.TryAdd("mute", "1"); Sfx.Muted = Args["mute"] == "1"; m.AddChild(new SavasTest()); return false; }, // savas akisi: gunduz savasi, Azman Homur ve Bozuk (combat/SavasTest.cs)
         ["zincir"] = m => { Args["bot"] = "1"; Args["mute"] = "1"; Sfx.Muted = true; m.AddChild(new ZincirTest()); return false; }, // zincir M2: bot T2 urununu arastirir ve uretir (ZincirTest.cs)

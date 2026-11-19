@@ -30,6 +30,8 @@ public sealed partial class Stamina
     public float BonusMax { get; set; }
     /// <summary>Yenilenme carpani (Dinlenmis +%25, GDD §3.4); M1'de baglanmadi, 1.</summary>
     public float RegenMult { get; set; } = 1f;
+    /// <summary>Depar bedeli carpani (yemek: Salgam Suyu -%20 => 0,8).</summary>
+    public float DrainMult { get; set; } = 1f;
     /// <summary>Sifira indi; depar UnlockAt'e kadar kapali.</summary>
     public bool Exhausted { get; private set; }
     /// <summary>Son Tick'te depar atildi mi.</summary>
@@ -54,7 +56,7 @@ public sealed partial class Stamina
         Sprinting = wantSprint && !Exhausted && Value > 0f;
         if (Sprinting)
         {
-            Value = Math.Max(0f, Value - Def.SprintDrain * dt);
+            Value = Math.Max(0f, Value - Def.SprintDrain * DrainMult * dt);
             SinceSprint = 0f;
             if (Value <= 0f) Exhausted = true;
         }

@@ -45,6 +45,56 @@ public sealed class AzmanUprootDef
     public float LogSeconds { get; set; }
 }
 
+/// <summary>Zirh yalniz arkadan delinir (Azman Kiskac): on ve yan hasar FrontMult ile carpilir; arka yay RearArcDeg.</summary>
+public sealed class AzmanRearDef
+{
+    public float FrontMult { get; set; } = 0.1f;
+    public float RearArcDeg { get; set; } = 140f;
+}
+
+/// <summary>Kule soken kiskac (Azman Kiskac): en yakin yapi parcasina Reach icinde yaklasir ve StructureDamage vurur; ustundeki oyuncuya Damage.</summary>
+public sealed class AzmanRipDef
+{
+    public float Reach { get; set; } = 18f;
+    public float StructureDamage { get; set; } = 220f;
+    public float Radius { get; set; } = 3f;
+    public float Damage { get; set; } = 20f;
+}
+
+/// <summary>Tarla tutusturma (Azman Kizgin): Patches adet yangin lekesi, Radius yaricap, Seconds surer; icindekine Dps, yapiya StructureDps. Sulama ve yagmurlama sondurur.</summary>
+public sealed class AzmanIgniteDef
+{
+    public int Patches { get; set; } = 4;
+    public float Radius { get; set; } = 3.2f;
+    public float Seconds { get; set; } = 20f;
+    public float Dps { get; set; } = 8f;
+    public float StructureDps { get; set; } = 6f;
+    /// <summary>Sulama (Capa) bir vurusta bu kadar saniye soger; yagmurlama saniyede 1 sn.</summary>
+    public float DouseSeconds { get; set; } = 6f;
+}
+
+/// <summary>Surubasi'nin cagirdigi sürü (Ayaz Kurdu; yaratik4 gelene dek koddan): her "howl"da Count tane, ayni anda en cok Max.</summary>
+public sealed class AzmanSummonDef
+{
+    public int Count { get; set; } = 2;
+    public int Max { get; set; } = 6;
+    public string Creature { get; set; } = "";
+    public float Scale { get; set; } = 1f;
+    public float Hp { get; set; }
+    public float Damage { get; set; }
+    public float Speed { get; set; }
+}
+
+/// <summary>Bolunme (Azman Hamur): can orani At esiklerinin altina inince Pieces parca ayrilir (HpFrac × can, ScaleMult kucuk); son parca cekirdektir.</summary>
+public sealed class AzmanSplitDef
+{
+    public List<float> At { get; set; } = new();
+    public int Pieces { get; set; } = 2;
+    public float HpFrac { get; set; } = 0.15f;
+    public float ScaleMult { get; set; } = 0.72f;
+    public float SpeedMult { get; set; } = 1.15f;
+}
+
 public sealed class AzmanRewardDef
 {
     public float Oz { get; set; }
@@ -70,7 +120,7 @@ public sealed class AzmanDef
     public float MoveSpeed { get; set; }
     public float ContactDamage { get; set; }
     public float ContactEvery { get; set; } = 1.2f;
-    /// <summary>Saldiri sirasi: "charge", "uproot".</summary>
+    /// <summary>Saldiri sirasi: "charge", "uproot", "rip", "ignite", "howl".</summary>
     public List<string> Attacks { get; set; } = new();
     public float AttackEvery { get; set; }
     /// <summary>Inisten sonra ilk saldiriya kadar (sn): Azman gelir gelmez hucum eder.</summary>
@@ -79,6 +129,14 @@ public sealed class AzmanDef
     public AzmanChargeDef? Charge { get; set; }
     public AzmanRidersDef? Riders { get; set; }
     public AzmanUprootDef? Uproot { get; set; }
+    public AzmanRearDef? Rear { get; set; }
+    public AzmanRipDef? Rip { get; set; }
+    public AzmanIgniteDef? Ignite { get; set; }
+    public AzmanSummonDef? Summon { get; set; }
+    public AzmanSplitDef? Split { get; set; }
+    /// <summary>Yer tutucu gorunumu: "homur", "bozuk", "kiskac", "kizgin", "surubasi", "hamur"; Color govdenin kod rengi (onaltilik).</summary>
+    public string Decor { get; set; } = "";
+    public string Color { get; set; } = "";
     public AzmanRewardDef Reward { get; set; } = new();
 }
 

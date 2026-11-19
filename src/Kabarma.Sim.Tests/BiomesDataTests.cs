@@ -14,10 +14,11 @@ public class BiomesDataTests
     static readonly GameData D = TestData.Load();
 
     [Fact]
-    public void World_is_640m_and_lake_is_60_to_90m_from_ocak()
+    public void World_is_1800m_with_a_640m_core_and_lake_is_60_to_90m_from_ocak()
     {
         var w = D.Biomes.World;
-        Assert.Equal(640, w.Terrain.Size); // M2 dunyasi (TEKNIK 7, dunya2); M1 kutusu ±146 m area ile korunur
+        Assert.Equal(1800, w.Terrain.Size); // M4 ara adimi (TEKNIK 7, biyom akisi); M2 cekirdegi (coreSize 640) ve M1 kutusu ±146 m area ile korunur
+        Assert.Equal(640, w.Terrain.CoreSize);
         var l = w.Lake;
         float c = MathF.Sqrt(l.Center[0] * l.Center[0] + l.Center[1] * l.Center[1]);
         float reach = l.Radius + l.ShoreNoise;
@@ -56,7 +57,7 @@ public class BiomesDataTests
     [Fact]
     public void Four_bookmarks_in_order()
     {
-        Assert.Equal(new[] { "kapsul", "us", "gol", "tepe", "gecis", "koru" }, D.Biomes.World.Bookmarks.Select(b => b.Id).ToArray()); // M1 dordu + M2 iki biyom (dunya2)
+        Assert.Equal(new[] { "kapsul", "us", "gol", "tepe", "gecis", "koru", "sazlik", "kanyon", "ayaz", "gobek" }, D.Biomes.World.Bookmarks.Select(b => b.Id).ToArray()); // M1 dordu + M2 iki biyom (dunya2) + M4 dort biyom (biyom akisi)
         Assert.All(D.Biomes.World.Bookmarks, b => Assert.Equal(68f, b.Fov)); // oyun kamerasi (Player.cs)
     }
 

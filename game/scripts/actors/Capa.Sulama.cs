@@ -24,6 +24,7 @@ public partial class Capa
         // Gol: nisan noktasi gol tabanina duser (su yuzeyi carpismasiz), World.IsWater onu taniyor.
         if (_d.World.IsWater(aim)) { FillTank(tank, aim, dt); return; }
         if (!tank.CanWater) { _d.Hud.Hint("Su deposu boş: göle nişan al, dolsun", 0.5f); return; }
+        _d.Azman?.Douse(aim, dt); // Azman Kizgin yangin lekeleri sonmeye baslar (ata4, M4)
         _d.Net?.ForwardWater(aim); // ortak: istemcide host'un tarlasi da islanir (depo kisisel)
         var farm = _d.State.Farm;
         bool any = false;
@@ -50,6 +51,7 @@ public partial class Capa
         if (got <= 0) return;
         if (GD.Randf() < 0.3f) Sfx.Play("water", aim, -14f);
         Fx.Burst(aim + Vector3.Up * 0.15f, Palette.SkyNoon, 5, 2.5f, 0.05f, 0.35f);
+        Vfx.Play("farm_water", aim + Vector3.Up * 0.2f);
     }
 
     static string TankText(WaterTank t) => $"Su deposu: {t.Liters:0} / {t.Capacity:0} L";

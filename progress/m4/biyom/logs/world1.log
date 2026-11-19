@@ -1,0 +1,25 @@
+tools/test.ps1  2026-11-19 01:59  git c2b88d3
+
+[PASS] build  exit=0 warnings=0 errors=0
+[PASS] sim  exit=0 Passed!  - Failed:     0, Passed:   660, Skipped:     0, Total:   660, Duration: 55 s - Kabarma.Sim.Tests.dll (net8.0)
+[FAIL] world  exit=1 WORLD RESULT fail 2
+      --- son satirlar: C:\Users\uruskan\Documents\GitHub\kabarma\.claude\worktrees\m1-varlik-72a21b\.tools\run\test\world.log
+      WORLD pois=57 seyir_kulesi_altin_cayir_0@105,40 ata_tasi_altin_cayir_0@64,36 seyir_kulesi_sis_korusu_0@-46,287 ata_tasi_sis_korusu_0@-212,219 seyir_kulesi_isil_sazlik_0@-55,856 ata_tasi_isil_sazlik_0@91,1241 seyir_kulesi_kizil_kanyon_0@-823,1237 ata_tasi_kizil_kanyon_0@-725,1008 seyir_kulesi_ayaz_yaylasi_0@-1122,578 ata_tasi_ayaz_yaylasi_0@-768,391 seyir_kulesi_gobek_0@-392,485 ata_tasi_gobek_0@-401,523
+      WORLD fog_chunks=392 shafts=44 fog_meadow=0.0011 fog_koru=0.0045
+      WORLD note=build_ms ayni makinede ~15 Godot oturumu varken olculdu
+      WORLD m4_nodes=turba:14,kukurt:10,kaucuk_sutu:12,balcik:12,isil_yosun:12,kemik:30,kum:14,kuvars:12,titan_ore:12,katran:10,tuz:12,buz:18,ayaz_kristali:12,ham_maya:10,obsidyen:8,isil_cevher:8
+      WORLD crater_floor=-3.9 rim_max=47.1
+      WORLD light_isil_sazlik: fog=0.0035 sun=2.40
+      WORLD light_kizil_kanyon: fog=0.0014 sun=3.20
+      WORLD light_ayaz_yaylasi: fog=0.0020 sun=2.60
+      WORLD light_gobek: fog=0.0028 sun=2.60
+      WORLD FAIL ayaz_yaylasi decor ayaz_koknar placed 0/650
+      WORLD FAIL ayaz_yaylasi decor ayaz_koknar_genc placed 0/400
+      WORLD RESULT fail 2
+
+sinama     sonuc  sure(sn)  ayrinti
+------     -----  --------  -------
+build      PASS        1.6  exit=0 warnings=0 errors=0
+sim        PASS       59.4  exit=0 Passed!  - Failed:     0, Passed:   660, Skipped:     0, Total:   660, Duration: 55 s - Kabarma.Sim.Tests.dll (net8.0)
+world      FAIL      687.4  exit=1 WORLD RESULT fail 2
+TEST FAIL (1)

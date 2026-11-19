@@ -85,7 +85,7 @@ public partial class World
             {
                 int units = node.Units.Count >= 2 ? rng.RandiRange(node.Units[0], node.Units[1]) : 1;
                 float size = rng.RandfRange(node.Size[0], node.Size.Count > 1 ? node.Size[1] : node.Size[0]);
-                var rock = new Rock(units, size, seed++, node.Item, node.Model) { Name = $"{node.Id}_{seed}" };
+                var rock = new Rock(units, size, seed++, node.Item, node.Model, node.Tint) { Name = $"{node.Id}_{seed}" };
                 AddChild(rock);
                 rock.GlobalPosition = Ground(s) + Vector3.Down * node.Sink * size;
                 _rocks.Add(rock);
@@ -100,7 +100,7 @@ public partial class World
                 {
                     int units = node.Units.Count >= 2 ? brng.RandiRange(node.Units[0], node.Units[1]) : 1;
                     float size = brng.RandfRange(node.Size[0], node.Size.Count > 1 ? node.Size[1] : node.Size[0]);
-                    var rock = new Rock(units, size, seed++, node.Item, node.Model) { Name = $"{id}_{node.Id}_{seed}" };
+                    var rock = new Rock(units, size, seed++, node.Item, node.Model, node.Tint) { Name = $"{id}_{node.Id}_{seed}" };
                     AddChild(rock);
                     rock.GlobalPosition = Ground(s) + Vector3.Down * node.Sink * size;
                     _rocks.Add(rock);
@@ -111,11 +111,11 @@ public partial class World
     /// <summary>Biyomun icinde (agirlik >= 0,7), golden, aciklik ve kesif noktalarindan, dik yamactan uzak dugum yerleri.</summary>
     IEnumerable<Vector3> BiomeNodeSpots(NodeDef node, string biome, RandomNumberGenerator rng)
     {
-        float half = Size / 2f - 8f;
+        var rc = BiomeRect(biome, 8f);
         int made = 0;
-        for (int tries = 0; tries < node.ScatterCount * 60 && made < node.ScatterCount; tries++)
+        for (int tries = 0; tries < node.ScatterCount * 120 && made < node.ScatterCount; tries++)
         {
-            var p = new Vector3(rng.RandfRange(-half, half), 0, rng.RandfRange(-half, half));
+            var p = new Vector3(rng.RandfRange(rc.Position.X, rc.End.X), 0, rng.RandfRange(rc.Position.Y, rc.End.Y));
             if (Map.Weight(biome, p.X, p.Z) < 0.7f || InClearing(p) || InPoiClear(p)) continue;
             float d = p.Length();
             if (node.ScatterDistance.Count >= 2 && (d < node.ScatterDistance[0] || d > node.ScatterDistance[1])) continue;
@@ -129,13 +129,13 @@ public partial class World
     IEnumerable<Vector3> ScatterSpots(NodeDef node, RandomNumberGenerator rng)
     {
         if (node.ScatterCount <= 0 || node.ScatterDistance.Count < 2) yield break;
-        float half = Size / 2f - 6f;
+        float half = (T.CoreSize > 0 ? T.CoreSize : Size) / 2f - 6f; // Cayir'in eski cekirdek siniri (yerlesim ayni kalir)
         int made = 0;
         for (int tries = 0; tries < node.ScatterCount * 40 && made < node.ScatterCount; tries++)
         {
             float a = rng.Randf() * Mathf.Tau, d = rng.RandfRange(node.ScatterDistance[0], node.ScatterDistance[1]);
             var p = new Vector3(Mathf.Cos(a) * d, 0, Mathf.Sin(a) * d);
-            if (Mathf.Abs(p.X) > half || Mathf.Abs(p.Z) > half || InClearing(p)) continue;
+            if (Mathf.Abs(p.X) > half || Mathf.Abs(p.Z) > half || InClearing(p)) continue; // Cayir: eski cekirdek siniri
             if (ShoreDistance(p.X, p.Z) < node.LakeClear || SlopeAt(p.X, p.Z) > node.ScatterSlope) continue;
             made++;
             yield return p;

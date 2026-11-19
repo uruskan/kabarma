@@ -116,6 +116,7 @@ public partial class Director : Node3D
         InitOyuk();        // Director.Oyuk.cs: Oyuklar, Kostebek Bey, Yarasa Yumagi (oyuk, M3)
         WireProgress();    // Director.Progress.cs: Ustalik XP'si, is emri olculeri, basarim ve odul bildirimleri
         WireChips();       // Director.Chips.cs: cip kilidi (Kabarma) ve dusme kaynaklari
+        InitVfx();         // fx/Director.Vfx.cs: ortak efekt kitapligi (durum aurasi, olay efektleri, Kabarma gokyuzu dalgasi)
         State.Farm.Eaten += p => { GD.Print($"EATEN plot {p.X},{p.Y}"); Sfx.Play("pop", FarmView.CellCenter(p.X, p.Y), -2f); };
         Pod.BeginHatchIntro(this); // Pod.Hatch.cs: kapak acilir, Suna giris repliklerini soyler (PLAN 1.4, 0:00)
         InitNet(); // Director.Net.cs (ortak): --coop varsa NetSync; tek oyuncuda null
@@ -183,6 +184,7 @@ public partial class Director : Node3D
         State.Food.Tick(dt);
         Player.MaxHp = Data.Tool.Player.MaxHp + State.Food.BonusMaxHp;
         if (!Player.Down && Player.Hp < Player.MaxHp) Player.Hp = Mathf.Min(Player.MaxHp, Player.Hp + State.Food.Regen * dt);
+        ApplyFoodEffects(); // Director.Asi.cs: Dayaniklilik eki, depar bedeli, hiz (ICERIK 15 ozel etkileri)
         if (Input.IsActionJustPressed("ui_accept") && Hud.ReportOpen) CloseReport();
         TickEconomy(dt); // Director.Economy.cs: gecikmeli odeme, kasa izleme
         TickKemer(dt);   // Director.Belt.cs: elde tutulan esya, el uretim kuyrugu (karar 23)

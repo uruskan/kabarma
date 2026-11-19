@@ -99,6 +99,30 @@ public partial class FarmView
             if (n is Node3D n3 && IsInstanceValid(n3)) hives.Add((n3.GlobalPosition.X, n3.GlobalPosition.Z));
         Farm.SetScarecrows(scare);
         Farm.SetPollinators(hives);
+        ApplyGreenhouses(d);
+    }
+
+    HashSet<(int, int)> _seraSet = new();
+
+    /// <summary>
+    /// Sera (ICERIK 5 bant kurali, 11): calisan bir Sera Kontrol Unitesinin greenhouse.radius yaricapindaki tarla kareleri
+    /// biyom bandindan bagimsiz buyur. Yalniz bu tarama isaretledigi kareleri geri alir (elle isaretlenenlere dokunmaz).
+    /// </summary>
+    void ApplyGreenhouses(Director d)
+    {
+        float r = _data.Crops.Genetics.Greenhouse.Radius;
+        var units = d.Stations.Where(s => IsInstanceValid(s) && s.IsInsideTree() && s.Def.Station == "sera_kontrol_unitesi" && (s.Queue.PowerOk == null || s.Queue.PowerOk()))
+            .Select(s => s.GlobalPosition).ToList();
+        var now = new HashSet<(int, int)>();
+        if (units.Count > 0)
+            foreach (var p in Farm.Plots)
+            {
+                var c = CellCenter(p.X, p.Y);
+                if (units.Any(u => new Vector2(u.X - c.X, u.Z - c.Z).Length() <= r)) now.Add((p.X, p.Y));
+            }
+        foreach (var k in _seraSet) if (!now.Contains(k)) Farm.SetGreenhouse(k.Item1, k.Item2, false);
+        foreach (var k in now) Farm.SetGreenhouse(k.Item1, k.Item2, true);
+        _seraSet = now;
     }
 
     // ---------- yabani bitkiler ----------
@@ -154,6 +178,7 @@ public partial class FarmView
             var a = _data.Crops.Genetics.AlacaOf(h.Alaca);
             d?.Hud.Hint($"Alaca! {name}: satışta ×{a?.PriceMult}", 2.5f);
             Fx.Burst(at + Vector3.Up * 0.6f, CropVisuals.AlacaTint(h.Alaca), 30, 6f, 0.12f, 0.9f);
+        Vfx.Play("farm_alaca", at + Vector3.Up * 0.5f, null, CropVisuals.AlacaTint(h.Alaca));
             Sfx.Play("swell", at, -2f);
         }
         GD.Print($"TARIM harvest crop={h.Crop} item={h.Item} yield={h.Yield} seeds={h.Seeds} wild={h.Wild} crossed={h.Crossed}");

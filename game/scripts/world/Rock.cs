@@ -21,7 +21,7 @@ public partial class Rock : Node3D
     float _flash;
 
     /// <param name="model">Model yolu (biomes.json "nodes"); bos ya da yoksa koddan kurulur.</param>
-    public Rock(int stones, float size, ulong seed, string item = "stone", string model = null)
+    public Rock(int stones, float size, ulong seed, string item = "stone", string model = null, string tint = "")
     {
         Stones = _max = stones;
         _size = size;
@@ -32,6 +32,7 @@ public partial class Rock : Node3D
         if (loaded != null)
         {
             FromModel = true;
+            if (!string.IsNullOrEmpty(tint)) World.TintNode(loaded, new Color(tint)); // yer tutucu: ayni kaya baska cevher tonu (biomes.json nodes.tint)
             _mesh = new Node3D();
             loaded.Scale = Vector3.One * size;
             loaded.Rotation = new Vector3(0, r.Randf() * Mathf.Tau, 0);

@@ -233,7 +233,7 @@ public sealed class CreatureRig
     public void Play(string slot, float blend = 0.15f, float speed = 1f, bool restart = false)
     {
         if (!Animated || !SlotAnim.TryGetValue(slot, out var anim)) return;
-        Player.SpeedScale = speed;
+        Player.SpeedScale = speed * (Def.Rig != null && Def.Rig.ClipSpeed.TryGetValue(slot, out var cs) ? cs : 1f); // ClipSpeed: yurume klibinden turetilen kosu
         if (!restart && Slot == slot && Player.IsPlaying()) return;
         Slot = slot;
         Player.Play(anim, blend);

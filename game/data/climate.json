@@ -1,0 +1,18 @@
+{
+  "_not": "Biyom sozlesmesi (M4 biyom): altı biyomun kimligi ve kademesi (ICERIK §1), iklim tehlikeleri ve direnc kaynaklari (GDD §3.5, ICERIK §16). Direnc yetmezse saniyede 1-3 can gider ve dayaniklilik yenilenmez; hicbir tehlike aninda oldurmez. gear: giyili kusam modulu; foods: etkin yemek; conditions: shelter (kapali alan ya da isi kaynagi), shade, wet. Moduller ve yemekler kendi akislarinda gelir (kusam, tarim4); kimlikler docs/kimlikler-m4.md.",
+  "biomeIds": ["altin_cayir", "sis_korusu", "isil_sazlik", "kizil_kanyon", "ayaz_yaylasi", "gobek"],
+  "hazards": {
+    "cold": { "name": "Soğuk", "gear": ["termal_astar"], "foods": ["acili_ezme", "kar_cayi"], "conditions": ["shelter"], "drainPerSecond": 2.0, "blocksStaminaRegen": true },
+    "heat": { "name": "Sıcak", "gear": ["serin_yelek"], "foods": ["ayran", "karpuz_peynir"], "conditions": ["shade", "wet"], "drainPerSecond": 1.5, "blocksStaminaRegen": true },
+    "toxic_gas": { "name": "Zehirli gaz", "gear": ["filtre_maskesi"], "foods": [], "conditions": [], "drainPerSecond": 2.0, "blocksStaminaRegen": true },
+    "maya_burn": { "name": "Maya yanığı", "gear": ["maya_yalitimi"], "foods": ["eksi_maya_ekmegi"], "conditions": [], "drainPerSecond": 3.0, "blocksStaminaRegen": true }
+  },
+  "biomes": {
+    "altin_cayir": { "tier": 1, "hazards": [], "entryGear": [] },
+    "sis_korusu": { "tier": 2, "hazards": [], "entryGear": [] },
+    "isil_sazlik": { "tier": 3, "hazards": [ { "hazard": "toxic_gas", "when": "always", "zone": "gas_pit" } ], "entryGear": ["filtre_maskesi"] },
+    "kizil_kanyon": { "tier": 4, "hazards": [ { "hazard": "heat", "when": "day", "zone": "" } ], "entryGear": ["serin_yelek"] },
+    "ayaz_yaylasi": { "tier": 5, "hazards": [ { "hazard": "cold", "when": "always", "zone": "" } ], "entryGear": ["termal_astar"] },
+    "gobek": { "tier": 6, "hazards": [ { "hazard": "maya_burn", "when": "always", "zone": "" } ], "entryGear": ["maya_yalitimi"] }
+  }
+}

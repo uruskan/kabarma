@@ -34,6 +34,11 @@ public sealed class RawSourceDef
     public string Id { get; set; } = "";
     public int Tier { get; set; } = 1;
     public string By { get; set; } = "";
+    /// <summary>
+    /// Kaynagin oyunda nasil uretildigi (M4 sikilastirma): "mayavault" (Kabarma safagi, MayaVault), "pending:&lt;akis&gt;" (o
+    /// akisin dugumu henuz yok: kabul akisi bunlari bosaltmak zorunda), bos (T1-T2: dunya/tarim/hayvan, bot yoluyla sinanir).
+    /// </summary>
+    public string Via { get; set; } = "";
 }
 
 public sealed class ResearchFile

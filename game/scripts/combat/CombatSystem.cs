@@ -42,6 +42,7 @@ public partial class CombatSystem : Node
     {
         if (t == null || !t.Alive) return default;
         var r = t.TakeHit(hit, from);
+        Vfx.Hit(t.Center, hit, r); // fx/Vfx.cs: kıvılcım, kritik halka, kabarık patlaması
         Resolve(t, 0);
         return r;
     }
@@ -73,12 +74,12 @@ public partial class CombatSystem : Node
             {
                 case AreaKind.BurnSpread: Spreads += near.Count; break;
                 case AreaKind.ShockChain: Chains += near.Count; break;
-                case AreaKind.SwellBurst: Bursts++; Fx.Burst(at, Palette.MayaTeal, 40, 7f, 0.22f, 0.9f, true, -1f); Sfx.Play("kabarik_gumleme", at, 2f); break;
+                case AreaKind.SwellBurst: Bursts++; Vfx.Play("swell_burst", at); Sfx.Play("kabarik_gumleme", at, 2f); break;
             }
             foreach (var t in near)
             {
-                if (a.Kind == AreaKind.ShockChain) Fx.Burst((at + t.Center) * 0.5f, Palette.Warning, 6, 3f, 0.06f, 0.25f, true);
-                if (a.Kind == AreaKind.BurnSpread) Fx.Burst(t.Center, Palette.Accent, 6, 2f, 0.08f, 0.4f, true, -3f);
+                if (a.Kind == AreaKind.ShockChain) Vfx.Play("shock_chain", (at + t.Center) * 0.5f);
+                if (a.Kind == AreaKind.BurnSpread) Vfx.Play("burn_spread", t.Center);
                 // Alan etkisi de hedefin kendi kuralindan gecer (Ata asamasi, kalkan): isabet olarak iletilir.
                 if (a.Kind == AreaKind.BurnSpread) Combat.ApplyArea(Data, t.Body, a);
                 else

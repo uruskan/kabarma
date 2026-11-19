@@ -153,7 +153,7 @@ public partial class PlotView : Node3D
     public void OnBitten()
     {
         if (_crop == null) return;
-        Fx.Burst(_crop.GlobalPosition + Vector3.Up * 0.4f, Palette.Plant, 6, 2.5f, 0.07f, 0.4f);
+        Vfx.Play("farm_sprout", _crop.GlobalPosition + Vector3.Up * 0.3f);
         _flash = 0.25f;
         // Ekme efekti Capa.Toprak'ta: feel.json sources.toprak_ekim.
     }
@@ -185,6 +185,7 @@ public partial class PlotView : Node3D
         {
             Fx.Burst(_crop.GlobalPosition + Vector3.Up * 0.5f, CropVisuals.ProduceColor(Plot.Crop), 22, 5f, 0.12f, 0.6f);
             Fx.Burst(_crop.GlobalPosition + Vector3.Up * 0.5f, Palette.TurnipTop, 12, 4f, 0.1f, 0.6f);
+        Vfx.Play("farm_harvest", _crop.GlobalPosition + Vector3.Up * 0.4f);
             _crop.QueueFree();
             _crop = null;
         }

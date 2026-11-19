@@ -1,4 +1,4 @@
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using Godot;
 using Kabarma.Sim;
 
@@ -24,6 +24,10 @@ public partial class World : Node3D
     /// <summary>Kenar uzunlugu (m) ve 1 m'lik hucre sayisi.</summary>
     public float Size { get; private set; }
     public int Cells { get; private set; }
+    /// <summary>Dunya karesinin merkezi (M4 ara adimi: 1800 m dunya kratere yakin merkezlenir; Ocak yine 0,0).</summary>
+    public Vector2 Center { get; private set; }
+    /// <summary>Karenin bati-guney kosesi: yukseklik izgarasinin (0,0) hucresi.</summary>
+    public Vector2 Origin => Center - new Vector2(Size, Size) * 0.5f;
 
     FastNoiseLite _noise, _hillNoise, _shoreNoise;
     float[,] _h;
@@ -34,6 +38,7 @@ public partial class World : Node3D
         Data = (GetParent() as Director)?.Data ?? GameData.Load(f => FileAccess.GetFileAsString("res://data/" + f));
         Cells = T.Size;
         Size = T.Size;
+        Center = new Vector2(T.CenterX, T.CenterZ);
         _noise = new FastNoiseLite { Seed = T.Seed, Frequency = T.NoiseFrequency, FractalOctaves = 3, NoiseType = FastNoiseLite.NoiseTypeEnum.Perlin };
         _hillNoise = new FastNoiseLite { Seed = T.Seed + 1, Frequency = T.HillFrequency, FractalOctaves = 2, NoiseType = FastNoiseLite.NoiseTypeEnum.Perlin };
         _shoreNoise = new FastNoiseLite { Seed = T.Seed + 2, Frequency = 0.08f, NoiseType = FastNoiseLite.NoiseTypeEnum.Perlin };
@@ -65,14 +70,14 @@ public partial class World : Node3D
         float flat = Mathf.SmoothStep(T.BaseFlatInner, T.BaseFlatOuter, d);
         float far = Mathf.SmoothStep(T.HillStart, T.HillEnd, d);
         float hills = (_hillNoise.GetNoise2D(wx, wz) * 0.5f + 0.5f) * T.HillAmp * far;
-        float edge = Mathf.SmoothStep(T.EdgeStart, Size / 2f, Mathf.Max(Mathf.Abs(wx), Mathf.Abs(wz))) * T.EdgeHeight;
+        float edge = Mathf.SmoothStep(T.EdgeStart, Size / 2f, Mathf.Max(Mathf.Abs(wx - Center.X), Mathf.Abs(wz - Center.Y))) * T.EdgeHeight;
         float peak = 0f;
         if (T.Peak.Count == 2)
         {
             float dp = new Vector2(wx - T.Peak[0], wz - T.Peak[1]).Length() / T.PeakRadius;
             peak = T.PeakHeight * Mathf.Exp(-dp * dp) * Mathf.SmoothStep(T.HillStart, T.HillStart + 25f, d);
         }
-        return n * flat + hills + edge + peak + BiomeHeight(wx, wz);
+        return n * flat + hills + edge + peak + BiomeHeight(wx, wz) + Map.RimHeight(wx, wz);
     }
 
     void BuildHeights()
@@ -80,7 +85,7 @@ public partial class World : Node3D
         _h = new float[Cells + 1, Cells + 1];
         for (int x = 0; x <= Cells; x++)
         for (int z = 0; z <= Cells; z++)
-            _h[x, z] = BaseHeight(x - Cells / 2f, z - Cells / 2f);
+            _h[x, z] = BaseHeight(x + Origin.X, z + Origin.Y);
         CarveLake();
         FlattenPois(); // World.Pois.cs: kesif noktasi duzlestirmesi (TEKNIK 7.2)
     }
@@ -88,8 +93,8 @@ public partial class World : Node3D
     public float HeightAt(float wx, float wz)
     {
         if (InteriorFloor(wx, wz, out float inside)) return inside; // World.Oyuk.cs: Oyuk odasi tabani (M3)
-        float fx = Mathf.Clamp(wx + Cells / 2f, 0, Cells - 0.001f);
-        float fz = Mathf.Clamp(wz + Cells / 2f, 0, Cells - 0.001f);
+        float fx = Mathf.Clamp(wx - Origin.X, 0, Cells - 0.001f);
+        float fz = Mathf.Clamp(wz - Origin.Y, 0, Cells - 0.001f);
         int ix = (int)fx, iz = (int)fz;
         float tx = fx - ix, tz = fz - iz;
         float a = Mathf.Lerp(_h[ix, iz], _h[ix + 1, iz], tx);
@@ -131,7 +136,7 @@ public partial class World : Node3D
             for (int x = 0; x <= w; x++)
             {
                 int gx = cx + x, gz = cz + z, i = z * m + x;
-                verts[i] = new Vector3(gx - Cells / 2f, _h[gx, gz], gz - Cells / 2f);
+                verts[i] = new Vector3(gx + Origin.X, _h[gx, gz], gz + Origin.Y);
                 float hl = _h[Mathf.Max(gx - 1, 0), gz], hr = _h[Mathf.Min(gx + 1, Cells), gz];
                 float hd = _h[gx, Mathf.Max(gz - 1, 0)], hu = _h[gx, Mathf.Min(gz + 1, Cells)];
                 norms[i] = new Vector3(-(hr - hl) * 0.5f, 1f, -(hu - hd) * 0.5f).Normalized();
@@ -155,7 +160,7 @@ public partial class World : Node3D
             root.AddChild(new MeshInstance3D { Mesh = mesh, MaterialOverride = _groundMat, Name = $"T_{cx / TerrainChunk}_{cz / TerrainChunk}" });
         }
 
-        var body = new StaticBody3D { Name = "TerrainBody" };
+        var body = new StaticBody3D { Name = "TerrainBody", Position = new Vector3(Center.X, 0, Center.Y) }; // HeightMapShape kendi merkezindedir: dunya merkezine tasi (M4 ara adimi)
         var shape = new HeightMapShape3D { MapWidth = n, MapDepth = n };
         var data = new float[n * n];
         for (int z = 0; z < n; z++)

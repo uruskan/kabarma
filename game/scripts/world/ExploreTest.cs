@@ -75,7 +75,7 @@ public partial class ExploreTest : Node
         yield return 0.3;
         Check(X.Climbed.Contains(cayirTower.Id), "kule tirmanildi");
         Check(X.Found.Contains(cayirTower.Id), "kule bulundu");
-        Check(X.Percent > 90f && X.Percent > walk, $"kule 600 m acar (%{X.Percent:0})");
+        Check(X.Percent > 25f && X.Percent > walk, $"kule 600 m acar (%{X.Percent:0}; 1800 m dunyada ~%35)"); // M4 ara adimi: 600 m yaricap 1800 m karenin ~%35'i
         Check(_d.Player.GlobalPosition.Y > W.PoiPos(cayirTower).Y + 12f, $"oyuncu kule tepesinde (y={_d.Player.GlobalPosition.Y:0.0})");
         Check(E.Prompt(_d.Player.GlobalPosition)?.verb == "İn", "tepede istem: İn");
         E.Interact();

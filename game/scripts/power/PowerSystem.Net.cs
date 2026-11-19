@@ -13,7 +13,7 @@ namespace Kabarma.Game;
 /// </summary>
 public partial class PowerSystem
 {
-    public enum Op : byte { Toggle = 1, Priority = 2, Press = 3, Unplug = 4, Dismantle = 5 }
+    public enum Op : byte { Toggle = 1, Priority = 2, Press = 3, Unplug = 4, Dismantle = 5, Filter = 6, Reset = 7, Refuel = 8 }
 
     /// <summary>Director.InitNet'ten sonra (ertelenmis) bir kez.</summary>
     public void BindNet()
@@ -40,6 +40,7 @@ public partial class PowerSystem
             w.VarU((uint)x.Id); w.Str(x.Def);
             w.F32(x.X); w.F32(x.Y); w.F32(x.Z); w.F32(x.Yaw);
             w.U8((byte)x.Priority); w.Bool(x.On);
+            w.Str(x.Filter); w.Bool(x.Mem); w.VarU((uint)x.Count); w.F32(x.Fuel); // M4 tasima: filtre, bellek, sayac, yakit
             w.VarU((uint)Mathf.RoundToInt(x.StoredWh));
             w.Bool(x.PressLeft > 0);
         }
@@ -57,7 +58,9 @@ public partial class PowerSystem
         var nodes = new System.Collections.Generic.List<PowerNode>();
         for (int i = 0; i < count; i++)
         {
-            var x = new PowerNode { Id = (int)r.VarU(), Def = r.Str(), X = r.F32(), Y = r.F32(), Z = r.F32(), Yaw = r.F32(), Priority = r.U8(), On = r.Bool(), StoredWh = r.VarU() };
+            var x = new PowerNode { Id = (int)r.VarU(), Def = r.Str(), X = r.F32(), Y = r.F32(), Z = r.F32(), Yaw = r.F32(), Priority = r.U8(), On = r.Bool() };
+            x.Filter = r.Str(); x.Mem = r.Bool(); x.Count = (int)r.VarU(); x.Fuel = r.F32();
+            x.StoredWh = r.VarU();
             bool pressed = r.Bool();
             var old = n.Get(x.Id);
             x.PressLeft = pressed ? (old?.PressLeft > 0 ? old.PressLeft : F.ButtonSeconds) : 0f;
@@ -117,6 +120,7 @@ public partial class PowerSystem
         switch (op)
         {
             case Op.Toggle: n.On = !n.On; break;
+            case Op.Filter: case Op.Reset: case Op.Refuel: ApplyTransport(op, n, bag); break; // M4 tasima (PowerSystem.Transport.cs)
             case Op.Priority: n.Priority = n.Priority >= F.PriorityMax ? F.PriorityMin : n.Priority + 1; break;
             case Op.Press:
                 Net.Press(F, id);

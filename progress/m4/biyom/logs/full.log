@@ -1,0 +1,293 @@
+tools/test.ps1  2026-11-19 04:10  git c2b88d3
+
+[PASS] build  exit=0 warnings=0 errors=0
+[PASS] sim  exit=0 Passed!  - Failed:     0, Passed:   660, Skipped:     0, Total:   660, Duration: 53 s - Kabarma.Sim.Tests.dll (net8.0)
+[PASS] bench  exit=0 1000 gun 2.357 sn, ayrilan 107.4 MB, tepe 94.0 MB (Release, 3x3)
+[FAIL] bot  exit=1 RESULT fail bot did not reach end step=mine
+      --- son satirlar: C:\Users\uruskan\Documents\GitHub\kabarma\.claude\worktrees\m1-varlik-72a21b\.tools\run\test\bot.log
+      WILDLIFE spawn dalli herd=3 at=-139,399
+      WILDLIFE spawn vicik herd=1 at=-149,483
+      WILDLIFE spawn findikci herd=3 at=-166,511
+      WILDLIFE spawn dalli herd=2 at=-206,491
+      WILDLIFE spawn findikci herd=2 at=-175,485
+      WILDLIFE spawn bozuk herd=1 at=-148,497
+      WILDLIFE spawn vicik herd=1 at=-163,489
+      WILDLIFE spawn vizviz swarm at=-266,468
+      WILDLIFE spawn vizviz swarm at=-88,528
+      MUSIC day silence 177s
+      RESULT fail bot did not reach end step=mine t=900.0
+      QUIT t=900.0
+[FAIL] hayvan  exit=1 HAYVAN satiri yok | RESULT fail bot did not reach end step=mine
+      --- son satirlar: C:\Users\uruskan\Documents\GitHub\kabarma\.claude\worktrees\m1-varlik-72a21b\.tools\run\test\hayvan.log
+      WILDLIFE spawn vicik herd=2 at=-78,423
+      WILDLIFE spawn dalli herd=2 at=-320,414
+      WILDLIFE spawn vicik herd=1 at=-263,391
+      WILDLIFE spawn vizviz swarm at=-117,435
+      WILDLIFE spawn findikci herd=3 at=-188,483
+      WILDLIFE spawn vicik herd=1 at=-97,545
+      WILDLIFE spawn dalli herd=4 at=-198,503
+      WILDLIFE spawn findikci herd=2 at=-106,600
+      MUSIC day silence 177s
+      WILDLIFE spawn bozuk herd=1 at=-109,551
+      RESULT fail bot did not reach end step=mine t=1300.0
+      QUIT t=1300.0
+[FAIL] savashayvan  exit=1 RESULT fail bot did not reach end step=mine
+      --- son satirlar: C:\Users\uruskan\Documents\GitHub\kabarma\.claude\worktrees\m1-varlik-72a21b\.tools\run\test\savashayvan.log
+      WILDLIFE spawn findikci herd=2 at=-34,484
+      WILDLIFE spawn findikci herd=3 at=-206,465
+      WILDLIFE spawn vizviz swarm at=-123,589
+      WILDLIFE spawn vizviz swarm at=-171,513
+      WILDLIFE spawn vicik herd=2 at=-138,487
+      WILDLIFE spawn dalli herd=3 at=-191,509
+      WILDLIFE spawn dalli herd=2 at=-192,570
+      WILDLIFE spawn vicik herd=2 at=-79,538
+      MUSIC day silence 177s
+      MUSIC day silence 177s
+      RESULT fail bot did not reach end step=mine t=2200.0
+      QUIT t=2200.0
+[FAIL] buildtest  exit=1 placed=89 failed=6 pieces=88
+      --- son satirlar: C:\Users\uruskan\Documents\GitHub\kabarma\.claude\worktrees\m1-varlik-72a21b\.tools\run\test\buildtest.log
+      OK   yapi: plan tamam: pencereli_duvar ()
+      OK   yapi: plan tamam: duz_cati ()
+      OK   yapi: plan parcalari kuruldu ve dengede
+      SHOT yapi_plan_kuruldu.png (basliksiz: atlandi)
+      OK   yapi: Plan Defteri: 6 parca kaydedildi
+      SHOT yapi_defter_hayalet.png (basliksiz: atlandi)
+      BLUEPRINT placed 6/6 'Barınak'
+      BLUEPRINT 6/6
+      OK   yapi: Plan Defteri yerlestirme 6/6
+      OK   yapi: defterden konanlar plan hayaleti
+      SHOT yapi_defter_konuldu.png (basliksiz: atlandi)
+      BUILD RESULT placed=89 failed=6 pieces=88
+[PASS] audio  exit=0 ok sounds=60 playable=60 variant_files=180 buses=6 layers_loaded=3/3 day_music=yes
+[PASS] world  exit=0 WORLD RESULT ok checks passed (46503 ms)
+[FAIL] explore  exit=1 EXPLORE RESULT fail 2: kule 600 m acar (%33); yere indi
+      --- son satirlar: C:\Users\uruskan\Documents\GitHub\kabarma\.claude\worktrees\m1-varlik-72a21b\.tools\run\test\explore.log
+      EXPLORE nest yuva_altin_cayir_0 +1 egg
+      EXPLORE ok yuva bir yumurta verdi
+      EXPLORE ok bos yuva istem vermez
+      EXPLORE ok enkaz 12 Hurda
+      EXPLORE ok enkaz bos, gun 6'te yenilenir
+      MAP open percent=44.1 found=6
+      EXPLORE ok harita acildi
+      EXPLORE ok isaret kondu
+      EXPLORE ok harita kapandi
+      EXPLORE flight_land_off=6.0 apex=59
+      EXPLORE percent=44.1 found=6 flights=1
+      EXPLORE RESULT fail 2: kule 600 m acar (%33); yere indi
+[PASS] oyuk  exit=0 OYUK RESULT ok checks=passed hurt=6 rooms=6
+[FAIL] boss  exit=1 RESULT fail boss defeated= fights=koca_pofuduk:300 player_hp=100 shears=0 pillar_stuns=0 shard_hits=0 wave_jumps=0 seals=
+      --- son satirlar: C:\Users\uruskan\Documents\GitHub\kabarma\.claude\worktrees\m1-varlik-72a21b\.tools\run\test\boss.log
+      ATA pillar_hit koca_pofuduk
+      ATA pillar_hit koca_pofuduk
+      WILDLIFE spawn pofuduk herd=3 at=-39,96
+      ATA pillar_hit koca_pofuduk
+      ATA pillar_hit koca_pofuduk
+      ATA pillar_hit koca_pofuduk
+      ATA pillar_hit koca_pofuduk
+      ATA pillar_hit koca_pofuduk
+      ATA pillar_hit koca_pofuduk
+      ATA pillar_hit koca_pofuduk
+      ATA pillar_hit koca_pofuduk
+      RESULT fail boss defeated= fights=koca_pofuduk:300 player_hp=100 shears=0 pillar_stuns=0 shard_hits=0 wave_jumps=0 seals= t=312 :: koca_pofuduk: 300 sn'de yenilmedi (asama 1, can 1400/1400)
+[FAIL] savas  exit=1 RESULT fail savas day_down=False defeated= fights= player_hp=100 hurts=0 walls_placed=0 wall_hits=0 riders=0 uproots=0 log_landings=0 log_hits=0 spreads=0 chains=0 wild_mixed=
+      --- son satirlar: C:\Users\uruskan\Documents\GitHub\kabarma\.claude\worktrees\m1-varlik-72a21b\.tools\run\test\savas.log
+      HATCH intro done
+      WILDLIFE spawn pofuduk herd=2 at=22,-164
+      SUNA line=giris_2 voice=yes
+      WILDLIFE spawn gidak herd=4 at=75,-108
+      WILDLIFE spawn sinsi herd=1 at=51,113
+      WILDLIFE spawn pofuduk herd=2 at=-100,42
+      WILDLIFE spawn cekirge swarm at=85,67
+      WILDLIFE spawn homur herd=1 at=-37,52
+      WILDLIFE spawn gidak herd=2 at=95,-92
+      EXPLORE found yabani_bahce_altin_cayir_0 at=-145,2
+      WILDLIFE spawn vicik herd=1 at=-407,65
+      RESULT fail savas day_down=False defeated= fights= player_hp=100 hurts=0 walls_placed=0 wall_hits=0 riders=0 uproots=0 log_landings=0 log_hits=0 spreads=0 chains=0 wild_mixed= t=123 :: gunduz: yabani Bozuk 120 sn'de dusmedi (can 300)
+[PASS] camera  exit=0 RESULT ok camera checks=73
+[FAIL] grip  exit=1 RESULT fail grip (4/67) cart=sag 9256.8cm sol 9262.8cm araba (yururken): eller saplarda degil (sag 3961.3, sol 3961.3 cm); araba (dururken): eller saplarda degil (sag 9256.8, sol 9262.8 cm); araba: saplar kolun yetisemeyecegi kadar asagida (kol 0.55 m, omuz-sap dikey -92.88, yana 0.12 m); araba: pushReach 0.34 m, olculen koldan hesaplanan -0.02 m
+      --- son satirlar: C:\Users\uruskan\Documents\GitHub\kabarma\.claude\worktrees\m1-varlik-72a21b\.tools\run\test\grip.log
+      GRIP ates/Kazma gap=0.0cm namlu-nisan=0.6d
+      GRIP ates/Bicme gap=0.0cm namlu-nisan=0.6d
+      GRIP cart model sag=(-0.28596115, 0.7204399, -0.48311043) sol=(0.28627014, 0.7205, -0.48307037) kesit sag=3.0x5.0cm sol=3.0x5.0cm arka_uc=-0.540 kenar=0.717 on_ust=0.721
+      CART grab speed=4.00
+      WILDLIFE spawn homur herd=1 at=-9,-80
+      WILDLIFE spawn homur herd=2 at=44,93
+      GRIP FAIL araba (yururken): eller saplarda degil (sag 3961.3, sol 3961.3 cm)
+      GRIP FAIL araba (dururken): eller saplarda degil (sag 9256.8, sol 9262.8 cm)
+      GRIP FAIL araba: saplar kolun yetisemeyecegi kadar asagida (kol 0.55 m, omuz-sap dikey -92.88, yana 0.12 m)
+      GRIP FAIL araba: pushReach 0.34 m, olculen koldan hesaplanan -0.02 m
+      GRIP cart sag=3961.3/9256.8cm sol=3961.3/9262.8cm (yururken/dururken) eksen=0.0/0.0d kol=0.547 omuz_onde=-0.024 omuz-sap_dikey=-92.885 yana=0.119 itme_ideal=-0.024 pushReach=0.340 sap_onde=0.343 egim=3.2d
+      RESULT fail grip (4/67) cart=sag 9256.8cm sol 9262.8cm araba (yururken): eller saplarda degil (sag 3961.3, sol 3961.3 cm); araba (dururken): eller saplarda degil (sag 9256.8, sol 9262.8 cm); araba: saplar kolun yetisemeyecegi kadar asagida (kol 0.55 m, omuz-sap dikey -92.88, yana 0.12 m); araba: pushReach 0.34 m, olculen koldan hesaplanan -0.02 m
+[FAIL] save  exit=1 RESULT fail bot ilk gunu 1500 sn icinde bitirmedi (adim mine)
+      --- son satirlar: C:\Users\uruskan\Documents\GitHub\kabarma\.claude\worktrees\m1-varlik-72a21b\.tools\run\test\save.log
+      WILDLIFE spawn dalli herd=2 at=-113,583
+      WILDLIFE spawn dalli herd=4 at=-188,474
+      WILDLIFE spawn findikci herd=2 at=-155,540
+      WILDLIFE spawn vicik herd=2 at=-84,596
+      WILDLIFE spawn findikci herd=2 at=-119,553
+      WILDLIFE spawn vicik herd=1 at=-174,592
+      WILDLIFE spawn vizviz swarm at=-160,499
+      WILDLIFE spawn vizviz swarm at=-153,543
+      WILDLIFE spawn bozuk herd=1 at=-189,472
+      MUSIC day silence 177s
+      SAVE ok slot=yuva1 reason=otomatik bytes=13274 sections=43 day=1
+      RESULT fail bot ilk gunu 1500 sn icinde bitirmedi (adim mine)
+[PASS] menu  exit=0 RESULT ok menu new->esc->menu->devam->close
+[FAIL] tarim  exit=1 RESULT fail bot did not reach end step=mine
+      --- son satirlar: C:\Users\uruskan\Documents\GitHub\kabarma\.claude\worktrees\m1-varlik-72a21b\.tools\run\test\tarim.log
+      BOT tarim korkuluk wood=0 fiber=0 have=0 inHand=True head=Bicme menu=False pos=(241.22658, -7123582.5, -129.77124)
+      BOT tarim korkuluk wood=0 fiber=0 have=0 inHand=True head=Bicme menu=False pos=(241.22658, -7124650, -129.77124)
+      BOT tarim stage=1 crop= seeds=0 t=895
+      BOT tarim korkuluk wood=0 fiber=0 have=0 inHand=True head=Bicme menu=False pos=(241.22658, -7203883.5, -129.77124)
+      BOT tarim korkuluk wood=0 fiber=0 have=0 inHand=True head=Bicme menu=False pos=(241.22658, -7204957, -129.77124)
+      BOT tarim korkuluk wood=0 fiber=0 have=0 inHand=True head=Bicme menu=False pos=(241.22658, -7206031, -129.77124)
+      BOT tarim stage=1 crop= seeds=0 t=900
+      BOT tarim korkuluk wood=0 fiber=0 have=0 inHand=True head=Bicme menu=False pos=(241.22658, -7284634.5, -129.77124)
+      BOT tarim korkuluk wood=0 fiber=0 have=0 inHand=True head=Bicme menu=False pos=(241.22658, -7285714, -129.77124)
+      BOT tarim korkuluk wood=0 fiber=0 have=0 inHand=True head=Bicme menu=False pos=(241.22658, -7285714, -129.77124)
+      RESULT fail bot did not reach end step=mine t=900.0
+      QUIT t=900.0
+[PASS] creatures  exit=0 RESULT ok creatures=10 wild=11 clips=80 posed=74
+[FAIL] latency  exit=1 RESULT fail heads=4/7 budget_max_ms=33.3 wall_med_ms=38.9 wall_max_ms=56.1 hitstop=fail :: kazma: 8/8 basista tepki yok | bicme: 8/8 basista tepki yok | toprak: 8/8 basista tepki yok | cekim: S urun tutulamadi | tirpan isabet: duraklama olmadi | civi isabet: duraklama olmadi
+      --- son satirlar: C:\Users\uruskan\Documents\GitHub\kabarma\.claude\worktrees\m1-varlik-72a21b\.tools\run\test\latency.log
+      TRIGGER civi 1sn_basili_atis=1 yari otomatik ok
+      TRIGGER tirpan 1sn_basili_atis=3 tam otomatik ok
+      HITSTOP tirpan isinma: istenen=0.0ms olculen=0.0ms kare=0.0ms
+      WILDLIFE spawn pofuduk herd=3 at=-135,-50
+      HITSTOP tirpan isabet yok FAIL
+      HITSTOP tirpan kritik  veri=60 istenen=60.0ms olculen=60.8ms bitis_karesi=15.7ms aralik=30-80 istenen_aralikta=evet olculen_aralikta=evet ok
+      HITSTOP civi isinma: istenen=0.0ms olculen=0.0ms kare=0.0ms
+      HITSTOP civi isabet yok FAIL
+      HITSTOP civi kritik    veri=60 istenen=60.0ms olculen=62.4ms bitis_karesi=16.6ms aralik=30-80 istenen_aralikta=evet olculen_aralikta=evet ok
+      FEEL user C:\Users\uruskan\Documents\GitHub\kabarma\.claude\worktrees\m1-varlik-72a21b\.tools\run\test\latency/feel_tuning_test.json
+      F1KAYIT kayit=True sifirlama=True okuma=True degerler=True yalniz_fark=True ok
+      RESULT fail heads=4/7 budget_max_ms=33.3 wall_med_ms=38.9 wall_max_ms=56.1 hitstop=fail :: kazma: 8/8 basista tepki yok | bicme: 8/8 basista tepki yok | toprak: 8/8 basista tepki yok | cekim: S urun tutulamadi | tirpan isabet: duraklama olmadi | civi isabet: duraklama olmadi
+[FAIL] ekonomi  exit=1 ok=81 fail=1
+      --- son satirlar: C:\Users\uruskan\Documents\GitHub\kabarma\.claude\worktrees\m1-varlik-72a21b\.tools\run\test\ekonomi.log
+      ECON OK   kalite: kare surulup ekildi
+      ECON OK   kalite: nem hic dusmedi (en az ★2, GDD 8.2)
+      ECON FAIL Biçme hasadi yildizla cantada (★2 +0, ★3 +0)
+      ECON OK   kalite kasaya gecti
+      ECON OK   kasa degeri taban × kalite × Borsa (0 = 0)
+      ECON ECONOMY RESULT ok=81 fail=1
+      ECONOMY RESULT ok=81 fail=1
+      ERROR: 1 RID allocations of type 'N13RendererDummy15MaterialStorage13DummyMaterialE' were leaked at exit.
+      ERROR: 1 RID allocations of type 'N13RendererDummy15MaterialStorage11DummyShaderE' were leaked at exit.
+      ERROR: 8 RID allocations of type 'N13RendererDummy9DummyMeshE' were leaked at exit.
+      ERROR: 3 RID allocations of type 'PN13RendererDummy14TextureStorage12DummyTextureE' were leaked at exit.
+      ERROR: 4 RID allocations of type 'N17RendererSceneCull8InstanceE' were leaked at exit.
+[PASS] borsa  exit=0 ok=25 fail=0
+[PASS] holding  exit=0 ok=27 fail=0
+[FAIL] zincir  exit=1 ok=0 fail=1 veri=0 t=1500
+      --- son satirlar: C:\Users\uruskan\Documents\GitHub\kabarma\.claude\worktrees\m1-varlik-72a21b\.tools\run\test\zincir.log
+      WILDLIFE spawn vicik herd=2 at=-280,456
+      WILDLIFE spawn bozuk herd=1 at=-45,485
+      WILDLIFE spawn vizviz swarm at=-170,562
+      WILDLIFE spawn findikci herd=2 at=-218,516
+      WILDLIFE spawn dalli herd=4 at=-112,551
+      WILDLIFE spawn findikci herd=2 at=-117,570
+      WILDLIFE spawn dalli herd=3 at=-201,471
+      WILDLIFE spawn vizviz swarm at=-141,552
+      MUSIC day silence 177s
+      ZINCIR ZAMAN ASIMI t=1500 adim=mine veri=0 masa=False
+      ZINCIR ZINCIR RESULT ok=0 fail=1 veri=0 t=1500
+      ZINCIR RESULT ok=0 fail=1 veri=0 t=1500
+[PASS] kabarma  exit=0 ok checks=16 species=10 t=1246
+[PASS] kartlar  exit=0 ok=13 fail=0
+[PASS] gece  exit=0 GECE RESULT ok checks=2362 nights=2 day=3
+[PASS] ilerleme  exit=0 ILERLEME RESULT ok checks=15 credits=6100 veri=80
+[FAIL] savunma  exit=1 ok=22 fail=1 shots=18 kills=4 trapHits=134
+      --- son satirlar: C:\Users\uruskan\Documents\GitHub\kabarma\.claude\worktrees\m1-varlik-72a21b\.tools\run\test\savunma.log
+      DEFENSE FAIL Firlatma Pedi oyuncuyu firlatti (+0.2 m)
+      DEFENSE PASS kapali cukura dusulmez
+      DEFENSE pit open (7)
+      DEFENSE pit fall held=1
+      DEFENSE PASS acik cukura dustu (1)
+      DEFENSE PASS cukurda tutuluyor
+      DEFENSE pit closed (7)
+      DEFENSE PASS kapak kapaninca birakti
+      DEFENSE PASS tuzak etkileri uygulandi
+      DEFENSE removed sapan_kulesi(2)
+      DEFENSE PASS sokulen kulenin cephanesi cantaya (+12)
+      DEFENSE RESULT ok=22 fail=1 shots=18 kills=4 trapHits=134
+[FAIL] coop  exit=1 fail timeout done= reports=0 roster=4
+      --- son satirlar: C:\Users\uruskan\Documents\GitHub\kabarma\.claude\worktrees\m1-varlik-72a21b\.tools\run\test\coop.log
+      COOP spawn client 3 pid=9152
+      NET join peer=1 name=Bot 1 players=2
+      NET peer 1 ready (Bot 1)
+      NET join peer=2 name=Bot 2 players=3
+      NET peer 2 ready (Bot 2)
+      NET join peer=3 name=Bot 3 players=4
+      NET peer 3 ready (Bot 3)
+      MUSIC day silence 177s
+      COOP RESULT fail timeout t=420 done= reports=0 roster=4
+      NET leave peer=2 ayrıldı
+      NET leave peer=1 ayrıldı
+      NET leave peer=3 ayrıldı
+[PASS] cip  exit=0 CIP RESULT ok checks=11 chips=6
+[FAIL] input_kbm  exit=1 RESULT fail input stuck step=mine age=240 device=Kbm op=- queue=0 aimErr=0.1deg miss=985.88m aim=(-225.81717, -6.8449173, 621.2904) hit=(-239.6802, -522531.2, 659.6594) node= muzzle->hit=333.6 pos=(-224.09001, -522862.84, 618.60706) move=(0, 0, 0) fire=True/False pressed=False head=Kazma menu=False wheel=False lock=False look=(0, 0) sent= bag=4/20 events=225
+      --- son satirlar: C:\Users\uruskan\Documents\GitHub\kabarma\.claude\worktrees\m1-varlik-72a21b\.tools\run\test\input_kbm.log
+      WILDLIFE spawn findikci herd=2 at=-190,123
+      WILDLIFE spawn dalli herd=3 at=-91,254
+      EXPLORE found enkaz_altin_cayir_0 at=-69,179
+      WILDLIFE spawn vicik herd=1 at=13,288
+      WILDLIFE spawn findikci herd=3 at=-251,122
+      EXPLORE found enkaz_sis_korusu_1 at=-151,238
+      WILDLIFE spawn dalli herd=4 at=-182,424
+      WILDLIFE spawn vicik herd=2 at=-93,423
+      WILDLIFE spawn vizviz swarm at=-145,418
+      WILDLIFE spawn vizviz swarm at=-233,308
+      WILDLIFE spawn bozuk herd=1 at=-274,429
+      RESULT fail input stuck step=mine age=240 device=Kbm op=- queue=0 aimErr=0.1deg miss=985.88m aim=(-225.81717, -6.8449173, 621.2904) hit=(-239.6802, -522531.2, 659.6594) node= muzzle->hit=333.6 pos=(-224.09001, -522862.84, 618.60706) move=(0, 0, 0) fire=True/False pressed=False head=Kazma menu=False wheel=False lock=False look=(0, 0) sent= bag=4/20 events=225
+[FAIL] input_pad  exit=1 RESULT fail input stuck step=mine age=240 device=Pad op=- queue=0 aimErr=0.0deg miss=336.02m aim=(-225.81717, -6.8449173, 621.2904) hit=(-231.4431, -522531.2, 661.68463) node= muzzle->hit=333.6 pos=(-224.68878, -522862.84, 618.2942) move=(0, 0, 0) fire=True/False pressed=False head=Kazma menu=False wheel=False lock=False look=(0, 0) sent= bag=4/20 events=518
+      --- son satirlar: C:\Users\uruskan\Documents\GitHub\kabarma\.claude\worktrees\m1-varlik-72a21b\.tools\run\test\input_pad.log
+      WILDLIFE spawn pofuduk herd=3 at=16,-150
+      WILDLIFE spawn gidak herd=3 at=-89,62
+      WILDLIFE spawn pofuduk herd=2 at=-86,-52
+      WILDLIFE spawn dalli herd=2 at=-235,189
+      EXPLORE found enkaz_altin_cayir_0 at=-69,179
+      EXPLORE found enkaz_sis_korusu_1 at=-151,238
+      WILDLIFE spawn dalli herd=3 at=31,281
+      WILDLIFE spawn vicik herd=2 at=-154,375
+      WILDLIFE spawn vizviz swarm at=-240,357
+      WILDLIFE spawn vizviz swarm at=-232,508
+      WILDLIFE spawn bozuk herd=1 at=-73,584
+      RESULT fail input stuck step=mine age=240 device=Pad op=- queue=0 aimErr=0.0deg miss=336.02m aim=(-225.81717, -6.8449173, 621.2904) hit=(-231.4431, -522531.2, 661.68463) node= muzzle->hit=333.6 pos=(-224.68878, -522862.84, 618.2942) move=(0, 0, 0) fire=True/False pressed=False head=Kazma menu=False wheel=False lock=False look=(0, 0) sent= bag=4/20 events=518
+
+sinama     sonuc  sure(sn)  ayrinti
+------     -----  --------  -------
+build      PASS        1.5  exit=0 warnings=0 errors=0
+sim        PASS       56.2  exit=0 Passed!  - Failed:     0, Passed:   660, Skipped:     0, Total:   660, Duration: 53 s - Kabarma.Sim.Tests.dll (net8.0)
+bench      PASS        6.6  exit=0 1000 gun 2.357 sn, ayrilan 107.4 MB, tepe 94.0 MB (Release, 3x3)
+bot        FAIL       2791  exit=1 RESULT fail bot did not reach end step=mine
+hayvan     FAIL      364.3  exit=1 HAYVAN satiri yok | RESULT fail bot did not reach end step=mine
+savashayvan FAIL      598.3  exit=1 RESULT fail bot did not reach end step=mine
+buildtest  FAIL       42.3  exit=1 placed=89 failed=6 pieces=88
+audio      PASS        6.8  exit=0 ok sounds=60 playable=60 variant_files=180 buses=6 layers_loaded=3/3 day_music=yes
+world      PASS       48.2  exit=0 WORLD RESULT ok checks passed (46503 ms)
+explore    FAIL       71.9  exit=1 EXPLORE RESULT fail 2: kule 600 m acar (%33); yere indi
+oyuk       PASS       54.9  exit=0 OYUK RESULT ok checks=passed hurt=6 rooms=6
+boss       FAIL      145.7  exit=1 RESULT fail boss defeated= fights=koca_pofuduk:300 player_hp=100 shears=0 pillar_stuns=0 shard_hits=0 wave_jumps=0 seals=
+savas      FAIL       79.8  exit=1 RESULT fail savas day_down=False defeated= fights= player_hp=100 hurts=0 walls_placed=0 wall_hits=0 riders=0 uproots=0 log_landings=0 log_hits=0 spreads=0 chains=0 wild_mixed=
+camera     PASS       59.7  exit=0 RESULT ok camera checks=73
+grip       FAIL       68.1  exit=1 RESULT fail grip (4/67) cart=sag 9256.8cm sol 9262.8cm araba (yururken): eller saplarda degil (sag 3961.3, sol 3961.3 cm); araba (dururken): eller saplarda degil (sag 9256.8, sol 9262.8 cm); araba: saplar kolun yetisemeyecegi kadar asagida (kol 0.55 m, omuz-sap dikey -92.88, yana 0.12 m); araba: pushReach 0.34 m, olculen koldan hesaplanan -0.02 m
+save       FAIL      415.4  exit=1 RESULT fail bot ilk gunu 1500 sn icinde bitirmedi (adim mine)
+menu       PASS       88.6  exit=0 RESULT ok menu new->esc->menu->devam->close
+tarim      FAIL      267.7  exit=1 RESULT fail bot did not reach end step=mine
+creatures  PASS        4.6  exit=0 RESULT ok creatures=10 wild=11 clips=80 posed=74
+latency    FAIL      166.2  exit=1 RESULT fail heads=4/7 budget_max_ms=33.3 wall_med_ms=38.9 wall_max_ms=56.1 hitstop=fail :: kazma: 8/8 basista tepki yok | bicme: 8/8 basista tepki yok | toprak: 8/8 basista tepki yok | cekim: S urun tutulamadi | tirpan isabet: duraklama olmadi | civi isabet: duraklama olmadi
+ekonomi    FAIL      108.4  exit=1 ok=81 fail=1
+borsa      PASS       72.4  exit=0 ok=25 fail=0
+holding    PASS       55.1  exit=0 ok=27 fail=0
+zincir     FAIL      419.7  exit=1 ok=0 fail=1 veri=0 t=1500
+kabarma    PASS      370.6  exit=0 ok checks=16 species=10 t=1246
+kartlar    PASS         72  exit=0 ok=13 fail=0
+gece       PASS       88.3  exit=0 GECE RESULT ok checks=2362 nights=2 day=3
+ilerleme   PASS       45.4  exit=0 ILERLEME RESULT ok checks=15 credits=6100 veri=80
+savunma    FAIL       65.3  exit=1 ok=22 fail=1 shots=18 kills=4 trapHits=134
+coop       FAIL      468.3  exit=1 fail timeout done= reports=0 roster=4
+cip        PASS         45  exit=0 CIP RESULT ok checks=11 chips=6
+input_kbm  FAIL       99.2  exit=1 RESULT fail input stuck step=mine age=240 device=Kbm op=- queue=0 aimErr=0.1deg miss=985.88m aim=(-225.81717, -6.8449173, 621.2904) hit=(-239.6802, -522531.2, 659.6594) node= muzzle->hit=333.6 pos=(-224.09001, -522862.84, 618.60706) move=(0, 0, 0) fire=True/False pressed=False head=Kazma menu=False wheel=False lock=False look=(0, 0) sent= bag=4/20 events=225
+input_pad  FAIL      174.3  exit=1 RESULT fail input stuck step=mine age=240 device=Pad op=- queue=0 aimErr=0.0deg miss=336.02m aim=(-225.81717, -6.8449173, 621.2904) hit=(-231.4431, -522531.2, 661.68463) node= muzzle->hit=333.6 pos=(-224.68878, -522862.84, 618.2942) move=(0, 0, 0) fire=True/False pressed=False head=Kazma menu=False wheel=False lock=False look=(0, 0) sent= bag=4/20 events=518
+TEST FAIL (17)
