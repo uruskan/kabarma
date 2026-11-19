@@ -18,7 +18,11 @@ public partial class AtaTest : Node
 {
     Director _d;
     AtaSystem _sys;
-    readonly string[] _order = { "koca_pofuduk", "boynuzlu_dede" };
+    string[] _order = { "koca_pofuduk", "boynuzlu_dede" };
+    /// <summary>Gomulu kullanim (M4 kabul, Bot.AnaMaya): Ata gercek adakla zaten indi; test yalniz dovusur. Bitince Quit yerine bu cagrilir (basari, ozet).</summary>
+    public System.Action<bool, string> OnDone;
+    public string[] OrderOverride { set => _order = value; }
+    public bool StartInFight;
     int _idx;
     enum S { Wait, Walk, Altar, Fight, After, Done }
     S _s = S.Wait;
@@ -54,6 +58,7 @@ public partial class AtaTest : Node
                 _sys = _d.Atalar;
                 _hpAtStart = P.Hp;
                 Say($"BOSS start hp={P.Hp:0} arenas={_sys.Progress.Records.Count}");
+                if (StartInFight) { _fightTime[Cur.Id] = 0; _cekimStage = 0; _shard = null; Go(S.Fight); return; }
                 Go(S.Walk);
                 return;
             case S.Walk: Walk(dt); return;
@@ -296,8 +301,8 @@ public partial class AtaTest : Node
         if (_jumpDown) Input.ActionRelease("jump");
         if (P != null) P.MoveOverride = Vector3.Zero;
         bool ok = _fails.Count == 0 && _sys != null && _order.All(_sys.Progress.IsDefeated);
-        if (ok && _sys.Shears == 0) _fails.Add("Bicme kirkmasi hic olmadi");
-        if (ok && _sys.ShardHits == 0) _fails.Add("boynuz parcasi hic isabet etmedi");
+        if (ok && _sys.Shears == 0 && _order.Contains("koca_pofuduk")) _fails.Add("Bicme kirkmasi hic olmadi");
+        if (ok && _sys.ShardHits == 0 && _order.Contains("boynuzlu_dede")) _fails.Add("boynuz parcasi hic isabet etmedi");
         ok = _fails.Count == 0 && ok;
         _s = S.Done;
         string times = string.Join(",", _fightTime.Select(kv => $"{kv.Key}:{kv.Value:0}"));
@@ -308,6 +313,7 @@ public partial class AtaTest : Node
             using var fa = FileAccess.Open(dir.TrimEnd('/', '\\') + "/boss.log", FileAccess.ModeFlags.Write);
             fa?.StoreString(string.Join("\n", _log) + "\n");
         }
+        if (OnDone != null) { OnDone(ok, string.Join(" | ", _fails)); return; }
         GetTree().Quit(ok ? 0 : 1);
     }
 

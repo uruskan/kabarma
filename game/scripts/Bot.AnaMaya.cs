@@ -52,6 +52,7 @@ public partial class Bot
     void StepAnaMaya()
     {
         if (_d.Hud.ReportOpen) { if (_stepT > 1.5f) { CloseReport(); _stepT = 0; } P.MoveOverride = Vector3.Zero; return; }
+        if (Main.Args.ContainsKey("anamaya_chain") && !AmChainDone) { AmChain(); return; } // Bot.AnaMaya.Chain.cs: zincir bolumleri (hediyesiz)
         if (!_amStarted) { _amStarted = true; Engine.TimeScale = 3; _amLast = P.GlobalPosition; _amT0 = _t; GD.Print("BOT anamaya basladi (3x zaman)"); }
         float dt = (float)GetProcessDeltaTime();
         var p = P.GlobalPosition;
