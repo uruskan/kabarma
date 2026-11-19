@@ -28,7 +28,7 @@ public sealed partial class GameState
             if (Night is { Phase: not NightPhase.Dawn } n && p.Swollen != null) { n.RecordSwell(p.Swollen); n.Hand.OnCropSwell(); } // Hand: Hasat Senligi (kartlar)
         };
         Farm.Eaten += _ => Night?.RecordEaten();
-        Sold += (_, _) => Orders.Report("cargo_sold");
+        Sold += (v, _) => { Orders.Report("cargo_sold"); Orders.Report("credits_earned", v); }; // credits_earned: Tuccar (ilerleme4)
         InitProgress(); // GameState.Progress.cs: Ustalik, basarimlar, boy olculeri
     }
 

@@ -55,6 +55,7 @@ public sealed partial class GameState
         if (res == null) return null;
         if (res.Credits > 0) Credits += res.Credits;
         if (res.Reward.Kind == "items" && res.Reward.Items.Count > 0) Catalog.Send("cark:" + res.Reward.Id, "kapsul", res.Reward.Items);
+        Orders.Report("wheel_spin"); // Carkci (ilerleme4)
         WheelSpun?.Invoke(res);
         return res;
     }
