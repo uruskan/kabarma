@@ -140,8 +140,18 @@ public partial class CoopTest : Node
         if (!_host)
         {
             if (bot != null && bot.CoopDone && !_sentDone) { _sentDone = true; SendHost(0); Log($"COOP client done t={_t:0.0}"); }
+            if (_handClientT >= 0f)
+            {
+                _handClientT += dt;
+                if (_handClientT > HandoverWait - 3f && !_handLogged)
+                {
+                    _handLogged = true;
+                    Log($"COOP HANDOVER state={(Net.IsHost ? "host" : "client")} joined={Net.Joined} roster={Net.Roster.Count} avatars={Net.Avatars.Count} {Net.Status}");
+                }
+            }
             return;
         }
+        if (_handover) { TickHandover(dt); return; }
         if (!_lateSpawned && _t >= LateJoinAt) { _lateSpawned = true; Spawn(Clients); }
         if (bot != null && bot.CoopDone) _done.Add(0);
         if (!_drill && _lateSpawned && _done.Count >= Clients + 1 && Net.Actors.Count == Clients)
@@ -202,6 +212,7 @@ public partial class CoopTest : Node
         byte k = r.U8();
         if (k == 1) { SendHost(1); Log("COOP report sent"); }
         else if (k == 2) { int code = r.U8(); Log($"COOP final from host code={code}"); _exit = code; _quitT = 0.5f; }
+        else if (k == 4) { _handClientT = 0f; Log("COOP handover basliyor"); } // sekiz (M5)
         else if (k == 3)
         {
             string id = Main.Args.GetValueOrDefault("bot_id");
@@ -311,7 +322,54 @@ public partial class CoopTest : Node
         if (bases + ruinedBases < Clients + 1) fails.Add($"host has {bases} foundations (+{ruinedBases} ruins), want {Clients + 1}");
         bool ok = fails.Count == 0 && maxDiff < 0.01;
         int rejected = Net.RequestsRejected, corr = Net.Corrections;
-        Log($"COOP RESULT {(ok ? "ok" : "fail")} players={Clients + 1} max_diff_mm={maxDiff * 1000:0.000} pieces={pieces} foundations={bases} late_join=1 plots={plots} tilled={tilled} crafted={Net.Actors.Values.Count(x => x.Bag.Count(Bot.CoopCraft) > 0) + (_d.State.Backpack.Count(Bot.CoopCraft) > 0 ? 1 : 0)} revives={Net.Revives} voice_frames={hostVoice} creatures_spawned={Net.DynamicCount} rejected={rejected} corrections={corr} glass={_glassProbe} rivalry={_rivProbe} ruins={_d.State.Rivalry.Ruins.Count} t={_t:0.0}" + (fails.Count > 0 ? " :: " + string.Join("; ", fails.Take(8)) : ""));
+        _resultLine = ($"COOP RESULT {(ok ? "ok" : "fail")} players={Clients + 1} max_diff_mm={maxDiff * 1000:0.000} pieces={pieces} foundations={bases} late_join=1 plots={plots} tilled={tilled} crafted={Net.Actors.Values.Count(x => x.Bag.Count(Bot.CoopCraft) > 0) + (_d.State.Backpack.Count(Bot.CoopCraft) > 0 ? 1 : 0)} revives={Net.Revives} voice_frames={hostVoice} creatures_spawned={Net.DynamicCount} rejected={rejected} corrections={corr} glass={_glassProbe} rivalry={_rivProbe} ruins={_d.State.Rivalry.Ruins.Count} t={_t:0.0}" + (fails.Count > 0 ? " :: " + string.Join("; ", fails.Take(8)) : ""));
+        if (ok) StartHandover(); // sekiz (M5): sonuc satiri devirden sonra yazilir
+        else { Log(_resultLine); Finish(1); }
+    }
+
+    // ---------- dunya devri (sekiz, M5) ----------
+
+    const float HandoverWait = 14f;
+    bool _handover, _handLogged;
+    float _handT, _handClientT = -1f;
+    string _resultLine = "";
+
+    /// <summary>Host: sinama bitince dunyayi bir istemciye devreder, kendisi yeni host'a istemci olarak baglanir.</summary>
+    void StartHandover()
+    {
+        _handover = true;
+        var w = NetPackets.Begin(NetMsg.Final); w.U8(4);
+        Net.Broadcast(w.ToArray());
+        if (!Net.Handover()) { Log($"{_resultLine.Replace("RESULT ok", "RESULT fail")} :: devir baslamadi: {Net.Status}"); Finish(1); return; }
+        Log("COOP handover basladi");
+    }
+
+    /// <summary>Eski host: devirden sonra yeni host'a istemci olarak katilmis olmali; tam bir istemci yeni host, oteki ikisi istemci.</summary>
+    void TickHandover(float dt)
+    {
+        _handT += dt;
+        if (_handT < HandoverWait) return;
+        _handover = false;
+        var fails = new List<string>();
+        int want = Clients + 1;
+        if (!Net.IsClient || !Net.Joined) fails.Add($"eski host istemci degil (host={Net.IsHost} joined={Net.Joined} {Net.Status})");
+        if (Net.Roster.Count != want) fails.Add($"eski host listesi {Net.Roster.Count}/{want}");
+        if (Net.Avatars.Count != Clients) fails.Add($"eski host {Net.Avatars.Count}/{Clients} oyuncu goruyor");
+        int hosts = 0, clients = 0;
+        string runDir = ProjectSettings.GlobalizePath("res://").TrimEnd('/') + "/../.tools/run/test";
+        for (int k = 1; k <= Clients; k++)
+        {
+            string path = $"{runDir}/coop_client_{k}.log";
+            string line = FileAccess.FileExists(path) ? FileAccess.GetFileAsString(path).Split('\n').LastOrDefault(l => l.Contains("COOP HANDOVER state=")) : null;
+            if (line == null) { fails.Add($"bot {k} devir durumu yazmadi"); continue; }
+            if (line.Contains("state=host") && line.Contains($"roster={want}")) hosts++;
+            else if (line.Contains("state=client") && line.Contains("joined=True") && line.Contains($"roster={want}")) clients++;
+            else fails.Add($"bot {k}: {line.Trim()}");
+        }
+        if (hosts != 1 || clients != Clients - 1) fails.Add($"yeni host {hosts} (1 olmali), istemci {clients} ({Clients - 1} olmali)");
+        bool ok = fails.Count == 0;
+        Log($"COOP HANDOVER {(ok ? "ok" : "fail")} t={_handT:0.0}" + (ok ? "" : " :: " + string.Join("; ", fails.Take(6))));
+        Log(ok ? _resultLine : _resultLine.Replace("RESULT ok", "RESULT fail") + " :: devir: " + string.Join("; ", fails.Take(4)));
         Finish(ok ? 0 : 1);
     }
 
