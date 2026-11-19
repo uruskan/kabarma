@@ -27,6 +27,10 @@ public partial class Director
     /// <summary>O an gecerli tuzuk (Kabarma suruyorsa plandan; degilse yok). GDD 14.8.</summary>
     public TuzukSet TuzukNow => Night is { Plan: not null, Phase: not NightPhase.Dawn } n ? n.Plan.Spec.Tuzuk : TuzukSet.None;
 
+    /// <summary>Tur adina gore (HeadDef/AbilityDef.DamageType: "ates", "sok"...) tuzuk hasar carpani; tanimsiz tur 1 (Sagnak, gece4).</summary>
+    public float TuzukMult(string damageType) =>
+        !string.IsNullOrEmpty(damageType) && Combat.TryParse(damageType, out var t) ? TuzukNow.DamageMult(t) : 1f;
+
     /// <summary>Sagnak (tuzuk): oyuncunun Ates isabeti etkisiz, Sok guclu. Savas sozlesmesinin Hit girisinde cagrilir.</summary>
     public CombatHit TuzukHit(CombatHit h)
     {

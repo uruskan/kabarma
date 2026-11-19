@@ -34,8 +34,9 @@ public partial class AbilitySystem
         return list;
     }
 
-    void HitFoe(Node3D n, float dmg, Vector3 from, float knock)
+    void HitFoe(Node3D n, float dmg, Vector3 from, float knock, string damageType = null)
     {
+        dmg *= D.TuzukMult(damageType); // Tuzuk Saganak (gece4)
         var dir = ((n.GlobalPosition - from) with { Y = 0 }).Normalized() * knock;
         switch (n)
         {
@@ -157,7 +158,7 @@ public partial class AbilitySystem
                 _rocketUp = false;
                 var def = Def("roket_ziplama");
                 Fx.Burst(p.GlobalPosition + Vector3.Up * 0.3f, Palette.Warning, 40, def.Radius * 2f, 0.12f, 0.5f, true, 0f);
-                foreach (var n in Foes(p.GlobalPosition, def.Radius)) HitFoe(n, def.Damage, p.GlobalPosition, def.Knock);
+                foreach (var n in Foes(p.GlobalPosition, def.Radius)) HitFoe(n, def.Damage, p.GlobalPosition, def.Knock, def.DamageType);
                 Sfx.Play("hit", p.GlobalPosition, 0f);
             }
         }
@@ -172,7 +173,7 @@ public partial class AbilitySystem
                 foreach (var n in Foes(_ringPos, def.Radius))
                 {
                     if (!AbilityRules.InRing(_ringPos.X, _ringPos.Z, def.Inner, def.Radius, n.GlobalPosition.X, n.GlobalPosition.Z)) continue;
-                    HitFoe(n, def.Damage * 0.5f, _ringPos, 0f);
+                    HitFoe(n, def.Damage * 0.5f, _ringPos, 0f, def.DamageType);
                     if (n is Zipzip z) z.BurnT = Mathf.Max(z.BurnT, def.Burn);
                 }
                 Fx.Burst(_ringPos + Vector3.Up * 0.2f, Palette.Warning, 10, def.Radius, 0.1f, 0.4f, true, 0f);
@@ -210,7 +211,7 @@ public partial class AbilitySystem
                 _rainTick = 0.5f;
                 var def = Def("yorunge_sulamasi");
                 float per = def.Damage / (def.Duration / 0.5f);
-                foreach (var n in Foes(_rainPos, def.Radius)) HitFoe(n, per, _rainPos, def.Knock);
+                foreach (var n in Foes(_rainPos, def.Radius)) HitFoe(n, per, _rainPos, def.Knock, def.DamageType);
                 foreach (var pl in D.State.Farm.Plots) // tarlayi sular
                 {
                     var c = D.FarmView.CellCenter(pl.X, pl.Y);
