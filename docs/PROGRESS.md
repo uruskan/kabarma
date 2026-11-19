@@ -38,6 +38,7 @@ Sahibin kararı 24 (18 Kasım 2026): ana oturum M2'den M7'ye sormadan ilerler; a
 
 | İstek | Hat | Adet | Tahmin | Durum |
 |---|---|---|---|---|
+| Suna M6 replikleri (ogretici), 12 adet, ElevenLabs, sahibin onayi. Kimlik, metin (TR ve EN) ve ton: `game/data/suna.json` `lines` (ornek: `tut_biyom_sis_korusu`, `tut_otomasyon_ilk`); dosya `assets/audio/voice/{dil}/{kimlik}.mp3` | ElevenLabs | 12 × 2 dil | — | sahibin onayi bekliyor (her kullanimda ayri onay; ses yokken altyazi calisir) |
 | Ağaçlar (meşe, huş, turuncu, koru, ladin, çalı) | Tripo web | 7 iş + 1 yeniden doku | 405 | üretildi (18 Kasım). Ham dosyalar `.tools/tripo_web/agaclar/`; bitki oturumu hattan geçirip bağlıyor |
 | Dalga 1: dev mantar, kütük, demir, reçine, güherçile, yuva, enkaz, oyuk ağzı | Tripo web | 8 iş + 1 yeniden doku | 460 | üretildi (18 Kasım). Ham dosyalar `.tools/tripo_web/dalga1/`, istemler `istemler.md`; bitki bağlıyor |
 | Homur (yaratık denemesi) | Tripo web | 1 iş + iskelet | 55 + ? | model üretildi, iskelet ve yaratik2 doğrulaması bekliyor; öteki 6 tür ve Atalar bundan sonra |
@@ -134,3 +135,5 @@ Ortak oyun (koşul 4) ve kayıt (koşul 5) M2 teslimidir. M1'deki hiçbir özell
 - 2026-11-19 ilerleme4: 24 is emri zinciri (#13-24, #37-48; 36/48), olcu kaynaklari (9 bagli, 15 sistem bekliyor), zincir odulleri dolaba ve kartlara bagli, katalog (23 tohum, 36 kozmetik), cark kozmetik odulu.
 
 - 2026-11-19 arayuz (M6): ayarlar sayfasi (arayuz boyu, renk korlugu suzgeci, sarsinti, altyazi ve boyu, tus atamalari), fotograf modu (P / Esc menusu), eski paneller tek Rust dilinde (UiPanels, Hud.Box). Renk korlugu: Machado tabanli daltonizasyon (gorsel dogrulama yalniz sahibin gozunde).
+
+- 2026-11-19 ogretici (M6): data/suna.json (12 replik TR ve EN, ceviri anahtari suna.<kimlik>, ton), Director.Ogretici.cs (8 sistem tetikleyicisi, bir kez, kayitta saklanir), SayLine suna.json'a duser. Ses: Kredi kuyrugunda.
