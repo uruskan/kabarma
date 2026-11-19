@@ -57,7 +57,7 @@
         "bones": { "root": "tripo::Root", "spine": "tripo::Spine_1", "head": "tripo::Head_2", "top": "tripo::Spine_2", "ear_l": "bone_23", "ear_r": "bone_25", "tail": "bone_40", "front_l": "tripo::0_Left_Limb_0", "frontlow_l": "tripo::0_Left_Limb_1", "front_r": "tripo::0_Right_Limb_0", "frontlow_r": "tripo::0_Right_Limb_1", "back_l": "tripo::1_Left_Limb_0", "backlow_l": "tripo::1_Left_Limb_1", "back_r": "tripo::1_Right_Limb_0", "backlow_r": "tripo::1_Right_Limb_1" },
         "clips": { "idle": "pose", "walk": "glb:walk", "run": "glb:walk", "attack1": "pose", "attack2": "pose", "hit": "pose", "eat": "pose", "rest": "pose" },
         "clipSpeed": { "run": 2.2 },
-        "placeholder": ["idle", "run", "attack1", "attack2", "hit", "eat", "rest"] },
+        "placeholder": ["idle", "attack1", "attack2", "hit", "eat", "rest"] },
       "swell": { "push": 0.05, "wobble": 0.03, "glow": 0.8, "veinScale": 3.5, "seconds": 1.4, "stepJiggle": 0.014, "hitJiggle": 0.03 },
       "wild": { "stance": "raider", "active": "day", "wanderRadius": 8, "walkSpeedMult": 0.35, "runSpeedMult": 1.0, "alertRadius": 11, "fleeRadius": 4.5, "fleeSeconds": 3, "target": "crop", "targetSense": 32, "targetStop": 1.4, "targetSeconds": 8, "pauseMin": 2.5, "pauseMax": 6, "idleShare": 0.35, "grazeShare": 0.5, "retargetMin": 5, "retargetMax": 10 }
     },
