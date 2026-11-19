@@ -403,14 +403,14 @@ public partial class OyukSystem : Node3D
         int n = 20, full = Mathf.CeilToInt(f.Hp / Mathf.Max(1, f.MaxHp) * n);
         string state = Mole is { } m ? m.State switch
         {
-            MoleFight.Phase.Hidden => "saklı",
-            MoleFight.Phase.Stunned => "SERSEM",
-            MoleFight.Phase.Trapped => m.Weak ? "SIKIŞTI · SERSEM" : "SIKIŞTI",
-            _ => "üstte",
-        } : Bats is { } b ? (b.Scattered ? "DAĞILDI" : "toplu (ışık getir)")
-          : Mud is { } mu ? (mu.Dry ? "KURU · Darbe!" : "ıslak (ateş getir)")
-          : Scorpion is { } sc ? (sc.Cracked ? "ÇATLAK" : "zırhlı (Havan / sarkıt)")
-          : Mirror is { } mir ? (mir.Copies.Count > 0 ? $"{mir.Copies.Count} kopya (Ateş / Şok)" : "AYNA AÇIK") : "";
+            MoleFight.Phase.Hidden => Loc.T("world.oyuk_hidden"),
+            MoleFight.Phase.Stunned => Loc.T("world.oyuk_stunned"),
+            MoleFight.Phase.Trapped => m.Weak ? Loc.T("world.oyuk_trapped_weak") : Loc.T("world.oyuk_trapped"),
+            _ => Loc.T("world.oyuk_up"),
+        } : Bats is { } b ? (b.Scattered ? Loc.T("world.oyuk_bats_scattered") : Loc.T("world.oyuk_bats_grouped"))
+          : Mud is { } mu ? (mu.Dry ? Loc.T("world.oyuk_mud_dry") : Loc.T("world.oyuk_mud_wet"))
+          : Scorpion is { } sc ? (sc.Cracked ? Loc.T("world.oyuk_scorpion_cracked") : Loc.T("world.oyuk_scorpion_armored"))
+          : Mirror is { } mir ? (mir.Copies.Count > 0 ? Loc.T("world.oyuk_mirror_copies", mir.Copies.Count) : Loc.T("world.oyuk_mirror_open")) : "";
         _bar.Text = $"{room.Guardian.Name.ToUpperInvariant()}  {new string('▮', full)}{new string('▯', n - full)}  {f.Hp:0}/{f.MaxHp:0}  · {state}";
         _bar.Visible = true;
     }
@@ -424,7 +424,7 @@ public partial class OyukSystem : Node3D
         GD.Print($"OYUK cleared {room.Poi.Id} guardian={room.Guardian.Id} tier={room.Tier}");
         Events.RaiseOyukCleared(room.Poi.Id);
         Sfx.Play("kabarmis_patlama", _target?.Center ?? room.Center, -2f);
-        _d.Hud.Hint($"{room.Guardian.Name} yenildi: sandıkları aç", 3f);
+        _d.Hud.Hint(Loc.T("world.oyuk_defeated", room.Guardian.Name), 3f);
         EndFight();
     }
 
@@ -438,7 +438,7 @@ public partial class OyukSystem : Node3D
         var (x, z) = Inside.Local(aim);
         int hole = m.HoleNear(x, z, 1.6f);
         if (hole < 0) return true;
-        if (!tank.TryWaterCell()) { _d.Hud.Hint("Su deposu boş", 0.5f); return true; }
+        if (!tank.TryWaterCell()) { _d.Hud.Hint(Loc.T("world.tank_empty_short"), 0.5f); return true; }
         bool flooded = m.Water(hole, tank.PerCell);
         if (flooded) GD.Print($"OYUK flood hole={hole} state={m.State}");
         if (GD.Randf() < 0.4f) Sfx.Play("water", aim, -8f);
@@ -449,13 +449,13 @@ public partial class OyukSystem : Node3D
     public (string verb, string obj)? Prompt(Vector3 p)
     {
         if (Inside == null)
-            return MouthNear(p) is { } poi ? ("Gir", "Oyuk" + (P.IsCleared(poi.Id) ? " (temiz)" : "")) : null;
+            return MouthNear(p) is { } poi ? (Loc.T("world.oyuk_enter"), Loc.T("world.oyuk") + (P.IsCleared(poi.Id) ? " " + Loc.T("world.oyuk_clean") : "")) : null;
         var room = Inside;
-        if (p.DistanceTo(room.DoorPos) < Def.Interior.DoorReach + 0.8f) return ("Çık", "Oyuk");
+        if (p.DistanceTo(room.DoorPos) < Def.Interior.DoorReach + 0.8f) return (Loc.T("world.oyuk_exit"), Loc.T("world.oyuk"));
         var chest = room.Chests.FirstOrDefault(c => !c.Opened && c.GlobalPosition.DistanceTo(p) < 2.2f);
-        if (chest != null) return P.IsCleared(room.Poi.Id) ? ("Aç", "Sandık") : ("Kilitli", "Sandık (önce koruyucu)");
+        if (chest != null) return P.IsCleared(room.Poi.Id) ? (Loc.T("world.oyuk_open"), Loc.T("world.oyuk_chest")) : (Loc.T("world.oyuk_locked"), Loc.T("world.oyuk_chest_locked"));
         var lamp = room.Lamps.FirstOrDefault(l => !l.Lit && l.GlobalPosition.DistanceTo(p) < 2.2f);
-        if (lamp != null) return ("Yak", "Kandil");
+        if (lamp != null) return (Loc.T("world.oyuk_light"), Loc.T("world.oyuk_lamp"));
         return null;
     }
 
@@ -477,7 +477,7 @@ public partial class OyukSystem : Node3D
         {
             if (ForwardChest(room, chest)) return true; // ortak: odul host'ta aktorun cantasina
             var loot = P.OpenChest(room.Poi.Id, room.Guardian, room.Tier, chest.Slot);
-            if (loot.Count == 0) { _d.Hud.Hint("Sandık kilitli: önce koruyucuyu yen", 1.5f); return true; }
+            if (loot.Count == 0) { _d.Hud.Hint(Loc.T("world.oyuk_chest_locked_hint"), 1.5f); return true; }
             chest.Open();
             foreach (var (item, n) in loot)
             {

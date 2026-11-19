@@ -24,7 +24,8 @@ public partial class Hud
 
     static string ClassName(string cls) => cls switch
     {
-        "capa" => "Çapa", "yorunge" => "Yörünge", "beden" => "Beden", "ciftlik" => "Çiftlik", "risk" => "Risk", _ => "Aşı",
+        "capa" => Loc.T("cards.class_capa"), "yorunge" => Loc.T("cards.class_yorunge"), "beden" => Loc.T("cards.class_beden"),
+        "ciftlik" => Loc.T("cards.class_ciftlik"), "risk" => Loc.T("cards.class_risk"), _ => Loc.T("cards.class_asi"),
     };
 
     /// <summary>Hud.Rust'tan, PaintOffer'dan sonra: teklifin ustunde sayaclar, kartlarin uzerinde asi ve Nisan.</summary>
@@ -45,10 +46,10 @@ public partial class Hud
         Rect(bx, by, total, 28, T.A(T.Dialog, 0.85f));
         float kx = bx + 8;
         kx += Keycap(KeyText("card_reroll", "U"), kx, by + 3, 22, h.RerollsLeft > 0 ? T.Ink : T.Muted, PadDevice) + 6;
-        kx += Text($"YENİLE {h.RerollsLeft}", kx, by + 5, T.Data.Type.Caption, h.RerollsLeft > 0 ? T.Ink : T.Muted, true, true) + 16;
+        kx += Text(Loc.T("cards.reroll", h.RerollsLeft), kx, by + 5, T.Data.Type.Caption, h.RerollsLeft > 0 ? T.Ink : T.Muted, true, true) + 16;
         kx += Keycap(KeyText("card_banish", "K"), kx, by + 3, 22, h.BanishesLeft > 0 ? T.Ink : T.Muted, PadDevice) + 6;
-        Text(_d.BanishMode ? "SÜRGÜN: KARTI SEÇ" : $"SÜRGÜN {h.BanishesLeft}", kx, by + 5, T.Data.Type.Caption, _d.BanishMode ? T.Brick : (h.BanishesLeft > 0 ? T.Ink : T.Muted), true, true);
-        TextIn($"YUVA {h.SlotsUsed}/{_d.Data.Cards.MaxSlots}", bx, by + 5, total - 10, T.Data.Type.Caption, h.SlotsUsed >= _d.Data.Cards.MaxSlots ? T.Short : T.Ink, HorizontalAlignment.Right, true, true);
+        Text(_d.BanishMode ? Loc.T("cards.banish_pick") : Loc.T("cards.banish", h.BanishesLeft), kx, by + 5, T.Data.Type.Caption, _d.BanishMode ? T.Brick : (h.BanishesLeft > 0 ? T.Ink : T.Muted), true, true);
+        TextIn(Loc.T("cards.slots", h.SlotsUsed, _d.Data.Cards.MaxSlots), bx, by + 5, total - 10, T.Data.Type.Caption, h.SlotsUsed >= _d.Data.Cards.MaxSlots ? T.Short : T.Ink, HorizontalAlignment.Right, true, true);
 
         for (int i = 0; i < n; i++)
         {
@@ -61,11 +62,11 @@ public partial class Hud
                 Rect(x, y, 3, ch, T.Brick); Rect(x + cw - 3, y, 3, ch, T.Brick);
             }
             string tag = c.IsAsi
-                ? "AŞI · " + string.Join(" + ", c.Parents.Select(p => _d.Data.Cards.Find(p)?.Name ?? p))
-                : T.Upper(ClassName(c.Class)) + (c.Team ? " · EKİP" : "");
+                ? Loc.T("cards.tag_asi") + " · " + string.Join(" + ", c.Parents.Select(p => _d.Data.Cards.Find(p)?.Name ?? p))
+                : T.Upper(ClassName(c.Class)) + (c.Team ? " · " + Loc.T("cards.tag_team") : "");
             Text(Fit(T.Upper(tag), cw - 24, T.Data.Type.Caption, true, true), x + 12, y + ch - 44, T.Data.Type.Caption, c.IsAsi ? Palette.MayaViolet : T.Muted, true, true);
             int lv = h.NisanLevel(c.Id);
-            if (lv > 0) TextIn($"NİŞAN {lv}", x, y + ch - 25, cw - 12, T.Data.Type.Caption, T.Short, HorizontalAlignment.Right, true, true);
+            if (lv > 0) TextIn(Loc.T("cards.nisan", lv), x, y + ch - 25, cw - 12, T.Data.Type.Caption, T.Short, HorizontalAlignment.Right, true, true);
         }
     }
 
@@ -78,9 +79,9 @@ public partial class Hud
         foreach (var g in cards.Cards.GroupBy(c => c.Class))
         {
             int open = g.Count(c => book.IsUnlocked(c.Id));
-            var nisan = g.Where(c => book.Level(c.Id) > 0).Select(c => $"{c.Name} N{book.Level(c.Id)}");
+            var nisan = g.Where(c => book.Level(c.Id) > 0).Select(c => Loc.T("cards.nisan_short", c.Name, book.Level(c.Id)));
             string extra = nisan.Any() ? " · " + string.Join(", ", nisan) : "";
-            items.Add(new MenuItem($"{ClassName(g.Key)}: {open}/{g.Count()} açık{extra}", () => false, () => { }));
+            items.Add(new MenuItem(Loc.T("cards.book_class", ClassName(g.Key), open, g.Count(), extra), () => false, () => { }));
         }
         if (book.Jetons > 0)
         {
@@ -89,17 +90,17 @@ public partial class Hud
                 foreach (var id in choices)
                 {
                     var cid = id;
-                    items.Add(new MenuItem($"Jetonla aç: {cards.Card(cid).Name}", () => book.Jetons > 0, () => { book.SpendJeton(cid); OpenCardBook(); }));
+                    items.Add(new MenuItem(Loc.T("cards.jeton_open", cards.Card(cid).Name), () => book.Jetons > 0, () => { book.SpendJeton(cid); OpenCardBook(); }));
                 }
             else
                 foreach (var c in book.Open.Where(c => !c.IsAsi).Take(8))
                 {
                     var cid = c.Id;
-                    items.Add(new MenuItem($"Jetonla Nişan puanı: {c.Name} ({book.Points(cid)})", () => book.Jetons > 0, () => { book.SpendJeton(cid); OpenCardBook(); }));
+                    items.Add(new MenuItem(Loc.T("cards.jeton_points", c.Name, book.Points(cid)), () => book.Jetons > 0, () => { book.SpendJeton(cid); OpenCardBook(); }));
                 }
         }
         int total = cards.Cards.Count(c => book.IsUnlocked(c.Id));
-        ShowMenu($"KART DEFTERİ · {total}/{cards.Cards.Count} AÇIK · JETON {book.Jetons}", items,
-                 "Kartlar iş emirleri, üye tipleri, Atalar ve jetonla açılır. Aşı, iki ebeveyni açıkken kendiliğinden açılır.");
+        ShowMenu(Loc.T("cards.book_title", total, cards.Cards.Count, book.Jetons), items,
+                 Loc.T("cards.book_hint"));
     }
 }

@@ -248,7 +248,7 @@ public partial class Furniture : Node3D
         bool near = Def.LightRange <= 0 && InReach(_d.Player.GlobalPosition);
         _label.Visible = near;
         if (near)
-            _label.Text = Storage != null ? $"{Def.Name}  {Storage.UsedSlots}/{Storage.Slots}\nE: aç" : Def.Spawn ? $"{Def.Name}\nE: uyu" : Def.Name;
+            _label.Text = Storage != null ? Loc.T("world.furniture_open", Def.Name, Storage.UsedSlots, Storage.Slots) : Def.Spawn ? Loc.T("world.furniture_sleep", Def.Name) : Def.Name;
         if (_lid != null)
         {
             _open = Mathf.MoveToward(_open, Opened && _d.Hud.MenuOpen ? 1f : 0f, dt * 4f);

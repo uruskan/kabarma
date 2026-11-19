@@ -54,15 +54,15 @@ public partial class Hud
     {
         var m = _d.State.Market;
         float x = LeftX, w = ColW;
-        Section("Borsa", x, top);
-        string day = m.State.Open ? $"GÜN {m.State.Day}" : "AÇILIŞ: İLK ŞAFAKTAN SONRA";
+        Section(Loc.T("market.borsa"), x, top);
+        string day = m.State.Open ? Loc.T("market.day", m.State.Day) : Loc.T("market.opens");
         TextIn(day, x, top + 6, w, 14, T.Muted, HorizontalAlignment.Right, true, true);
         float y = top + 38;
         const float rowH = 30;
-        Text("KATEGORİ", x + 8, y, 12, T.Muted, true, true);
-        TextIn("ÇARPAN", x, y, w - 150, 12, T.Muted, HorizontalAlignment.Right, true, true);
-        TextIn("DOYGUNLUK", x, y, w - 64, 12, T.Muted, HorizontalAlignment.Right, true, true);
-        TextIn("30 GÜN", x, y, w - 6, 12, T.Muted, HorizontalAlignment.Right, true, true);
+        Text(Loc.T("market.category"), x + 8, y, 12, T.Muted, true, true);
+        TextIn(Loc.T("market.mult"), x, y, w - 150, 12, T.Muted, HorizontalAlignment.Right, true, true);
+        TextIn(Loc.T("market.saturation"), x, y, w - 64, 12, T.Muted, HorizontalAlignment.Right, true, true);
+        TextIn(Loc.T("market.days30"), x, y, w - 6, 12, T.Muted, HorizontalAlignment.Right, true, true);
         y += 18;
         foreach (var c in m.Categories)
         {
@@ -71,7 +71,7 @@ public partial class Hud
             Rect(x, y, w, rowH - 3, sel ? T.Selected : T.Panel);
             if (hot) Rect(x, y, 4, rowH - 3, T.Warning);
             Text(Fit(T.Upper(c.Name), w - 250, 15, true, true), x + 10, y + 5, 15, T.Ink, true, true);
-            if (hot) Text("SICAK ×2", x + 12 + Measure(Fit(T.Upper(c.Name), w - 250, 15, true, true), 15, true, true) + 8, y + 7, 12, T.Warning, true, true);
+            if (hot) Text(Loc.T("market.hot"), x + 12 + Measure(Fit(T.Upper(c.Name), w - 250, 15, true, true), 15, true, true) + 8, y + 7, 12, T.Warning, true, true);
             var tone = f >= 1.05f ? T.Green : f <= 0.95f ? T.Red : T.Ink;
             TextIn("×" + F2(f), x, y + 5, w - 150, 16, tone, HorizontalAlignment.Right, true, true);
             // doygunluk cubugu
@@ -87,7 +87,7 @@ public partial class Hud
         float gh = Math.Min(150, bottom - y - 40);
         if (gh > 60)
         {
-            Text(T.Upper(cat.Name) + "  ·  BORSA ÇARPANI, SON 30 GÜN", x, y, 14, T.Ink, true, true);
+            Text(Loc.T("market.chart_title", T.Upper(cat.Name)), x, y, 14, T.Ink, true, true);
             y += 22;
             Rect(x, y, w, gh, T.Panel);
             var mf = _d.Data.Market;
@@ -98,7 +98,7 @@ public partial class Hud
             Spark(m.State.History.TryGetValue(cat.Id, out var hh) ? hh : null, x + 6, y + 6, w - 12, gh - 12, T.Teal, lo, hi, 2.5f);
             y += gh + 6;
         }
-        Paragraph("Fiyat = taban × kalite × Borsa × doygunluk. Fiyat fırlatma anında kilitlenir. Aynı kategoriden her kasa %3 düşürür; her sabah geri gelir.",
+        Paragraph(Loc.T("market.price_note"),
             x, Math.Min(y, bottom - 36), w, 13, T.A(T.Ink, 0.7f), 2);
     }
 
@@ -124,37 +124,37 @@ public partial class Hud
     {
         var s = _d.State;
         float x = LeftX, w = ColW;
-        Section("Katalog", x, top);
+        Section(Loc.T("market.catalog"), x, top);
         float y = top + 40;
         Rect(x, y, w, 60, T.Panel);
-        Text("CÜZDAN (EKİPÇE ORTAK)", x + 12, y + 8, 13, T.Muted, true, true);
-        Text($"{s.Credits.ToString("N0", CultureInfo.GetCultureInfo("tr-TR"))} KREDİ", x + 12, y + 26, 24, T.Warning, true, true);
+        Text(Loc.T("market.wallet"), x + 12, y + 8, 13, T.Muted, true, true);
+        Text(Loc.T("market.credits_n", s.Credits.ToString("N0", CultureInfo.GetCultureInfo("tr-TR"))), x + 12, y + 26, 24, T.Warning, true, true);
         y += 72;
-        Text("TESLİMATLAR", x, y, 15, T.Ink, true, true);
+        Text(Loc.T("market.deliveries"), x, y, 15, T.Ink, true, true);
         y += 24;
         var dls = s.Catalog.Deliveries;
-        if (dls.Count == 0) { Rect(x, y, w, 40, T.Panel); Text("Yolda teslimat yok.", x + 12, y + 10, 16, T.Muted); y += 46; }
+        if (dls.Count == 0) { Rect(x, y, w, 40, T.Panel); Text(Loc.T("market.no_deliveries"), x + 12, y + 10, 16, T.Muted); y += 46; }
         foreach (var dl in dls.Take(6))
         {
             Rect(x, y, w, 52, T.Panel);
             string icon = dl.Items.Keys.FirstOrDefault() ?? (dl.Load.Length > 0 ? dl.Load : null);
             if (icon != null) ItemIcon(icon, x + 4, y + 4, 44, 44, 1f, false);
-            string name = dl.Source.StartsWith("cark:") ? "Çark ödülü" : s.Data.Catalog.Entries.FirstOrDefault(e => e.Id == dl.Source)?.Name ?? dl.Source;
+            string name = dl.Source.StartsWith("cark:") ? Loc.T("market.wheel_reward") : s.Data.Catalog.Entries.FirstOrDefault(e => e.Id == dl.Source)?.Name ?? dl.Source;
             Text(Fit(T.Upper(name), w - 200, 16, true, true), x + 56, y + 6, 16, T.Ink, true, true);
             string what = string.Join("  ·  ", dl.Items.Select(kv => $"{ItemNames.Of(kv.Key)} ×{kv.Value}").Concat(dl.Load.Length > 0 ? new[] { ItemNames.Of(dl.Load) } : Array.Empty<string>()));
             Text(Fit(what, w - 70, 14), x + 56, y + 29, 14, T.A(T.Ink, 0.8f));
             float total = s.Catalog.Seconds(dl.Via);
             if (!dl.Arrived)
             {
-                TextIn($"{(dl.Via == "rampa" ? "RAMPAYA" : "KAPSÜL")}  {Mathf.Ceil(dl.Left):0} SN", x, y + 7, w - 10, 14, T.Muted, HorizontalAlignment.Right, true, true);
+                TextIn(Loc.T("market.eta", dl.Via == "rampa" ? Loc.T("market.to_ramp") : Loc.T("market.capsule"), Mathf.Ceil(dl.Left).ToString("0", CultureInfo.InvariantCulture)), x, y + 7, w - 10, 14, T.Muted, HorizontalAlignment.Right, true, true);
                 Rect(x, y + 48, w * (1f - dl.Left / Math.Max(1f, total)), 4, T.Green);
             }
-            else TextIn(dl.Via == "rampa" ? "RAMPADA" : "İNDİ: E İLE AÇ", x, y + 7, w - 10, 14, T.Green, HorizontalAlignment.Right, true, true);
+            else TextIn(dl.Via == "rampa" ? Loc.T("market.at_ramp") : Loc.T("market.landed"), x, y + 7, w - 10, 14, T.Green, HorizontalAlignment.Right, true, true);
             y += 57;
         }
         y += 6;
         if (y < bottom - 60)
-            Paragraph("Kapsül gökten Ocak'ın yanına iner; yanına git, E ile aç, içi çantaya geçer. Araç gövdesi Kargo Rampası'na iner. Katalog fiyatı Borsa'dan etkilenmez.",
+            Paragraph(Loc.T("market.catalog_note"),
                 x, y, w, 13, T.A(T.Ink, 0.7f), 4);
     }
 
@@ -165,8 +165,8 @@ public partial class Hud
         var s = _d.State;
         var wh = s.Wheel;
         float x = LeftX, w = ColW;
-        Section("Tohum Çarkı", x, top);
-        TextIn(s.WheelFreeToday ? "BUGÜN BEDAVA" : $"{wh.Cost} KREDİ", x, top + 6, w, 14, s.WheelFreeToday ? T.Green : T.Muted, HorizontalAlignment.Right, true, true);
+        Section(Loc.T("market.wheel"), x, top);
+        TextIn(s.WheelFreeToday ? Loc.T("market.free_today") : Loc.T("market.credits_n", wh.Cost), x, top + 6, w, 14, s.WheelFreeToday ? T.Green : T.Muted, HorizontalAlignment.Right, true, true);
         float y = top + 40;
         // Agirlikli serit: her odul payi kadar
         float bx = x, total = wh.TotalWeight;
@@ -186,28 +186,28 @@ public partial class Hud
             Rect(x, y, w, 30, last ? T.Selected : T.Panel);
             Rect(x, y, 6, 30, T.A(tones[i % tones.Length], 0.85f));
             Text(Fit(T.Upper(r.Name), w - 200, 14, true, true), x + 14, y + 7, 14, T.Ink, true, true);
-            string val = r.Kind == "credits" ? string.Join(" / ", r.Amounts) + " KR" : $"≈{r.Value} KR";
+            string val = r.Kind == "credits" ? Loc.T("market.kr_n", string.Join(" / ", r.Amounts)) : Loc.T("market.kr_approx", r.Value);
             TextIn(val, x, y + 7, w - 70, 13, T.Muted, HorizontalAlignment.Right, true, true);
             TextIn($"%{(wh.Chance(r) * 100f).ToString("0.#", CultureInfo.GetCultureInfo("tr-TR"))}", x, y + 7, w - 10, 14, T.Ink, HorizontalAlignment.Right, true, true);
             y += 33; i++;
         }
         y += 6;
-        string ev = $"BEKLENEN DEĞER  ≈{wh.ExpectedValue:0} KREDİ  (%{wh.ExpectedValue / Math.Max(1, wh.Cost) * 100f:0})";
+        string ev = Loc.T("market.expected", wh.ExpectedValue.ToString("0", CultureInfo.InvariantCulture), (wh.ExpectedValue / Math.Max(1, wh.Cost) * 100f).ToString("0", CultureInfo.InvariantCulture));
         Text(ev, x, y, 13, T.A(T.Ink, 0.75f), true, true);
         y += 24;
         if (wh.State.Last.Length > 0)
         {
             var last = wh.Rewards.FirstOrDefault(r => r.Id == wh.State.Last);
-            string got = last == null ? wh.State.Last : last.Kind == "credits" ? $"{wh.State.LastCredits} Kredi" : last.Name;
+            string got = last == null ? wh.State.Last : last.Kind == "credits" ? Loc.T("market.credit_n", wh.State.LastCredits) : last.Name;
             Rect(x, y, w, 40, T.Panel);
-            Text("SON ÖDÜL", x + 12, y + 12, 13, T.Muted, true, true);
+            Text(Loc.T("market.last_reward"), x + 12, y + 12, 13, T.Muted, true, true);
             TextIn(T.Upper(got), x, y + 9, w - 12, 18, T.Warning, HorizontalAlignment.Right, true, true);
             y += 48;
         }
         var tokens = wh.State.Tokens.Where(kv => kv.Value > 0).ToList();
         if (tokens.Count > 0 && y < bottom - 40)
         {
-            Text("KOOPERATİF DEPOSU (SİSTEMİ GELİNCE ALINIR)", x, y, 12, T.Muted, true, true);
+            Text(Loc.T("market.coop_depot"), x, y, 12, T.Muted, true, true);
             y += 18;
             Paragraph(string.Join("  ·  ", tokens.Select(kv => $"{wh.Rewards.FirstOrDefault(r => r.Id == kv.Key)?.Name ?? kv.Key} ×{kv.Value}")), x, y, w, 14, T.Ink, 3);
         }

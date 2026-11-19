@@ -29,12 +29,12 @@ public partial class Hud
         }
         else
         {
-            _goal.Text = "Defter: 240 iş emri";
-            _goalProgress.Text = "Sıradaki: 5 kabarık ürün yetiştir";
+            _goal.Text = Loc.T("hud.defter_total", 240);
+            _goalProgress.Text = Loc.T("hud.next_goal");
         }
 
         _hp.Value = _d.Player.Hp / _d.Player.MaxHp * 100f;
-        _bag.Text = $"{s.Credits} Kredi   ·   Yumurta {s.Eggs}   ·   Çanta {s.Backpack.UsedSlots}/{s.Backpack.Slots} ({G("{act:bag}")})";
+        _bag.Text = Loc.T("hud.bag_line", s.Credits, s.Eggs, s.Backpack.UsedSlots, s.Backpack.Slots, G("{act:bag}"));
     }
 
     public void OnHead(int h)

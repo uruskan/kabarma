@@ -57,7 +57,7 @@ public partial class SaveService : Node
     public bool SaveNow(string reason, bool quiet = false)
     {
         if (!Enabled) { LastError = "kayit kapali"; return false; }
-        if (!_d.CanSave(out var why)) { LastError = why; if (!quiet) _d.Hud?.Hint($"Kaydedilemedi: {why}", 2f); return false; }
+        if (!_d.CanSave(out var why)) { LastError = why; if (!quiet) _d.Hud?.Hint(Loc.T("menu.save_failed_hint", why), 2f); return false; }
         try
         {
             var store = _d.Store;
@@ -70,14 +70,14 @@ public partial class SaveService : Node
             _sinceSave = 0;
             LastError = null;
             GD.Print($"SAVE ok slot={_d.SaveSlot} reason={reason} bytes={bytes} sections={g.Sections.Count} day={g.Manifest.Day}");
-            if (!quiet) _d.Hud?.Hint(reason == "elle" ? "Kaydedildi" : "Otomatik kayıt", 1.5f);
+            if (!quiet) _d.Hud?.Hint(Loc.T(reason == "elle" ? "menu.saved" : "menu.autosaved"), 1.5f);
             return true;
         }
         catch (Exception e)
         {
             LastError = e.Message;
             GD.PushError($"SAVE basarisiz: {e.Message}");
-            if (!quiet) _d.Hud?.Hint("Kayıt yazılamadı", 2f);
+            if (!quiet) _d.Hud?.Hint(Loc.T("menu.save_write_failed"), 2f);
             return false;
         }
     }

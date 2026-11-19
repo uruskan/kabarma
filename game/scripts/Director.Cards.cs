@@ -42,7 +42,7 @@ public partial class Director
         if (Player.Down && !_cardsDown && h.TryRevive())
         {
             Player.NetRevive(Player.MaxHp * 0.5f);
-            Hud.Big("İKİNCİ NEFES", Palette.MayaTeal, 1.6f);
+            Hud.Big(Loc.T("dir.big_second_wind"), Palette.MayaTeal, 1.6f);
         }
         _cardsDown = Player.Down;
 
@@ -63,7 +63,7 @@ public partial class Director
         if (Input.IsActionJustPressed("card_banish") && n.Hand.BanishesLeft > 0)
         {
             _banishMode = !_banishMode;
-            Hud.Hint(_banishMode ? "Sürgün: sürgün edilecek kartı seç" : "Sürgün iptal", 1.5f);
+            Hud.Hint(_banishMode ? Loc.T("dir.hint_banish_pick") : Loc.T("dir.hint_banish_cancel"), 1.5f);
         }
     }
 
@@ -74,8 +74,8 @@ public partial class Director
         _banishMode = false;
         var n = Night;
         var id = n?.Offer != null && i < n.Offer.Cards.Count ? n.Offer.Cards[i].Id : null;
-        if (n != null && n.Hand.Banish(i)) { GD.Print($"NIGHT banish {id} left={n.Hand.BanishesLeft}"); Hud.Hint("Kart bu gece için sürgün edildi", 1.5f); }
-        else Hud.Hint("Bu kart sürgün edilemez", 1.5f);
+        if (n != null && n.Hand.Banish(i)) { GD.Print($"NIGHT banish {id} left={n.Hand.BanishesLeft}"); Hud.Hint(Loc.T("dir.hint_banished"), 1.5f); }
+        else Hud.Hint(Loc.T("dir.hint_cant_banish"), 1.5f);
         RefreshOffer();
         return true;
     }
@@ -195,7 +195,7 @@ public partial class Director
             var src = Zipzip.All.Where(z => !z.Dead).OrderBy(z => z.Center.DistanceTo(from)).FirstOrDefault();
             if (src != null && src.Center.DistanceTo(from) < 3f) src.Hit(Mathf.Round(g.Reflected), false, Vector3.Zero, 0, false);
         }
-        if (g.Dodged) Hud.Hint("Kaçtın", 0.6f);
+        if (g.Dodged) Hud.Hint(Loc.T("dir.hint_dodged"), 0.6f);
         return g.Taken;
     }
 

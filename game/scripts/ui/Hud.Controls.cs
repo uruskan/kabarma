@@ -9,7 +9,7 @@ namespace Kabarma.Game;
 /// </summary>
 public partial class Hud
 {
-    const string HeadHintText = "{act:head_wheel}: çark  ·  {act:head_keys}";
+    static string HeadHintText => Loc.T("hud.head_hint");
     string _menuFootRaw = "";
     StyleBoxFlat _cursorBox;
 

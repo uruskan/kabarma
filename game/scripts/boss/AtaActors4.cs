@@ -186,9 +186,9 @@ public partial class KurbagaAga : AtaActor
         if (phase == 2)
         {
             _sac.Reset(); _sac.Visible = true; _sac.SetActive(true);
-            if (!quiet) { D.Hud.Say("Şişti: karnındaki maya kesesi ışıyınca vur!"); Squash.Kick(Visual, 0.3f, 0.8f, 3f); }
+            if (!quiet) { D.Hud.Say(Loc.T("ata.say_swelled")); Squash.Kick(Visual, 0.3f, 0.8f, 3f); }
         }
-        if (!quiet && phase == 1) D.Hud.Say("Suya dalıyor: nilüfer yaprağında dur!");
+        if (!quiet && phase == 1) D.Hud.Say(Loc.T("ata.say_dive"));
     }
 
     protected override void SpecialAttack(string kind, int count)
@@ -204,7 +204,7 @@ public partial class KurbagaAga : AtaActor
                 {
                     _swallowed = true;
                     Fx.Burst(p.GlobalPosition + Vector3.Up, Palette.MayaTeal, 20, 4f, 0.14f, 0.6f, true);
-                    D.Hud.Say("Yutuldun! İçeriden vur: kritik!");
+                    D.Hud.Say(Loc.T("ata.say_swallowed"));
                     GD.Print("ATA swallow caught");
                 }
                 else { Squash.Kick(Visual, 0.15f, 0.3f, 2f); GD.Print("ATA swallow miss"); }
@@ -386,9 +386,9 @@ public partial class CiyanPasa : AtaActor
                 Sys.Targets.Add(b);
                 _barrels.Add(b);
             }
-            if (!quiet) D.Hud.Say("Mesa duvarına çıkıyor: katran varillerini patlat!");
+            if (!quiet) D.Hud.Say(Loc.T("ata.say_mesa"));
         }
-        if (!quiet && phase == 1) D.Hud.Say("Bogumlar kopuyor; kum fırtınası başladı!");
+        if (!quiet && phase == 1) D.Hud.Say(Loc.T("ata.say_sandstorm"));
     }
 
     public override void OnWeakPointBroken(int i) { if (i >= 0 && i < _segs.Count) _segs[i].Break(); }
@@ -443,9 +443,9 @@ public partial class BuzTosunu : AtaActor
         if (phase == 2)
         {
             _glacier.Visible = true; _belly.Reset(); _belly.Visible = true; _belly.SetActive(true);
-            if (!quiet) D.Hud.Say("Sırtında buzul: ateşle erit, sonra karnı aç!");
+            if (!quiet) D.Hud.Say(Loc.T("ata.say_glacier"));
         }
-        if (!quiet && phase == 1) D.Hud.Say("Tipi! Isınma noktalarının yanında kal.");
+        if (!quiet && phase == 1) D.Hud.Say(Loc.T("ata.say_blizzard"));
     }
 
     protected override void SpecialAttack(string kind, int count)
@@ -469,7 +469,7 @@ public partial class BuzTosunu : AtaActor
         float k = Phase.Armor > 0 ? Mathf.Clamp(Fight.Armor / Phase.Armor, 0f, 1f) : 0f;
         _glacier.Scale = new Vector3(1f, 0.25f + 0.75f * k, 1f);
         if (Burning > 0 && (int)(_walkT * 6) != (int)((_walkT - dt) * 6)) Fx.Burst(_glacier.GlobalPosition, new Color("CFE6F2"), 4, 3f, 0.12f, 0.6f);
-        if (k <= 0.01f && _glacier.Visible) { _glacier.Visible = false; Fx.Burst(Center + Vector3.Up * 2f, new Color("CFE6F2"), 50, 7f, 0.2f, 1f); D.Hud.Say("Buzul eridi: karnındaki kese açık!"); }
+        if (k <= 0.01f && _glacier.Visible) { _glacier.Visible = false; Fx.Burst(Center + Vector3.Up * 2f, new Color("CFE6F2"), 50, 7f, 0.2f, 1f); D.Hud.Say(Loc.T("ata.say_melted")); }
     }
 
     public override void OnWeakPointBroken(int i) => _belly.Break();
@@ -508,9 +508,9 @@ public partial class AnaMaya : AtaActor
         if (phase == 2)
         {
             _core.Reset(); _core.Visible = true; _core.SetActive(true);
-            if (!quiet) D.Hud.Say("Hepiniz kabarıyorsunuz: dev boyda dövüşün, çekirdeği aç!");
+            if (!quiet) D.Hud.Say(Loc.T("ata.say_giants"));
         }
-        if (!quiet && phase == 1) D.Hud.Say("Zemin kabarıp iniyor: zıpla! Hamurcuk seli geliyor.");
+        if (!quiet && phase == 1) D.Hud.Say(Loc.T("ata.say_floor"));
     }
 
     protected override void SpecialAttack(string kind, int count)

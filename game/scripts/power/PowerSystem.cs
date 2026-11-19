@@ -107,7 +107,7 @@ public partial class PowerSystem : Node3D
     void Refund(int cables)
     {
         int added = _d.State.Backpack.Add(F.CableItem, cables);
-        if (added < cables) _d.Hud.Hint("Çanta dolu: Kablo yere düşmedi, kayboldu", 2f);
+        if (added < cables) _d.Hud.Hint(Loc.T("power.bag_full_cable"), 2f);
     }
 
     /// <summary>Parcayi soker: esya ve kablolari cantaya doner (ortak oyunda host'ta, aktorun cantasina).</summary>
@@ -252,7 +252,7 @@ public partial class PowerSystem : Node3D
         SignalMode = !SignalMode;
         _pick = -1;
         Sfx.Play("place", null, -16f);
-        _d.Hud.Hint(SignalMode ? "Sinyal teli: Düğme / Basınç Plakası → Şalter / Lamba" : "Güç kablosu", 1.2f);
+        _d.Hud.Hint(SignalMode ? Loc.T("power.signal_wire_hint") : Loc.T("power.power_cable"), 1.2f);
     }
 
     /// <summary>Nisan noktasina en yakin soket (oyuncunun 7 m'si icinde, nisana 1,6 m'den yakin); yoksa -1.</summary>
@@ -287,21 +287,21 @@ public partial class PowerSystem : Node3D
     {
         int have = _d.State.Backpack.Count(F.CableItem);
         int target = TargetAt(aim);
-        string mode = SignalMode ? "Sinyal teli" : "Güç kablosu";
+        string mode = SignalMode ? Loc.T("power.signal_wire") : Loc.T("power.power_cable");
         string reason = null;
         if (_pick >= 0 && Net.Get(_pick) == null) _pick = -1;
         if (_pick >= 0)
         {
             var a = SocketOf(_pick);
             var b = target >= 0 && target != _pick ? SocketOf(target) : aim;
-            reason = target >= 0 && target != _pick ? Net.CanConnect(F, _pick, target, SignalMode) : a.DistanceTo(b) > F.CableMaxLength ? $"Kablo en fazla {F.CableMaxLength:0} m" : "";
+            reason = target >= 0 && target != _pick ? Net.CanConnect(F, _pick, target, SignalMode) : a.DistanceTo(b) > F.CableMaxLength ? Loc.T("power.cable_max", F.CableMaxLength.ToString("0", System.Globalization.CultureInfo.InvariantCulture)) : "";
             ShowPreview(a, b, string.IsNullOrEmpty(reason) && target >= 0);
-            _d.Hud.Hint($"{mode} ×{have}  ·  {NameOf(_pick)} → {(target >= 0 && target != _pick ? NameOf(target) : "?")}  {a.DistanceTo(b):0.0}/{F.CableMaxLength:0} m{(string.IsNullOrEmpty(reason) ? "" : "  ·  " + reason)}  ·  {{act:fire}}: tak  ·  {{act:build_rotate}}: güç/sinyal", 0.2f);
+            _d.Hud.Hint(Loc.T("power.cable_hint", mode, have, NameOf(_pick), (target >= 0 && target != _pick ? NameOf(target) : "?"), a.DistanceTo(b).ToString("0.0", System.Globalization.CultureInfo.InvariantCulture), F.CableMaxLength.ToString("0", System.Globalization.CultureInfo.InvariantCulture), (string.IsNullOrEmpty(reason) ? "" : "  ·  " + reason)), 0.2f);
         }
         else
         {
             HidePreview();
-            _d.Hud.Hint($"{mode} ×{have}  ·  {(target >= 0 ? NameOf(target) + "  ·  {act:fire}: ilk soket" : "bir sokete nişan al")}  ·  {{act:build_rotate}}: güç/sinyal  ·  E: ayar / sök", 0.2f);
+            _d.Hud.Hint(Loc.T("power.cable_idle_hint", mode, have, (target >= 0 ? NameOf(target) + "  ·  " + Loc.T("power.first_socket") : Loc.T("power.aim_socket"))), 0.2f);
         }
         if (!firePressed) return false;
         if (_pick < 0)
@@ -314,7 +314,7 @@ public partial class PowerSystem : Node3D
             return true;
         }
         if (target < 0 || target == _pick) { _pick = -1; HidePreview(); Sfx.Play("place", null, -18f); return true; }
-        if (have < 1) { _d.Hud.Hint("Kablo yok: Tezgâh → Kablo", 1.5f); Sfx.Play("hit", null, -10f); return true; }
+        if (have < 1) { _d.Hud.Hint(Loc.T("power.no_cable_item"), 1.5f); Sfx.Play("hit", null, -10f); return true; }
         var err = Net.CanConnect(F, _pick, target, SignalMode);
         if (err != null) { _d.Hud.Hint(err, 1.5f); Sfx.Play("hit", null, -10f); _lastReason = err; GD.Print($"POWER refuse {err}"); return true; }
         if (ForwardCable(_pick, target, SignalMode)) { Sfx.Play("place", SocketOf(target), -2f); _pick = -1; HidePreview(); return true; } // ortak: host ceker
@@ -387,21 +387,21 @@ public partial class PowerSystem : Node3D
         var items = new List<Hud.MenuItem>();
         void Re() => OpenPanel(id);
         if (pdef.Kind is "switch" or "lever" or "timer" or "motion" or "memory" or "belt" or "pipe" or "splitter" or "merger" || (pdef.IsConsumer && F.IsDevice(n.Def)))
-            items.Add(new Hud.MenuItem(n.On ? "Kapat" : "Aç", () => !(n.SignalWired && pdef.Kind == "switch"), () => { Act(Op.Toggle, id); Sfx.Play("place", null, -8f); Re(); }));
+            items.Add(new Hud.MenuItem(n.On ? Loc.T("power.turn_off") : Loc.T("power.turn_on"), () => !(n.SignalWired && pdef.Kind == "switch"), () => { Act(Op.Toggle, id); Sfx.Play("place", null, -8f); Re(); }));
         if (pdef.IsConsumer || pdef.Kind == "fuse")
-            items.Add(new Hud.MenuItem($"Öncelik: {n.Priority}  (1 en önemli, 5 ilk kapanır)", () => true, () => { Act(Op.Priority, id); Sfx.Play("place", null, -12f); Re(); }));
-        if (pdef.Kind == "button" && dev != null) items.Add(new Hud.MenuItem("Bas", () => true, () => { Press(dev); Re(); }));
+            items.Add(new Hud.MenuItem(Loc.T("power.priority_item", n.Priority), () => true, () => { Act(Op.Priority, id); Sfx.Play("place", null, -12f); Re(); }));
+        if (pdef.Kind == "button" && dev != null) items.Add(new Hud.MenuItem(Loc.T("power.press"), () => true, () => { Press(dev); Re(); }));
         TransportPanel(items, n, pdef, dev, Re); // M4 tasima: kol filtresi, yakit, sayac, drone gorevleri, teleferik hatti
         int cables = Net.Links.Count(l => l.A == id || l.B == id);
-        items.Add(new Hud.MenuItem($"Kablolarını sök ({cables})", () => cables > 0, () => { Act(Op.Unplug, id); Sfx.Play("pickup", null, -6f); Re(); }, F.CableItem));
-        if (dev != null) items.Add(new Hud.MenuItem($"Sök ({dev.Def.Name} ve kabloları çantaya)", () => true, () => Dismantle(dev), dev.Def.Id));
+        items.Add(new Hud.MenuItem(Loc.T("power.unplug", cables), () => cables > 0, () => { Act(Op.Unplug, id); Sfx.Play("pickup", null, -6f); Re(); }, F.CableItem));
+        if (dev != null) items.Add(new Hud.MenuItem(Loc.T("power.dismantle", dev.Def.Name), () => true, () => Dismantle(dev), dev.Def.Id));
         var stats = Net.StatsOf(id);
         string net = stats == null
-            ? "Ağa bağlı değil. Elinde Kablo varken bir sokete, sonra ötekine sol tık (en fazla 12 m)."
-            : $"Ağ: üretim {stats.SupplyW:0} W · talep {stats.DemandW:0} W · karşılanan {stats.ServedW:0} W" +
-              (stats.CapacityWh > 0 ? $" · akü {stats.StoredWh:0}/{stats.CapacityWh:0} Wh ({(stats.BatteryW >= 0 ? "-" : "+")}{Mathf.Abs(stats.BatteryW):0} W)" : "") +
-              (stats.Overloaded ? $"\nAŞIRI YÜK: {stats.Shed} tüketici kapandı (5'ten başlayarak)" : "");
+            ? Loc.T("power.not_networked")
+            : Loc.T("power.net_stats", stats.SupplyW.ToString("0", System.Globalization.CultureInfo.InvariantCulture), stats.DemandW.ToString("0", System.Globalization.CultureInfo.InvariantCulture), stats.ServedW.ToString("0", System.Globalization.CultureInfo.InvariantCulture)) +
+              (stats.CapacityWh > 0 ? " · " + Loc.T("power.net_battery", stats.StoredWh.ToString("0", System.Globalization.CultureInfo.InvariantCulture), stats.CapacityWh.ToString("0", System.Globalization.CultureInfo.InvariantCulture), (stats.BatteryW >= 0 ? "-" : "+"), Mathf.Abs(stats.BatteryW).ToString("0", System.Globalization.CultureInfo.InvariantCulture)) : "") +
+              (stats.Overloaded ? "\n" + Loc.T("power.net_overload", stats.Shed) : "");
         string title = dev != null ? $"{dev.Def.Name} · {dev.Status()}" : $"{NameOf(id)} · {pdef.Watts:0} W";
-        _d.Hud.ShowMenu(title, items, net + "\n{act:interact} / {act:ui_cancel}: kapat");
+        _d.Hud.ShowMenu(title, items, net + "\n" + Loc.T("world.close_footer"));
     }
 }

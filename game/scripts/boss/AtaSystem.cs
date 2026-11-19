@@ -158,18 +158,18 @@ public partial class AtaSystem : Node3D
         {
             // Kabarik Ata (GDD §18): ayni adak + KS × 50 Maya. KS Sekme ile (ui_focus_next) secilir.
             if (Input.IsActionJustPressed("ui_focus_next")) CycleKabarikKs();
-            _d.Hud.Hint($"Kabarık {def.Name} · KS {KabarikKs} · {MayaHave}/{AtaRules.MayaCost(Data, KabarikKs)} Maya · {OfferingText(def, true)}{DrumText(def, true)}  ·  {{act:interact}} adak sun  ·  Sekme: KS");
+            _d.Hud.Hint(Loc.T("ata.kabarik_hint", def.Name, KabarikKs, MayaHave, AtaRules.MayaCost(Data, KabarikKs), OfferingText(def, true), DrumText(def, true)));
             if (Input.IsActionJustPressed("interact")) Offer(def);
             return;
         }
-        _d.Hud.Hint($"Ata Taşı · {def.OfferingName}: {OfferingText(def)}{DrumText(def, false)}  ·  {{act:interact}} adak sun");
+        _d.Hud.Hint(Loc.T("ata.stone_hint", def.OfferingName, OfferingText(def), DrumText(def, false)));
         if (Input.IsActionJustPressed("interact")) Offer(def);
     }
 
     public string OfferingText(AtaDef def, bool kab = false) => string.Join("  ", def.Offering.Select(o =>
-        $"{(o.Swollen ? "Kabarık " : "")}{ItemNames.Of(o.Item)} {o.Count - AtaRules.Missing(Progress, def, o, kab)}/{o.Count}"));
+        $"{(o.Swollen ? Loc.T("ata.swollen_word") + " " : "")}{ItemNames.Of(o.Item)} {o.Count - AtaRules.Missing(Progress, def, o, kab)}/{o.Count}"));
 
-    string DrumText(AtaDef def, bool kab) => def.PowerWatts <= 0 ? "" : $"  Davul {Progress.Record(kab ? AtaRules.KabarikId(def.Id) : def.Id).PowerT:0}/{def.PowerSeconds:0} sn ({def.PowerWatts:0} W)";
+    string DrumText(AtaDef def, bool kab) => def.PowerWatts <= 0 ? "" : "  " + Loc.T("ata.drum", Progress.Record(kab ? AtaRules.KabarikId(def.Id) : def.Id).PowerT.ToString("0", System.Globalization.CultureInfo.InvariantCulture), def.PowerSeconds.ToString("0", System.Globalization.CultureInfo.InvariantCulture), def.PowerWatts.ToString("0", System.Globalization.CultureInfo.InvariantCulture));
 
     // ---------- Kabarik Ata ----------
 
@@ -214,7 +214,7 @@ public partial class AtaSystem : Node3D
         int n = AtaRules.OfferFromBag(Progress, def, bag, kab);
         if (n > 0) { Sfx.Play("ui_onay", AltarPos(def)); Fx.Burst(AltarPos(def) + Vector3.Up, Palette.MayaTeal, 12, 3f, 0.1f, 0.6f, true); _stones[def.Id].Refresh(); }
         else Sfx.Play("ui_hata", AltarPos(def));
-        if (!TrySummon(def, bag, ks) && n == 0 && local) _d.Hud.Hint(kab && AtaRules.OfferingComplete(Progress, def, true) ? $"Maya yetmiyor: {AtaRules.MayaCost(Data, KabarikKs)} gerekir" : $"Adak eksik: {OfferingText(def, kab)}", 2f);
+        if (!TrySummon(def, bag, ks) && n == 0 && local) _d.Hud.Hint(kab && AtaRules.OfferingComplete(Progress, def, true) ? Loc.T("ata.maya_short", AtaRules.MayaCost(Data, KabarikKs)) : Loc.T("ata.offering_missing", OfferingText(def, kab)), 2f);
     }
 
     bool TrySummon(AtaDef def, Inventory bag, int ks)
@@ -252,7 +252,7 @@ public partial class AtaSystem : Node3D
     {
         GD.Print($"ATA summon {def.Id} hp={Fight.MaxHp:0}");
         Sfx.Play("gokyuzu_dalga", ArenaCenter(def), 2f);
-        _d.Hud.Say($"{def.Name} geliyor!");
+        _d.Hud.Say(Loc.T("ata.arriving", def.Name));
         _stones[def.Id].Pulse();
         SpawnActor(def, arriving: true);
     }
@@ -311,7 +311,7 @@ public partial class AtaSystem : Node3D
         _cold += AtaRules.ColdDamage(Fight, def, near, dt);
         if (_cold < 2f) return;
         p.Hurt(_cold, p.GlobalPosition);
-        Fx.Text3D(p.GlobalPosition + Vector3.Up * 2f, "SOĞUK", Palette.SkyNoon, 56, 0.8f, 0.8f);
+        Fx.Text3D(p.GlobalPosition + Vector3.Up * 2f, Loc.T("ata.cold"), Palette.SkyNoon, 56, 0.8f, 0.8f);
         _cold = 0;
     }
 
@@ -474,8 +474,8 @@ public partial class AtaSystem : Node3D
             for (int i = 0; i < it.Count; i++) Fx.FlyTo(at, () => _d.Player.BackpackPoint.GlobalPosition, Palette.MayaTeal, 0.18f);
         }
         var seal = Data.SealOf(def.Reward.Seal);
-        if (kab) _d.Hud.Say($"Kabarık {def.Name} yenildi (KS {ks})! +{items[0].Count} {ItemNames.Of(items[0].Item)}");
-        else _d.Hud.Say($"{def.Name} yenildi!" + (seal != null ? $" Mühür: {seal.Name}." : "") + (!string.IsNullOrEmpty(def.Reward.Ulti) ? " Ulti açıldı." : ""));
+        if (kab) _d.Hud.Say(Loc.T("ata.kabarik_defeated", def.Name, ks, items[0].Count, ItemNames.Of(items[0].Item)));
+        else _d.Hud.Say(Loc.T("ata.defeated", def.Name) + (seal != null ? " " + Loc.T("ata.seal", seal.Name) : "") + (!string.IsNullOrEmpty(def.Reward.Ulti) ? " " + Loc.T("ata.ulti_unlocked") : ""));
         if (left > 0) GD.Print($"ATA reward_overflow {left}");
         Events.RaiseAtaDefeated(kab ? AtaRules.KabarikId(def.Id) : def.Id); // Kabarik: kabarik_<ata> (cip kaynagi ata:kabarik_<ata>, is emri #33)
         _stones[def.Id].Refresh();

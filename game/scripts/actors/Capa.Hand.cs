@@ -21,7 +21,7 @@ public partial class Capa
         if (id == PlanTools.Plan)
         {
             if (_ghost != null) _ghost.Visible = false;
-            if (_d.Build == null) { _d.Hud.Hint("İnşa Planı: yapı seti yok", 0.2f); return false; }
+            if (_d.Build == null) { _d.Hud.Hint(Loc.T("capa.no_build_set"), 0.2f); return false; }
             int before = _d.Build.System.Pieces.Count;
             _d.Build.Tick(_d.Player, aim, firePressed && !_d.Hud.WheelOpen);
             return _d.Build.System.Pieces.Count > before;
@@ -37,7 +37,7 @@ public partial class Capa
         var food = _d.Data.Tool.Foods.FirstOrDefault(f => f.Id == id);
         if (food != null)
         {
-            _d.Hud.Hint($"{food.Name} ×{_d.State.Backpack.Count(id)}  ·  {{act:fire}}: ye", 0.2f);
+            _d.Hud.Hint(Loc.T("capa.food_hint", food.Name, _d.State.Backpack.Count(id)), 0.2f);
             if (firePressed) { _d.EatFood(food); return true; }
         }
         return false;

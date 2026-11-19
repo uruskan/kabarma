@@ -135,7 +135,7 @@ public partial class BoynuzluDede : AtaActor
             {
                 Sfx.Play("parca_darbe", Center, 8f, 0.4f);
                 Fx.Burst(_antlers.GlobalPosition, Palette.OffWhite.Lerp(Palette.Wood, 0.45f), 60, 8f, 0.25f, 1.2f);
-                D.Hud.Say("Boynuz kırıldı: parçaları Çekim'le al, ona fırlat!");
+                D.Hud.Say(Loc.T("ata.say_antler"));
             }
             for (int i = 0; i < Phase.Shards; i++)
             {
@@ -147,8 +147,8 @@ public partial class BoynuzluDede : AtaActor
                 shard.Drop(_antlers.GlobalPosition, at);
             }
         }
-        if (!quiet && phase == 0) D.Hud.Say("Sis çöküyor; dallardan koruyucular düşüyor.");
-        if (!quiet && phase == 1) D.Hud.Say("Kök dalgası: zıpla! Işıyan kovanları vur.");
+        if (!quiet && phase == 0) D.Hud.Say(Loc.T("ata.say_fog"));
+        if (!quiet && phase == 1) D.Hud.Say(Loc.T("ata.say_roots"));
     }
 
     protected override void SpecialAttack(string kind, int count)

@@ -93,8 +93,8 @@ public partial class OyukSystem
     bool ForwardChest(OyukRoom room, OyukChest chest)
     {
         if (_d.Net?.Forward("oyukchest", w => { w.Str(room.Poi.Id); w.VarU((uint)chest.Slot); }) != true) return false;
-        if (P.IsCleared(room.Poi.Id)) { chest.Open(); _d.Hud.Hint("Sandık açıldı", 1.5f); }
-        else _d.Hud.Hint("Sandık kilitli: önce koruyucuyu yen", 1.5f);
+        if (P.IsCleared(room.Poi.Id)) { chest.Open(); _d.Hud.Hint(Loc.T("world.oyuk_chest_opened"), 1.5f); }
+        else _d.Hud.Hint(Loc.T("world.oyuk_chest_locked_hint"), 1.5f);
         return true;
     }
 }

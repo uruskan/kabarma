@@ -83,11 +83,11 @@ public partial class Station : Node3D
         if (_oven != null) _oven.Working = working;
         if (_grill != null) _grill.Working = working;
         bool near = InReach(_d.Player.GlobalPosition);
-        string fuel = Def.FuelPerJob > 0 && Def.Fuel.Count > 0 ? $"  ·  yakıt: {ItemNames.Of(Def.Fuel[0])} {_d.State.Backpack.Count(Def.Fuel[0])}" : "";
-        string packing = Def.Station == "paketleme" && _d.State.Cargo.Open != null ? $"\nkasa: {_d.State.Cargo.Open.Items.UsedSlots}/{_d.State.Cargo.Open.Items.Slots} yığın · {_d.State.Cargo.Value(_d.State.Cargo.Open)} Kredi" : "";
+        string fuel = Def.FuelPerJob > 0 && Def.Fuel.Count > 0 ? "  ·  " + Loc.T("world.station_fuel", ItemNames.Of(Def.Fuel[0]), _d.State.Backpack.Count(Def.Fuel[0])) : "";
+        string packing = Def.Station == "paketleme" && _d.State.Cargo.Open != null ? "\n" + Loc.T("world.station_packing", _d.State.Cargo.Open.Items.UsedSlots, _d.State.Cargo.Open.Items.Slots, _d.State.Cargo.Value(_d.State.Cargo.Open)) : "";
         _label.Text = working
-            ? $"{Def.Name}\n{Queue.Active.Name} {(int)(Queue.Progress * 100)}%  ·  sırada {Queue.Queued}{QueueTail()}"
-            : near ? $"{Def.Name}{fuel}\nE: {(Def.Station == _d.Data.Research.Table ? "araştırma" : "üretim")}{packing}{AutoTail()}" : Def.Name + packing + AutoTail();
+            ? Loc.T("world.station_working", Def.Name, Queue.Active.Name, (int)(Queue.Progress * 100), Queue.Queued, QueueTail())
+            : near ? Loc.T("world.station_near", Def.Name, fuel, (Def.Station == _d.Data.Research.Table ? Loc.T("world.research") : Loc.T("world.craft")), packing, AutoTail()) : Def.Name + packing + AutoTail();
         _label.Modulate = near ? Palette.Warning : Palette.OffWhite;
         if (_bounce > 0)
         {

@@ -52,29 +52,29 @@ public partial class ServerListPanel : CanvasLayer
         var v = new VBoxContainer();
         v.AddThemeConstantOverride("separation", UiTheme.Px(8));
         panel.AddChild(v);
-        v.AddChild(Lbl(UiTheme.Upper("Sunucular"), 30, true, UiTheme.Ivory));
-        v.AddChild(Lbl("Adanmış sunucular: kayıtlı liste, Steam sunucu tarayıcısı ve doğrudan IP (ENet)", 15, false, UiTheme.Muted));
-        _player = Field(v, "Adın", Main.Args.TryGetValue("name", out var nm) ? nm : SteamBoot.Ready ? SteamBoot.PersonaName : "Oyuncu");
+        v.AddChild(Lbl(UiTheme.Upper(Loc.T("menu.servers")), 30, true, UiTheme.Ivory));
+        v.AddChild(Lbl(Loc.T("server.desc"), 15, false, UiTheme.Muted));
+        _player = Field(v, Loc.T("menu.your_name"), Main.Args.TryGetValue("name", out var nm) ? nm : SteamBoot.Ready ? SteamBoot.PersonaName : Loc.T("menu.player"));
 
-        v.AddChild(Lbl(UiTheme.Upper("Liste"), 18, true, UiTheme.Teal));
+        v.AddChild(Lbl(UiTheme.Upper(Loc.T("server.list")), 18, true, UiTheme.Teal));
         var scroll = new ScrollContainer { CustomMinimumSize = new Vector2(0, UiTheme.Px(190)), HorizontalScrollMode = ScrollContainer.ScrollMode.Disabled };
         _list = new VBoxContainer { SizeFlagsHorizontal = Control.SizeFlags.ExpandFill };
         scroll.AddChild(_list);
         v.AddChild(scroll);
         var listRow = Row(v);
-        listRow.AddChild(Btn("Steam listesini yenile", () => { _steam.Refresh(_data); _shown = -1; }));
-        listRow.AddChild(Btn("Kapat", QueueFree));
+        listRow.AddChild(Btn(Loc.T("server.steam_refresh"), () => { _steam.Refresh(_data); _shown = -1; }));
+        listRow.AddChild(Btn(Loc.T("menu.close"), QueueFree));
 
-        v.AddChild(Lbl(UiTheme.Upper("Doğrudan bağlan"), 18, true, UiTheme.Teal));
+        v.AddChild(Lbl(UiTheme.Upper(Loc.T("server.direct")), 18, true, UiTheme.Teal));
         var ipRow = Row(v);
-        _name = new LineEdit { PlaceholderText = "sunucu adı (kayıt için)", CustomMinimumSize = new Vector2(UiTheme.Px(180), 0) };
+        _name = new LineEdit { PlaceholderText = Loc.T("server.ph_name"), CustomMinimumSize = new Vector2(UiTheme.Px(180), 0) };
         _ip = new LineEdit { Text = "127.0.0.1", PlaceholderText = "IP", CustomMinimumSize = new Vector2(UiTheme.Px(160), 0) };
         _port = new LineEdit { Text = _data.Net.Port.ToString(), PlaceholderText = "port", CustomMinimumSize = new Vector2(UiTheme.Px(80), 0) };
-        _pass = new LineEdit { PlaceholderText = "şifre", Secret = true, CustomMinimumSize = new Vector2(UiTheme.Px(120), 0) };
+        _pass = new LineEdit { PlaceholderText = Loc.T("server.ph_pass"), Secret = true, CustomMinimumSize = new Vector2(UiTheme.Px(120), 0) };
         foreach (var c in new Control[] { _name, _ip, _port, _pass }) ipRow.AddChild(c);
         var go = Row(v);
-        go.AddChild(Btn("Bağlan", () => Connect(_ip.Text.Trim(), _port.Text.Trim(), _pass.Text)));
-        go.AddChild(Btn("Listeye ekle", AddSaved));
+        go.AddChild(Btn(Loc.T("server.connect"), () => Connect(_ip.Text.Trim(), _port.Text.Trim(), _pass.Text)));
+        go.AddChild(Btn(Loc.T("server.add"), AddSaved));
         _status = Lbl("", 15, false, UiTheme.Muted);
         v.AddChild(_status);
         _steam.Refresh(_data); // Steam aciksa kendiliginden doldurur
@@ -98,20 +98,20 @@ public partial class ServerListPanel : CanvasLayer
 
     void AddSaved()
     {
-        if (!int.TryParse(_port.Text.Trim(), out int port) || _ip.Text.Trim().Length == 0) { _status.Text = "IP ve port gerekli"; return; }
+        if (!int.TryParse(_port.Text.Trim(), out int port) || _ip.Text.Trim().Length == 0) { _status.Text = Loc.T("server.need_ip"); return; }
         string name = _name.Text.Trim().Length > 0 ? _name.Text.Trim() : $"{_ip.Text.Trim()}:{port}";
         _saved.RemoveAll(s => s.Host == _ip.Text.Trim() && s.Port == port);
         _saved.Add(new ServerEntry { Name = name, Host = _ip.Text.Trim(), Port = port, Source = "kayitli" });
         Persist();
         _shown = -1;
-        _status.Text = "Listeye eklendi";
+        _status.Text = Loc.T("server.added");
     }
 
     void Rebuild()
     {
         foreach (var c in _list.GetChildren()) c.QueueFree();
         var all = _saved.Concat(_steam.Entries).ToList();
-        if (all.Count == 0) _list.AddChild(Lbl("Henüz sunucu yok. Aşağıdan IP girip bağlan ya da listeye ekle.", 15, false, UiTheme.Muted));
+        if (all.Count == 0) _list.AddChild(Lbl(Loc.T("server.empty"), 15, false, UiTheme.Muted));
         foreach (var s in all)
         {
             var row = new HBoxContainer();
@@ -119,10 +119,10 @@ public partial class ServerListPanel : CanvasLayer
             var name = Lbl($"{s.Name}", 17, true, UiTheme.Ivory);
             name.SizeFlagsHorizontal = Control.SizeFlags.ExpandFill;
             row.AddChild(name);
-            row.AddChild(Lbl(s.Source == "steam" ? $"{s.Players}/{s.MaxPlayers} · {s.Ping} ms{(s.Password ? " · şifreli" : "")}" : $"{s.Host}:{s.Port}", 14, false, UiTheme.Muted));
+            row.AddChild(Lbl(s.Source == "steam" ? Loc.T(s.Password ? "server.steam_info_pw" : "server.steam_info", s.Players, s.MaxPlayers, s.Ping) : $"{s.Host}:{s.Port}", 14, false, UiTheme.Muted));
             var e = s;
-            row.AddChild(Btn("Bağlan", () => Connect(e.Host, e.Port.ToString(), e.Password ? _pass.Text : "")));
-            if (s.Source != "steam") row.AddChild(Btn("Sil", () => { _saved.Remove(e); Persist(); _shown = -1; }));
+            row.AddChild(Btn(Loc.T("server.connect"), () => Connect(e.Host, e.Port.ToString(), e.Password ? _pass.Text : "")));
+            if (s.Source != "steam") row.AddChild(Btn(Loc.T("menu.delete"), () => { _saved.Remove(e); Persist(); _shown = -1; }));
             _list.AddChild(row);
         }
     }
@@ -131,12 +131,12 @@ public partial class ServerListPanel : CanvasLayer
 
     void Connect(string ip, string port, string password)
     {
-        if (ip.Length == 0 || !int.TryParse(port, out _)) { _status.Text = "IP ve port gerekli"; return; }
+        if (ip.Length == 0 || !int.TryParse(port, out _)) { _status.Text = Loc.T("server.need_ip"); return; }
         var a = Main.Args;
         a["coop"] = "client"; a["transport"] = "enet"; a["connect"] = ip; a["port"] = port;
-        a["name"] = string.IsNullOrWhiteSpace(_player.Text) ? "Oyuncu" : _player.Text.Trim();
+        a["name"] = string.IsNullOrWhiteSpace(_player.Text) ? Loc.T("menu.player") : _player.Text.Trim();
         if (password.Length > 0) a["password"] = password; else a.Remove("password");
-        _status.Text = "Bağlanılıyor…";
+        _status.Text = Loc.T("menu.connecting");
         GetTree().ReloadCurrentScene();
     }
 

@@ -293,7 +293,7 @@ public partial class PenSystem : Node
     {
         if (id != "ahsap_kapi") return true;
         var kasa = FreeKasaNear(at);
-        if (kasa == null) { _d.Hud.Hint("Ahşap Kapı bir Kapı Kasası'na oturur", 0.25f); return false; }
+        if (kasa == null) { _d.Hud.Hint(Loc.T("ranch.gate_needs_frame"), 0.25f); return false; }
         ghost.GlobalTransform = kasa.GlobalTransform;
         return true;
     }
@@ -345,14 +345,14 @@ public partial class PenSystem : Node
         string lab = null;
         float D(Vector3 q) => new Vector2(q.X - p.X, q.Z - p.Z).Length();
         foreach (var e in _eggs.Where(e => IsInstanceValid(e)))
-            if (D(e.GlobalPosition) < bestD) { bestD = D(e.GlobalPosition); var ee = e; act = () => PickEgg(ee); lab = "Yumurtayı al"; }
+            if (D(e.GlobalPosition) < bestD) { bestD = D(e.GlobalPosition); var ee = e; act = () => PickEgg(ee); lab = Loc.T("ranch.take_egg"); }
         foreach (var pr in _props.Where(x => IsInstanceValid(x)))
         {
             float d = D(pr.GlobalPosition);
             if (d >= bestD + 0.01f) continue;
-            if (pr.Nest != null && pr.Nest.Eggs > 0) { bestD = d; var pp = pr; act = () => pp.Collect(); lab = $"Folluk: {pr.Nest.Eggs} yumurtayı al"; }
-            else if (pr.Feeder != null && pr.Feeder.Room > 0 && FoodFor(pr) is string food) { bestD = d; var pp = pr; act = () => pp.Fill(); lab = $"Yemlik'e {ItemNames.Of(food)} koy"; }
-            else if (pr.Kasa != null) { bestD = d; var pp = pr; act = () => pp.ToggleDoor(); lab = pr.DoorOpen ? "Kapıyı kapat" : "Kapıyı aç"; }
+            if (pr.Nest != null && pr.Nest.Eggs > 0) { bestD = d; var pp = pr; act = () => pp.Collect(); lab = Loc.T("ranch.take_eggs", pr.Nest.Eggs); }
+            else if (pr.Feeder != null && pr.Feeder.Room > 0 && FoodFor(pr) is string food) { bestD = d; var pp = pr; act = () => pp.Fill(); lab = Loc.T("ranch.fill_feeder", ItemNames.Of(food)); }
+            else if (pr.Kasa != null) { bestD = d; var pp = pr; act = () => pp.ToggleDoor(); lab = pr.DoorOpen ? Loc.T("ranch.close_gate") : Loc.T("ranch.open_gate"); }
             else if (_d.Ranch?.PropAction(pr) is var (pa, pl) && pa != null) { bestD = d; act = pa; lab = pl; } // M3: Ahir Zili, Eyerlik (Husbandry.Combat)
         }
         foreach (var g in _gates.Values.Where(g => g.Leaves.Count > 0 && IsInstanceValid(g.Piece)))
@@ -360,7 +360,7 @@ public partial class PenSystem : Node
             // Agil halkasindaki kapi, halkanin disinda kalmis basi bos kapidan once (1 m pay): kosede kaymis kapi E'yi calmaz.
             float d = D(g.Piece.GlobalPosition) + (InPen(g) ? 0f : 1f);
             if (d >= bestD) continue;
-            bestD = d; var gg = g; act = () => ToggleGateGroup(gg); lab = g.Open ? "Kapıyı kapat" : "Kapıyı aç";
+            bestD = d; var gg = g; act = () => ToggleGateGroup(gg); lab = g.Open ? Loc.T("ranch.close_gate") : Loc.T("ranch.open_gate");
         }
         label = lab;
         _nearD = bestD;

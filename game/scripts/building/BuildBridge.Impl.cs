@@ -49,7 +49,7 @@ public partial class BuildBridge
 
     static Dictionary<string, int> Wood(int n) => new() { ["wood"] = n };
 
-    public string NameOf(string id) => id == Sok ? "Sök" : id == Onar ? "Onar" : _sys.Kit.Pieces.FirstOrDefault(p => p.Id == id)?.Name ?? id;
+    public string NameOf(string id) => id == Sok ? Loc.T("build.dismantle") : id == Onar ? Loc.T("build.repair") : _sys.Kit.Pieces.FirstOrDefault(p => p.Id == id)?.Name ?? id;
 
     partial void SelectImpl(string id) => _sys.Select(id);
     partial void RotateImpl() => _sys.Rotate();
@@ -71,8 +71,8 @@ public partial class BuildBridge
         var setCost = setMat == null ? null : StructureCosts.Cost(BData, setMat, cost);
         int wood = setMat == null ? _d.State.Backpack.Count("wood") : (setCost.All(kv => _d.State.Backpack.Count(kv.Key) >= kv.Value) ? cost : 0);
         // M2: kurma tapu disinda da serbest (GDD 7); orada sokum iadesi %50 (BuildBridge.Yapi.cs RefundFor).
-        string why = cur == null ? "" : !cur.Valid ? cur.Reason : wood < cost ? (setMat == null ? $"odun yetmiyor ({wood}/{cost})" : $"{ItemNames.Of(setCost.Keys.First())} yetmiyor ({_d.State.Backpack.Count(setCost.Keys.First())}/{cost})") : "";
-        _d.Hud.Hint($"İnşa: {NameOf(id)} ({(setMat == null ? cost + " Odun" : string.Join(" + ", setCost.Select(kv => kv.Value + " " + ItemNames.Of(kv.Key))))}){(why != "" ? "  ·  " + why : "")}  ·  {{act:build_wheel}} basılı: parça  ·  {{act:build_rotate}}: döndür  ·  {{act:interact}} basılı: onar / sök", 0.2f);
+        string why = cur == null ? "" : !cur.Valid ? cur.Reason : wood < cost ? (setMat == null ? Loc.T("build.need_wood", wood, cost) : Loc.T("build.need_item", ItemNames.Of(setCost.Keys.First()), _d.State.Backpack.Count(setCost.Keys.First()), cost)) : "";
+        _d.Hud.Hint(Loc.T("build.hint", NameOf(id), (setMat == null ? cost + " " + ItemNames.Of("wood") : string.Join(" + ", setCost.Select(kv => kv.Value + " " + ItemNames.Of(kv.Key)))), (why != "" ? "  ·  " + why : "")), 0.2f);
         if (!place || cur == null) return;
         if (why != "") { Sfx.Play("hit", null, -10f); return; }
         if (_d.Net?.ForwardPlace(_sys) == true) return; // ortak: istemcide host kurar, parca bolumle doner
@@ -112,10 +112,10 @@ public partial class BuildBridge
     {
         var t = TargetAt(p, aim);
         Highlight(t, sok);
-        string head = sok ? "Sök" : "Onar";
-        if (t == null) { _d.Hud.Hint($"İnşa · {head}: bir parçaya ya da istasyona nişan al  ·  tekerlek: değiştir", 0.2f); return; }
+        string head = sok ? Loc.T("build.dismantle") : Loc.T("build.repair");
+        if (t == null) { _d.Hud.Hint(Loc.T("build.aim_hint", head), 0.2f); return; }
         string msg = sok ? SokPreview(t, out bool ok) : OnarPreview(t, out ok);
-        _d.Hud.Hint($"İnşa · {head}: {msg}", 0.2f);
+        _d.Hud.Hint(Loc.T("build.mode_msg", head, msg), 0.2f);
         if (!fire) return;
         if (!ok) { Sfx.Play("hit", null, -10f); return; }
         if (sok) Deconstruct(t); else Repair(t);
@@ -130,7 +130,7 @@ public partial class BuildBridge
         _ => ("", "", new()),
     };
 
-    static string CostText(IReadOnlyDictionary<string, int> c) => c.Count == 0 ? "bedava" : string.Join(" + ", c.Select(kv => $"{kv.Value} {ItemNames.Of(kv.Key)}"));
+    static string CostText(IReadOnlyDictionary<string, int> c) => c.Count == 0 ? Loc.T("build.free") : string.Join(" + ", c.Select(kv => $"{kv.Value} {ItemNames.Of(kv.Key)}"));
 
     bool Fits(Dictionary<string, int> items)
     {
@@ -144,10 +144,10 @@ public partial class BuildBridge
     {
         if (t is Station st)
         {
-            if (st.Queue.Active != null) return "üretim sürüyor";
-            if (st.Def.Station == "paketleme" && _d.State.Cargo.Open != null && _d.Stations.Count(s => s.Def.Station == "paketleme") == 1) return "kasada mal var";
+            if (st.Queue.Active != null) return Loc.T("build.prod_running");
+            if (st.Def.Station == "paketleme" && _d.State.Cargo.Open != null && _d.Stations.Count(s => s.Def.Station == "paketleme") == 1) return Loc.T("build.crate_has_goods");
         }
-        if (t is Furniture f && f.Storage != null && !f.Storage.IsEmpty) return "önce boşalt";
+        if (t is Furniture f && f.Storage != null && !f.Storage.IsEmpty) return Loc.T("build.empty_first");
         return "";
     }
 
@@ -156,7 +156,7 @@ public partial class BuildBridge
         var (_, name, cost) = Describe(this, t);
         var refund = RefundFor(t, cost);
         string block = SokBlock(t);
-        if (block == "" && !Fits(refund)) block = "çanta dolu";
+        if (block == "" && !Fits(refund)) block = Loc.T("build.bag_full");
         ok = block == "";
         return $"{name} (+{CostText(refund)}){(ok ? "" : "  ·  " + block)}";
     }
@@ -164,13 +164,13 @@ public partial class BuildBridge
     string OnarPreview(Node3D t, out bool ok)
     {
         ok = false;
-        if (t is not BuildPiece bp) return $"{Describe(this, t).name}: hasarsız";
+        if (t is not BuildPiece bp) return Loc.T("build.undamaged", Describe(this, t).name);
         float max = _sys.MaxHp(bp);
         var cost = Structures.RepairCost(PieceCost(bp), bp.Hp, max, Rules);
-        if (cost.Count == 0) return $"{bp.Def.Name}: hasarsız";
+        if (cost.Count == 0) return Loc.T("build.undamaged", bp.Def.Name);
         bool afford = cost.All(kv => _d.State.Backpack.Count(kv.Key) >= kv.Value);
         ok = afford;
-        return $"{bp.Def.Name} (can %{bp.Hp / max * 100f:0}, bedel {CostText(cost)}){(afford ? "" : "  ·  malzeme yetmiyor")}";
+        return Loc.T("build.damaged", bp.Def.Name, (bp.Hp / max * 100f).ToString("0", global::System.Globalization.CultureInfo.InvariantCulture), CostText(cost), (afford ? "" : "  ·  " + Loc.T("build.mat_short")));
     }
 
     /// <summary>Hedefi soker ve bedelini iade eder (M1: kurma yalniz tapu icinde, iade %100). Islediyse true.</summary>
@@ -231,9 +231,10 @@ public partial class BuildBridge
     }
 
     /// <summary>Yapi parcasina hasar (Zipzip hucumu vb.): M1'de yikilma yok, can azaminin %10'unda durur.</summary>
-    public float Damage(BuildPiece piece, float amount)
+    public float Damage(BuildPiece piece, float amount, string attackerTeam = "")
     {
         if (piece == null || !IsInstanceValid(piece)) return 0;
+        if (_d.Riv.TryStructureHit(piece, amount, attackerTeam, out float rivHp)) return rivHp; // Cekisme (kural 2, 6): gunduz yok, gece yikilir ve enkaz plani
         piece.Hp = Structures.ApplyDamage(piece.Hp, _sys.MaxHp(piece), amount, Rules);
         return piece.Hp;
     }

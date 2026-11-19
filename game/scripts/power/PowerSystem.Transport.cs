@@ -64,7 +64,7 @@ public partial class PowerSystem
         }
         if (local && op is TransOp.DroneOrder or TransOp.RopeConnect)
         {
-            _d.Hud.Hint(err ?? (op == TransOp.DroneOrder ? "Görev eklendi" : "Hat kuruldu"), 2f);
+            _d.Hud.Hint(err ?? (op == TransOp.DroneOrder ? Loc.T("power.order_added") : Loc.T("power.line_built")), 2f);
             Sfx.Play(err == null ? "pickup" : "hit", null, -8f);
         }
         GD.Print($"POWER trans {op} {id} err={err}");
@@ -162,34 +162,34 @@ public partial class PowerSystem
         int id = n.Id;
         var bag = _d.State.Backpack;
         if (pdef.IsMover || pdef.Kind == "ropeway_station" || pdef.Kind == "drone_station")
-            items.Add(new Hud.MenuItem($"Eşya: {(n.Filter.Length > 0 ? ItemNames.Of(n.Filter) : "hepsi")}  (çantandaki eşyalar arasında değiştir)", () => true, () => { Act(Op.Filter, id); Sfx.Play("place", null, -12f); re(); }));
+            items.Add(new Hud.MenuItem(Loc.T("power.filter_item", (n.Filter.Length > 0 ? ItemNames.Of(n.Filter) : Loc.T("power.all_word"))), () => true, () => { Act(Op.Filter, id); Sfx.Play("place", null, -12f); re(); }));
         if (pdef.Kind is "counter" or "memory")
-            items.Add(new Hud.MenuItem("Sıfırla", () => true, () => { Act(Op.Reset, id); Sfx.Play("place", null, -12f); re(); }));
+            items.Add(new Hud.MenuItem(Loc.T("power.reset"), () => true, () => { Act(Op.Reset, id); Sfx.Play("place", null, -12f); re(); }));
         if (pdef.Source == "fuel" && pdef.FuelItem != null)
-            items.Add(new Hud.MenuItem($"Yakıt ekle: {ItemNames.Of(pdef.FuelItem)} ×{System.Math.Min(5, bag.Count(pdef.FuelItem))} (çantada {bag.Count(pdef.FuelItem)})", () => bag.Count(pdef.FuelItem) > 0, () => { Act(Op.Refuel, id); Sfx.Play("pickup", null, -8f); re(); }, pdef.FuelItem));
+            items.Add(new Hud.MenuItem(Loc.T("power.add_fuel", ItemNames.Of(pdef.FuelItem), System.Math.Min(5, bag.Count(pdef.FuelItem)), bag.Count(pdef.FuelItem)), () => bag.Count(pdef.FuelItem) > 0, () => { Act(Op.Refuel, id); Sfx.Play("pickup", null, -8f); re(); }, pdef.FuelItem));
         if (pdef.Kind == "drone_station")
         {
             var ds = Net.Transport.Drones.Station(id);
-            items.Add(new Hud.MenuItem(_droneFrom == null ? "Kaynak: bakılan Sandık" : "Kaynak seçildi ✓ (yeniden: bakılan Sandık)", () => ChestAtAim() != null, () => { _droneFrom = ChestAtAim().GlobalPosition; Sfx.Play("place", null, -10f); re(); }));
-            items.Add(new Hud.MenuItem(_droneTo == null ? "Hedef: bakılan Sandık" : "Hedef seçildi ✓ (yeniden: bakılan Sandık)", () => ChestAtAim() != null, () => { _droneTo = ChestAtAim().GlobalPosition; Sfx.Play("place", null, -10f); re(); }));
-            items.Add(new Hud.MenuItem($"Görev ekle ({ds.Orders.Count}/8): {(n.Filter.Length > 0 ? ItemNames.Of(n.Filter) : "?")}", () => _droneFrom != null && _droneTo != null && n.Filter.Length > 0, () =>
+            items.Add(new Hud.MenuItem(_droneFrom == null ? Loc.T("power.source_pick") : Loc.T("power.source_picked"), () => ChestAtAim() != null, () => { _droneFrom = ChestAtAim().GlobalPosition; Sfx.Play("place", null, -10f); re(); }));
+            items.Add(new Hud.MenuItem(_droneTo == null ? Loc.T("power.target_pick") : Loc.T("power.target_picked"), () => ChestAtAim() != null, () => { _droneTo = ChestAtAim().GlobalPosition; Sfx.Play("place", null, -10f); re(); }));
+            items.Add(new Hud.MenuItem(Loc.T("power.add_order", ds.Orders.Count, (n.Filter.Length > 0 ? ItemNames.Of(n.Filter) : "?")), () => _droneFrom != null && _droneTo != null && n.Filter.Length > 0, () =>
             {
                 TransAct(TransOp.DroneOrder, id, 0, n.Filter, _droneFrom.Value.X, _droneFrom.Value.Z, _droneTo.Value.X, _droneTo.Value.Z);
                 re();
             }));
-            items.Add(new Hud.MenuItem("Görevleri temizle", () => ds.Orders.Count > 0, () => { TransAct(TransOp.DroneClear, id); re(); }));
+            items.Add(new Hud.MenuItem(Loc.T("power.clear_orders"), () => ds.Orders.Count > 0, () => { TransAct(TransOp.DroneClear, id); re(); }));
         }
         if (pdef.Kind == "ropeway_station")
         {
             var lines = Net.Transport.Ropeways.Lines;
             var aim = _d.Player.AimPoint(out _);
             int other = Net.Nodes.Where(x => x.Id != id && F.Def(x.Def)?.Kind == "ropeway_station").OrderBy(x => new Vector3(x.X, x.Y, x.Z).DistanceTo(aim)).Select(x => x.Id).FirstOrDefault();
-            items.Add(new Hud.MenuItem($"Hat kur: bakılan en yakın başka istasyona ({lines.Count(l => l.A == id)} hat)", () => other > 0, () =>
+            items.Add(new Hud.MenuItem(Loc.T("power.build_line", lines.Count(l => l.A == id)), () => other > 0, () =>
             {
                 TransAct(TransOp.RopeConnect, id, other, n.Filter);
                 re();
             }));
-            items.Add(new Hud.MenuItem("Hatlarını kaldır", () => lines.Any(l => l.A == id), () => { TransAct(TransOp.RopeRemove, id); re(); }));
+            items.Add(new Hud.MenuItem(Loc.T("power.remove_lines"), () => lines.Any(l => l.A == id), () => { TransAct(TransOp.RopeRemove, id); re(); }));
         }
     }
 }

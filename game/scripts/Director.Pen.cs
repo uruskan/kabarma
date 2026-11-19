@@ -24,7 +24,7 @@ public partial class Director
         if (Gidak.Visible && !Gidak.Swollen && Gidak.GlobalPosition.DistanceTo(Player.GlobalPosition) < 3f && !Gidak.Tame)
         {
             if (State.Backpack.Remove(Data.Pen.Animals[0].Food, 1)) Gidak.GiveWheat();
-            else Hud.Hint($"{ItemNames.Of(Data.Pen.Animals[0].Food)} yok", 1f);
+            else Hud.Hint(Loc.T("dir.hint_none_left", ItemNames.Of(Data.Pen.Animals[0].Food)), 1f);
             return true;
         }
         if (Ranch != null && Ranch.Interact(Player.GlobalPosition)) return true; // RanchSystem: yem, okşama, urun, gubre, panel (agil nesnesinden yakinsa)

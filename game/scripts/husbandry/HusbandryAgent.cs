@@ -46,7 +46,7 @@ public partial class HusbandryAgent : Node
     }
 
     public float Radius => 0.3f * Mathf.Max(0.6f, Species.Size);
-    public string Title => Species.Name + (Animal.Adult(_r.Ranch.Rules.Def.Breeding.AdultDays) ? "" : " (yavru)");
+    public string Title => Species.Name + (Animal.Adult(_r.Ranch.Rules.Def.Breeding.AdultDays) ? "" : " " + Loc.T("ranch.baby_suffix"));
     public float HpFraction => _iface?.HpFraction ?? 1f;
 
     public override void _Process(double delta)
@@ -171,7 +171,7 @@ public partial class HusbandryAgent : Node
     void Homed()
     {
         GD.Print($"RANCH registered {Animal.Species} id={Animal.Id} genes={Animal.Genes}");
-        Fx.Text3D(Host.GlobalPosition + Vector3.Up * (Species.Size + 0.5f), "Kayıt", Palette.CoopBlue, 64, 1.2f, 1.4f);
+        Fx.Text3D(Host.GlobalPosition + Vector3.Up * (Species.Size + 0.5f), Loc.T("ranch.registered"), Palette.CoopBlue, 64, 1.2f, 1.4f);
         Sfx.Play("pickup", Host.GlobalPosition, -4f);
         Events.RaiseAnimalPenned(Animal.Species);
     }

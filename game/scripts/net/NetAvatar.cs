@@ -135,7 +135,7 @@ public partial class NetAvatar : Node3D
         PlayClip(b, speed);
         UpdateBeam(b);
         _label.Modulate = Down ? Palette.Warning : Talking ? Palette.MayaTeal : Palette.OffWhite;
-        _label.Text = _name + (Down ? "  (baygın: E basılı tut)" : "") + (Talking ? "  🔊" : "");
+        _label.Text = _name + (Down ? "  " + Loc.T("net.avatar_down") : "") + (Talking ? "  🔊" : "");
     }
 
     void PlayClip(PlayerFrame f, float speed)

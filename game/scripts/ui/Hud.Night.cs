@@ -35,7 +35,7 @@ public partial class Hud
         _ => T.Muted,
     };
 
-    static string RarityName(string r) => r switch { "N" => "Nadir", "D" => "Destansı", "E" => "Efsane", _ => "Sıradan" };
+    static string RarityName(string r) => r switch { "N" => Loc.T("hud.rarity_n"), "D" => Loc.T("hud.rarity_d"), "E" => Loc.T("hud.rarity_e"), _ => Loc.T("hud.rarity_c") };
 
     /// <summary>Hud._Process'ten (eski adiyla): eski ust orta kutusu kapali kalir.</summary>
     void UpdateNightBox() => _nightBox.Visible = false;
@@ -70,7 +70,7 @@ public partial class Hud
         // 1. satir: dalga sayaci (sol) ve Gosteri (sag)
         int waves = night.Def.Waves.Count;
         int cur = night.Phase == NightPhase.Alarm ? 0 : Mathf.Clamp(night.WaveIndex + 1, 0, waves);
-        Text(night.Phase == NightPhase.Alarm ? "KABARMA GELİYOR" : $"DALGA {cur}/{waves}", x + 12, y + 6, T.Data.Type.Title, T.Ink, true, true);
+        Text(night.Phase == NightPhase.Alarm ? Loc.T("hud.kabarma_coming") : Loc.T("hud.wave_n", cur, waves), x + 12, y + 6, T.Data.Type.Title, T.Ink, true, true);
         for (int i = 0; i < waves; i++)
         {
             bool done = i < cur - 1 || (i == cur - 1 && night.SpawnedThisWave >= (night.CurrentWave?.Count ?? 0) && Zipzip.All.Count(z => !z.Dead) == 0);
@@ -85,7 +85,7 @@ public partial class Hud
         float gs = 32 * (1 + 0.25f * bump);
         var gc = T.Short.Lerp(T.Brick, Mathf.Clamp((g - 1f) / 4f, 0, 1));
         TextIn($"×{g:0.0}", x, y + 2 - (gs - 32) / 2f, w - 12, gs, gc, HorizontalAlignment.Right, true, true);
-        TextIn("GÖSTERİ", x, y + 36, w - 12 - Measure($"×{g:0.0}", 32, true, true) - 8, T.Data.Type.Caption, T.Muted, HorizontalAlignment.Right, true, true);
+        TextIn(Loc.T("hud.gosteri"), x, y + 36, w - 12 - Measure($"×{g:0.0}", 32, true, true) - 8, T.Data.Type.Caption, T.Muted, HorizontalAlignment.Right, true, true);
 
         // 2. satir: Oz cubugu (seviye esigine dek), solda Oz ve seviye, sagda sondurulen ve yerdeki Oz
         int lv = night.Level, maxLv = night.Def.MaxCardLevels;
@@ -94,9 +94,9 @@ public partial class Hud
         float frac = capped ? 1 : Mathf.Clamp((night.Oz - lo) / Math.Max(1e-3f, hi - lo), 0, 1);
         Rect(x + 12, y + 52, w - 24, 8, T.Panel);
         if (frac > 0) Rect(x + 12, y + 52, (w - 24) * frac, 8, T.Oz);
-        Text(capped ? $"ÖZ · SEVİYE {lv}/{maxLv} · DOLU" : $"ÖZ {(int)night.Oz}/{(int)hi} · SEVİYE {lv}/{maxLv}", x + 12, y + 63, T.Data.Type.Caption, T.Ink, true, true);
+        Text(capped ? Loc.T("hud.oz_capped", lv, maxLv) : Loc.T("hud.oz_level", (int)night.Oz, (int)hi, lv, maxLv), x + 12, y + 63, T.Data.Type.Caption, T.Ink, true, true);
         // Yerdeki Oz (M1 karari 19): toplaninca ya da dalga bitince sayilir.
-        string right = $"{night.Kills} SÖNDÜ" + (night.Motes.Count > 0 ? $"  ·  YERDE {(int)night.OzOnGround} ÖZ" : "");
+        string right = Loc.T("hud.kills", night.Kills) + (night.Motes.Count > 0 ? "  ·  " + Loc.T("hud.on_ground", (int)night.OzOnGround) : "");
         TextIn(right, x, y + 63, w - 12, T.Data.Type.Caption, T.A(T.Ink, 0.8f), HorizontalAlignment.Right, true, true);
 
         // 3. satir: kart seridi (bu gece alinan kartlar ve rutbeleri)
@@ -149,7 +149,7 @@ public partial class Hud
             for (int l = 0; l < Math.Min(3, lines.Count); l++)
                 Text(l == 2 && lines.Count > 3 ? Fit(lines[l] + " …", cw - 24, 16) : lines[l], x + 12, yy + 78 + l * 19, 16, T.A(T.Ink, 0.82f * appear));
             float pw = Pips(x + 12, yy + ch - 22, rank, max, T.Teal);
-            Text(rank > 0 ? $"SIRADAKİ: {rank + 1}. RÜTBE" : "YENİ KART", x + 18 + pw, yy + ch - 25, T.Data.Type.Caption, T.A(T.Teal, appear), true, true);
+            Text(rank > 0 ? Loc.T("hud.next_rank", rank + 1) : Loc.T("hud.new_card"), x + 18 + pw, yy + ch - 25, T.Data.Type.Caption, T.A(T.Teal, appear), true, true);
             if (i == 0)
             {
                 // 20 sn icinde secilmezse ilki alinir: ilk kartin altinda geri sayim

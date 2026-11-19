@@ -20,10 +20,10 @@ public partial class Director
             case "katalog_terminali": OpenCatalogMenu(); return true;
             case "tohum_carki": OpenWheelMenu(); return true;
             case "is_emri_panosu": Hud.OpenInventory(1); return true; // Defter: is emirleri
-            case "harita_masasi": Hud.Hint("Harita Masası: haritayı {act:map} ile aç", 2.5f); return true;
-            case "gardirop": Hud.Hint("Gardırop: kozmetik seçimi dolap akışında (M4 dolap)", 2.5f); return true;
-            case "radyo": Hud.Hint("Radyo: müzik çalar (ses akışı)", 1.8f); return true;
-            case "saat": Hud.Hint($"Saat: gün {State.Calendar.Day}", 1.8f); return true;
+            case "harita_masasi": Hud.Hint(Loc.T("dir.hint_map_table"), 2.5f); return true;
+            case "gardirop": Hud.Hint(Loc.T("dir.hint_wardrobe_todo"), 2.5f); return true;
+            case "radyo": Hud.Hint(Loc.T("dir.hint_radio"), 1.8f); return true;
+            case "saat": Hud.Hint(Loc.T("dir.hint_clock", State.Calendar.Day), 1.8f); return true;
         }
         return false;
     }

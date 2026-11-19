@@ -154,15 +154,15 @@ public partial class PenProp : Node3D
     {
         float dt = (float)delta;
         bool near = new Vector2(_d.Player.GlobalPosition.X - GlobalPosition.X, _d.Player.GlobalPosition.Z - GlobalPosition.Z).Length() < _d.Data.Pen.InteractRange + 1f;
-        _label.Text = Feeder != null ? (Feeder.Amount == 0 ? $"{Def.Name}\nBoş" : $"{Def.Name}\n{ItemNames.Of(Feeder.Food)} {Feeder.Amount}/{Feeder.Capacity}")
-            : Nest != null ? $"{Def.Name}\nYumurta {Nest.Eggs}/{Nest.Slots}"
-            : Trough != null ? $"{Def.Name}\nSu {Trough.Water:0}/{Trough.Capacity}"
-            : Hive != null ? $"{Def.Name}\n{(Hive.AnimalId == 0 ? "Boş" : "Vızvız yerleşti")}"
-            : Post != null ? $"{Def.Name}\n{(Post.AnimalId == 0 ? "Boş" : "Hayvan bağlı")}"
-            : Flag != null ? $"{Def.Name}\nSavaş Ağılı"
-            : Post != null ? $"{Def.Name}\n{(Post.AnimalId == 0 ? "Boş" : "Hayvan bağlı")}"
-            : Flag != null ? $"{Def.Name}\nSavaş Ağılı"
-            : Kasa == null && Def.Id == "ahsap_kapi" ? $"{Def.Name}\nKapı Kasası'na oturur" : Def.Name;
+        _label.Text = Feeder != null ? (Feeder.Amount == 0 ? Loc.T("ranch.label_empty", Def.Name) : $"{Def.Name}\n{ItemNames.Of(Feeder.Food)} {Feeder.Amount}/{Feeder.Capacity}")
+            : Nest != null ? Loc.T("ranch.label_eggs", Def.Name, Nest.Eggs, Nest.Slots)
+            : Trough != null ? Loc.T("ranch.label_water", Def.Name, Trough.Water.ToString("0", System.Globalization.CultureInfo.InvariantCulture), Trough.Capacity)
+            : Hive != null ? Loc.T("ranch.label_hive", Def.Name, (Hive.AnimalId == 0 ? Loc.T("ranch.empty") : Loc.T("ranch.hive_settled")))
+            : Post != null ? Loc.T("ranch.label_hive", Def.Name, (Post.AnimalId == 0 ? Loc.T("ranch.empty") : Loc.T("ranch.animal_tied")))
+            : Flag != null ? Loc.T("ranch.label_war_pen", Def.Name)
+            : Post != null ? Loc.T("ranch.label_hive", Def.Name, (Post.AnimalId == 0 ? Loc.T("ranch.empty") : Loc.T("ranch.animal_tied")))
+            : Flag != null ? Loc.T("ranch.label_war_pen", Def.Name)
+            : Kasa == null && Def.Id == "ahsap_kapi" ? Loc.T("ranch.label_gate_frame", Def.Name) : Def.Name;
         _label.Visible = near || Feeder != null || Nest != null || Trough != null || Hive != null;
         _label.Modulate = near ? Palette.Warning : Palette.OffWhite;
         if (_bounce > 0)

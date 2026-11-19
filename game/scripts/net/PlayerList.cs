@@ -66,7 +66,7 @@ public partial class PlayerList : CanvasLayer
         _panel.Visible = show;
         if (!show) return;
         var roster = net.Roster;
-        _title.Text = UiTheme.Upper($"Ortak oyun · {roster.Count}/{net.Cfg.MaxPlayers}");
+        _title.Text = UiTheme.Upper(Loc.T("menu.players_title", roster.Count, net.Cfg.MaxPlayers));
         if (roster.Count != _lastCount || held || _showT > 0)
         {
             _lastCount = roster.Count;
@@ -79,14 +79,14 @@ public partial class PlayerList : CanvasLayer
                 if (!me && net.Avatars.TryGetValue(e.Peer, out var av))
                 {
                     dist = av.GlobalPosition.DistanceTo(_d.Player.GlobalPosition);
-                    state = av.Down ? "  · baygın" : av.Talking ? "  · konuşuyor" : "";
+                    state = av.Down ? "  · " + Loc.T("menu.pl_down") : av.Talking ? "  · " + Loc.T("menu.pl_talking") : "";
                 }
-                else if (me && _d.Player.Down) state = $"  · baygın {_d.Player.DownLeft:0} sn";
-                string line = $"{(e.Host ? "★ " : "   ")}{e.Name}{(me ? " (sen)" : "")}{state}{(!me ? $"   {dist:0} m" : "")}{(e.Ready ? "" : "  · katılıyor")}";
+                else if (me && _d.Player.Down) state = "  · " + Loc.T("menu.pl_down_n", _d.Player.DownLeft.ToString("0", System.Globalization.CultureInfo.InvariantCulture));
+                string line = $"{(e.Host ? "★ " : "   ")}{e.Name}{(me ? " " + Loc.T("menu.pl_you") : "")}{state}{(!me ? $"   {dist:0} m" : "")}{(e.Ready ? "" : "  · " + Loc.T("menu.pl_joining"))}";
                 _rows.AddChild(Lbl(line, 16, me, me ? UiTheme.Ivory : UiTheme.Ink));
             }
         }
-        _foot.Text = net.Status + (net.IsClient && net.SectionMismatches > 0 ? $" · eşleme {net.SectionMismatches}" : "");
+        _foot.Text = net.Status + (net.IsClient && net.SectionMismatches > 0 ? " · " + Loc.T("menu.pl_mismatch", net.SectionMismatches) : "");
         _foot.AddThemeColorOverride("font_color", net.Failed ? UiTheme.Red : UiTheme.Muted);
     }
 }

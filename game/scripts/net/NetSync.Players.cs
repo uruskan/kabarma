@@ -124,7 +124,7 @@ public partial class NetSync
         {
             var f = PlayerFrame.Read(r, Cfg.PosPerMetre);
             if (f.Peer == LocalPeer) continue;
-            if (!Avatars.TryGetValue(f.Peer, out var av)) av = SpawnAvatar(f.Peer, Roster.FirstOrDefault(e => e.Peer == f.Peer)?.Name ?? $"Oyuncu {f.Peer}");
+            if (!Avatars.TryGetValue(f.Peer, out var av)) av = SpawnAvatar(f.Peer, Roster.FirstOrDefault(e => e.Peer == f.Peer)?.Name ?? Loc.T("net.player_n", f.Peer));
             av.Push(f, now);
         }
         ReadCreatures(r, now); // NetSync.Creatures.cs

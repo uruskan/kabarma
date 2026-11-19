@@ -23,7 +23,7 @@ public partial class Capa
         if (_d.Oyuk?.WaterAt(aim, tank) == true) return; // OyukSystem: Oyuk icinde su deliklere gider (oyuk, M3)
         // Gol: nisan noktasi gol tabanina duser (su yuzeyi carpismasiz), World.IsWater onu taniyor.
         if (_d.World.IsWater(aim)) { FillTank(tank, aim, dt); return; }
-        if (!tank.CanWater) { _d.Hud.Hint("Su deposu boş: göle nişan al, dolsun", 0.5f); return; }
+        if (!tank.CanWater) { _d.Hud.Hint(Loc.T("capa.tank_empty"), 0.5f); return; }
         _d.Azman?.Douse(aim, dt); // Azman Kizgin yangin lekeleri sonmeye baslar (ata4, M4)
         _d.Net?.ForwardWater(aim); // ortak: istemcide host'un tarlasi da islanir (depo kisisel)
         var farm = _d.State.Farm;
@@ -47,14 +47,14 @@ public partial class Capa
     void FillTank(WaterTank tank, Vector3 aim, float dt)
     {
         float got = tank.Fill(dt);
-        _d.Hud.Hint(tank.Full ? $"Su deposu dolu: {tank.Capacity:0} L" : TankText(tank), 0.5f);
+        _d.Hud.Hint(tank.Full ? Loc.T("capa.tank_full", tank.Capacity.ToString("0", System.Globalization.CultureInfo.InvariantCulture)) : TankText(tank), 0.5f);
         if (got <= 0) return;
         if (GD.Randf() < 0.3f) Sfx.Play("water", aim, -14f);
         Fx.Burst(aim + Vector3.Up * 0.15f, Palette.SkyNoon, 5, 2.5f, 0.05f, 0.35f);
         Vfx.Play("farm_water", aim + Vector3.Up * 0.2f);
     }
 
-    static string TankText(WaterTank t) => $"Su deposu: {t.Liters:0} / {t.Capacity:0} L";
+    static string TankText(WaterTank t) => Loc.T("capa.tank_text", t.Liters.ToString("0", System.Globalization.CultureInfo.InvariantCulture), t.Capacity.ToString("0", System.Globalization.CultureInfo.InvariantCulture));
 
     /// <summary>
     /// Iki WaterAt cagrisi arasindaki oyun suresi (Capa.cs bunu kisa araliklarla cagirir). Uzun ara (tetik birakilmis)

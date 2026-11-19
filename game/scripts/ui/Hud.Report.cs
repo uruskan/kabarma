@@ -28,9 +28,9 @@ public partial class Hud
         _report.AddThemeStyleboxOverride("panel", FlatBox(T.Dialog, 28, 22));
         var v = new VBoxContainer { CustomMinimumSize = new Vector2(T.Px(640), 0) };
         v.AddThemeConstantOverride("separation", T.Px(5));
-        v.AddChild(UL(T.Upper($"Hasat Raporu · Gece {r.NightNumber}"), 34, T.Ink, true, true));
+        v.AddChild(UL(T.Upper(Loc.T("report.title", r.NightNumber)), 34, T.Ink, true, true));
         int min = (int)(r.Seconds / 60f), sec = (int)(r.Seconds % 60f);
-        v.AddChild(UL($"Küçük Kabarma · KS {r.Ks} · {min}:{sec:00} · {r.WavesCleared}/{r.WavesTotal} dalga", 17, T.Muted));
+        v.AddChild(UL(Loc.T("report.summary", r.Ks, min, sec.ToString("00", System.Globalization.CultureInfo.InvariantCulture), r.WavesCleared, r.WavesTotal), 17, T.Muted));
         v.AddChild(Rule());
         void Row(string a, string b, Color? col = null)
         {
@@ -43,20 +43,20 @@ public partial class Hud
             h.AddChild(hb);
             v.AddChild(h);
         }
-        Row("Söndürülen kabarık", $"{r.Kills}");
-        Row("Toplanan Maya", $"{(int)r.Maya}", T.Oz);
-        Row("Öz · kart seviyesi", $"{(int)r.Oz} · {r.Level}/{r.MaxLevel}");
-        Row("En yüksek Gösteri", $"×{r.PeakGosteri:0.0}", T.Short);
-        Row("Verilen hasar", $"{(int)r.DamageDealt}");
+        Row(Loc.T("report.row_kills"), $"{r.Kills}");
+        Row(Loc.T("report.row_maya"), $"{(int)r.Maya}", T.Oz);
+        Row(Loc.T("report.row_oz"), $"{(int)r.Oz} · {r.Level}/{r.MaxLevel}");
+        Row(Loc.T("report.row_gosteri"), $"×{r.PeakGosteri:0.0}", T.Short);
+        Row(Loc.T("report.row_damage"), $"{(int)r.DamageDealt}");
         string sizes = string.Join(" ", r.SwollenBySize.OrderBy(kv => kv.Key).Select(kv => $"{kv.Key} {kv.Value}"));
-        Row("Kabaran ekin", r.SwollenTotal > 0 ? $"{r.SwollenTotal}  ({sizes})" : "0", T.Green);
-        Row("Yenen ekin", $"{r.CropsEaten}", r.CropsEaten > 0 ? T.Red : T.Green);
-        Row("Kabaran hayvan", $"{r.AnimalsSwollen}");
-        Row("Yere düşme", $"{r.PlayerDowns}", r.PlayerDowns > 0 ? T.Red : T.Green);
-        if (r.SoldCredits > 0) Row("Kargo satışı", $"+{r.SoldCredits} Kredi", T.Short);
+        Row(Loc.T("report.row_swollen_crops"), r.SwollenTotal > 0 ? $"{r.SwollenTotal}  ({sizes})" : "0", T.Green);
+        Row(Loc.T("report.row_crops_eaten"), $"{r.CropsEaten}", r.CropsEaten > 0 ? T.Red : T.Green);
+        Row(Loc.T("report.row_swollen_animals"), $"{r.AnimalsSwollen}");
+        Row(Loc.T("report.row_downs"), $"{r.PlayerDowns}", r.PlayerDowns > 0 ? T.Red : T.Green);
+        if (r.SoldCredits > 0) Row(Loc.T("report.row_cargo"), Loc.T("report.cargo_value", r.SoldCredits), T.Short);
 
         v.AddChild(Rule());
-        v.AddChild(UL("KARTLAR · ŞAFAKTA SÖNDÜ", 16, T.Muted, true, true));
+        v.AddChild(UL(Loc.T("report.cards_title"), 16, T.Muted, true, true));
         var cards = new HFlowContainer();
         cards.AddThemeConstantOverride("h_separation", T.Px(6));
         cards.AddThemeConstantOverride("v_separation", T.Px(4));
@@ -68,18 +68,18 @@ public partial class Hud
             chip.AddChild(UL($"{T.Upper(c.Name)}  {c.Rank}/{max}", 15, T.Ink, true, true));
             cards.AddChild(chip);
         }
-        if (r.Cards.Count == 0) cards.AddChild(UL("Kart seçilmedi.", 15, T.Muted));
+        if (r.Cards.Count == 0) cards.AddChild(UL(Loc.T("report.no_cards"), 15, T.Muted));
         v.AddChild(cards);
 
         if (defterJustOpened)
         {
             v.AddChild(Rule());
             var o = _d.State.Orders;
-            v.AddChild(UL($"Defter açıldı: {o.OrdersTotal} iş emri.", 21, T.Teal, true));
+            v.AddChild(UL(Loc.T("report.defter_opened", o.OrdersTotal), 21, T.Teal, true));
             var next = o.Tracked?.Current;
-            if (next != null) v.AddChild(UL($"Sıradaki iş emri: {next.Goal}.", 18, T.Ink));
+            if (next != null) v.AddChild(UL(Loc.T("report.next_order", next.Goal), 18, T.Ink));
         }
-        v.AddChild(UL(G("{act:ui_accept}: rapor kapanır. Defter: {act:bag}, sonra Q."), 15, T.Muted));
+        v.AddChild(UL(G(Loc.T("report.close_hint")), 15, T.Muted));
         _report.AddChild(v);
         IgnoreMouse(_report);
         _report.Visible = true;

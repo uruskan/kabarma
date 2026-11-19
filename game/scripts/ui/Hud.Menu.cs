@@ -42,7 +42,7 @@ public partial class Hud
             l.SetMeta("i", i);
             _menuList.AddChild(l);
         }
-        if (items.Count == 0) _menuList.AddChild(L("Burada yapılacak bir şey yok.", 20, Palette.Fog));
+        if (items.Count == 0) _menuList.AddChild(L(Loc.T("hud.menu_empty"), 20, Palette.Fog));
         _menu.Visible = true;
         RefreshMenu();
         // Ayni panel yenilendiyse (satistan sonra) imlec yerinde kalir; yeni panelde ilk satirdan baslar.
@@ -115,7 +115,7 @@ public partial class Hud
         if (_menuItems.Count == 0)
         {
             Rect(x, y, ColW, 42, T.Panel);
-            Text("Burada yapılacak bir şey yok.", x + 14, y + 11, 17, T.Muted);
+            Text(Loc.T("hud.menu_empty"), x + 14, y + 11, 17, T.Muted);
             y += 47;
         }
         for (int i = 0; i < _menuItems.Count; i++)

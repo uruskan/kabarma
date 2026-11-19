@@ -124,13 +124,13 @@ public partial class HoldingCampNode : Node3D
             p.ruin.Visible = !up;
             float max = _w.H.StructureMaxHp(s, c.Level);
             bool locked = s.Core && up && System.Linq.Enumerable.Any(c.Structures, kv => kv.Key != s.Id && kv.Value > 0);
-            p.label.Text = up ? $"{s.Name}  {Mathf.CeilToInt(hp)}/{Mathf.CeilToInt(max)}{(locked ? "  (kilitli)" : "")}" : $"{s.Name} (yıkık)";
+            p.label.Text = up ? $"{s.Name}  {Mathf.CeilToInt(hp)}/{Mathf.CeilToInt(max)}{(locked ? "  " + Loc.T("holding.locked") : "")}" : Loc.T("holding.part_ruined", s.Name);
             p.label.Modulate = up ? (hp < max ? Palette.Warning : Palette.OffWhite) : Palette.DarkGrey;
         }
         _perde.Visible = perdeUp;
-        _sign.Text = c.Kind == "hq" ? (c.Cleared ? "Bereket Holding Genel Merkez (ele geçirildi)" : $"BEREKET HOLDING GENEL MERKEZ · Sv. {c.Level} · yalnız Kabarma gecesi") : c.Destroyed
-            ? $"Bereket Holding (yıkık, gün {c.RebuildDay} yeniden kurulur)"
-            : $"Bereket Holding · Kamp Sv. {c.Level} · Husumet {Mathf.RoundToInt(c.Husumet)}";
+        _sign.Text = c.Kind == "hq" ? (c.Cleared ? Loc.T("holding.hq_captured") : Loc.T("holding.hq_sign", c.Level)) : c.Destroyed
+            ? Loc.T("holding.camp_ruined", c.RebuildDay)
+            : Loc.T("holding.camp_sign", c.Level, Mathf.RoundToInt(c.Husumet));
     }
 
     /// <summary>Seviyeye gore kule ve duvar halkalari; yikik kampta enkaz.</summary>

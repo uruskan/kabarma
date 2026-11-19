@@ -46,7 +46,7 @@ public partial class Hud
         if (_defterTab == 0 && JPd("ui_accept"))
         {
             var chain = s.Orders.Chains.Where(c => c.Opened).ElementAtOrDefault(_defterSel);
-            if (chain != null && !chain.Done && s.Orders.Pin(chain.Def.Id)) { Hint($"Takip: {chain.Def.Name}", 1.5f); Sfx.Play("place", null, -12f); RebuildDefter(); }
+            if (chain != null && !chain.Done && s.Orders.Pin(chain.Def.Id)) { Hint(Loc.T("mastery.track", chain.Def.Name), 1.5f); Sfx.Play("place", null, -12f); RebuildDefter(); }
         }
         else if (_defterTab == 3 && JPd("ui_accept")) ChipsAccept(); // Hud.Chips.cs
         else if (_defterTab == 1)
@@ -74,16 +74,16 @@ public partial class Hud
     {
         var s = _d.State;
         int cost = s.Mastery.RespecCost(b.Id);
-        if (s.Mastery.ChoiceCount(b.Id) == 0) { Hint("Sıfırlanacak seçim yok", 1.5f); return; }
+        if (s.Mastery.ChoiceCount(b.Id) == 0) { Hint(Loc.T("mastery.nothing_reset"), 1.5f); return; }
         if (_respecArmed != b.Id)
         {
             _respecArmed = b.Id; _respecArmT = 4f;
-            Hint($"{b.Name} seçimleri {cost:N0} Kredi karşılığı sıfırlanır: tekrar bas", 4f);
+            Hint(Loc.T("mastery.reset_confirm", b.Name, cost.ToString("N0", System.Globalization.CultureInfo.InvariantCulture)), 4f);
             return;
         }
         _respecArmed = "";
         int paid = s.RespecMastery(b.Id);
-        Hint(paid < 0 ? $"Yetmiyor: {cost:N0} Kredi gerek" : $"{b.Name} sıfırlandı (−{paid:N0} Kredi)", 2.5f);
+        Hint(paid < 0 ? Loc.T("mastery.cant_afford", cost.ToString("N0", System.Globalization.CultureInfo.InvariantCulture)) : Loc.T("mastery.reset_done", b.Name, paid.ToString("N0", System.Globalization.CultureInfo.InvariantCulture)), 2.5f);
         RebuildDefter();
     }
 
@@ -94,7 +94,7 @@ public partial class Hud
         var s = _d.State;
         var m = s.Mastery;
         _defterSel = Mathf.Clamp(_defterSel, 0, m.Branches.Count - 1);
-        _defterPage.AddChild(UL("Yaparak gelişir: her seviye +%1; 10, 20, 30, 40, 50. seviyede iki özellikten biri seçilir. Ustalık karaktere aittir.", 15, T.Muted));
+        _defterPage.AddChild(UL(Loc.T("mastery.intro"), 15, T.Muted));
 
         for (int k = 0; k < m.Branches.Count; k++)
         {
@@ -104,8 +104,8 @@ public partial class Hud
             if (sel) AddBranchDetail(b);
         }
         _defterPage.AddChild(UL(_padLast
-            ? "←→: SEKME   ·   ↑↓: DAL   ·   X: A SEÇ   ·   Y: B SEÇ   ·   GERİ: SIFIRLA"
-            : "←→: SEKME   ·   ↑↓: DAL   ·   1: A SEÇ   ·   2: B SEÇ   ·   R: SIFIRLA", 14, T.Muted, true, true));
+            ? Loc.T("mastery.keys_pad")
+            : Loc.T("mastery.keys_kb"), 14, T.Muted, true, true));
     }
 
     Control BranchRow(MasteryBranchDef b, bool selected)
@@ -120,14 +120,14 @@ public partial class Hud
         var name = UL(T.Upper(b.Name), 19, T.Ink, true, true);
         name.CustomMinimumSize = new Vector2(T.Px(140), 0);
         h.AddChild(name);
-        h.AddChild(UL($"SV {lv}", 19, T.Ivory, true, true));
+        h.AddChild(UL(Loc.T("mastery.lv", lv), 19, T.Ivory, true, true));
         var bar = new ProgressBar { MinValue = 0, MaxValue = 1, Value = m.Fraction(b.Id), ShowPercentage = false, CustomMinimumSize = new Vector2(T.Px(260), T.Px(10)), SizeFlagsVertical = Control.SizeFlags.ShrinkCenter, SizeFlagsHorizontal = Control.SizeFlags.ExpandFill, MouseFilter = Control.MouseFilterEnum.Ignore };
         bar.AddThemeStyleboxOverride("background", new StyleBoxFlat { BgColor = T.A(T.Ink, 0.15f) });
         bar.AddThemeStyleboxOverride("fill", new StyleBoxFlat { BgColor = pending ? T.Ivory : T.Teal });
         h.AddChild(bar);
-        string stat = lv >= m.Def.MaxLevel ? "ÜST" : $"{(long)m.Xp(b.Id)}/{(long)m.Threshold(lv + 1)} XP";
+        string stat = lv >= m.Def.MaxLevel ? Loc.T("mastery.max") : Loc.T("mastery.xp", (long)m.Xp(b.Id), (long)m.Threshold(lv + 1));
         h.AddChild(UL(stat, 15, T.Muted, true, true));
-        if (pending) h.AddChild(UL("SEÇ!", 17, T.Ivory, true, true));
+        if (pending) h.AddChild(UL(Loc.T("mastery.choose"), 17, T.Ivory, true, true));
         row.AddChild(h);
         return row;
     }
@@ -136,7 +136,7 @@ public partial class Hud
     {
         var m = _d.State.Mastery;
         int lv = m.Level(b.Id);
-        _defterPage.AddChild(UL($"Seviye payı: +%{lv} · seçimler sıfırlama {m.RespecCost(b.Id):N0} Kredi", 14, T.Muted));
+        _defterPage.AddChild(UL(Loc.T("mastery.level_share", lv, m.RespecCost(b.Id).ToString("N0", System.Globalization.CultureInfo.InvariantCulture)), 14, T.Muted));
         int pendingTier = m.PendingTiers(b.Id).FirstOrDefault();
         foreach (int tier in m.Def.PerkLevels)
         {
@@ -146,7 +146,7 @@ public partial class Hud
             {
                 bool mine = chosen?.Id == p.Id;
                 string head = $"{tier} · {p.Slot}: {p.Name}";
-                string body = p.Text + (p.Live ? "" : " (etkisi ilgili sistemle gelir)");
+                string body = p.Text + (p.Live ? "" : " " + Loc.T("mastery.not_live"));
                 string key = open ? (_padLast ? (p.Slot == "A" ? "X" : "Y") : (p.Slot == "A" ? "1" : "2")) : mine ? "✓" : "";
                 _defterPage.AddChild(OrderRow(mine, open && tier == pendingTier, $"{head} — {body}", key));
             }

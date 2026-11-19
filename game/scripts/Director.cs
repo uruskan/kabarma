@@ -204,7 +204,7 @@ public partial class Director : Node3D
 
         // Gidak yakinsa ipucu
         if (Gidak.Visible && !Gidak.Swollen && Gidak.Fed == 0 && Gidak.GlobalPosition.DistanceTo(Player.GlobalPosition) < 3f && State.Backpack.Count("wheat") > 0)
-            Hud.Hint("{act:interact}: Gıdak'a buğday ver");
+            Hud.Hint(Loc.T("dir.hint_feed_gidak"));
 
         TickPhase(dt); // Director.Night.cs
     }

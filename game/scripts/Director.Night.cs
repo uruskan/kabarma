@@ -46,7 +46,7 @@ public partial class Director
         {
             if (i == 0) Hud.Say(Data.Scenario.NightLines["wave"]);
             if (i == 1) DebugShot($"kabarma_pano_gece{State.NightsStarted}", 2.5f);
-            Hud.Big($"DALGA {i + 1}", Palette.MayaTeal, 2f);
+            Hud.Big(Loc.T("dir.big_wave", i + 1), Palette.MayaTeal, 2f);
             GD.Print($"NIGHT wave {i + 1} count={w.Count}");
         };
         n.LevelUp += lv =>
@@ -55,7 +55,7 @@ public partial class Director
             Fx.Burst(Player.GlobalPosition + Vector3.Up * 0.6f, Palette.MayaViolet, 24, 3.5f, 0.07f, 0.7f, true, -1f);
             if (lv == 1) Hud.Say(Data.Scenario.NightLines["level"]);
         };
-        n.CardTaken += (c, r) => { Hud.Big($"{c.Name} {(r > 1 ? "· Rütbe " + r : "")}", Palette.MayaViolet, 1.6f); GD.Print($"NIGHT card {c.Id} rank={r}"); Events.RaiseCardPicked(c.Id); };
+        n.CardTaken += (c, r) => { Hud.Big($"{c.Name} {(r > 1 ? Loc.T("dir.card_rank", r) : "")}", Palette.MayaViolet, 1.6f); GD.Print($"NIGHT card {c.Id} rank={r}"); Events.RaiseCardPicked(c.Id); };
         n.DawnNow += BeginDawn;
         n.OzCollected += OnOzCollected; // Director.Oz.cs (M1 karari 19)
         ClearOzViews();
@@ -64,7 +64,7 @@ public partial class Director
         Sfx.Play("siren", null, -2f);
         Sfx.Music(true);
         Hud.Say(Data.Scenario.NightLines["alarm"]);
-        Hud.Big("KABARMA", Palette.MayaViolet, 3f);
+        Hud.Big(Loc.T("dir.big_kabarma"), Palette.MayaViolet, 3f);
         GD.Print($"NIGHT start n={State.NightsStarted}{(_replay ? " replay" : "")}");
         Events.RaiseNightStarted();
     }
@@ -88,7 +88,7 @@ public partial class Director
         _slowMo = 1f;
         Player.SpeedMult = 1f; // GDD 15: kartlar safakta soner (Cevik dahil)
         CardsDawn(); // Director.Cards.cs
-        Hud.Big("ŞAFAK", Palette.Warning, 3f);
+        Hud.Big(Loc.T("dir.big_dawn"), Palette.Warning, 3f);
         GD.Print($"NIGHT dawn kills={Night.Kills} level={Night.Level} maya={Night.Maya:0} cards={Night.CardsCount} statsBase={Night.Stats.IsBase}{(_replay ? " replay" : "")}");
         if (_replay) { Events.RaiseDawn(); return; }
         Pod.BecomeRamp();
@@ -98,7 +98,7 @@ public partial class Director
         if (_swollenAtDawn == 0)
         {
             // Satacak kabarik urun kalmadi: satis adimi bos gecer, rapor yine gelir.
-            Hud.Say("Tarlada kabarık bir şey kalmamış. Kooperatif bunu not etti. Bir dahaki sefere tarlanın başında dur.");
+            Hud.Say(Loc.T("dir.say_no_swollen"));
             State.Scenario.Report("sell");
         }
     }
@@ -159,7 +159,7 @@ public partial class Director
     {
         if (Phase != Act.Free || NightActive || Hud.ReportOpen)
         {
-            Hud.Hint("Küçük Kabarma şimdi başlamaz: ilk gece ve Hasat Raporu bitmeli", 2.5f);
+            Hud.Hint(Loc.T("dir.hint_small_kabarma_refused"), 2.5f);
             GD.Print($"REPLAY refused phase={Phase}");
             return false;
         }

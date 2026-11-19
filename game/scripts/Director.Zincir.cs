@@ -56,11 +56,11 @@ public partial class Director
 
     public string ResearchBlockText(ResearchNodeDef n, ResearchBlock b) => b switch
     {
-        ResearchBlock.NeedsPrereq => "Önce araştır: " + string.Join(", ", n.Requires.Where(q => !State.Research.IsDone(q)).Select(ItemNames.Of)),
-        ResearchBlock.NoTable => $"{ItemNames.Of(Data.Research.Table)} yanında araştırılır",
-        ResearchBlock.NoVeri => $"Veri yetmiyor ({State.Research.Veri}/{Data.Research.CostOf(n)}): {{act:scan}} ile yeni türleri tara",
-        ResearchBlock.Done => "Zaten araştırıldı",
-        _ => "Araştırılamaz",
+        ResearchBlock.NeedsPrereq => Loc.T("dir.res_needs_prereq", string.Join(", ", n.Requires.Where(q => !State.Research.IsDone(q)).Select(ItemNames.Of))),
+        ResearchBlock.NoTable => Loc.T("dir.res_no_table", ItemNames.Of(Data.Research.Table)),
+        ResearchBlock.NoVeri => Loc.T("dir.res_no_veri", State.Research.Veri, Data.Research.CostOf(n)),
+        ResearchBlock.Done => Loc.T("dir.res_done"),
+        _ => Loc.T("dir.res_cant"),
     };
 
     /// <summary>Kilitli satirin aciklamasi (Uretim paneli): arastirma, Ocak basamagi ya da ilk alinacak esya.</summary>
@@ -70,12 +70,12 @@ public partial class Director
         {
             var b = State.Research.Check(n.Id, NearResearchTable);
             return b == ResearchBlock.Ok || b == ResearchBlock.NoTable || b == ResearchBlock.NoVeri
-                ? $"Araştırma: {Data.Research.CostOf(n)} Veri ({ItemNames.Of(Data.Research.Table)})"
+                ? Loc.T("dir.lock_research", Data.Research.CostOf(n), ItemNames.Of(Data.Research.Table))
                 : ResearchBlockText(n, b);
         }
         int tier = ResearchFile.TierLock(r);
-        if (tier > 0) return $"Ocak T{tier} gerekir (Ata Çekirdeği)";
-        return $"Kilitli: ilk {ItemNames.Of(r.UnlockOn ?? "")} ile açılır";
+        if (tier > 0) return Loc.T("dir.lock_ocak_tier", tier);
+        return Loc.T("dir.lock_first", ItemNames.Of(r.UnlockOn ?? ""));
     }
 
     void TickZincir(float dt)
@@ -85,11 +85,11 @@ public partial class Director
             _zincirWired = true;
             State.Research.Researched += n =>
             {
-                Hud.Big($"Araştırıldı: {ItemNames.Of(n.Id)}", Palette.Warning, 2.5f);
+                Hud.Big(Loc.T("dir.big_researched", ItemNames.Of(n.Id)), Palette.Warning, 2.5f);
                 Sfx.Play("pickup", null, 0f);
                 GD.Print($"RESEARCHED {n.Id} veri={State.Research.Veri}");
             };
-            State.Research.TierChanged += t => { Hud.Big($"Ocak T{t}: tapu {State.Research.ClaimRadius:0} m", Palette.Warning, 3f); GD.Print($"OCAK_TIER {t}"); };
+            State.Research.TierChanged += t => { Hud.Big(Loc.T("dir.big_ocak_tier", t, State.Research.ClaimRadius.ToString("0", System.Globalization.CultureInfo.InvariantCulture)), Palette.Warning, 3f); GD.Print($"OCAK_TIER {t}"); };
         }
         if (!Hud.MenuOpen && Input.IsActionJustPressed("scan")) Scan();
         // Maya Kazani (GDD 6, 14.4): safakta biriken Maya, Ocak'in yaninda "maya" esyasi olarak canta ve Sandiklara alinir.
@@ -99,8 +99,8 @@ public partial class Director
             _mayaAskT = 0.5f;
             if (Net?.Forward("maya", _ => { }) == true) return; // ortak: istemcide host Kazan'dan aktorun cantasina verir (Director.Maya.cs)
             int got = State.MayaStock.Withdraw(StationStore());
-            if (got > 0) { Hud.Big($"+{got} Maya (Kazan)", Palette.MayaTeal, 2f); Sfx.Play("pickup", null, -4f); GD.Print($"MAYA withdrawn {got} left={State.MayaStock.Stock}"); }
-            else Hud.Hint($"Maya Kazanı'nda {State.MayaStock.Stock} Maya var: çanta ve Sandıklar dolu", 1.2f);
+            if (got > 0) { Hud.Big(Loc.T("dir.big_maya_gain", got), Palette.MayaTeal, 2f); Sfx.Play("pickup", null, -4f); GD.Print($"MAYA withdrawn {got} left={State.MayaStock.Stock}"); }
+            else Hud.Hint(Loc.T("dir.hint_maya_stock", State.MayaStock.Stock), 1.2f);
         }
         // Ocak basamagi: siradaki Cekirdek cantadaysa Ocak'in yaninda takilir (GDD §6).
         _coreHintT -= dt;
@@ -112,7 +112,7 @@ public partial class Director
             if (next < cores.Count && !string.IsNullOrEmpty(cores[next]) && State.Backpack.Count(cores[next]) > 0)
             {
                 if (OcakPos.DistanceTo(Player.GlobalPosition) < 3.5f) State.Research.TryUpgradeOcak(State.Backpack);
-                else Hud.Hint($"{ItemNames.Of(cores[next])}: Ocak'ın yanına götür, basamak yükselsin", 1f);
+                else Hud.Hint(Loc.T("dir.hint_core_bring", ItemNames.Of(cores[next])), 1f);
             }
         }
     }
@@ -145,15 +145,15 @@ public partial class Director
             foreach (var p in World.TreePositions) Consider("plant", "tree", p + Vector3.Up * 1.2f);
             foreach (var v in FarmView.Views) if (v.Plot.Crop is string crop && crop.Length > 0) Consider("plant", crop, v.GlobalPosition);
         }
-        if (id == null) { Hud.Hint("Tarayıcı: taranacak bir şeye bak (yaratık, bitki, maden)", 1.4f); Sfx.Play("hit", null, -16f); return -1; }
+        if (id == null) { Hud.Hint(Loc.T("dir.hint_scan_aim"), 1.4f); Sfx.Play("hit", null, -16f); return -1; }
         int got = State.Research.Scan(kind, id);
         var name = State.Research.ScanEntry(kind, id)!.Name;
         if (got > 0)
         {
-            Hud.Big($"Tarandı: {name}  +{got} Veri", Palette.CoopBlue.Lightened(0.3f), 2f);
+            Hud.Big(Loc.T("dir.big_scanned", name, got), Palette.CoopBlue.Lightened(0.3f), 2f);
             Sfx.Play("pickup", null, -4f);
         }
-        else Hud.Hint($"{name} Ansiklopedi'de var ({State.Research.Veri} Veri)", 1.2f);
+        else Hud.Hint(Loc.T("dir.hint_already_scanned", name, State.Research.Veri), 1.2f);
         GD.Print($"SCANNED {kind}:{id} +{Mathf.Max(0, got)} veri={State.Research.Veri}");
         return got;
     }
@@ -161,14 +161,14 @@ public partial class Director
     /// <summary>Sandik menusunun ilk iki satiri (GDD §5 envanter duzeni): hizli yigma ve siralama.</summary>
     void AddChestTools(List<Hud.MenuItem> items, Furniture chest)
     {
-        items.Add(new Hud.MenuItem("Aynılarını koy (hızlı yığ)", () => chest.Storage.Contents.Any(c => State.Backpack.Count(c.id) > 0), () =>
+        items.Add(new Hud.MenuItem(Loc.T("dir.chest_quickstack"), () => chest.Storage.Contents.Any(c => State.Backpack.Count(c.id) > 0), () =>
         {
             int n = State.Backpack.QuickStackTo(chest.Storage);
             Sfx.Play("place", null, -8f);
             GD.Print($"QUICKSTACK {n}");
             OpenChestMenu(chest);
         }));
-        items.Add(new Hud.MenuItem("Çantayı ve Sandığı sırala", () => !State.Backpack.IsEmpty || !chest.Storage.IsEmpty, () =>
+        items.Add(new Hud.MenuItem(Loc.T("dir.chest_sort"), () => !State.Backpack.IsEmpty || !chest.Storage.IsEmpty, () =>
         {
             State.Backpack.Sort(SortOrder);
             chest.Storage.Sort(SortOrder);

@@ -195,6 +195,7 @@ public partial class Player : CharacterBody3D
     public void Hurt(float dmg, Vector3 from)
     {
         if (Down) return;
+        if (GetParent() is Director rd && !rd.Riv.PlayerHurtAllowed(GlobalPosition)) return; // Cekisme (GDD 22.2 kural 2): tapuda gunduz dokunulmaz
         dmg = AbilitySystem.HurtFilter?.Invoke(this, dmg, from) ?? dmg; if (dmg <= 0) return; // gucler: Atilma, Kalkan Balonu, Dev Mod (kart etkisinden once: kacinilan vurus karti tetiklemez)
         if (GetParent() is Director cd) { dmg = cd.CardGuard(dmg, from); if (dmg <= 0) return; } // kartlar: Kabuk, Dikenli, Ufak Tefek
         if (ArmorPoints > 0f || Shield > 0f) { var (ad, ashield) = Kabarma.Sim.ArmorRules.Absorb(dmg, ArmorPoints, Shield); Shield = ashield; ShieldIdle = 0f; dmg = ad; if (dmg <= 0f) return; } // kusam: zirh takimi ve Kalkan Jeneratoru

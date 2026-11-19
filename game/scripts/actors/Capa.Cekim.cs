@@ -66,7 +66,7 @@ public partial class Capa
             if (holdAt.Y < floor) holdAt.Y = floor;
             Held.Body.GlobalPosition = Held.Body.GlobalPosition.Lerp(holdAt, Mathf.Min(1f, dt * c.Follow));
             ShowBeam(muzzle, Held.Body.GlobalPosition, HeadColors[(int)Head.Cekim], 0.5f + k);
-            _d.Hud.Hint(AtRamp(Held.Body.GlobalPosition) ? "Bırak: kargoya yükle ({act:fire}) · basılı tut: fırlat" : "Kargo Rampası'na taşı · {act:fire} basılı tut, bırak: fırlat");
+            _d.Hud.Hint(AtRamp(Held.Body.GlobalPosition) ? Loc.T("capa.drop_cargo_hint") : Loc.T("capa.carry_to_ramp"));
             return true;
         }
         if (_missBeamT > 0f)
@@ -93,6 +93,7 @@ public partial class Capa
             .OrderBy(v => v.GlobalPosition.DistanceTo(aim)).FirstOrDefault();
         if (view != null && view.GlobalPosition.DistanceTo(aim) < c.GrabRadius + view.CropScale * c.GrabPerScale)
         {
+            if (!_d.Riv.CropGrabAllowed(view.GlobalPosition, _d.Riv.LocalTeam)) { _d.Hud.Hint(Loc.T("rivalry.grab_rival"), 1.4f); return false; } // Cekisme (kural 5)
             if (TooHeavy(view.Plot.Swollen.Kg, view.GlobalPosition)) return false;
             var sc = view.Lift();
             if (sc != null) { FeelDebris("cekim_tut", view.GlobalPosition, Palette.Soil); return Grab(sc, true); }
@@ -103,7 +104,7 @@ public partial class Capa
     bool TooHeavy(float kg, Vector3 at)
     {
         if (kg <= _t.Carry.MaxKg) return false;
-        _d.Hud.Hint($"Çok ağır: {kg:0} kg (Çekim en çok {_t.Carry.MaxKg:0} kg taşır)", 1.5f);
+        _d.Hud.Hint(Loc.T("capa.too_heavy", kg.ToString("0", System.Globalization.CultureInfo.InvariantCulture), _t.Carry.MaxKg.ToString("0", System.Globalization.CultureInfo.InvariantCulture)), 1.5f);
         FeelEmpty("cekim_agir", at);
         _missBeamT = _t.Carry.MissBeamSeconds;
         return true;

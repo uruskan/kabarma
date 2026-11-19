@@ -18,7 +18,7 @@ public partial class AudioPanel : CanvasLayer
         _panel = new PanelContainer { Visible = false, Position = new Vector2(420, 160) };
         UiPanels.Skin(_panel); // M6: tek panel dili (Rust tarzi)
         var v = new VBoxContainer { CustomMinimumSize = new Vector2(380, 0) };
-        v.AddChild(UiPanels.Title("F2 · Ses", 28));
+        v.AddChild(UiPanels.Title(Loc.T("menu.audio_title"), 28));
         if (Sfx.Data != null)
             foreach (var b in Sfx.Data.Buses) Slider(v, b.Id, b.Name);
         _panel.AddChild(v);
@@ -38,7 +38,7 @@ public partial class AudioPanel : CanvasLayer
         _first ??= s;
     }
 
-    static string Percent(float x) => $"%{Mathf.RoundToInt(x * 100)}";
+    static string Percent(float x) => Loc.T("settings.pct", Mathf.RoundToInt(x * 100));
 
     public override void _Input(InputEvent e)
     {

@@ -28,7 +28,7 @@ public partial class Station
         .Where(f => IsInstanceValid(f) && f.Storage != null && new Vector2(f.GlobalPosition.X - GlobalPosition.X, f.GlobalPosition.Z - GlobalPosition.Z).Length() <= r)
         .OrderBy(f => f.GlobalPosition.DistanceSquaredTo(GlobalPosition)).Select(f => f.Storage).ToList();
 
-    string AutoTail() => Machine == null || Def.Station == "montaj_makinesi" ? "" : _autoWork ? "\n" + _autoNote : "\n(hedef yok)";
+    string AutoTail() => Machine == null || Def.Station == "montaj_makinesi" ? "" : _autoWork ? "\n" + _autoNote : "\n" + Loc.T("world.auto_no_target");
 
     void TickAuto(float dt)
     {
@@ -62,52 +62,52 @@ public partial class Station
         }
         _autoWork = target;
         if (id != "sera_kontrol_unitesi" && !target) return;
-        if (!powered && id != "sera_kontrol_unitesi") { _autoNote = "güç yok"; return; }
+        if (!powered && id != "sera_kontrol_unitesi") { _autoNote = Loc.T("power.no_power"); return; }
         int n = 0;
         switch (id)
         {
             case "hasat_robotu":
                 n = AutomationRules.Harvest(_d.Data, farm, _d.State.Rng, x, z, m.Radius, chests);
-                if (n > 0) { _d.OnHarvest(n); Fx.Text3D(GlobalPosition + Vector3.Up * 2.2f, $"+{n} hasat", Palette.Warning, 40, 1f, 1.1f); }
-                _autoNote = "hasat ediyor";
+                if (n > 0) { _d.OnHarvest(n); Fx.Text3D(GlobalPosition + Vector3.Up * 2.2f, Loc.T("world.auto_harvested", n), Palette.Warning, 40, 1f, 1.1f); }
+                _autoNote = Loc.T("world.auto_harvesting");
                 break;
             case "ekim_robotu":
                 n = AutomationRules.Plant(_d.Data, farm, _d.State.Rng, x, z, m.Radius, chests);
-                if (n > 0) Fx.Text3D(GlobalPosition + Vector3.Up * 2.2f, $"{n} ekildi", Palette.Plant, 40, 1f, 1.1f);
-                _autoNote = "ekiyor";
+                if (n > 0) Fx.Text3D(GlobalPosition + Vector3.Up * 2.2f, Loc.T("world.auto_planted", n), Palette.Plant, 40, 1f, 1.1f);
+                _autoNote = Loc.T("world.auto_planting");
                 break;
             case "sera_kontrol_unitesi":
                 n = AutomationRules.Greenhouse(farm, x, z, m.Radius, powered, _sera);
                 _autoWork = n > 0 || _sera.Count > 0;
-                _autoNote = powered ? $"{n} kare sera bandında" : "güç yok";
+                _autoNote = powered ? Loc.T("world.auto_greenhouse", n) : Loc.T("power.no_power");
                 break;
             case "otomatik_yemlik":
                 n = AutomationRules.Feed(_d.Pens.Props.Where(p => p.Feeder != null && Near(p, m.Radius)).Select(p => p.Feeder).ToList(), chests, WantedFoods());
-                if (n > 0) Fx.Text3D(GlobalPosition + Vector3.Up * 2.2f, $"+{n} yem", Palette.Warning, 40, 1f, 1.1f);
-                _autoNote = "yem taşıyor";
+                if (n > 0) Fx.Text3D(GlobalPosition + Vector3.Up * 2.2f, Loc.T("world.auto_feed", n), Palette.Warning, 40, 1f, 1.1f);
+                _autoNote = Loc.T("world.auto_feeding");
                 break;
             case "yumurta_toplayici":
                 n = AutomationRules.CollectEggs(_d.Pens.Props.Where(p => p.Nest != null && Near(p, m.Radius)).Select(p => p.Nest).ToList(), chests, _d.Data.Pen.Animals[0].Product);
-                if (n > 0) Fx.Text3D(GlobalPosition + Vector3.Up * 2.2f, $"+{n} yumurta", Palette.OffWhite, 40, 1f, 1.1f);
-                _autoNote = "topluyor";
+                if (n > 0) Fx.Text3D(GlobalPosition + Vector3.Up * 2.2f, Loc.T("world.auto_eggs", n), Palette.OffWhite, 40, 1f, 1.1f);
+                _autoNote = Loc.T("world.auto_collecting");
                 break;
             case "sagim_kirkim_kolu":
                 n = AutomationRules.Milk(_d.State.Ranch.Animals, x, z, m.Radius, m.Items, chests);
-                if (n > 0) Fx.Text3D(GlobalPosition + Vector3.Up * 2.2f, $"+{n} süt/yün", Palette.OffWhite, 40, 1f, 1.1f);
-                _autoNote = "sağıyor, kırkıyor";
+                if (n > 0) Fx.Text3D(GlobalPosition + Vector3.Up * 2.2f, Loc.T("world.auto_milk", n), Palette.OffWhite, 40, 1f, 1.1f);
+                _autoNote = Loc.T("world.auto_milking");
                 break;
             case "paketleyici":
                 n = AutomationRules.Pack(_d.State.Cargo, chests, _idleT > m.IdleLaunchSeconds * 0.5f, out bool ready);
                 _idleT = n > 0 || ready ? 0 : _idleT + m.Interval;
                 var cargo = _d.State.Cargo;
                 if (cargo.Pad.Count > 0 && _d.Pod.IsRamp && (cargo.Pad.Count >= _d.Data.Economy.Ramp.MaxCrates || _idleT >= m.IdleLaunchSeconds)) { _d.MachineLaunchRamp(); _idleT = 0; }
-                _autoNote = $"kasa: {cargo.Open?.Items.UsedSlots ?? 0} yığın · rampa {cargo.Pad.Count}";
+                _autoNote = Loc.T("world.auto_packing", cargo.Open?.Items.UsedSlots ?? 0, cargo.Pad.Count);
                 break;
             case "sondaj_kulesi":
                 var poi = DrillPoi(m);
                 string ore = poi == null ? null : AutomationRules.DrillOre(_d.Data, poi.Biome);
                 if (ore != null && AutomationRules.AddAll(chests, ore, 1) > 0) { n = 1; Fx.Text3D(GlobalPosition + Vector3.Up * 2.2f, $"+1 {ItemNames.Of(ore)}", Palette.Warning, 40, 1f, 1.1f); }
-                _autoNote = ore == null ? "bu biyomun cevheri yok" : "cevher çıkarıyor";
+                _autoNote = ore == null ? Loc.T("world.auto_no_ore") : Loc.T("world.auto_drilling");
                 break;
         }
         if (n > 0) GD.Print($"MACHINE {id} n={n}");
@@ -135,7 +135,7 @@ public partial class Station
         if (r == null) return;
         var proxy = AssemblerState.Proxy(r);
         if (Queue.Active == null && QueueAfford(proxy)) _autoWork = true;
-        if (Queue.Queued < 1 && Queue.Enqueue(proxy, _d.StationStore())) _autoNote = "üretiyor";
+        if (Queue.Queued < 1 && Queue.Enqueue(proxy, _d.StationStore())) _autoNote = Loc.T("world.auto_crafting");
     }
 
     bool QueueAfford(RecipeDef r) => StationQueue.CanAfford(r, _d.StationStore());
@@ -152,28 +152,28 @@ public partial class Station
         if (id == "montaj_makinesi")
         {
             var a = _d.State.Assembler;
-            string cur = string.IsNullOrEmpty(a.Recipe) ? "seçili tarif yok" : ItemNames.Of(a.Recipe);
-            items.Add(new Hud.MenuItem($"Tarif: {cur}  (değiştir)", () => true, () => { a.Next(_d.Data, _d.State.Known); Sfx.Play("place", null, -12f); OpenMachineMenu(); }));
-            footer = "Seçilen tarifi, girdi Sandıklarda oldukça kendi üretir; ürün Sandıklara girer.";
+            string cur = string.IsNullOrEmpty(a.Recipe) ? Loc.T("world.auto_no_recipe") : ItemNames.Of(a.Recipe);
+            items.Add(new Hud.MenuItem(Loc.T("world.auto_recipe", cur), () => true, () => { a.Next(_d.Data, _d.State.Known); Sfx.Play("place", null, -12f); OpenMachineMenu(); }));
+            footer = Loc.T("world.auto_footer_assembler");
         }
         else
         {
             footer = id switch
             {
-                "hasat_robotu" => $"{m.Radius:0} m çevredeki olgun ekini toplar; ürün ve tohum Sandıklara girer.",
-                "ekim_robotu" => $"{m.Radius:0} m çevredeki boş kareye Sandıktaki tohumu eker.",
-                "otomatik_yemlik" => "Yemlik'leri Sandıktaki yemle doldurur.",
-                "yumurta_toplayici" => "Folluk'taki yumurtayı Sandığa taşır.",
-                "sagim_kirkim_kolu" => "Evcil hayvanların sütünü ve yününü Sandığa toplar.",
-                "paketleyici" => "Yanındaki Sandıktaki satılabilir ürünü kasaya doldurur ve rampaya yollar (rampa kurulu olmalı).",
-                "sondaj_kulesi" => "Zengin Yatak'ın üstünde sürekli cevher çıkarır.",
-                "sera_kontrol_unitesi" => $"{m.Radius:0} m çevredeki tarla karelerini sera sıcaklık bandına alır.",
+                "hasat_robotu" => Loc.T("world.auto_footer_harvest", m.Radius.ToString("0", System.Globalization.CultureInfo.InvariantCulture)),
+                "ekim_robotu" => Loc.T("world.auto_footer_plant", m.Radius.ToString("0", System.Globalization.CultureInfo.InvariantCulture)),
+                "otomatik_yemlik" => Loc.T("world.auto_footer_feeder"),
+                "yumurta_toplayici" => Loc.T("world.auto_footer_eggs"),
+                "sagim_kirkim_kolu" => Loc.T("world.auto_footer_milk"),
+                "paketleyici" => Loc.T("world.auto_footer_packer"),
+                "sondaj_kulesi" => Loc.T("world.auto_footer_drill"),
+                "sera_kontrol_unitesi" => Loc.T("world.auto_footer_greenhouse", m.Radius.ToString("0", System.Globalization.CultureInfo.InvariantCulture)),
                 _ => "",
             };
         }
-        string state = _d.Power?.PortOf(this) is { } port ? (port.Powered ? "beslenmiş" : "güç yok") : "güç bağlı değil";
-        items.Add(new Hud.MenuItem($"Durum: {state}{(_autoWork ? " · " + _autoNote : "")}", () => false, () => { }));
-        _d.Hud.ShowMenu(Def.Name, items, footer + "\n{act:interact} / {act:ui_cancel}: kapat");
+        string state = _d.Power?.PortOf(this) is { } port ? (port.Powered ? Loc.T("world.auto_fed") : Loc.T("power.no_power")) : Loc.T("world.auto_not_wired");
+        items.Add(new Hud.MenuItem(Loc.T("world.auto_state", state, (_autoWork ? " · " + _autoNote : "")), () => false, () => { }));
+        _d.Hud.ShowMenu(Def.Name, items, footer + "\n" + Loc.T("world.close_footer"));
         return true;
     }
 }

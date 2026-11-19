@@ -79,7 +79,7 @@ public partial class Director
         state.Parked = def.Kind == "air";
         var v = SpawnVehicle(def, state);
         Fx.Burst(v.GlobalPosition + Vector3.Up * 0.8f, Palette.Warning, 24, 4f, 0.1f, 0.8f);
-        Hud.Hint($"{def.Name} hazır. Depo boş: yakıt doldur (E)", 4f);
+        Hud.Hint(Loc.T("dir.hint_vehicle_ready", def.Name), 4f);
         GD.Print($"VEHICLE produced {def.Id}#{state.Id} at {at}");
     }
 
@@ -101,8 +101,8 @@ public partial class Director
         if (Riding != null) return false;
         if (VehicleForward("board", v, "")) return true; // ortak: istemcide host koltuk verir
         int me = MyRiderId;
-        if (v.State.Flipped) { Kabarma.Sim.Vehicles.Right(v.State); v.Place(); Hud.Hint($"{v.Def.Name} doğrultuldu", 1.5f); return true; }
-        if (!Kabarma.Sim.Vehicles.Board(v.Def, v.State, me)) { Hud.Hint("Koltuk dolu", 1.5f); return true; }
+        if (v.State.Flipped) { Kabarma.Sim.Vehicles.Right(v.State); v.Place(); Hud.Hint(Loc.T("dir.hint_vehicle_righted", v.Def.Name), 1.5f); return true; }
+        if (!Kabarma.Sim.Vehicles.Board(v.Def, v.State, me)) { Hud.Hint(Loc.T("dir.hint_seat_full"), 1.5f); return true; }
         EnterVehicle(v);
         return true;
     }
@@ -111,8 +111,8 @@ public partial class Director
     {
         Riding = v;
         Player.MoveOverride = Vector3.Zero;
-        string how = v.Def.Kind == "air" ? "W/S: gaz · A/D: dümen · Shift: yüksel · Boşluk: alçal · E: in" : "W/S: gaz · A/D: direksiyon · Boşluk: fren · E: in";
-        Hud.Hint(v.State.Fuel > 0 ? how : $"Depo boş ({ItemNames.Of(v.Def.FuelItem)})", 2.5f);
+        string how = v.Def.Kind == "air" ? Loc.T("dir.vehicle_controls_air") : Loc.T("dir.vehicle_controls_ground");
+        Hud.Hint(v.State.Fuel > 0 ? how : Loc.T("dir.hint_tank_empty", ItemNames.Of(v.Def.FuelItem)), 2.5f);
         GD.Print($"VEHICLE board {v.Name} seat={v.State.Riders.IndexOf(MyRiderId)}");
     }
 
@@ -120,7 +120,7 @@ public partial class Director
     {
         var v = Riding;
         if (v == null) return;
-        if (v.State.Altitude > 2.5f) { Hud.Hint("Önce yere in (Boşluk: alçal)", 1.5f); return; }
+        if (v.State.Altitude > 2.5f) { Hud.Hint(Loc.T("dir.hint_land_first"), 1.5f); return; }
         if (VehicleForward("leave", v, "")) { /* istemci: host koltugu birakir, Riding geri okunur */ }
         else Kabarma.Sim.Vehicles.Leave(v.State, MyRiderId);
         Riding = null;
@@ -138,7 +138,7 @@ public partial class Director
         var h = Stations.FirstOrDefault(s => s.Def.Station == "zeplin_hangari" && IsInstanceValid(s));
         if (h == null || !Kabarma.Sim.Vehicles.InHangar(v.State, h.GlobalPosition.X, h.GlobalPosition.Z, Data.Vehicles.Rules)) return;
         v.State.Parked = true; v.State.Altitude = 0; v.State.Speed = 0; v.State.Hp = v.Def.Hp;
-        Hud.Hint("Zeplin hangara park etti (onarıldı)", 2.5f);
+        Hud.Hint(Loc.T("dir.hint_zeppelin_parked"), 2.5f);
     }
 
     VehiclesSave CaptureVehicles() => new() { NextId = _nextVehicleId, Vehicles = Vehicles.Where(IsInstanceValid).Select(v => v.State).ToList() };
@@ -187,7 +187,7 @@ public partial class Director
             }
             else if (driver >= 100 && _remoteInput.TryGetValue(v.State.Id, out var ri) && Time.GetTicksMsec() - ri.at < 600) { v.Drive(ri.input, dt); RunVehicleWork(v, dt); }
             else { v.Drive(default, dt); }
-            if (v.State.Flipped && Riding == v) { Hud.Hint($"{v.Def.Name} devrildi. E: doğrult", 2f); LeaveVehicle(); }
+            if (v.State.Flipped && Riding == v) { Hud.Hint(Loc.T("dir.hint_vehicle_flipped", v.Def.Name), 2f); LeaveVehicle(); }
         }
         // Oyuncu koltukta: konum ve yon (yolcular surucuyle birlikte).
         var me = Riding;

@@ -167,23 +167,23 @@ public partial class RanchSystem
         {
             case WarEventKind.Swelled:
                 if (ag != null) SwellHost(ag.Host, true);
-                Fx.Text3D(at, Ranch.Rules.Def.FormOf(a?.Species ?? "")?.Name ?? "Kabardı", Palette.MayaViolet, 64, 1.2f, 1.6f);
+                Fx.Text3D(at, Ranch.Rules.Def.FormOf(a?.Species ?? "")?.Name ?? Loc.T("ranch.swelled"), Palette.MayaViolet, 64, 1.2f, 1.6f);
                 break;
             case WarEventKind.Hid:
                 if (ag != null) ag.Host.Visible = false;
                 break;
             case WarEventKind.Fainted:
-                Fx.Text3D(at, "Bayıldı", Palette.Warning, 64, 1.2f, 1.6f);
+                Fx.Text3D(at, Loc.T("ranch.fainted_short"), Palette.Warning, 64, 1.2f, 1.6f);
                 if (ag != null) SwellHost(ag.Host, false);
                 GD.Print($"RANCH fainted {a?.Species} id={e.AnimalId}");
                 break;
             case WarEventKind.Died:
-                Fx.Text3D(at, "Öldü (Sert Ay)", Palette.Warning, 64, 1.2f, 1.6f);
+                Fx.Text3D(at, Loc.T("ranch.died_hard_moon"), Palette.Warning, 64, 1.2f, 1.6f);
                 ag?.Host.QueueFree();
                 break;
             case WarEventKind.Scattered:
                 if (ag != null) { ag.Host.Visible = true; ag.Host.GlobalPosition = _d.World.Ground(ag.Host.GlobalPosition + new Vector3((float)GD.RandRange(-1.0, 1.0), 0, (float)GD.RandRange(-1.0, 1.0)).Normalized() * WarDef.ScatterRadius); }
-                Fx.Text3D(at, "Kaçıştı!", Palette.Warning, 64, 1.2f, 1.6f);
+                Fx.Text3D(at, Loc.T("ranch.fled_all"), Palette.Warning, 64, 1.2f, 1.6f);
                 GD.Print($"RANCH scattered {a?.Species} id={e.AnimalId}");
                 if (a != null) Events.RaiseAnimalEscaped(a.Species);
                 break;
@@ -212,7 +212,7 @@ public partial class RanchSystem
     /// <summary>Agil nesnesinin E eylemi ve etiketi (yoksa null): Ahir Zili, Eyerlik.</summary>
     public (Action, string) PropAction(PenProp pr)
     {
-        if (pr.Def.Id == WarDef.Bell) return (() => RingRequest(pr), "Zili çal");
+        if (pr.Def.Id == WarDef.Bell) return (() => RingRequest(pr), Loc.T("ranch.ring_bell"));
         if (pr.Def.Id == Ranch.Rules.Def.Mount.Rack)
         {
             var mdef = Ranch.Rules.Def.Mount;
@@ -220,7 +220,7 @@ public partial class RanchSystem
             var ag = _agents.Where(x => IsInstanceValid(x) && Ranch.Mount.CanSaddle(x.Animal) && x.Host.GlobalPosition.DistanceTo(pr.GlobalPosition) <= mdef.RackRadius)
                 .OrderBy(x => x.Host.GlobalPosition.DistanceTo(pr.GlobalPosition)).FirstOrDefault();
             if (ag == null) return (null, null);
-            return (() => SaddleRequest(pr, ag), $"Eyer tak: {ag.Species.Name}");
+            return (() => SaddleRequest(pr, ag), Loc.T("ranch.saddle_on", ag.Species.Name));
         }
         return (null, null);
     }
@@ -251,7 +251,7 @@ public partial class RanchSystem
     void Saddled(PenAnimal a)
     {
         var ag = AgentOf(a.Id);
-        if (ag != null) Fx.Text3D(ag.Host.GlobalPosition + Vector3.Up * (ag.Species.Size + 0.6f), "Eyerlendi", Palette.CoopBlue, 64, 1.2f, 1.4f);
+        if (ag != null) Fx.Text3D(ag.Host.GlobalPosition + Vector3.Up * (ag.Species.Size + 0.6f), Loc.T("ranch.saddled"), Palette.CoopBlue, 64, 1.2f, 1.4f);
         GD.Print($"RANCH saddled {a.Species} id={a.Id}");
     }
 }

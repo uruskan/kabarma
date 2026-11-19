@@ -44,10 +44,10 @@ public partial class PhotoMode : CanvasLayer
         _exprs = _d.Data.Visor.Expressions.Keys.OrderBy(k => k, StringComparer.Ordinal).ToList();
         _panel = UiPanels.Skin(new PanelContainer { Position = new Vector2(T.Px(24), T.Px(24)) });
         var v = new VBoxContainer { CustomMinimumSize = new Vector2(T.Px(440), 0) };
-        v.AddChild(UiPanels.Title("Fotoğraf modu", 30));
+        v.AddChild(UiPanels.Title(Loc.T("menu.photo"), 30));
         _info = UiPanels.Text("", 18, T.Ink);
         v.AddChild(_info);
-        v.AddChild(UiPanels.Text("WASD · Q/E: kamera  ·  Shift: hızlı  ·  fare: bakış  ·  tekerlek: görüş açısı\n← →: poz  ·  ↑ ↓: vizör yüzü  ·  [ ]: ifade\nU: oyun arayüzü  ·  H: bu panel  ·  Enter: çek  ·  Esc: çık", 15, T.Muted));
+        v.AddChild(UiPanels.Text(Loc.T("menu.photo_help"), 15, T.Muted));
         _panel.AddChild(v);
         AddChild(_panel);
         _toast = UiPanels.Title("", 34, T.Warning);
@@ -197,8 +197,8 @@ public partial class PhotoMode : CanvasLayer
     {
         if (_panel == null) return;
         _panel.Visible = !_panelHidden && !_shooting;
-        _info.Text = $"Poz: {PoseId}  ·  Vizör yüzü: {FaceStyle}  ·  İfade: {(Expression.Length == 0 ? "otomatik" : Expression)}  ·  Görüş: {_cam?.Fov:0}°" +
-                     $"\nOyun arayüzü: {(_hudHidden ? "gizli" : "açık")}";
+        _info.Text = Loc.T("menu.photo_info", PoseId, FaceStyle, Expression.Length == 0 ? Loc.T("menu.photo_auto") : Expression, (_cam?.Fov)?.ToString("0", System.Globalization.CultureInfo.InvariantCulture) ?? "") +
+                     "\n" + Loc.T("menu.photo_ui", Loc.T(_hudHidden ? "menu.photo_hidden" : "settings.on"));
     }
 
     // ---------------- cekim ----------------
@@ -223,7 +223,7 @@ public partial class PhotoMode : CanvasLayer
         if (_d.Hud != null) _d.Hud.Visible = hud;
         _shooting = false;
         Refresh();
-        _toast.Text = T.Upper("Fotoğraf kaydedildi");
+        _toast.Text = T.Upper(Loc.T("menu.photo_saved"));
         _toastT = 2f;
     }
 }

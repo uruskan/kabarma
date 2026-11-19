@@ -43,7 +43,7 @@ public sealed class PowerPort
     }
 
     /// <summary>Istasyonun etiketi icin kisa durum: "Güç: 20 W ✓" / "Güç yok: kablo çek" / "Güç yetmiyor".</summary>
-    public string Status => !Connected ? $"Güç yok ({Watts:0} W): Kablo çek" : Shed ? $"Güç yetmiyor ({Watts:0} W)" : Powered ? $"Güç: {Watts:0} W" : $"Güç: {Watts:0} W (beklemede)";
+    public string Status => !Connected ? Loc.T("power.port_none", Watts.ToString("0", System.Globalization.CultureInfo.InvariantCulture)) : Shed ? Loc.T("power.port_shed", Watts.ToString("0", System.Globalization.CultureInfo.InvariantCulture)) : Powered ? Loc.T("power.port_on", Watts.ToString("0", System.Globalization.CultureInfo.InvariantCulture)) : Loc.T("power.port_standby", Watts.ToString("0", System.Globalization.CultureInfo.InvariantCulture));
 
     /// <summary>Istasyon kalkinca: dugum ve kablolari silinir, kablolar cantaya doner.</summary>
     public void Detach() => _sys.Unregister(NodeId, refund: true);

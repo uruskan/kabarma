@@ -33,7 +33,7 @@ public partial class ControlsPanel : CanvasLayer
         _box = new PanelContainer { Visible = false };
         UiPanels.Skin(_box); // M6: tek panel dili (Rust tarzi)
         var v = new VBoxContainer { CustomMinimumSize = new Vector2(760, 0) };
-        v.AddChild(Text("TUŞ ATAMALARI", 28, Palette.Warning));
+        v.AddChild(Text(Loc.T("menu.controls_title"), 28, Palette.Warning));
         _scroll = new ScrollContainer { CustomMinimumSize = new Vector2(760, 560), HorizontalScrollMode = ScrollContainer.ScrollMode.Disabled };
         _list = new VBoxContainer();
         _scroll.AddChild(_list);
@@ -77,7 +77,7 @@ public partial class ControlsPanel : CanvasLayer
             _rows.Add(l);
         }
         _ids.Add("");
-        var reset = Text("Hepsini varsayılana döndür", 19, Palette.Accent);
+        var reset = Text(Loc.T("menu.controls_reset"), 19, Palette.Accent);
         _list.AddChild(reset);
         _rows.Add(reset);
         _sel = Mathf.Clamp(_sel, 0, _rows.Count - 1);
@@ -92,9 +92,9 @@ public partial class ControlsPanel : CanvasLayer
         }
         if (_sel < _rows.Count) _scroll.CallDeferred(ScrollContainer.MethodName.EnsureControlVisible, _rows[_sel]);
         _foot.Text = _capturing
-            ? $"«{_c.Data.Actions[_ids[_sel]].Name}» için yeni tuşa ya da kol düğmesine bas  ·  {_c.Glyph("ui_cancel")}: vazgeç"
-            : _c.Expand("{act:ui_up} {act:ui_down}: satır  ·  {act:ui_accept}: değiştir  ·  {act:ui_cancel} / {act:controls_panel}: kapat") +
-              (_c.UserPath != null ? $"\nKayıt: {_c.UserPath}" : "\nSınama: değişiklik kaydedilmez");
+            ? Loc.T("menu.controls_capture", _c.Data.Actions[_ids[_sel]].Name, _c.Glyph("ui_cancel"))
+            : _c.Expand(Loc.T("menu.controls_help")) +
+              (_c.UserPath != null ? "\n" + Loc.T("menu.controls_saved", _c.UserPath) : "\n" + Loc.T("menu.controls_test"));
     }
 
     public override void _Input(InputEvent e)

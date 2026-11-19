@@ -20,13 +20,13 @@ public partial class Director
         InitKabarma(); // Director.Kabarma.cs: takvim/Can tetigi, --kabarma (kabarma3)
         cal.Morning += day =>
         {
-            Hud.Big($"GÜN {day}", Palette.Warning, 2.5f);
+            Hud.Big(Loc.T("dir.big_day", day), Palette.Warning, 2.5f);
             GD.Print($"CALENDAR morning day={day}");
         };
         cal.Dusk += day =>
         {
-            Hud.Big("GECE", Palette.CoopBlue.Lerp(Palette.OffWhite, 0.4f), 2.5f);
-            Hud.Hint("Normal gece: Kabarma yok. Uyku Tulumu'nda uyursan sabah olur.", 4f);
+            Hud.Big(Loc.T("dir.big_night"), Palette.CoopBlue.Lerp(Palette.OffWhite, 0.4f), 2.5f);
+            Hud.Hint(Loc.T("dir.hint_normal_night"), 4f);
             GD.Print($"CALENDAR dusk day={day}");
         };
         Events.Slept += OnSlept;
@@ -35,7 +35,7 @@ public partial class Director
             var st = chain.Def.Steps[i];
             GD.Print($"ORDER {chain.Def.Id} step={i + 1} done{(State.Orders.DefterOpen ? "" : " (defter kapali)")}");
             if (!State.Orders.DefterOpen) return; // PLAN 1.4: Defter ilk geceden sonra acilir; oncesi sessizce sayilir
-            Hud.Big($"DEFTER · {st.Goal}", Palette.CoopBlue.Lerp(Palette.OffWhite, 0.3f), 2.2f);
+            Hud.Big(Loc.T("dir.big_ledger", st.Goal), Palette.CoopBlue.Lerp(Palette.OffWhite, 0.3f), 2.2f);
             Sfx.Play("levelup", null, -10f);
         };
         DebugHudArgs();
@@ -46,7 +46,7 @@ public partial class Director
     {
         var cal = State.Calendar;
         if (State.Sleep()) { GD.Print($"SLEPT night skipped -> day {cal.Day}"); return; }
-        string why = !cal.Running || NightActive ? "Kabarma gecesi uyuyarak atlanmaz." : "Henüz gece değil. Uyku geceyi atlatır.";
+        string why = !cal.Running || NightActive ? Loc.T("dir.hint_sleep_kabarma") : Loc.T("dir.hint_sleep_notnight");
         Hud.Hint(why, 2.5f);
         GD.Print($"SLEPT ignored running={cal.Running} night={cal.IsNight} kabarma={NightActive}");
     }

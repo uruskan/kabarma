@@ -47,7 +47,7 @@ public partial class Capa
         bool free = _d.NightActive;
         if (!free && !string.IsNullOrEmpty(w.Ammo) && !_d.State.Backpack.Remove(w.Ammo, w.AmmoPerShot))
         {
-            _d.Hud.Hint("Çivi yok: Tezgâhta bakırdan çivi yap", 1.2f);
+            _d.Hud.Hint(Loc.T("capa.no_nails"), 1.2f);
             FeelEmpty("civi", muzzle);
             return;
         }

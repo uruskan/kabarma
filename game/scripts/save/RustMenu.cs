@@ -149,14 +149,14 @@ void fragment() { COLOR = vec4(textureLod(screen_texture, SCREEN_UV, 3.0).rgb * 
     /// <summary>Yuvanin satir yazisi: "YUVA 2  ·  Gun 4  ·  18.11.2026 14:20  ·  1 sa 12 dk".</summary>
     public static string SlotLine(SaveSlotInfo s)
     {
-        string name = T.Upper(s.Slot.Replace("yuva", "yuva "));
-        if (!s.Exists) return $"{name}  ·  boş";
-        if (s.Manifest == null) return $"{name}  ·  okunamadı ({s.Error})";
+        string name = s.Slot.StartsWith("yuva", StringComparison.Ordinal) ? T.Upper(Loc.T("menu.slot_n", s.Slot.Substring(4))) : T.Upper(s.Slot);
+        if (!s.Exists) return Loc.T("menu.slot_empty", name);
+        if (s.Manifest == null) return Loc.T("menu.slot_unreadable", name, s.Error);
         var m = s.Manifest;
         string when = DateTime.TryParse(m.SavedUtc, CultureInfo.InvariantCulture, DateTimeStyles.AdjustToUniversal | DateTimeStyles.AssumeUniversal, out var t)
             ? t.ToLocalTime().ToString("dd.MM.yyyy HH:mm", CultureInfo.InvariantCulture) : m.SavedUtc;
         var play = TimeSpan.FromSeconds(m.PlaySeconds);
-        string dur = play.TotalHours >= 1 ? $"{(int)play.TotalHours} sa {play.Minutes} dk" : $"{play.Minutes} dk";
-        return $"{name}  ·  Gün {m.Day}  ·  {when}  ·  {dur}";
+        string dur = play.TotalHours >= 1 ? Loc.T("menu.dur_hm", (int)play.TotalHours, play.Minutes) : Loc.T("menu.dur_m", play.Minutes);
+        return Loc.T("menu.slot_line", name, m.Day, when, dur);
     }
 }

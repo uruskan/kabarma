@@ -18,10 +18,11 @@ public partial class Hud
 
     string _chipHead = "tirpan_isini";
 
-    static readonly Dictionary<string, string> ChipHeadNames = new()
+    static Dictionary<string, string> ChipHeadNames => new()
     {
-        ["tirpan_isini"] = "Tırpan Işını", ["civi_tabancasi"] = "Çivi Tabancası",
-        ["kazma"] = "Kazma", ["bicme"] = "Biçme", ["cekim"] = "Çekim", ["toprak"] = "Toprak", ["sulama"] = "Sulama", ["insa_plani"] = "İnşa Planı",
+        ["tirpan_isini"] = Loc.T("chips.head_tirpan"), ["civi_tabancasi"] = Loc.T("chips.head_civi"),
+        ["kazma"] = Loc.T("chips.head_kazma"), ["bicme"] = Loc.T("chips.head_bicme"), ["cekim"] = Loc.T("chips.head_cekim"),
+        ["toprak"] = Loc.T("chips.head_toprak"), ["sulama"] = Loc.T("chips.head_sulama"), ["insa_plani"] = Loc.T("chips.head_insa"),
     };
 
     /// <summary>Sekmede gosterilen basliklar: acik silah basliklari ve is basliklari.</summary>
@@ -69,12 +70,12 @@ public partial class Hud
         var b = _d.State.Chips;
         var entries = ChipEntries();
         _defterSel = Mathf.Clamp(_defterSel, 0, Mathf.Max(0, entries.Count - 1));
-        _defterPage.AddChild(UL($"Çapa Mk.{_d.State.Research.OcakTier} · başlık başına {b.Capacity()} yuva · Depo {b.Owned.Count}/{b.Def.StorageMax}" + (b.Locked ? " · KABARMA: KİLİTLİ" : ""), 16, T.Muted));
+        _defterPage.AddChild(UL(Loc.T("chips.summary", _d.State.Research.OcakTier, b.Capacity(), b.Owned.Count, b.Def.StorageMax) + (b.Locked ? " · " + Loc.T("chips.locked_state") : ""), 16, T.Muted));
 
         // Mk yukselince satir sayisi artar: secili satiri ortalayan 17 satirlik pencere.
         const int Window = 17;
         int first = Mathf.Clamp(_defterSel - 8, 0, Mathf.Max(0, entries.Count - Window));
-        if (first > 0) _defterPage.AddChild(UL($"↑ {first} satır daha", 14, T.Muted, true, true));
+        if (first > 0) _defterPage.AddChild(UL(Loc.T("chips.rows_up", first), 14, T.Muted, true, true));
         bool storageHeader = false;
         for (int k = first; k < Mathf.Min(entries.Count, first + Window); k++)
         {
@@ -83,28 +84,28 @@ public partial class Hud
             switch (e.Kind)
             {
                 case ChipRowKind.Head:
-                    _defterPage.AddChild(ChipRow(sel, e.Head == _chipHead, T.Muted, T.Upper(ChipHeadNames.GetValueOrDefault(e.Head, e.Head)) + (e.Head == _chipHead ? "   ·   AKTİF" : ""), "", true));
+                    _defterPage.AddChild(ChipRow(sel, e.Head == _chipHead, T.Muted, T.Upper(ChipHeadNames.GetValueOrDefault(e.Head, e.Head)) + (e.Head == _chipHead ? "   ·   " + Loc.T("chips.active") : ""), "", true));
                     break;
                 case ChipRowKind.Slot:
                 {
                     var c = e.ChipId != 0 ? b.Get(e.ChipId) : null;
                     _defterPage.AddChild(c == null
-                        ? ChipRow(sel, false, T.Muted, $"   Yuva {e.Slot + 1}: boş", "", false)
-                        : ChipRow(sel, true, Color.FromHtml("#" + b.RarityOf(c.Rarity)!.Color), $"   Yuva {e.Slot + 1}: {ChipLabel(c)}", ChipEffectText(c), false));
+                        ? ChipRow(sel, false, T.Muted, "   " + Loc.T("chips.slot_empty", e.Slot + 1), "", false)
+                        : ChipRow(sel, true, Color.FromHtml("#" + b.RarityOf(c.Rarity)!.Color), "   " + Loc.T("chips.slot_filled", e.Slot + 1, ChipLabel(c)), ChipEffectText(c), false));
                     break;
                 }
                 default:
                 {
-                    if (!storageHeader) { storageHeader = true; _defterPage.AddChild(DefterSection("ÇİP DEPOSU")); }
+                    if (!storageHeader) { storageHeader = true; _defterPage.AddChild(DefterSection(Loc.T("chips.storage"))); }
                     var c = b.Get(e.ChipId)!;
                     _defterPage.AddChild(ChipRow(sel, false, Color.FromHtml("#" + b.RarityOf(c.Rarity)!.Color), ChipLabel(c), ChipEffectText(c), false));
                     break;
                 }
             }
         }
-        if (first + Window < entries.Count) _defterPage.AddChild(UL($"↓ {entries.Count - first - Window} satır daha", 14, T.Muted, true, true));
-        if (!entries.Any(x => x.Kind == ChipRowKind.Storage)) _defterPage.AddChild(UL("Depo boş. Çipler Atalardan, Kabarma ödülünden, Holding'den ve çarktan düşer; Maya Kesesi ile üretilir.", 15, T.Muted));
-        _defterPage.AddChild(UL(_padLast ? "←→: SEKME   ·   ↑↓: SATIR   ·   A: SEÇ / TAK / ÇIKAR" : "←→: SEKME   ·   ↑↓: SATIR   ·   ENTER: SEÇ / TAK / ÇIKAR", 14, T.Muted, true, true));
+        if (first + Window < entries.Count) _defterPage.AddChild(UL(Loc.T("chips.rows_down", entries.Count - first - Window), 14, T.Muted, true, true));
+        if (!entries.Any(x => x.Kind == ChipRowKind.Storage)) _defterPage.AddChild(UL(Loc.T("chips.storage_empty"), 15, T.Muted));
+        _defterPage.AddChild(UL(_padLast ? Loc.T("chips.keys_pad") : Loc.T("chips.keys_kb"), 14, T.Muted, true, true));
     }
 
     /// <summary>Cip satiri: solda nadirlik renginde yer tutucu ikon karesi, ad, sagda etki.</summary>
@@ -147,11 +148,11 @@ public partial class Hud
                 Sfx.Play("place", null, -12f);
                 break;
             case ChipRowKind.Slot:
-                if (e.ChipId == 0) { Hint("Depodan bir çip seç, Enter ile tak", 1.5f); return; }
-                ChipFeedback(b.Remove(e.Head, e.Slot), "Çip depoya alındı");
+                if (e.ChipId == 0) { Hint(Loc.T("chips.hint_pick"), 1.5f); return; }
+                ChipFeedback(b.Remove(e.Head, e.Slot), Loc.T("chips.stored"));
                 break;
             default:
-                ChipFeedback(b.Install(_chipHead, e.ChipId), $"{b.TypeOf(b.Get(e.ChipId)!.Type)?.Name} takıldı: {ChipHeadNames.GetValueOrDefault(_chipHead, _chipHead)}");
+                ChipFeedback(b.Install(_chipHead, e.ChipId), Loc.T("chips.installed", b.TypeOf(b.Get(e.ChipId)!.Type)?.Name ?? "", ChipHeadNames.GetValueOrDefault(_chipHead, _chipHead)));
                 break;
         }
         RebuildDefter();
@@ -162,11 +163,11 @@ public partial class Hud
         string msg = r switch
         {
             ChipResult.Ok => ok,
-            ChipResult.Locked => "Kabarma gecesi çip değişmez",
-            ChipResult.Incompatible => "Bu çip bu başlığa takılmaz",
-            ChipResult.Duplicate => "Bu çip türü başlıkta zaten var",
-            ChipResult.NoSlot => "Boş yuva yok (Çapa yükselince yuva artar)",
-            _ => "Olmadı",
+            ChipResult.Locked => Loc.T("chips.err_locked"),
+            ChipResult.Incompatible => Loc.T("chips.err_incompatible"),
+            ChipResult.Duplicate => Loc.T("chips.err_duplicate"),
+            ChipResult.NoSlot => Loc.T("chips.err_noslot"),
+            _ => Loc.T("chips.err_fail"),
         };
         Hint(msg, 2f);
         Sfx.Play(r == ChipResult.Ok ? "place" : "hit", null, -12f);

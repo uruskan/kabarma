@@ -36,7 +36,7 @@ public partial class Capa
         _ammoAcc += amount;
         int need = (int)_ammoAcc;
         if (need <= 0) return true;
-        if (!_d.State.Backpack.Remove(item, need)) { _ammoAcc = 0; _d.Hud.Hint($"{ItemNames.Of(item)} yok", 1.2f); return false; }
+        if (!_d.State.Backpack.Remove(item, need)) { _ammoAcc = 0; _d.Hud.Hint(Loc.T("capa.item_none", ItemNames.Of(item)), 1.2f); return false; }
         _ammoAcc -= need;
         return true;
     }

@@ -70,11 +70,11 @@ public partial class Hud
         if (step != null)
         {
             _stepText = GoalText(step.Goal) + (step.Target > 1 ? $"   {s.Scenario.Progress}/{step.Target}" : "");
-            _defterText = s.Orders.DefterOpen && orderLine != "" ? "DEFTER · " + orderLine : "";
+            _defterText = s.Orders.DefterOpen && orderLine != "" ? Loc.T("hud.defter_prefix", orderLine) : "";
         }
         else
         {
-            _stepText = orderLine != "" ? orderLine : "Defter: " + s.Orders.OrdersTotal + " iş emri";
+            _stepText = orderLine != "" ? orderLine : Loc.T("hud.defter_total", s.Orders.OrdersTotal);
             _defterText = "";
         }
     }
@@ -84,10 +84,10 @@ public partial class Hud
 
     // ---------- Cizim ----------
 
-    static readonly (string label, float angle)[] Cardinals =
+    static readonly (string key, float angle)[] Cardinals =
     {
-        ("K", 0f), ("KD", Mathf.Pi * 0.25f), ("D", Mathf.Pi * 0.5f), ("GD", Mathf.Pi * 0.75f),
-        ("G", Mathf.Pi), ("GB", -Mathf.Pi * 0.75f), ("B", -Mathf.Pi * 0.5f), ("KB", -Mathf.Pi * 0.25f),
+        ("hud.compass_n", 0f), ("hud.compass_ne", Mathf.Pi * 0.25f), ("hud.compass_e", Mathf.Pi * 0.5f), ("hud.compass_se", Mathf.Pi * 0.75f),
+        ("hud.compass_s", Mathf.Pi), ("hud.compass_sw", -Mathf.Pi * 0.75f), ("hud.compass_w", -Mathf.Pi * 0.5f), ("hud.compass_nw", -Mathf.Pi * 0.25f),
     };
 
     float CompassX(float bearing, out bool inside, float left, float width)
@@ -115,12 +115,13 @@ public partial class Hud
             bool major = deg % 45 == 0;
             Rect(Mathf.Round(cx), y + (major ? h - 8 : h - 5), 1, major ? 8 : 5, T.A(T.Ink, major ? 0.7f : 0.35f));
         }
-        foreach (var (label, a) in Cardinals)
+        foreach (var (key, a) in Cardinals)
         {
             float cx = CompassX(a, out bool inside, x, w);
             if (!inside) continue;
+            string label = Loc.T(key);
             float size = label.Length == 1 ? 17 : 13;
-            TextIn(label, cx - 20, y + 3 + (17 - size) / 2f, 40, size, label == "K" ? T.Warning : T.Ink, HorizontalAlignment.Center, true, true);
+            TextIn(label, cx - 20, y + 3 + (17 - size) / 2f, 40, size, a == 0f ? T.Warning : T.Ink, HorizontalAlignment.Center, true, true);
         }
         // Isaretler: hedef (ucgen) ve Ocak (baklava) seridin altinda, adlari yanlarinda.
         float? xh = _compassHome is Vector3 hp ? CompassX(Bearing(hp), out _, x, w) : null;

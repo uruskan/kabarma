@@ -1,0 +1,145 @@
+﻿key,tr,en,de,fr,es,pt_BR,ru,zh_CN,ja,ko
+item.stone,Taş,Stone,Stein,Pierre,Piedra,Pedra,Камень,石头,石,돌
+item.wood,Odun,Wood,Holz,Bois,Madera,Madeira,Древесина,木头,木材,목재
+item.turnip,Şalgam,Turnip,Rübe,Navet,Nabo,Nabo,Репа,芜菁,カブ,순무
+item.turnip_seed,Şalgam Tohumu,Turnip Seed,Rübensamen,Graine de navet,Semilla de nabo,Semente de nabo,Семена репы,芜菁种子,カブの種,순무 씨앗
+item.wheat,Buğday,Wheat,Weizen,Blé,Trigo,Trigo,Пшеница,小麦,小麦,밀
+item.civi,Çivi,Nail,Nagel,Clou,Clavo,Prego,Гвоздь,钉子,釘,못
+item.sebze_corbasi,Sebze Çorbası,Vegetable Soup,Gemüsesuppe,Soupe de légumes,Sopa de verduras,Sopa de legumes,Овощной суп,蔬菜汤,野菜スープ,야채 수프
+item.kargo_kasasi,Kargo Kasası,Cargo Crate,Frachtkiste,Caisse de cargaison,Caja de carga,Caixa de carga,Грузовой ящик,货箱,貨物箱,화물 상자
+item.egg,Yumurta,Egg,Ei,Œuf,Huevo,Ovo,Яйцо,鸡蛋,卵,달걀
+item.fiber,Lif,Fiber,Faser,Fibre,Fibra,Fibra,Волокно,纤维,繊維,섬유
+item.clay,Kil,Clay,Ton,Argile,Arcilla,Argila,Глина,黏土,粘土,점토
+item.copper_ore,Bakır Cevheri,Copper Ore,Kupfererz,Minerai de cuivre,Mineral de cobre,Minério de cobre,Медная руда,铜矿石,銅鉱石,구리 광석
+item.copper_ingot,Bakır Külçe,Copper Ingot,Kupferbarren,Lingot de cuivre,Lingote de cobre,Lingote de cobre,Медный слиток,铜锭,銅インゴット,구리 주괴
+item.civi_tabancasi,Çivi Tabancası,Nail Gun,Nagelpistole,Cloueur,Pistola de clavos,Pistola de pregos,Гвоздомёт,钉枪,釘打ち機,못 총
+item.el_arabasi,El Arabası,Handcart,Handkarren,Charrette à bras,Carretilla de mano,Carrinho de mão,Ручная тележка,手推车,手押し車,손수레
+item.kozde_salgam,Közde Şalgam,Ember-Roasted Turnip,Geröstete Rübe,Navet braisé,Nabo asado,Nabo assado,Печёная репа,烤芜菁,焼きカブ,구운 순무
+item.haslanmis_yumurta,Haşlanmış Yumurta,Boiled Egg,Gekochtes Ei,Œuf bouilli,Huevo hervido,Ovo cozido,Варёное яйцо,煮鸡蛋,ゆで卵,삶은 달걀
+item.ahsap_kapi,Ahşap Kapı,Wooden Door,Holztür,Porte en bois,Puerta de madera,Porta de madeira,Деревянная дверь,木门,木の扉,나무 문
+item.sandik,Sandık,Chest,Truhe,Coffre,Cofre,Baú,Сундук,箱子,チェスト,상자
+item.uyku_tulumu,Uyku Tulumu,Sleeping Bag,Schlafsack,Sac de couchage,Saco de dormir,Saco de dormir,Спальный мешок,睡袋,寝袋,침낭
+item.mesale,Meşale,Torch,Fackel,Torche,Antorcha,Tocha,Факел,火把,松明,횃불
+item.yemlik,Yemlik,Feed Trough,Futtertrog,Mangeoire,Comedero,Comedouro,Кормушка,饲料槽,飼い葉桶,여물통
+item.folluk,Folluk,Nest Box,Legenest,Pondoir,Nidal,Ninho de postura,Куриное гнездо,产蛋窝,産卵箱,산란 상자
+item.kablo,Kablo,Cable,Kabel,Câble,Cable,Cabo,Кабель,电缆,ケーブル,케이블
+item.direk,Direk,Pole,Mast,Poteau,Poste,Poste,Столб,电线杆,電柱,전봇대
+item.salter,Şalter,Switch,Schalter,Interrupteur,Interruptor,Interruptor,Рубильник,开关,スイッチ,스위치
+item.ruzgar_gulu,Rüzgâr Gülü,Wind Turbine,Windrad,Éolienne,Aerogenerador,Aerogerador,Ветрогенератор,风力发电机,風力タービン,풍력 터빈
+item.hayvan_carki,Hayvan Çarkı,Animal Wheel,Tierrad,Roue à animaux,Rueda de animales,Roda de animais,Колесо для животных,动物转轮,動物の車輪,동물 바퀴
+item.aku_mk1,Akü Mk1,Battery Mk1,Batterie Mk1,Batterie Mk1,Batería Mk1,Bateria Mk1,Аккумулятор Mk1,电池 Mk1,バッテリー Mk1,배터리 Mk1
+item.elektrik_lambasi,Elektrik Lambası,Electric Lamp,Elektrolampe,Lampe électrique,Lámpara eléctrica,Lâmpada elétrica,Электрическая лампа,电灯,電灯,전등
+item.dugme,Düğme,Button,Knopf,Bouton,Botón,Botão,Кнопка,按钮,ボタン,버튼
+item.basinc_plakasi,Basınç Plakası,Pressure Plate,Druckplatte,Plaque de pression,Placa de presión,Placa de pressão,Нажимная плита,压力板,感圧板,압력판
+item.ocakbasi,Ocakbaşı,Ocakbaşı,Ocakbaşı,Ocakbaşı,Ocakbaşı,Ocakbaşı,Ocakbaşı,Ocakbaşı,Ocakbaşı,Ocakbaşı
+item.kargo_rampasi,Kargo Rampası,Cargo Ramp,Frachtrampe,Rampe de cargaison,Rampa de carga,Rampa de carga,Грузовая рампа,货运坡道,貨物ランプ,화물 경사로
+item.cayir_cekirdegi,Çayır Çekirdeği,Meadow Core,Wiesenkern,Noyau de la prairie,Núcleo del prado,Núcleo do prado,Ядро луга,草甸核心,草原のコア,초원 코어
+item.koru_cekirdegi,Koru Çekirdeği,Grove Core,Hainkern,Noyau du bosquet,Núcleo del bosque,Núcleo do bosque,Ядро рощи,树林核心,木立のコア,숲 코어
+item.ata_yunu,Ata Yünü,Ata Wool,Ata-Wolle,Laine d'Ata,Lana de Ata,Lã de Ata,Шерсть Ata,Ata羊毛,Ataの羊毛,Ata 양모
+item.dede_boynuzu,Dede Boynuzu,Elder Horn,Ältestenhorn,Corne de l'Ancien,Cuerno del Anciano,Chifre do Ancião,Рог Старца,长老之角,長老の角,어르신의 뿔
+item.ata_tasi,Ata Taşı,Ata Stone,Ata-Stein,Pierre d'Ata,Piedra de Ata,Pedra de Ata,Камень Ata,Ata石,Ataの石,Ata 석
+item.aga_derisi,Ağa Derisi,Agha Hide,Agha-Leder,Cuir d'Agha,Cuero de Agha,Couro de Agha,Кожа Аги,阿迦皮革,アガの革,아가의 가죽
+item.pasa_kabugu,Paşa Kabuğu,Pasha Shell,Pascha-Panzer,Carapace de Pacha,Caparazón de Pachá,Carapaça do Paxá,Панцирь Паши,帕夏之壳,パシャの殻,파샤의 껍질
+item.tosun_disi,Tosun Dişi,Bullock Tooth,Stierzahn,Dent de taureau,Diente de toro,Dente de touro,Клык бычка,公牛之牙,若牛の牙,황소의 이빨
+item.sazlik_cekirdegi,Sazlık Çekirdeği,Reed Core,Schilfkern,Noyau des roselières,Núcleo del juncal,Núcleo do juncal,Ядро камышей,芦苇核心,葦原のコア,갈대 코어
+item.kanyon_cekirdegi,Kanyon Çekirdeği,Canyon Core,Schluchtkern,Noyau du canyon,Núcleo del cañón,Núcleo do cânion,Ядро каньона,峡谷核心,峡谷のコア,협곡 코어
+item.ayaz_cekirdegi,Ayaz Çekirdeği,Frost Core,Frostkern,Noyau du gel,Núcleo de escarcha,Núcleo de geada,Ядро мороза,寒霜核心,霜のコア,서리 코어
+item.kabarik_oz,Kabarık Ata Özü,Kabarık Ata Essence,Kabarık-Ata-Essenz,Essence d'Ata Kabarık,Esencia de Ata Kabarık,Essência de Ata Kabarık,Эссенция Ata Kabarık,Kabarık Ata精华,Kabarık Ataのエッセンス,Kabarık Ata 정수
+item.maya,Maya,Maya,Maya,Maya,Maya,Maya,Maya,Maya,Maya,Maya
+item.azman_kiskaci,Azman Kıskacı,Azman Pincer,Azman-Zange,Pince d'Azman,Pinza de Azman,Pinça de Azman,Клешня Azman,Azman钳,Azmanのハサミ,Azman 집게
+item.azman_kozu,Azman Közü,Azman Ember,Azman-Glut,Braise d'Azman,Brasa de Azman,Brasa de Azman,Уголь Azman,Azman余烬,Azmanの残り火,Azman 불씨
+item.surubasi_postu,Sürübaşı Postu,Herd Leader Pelt,Herdenführer-Fell,Peau du chef de troupeau,Piel del líder de la manada,Pele do líder do rebanho,Шкура вожака стада,头羊兽皮,群れのリーダーの毛皮,무리 우두머리 모피
+item.azman_hamuru,Azman Hamuru,Azman Dough,Azman-Teig,Pâte d'Azman,Masa de Azman,Massa de Azman,Тесто Azman,Azman面团,Azmanの生地,Azman 반죽
+item.destansi_cip,Destansı Çip,Epic Chip,Epischer Chip,Puce épique,Chip épico,Chip épico,Эпический чип,史诗芯片,エピックチップ,에픽 칩
+item.azman_postu,Azman Postu,Azman Pelt,Azman-Fell,Peau d'Azman,Piel de Azman,Pele de Azman,Шкура Azman,Azman兽皮,Azmanの獣皮,Azman 모피
+item.azman_boynuzu,Azman Boynuzu,Azman Horn,Azman-Horn,Corne d'Azman,Cuerno de Azman,Chifre de Azman,Рог Azman,Azman之角,Azmanの角,Azman 뿔
+item.capa,Çapa,Çapa,Çapa,Çapa,Çapa,Çapa,Çapa,Çapa,Çapa,Çapa
+item.insa_plani,İnşa Planı,Build Plan,Bauplan,Plan de construction,Plano de construcción,Plano de construção,План постройки,建造图纸,建築プラン,건설 계획
+item.ocak,Ocak,Ocak,Ocak,Ocak,Ocak,Ocak,Ocak,Ocak,Ocak,Ocak
+item.tezgah,Tezgâh,Workbench,Werkbank,Établi,Mesa de trabajo,Bancada,Верстак,工作台,作業台,작업대
+item.tas_firin,Taş Fırın,Stone Oven,Steinofen,Four en pierre,Horno de piedra,Forno de pedra,Каменная печь,石炉,石窯,돌 화덕
+item.paketleme,Paketleme Tezgâhı,Packing Workbench,Packwerkbank,Établi d'emballage,Mesa de empaquetado,Bancada de embalagem,Упаковочный верстак,包装工作台,梱包作業台,포장 작업대
+item.celik,Çelik,Steel,Stahl,Acier,Acero,Aço,Сталь,钢,鋼,강철
+item.mayali_beton,Mayalı Beton,Leavened Concrete,Hefebeton,Béton levé,Hormigón fermentado,Concreto fermentado,Дрожжевой бетон,发酵混凝土,発酵コンクリート,발효 콘크리트
+item.kerpic_tas,Kerpiç-Taş,Adobe Stone,Lehmstein,Pierre d'adobe,Piedra de adobe,Pedra de adobe,Саманный камень,土坯石,日干しレンガ石,흙벽돌석
+item.celik_sac,Çelik Sac,Steel Sheet,Stahlblech,Tôle d'acier,Chapa de acero,Chapa de aço,Стальной лист,钢板,鋼板,강판
+item.copper_wire,Bakır Tel,Copper Wire,Kupferdraht,Fil de cuivre,Alambre de cobre,Fio de cobre,Медная проволока,铜线,銅線,구리선
+item.brick,Kerpiç,Adobe Brick,Lehmziegel,Brique d'adobe,Ladrillo de adobe,Tijolo de adobe,Саман,土坯,日干しレンガ,흙벽돌
+item.charcoal,Odun Kömürü,Charcoal,Holzkohle,Charbon de bois,Carbón vegetal,Carvão vegetal,Древесный уголь,木炭,木炭,숯
+item.iron_ingot,Demir Külçe,Iron Ingot,Eisenbarren,Lingot de fer,Lingote de hierro,Lingote de ferro,Железный слиток,铁锭,鉄インゴット,철 주괴
+item.plank,Kereste,Plank,Brett,Planche,Tabla,Tábua,Доска,木板,板材,판자
+item.cloth,Kumaş,Cloth,Stoff,Tissu,Tela,Tecido,Ткань,布料,布,천
+item.flour,Un,Flour,Mehl,Farine,Harina,Farinha,Мука,面粉,小麦粉,밀가루
+item.sacma,Saçma,Buckshot,Schrot,Chevrotine,Perdigones,Chumbinho,Дробь,霰弹,散弾,산탄
+item.filtre_maskesi,Filtre Maskesi,Filter Mask,Filtermaske,Masque filtrant,Mascarilla filtrante,Máscara filtrante,Фильтрующая маска,过滤面罩,フィルターマスク,필터 마스크
+item.arastirma_masasi,Araştırma Masası,Research Table,Forschungstisch,Table de recherche,Mesa de investigación,Mesa de pesquisa,Исследовательский стол,研究台,研究台,연구대
+item.komur_ocagi,Kömür Ocağı,Charcoal Kiln,Kohlenmeiler,Four à charbon,Horno de carbón,Forno de carvão,Угольная печь,炭窑,炭焼き窯,숯가마
+item.demirci_ocagi,Demirci Ocağı,Smith's Forge,Schmiedeesse,Forge de forgeron,Fragua de herrero,Forja de ferreiro,Кузнечный горн,铁匠炉,鍛冶炉,대장간 화로
+item.bicki,Bıçkı,Sawmill,Sägewerk,Scierie,Aserradero,Serraria,Лесопилка,锯木机,製材機,제재소
+item.degirmen,Değirmen,Mill,Mühle,Moulin,Molino,Moinho,Мельница,磨坊,製粉所,방앗간
+item.dokuma_tezgahi,Dokuma Tezgâhı,Weaving Workbench,Webwerkbank,Établi de tissage,Mesa de tejido,Bancada de tecelagem,Ткацкий верстак,织布工作台,織物作業台,직조 작업대
+item.kasap_tezgahi,Kasap Tezgâhı,Butcher Workbench,Fleischer-Werkbank,Établi de boucher,Mesa de carnicero,Bancada de açougueiro,Мясницкий верстак,屠宰工作台,精肉作業台,정육 작업대
+item.kulucka,Kuluçka,Incubator,Brutkasten,Couveuse,Incubadora,Chocadeira,Инкубатор,孵化器,孵卵器,부화기
+item.arac_atolyesi,Araç Atölyesi,Vehicle Workshop,Fahrzeugwerkstatt,Atelier de véhicules,Taller de vehículos,Oficina de veículos,Мастерская техники,载具工坊,乗り物工房,차량 작업장
+item.oyma_iskelesi,Oyma İskelesi,Carving Scaffold,Schnitzgerüst,Échafaudage de sculpture,Andamio de tallado,Andaime de entalhe,Резные леса,雕刻架,彫刻足場,조각 비계
+item.tuy,Tüy,Feather,Feder,Plume,Pluma,Pena,Перо,羽毛,羽根,깃털
+item.yun,Yün,Wool,Wolle,Laine,Lana,Lã,Шерсть,羊毛,羊毛,양모
+item.sut,Süt,Milk,Milch,Lait,Leche,Leite,Молоко,牛奶,ミルク,우유
+item.deri,Deri,Hide,Leder,Cuir,Cuero,Couro,Кожа,皮革,革,가죽
+item.kurk,Kürk,Fur,Pelz,Fourrure,Pelaje,Pelagem,Мех,毛皮,毛皮,모피
+item.bal,Bal,Honey,Honig,Miel,Miel,Mel,Мёд,蜂蜜,はちみつ,꿀
+item.balmumu,Balmumu,Beeswax,Bienenwachs,Cire d'abeille,Cera de abeja,Cera de abelha,Воск,蜂蜡,蜜蝋,밀랍
+item.gubre,Gübre,Manure,Mist,Fumier,Estiércol,Esterco,Навоз,粪肥,厩肥,거름
+item.sumuk,Sümük,Snot,Rotz,Morve,Moco,Meleca,Сопли,鼻涕,鼻水,콧물
+item.kompost,Kompost,Compost,Kompost,Compost,Compost,Composto,Компост,堆肥,コンポスト,퇴비
+item.truf,Trüf,Truffle,Trüffel,Truffe,Trufa,Trufa,Трюфель,松露,トリュフ,트러플
+item.et,Et,Meat,Fleisch,Viande,Carne,Carne,Мясо,肉,肉,고기
+item.hu_yumurtasi,Hu Yumurtası,Hu Egg,Hu-Ei,Œuf de Hu,Huevo de Hu,Ovo de Hu,Яйцо Hu,Hu蛋,Huの卵,Hu 알
+item.suluk,Suluk,Water Trough,Wassertrog,Abreuvoir,Bebedero,Bebedouro,Поилка,饮水槽,水飲み器,물그릇
+item.kasinma_fircasi,Kaşınma Fırçası,Scratching Brush,Kratzbürste,Brosse à gratter,Cepillo rascador,Escova de coçar,Щётка-чесалка,抓痒刷,かゆみ取りブラシ,긁기 솔
+item.ari_kovani,Arı Kovanı,Beehive,Bienenstock,Ruche,Colmena,Colmeia,Улей,蜂箱,ミツバチの巣箱,벌통
+item.savas_agili_bayragi,Savaş Ağılı Bayrağı,War Pen Banner,Kriegsstall-Banner,Bannière de l'enclos de guerre,Estandarte del corral de guerra,Bandeira do curral de guerra,Знамя боевого загона,战斗圈栏旗帜,戦闘囲いの旗,전투 우리 깃발
+item.ahir_zili,Ahır Zili,Barn Bell,Stallglocke,Cloche de l'étable,Campana del establo,Sino do estábulo,Колокол хлева,畜棚铃,畜舎の鐘,외양간 종
+item.baglama_diregi,Bağlama Direği,Hitching Post,Anbindepfosten,Poteau d'attache,Poste de amarre,Poste de amarração,Коновязь,拴马桩,つなぎ柱,말뚝
+item.eyerlik,Eyerlik,Saddle Rack,Sattelständer,Porte-selle,Soporte para sillas,Suporte de selas,Седельная стойка,马鞍架,鞍掛け,안장 걸이
+item.eyer,Eyer,Saddle,Sattel,Selle,Silla de montar,Sela,Седло,马鞍,鞍,안장
+item.hard_wood,Sert Odun,Hardwood,Hartholz,Bois dur,Madera dura,Madeira de lei,Твёрдая древесина,硬木,硬木,경목
+item.resin,Reçine,Resin,Harz,Résine,Resina,Resina,Смола,树脂,樹脂,수지
+item.iron_ore,Demir Cevheri,Iron Ore,Eisenerz,Minerai de fer,Mineral de hierro,Minério de ferro,Железная руда,铁矿石,鉄鉱石,철광석
+item.saltpeter,Güherçile,Saltpeter,Salpeter,Salpêtre,Salitre,Salitre,Селитра,硝石,硝石,초석
+item.turba,Turba,Peat,Torf,Tourbe,Turba,Turfa,Торф,泥炭,泥炭,이탄
+item.kukurt,Kükürt,Sulfur,Schwefel,Soufre,Azufre,Enxofre,Сера,硫磺,硫黄,유황
+item.kaucuk_sutu,Kauçuk Sütü,Rubber Latex,Kautschukmilch,Latex de caoutchouc,Látex de caucho,Látex de borracha,Каучуковый латекс,橡胶乳,ゴムの樹液,고무 수액
+item.balcik,Balçık,Mud,Schlamm,Boue,Lodo,Lama,Грязь,淤泥,泥,진흙
+item.isil_yosun,Işıl Yosun,Glow Moss,Leuchtmoos,Mousse luisante,Musgo luminoso,Musgo luminoso,Светящийся мох,发光苔藓,光る苔,빛나는 이끼
+item.kum,Kum,Sand,Sand,Sable,Arena,Areia,Песок,沙子,砂,모래
+item.kuvars,Kuvars,Quartz,Quarz,Quartz,Cuarzo,Quartzo,Кварц,石英,石英,석영
+item.titan_ore,Titan Cevheri,Titanium Ore,Titanerz,Minerai de titane,Mineral de titanio,Minério de titânio,Титановая руда,钛矿石,チタン鉱石,티타늄 광석
+item.katran,Katran,Tar,Teer,Goudron,Alquitrán,Alcatrão,Дёготь,焦油,タール,타르
+item.tuz,Tuz,Salt,Salz,Sel,Sal,Sal,Соль,盐,塩,소금
+item.buz,Buz,Ice,Eis,Glace,Hielo,Gelo,Лёд,冰,氷,얼음
+item.ayaz_kristali,Ayaz Kristali,Frost Crystal,Frostkristall,Cristal de givre,Cristal de escarcha,Cristal de geada,Морозный кристалл,寒霜水晶,霜の結晶,서리 수정
+item.ham_maya,Ham Maya,Raw Maya,Rohe Maya,Maya brute,Maya crudo,Maya bruta,Сырая Maya,生Maya,生のMaya,생 Maya
+item.obsidyen,Obsidyen,Obsidian,Obsidian,Obsidienne,Obsidiana,Obsidiana,Обсидиан,黑曜石,黒曜石,흑요석
+item.isil_cevher,Işıl Cevher,Glow Ore,Leuchterz,Minerai luisant,Mineral luminoso,Minério luminoso,Светящаяся руда,发光矿石,光る鉱石,빛나는 광석
+item.kemik,Kemik,Bone,Knochen,Os,Hueso,Osso,Кость,骨头,骨,뼈
+item.kitin,Kitin,Chitin,Chitin,Chitine,Quitina,Quitina,Хитин,几丁质,キチン質,키틴
+item.kabartma_plani,Kabartma Planı,Kabartma Plan,Kabartma-Plan,Plan de Kabartma,Plan de Kabartma,Plano de Kabartma,План Kabartma,Kabartma图纸,Kabartmaプラン,Kabartma 계획
+item.scrap,Hurda,Scrap,Schrott,Ferraille,Chatarra,Sucata,Металлолом,废料,スクラップ,고철
+item.maya_kesesi,Maya Kesesi,Maya Pouch,Maya-Beutel,Bourse de Maya,Bolsa de Maya,Bolsa de Maya,Мешочек Maya,Maya袋,Mayaの袋,Maya 주머니
+item.holding_parcasi,Holding Parçası,Holding Piece,Holding-Teil,Pièce du Holding,Pieza del Holding,Peça do Holding,Деталь Holding,Holding零件,Holdingの部品,Holding 부품
+item.mancinik,Mancınık,Catapult,Katapult,Catapulte,Catapulta,Catapulta,Катапульта,投石机,カタパルト,투석기
+item.nadir_cip,Nadir Çip,Rare Chip,Seltener Chip,Puce rare,Chip raro,Chip raro,Редкий чип,稀有芯片,レアチップ,희귀 칩
+item.maya_feneri,Maya Feneri,Maya Lantern,Maya-Laterne,Lanterne de Maya,Linterna de Maya,Lanterna de Maya,Фонарь Maya,Maya灯笼,Mayaのランタン,Maya 등불
+item.pumpkin,Kabak,Pumpkin,Kürbis,Citrouille,Calabaza,Abóbora,Тыква,南瓜,カボチャ,호박
+item.sunflower,Ayçiçeği,Sunflower,Sonnenblume,Tournesol,Girasol,Girassol,Подсолнух,向日葵,ヒマワリ,해바라기
+item.tomato,Domates,Tomato,Tomate,Tomate,Tomate,Tomate,Помидор,番茄,トマト,토마토
+item.mushroom,Şapkalı Mantar,Capped Mushroom,Hutpilz,Champignon à chapeau,Hongo de sombrero,Cogumelo de chapéu,Шляпочный гриб,伞菇,カサ付きキノコ,갓버섯
+item.blackberry,Böğürtlen,Blackberry,Brombeere,Mûre,Mora,Amora,Ежевика,黑莓,ブラックベリー,블랙베리
+item.sourberry,Ekşilik,Sourberry,Sauerbeere,Baie acide,Baya ácida,Baga azeda,Кислая ягода,酸莓,酸っぱいベリー,신 열매
+item.hazelnut,Fındık,Hazelnut,Haselnuss,Noisette,Avellana,Avelã,Фундук,榛子,ヘーゼルナッツ,헤이즐넛
+item.garlic,Sarımsak,Garlic,Knoblauch,Ail,Ajo,Alho,Чеснок,大蒜,ニンニク,마늘
+item.wheat_seed,Buğday Tohumu,Wheat Seed,Weizensamen,Graine de blé,Semilla de trigo,Semente de trigo,Семена пшеницы,小麦种子,小麦の種,밀 씨앗
+item.pumpkin_seed,Kabak Tohumu,Pumpkin Seed,Kürbissamen,Graine de citrouille,Semilla de calabaza,Semente de abóbora,Семена тыквы,南瓜种子,カボチャの種,호박 씨앗
+item.sunflower_seed,Ayçiçeği Tohumu,Sunflower Seed,Sonnenblumensamen,Graine de tournesol,Semilla de girasol,Semente de girassol,Семена подсолнуха,向日葵种子,ヒマワリの種,해바라기 씨앗
+item.flax_seed,Lifotu Tohumu,Flax Seed,Leinsamen,Graine de lin,Semilla de lino,Semente de linho,Семена льна,亚麻种子,亜麻の種,아마 씨앗

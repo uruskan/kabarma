@@ -1,0 +1,145 @@
+﻿key,tr,en,de,fr,es,pt_BR,ru,zh_CN,ja,ko
+item.kimyasal_gubre,Kimyasal Gübre,Chemical Fertilizer,Chemiedünger,Engrais chimique,Fertilizante químico,Fertilizante químico,Химическое удобрение,化学肥料,化学肥料,화학 비료
+item.biyoyakit,Biyoyakıt,Biofuel,Biokraftstoff,Biocarburant,Biocombustible,Biocombustível,Биотопливо,生物燃料,バイオ燃料,바이오연료
+item.cam,Cam,Glass,Glas,Verre,Vidrio,Vidro,Стекло,玻璃,ガラス,유리
+item.devre,Devre,Circuit,Schaltkreis,Circuit,Circuito,Circuito,Схема,电路,回路,회로
+item.plastik,Plastik,Plastic,Kunststoff,Plastique,Plástico,Plástico,Пластик,塑料,プラスチック,플라스틱
+item.titan_ingot,Titan Külçe,Titanium Ingot,Titanbarren,Lingot de titane,Lingote de titanio,Lingote de titânio,Титановый слиток,钛锭,チタンインゴット,티타늄 주괴
+item.termal_kumas,Termal Kumaş,Thermal Fabric,Thermostoff,Tissu thermique,Tela térmica,Tecido térmico,Термоткань,保温织物,断熱布,보온 천
+item.kristal_lens,Kristal Lens,Crystal Lens,Kristalllinse,Lentille de cristal,Lente de cristal,Lente de cristal,Кристаллическая линза,水晶透镜,クリスタルレンズ,크리스탈 렌즈
+item.aku_hucresi,Akü Hücresi,Battery Cell,Akkuzelle,Cellule de batterie,Celda de batería,Célula de bateria,Аккумуляторная ячейка,电池单元,バッテリーセル,배터리 셀
+item.mayali_alasim,Mayalı Alaşım,Maya Alloy,Maya-Legierung,Alliage de Maya,Aleación de Maya,Liga de Maya,Сплав Maya,Maya合金,Maya合金,Maya 합금
+item.reaktor_cubugu,Reaktör Çubuğu,Reactor Rod,Reaktorstab,Barre de réacteur,Barra de reactor,Barra de reator,Стержень реактора,反应堆燃料棒,原子炉棒,원자로 막대
+item.havan_mermisi,Havan Mermisi,Mortar Shell,Mörsergranate,Obus de mortier,Proyectil de mortero,Projétil de morteiro,Миномётный снаряд,迫击炮弹,迫撃砲弾,박격포탄
+item.maya_siringasi,Maya Şırıngası,Maya Syringe,Maya-Spritze,Seringue de Maya,Jeringa de Maya,Seringa de Maya,Шприц Maya,Maya注射器,Maya注射器,Maya 주사기
+item.ark_eki,Ark Eki,Arc Attachment,Lichtbogen-Aufsatz,Accessoire d'arc,Accesorio de arco,Acessório de arco,Дуговая насадка,电弧附件,アーク拡張パーツ,아크 부착물
+item.sirt_yazicisi,Sırt Yazıcısı,Backpack Printer,Rucksack-Drucker,Imprimante dorsale,Impresora de espalda,Impressora de costas,Ранцевый принтер,背负式打印机,背負い式プリンター,등짐 프린터
+item.tabaklama_askisi,Tabaklama Askısı,Tanning Rack,Gerbgestell,Support de tannage,Soporte de curtido,Suporte de curtimento,Рама для дубления,制革架,なめし架,무두질 걸이
+item.harman_yeri,Harman Yeri,Threshing Floor,Dreschplatz,Aire de battage,Era de trillar,Eira de debulha,Гумно,打谷场,脱穀場,타작마당
+item.yuksek_firin,Yüksek Fırın,Blast Furnace,Hochofen,Haut fourneau,Alto horno,Alto-forno,Доменная печь,高炉,高炉,용광로
+item.kimya_tezgahi,Kimya Tezgâhı,Chemistry Workbench,Chemie-Werkbank,Établi de chimie,Mesa de trabajo de química,Bancada de química,Химический верстак,化学工作台,化学作業台,화학 작업대
+item.pres,Pres,Press,Presse,Presse,Prensa,Prensa,Пресс,压榨机,プレス機,압착기
+item.mutfak,Mutfak,Kitchen,Küche,Cuisine,Cocina,Cozinha,Кухня,厨房,キッチン,주방
+item.damitici,Damıtıcı,Distiller,Destillierapparat,Distillateur,Destilador,Destilador,Перегонный куб,蒸馏器,蒸留器,증류기
+item.tursu_ficisi,Turşu Fıçısı,Pickle Barrel,Einlegefass,Baril à marinades,Barril de encurtidos,Barril de picles,Бочка для солений,腌菜桶,ピクルス樽,절임통
+item.hasat_robotu,Hasat Robotu,Harvest Robot,Ernteroboter,Robot de récolte,Robot cosechador,Robô colhedor,Робот-жнец,收割机器人,収穫ロボット,수확 로봇
+item.otomatik_yemlik,Otomatik Yemlik,Automatic Feeder,Automatischer Futtertrog,Mangeoire automatique,Comedero automático,Comedouro automático,Автокормушка,自动饲槽,自動餌箱,자동 여물통
+item.yumurta_toplayici,Yumurta Toplayıcı,Egg Collector,Eiersammler,Collecteur d'œufs,Recolector de huevos,Coletor de ovos,Сборщик яиц,集蛋器,卵回収機,달걀 수집기
+item.kompostor,Kompostör,Composter,Komposter,Composteur,Compostador,Composteira,Компостер,堆肥机,コンポスター,퇴비통
+item.cam_ocagi,Cam Ocağı,Glass Furnace,Glasofen,Four à verre,Horno de vidrio,Forno de vidro,Стекловаренная печь,玻璃炉,ガラス炉,유리 가마
+item.elektronik_tezgahi,Elektronik Tezgâhı,Electronics Workbench,Elektronik-Werkbank,Établi électronique,Mesa de trabajo electrónica,Bancada eletrônica,Электронный верстак,电子工作台,電子作業台,전자 작업대
+item.montaj_makinesi,Montaj Makinesi,Assembler,Montagemaschine,Machine d'assemblage,Máquina de montaje,Máquina de montagem,Сборочная машина,装配机,組立機,조립기
+item.rafineri,Rafineri,Refinery,Raffinerie,Raffinerie,Refinería,Refinaria,Нефтеперерабатывающий завод,炼油厂,精製所,정제소
+item.sera_kontrol_unitesi,Sera Kontrol Ünitesi,Greenhouse Control Unit,Gewächshaus-Steuereinheit,Unité de contrôle de serre,Unidad de control de invernadero,Unidade de controle de estufa,Блок управления теплицей,温室控制单元,温室制御ユニット,온실 제어 장치
+item.ekim_robotu,Ekim Robotu,Planting Robot,Pflanzroboter,Robot planteur,Robot sembrador,Robô plantador,Робот-сеятель,播种机器人,植え付けロボット,파종 로봇
+item.sagim_kirkim_kolu,Sağım-Kırkım Kolu,Milking-Shearing Arm,Melk-Schur-Arm,Bras de traite et tonte,Brazo de ordeño y esquila,Braço de ordenha e tosquia,Рука для дойки и стрижки,挤奶剪毛机械臂,搾乳・刈毛アーム,착유·털깎이 팔
+item.paketleyici,Paketleyici,Packager,Verpacker,Emballeur,Empaquetador,Empacotador,Упаковщик,打包机,梱包機,포장기
+item.sondaj_kulesi,Sondaj Kulesi,Drilling Tower,Bohrturm,Tour de forage,Torre de perforación,Torre de perfuração,Буровая вышка,钻井塔,掘削タワー,시추탑
+item.kristal_kesici,Kristal Kesici,Crystal Cutter,Kristallschneider,Découpeur de cristal,Cortador de cristal,Cortador de cristal,Резак кристаллов,水晶切割机,クリスタルカッター,크리스탈 절단기
+item.batarya_tezgahi,Batarya Tezgâhı,Battery Workbench,Batterie-Werkbank,Établi de batteries,Mesa de trabajo de baterías,Bancada de baterias,Аккумуляторный верстак,电池工作台,バッテリー作業台,배터리 작업대
+item.zeplin_hangari,Zeplin Hangarı,Zeppelin Hangar,Zeppelin-Hangar,Hangar à zeppelin,Hangar de zepelín,Hangar de zepelim,Ангар для дирижабля,飞艇机库,飛行船格納庫,비행선 격납고
+item.maya_dokumhanesi,Maya Dökümhanesi,Maya Foundry,Maya-Gießerei,Fonderie de Maya,Fundición de Maya,Fundição de Maya,Литейная Maya,Maya铸造厂,Maya鋳造所,Maya 주조소
+item.kabartma_odasi,Kabartma Odası,Puffing Room,Aufblähkammer,Salle de gonflage,Sala de hinchado,Sala de inchamento,Комната вздутия,膨胀室,膨張室,부풀림실
+item.su_carki,Su Çarkı,Water Wheel,Wasserrad,Roue à eau,Rueda hidráulica,Roda-d'água,Водяное колесо,水车,水車,물레바퀴
+item.biyoyakit_jeneratoru,Biyoyakıt Jeneratörü,Biofuel Generator,Biokraftstoff-Generator,Générateur de biocarburant,Generador de biocombustible,Gerador de biocombustível,Биотопливный генератор,生物燃料发电机,バイオ燃料発電機,바이오연료 발전기
+item.gunes_paneli,Güneş Paneli,Solar Panel,Solarpanel,Panneau solaire,Panel solar,Painel solar,Солнечная панель,太阳能板,ソーラーパネル,태양광 패널
+item.cizbiz_tanki,Cızbız Tankı,Cızbız Tank,Cızbız-Tank,Réservoir Cızbız,Tanque Cızbız,Tanque Cızbız,Бак Cızbız,Cızbız罐,Cızbızタンク,Cızbız 탱크
+item.kabarma_toplayicisi,Kabarma Toplayıcısı,Kabarma Collector,Kabarma-Sammler,Collecteur de Kabarma,Colector de Kabarma,Coletor de Kabarma,Коллектор Kabarma,Kabarma收集器,Kabarma収集器,Kabarma 수집기
+item.maya_reaktoru,Maya Reaktörü,Maya Reactor,Maya-Reaktor,Réacteur Maya,Reactor Maya,Reator Maya,Реактор Maya,Maya反应堆,Mayaリアクター,Maya 원자로
+item.aku_mk2,Akü Mk2,Battery Mk2,Akku Mk2,Batterie Mk2,Batería Mk2,Bateria Mk2,Аккумулятор Mk2,电池 Mk2,バッテリー Mk2,배터리 Mk2
+item.aku_mk3,Akü Mk3,Battery Mk3,Akku Mk3,Batterie Mk3,Batería Mk3,Bateria Mk3,Аккумулятор Mk3,电池 Mk3,バッテリー Mk3,배터리 Mk3
+item.aku_mk4,Akü Mk4,Battery Mk4,Akku Mk4,Batterie Mk4,Batería Mk4,Bateria Mk4,Аккумулятор Mk4,电池 Mk4,バッテリー Mk4,배터리 Mk4
+item.sigorta_kutusu,Sigorta Kutusu,Fuse Box,Sicherungskasten,Boîte à fusibles,Caja de fusibles,Caixa de fusíveis,Блок предохранителей,保险丝盒,ヒューズボックス,퓨즈 박스
+item.salter_kolu,Şalter Kolu,Switch Lever,Schalthebel,Levier d'interrupteur,Palanca de interruptor,Alavanca de interruptor,Рычаг выключателя,开关拉杆,スイッチレバー,스위치 레버
+item.hareket_sensoru,Hareket Sensörü,Motion Sensor,Bewegungssensor,Capteur de mouvement,Sensor de movimiento,Sensor de movimento,Датчик движения,运动传感器,モーションセンサー,움직임 센서
+item.gun_gece_sensoru,Gün-Gece Sensörü,Day-Night Sensor,Tag-Nacht-Sensor,Capteur jour-nuit,Sensor día-noche,Sensor dia-noite,Датчик день-ночь,昼夜传感器,昼夜センサー,낮밤 센서
+item.kabarma_sensoru,Kabarma Sensörü,Kabarma Sensor,Kabarma-Sensor,Capteur de Kabarma,Sensor de Kabarma,Sensor de Kabarma,Датчик Kabarma,Kabarma传感器,Kabarmaセンサー,Kabarma 센서
+item.depo_sensoru,Depo Sensörü,Storage Sensor,Lagersensor,Capteur de stockage,Sensor de almacén,Sensor de armazenamento,Датчик склада,仓储传感器,倉庫センサー,창고 센서
+item.guc_sensoru,Güç Sensörü,Power Sensor,Leistungssensor,Capteur de puissance,Sensor de energía,Sensor de energia,Датчик мощности,电力传感器,電力センサー,전력 센서
+item.nem_sensoru,Nem Sensörü,Moisture Sensor,Feuchtigkeitssensor,Capteur d'humidité,Sensor de humedad,Sensor de umidade,Датчик влажности,湿度传感器,湿度センサー,습도 센서
+item.sayac,Sayaç,Counter,Zähler,Compteur,Contador,Contador,Счётчик,计数器,カウンター,카운터
+item.zamanlayici,Zamanlayıcı,Timer,Zeitschaltuhr,Minuterie,Temporizador,Temporizador,Таймер,定时器,タイマー,타이머
+item.kapi_ve,VE Kapısı,AND Gate,UND-Gatter,Porte ET,Puerta AND,Porta AND,Вентиль И,与门,ANDゲート,AND 게이트
+item.kapi_veya,VEYA Kapısı,OR Gate,ODER-Gatter,Porte OU,Puerta OR,Porta OR,Вентиль ИЛИ,或门,ORゲート,OR 게이트
+item.kapi_degil,DEĞİL Kapısı,NOT Gate,NICHT-Gatter,Porte NON,Puerta NOT,Porta NOT,Вентиль НЕ,非门,NOTゲート,NOT 게이트
+item.karsilastirici,Karşılaştırıcı,Comparator,Komparator,Comparateur,Comparador,Comparador,Компаратор,比较器,コンパレーター,비교기
+item.bellek,Bellek,Memory,Speicher,Mémoire,Memoria,Memória,Память,存储器,メモリー,메모리
+item.siren,Siren,Siren,Sirene,Sirène,Sirena,Sirene,Сирена,警报器,サイレン,사이렌
+item.sinyal_lambasi,Sinyal Lambası,Signal Lamp,Signallampe,Lampe de signalisation,Lámpara de señal,Lâmpada de sinal,Сигнальная лампа,信号灯,信号ランプ,신호등
+item.bant,Bant,Conveyor Belt,Förderband,Tapis roulant,Cinta transportadora,Esteira,Конвейер,传送带,ベルトコンベア,컨베이어 벨트
+item.ayirici,Ayırıcı,Splitter,Verteiler,Séparateur,Divisor,Divisor,Разветвитель,分流器,スプリッター,분배기
+item.birlestirici,Birleştirici,Merger,Zusammenführer,Fusionneur,Fusionador,Mesclador,Объединитель,合流器,マージャー,합류기
+item.tasima_kolu,Kol,Arm,Arm,Bras,Brazo,Braço,Манипулятор,机械臂,アーム,팔
+item.boru,Boru,Pipe,Rohr,Tuyau,Tubería,Tubo,Труба,管道,パイプ,파이프
+item.pompa,Pompa,Pump,Pumpe,Pompe,Bomba,Bomba,Насос,泵,ポンプ,펌프
+item.drone_istasyonu,Drone İstasyonu,Drone Station,Drohnenstation,Station de drones,Estación de drones,Estação de drones,Станция дронов,无人机站,ドローンステーション,드론 정거장
+item.teleferik_istasyonu,Teleferik İstasyonu,Cable Car Station,Seilbahnstation,Station de téléphérique,Estación de teleférico,Estação de teleférico,Станция канатной дороги,缆车站,ロープウェイ駅,케이블카 정거장
+item.teleferik_diregi,Teleferik Direği,Cable Car Pylon,Seilbahnmast,Pylône de téléphérique,Torre de teleférico,Torre de teleférico,Опора канатной дороги,缆车支柱,ロープウェイ支柱,케이블카 지주
+item.su,Su,Water,Wasser,Eau,Agua,Água,Вода,水,水,물
+item.tabaklanmis_deri,Tabaklanmış Deri,Tanned Leather,Gegerbtes Leder,Cuir tanné,Cuero curtido,Couro curtido,Выделанная кожа,鞣制皮革,なめし革,무두질 가죽
+item.sira,Şıra,Fresh Must,Traubenmost,Moût,Mosto,Mosto,Сусло,果汁,搾り汁,과즙
+item.alev_kulesi,Alev Kulesi,Flame Tower,Flammenturm,Tour de flammes,Torre de llamas,Torre de chamas,Огненная башня,火焰塔,火炎タワー,화염탑
+item.havan_kulesi,Havan Kulesi,Mortar Tower,Mörserturm,Tour de mortier,Torre de mortero,Torre de morteiro,Миномётная башня,迫击炮塔,迫撃砲タワー,박격포탑
+item.ark_bobini,Ark Bobini,Arc Coil,Lichtbogenspule,Bobine d'arc,Bobina de arco,Bobina de arco,Дуговая катушка,电弧线圈,アークコイル,아크 코일
+item.lazer_kulesi,Lazer Kulesi,Laser Tower,Laserturm,Tour laser,Torre láser,Torre laser,Лазерная башня,激光塔,レーザータワー,레이저탑
+item.maya_topu_kulesi,Maya Topu Kulesi,Maya Cannon Tower,Maya-Kanonenturm,Tour canon Maya,Torre de cañón Maya,Torre de canhão Maya,Башня пушки Maya,Maya炮塔,Mayaキャノンタワー,Maya 대포탑
+item.elektrikli_cit,Elektrikli Çit,Electric Fence,Elektrozaun,Clôture électrique,Cerca eléctrica,Cerca elétrica,Электрическая ограда,电栅栏,電気柵,전기 울타리
+item.mayin,Mayın,Mine,Mine,Mine,Mina,Mina,Мина,地雷,地雷,지뢰
+item.yag_hendegi,Yağ Hendeği,Oil Trench,Ölgraben,Fossé d'huile,Zanja de aceite,Vala de óleo,Масляный ров,油沟,油の堀,기름 도랑
+item.dondurucu_puskurtucu,Dondurucu Püskürtücü,Freezing Sprayer,Frost-Sprüher,Pulvérisateur de gel,Pulverizador congelante,Pulverizador congelante,Замораживающий распылитель,冷冻喷雾器,冷凍スプレー,냉동 분무기
+item.celik_kapi,Çelik Kapı,Steel Door,Stahltür,Porte en acier,Puerta de acero,Porta de aço,Стальная дверь,钢门,鋼鉄のドア,강철 문
+item.cift_kanat_kapi,Çift Kanat Kapı,Double Door,Doppeltür,Porte double,Puerta doble,Porta dupla,Двустворчатая дверь,双开门,両開きドア,양문
+item.garaj_kapisi,Garaj Kapısı,Garage Door,Garagentor,Porte de garage,Puerta de garaje,Porta de garagem,Гаражные ворота,车库门,ガレージドア,차고 문
+item.tavan_kapagi,Tavan Kapağı,Ceiling Hatch,Deckenluke,Trappe de plafond,Trampilla de techo,Alçapão de teto,Потолочный люк,天花板活门,天井ハッチ,천장 해치
+item.el_merdiveni,El Merdiveni,Ladder,Leiter,Échelle,Escalera de mano,Escada de mão,Лестница,梯子,はしご,사다리
+item.ambar,Ambar,Granary,Kornspeicher,Grenier,Granero,Celeiro,Амбар,谷仓,穀倉,곡창
+item.silo,Silo,Silo,Silo,Silo,Silo,Silo,Силос,筒仓,サイロ,사일로
+item.sivi_tanki,Sıvı Tankı,Liquid Tank,Flüssigkeitstank,Réservoir de liquide,Tanque de líquido,Tanque de líquido,Резервуар для жидкости,液体罐,液体タンク,액체 탱크
+item.akilli_depo,Akıllı Depo,Smart Storage,Intelligentes Lager,Entrepôt intelligent,Almacén inteligente,Armazém inteligente,Умный склад,智能仓库,スマート倉庫,스마트 창고
+item.tohum_dolabi,Tohum Dolabı,Seed Cabinet,Saatgutschrank,Armoire à graines,Armario de semillas,Armário de sementes,Шкаф для семян,种子柜,種子キャビネット,씨앗 보관함
+item.alet_askisi,Alet Askısı,Tool Rack,Werkzeughalter,Support d'outils,Soporte de herramientas,Suporte de ferramentas,Подставка для инструментов,工具架,工具掛け,도구 걸이
+item.kupa_rafi,Kupa Rafı,Trophy Shelf,Trophäenregal,Étagère à trophées,Estante de trofeos,Prateleira de troféus,Полка для кубков,奖杯架,トロフィー棚,트로피 선반
+item.yatak,Yatak,Bed,Bett,Lit,Cama,Cama,Кровать,床,ベッド,침대
+item.ranza,Ranza,Bunk Bed,Etagenbett,Lits superposés,Litera,Beliche,Двухъярусная кровать,上下铺,二段ベッド,이층 침대
+item.sedir,Sedir,Divan,Diwan,Divan,Diván,Divã,Диван,长榻,ディバン,디반
+item.masa,Masa,Table,Tisch,Table,Mesa,Mesa,Стол,桌子,テーブル,탁자
+item.sandalye,Sandalye,Chair,Stuhl,Chaise,Silla,Cadeira,Стул,椅子,椅子,의자
+item.hali,Halı,Rug,Teppich,Tapis,Alfombra,Tapete,Ковёр,地毯,ラグ,러그
+item.soba,Soba,Stove,Ofen,Poêle,Estufa,Fogão a lenha,Печь,炉子,ストーブ,난로
+item.fener,Fener,Lantern,Laterne,Lanterne,Farol,Lanterna,Фонарь,灯笼,ランタン,랜턴
+item.projektor,Projektör,Floodlight,Scheinwerfer,Projecteur,Foco,Holofote,Прожектор,探照灯,投光器,투광기
+item.nilufer_saksisi,Nilüfer Saksısı,Water Lily Pot,Seerosentopf,Pot de nénuphar,Maceta de nenúfar,Vaso de nenúfar,Горшок с кувшинкой,睡莲盆,スイレン鉢,수련 화분
+item.sokak_lambasi,Sokak Lambası,Street Lamp,Straßenlaterne,Lampadaire,Farola,Poste de luz,Уличный фонарь,路灯,街灯,가로등
+item.yagmurlama,Yağmurlama,Sprinkler,Regner,Arroseur,Aspersor,Aspersor,Спринклер,洒水器,スプリンクラー,스프링클러
+item.damla_hatti,Damla Hattı,Drip Line,Tropfleitung,Ligne goutte-à-goutte,Línea de goteo,Linha de gotejamento,Капельная линия,滴灌管,点滴ライン,점적 호스
+item.buyutme_lambasi,Büyütme Lambası,Grow Lamp,Wachstumslampe,Lampe de croissance,Lámpara de cultivo,Lâmpada de cultivo,Лампа для роста,植物生长灯,育成ライト,식물 성장등
+item.kompost_kasasi,Kompost Kasası,Compost Bin,Kompostkiste,Bac à compost,Caja de compost,Caixa de composto,Компостный ящик,堆肥箱,堆肥ボックス,퇴비 상자
+item.saksi,Saksı,Flowerpot,Blumentopf,Pot de fleurs,Maceta,Vaso,Горшок,花盆,植木鉢,화분
+item.yukseltilmis_yatak,Yükseltilmiş Yatak,Raised Bed,Hochbeet,Carré surélevé,Bancal elevado,Canteiro elevado,Приподнятая грядка,高架种植床,レイズドベッド,높은 화단
+item.sirik,Sırık,Pole,Stange,Perche,Pértiga,Vara,Шест,竿,ポール,장대
+item.tarla_tabelasi,Tarla Tabelası,Field Sign,Feldschild,Panneau de champ,Letrero de campo,Placa de campo,Табличка поля,农田标牌,畑の看板,밭 표지판
+item.harita_masasi,Harita Masası,Map Table,Kartentisch,Table de cartes,Mesa de mapas,Mesa de mapas,Картографический стол,地图桌,地図テーブル,지도 탁자
+item.is_emri_panosu,İş Emri Panosu,Work Order Board,Auftragstafel,Tableau des commandes,Tablero de órdenes de trabajo,Quadro de ordens de serviço,Доска заказов,工单板,作業指示ボード,작업 지시판
+item.borsa_tahtasi,Borsa Tahtası,Exchange Board,Börsentafel,Tableau de bourse,Tablero de bolsa,Quadro da bolsa,Биржевая доска,交易板,取引ボード,시세판
+item.katalog_terminali,Katalog Terminali,Catalog Terminal,Katalog-Terminal,Terminal de catalogue,Terminal de catálogo,Terminal de catálogo,Каталожный терминал,目录终端,カタログ端末,카탈로그 단말기
+item.tohum_carki,Tohum Çarkı,Seed Wheel,Saatgutrad,Roue de graines,Rueda de semillas,Roda de sementes,Колесо семян,种子转盘,種子ホイール,씨앗 룰렛
+item.gardirop,Gardırop,Wardrobe,Kleiderschrank,Garde-robe,Armario,Guarda-roupa,Гардероб,衣柜,ワードローブ,옷장
+item.tabela,Tabela,Sign,Schild,Panneau,Letrero,Placa,Вывеска,招牌,看板,간판
+item.saksi_cicegi,Saksı Çiçeği,Potted Flower,Topfblume,Fleur en pot,Flor en maceta,Flor em vaso,Цветок в горшке,盆花,鉢植えの花,화분 꽃
+item.duvar_halisi,Duvar Halısı,Wall Hanging,Wandteppich,Tapisserie murale,Tapiz de pared,Tapeçaria de parede,Настенный ковёр,挂毯,壁掛けタペストリー,벽걸이 태피스트리
+item.tablo,Tablo,Painting,Gemälde,Tableau,Cuadro,Quadro,Картина,画作,絵画,그림
+item.ekip_bayragi,Ekip Bayrağı,Crew Flag,Teamflagge,Drapeau d'équipe,Bandera del equipo,Bandeira da equipe,Флаг команды,队旗,チームの旗,팀 깃발
+item.ata_heykeli,Ata Heykeli,Ata Statue,Ata-Statue,Statue d'Ata,Estatua de Ata,Estátua de Ata,Статуя Ata,Ata雕像,Ata像,Ata 석상
+item.ruzgar_cani,Rüzgâr Çanı,Wind Chime,Windspiel,Carillon éolien,Campana de viento,Sino de vento,Ветряной колокольчик,风铃,風鈴,풍경
+item.kus_evi,Kuş Evi,Birdhouse,Vogelhaus,Nichoir,Casa de pájaros,Casa de passarinho,Скворечник,鸟屋,巣箱,새집
+item.gidak_cucesi,Gıdak Cücesi,Gıdak Gnome,Gıdak-Gartenzwerg,Nain de jardin Gıdak,Gnomo de Gıdak,Gnomo de Gıdak,Гном Gıdak,Gıdak地精,Gıdakノーム,Gıdak 노움
+item.cesme,Çeşme,Fountain,Brunnen,Fontaine,Fuente,Fonte,Фонтан,喷泉,噴水,분수
+item.hamak,Hamak,Hammock,Hängematte,Hamac,Hamaca,Rede,Гамак,吊床,ハンモック,해먹
+item.salincak,Salıncak,Swing,Schaukel,Balançoire,Columpio,Balanço,Качели,秋千,ブランコ,그네
+item.kamp_atesi,Kamp Ateşi,Campfire,Lagerfeuer,Feu de camp,Fogata,Fogueira,Костёр,篝火,キャンプファイヤー,모닥불
+item.raf,Raf,Shelf,Regal,Étagère,Estante,Prateleira,Полка,架子,棚,선반
+item.kitaplik,Kitaplık,Bookshelf,Bücherregal,Bibliothèque,Librería,Estante de livros,Книжный шкаф,书架,本棚,책장
+item.saat,Saat,Clock,Uhr,Horloge,Reloj,Relógio,Часы,时钟,時計,시계
+item.radyo,Radyo,Radio,Radio,Radio,Radio,Rádio,Радио,收音机,ラジオ,라디오
+item.semaver,Semaver,Samovar,Samowar,Samovar,Samovar,Samovar,Самовар,茶炊,サモワール,사모바르
+item.kilim,Kilim,Kilim,Kilim,Kilim,Kilim,Kilim,Килим,基里姆毯,キリム,킬림

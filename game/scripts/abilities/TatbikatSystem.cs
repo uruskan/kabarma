@@ -52,9 +52,9 @@ public partial class TatbikatSystem : Node3D, IKabarmaStarter
         if (r.Kind == "fener")
         {
             GD.Print($"FENER request ks={r.Ks} r={r.Radius} s={r.Seconds} cards<={r.MaxCardLevels} (GECICI: Kucuk Kabarma)");
-            return D.RestartKucukKabarma() ? null : "Kabarma şimdi başlamaz";
+            return D.RestartKucukKabarma() ? null : Loc.T("tatbikat.no_start");
         }
-        return "Bilinmeyen istek";
+        return Loc.T("tatbikat.unknown_request");
     }
 
     void OnKilled(string id, bool sac)
@@ -78,8 +78,8 @@ public partial class TatbikatSystem : Node3D, IKabarmaStarter
         _waveT = 2f;
         Spawned = 0;
         Repaired = 0;
-        D.Hud.Big($"TATBİKAT · KS {ks}", Palette.Warning, 2.5f);
-        D.Hud.Say("Tatbikat: dalgalar hayalet. Hasar gerçek, onarım bedava, ödül yok.");
+        D.Hud.Big(Loc.T("tatbikat.big", ks), Palette.Warning, 2.5f);
+        D.Hud.Say(Loc.T("tatbikat.say"));
         Sfx.Play("siren", null, -6f);
         GD.Print($"TATBIKAT start ks={ks} pieces={_run.Hp.Count}");
         return null;
@@ -90,8 +90,8 @@ public partial class TatbikatSystem : Node3D, IKabarmaStarter
         if (_run == null) return;
         float dt = (float)delta;
         _mine.RemoveAll(g => !IsInstanceValid(g) || g.Dead);
-        if (D.Player.Down && D.Player.Hp <= 0) { End("Yere düştün"); return; }
-        if (_mine.Count > 0) { D.Hud.Hint($"Tatbikat · dalga {_wave + 1}/{F.Tatbikat.Waves} · kalan {_mine.Count}", 0.3f); return; }
+        if (D.Player.Down && D.Player.Hp <= 0) { End(Loc.T("tatbikat.you_fell")); return; }
+        if (_mine.Count > 0) { D.Hud.Hint(Loc.T("tatbikat.wave_hint", _wave + 1, F.Tatbikat.Waves, _mine.Count), 0.3f); return; }
         _waveT -= dt;
         if (_waveT > 0) return;
         if (_wave + 1 >= F.Tatbikat.Waves) { End(""); return; }
@@ -110,7 +110,7 @@ public partial class TatbikatSystem : Node3D, IKabarmaStarter
             _mine.Add(g);
         }
         Spawned += n;
-        D.Hud.Big($"HAYALET DALGA {_wave + 1}", Palette.MayaViolet, 1.6f);
+        D.Hud.Big(Loc.T("tatbikat.ghost_wave", _wave + 1), Palette.MayaViolet, 1.6f);
         GD.Print($"TATBIKAT wave {_wave + 1} count={n}");
     }
 
@@ -126,7 +126,7 @@ public partial class TatbikatSystem : Node3D, IKabarmaStarter
         var fix = TatbikatRules.Repairs(F, _run, now);
         foreach (var p in pieces) if (fix.TryGetValue(p.S.Id.ToString(), out var hp)) { p.Hp = hp; Repaired++; }
         GD.Print($"TATBIKAT end ks={_run.Ks} waves={_wave + 1} spawned={Spawned} repaired={Repaired} reason='{reason}'");
-        D.Hud.Big(reason == "" ? "TATBİKAT BİTTİ" : "TATBİKAT YARIDA", reason == "" ? Palette.MayaTeal : Palette.Warning, 2.5f);
+        D.Hud.Big(reason == "" ? Loc.T("tatbikat.done") : Loc.T("tatbikat.aborted"), reason == "" ? Palette.MayaTeal : Palette.Warning, 2.5f);
         if (reason != "") D.Hud.Hint(reason, 2f);
         _run = null;
     }
@@ -138,9 +138,9 @@ public partial class TatbikatSystem : Node3D, IKabarmaStarter
         for (int ks = 1; ks <= top; ks++)
         {
             int k = ks;
-            yield return new Hud.MenuItem($"Tatbikat · KS {k} (hayalet dalgalar, ödülsüz)", () => !Active && !D.NightActive, () => { D.Hud.HideMenu(); var e = StartDrill(k); if (e != null) D.Hud.Hint(e, 1.5f); });
+            yield return new Hud.MenuItem(Loc.T("tatbikat.menu_item", k), () => !Active && !D.NightActive, () => { D.Hud.HideMenu(); var e = StartDrill(k); if (e != null) D.Hud.Hint(e, 1.5f); });
         }
-        if (Active) yield return new Hud.MenuItem("Tatbikatı bitir", () => true, () => { D.Hud.HideMenu(); End("Durduruldu"); });
+        if (Active) yield return new Hud.MenuItem(Loc.T("tatbikat.end_item"), () => true, () => { D.Hud.HideMenu(); End(Loc.T("tatbikat.stopped")); });
     }
 
     // ---------- Maya Feneri ----------

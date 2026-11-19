@@ -81,7 +81,7 @@ public partial class AbilityHud : CanvasLayer
             bool locked = !ulti && i >= f.ActiveSlots;
             var def = string.IsNullOrEmpty(id) ? null : f.Def(id);
             _slotKey[i].Text = Key(ulti ? "ulti" : i == 0 ? "ability_1" : "ability_2");
-            _slotName[i].Text = locked ? "Kilitli · Kurbağa Ağa" : def == null ? (ulti ? "Ulti yok" : "Boş yuva") : (ulti ? "Ulti · " : "") + def.Name;
+            _slotName[i].Text = locked ? Loc.T("ability.locked_name") : def == null ? (ulti ? Loc.T("ability.no_ulti_short") : Loc.T("ability.empty_slot")) : (ulti ? Loc.T("ability.ulti_word") + " · " : "") + def.Name;
             _slotName[i].AddThemeColorOverride("font_color", locked || def == null ? Palette.OffWhite.Darkened(0.45f) : Palette.OffWhite);
             float frac = 0;
             if (def != null && !ulti && def.Cooldown > 0) frac = l.CooldownOf(id) / def.Cooldown;
@@ -90,8 +90,8 @@ public partial class AbilityHud : CanvasLayer
             _slotCd[i].Size = new Vector2(W * Mathf.Clamp(frac, 0, 1), SlotH);
         }
         _chargeFill.Size = new Vector2(W * l.Charge / f.Charge.Max, 14);
-        _chargeText.Text = $"Şarj {l.Charge:0}/{f.Charge.Max:0}";
+        _chargeText.Text = Loc.T("ability.charge", l.Charge.ToString("0", System.Globalization.CultureInfo.InvariantCulture), f.Charge.Max.ToString("0", System.Globalization.CultureInfo.InvariantCulture));
         _meterFill.Size = new Vector2(W * l.Meter / f.UltiMeter.Max, 14);
-        _meterText.Text = l.GiantLeft > 0 ? $"Dev Mod {l.GiantLeft:0} sn" : $"Maya ölçeri {l.Meter:0}/{f.UltiMeter.Max:0}";
+        _meterText.Text = l.GiantLeft > 0 ? Loc.T("ability.giant_left", l.GiantLeft.ToString("0", System.Globalization.CultureInfo.InvariantCulture)) : Loc.T("ability.meter", l.Meter.ToString("0", System.Globalization.CultureInfo.InvariantCulture), f.UltiMeter.Max.ToString("0", System.Globalization.CultureInfo.InvariantCulture));
     }
 }

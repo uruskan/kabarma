@@ -14,7 +14,7 @@ public partial class FeelPanel
         var b = new Button
         {
             Name = "KucukKabarmaButton",
-            Text = "Küçük Kabarma'yı yeniden başlat",
+            Text = Loc.T("menu.feel_restart"),
             ActionMode = BaseButton.ActionModeEnum.Press,
             FocusMode = Control.FocusModeEnum.All,
         };

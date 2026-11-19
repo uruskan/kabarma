@@ -25,10 +25,69 @@ public sealed class RivalrySystem
     RivalryState S => _d.State.Rivalry;
     RivalryFile F => _d.Data.Rivalry;
     public bool Enabled => S.Enabled;
-    public bool Night => _d.State.Calendar.IsNight;
+    public RivalryState State => S;
+    /// <summary>Sinama: gece/gunduz zorlanir (null: gercek takvim).</summary>
+    public bool? NightOverride { get; set; }
+    public bool Night => NightOverride ?? _d.State.Calendar.IsNight;
 
-    /// <summary>Oyuncu kimligi: host "p0", istemci "p" + es numarasi.</summary>
-    public static string PlayerId(byte peer) => "p" + peer;
+    /// <summary>
+    /// Kalici oyuncu kimligi (kayitli takimlar icin): host "p0"; istemci karakter adi ("n:" + ad). Es numarasi her oturumda
+    /// yeniden verildigi icin takimlar ona baglanmaz.
+    /// </summary>
+    public static string KeyOf(NetActor a) => "n:" + a.Name;
+    public const string HostKey = GameState.LocalPlayer;
+
+    /// <summary>Cevrimici oyuncularin kalici kimlikleri (host + istemciler).</summary>
+    HashSet<string> OnlineKeys()
+    {
+        var online = new HashSet<string> { HostKey };
+        if (_d.Net != null) foreach (var a in _d.Net.Actors.Values) online.Add(KeyOf(a));
+        return online;
+    }
+
+    /// <summary>Takimi olmayan cevrimici oyuncular en az dolu takima girer (en cok PlayersPerTeamMax). Donen: yeni uye sayisi.</summary>
+    public int EnsureMembers()
+    {
+        int added = 0;
+        foreach (var key in OnlineKeys())
+        {
+            if (S.TeamOf(key) != null) continue;
+            var t = S.Teams.Where(x => x.Players.Count < F.PlayersPerTeamMax).OrderBy(x => x.Players.Count).ThenBy(x => x.Id, System.StringComparer.Ordinal).FirstOrDefault();
+            if (t == null) break;
+            t.Players.Add(key);
+            added++;
+            GD.Print($"RIVALRY join {key} -> {t.Id}");
+        }
+        return added;
+    }
+
+    /// <summary>
+    /// Dunya ayari "Cekisme" (host ya da tek oyuncu): teamCount takim, Ocak'lar OcakPos'tan 600 m aralikli halkada. Takim 0 dunya
+    /// Ocak'inin tapusudur. Uyeler cevrimici oyunculardan sirayla dagitilir (EnsureMembers).
+    /// </summary>
+    public string AutoStart(int teamCount, bool dedicated = false)
+    {
+        if (_d.NetClient) return "istemci kuramaz";
+        teamCount = Mathf.Clamp(teamCount, F.TeamsMin, F.TeamsMax);
+        var home = _d.OcakPos;
+        float step = F.OcakMinDistance + 100f;
+        float plot = _d.State.Research.ClaimRadius > 0 ? _d.State.Research.ClaimRadius : F.PlotRadiusFallback;
+        var teams = new List<(string, string, float, float, float, string[])>();
+        for (int i = 0; i < teamCount; i++)
+        {
+            float ang = i * Mathf.Pi / 2f;
+            teams.Add(("t" + (i + 1), "Takım " + (i + 1), home.X + Mathf.Cos(ang) * step * (i == 0 ? 0 : 1), home.Z + Mathf.Sin(ang) * step * (i == 0 ? 0 : 1), plot, new string[0]));
+        }
+        // Takim bos baslar; Start dogrulamasi oyuncu ister, o yuzden once uyeleri ekleyip sonra kur.
+        var s = RivalryRules.New(F, dedicated, _d.State.Calendar.Running ? _d.State.Calendar.Day : 1);
+        foreach (var t in teams) RivalryRules.AddTeam(F, s, t.Item1, t.Item2, t.Item3, t.Item4, t.Item5);
+        _d.State.ReplaceRivalry(s);
+        EnsureMembers();
+        _filterSet = false;
+        _d.Net?.Flush();
+        GD.Print($"RIVALRY auto start teams={teamCount} dedicated={dedicated}");
+        return null;
+    }
 
     /// <summary>Cekisme dunyasini kurar (dunya ayari). Donen: null ya da reddetme nedeni (takim sayisi, Ocak araligi).</summary>
     public string Start(bool dedicated, IEnumerable<(string id, string name, float x, float z, float plot, string[] players)> teams)
@@ -72,11 +131,11 @@ public sealed class RivalrySystem
     /// Gecede bir takim yapi parcasina vurur (host). Karar Sim'den; yikilan parca enkaz planina cevrilir ve sokulur.
     /// Donen: karar. Hasar BuildBridge.Damage'in yuzde-10 tabanini asar (baskinda yikilir).
     /// </summary>
-    public RivalryVerdict RaidPiece(BuildPiece bp, float dmg, string attackerTeam, bool? nightOverride = null)
+    public RivalryVerdict RaidPiece(BuildPiece bp, float dmg, string attackerTeam)
     {
         if (!Enabled || _d.NetClient || bp == null || !GodotObject.IsInstanceValid(bp) || bp.S == null) return RivalryVerdict.NotRivalry;
         var at = bp.GlobalPosition;
-        var v = RivalryRules.CanHit(F, S, nightOverride ?? Night, at.X, at.Z, attackerTeam ?? "", bp.Def.Id);
+        var v = RivalryRules.CanHit(F, S, Night, at.X, at.Z, attackerTeam ?? "", bp.Def.Id);
         if (v != RivalryVerdict.Allowed) return v;
         bp.Hp -= dmg;
         if (bp.Hp > 0) { _d.Net?.Flush(); return v; }
@@ -121,29 +180,81 @@ public sealed class RivalrySystem
         return Rebuild(ruinId, team, _d.State.Backpack);
     }
 
-    /// <summary>Acik Silo'dan yagma (kural 5): gece, kendi disindaki takimin silosundan; menzil 8 m. Donen: (esya, Maya).</summary>
-    public (int items, int maya) LootSilo(string looterTeam, Vector3 at, Inventory bag)
+    /// <summary>
+    /// Acik Silo yagmasi (kural 5): gece, hedef takimin Ocak''indan 8 m icinde, yagmaci baska takimdan. Yalniz hedefin silosu bosalir.
+    /// Donen: (esya, Maya).
+    /// </summary>
+    public (int items, int maya) LootSilo(string targetTeam, string looterTeam, Vector3 at, Inventory bag)
     {
         if (!Enabled || !Night) return (0, 0);
-        if (!S.Teams.Any(t => t.Id != looterTeam && new Vector2(at.X - t.OcakX, at.Z - t.OcakZ).Length() <= 8f)) return (0, 0);
-        var r = RivalryRules.LootSilo(S, looterTeam, bag);
-        if (r.items + r.maya > 0) { GD.Print($"RIVALRY silo looted items={r.items} maya={r.maya} by={looterTeam}"); _d.Net?.Flush(); }
+        var target = S.Team(targetTeam);
+        if (target == null || new Vector2(at.X - target.OcakX, at.Z - target.OcakZ).Length() > 8f) return (0, 0);
+        var r = RivalryRules.LootSilo(S, targetTeam, looterTeam, bag);
+        if (r.items + r.maya > 0) { GD.Print($"RIVALRY silo looted items={r.items} maya={r.maya} from={targetTeam} by={looterTeam}"); _d.Net?.Flush(); }
         return r;
     }
 
+    /// <summary>Konuma 8 m icinde Ocak''i olan rakip takim (yoksa null).</summary>
+    string RivalAt(Vector3 at, string myTeam) =>
+        S.Teams.Where(t => t.Id != myTeam && (t.Silo.Count > 0 || t.SiloMaya > 0) && new Vector2(at.X - t.OcakX, at.Z - t.OcakZ).Length() <= 8f)
+            .Select(t => t.Id).FirstOrDefault();
+
+    // ------------------------------------------------------------------ oyun yolu kapilari (kural 2, 3, 5, 6)
+
+    /// <summary>
+    /// BuildBridge.Damage kapisi: Cekisme acikken yapi hasari kurala gore (gunduz yok, gece yikilir; vurulan takim yerine
+    /// saldiran takim attackerTeam, yabani/Kabaran bos). Donen: true = hasar Cekisme tarafindan islendi (cagiran birakir).
+    /// </summary>
+    public bool TryStructureHit(BuildPiece bp, float amount, string attackerTeam, out float hp)
+    {
+        hp = bp?.Hp ?? 0;
+        if (!Enabled || _d.NetClient) return false;
+        RaidPiece(bp, amount, attackerTeam ?? "");
+        hp = bp != null && GodotObject.IsInstanceValid(bp) ? bp.Hp : 0;
+        return true;
+    }
+
+    /// <summary>Oyuncu hasari (Player.Hurt): tapuda gunduz dokunulmaz (kural 2). Donen: hasar islesin mi.</summary>
+    public bool PlayerHurtAllowed(Vector3 at)
+    {
+        if (!Enabled) return true;
+        var v = Verdict(at, "", null, false);
+        return v is RivalryVerdict.Allowed or RivalryVerdict.NotRivalry;
+    }
+
+    /// <summary>Tarladaki kabarik urunu almak (Cekim): kendi tapunda serbest, rakibin urunu yalniz gece ve yagmalanabilirken (kural 5).</summary>
+    public bool CropGrabAllowed(Vector3 at, string team)
+    {
+        if (!Enabled) return true;
+        var plot = RivalryRules.PlotAt(S, at.X, at.Z);
+        if (plot == null || plot.Id == team) return true;
+        return RivalryRules.Lootable(F, S, Night, "swollen_crop", at.X, at.Z, team);
+    }
+
+    /// <summary>Yerel oyuncunun takimi (tek oyuncu / host).</summary>
+    public string LocalTeam => S.TeamOf(HostKey)?.Id ?? "";
+
     // ------------------------------------------------------------------ gece ve gunun akisi
 
-    /// <summary>Safakta (Director.Night): gecenin Maya'si her takima yazilir, Silo dolar, sezon puani artar.</summary>
-    public void OnDawn(float nightMaya)
+    /// <summary>
+    /// Safakta (Night.DawnNow): Kazan devrildiyse takimlar muhurlenir (kural 6; tek ortak Kabarma oldugundan hepsi); gecenin
+    /// Maya'si cevrimici takimlara yazilir; rampadaki kasalar ihracata hazir sayilir (kural 5); Silo dolar, puan islenir.
+    /// </summary>
+    public void OnDawn(float nightMaya, bool kazanToppled)
     {
         if (!Enabled || _d.NetClient) return;
-        foreach (var t in S.Teams) if (!t.Offline) RivalryRules.AddMaya(S, t.Id, t.KazanToppled ? nightMaya * 0.5f : nightMaya);
+        if (kazanToppled) foreach (var t in S.Teams) RivalryRules.ToppleKazan(S, t.Id);
+        int crates = _d.State.Cargo.Pad.Count;
+        if (crates > 0 && S.Teams.Count > 0) RivalryRules.MarkExportReady(S.Teams[0], "kargo_kasasi", crates); // rampa dunya Ocak''inin (takim 0)
+        foreach (var t in S.Teams) if (!t.Offline) RivalryRules.AddMaya(S, t.Id, nightMaya);
         RivalryRules.Dawn(F, S);
-        GD.Print($"RIVALRY dawn silo_maya={S.SiloMaya} " + string.Join(" ", RivalryRules.Leaderboard(S).Select(t => $"{t.Id}={t.Score}")));
+        GD.Print($"RIVALRY dawn toppled={kazanToppled} silo_maya={S.SiloMayaTotal} " + string.Join(" ", RivalryRules.Leaderboard(S).Select(t => $"{t.Id}={t.Score}")));
         _d.Net?.Flush();
     }
 
-    /// <summary>Director.Tick'ten: cevrimici durumu, kabarma suzgeci, sezon, Kabarma kancasi.</summary>
+    float _siloT, _memberT;
+
+    /// <summary>Director.Tick'ten: uyelik, cevrimici durumu, kabarma suzgeci, silo yagmasi, sezon, Kabarma kancasi.</summary>
     public void Tick(float dt)
     {
         if (!Enabled) return;
@@ -156,18 +267,28 @@ public sealed class RivalrySystem
         {
             _wiredNight = _d.State.Night;
             var n = _wiredNight;
-            n.DawnNow += () => OnDawn(n.Maya);
+            n.DawnNow += () => OnDawn(n.Maya, n.EndReason == KabarmaEnd.KazanToppled);
+        }
+        // Yagma: yerel oyuncu rakibin Ocak''inin yaninda, gece (istemcide host''a istek).
+        _siloT -= dt;
+        if (_siloT <= 0 && Night)
+        {
+            _siloT = 1f;
+            var me = _d.Player.GlobalPosition;
+            var team = _d.NetClient ? "" : LocalTeam;
+            var target = _d.NetClient ? S.Teams.Select(t => t).Where(t => new Vector2(me.X - t.OcakX, me.Z - t.OcakZ).Length() <= 8f && (t.Silo.Count > 0 || t.SiloMaya > 0)).Select(t => t.Id).FirstOrDefault() : RivalAt(me, team);
+            if (target != null && _d.Net?.Forward("rivalry_silo", w => w.Str(target)) != true) LootSilo(target, team, me, _d.State.Backpack);
         }
         if (_d.NetClient) return;
         _presenceT -= dt;
         if (_presenceT <= 0)
         {
             _presenceT = 1f;
-            var online = new HashSet<string> { GameState.LocalPlayer };
-            if (_d.Net != null) foreach (var peer in _d.Net.Actors.Keys) online.Add(PlayerId(peer));
-            if (RivalryRules.UpdatePresence(S, online) > 0)
+            bool changed = EnsureMembers() > 0;
+            if (RivalryRules.UpdatePresence(S, OnlineKeys()) > 0) changed = true;
+            if (changed)
             {
-                GD.Print("RIVALRY presence " + string.Join(" ", S.Teams.Select(t => $"{t.Id}:{(t.Offline ? "offline" : "online")}")));
+                GD.Print("RIVALRY presence " + string.Join(" ", S.Teams.Select(t => $"{t.Id}:{(t.Offline ? "offline" : "online")}[{t.Players.Count}]")));
                 _d.Net?.Flush();
             }
         }
@@ -175,6 +296,7 @@ public sealed class RivalrySystem
         if (day != _lastDay)
         {
             _lastDay = day;
+            RivalryRules.ClearSeals(S);
             if (RivalryRules.TickSeason(S, day)) { GD.Print($"RIVALRY season over winner={S.Season.Winner}"); _d.Net?.Flush(); }
         }
     }
@@ -185,8 +307,9 @@ public sealed class RivalrySystem
     public int ProbeRuined { get; private set; }
 
     /// <summary>
-    /// --test=coop: iki takim (host + 1. bot / 2. ve 3. bot), host'un kurdugu bir temel A takiminin tapusunda. Gunduz B'nin baskini
-    /// reddedilir, gece (saat zorlanarak) temel yikilir ve enkaz plani kalir; "rivalry" bolumu istemcilere gider (Judge ozeti karsilastirir).
+    /// --test=coop: iki takim (host + 1. bot / 2. ve 3. bot), host'un kurdugu bir temel A takiminin tapusunda. Gercek oyun yolu:
+    /// BuildBridge.Damage (yaratik/baskin hasari) gunduz B takimi icin hasar yapmaz, gece parcayi yikar ve enkaz plani kalir;
+    /// A'nin silosu B'nin botundan yagmalanir, kendi (B) silosu ve A'nin bu yagmadaki payi dokunulmaz. Saat NightOverride ile zorlanir.
     /// Donen: "ok ..." ya da "fail ...".
     /// </summary>
     public string CoopProbe()
@@ -194,9 +317,9 @@ public sealed class RivalrySystem
         var piece = _d.Build?.System.Pieces.FirstOrDefault(p => p.Def.Id == "kare_temel");
         if (piece == null || _d.Net == null) return "fail no piece/net";
         var at = piece.GlobalPosition;
-        var peers = _d.Net.Actors.Keys.OrderBy(k => k).ToList();
-        var a = new List<string> { GameState.LocalPlayer }; var b = new List<string>();
-        for (int i = 0; i < peers.Count; i++) (i == 0 ? a : b).Add(PlayerId(peers[i]));
+        var peers = _d.Net.Actors.Values.OrderBy(x => x.Peer).ToList();
+        var a = new List<string> { HostKey }; var b = new List<string>();
+        for (int i = 0; i < peers.Count; i++) (i == 0 ? a : b).Add(KeyOf(peers[i]));
         string why = Start(false, new[]
         {
             ("a", "Takim A", at.X, at.Z, 30f, a.ToArray()),
@@ -204,15 +327,35 @@ public sealed class RivalrySystem
         });
         if (why != null) return "fail start: " + why;
         int ruins0 = S.Ruins.Count;
-        var day = RaidPiece(piece, 99999f, "b", false);
-        if (day != RivalryVerdict.DayProtected || !GodotObject.IsInstanceValid(piece) || piece.Hp <= 0) return $"fail day verdict={day}";
-        var self = RaidPiece(piece, 99999f, "a", true);
-        if (self != RivalryVerdict.Friendly) return $"fail friendly verdict={self}";
-        var night = RaidPiece(piece, 99999f, "b", true);
-        if (night != RivalryVerdict.Allowed || S.Ruins.Count < ruins0 + 1) // dayanan parcalar da coker (kural 6): 1 ya da daha cok enkaz return $"fail night verdict={night} ruins={S.Ruins.Count}";
+        NightOverride = false;
+        _d.Build.Damage(piece, 99999f, "b");
+        if (!GodotObject.IsInstanceValid(piece) || piece.Hp <= 0) { NightOverride = null; return "fail day: parca gunduz hasar aldi"; }
+        var player = _d.Player.GlobalPosition;
+        if (PlayerHurtAllowed(at)) { NightOverride = null; return "fail day: oyuncu gunduz tapuda hasar alabiliyor"; }
+        NightOverride = true;
+        var self = RaidPiece(piece, 99999f, "a");
+        if (self != RivalryVerdict.Friendly) { NightOverride = null; return $"fail friendly verdict={self}"; }
+        _d.Build.Damage(piece, 99999f, "b"); // gece: gercek hasar yolu parcayi yikar
+        bool gone = !GodotObject.IsInstanceValid(piece) || _d.Build.System.Pieces.All(p => p != piece);
+        if (!gone || S.Ruins.Count < ruins0 + 1) { NightOverride = null; return $"fail night: gone={gone} ruins={S.Ruins.Count}"; } // dayanan parcalar da coker (kural 6)
         ProbeRuined = S.Ruins.Count - ruins0;
+        // Silo: A'nin silosu dolar, B'nin ilk botu (istemci aktoru) A'nin Ocak'inda yagmalar; B'nin kendi silosu dolu kalir.
+        var ta = S.Team("a")!; var tb = S.Team("b")!;
+        ta.Silo["turnip"] = 5; ta.SiloMaya = 7; tb.Silo["turnip"] = 3;
+        var looter = peers.FirstOrDefault(x => b.Contains(KeyOf(x)));
+        if (looter != null)
+        {
+            int t0 = looter.Bag.Count("turnip"), m0 = looter.Bag.Count("maya");
+            var wrong = LootSilo("b", "b", new Vector3(tb.OcakX, 0, tb.OcakZ), looter.Bag); // kendi silosu
+            var ok = LootSilo("a", "b", new Vector3(ta.OcakX, 0, ta.OcakZ), looter.Bag);
+            if (wrong != (0, 0) || ok != (5, 7) || looter.Bag.Count("turnip") != t0 + 5 || looter.Bag.Count("maya") != m0 + 7 || tb.Silo.GetValueOrDefault("turnip") != 3 || ta.Silo.Count != 0)
+            { NightOverride = null; return $"fail silo wrong={wrong} ok={ok} b_turnip={tb.Silo.GetValueOrDefault("turnip")}"; }
+            looter.Bag.Remove("turnip", 5); looter.Bag.Remove("maya", 7); // sinama artigi
+        }
+        tb.Silo.Clear();
+        NightOverride = null;
         _d.Net.Flush();
-        return $"ok teams=2 day={day} night={night} ruins={S.Ruins.Count}";
+        return $"ok teams=2 day=blocked night=destroyed ruins={S.Ruins.Count} silo=a_to_b";
     }
 
     // ------------------------------------------------------------------ ag
@@ -230,15 +373,16 @@ public sealed class RivalrySystem
         net.On("rivalry_rebuild", (actor, r) =>
         {
             int id = (int)r.VarU();
-            var team = S.TeamOf(PlayerId(actor.Peer))?.Id ?? "";
+            var team = S.TeamOf(KeyOf(actor))?.Id ?? "";
             var why = Rebuild(id, team, actor.Bag);
             if (why == null) net.Flush(); else GD.Print($"RIVALRY rebuild rejected: {why}");
         });
         net.On("rivalry_silo", (actor, r) =>
         {
-            var team = S.TeamOf(PlayerId(actor.Peer))?.Id ?? "";
+            string target = r.Str();
+            var team = S.TeamOf(KeyOf(actor))?.Id ?? "";
             var at = actor.HasFrame ? new Vector3(actor.Last.X, actor.Last.Y, actor.Last.Z) : Vector3.Zero;
-            LootSilo(team, at, actor.Bag);
+            LootSilo(target, team, at, actor.Bag);
         });
     }
 }

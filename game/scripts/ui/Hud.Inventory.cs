@@ -117,7 +117,7 @@ public partial class Hud
     void ToggleBelt(string id)
     {
         bool on = _d.State.Belt.Toggle(id);
-        Hint(on ? $"{ItemNames.Of(id)} kemerde" : $"{ItemNames.Of(id)} kemerden çıktı", 1f);
+        Hint(on ? Loc.T("inv.belt_on", ItemNames.Of(id)) : Loc.T("inv.belt_off", ItemNames.Of(id)), 1f);
         Sfx.Play("place", null, -12f);
     }
 
@@ -158,7 +158,7 @@ public partial class Hud
     {
         if (fromBelt)
         {
-            if (_d.State.Belt.At(index) is string bid) { _d.State.Belt.Assign(index, null); Hint($"{ItemNames.Of(bid)} kemerden çıktı", 1f); Sfx.Play("place", null, -12f); }
+            if (_d.State.Belt.At(index) is string bid) { _d.State.Belt.Assign(index, null); Hint(Loc.T("inv.belt_off", ItemNames.Of(bid)), 1f); Sfx.Play("place", null, -12f); }
             return;
         }
         var c = _d.State.Backpack.Contents;
@@ -248,7 +248,7 @@ public partial class Hud
     }
 
     Rect2 TabRect(int page) { _o = TopFrame; return Area(T.DesignW / 2f - 245 + page * 165, 0, 155, 54); }
-    static readonly string[] PageNames = { "ÇANTA", "DEFTER", "ÜRETİM" };
+    static string[] PageNames => new[] { Loc.T("inv.tab_bag"), Loc.T("inv.tab_defter"), Loc.T("inv.tab_craft") };
 
     /// <summary>Isaretcinin altindaki yuva: (kemer mi, sira); yoksa null.</summary>
     (bool belt, int index)? SlotAt(Vector2 screen)
@@ -270,15 +270,15 @@ public partial class Hud
             Button(PageNames[pg], T.DesignW / 2f - 245 + pg * 165, 0, 155, 54, 28, null, !StationOpen || pg == 0, false, _invPage == pg);
         }
         string pk = _padLast ? "LB / RB" : "Q";
-        Text($"{pk}: SAYFA", T.DesignW / 2f + 265, 18, T.Data.Type.Caption + 1, T.Muted, true, true);
+        Text(Loc.T("inv.page_key", pk), T.DesignW / 2f + 265, 18, T.Data.Type.Caption + 1, T.Muted, true, true);
 
         _o = CanvasFrame;
         string keys = _padLast
-            ? "D-PAD: SEÇ   ·   A: KULLAN   ·   LB / RB: SAYFA   ·   X / B: KAPAT"
-            : "YÖN TUŞLARI: SEÇ   ·   ENTER: KULLAN   ·   1–8: KEMER YUVASI   ·   SÜRÜKLE: KEMERE   ·   SHIFT+TIK: HIZLI AKTAR   ·   TAB / E / ESC: KAPAT";
-        if (StationOpen) keys = _padLast ? "D-PAD: SATIR   ·   A: SIRAYA EKLE   ·   X / B: KAPAT" : "1–9 YA DA TIK: SIRAYA EKLE   ·   SÜRÜKLE: KEMERE   ·   E / ESC: KAPAT";
-        if (_invPage == CraftPage) keys = _padLast ? "D-PAD ↑↓: TARİF   ·   ←→: ADET   ·   A: ÜRET   ·   X / B: KAPAT" : "TIK: SEÇ   ·   ÇİFT TIK / ENTER: ÜRET   ·   1–9: SATIRI ÜRET   ·   ←→: ADET   ·   TAB / E / ESC: KAPAT";
-        if (_invPage == 1) keys = _padLast ? "←→: SEKME   ·   ↑↓: SATIR   ·   A: TAKİP ET   ·   LB / RB: SAYFA   ·   X / B: KAPAT" : "←→: SEKME   ·   ↑↓: SATIR   ·   ENTER: TAKİP ET   ·   Q: SAYFA   ·   TAB / E / ESC: KAPAT";
+            ? Loc.T("inv.keys_pad")
+            : Loc.T("inv.keys_kb");
+        if (StationOpen) keys = _padLast ? Loc.T("inv.keys_station_pad") : Loc.T("inv.keys_station_kb");
+        if (_invPage == CraftPage) keys = _padLast ? Loc.T("inv.keys_craft_pad") : Loc.T("inv.keys_craft_kb");
+        if (_invPage == 1) keys = _padLast ? Loc.T("inv.keys_defter_pad") : Loc.T("inv.keys_defter_kb");
         CentreText(keys, T.DesignH - 20, T.Data.Type.Caption, T.A(T.Ink, 0.7f), true, true);
         if (_invPage == CraftPage) { PaintCraft(); return; } // Hud.Craft.cs
         if (_invPage != 0) return;
@@ -294,18 +294,18 @@ public partial class Hud
     {
         var iv = T.Data.Inventory;
         float top = BagY0;
-        Section("Kuşam", LeftX, top - 34);
+        Section(Loc.T("inv.gear"), LeftX, top - 34);
         for (int i = 0; i < iv.GearSlots; i++)
         {
             float x = LeftX + i * (ColW + 5) / iv.GearSlots, s = (ColW + 5) / iv.GearSlots - 5;
             Rect(x, top, s, s, T.Locked);
             Lock(x + s / 2f, top + s / 2f + 3, s * 0.26f, T.A(T.Muted, 0.55f));
         }
-        Text("M1'DE KUŞAM YOK", LeftX, top + 80, T.Data.Type.Caption, T.A(T.Muted, 0.8f), true, true);
+        Text(Loc.T("inv.no_gear"), LeftX, top + 80, T.Data.Type.Caption, T.A(T.Muted, 0.8f), true, true);
 
         // Yemek yuvalari (GDD 3.3: uc yuva, ayni yemek iki yuvaya konmaz)
         float fy = top + 112;
-        Section("Yemek", LeftX, fy);
+        Section(Loc.T("inv.food"), LeftX, fy);
         var active = _d.State.Food.Active;
         int slots = Math.Max(1, _d.State.Food.Slots); // yuva sayisi tool.json "foodSlots" (ekonomi)
         float fw = (ColW - (slots - 1) * 8) / slots;
@@ -317,11 +317,11 @@ public partial class Hud
             {
                 var (food, left) = active[i];
                 Text(Fit(T.Upper(food.Name), fw - 14, 15, true, true), x + 7, y + 6, 15, T.Ink, true, true);
-                Text($"{left / 60f:0.0} DK", x + 7, y + 26, 20, T.Green, true, true);
+                Text(Loc.T("inv.min", (left / 60f).ToString("0.0", System.Globalization.CultureInfo.InvariantCulture)), x + 7, y + 26, 20, T.Green, true, true);
                 float frac = Mathf.Clamp(left / Math.Max(1f, food.Seconds), 0, 1);
                 Rect(x, y + 56, fw * frac, 4, T.Green);
             }
-            else TextIn("BOŞ", x, y + 20, fw, 15, T.A(T.Muted, 0.6f), HorizontalAlignment.Center, true, true);
+            else TextIn(Loc.T("inv.empty"), x, y + 20, fw, 15, T.A(T.Muted, 0.6f), HorizontalAlignment.Center, true, true);
         }
 
         // Kredi ve yumurta
@@ -329,10 +329,10 @@ public partial class Hud
         float bw = (ColW - 15) / 2f;
         var s0 = _d.State;
         Rect(LeftX, sy, bw, T.Data.Inventory.Slot, T.Panel);
-        Text("KREDİ", LeftX + 10, sy + 7, T.Data.Type.Caption, T.Muted, true, true);
+        Text(Loc.T("inv.credits"), LeftX + 10, sy + 7, T.Data.Type.Caption, T.Muted, true, true);
         Text(s0.Credits.ToString("N0", CultureInfo.GetCultureInfo("tr-TR")), LeftX + 10, sy + 28, 34, T.Short, true, true);
         Rect(LeftX + bw + 15, sy, bw, T.Data.Inventory.Slot, T.Panel);
-        Text("YUMURTA", LeftX + bw + 25, sy + 7, T.Data.Type.Caption, T.Muted, true, true);
+        Text(Loc.T("inv.eggs"), LeftX + bw + 25, sy + 7, T.Data.Type.Caption, T.Muted, true, true);
         Text(s0.Eggs.ToString(CultureInfo.InvariantCulture), LeftX + bw + 25, sy + 28, 34, T.Ink, true, true);
     }
 
@@ -342,7 +342,7 @@ public partial class Hud
         _o = CanvasFrame;
         var iv = T.Data.Inventory;
         var inv = _d.State.Backpack;
-        Section($"Çanta  {inv.UsedSlots}/{inv.Slots}", BagX0, BagY0 - 34);
+        Section(Loc.T("inv.bag_title", inv.UsedSlots, inv.Slots), BagX0, BagY0 - 34);
         for (int i = 0; i < inv.Slots; i++)
         {
             bool has = i < inv.Contents.Count;
@@ -364,11 +364,11 @@ public partial class Hud
     string ItemKind(string id)
     {
         var tool = _d.Data.Tool;
-        if (tool.Foods.Any(f => f.Id == id)) return "Yemek. Yiyince üç yemek yuvasından birine girer ve güçlendirir.";
-        if (id == tool.Nailgun.Ammo) return "Çivi Tabancası'nın cephanesi. Kabarma gecesi harcanmaz.";
-        if (id.EndsWith("_seed")) return "Tohum. Toprak başlığıyla sürülmüş kareye ekilir.";
-        if (tool.Recipes.Any(r => r.Id == id)) return "Üretim ürünü. Kargo Rampası'nda satılabilir.";
-        return "Kaynak. İstasyonlarda üretimde kullanılır.";
+        if (tool.Foods.Any(f => f.Id == id)) return Loc.T("inv.kind_food");
+        if (id == tool.Nailgun.Ammo) return Loc.T("inv.kind_ammo");
+        if (id.EndsWith("_seed")) return Loc.T("inv.kind_seed");
+        if (tool.Recipes.Any(r => r.Id == id)) return Loc.T("inv.kind_product");
+        return Loc.T("inv.kind_resource");
     }
 
     /// <summary>Sag sutun: secili esyanin ayrintisi (ad, tur, bilgi satirlari, eylemler).</summary>
@@ -381,9 +381,9 @@ public partial class Hud
         var id = SelectedItem();
         if (id == null)
         {
-            Section("Boş yuva", x, y);
+            Section(Loc.T("inv.empty_slot"), x, y);
             Rect(x, y + 34, ColW, 60, T.Panel);
-            Text($"Çanta {inv.UsedSlots}/{inv.Slots} yuva dolu. Yığın en çok {inv.StackSize}.", x + 14, y + 52, 17, T.Ink);
+            Text(Loc.T("inv.bag_full", inv.UsedSlots, inv.Slots, inv.StackSize), x + 14, y + 52, 17, T.Ink);
             return;
         }
         Section(Fit(T.Upper(ItemNames.Of(id)), ColW, T.Data.Type.Section, true, true), x, y);
@@ -397,31 +397,31 @@ public partial class Hud
         float infoW = 300, actX = x + infoW + 10, actW = ColW - infoW - 10, ry = y + 126;
         var rows = new List<(string label, string value, bool good)>
         {
-            ("ELDE", inv.Count(id).ToString(CultureInfo.InvariantCulture), true),
-            ("YIĞIN", inv.StackSize.ToString(CultureInfo.InvariantCulture), true),
+            (Loc.T("inv.have"), inv.Count(id).ToString(CultureInfo.InvariantCulture), true),
+            (Loc.T("inv.stack"), inv.StackSize.ToString(CultureInfo.InvariantCulture), true),
         };
         int bi = s.Belt.Ids.ToList().IndexOf(id);
-        rows.Add(("KEMERDE", bi >= 0 ? $"{bi + 1}. YUVA" : "YOK", bi >= 0));
+        rows.Add((Loc.T("inv.on_belt"), bi >= 0 ? Loc.T("inv.slot_n", bi + 1) : Loc.T("inv.none"), bi >= 0));
         var food = _d.Data.Tool.Foods.FirstOrDefault(f => f.Id == id);
         if (food != null)
         {
-            rows.Add(("CAN", $"+{food.MaxHp:0}", true));
-            rows.Add(("YENİLENME", $"+{food.Regen:0.#}/SN", true));
-            rows.Add(("SÜRE", $"{food.Seconds / 60f:0.#} DK", true));
+            rows.Add((Loc.T("inv.hp"), $"+{food.MaxHp:0}", true));
+            rows.Add((Loc.T("inv.regen"), Loc.T("inv.per_sec", food.Regen.ToString("0.#", System.Globalization.CultureInfo.InvariantCulture)), true));
+            rows.Add((Loc.T("inv.dur"), Loc.T("inv.min", (food.Seconds / 60f).ToString("0.#", System.Globalization.CultureInfo.InvariantCulture)), true));
         }
         Rect(x, ry, infoW, 26 + rows.Count * 22 + 6, T.Panel);
         Rect(x, ry, infoW, 26, T.Panel);
-        Text("BİLGİ", x + 8, ry + 4, 17, T.Ink, true, true);
+        Text(Loc.T("inv.info"), x + 8, ry + 4, 17, T.Ink, true, true);
         for (int i = 0; i < rows.Count; i++)
         {
             Text(rows[i].label, x + 10, ry + 30 + i * 22, 15, T.Ink, true, true);
             TextIn(rows[i].value, x, ry + 30 + i * 22, infoW - 10, 15, rows[i].good ? T.Green : T.Short, HorizontalAlignment.Right, true, true);
         }
         Rect(actX, ry, actW, 26, T.Panel);
-        Text("EYLEMLER", actX + 8, ry + 4, 17, T.Ink, true, true);
+        Text(Loc.T("inv.actions"), actX + 8, ry + 4, 17, T.Ink, true, true);
         int k = 0;
         foreach (var (label, _) in DetailActions(id)) { Button(label, actX, ry + 30 + k * 40, actW, 36, 19); k++; }
-        Paragraph("1–8: bu kemer yuvasına koy.  Kemerdeki yuva: sürükle ya da Shift+tık ile çıkar.", x, ry + 26 + Math.Max(rows.Count * 22 + 12, k * 40 + 8) + 8, ColW, 14, T.A(T.Ink, 0.7f), 2);
+        Paragraph(Loc.T("inv.hint_belt"), x, ry + 26 + Math.Max(rows.Count * 22 + 12, k * 40 + 8) + 8, ColW, 14, T.A(T.Ink, 0.7f), 2);
     }
 
     /// <summary>Secili esyanin eylemleri (dugme etiketi, yaptigi). Tiklama ve cizim ayni listeyi kullanir.</summary>
@@ -430,9 +430,9 @@ public partial class Hud
         var l = new List<(string, Action)>();
         if (id == null) return l;
         var food = _d.Data.Tool.Foods.FirstOrDefault(f => f.Id == id);
-        if (food != null) l.Add(("YE", () => _d.EatFood(food)));
+        if (food != null) l.Add((Loc.T("inv.eat"), () => _d.EatFood(food)));
         bool on = _d.State.Belt.Contains(id);
-        l.Add((on ? "KEMERDEN ÇIKAR" : "KEMERE TAK", () => ToggleBelt(id)));
+        l.Add((on ? Loc.T("inv.belt_remove") : Loc.T("inv.belt_add"), () => ToggleBelt(id)));
         return l;
     }
 
@@ -540,6 +540,6 @@ public partial class Hud
             Sfx.Play("place", null, -10f);
             return;
         }
-        if (d.FromBelt) { belt.Assign(d.Index, null); _invFocusBelt = -1; Sfx.Play("place", null, -14f); Hint($"{ItemNames.Of(d.Id)} kemerden çıktı", 1f); }
+        if (d.FromBelt) { belt.Assign(d.Index, null); _invFocusBelt = -1; Sfx.Play("place", null, -14f); Hint(Loc.T("inv.belt_off", ItemNames.Of(d.Id)), 1f); }
     }
 }

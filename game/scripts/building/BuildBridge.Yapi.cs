@@ -57,16 +57,16 @@ public partial class BuildBridge
     public string UpgradePreview(Node3D t, out bool ok)
     {
         ok = false;
-        if (t is not BuildPiece bp) return "yalnız yapı parçası yükseltilir";
-        if (bp.Planned) return $"{bp.Def.Name}: plan, önce malzemesini getir";
+        if (t is not BuildPiece bp) return Loc.T("build.only_pieces_upgrade");
+        if (bp.Planned) return Loc.T("build.plan_bring_mat", bp.Def.Name);
         var up = StructureCosts.Upgrade(BData, bp.Material, _sys.UnitsOf(bp.Def.Id), InClaimAt(bp.GlobalPosition));
-        if (up == null) return $"{bp.Def.Name}: {MatName(bp.Material)} en üst malzeme";
+        if (up == null) return Loc.T("build.top_material", bp.Def.Name, MatName(bp.Material));
         var (to, pay, back) = up.Value;
         var rep = _sys.Graph.TrySetMaterial(bp.Sid, to.Id, commit: false);
         bool afford = pay.All(kv => _d.State.Backpack.Count(kv.Key) >= kv.Value);
-        string block = !rep.Valid ? $"alttaki taşıyamaz ({rep.Reason})" : !afford ? "malzeme yetmiyor" : !Fits(back) ? "çanta dolu" : "";
+        string block = !rep.Valid ? Loc.T("build.below_cant_carry", rep.Reason) : !afford ? Loc.T("build.mat_short") : !Fits(back) ? Loc.T("build.bag_full") : "";
         ok = block == "";
-        return $"{MatName(bp.Material)} → {to.Name}: {CostText(pay)}{(back.Count > 0 ? $" (+{CostText(back)} geri)" : "")}{(ok ? "" : "  ·  " + block)}";
+        return Loc.T("build.upgrade_line", MatName(bp.Material), to.Name, CostText(pay), (back.Count > 0 ? " " + Loc.T("build.back_refund", CostText(back)) : ""), (ok ? "" : "  ·  " + block));
     }
 
     /// <summary>Parcayi bir ust malzemeye yukseltir: yeni bedel cantadan, eskinin iadesi cantaya. Islediyse true.</summary>
@@ -117,7 +117,7 @@ public partial class BuildBridge
         var cur = _sys.Current;
         string id = _sys.Selected?.Id ?? "";
         string why = cur == null ? "" : !cur.Valid ? cur.Reason : "";
-        _d.Hud.Hint($"Plan modu: {NameOf(id)} (malzeme sonra: {CostOf(id)} Odun){(why != "" ? "  ·  " + why : "")}  ·  {{act:fire}}: plan bırak  ·  {{act:build_plan}}: kapat  ·  {{act:plan_book}} basılı: Plan Defteri", 0.2f);
+        _d.Hud.Hint(Loc.T("build.plan_mode_hint", NameOf(id), CostOf(id), ItemNames.Of("wood"), (why != "" ? "  ·  " + why : "")), 0.2f);
         if (!place || cur == null) return true;
         if (why != "") { Sfx.Play("hit", null, -10f); return true; }
         if (_d.Net?.ForwardPlan(_sys) == true) return true; // istemci: host plan olarak kurar
@@ -131,7 +131,7 @@ public partial class BuildBridge
         if (_sys.Active) _sys.SetActive(false);
         var cost = StructureCosts.Cost(BData, target.Material, _sys.UnitsOf(target.Def.Id));
         var missing = StructureCosts.Missing(cost, target.S.Delivered);
-        _d.Hud.Hint($"Plan: {target.Def.Name} ({MatName(target.Material)})  ·  eksik {CostText(missing)}  ·  {{act:fire}}: malzeme koy  ·  {{act:interact}} basılı: sök", 0.2f);
+        _d.Hud.Hint(Loc.T("build.plan_deliver_hint", target.Def.Name, MatName(target.Material), CostText(missing)), 0.2f);
         if (!place) return;
         if (_d.Net?.ForwardDeliver(target) == true) return; // istemci: host malzemeyi alir
         var moved = StructureCosts.Deliver(cost, target.S.Delivered, _d.State.Backpack);
@@ -144,7 +144,7 @@ public partial class BuildBridge
         if (StructureCosts.Missing(cost, target.S.Delivered).Count > 0) { Sfx.Play("place", target.GlobalPosition, -10f, 1.3f); return; }
         if (!_sys.CompletePlan(target, out var rep))
         {
-            _d.Hud.Hint($"Plan: {target.Def.Name} hazır ama {(rep?.Reason == "destek yok" ? "önce altını bitir" : rep?.Reason)}", 1.5f);
+            _d.Hud.Hint(Loc.T("build.plan_ready_but", target.Def.Name, (rep?.Reason == "destek yok" ? Loc.T("build.finish_below_first") : rep?.Reason)), 1.5f);
             Sfx.Play("hit", null, -10f);
             return;
         }
@@ -163,8 +163,8 @@ public partial class BuildBridge
             if (!Input.IsActionJustPressed("plan_book") || hud.MenuOpen || hud.WheelOpen) return false;
             var book = _d.State.Build.PlanBook;
             var slices = book.Slots.Select((bp, i) => bp == null
-                ? new Hud.WheelSlice("insa", null, $"{i + 1} · Boş", "Bakılan yapıyı buraya kaydet")
-                : new Hud.WheelSlice("insa", null, $"{i + 1} · {bp.Name}", $"{bp.Pieces.Count} parça · {CostText(bp.TotalCost(BData, _sys.UnitsOf))}")).ToList();
+                ? new Hud.WheelSlice("insa", null, Loc.T("build.book_empty_slice", i + 1), Loc.T("build.book_empty_desc"))
+                : new Hud.WheelSlice("insa", null, $"{i + 1} · {bp.Name}", Loc.T("build.book_slice_desc", bp.Pieces.Count, CostText(bp.TotalCost(BData, _sys.UnitsOf))))).ToList();
             hud.OpenWheel(Hud.WheelKind.Book, slices, Math.Clamp(_bookSlot, 0, Math.Max(0, slices.Count - 1)));
             p.LookLocked = true;
             _bookWheel = true;
@@ -193,10 +193,10 @@ public partial class BuildBridge
             var cam = p.Cam;
             var t = _sys.PieceAt(cam.GlobalPosition, -cam.GlobalBasis.Z);
             var cap = _sys.Capture(t, $"Yapı {slot + 1}");
-            if (cap == null) { _d.Hud.Hint("Plan Defteri: kaydetmek için bir yapı parçasına bak", 2f); Sfx.Play("hit", null, -10f); return false; }
+            if (cap == null) { _d.Hud.Hint(Loc.T("build.book_aim_to_save"), 2f); Sfx.Play("hit", null, -10f); return false; }
             book.Save(slot, cap);
             Sfx.Play("place", null, -6f, 1.4f);
-            _d.Hud.Hint($"Plan Defteri {slot + 1}: {cap.Pieces.Count} parça kaydedildi", 2f);
+            _d.Hud.Hint(Loc.T("build.book_saved", slot + 1, cap.Pieces.Count), 2f);
             GD.Print($"PLANBOOK saved slot={slot} pieces={cap.Pieces.Count}");
             return true;
         }
@@ -212,13 +212,13 @@ public partial class BuildBridge
         _sys.UpdateAim(cam.GlobalPosition, -cam.GlobalBasis.Z);
         var bp = _sys.Blueprint;
         bool ok = _sys.Current != null && _sys.Current.Valid;
-        _d.Hud.Hint($"Plan Defteri: {bp.Name} ({bp.Pieces.Count} parça){(ok ? "" : "  ·  " + (_sys.Current?.Reason ?? "temel için düz yer"))}  ·  {{act:fire}}: plan olarak bırak  ·  {{act:build_rotate}}: döndür  ·  {{act:build_plan}}: vazgeç", 0.2f);
+        _d.Hud.Hint(Loc.T("build.book_place_hint", bp.Name, bp.Pieces.Count, (ok ? "" : "  ·  " + (_sys.Current?.Reason ?? Loc.T("build.book_flat_ground")))), 0.2f);
         if (!place) return;
-        if (_d.Net != null && !_d.Net.IsHost) { _d.Hud.Hint("Plan Defteri ortak oyunda yalnız kurucuda (M2)", 2f); Sfx.Play("hit", null, -10f); return; }
+        if (_d.Net != null && !_d.Net.IsHost) { _d.Hud.Hint(Loc.T("build.book_host_only"), 2f); Sfx.Play("hit", null, -10f); return; }
         var (k, n) = _sys.PlaceBlueprint();
         if (k == 0) { Sfx.Play("hit", null, -10f); return; }
         Sfx.Play("place", null, -4f, 1.2f);
-        _d.Hud.Hint($"Plan Defteri: {k}/{n} parça plan olarak kondu", 2.5f);
+        _d.Hud.Hint(Loc.T("build.book_placed", k, n), 2.5f);
         _sys.EndBlueprint();
     }
 }

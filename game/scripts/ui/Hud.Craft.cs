@@ -134,17 +134,17 @@ public partial class Hud
         {
             Section(ItemNames.Of(_craftStation), CLeftX, CTop);
             var st = _d.NearStation(_craftStation);
-            Paragraph(st != null ? "İstasyonun tarifleri. Bu istasyonun yanında üretilir; malzeme ve yakıt önce çantadan, eksiği tapudaki Sandıklardan." : "İstasyondan uzaklaştın: tarifler yanına dönünce üretilir.", CLeftX, CTop + 40, CLeftW, 15, T.A(T.Ink, 0.8f), 4);
-            Button("BÜTÜN TARİFLER", CLeftX, CTop + 120, CLeftW, 40, 18);
+            Paragraph(st != null ? Loc.T("craft.station_near") : Loc.T("craft.station_far"), CLeftX, CTop + 40, CLeftW, 15, T.A(T.Ink, 0.8f), 4);
+            Button(Loc.T("craft.all_recipes"), CLeftX, CTop + 120, CLeftW, 40, 18);
             PaintStationExtras(); // zincir: Masa, guc, kuyruk (Hud.Craft.Research.cs)
         }
         else
         {
-            Section("Üretim", CLeftX, CTop);
+            Section(Loc.T("craft.title"), CLeftX, CTop);
             var sr = CraftSearchRect();
             _p.DrawRect(sr, _searchFocus ? T.Selected : T.Panel);
             if (_searchFocus) Frame(CLeftX, CTop + 38, CLeftW, 40, T.SelectedEdge, 1.5f);
-            string shown = _craftSearch.Length > 0 ? _craftSearch + (_searchFocus ? "_" : "") : _searchFocus ? "_" : "ARA…";
+            string shown = _craftSearch.Length > 0 ? _craftSearch + (_searchFocus ? "_" : "") : _searchFocus ? "_" : Loc.T("craft.search");
             Text(shown, CLeftX + 12, CTop + 47, 18, _craftSearch.Length > 0 || _searchFocus ? T.Ink : T.Muted, _craftSearch.Length == 0, true);
             var cats = _d.Data.Tool.CraftCategories;
             for (int i = 0; i < cats.Count; i++)
@@ -156,8 +156,8 @@ public partial class Hud
         }
 
         // Orta: tarifler
-        Section(_craftStation != null ? "Tarifler" : $"Tarifler  {rows.Count}", CMidX, CTop);
-        if (rows.Count == 0) { Rect(CMidX, CTop + 38, CMidW, 50, T.Panel); Text("Bu aramada tarif yok.", CMidX + 14, CTop + 52, 17, T.Muted); }
+        Section(_craftStation != null ? Loc.T("craft.recipes") : Loc.T("craft.recipes_n", rows.Count), CMidX, CTop);
+        if (rows.Count == 0) { Rect(CMidX, CTop + 38, CMidW, 50, T.Panel); Text(Loc.T("craft.no_result"), CMidX + 14, CTop + 52, 17, T.Muted); }
         for (int i = _craftScroll; i < Math.Min(rows.Count, _craftScroll + vis); i++) PaintCraftRow(rows[i], i, near);
         if (rows.Count > vis) TextIn($"{_craftScroll + 1}–{Math.Min(rows.Count, _craftScroll + vis)} / {rows.Count}", CMidX, CBottom + 2, CMidW, 13, T.Muted, HorizontalAlignment.Right, true, true);
 
@@ -195,12 +195,12 @@ public partial class Hud
                 if (cx + Measure(part, 15) > tx + tw) { Text("…", cx, y + 33, 15, T.Muted); break; }
                 cx += Text(part, cx, y + 33, 15, have >= n ? good : bad);
             }
-            if (r.In.Count == 0) Text("malzemesiz", cx, y + 33, 15, T.A(T.Ink, 0.7f));
+            if (r.In.Count == 0) Text(Loc.T("craft.no_material"), cx, y + 33, 15, T.A(T.Ink, 0.7f));
         }
         // Sag: istasyon ya da sure
-        if (needSt != null) TextIn(T.Upper($"{ItemNames.Of(needSt)} gerekir"), CMidX, y + 8, CMidW - 10, 14, bad, HorizontalAlignment.Right, true, true);
-        else TextIn(CraftRules.IsHand(r) ? "ELDE" : T.Upper(ItemNames.Of(r.Station)), CMidX, y + 8, CMidW - 10, 13, T.Muted, HorizontalAlignment.Right, true, true);
-        TextIn($"{r.Seconds:0.#} SN", CMidX, y + 32, CMidW - 10, 15, T.A(T.Ink, 0.8f), HorizontalAlignment.Right, true, true);
+        if (needSt != null) TextIn(T.Upper(Loc.T("craft.needs_station", ItemNames.Of(needSt))), CMidX, y + 8, CMidW - 10, 14, bad, HorizontalAlignment.Right, true, true);
+        else TextIn(CraftRules.IsHand(r) ? Loc.T("craft.by_hand") : T.Upper(ItemNames.Of(r.Station)), CMidX, y + 8, CMidW - 10, 13, T.Muted, HorizontalAlignment.Right, true, true);
+        TextIn(Loc.T("craft.sec", r.Seconds.ToString("0.#", System.Globalization.CultureInfo.InvariantCulture)), CMidX, y + 32, CMidW - 10, 15, T.A(T.Ink, 0.8f), HorizontalAlignment.Right, true, true);
     }
 
     /// <summary>Sag sutunun tiklanabilir alanlari (cizimle ayni hesap).</summary>
@@ -226,13 +226,13 @@ public partial class Hud
         // Ust kutu: ikon, tur, nerede
         Rect(x, y0, w, 120, T.Panel);
         ItemIcon(r.Id, x + 10, y0 + 10, 100, 100);
-        string where = CraftRules.IsHand(r) ? "Elde üretilir: her yerde." : $"{ItemNames.Of(r.Station)} yanında üretilir.";
-        string what = _d.Data.Tool.IsPlaceable(r.Id) ? "Yerleştirilebilir: çantaya girer, kemerden seçip kur." : r.Load ? "Yük: istasyonun önüne çıkar." : _d.Data.Tool.IsFood(r.Id) ? "Yemek: kemerden seçip sol tıkla ye." : "Çantaya girer.";
+        string where = CraftRules.IsHand(r) ? Loc.T("craft.where_hand") : Loc.T("craft.where_station", ItemNames.Of(r.Station));
+        string what = _d.Data.Tool.IsPlaceable(r.Id) ? Loc.T("craft.kind_placeable") : r.Load ? Loc.T("craft.kind_load") : _d.Data.Tool.IsFood(r.Id) ? Loc.T("craft.kind_food") : Loc.T("craft.kind_bag");
         Paragraph($"{where} {what}", x + 124, y0 + 12, w - 136, 16, T.Ink, 3);
-        Text($"SÜRE  {r.Seconds:0.#} SN   ·   ÜRÜN  ×{r.Out}", x + 124, y0 + 88, 15, T.A(T.Ink, 0.8f), true, true);
+        Text(Loc.T("craft.duration_out", r.Seconds.ToString("0.#", System.Globalization.CultureInfo.InvariantCulture), r.Out), x + 124, y0 + 88, 15, T.A(T.Ink, 0.8f), true, true);
 
         // Malzemeler: her satir ad, eldeki / gereken; eksikse kirmizi, altinda kaynagi ve "Pusulada goster"
-        Text("MALZEME", x, y0 + 130 - 26, 17, T.Ink, true, true);
+        Text(Loc.T("craft.material"), x, y0 + 130 - 26, 17, T.Ink, true, true);
         int k = 0;
         foreach (var (item, n) in r.In)
         {
@@ -246,31 +246,31 @@ public partial class Hud
             if (!okItem)
             {
                 var src = CraftRules.Source(_d.Data.Tool, item);
-                string line = src != null ? $"{ItemNames.Of(item)}: {src.Text}" : $"{ItemNames.Of(item)}: kaynağı bilinmiyor";
+                string line = src != null ? $"{ItemNames.Of(item)}: {src.Text}" : Loc.T("craft.source_unknown", ItemNames.Of(item));
                 Text(Fit(line, w - 64 - 160, 15), x + 64, y + 34, 15, T.Red);
                 if (src != null)
                 {
                     bool pinned = _d.PinnedSource == item;
-                    Button(pinned ? "PUSULADA" : "PUSULADA GÖSTER", x + w - 150, y + 30, 150, 28, 14, null, true, false, pinned);
+                    Button(pinned ? Loc.T("craft.pinned") : Loc.T("craft.pin"), x + w - 150, y + 30, 150, 28, 14, null, true, false, pinned);
                 }
             }
             k++;
         }
-        if (r.In.Count == 0) { Rect(x, y0 + 130, w, 44, T.Panel); Text("Malzeme gerekmez.", x + 14, y0 + 142, 16, T.A(T.Ink, 0.8f)); }
+        if (r.In.Count == 0) { Rect(x, y0 + 130, w, 44, T.Panel); Text(Loc.T("craft.no_mat_needed"), x + 14, y0 + 142, 16, T.A(T.Ink, 0.8f)); }
 
         // Alt: adet ve URET
         string needSt = CraftRules.NeedStation(r, near);
         bool unlocked = Unlocked(r);
         bool can = unlocked && needSt == null && CraftRules.Missing(r, _craftCount, _d.StoreFor(r)).Count == 0;
         float by = CBottom - 92;
-        Text("ADET", x, by - 24, 15, T.Muted, true, true);
+        Text(Loc.T("craft.count"), x, by - 24, 15, T.Muted, true, true);
         Button("−", x, by, 46, 40, 24);
         Rect(x + 50, by, 62, 40, T.Panel);
         TextIn(_craftCount.ToString(CultureInfo.InvariantCulture), x + 50, by + 6, 62, 24, T.Ink, HorizontalAlignment.Center, true, true);
         Button("+", x + 116, by, 46, 40, 24);
-        Button("MAKS", x + 168, by, 70, 40, 16);
-        Text($"TOPLAM {r.Seconds * _craftCount:0.#} SN", x, by + 46, 14, T.A(T.Ink, 0.7f), true, true);
-        string label = !unlocked ? "KİLİTLİ" : needSt != null ? T.Upper($"{ItemNames.Of(needSt)} gerekir") : can ? "ÜRET" : "MALZEME EKSİK";
+        Button(Loc.T("craft.max"), x + 168, by, 70, 40, 16);
+        Text(Loc.T("craft.total", (r.Seconds * _craftCount).ToString("0.#", System.Globalization.CultureInfo.InvariantCulture)), x, by + 46, 14, T.A(T.Ink, 0.7f), true, true);
+        string label = !unlocked ? Loc.T("craft.locked") : needSt != null ? T.Upper(Loc.T("craft.needs_station", ItemNames.Of(needSt))) : can ? Loc.T("craft.craft_btn") : Loc.T("craft.missing");
         if (_d.ResearchLocked(r)) (label, can) = ResearchButton(r); // zincir: "ARASTIR · 25 VERI" (Hud.Craft.Research.cs)
         Button(label, x + w - 220, by, 220, 82, label.Length > 10 ? 20 : 30, can ? T.Green.Darkened(0.35f) : T.Panel, can);
     }
@@ -392,11 +392,11 @@ public partial class Hud
             Rect(x, y + QRowH - 4, QW * Mathf.Clamp(prog, 0, 1), 4, T.Green);
             ItemIcon(icon, x + 2, y + 2, QRowH - 4, QRowH - 4, 1f, false);
             Text(Fit(T.Upper(title), QW - QRowH - 90, 15, true, true), x + QRowH + 4, y + 7, 15, T.Ink, true, true, !inventory);
-            TextIn($"{Mathf.Ceil(left):0} SN", x, y + 7, QW - (inventory ? QRowH + 6 : 8), 15, T.A(T.Ink, 0.85f), HorizontalAlignment.Right, true, true, !inventory);
+            TextIn(Loc.T("craft.sec", Mathf.Ceil(left).ToString("0", System.Globalization.CultureInfo.InvariantCulture)), x, y + 7, QW - (inventory ? QRowH + 6 : 8), 15, T.A(T.Ink, 0.85f), HorizontalAlignment.Right, true, true, !inventory);
             if (inventory) Button("×", x + QW - QRowH, y, QRowH, QRowH, 22, T.A(T.Red, 0.55f));
         }
         float top = QueueBottom - rows.Count * (QRowH + 3) - 22;
-        TextIn("ÜRETİM SIRASI", x, top, QW, 13, T.A(T.Ink, 0.75f), HorizontalAlignment.Right, true, true, !inventory);
+        TextIn(Loc.T("craft.queue_title"), x, top, QW, 13, T.A(T.Ink, 0.75f), HorizontalAlignment.Right, true, true, !inventory);
     }
 
     bool QueuePress(InputEventMouseButton mb)

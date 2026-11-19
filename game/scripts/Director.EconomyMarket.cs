@@ -12,7 +12,9 @@ namespace Kabarma.Game;
 /// </summary>
 public partial class Director
 {
-    public const string BorsaTitle = "Borsa", CatalogTitle = "Katalog", WheelTitle = "Tohum Çarkı";
+    public static string BorsaTitle => Loc.T("dir.borsa_title");
+    public static string CatalogTitle => Loc.T("dir.catalog_title");
+    public static string WheelTitle => Loc.T("dir.wheel_title");
     /// <summary>Rampa panelinde terminal satirlarinin ilki (Borsa); Katalog +1, Cark +2 (bot ve sinama icin).</summary>
     public int RampTerminalRow { get; private set; } = -1;
 
@@ -24,7 +26,7 @@ public partial class Director
         {
             var hot = State.Market.State.Hot;
             GD.Print($"BORSA day={day} hot={hot}");
-            if (hot.Length > 0) Hud.Hint($"Borsa: bugün {State.Market.CategoryName(hot)} sıcak (×2)", 4f);
+            if (hot.Length > 0) Hud.Hint(Loc.T("dir.hint_borsa_hot", State.Market.CategoryName(hot)), 4f);
         };
         // Kayittan gelen inmis teslimatlar: kapsulleri yerinde kur.
         foreach (var dl in State.Catalog.Deliveries.Where(d => d.Arrived).ToList()) OnDeliveryArrived(dl);
@@ -35,17 +37,17 @@ public partial class Director
 
     void AddTerminalRows(List<Hud.MenuItem> items)
     {
-        Hud.SetMarketPanel("borsa", "Kargo Rampası");
+        Hud.SetMarketPanel("borsa", Loc.T("dir.ramp_title"));
         RampTerminalRow = items.Count;
         var m = State.Market;
-        string hot = m.State.Hot.Length > 0 ? $"bugün sıcak: {m.CategoryName(m.State.Hot)}" : m.State.Open ? "bugün sıcak yok" : "fiyatlar ilk sabah oynar";
-        items.Add(new Hud.MenuItem($"Borsa   ←   12 kategori · {hot}", () => true, () => OpenBorsaMenu()));
+        string hot = m.State.Hot.Length > 0 ? Loc.T("dir.borsa_hot_today", m.CategoryName(m.State.Hot)) : m.State.Open ? Loc.T("dir.borsa_no_hot") : Loc.T("dir.borsa_first_morning");
+        items.Add(new Hud.MenuItem(Loc.T("dir.row_borsa", hot), () => true, () => OpenBorsaMenu()));
         int onWay = State.Catalog.Deliveries.Count;
-        items.Add(new Hud.MenuItem($"Katalog   ←   {State.Credits} Kredi{(onWay > 0 ? $" · {onWay} teslimat" : "")}", () => true, OpenCatalogMenu));
-        items.Add(new Hud.MenuItem($"Tohum Çarkı   ←   {(State.WheelFreeToday ? "bugün bedava" : $"{State.Wheel.Cost} Kredi")}", () => true, OpenWheelMenu));
+        items.Add(new Hud.MenuItem(Loc.T("dir.row_catalog", State.Credits, onWay > 0 ? Loc.T("dir.row_catalog_deliveries", onWay) : ""), () => true, OpenCatalogMenu));
+        items.Add(new Hud.MenuItem(Loc.T("dir.row_wheel", State.WheelFreeToday ? Loc.T("dir.wheel_free_today") : Loc.T("dir.credits_n", State.Wheel.Cost)), () => true, OpenWheelMenu));
     }
 
-    Hud.MenuItem BackToRamp() => new("Geri: Kargo Rampası", () => true, OpenRampMenu);
+    Hud.MenuItem BackToRamp() => new(Loc.T("dir.back_to_ramp"), () => true, OpenRampMenu);
 
     // ---------- Borsa ----------
 
@@ -57,12 +59,12 @@ public partial class Director
         foreach (var c in m.Categories)
         {
             var id = c.Id;
-            string tag = m.IsHot(id) ? "  · SICAK" : "";
+            string tag = m.IsHot(id) ? Loc.T("dir.borsa_hot_tag") : "";
             items.Add(new Hud.MenuItem($"{c.Name}  ×{m.Factor(id):0.00}{tag}", () => true, () => { Hud.MarketCategory = id; OpenBorsaMenu(); }));
         }
         items.Add(BackToRamp());
         Hud.SetMarketPanel("borsa", BorsaTitle);
-        Hud.ShowMenu(BorsaTitle, items, "Satırı seç: son 30 günü solda büyük gör. Satış Kargo Rampası'ndan; fiyat fırlatma anında kilitlenir.  ·  {act:interact} / {act:ui_cancel}: kapat");
+        Hud.ShowMenu(BorsaTitle, items, Loc.T("dir.borsa_foot"));
     }
 
     // ---------- Katalog ----------
@@ -76,13 +78,13 @@ public partial class Director
             var entry = e;
             int price = cat.Price(e);
             string what = e.Items.Count > 0 ? string.Join(", ", e.Items.Select(kv => $"{ItemNames.Of(kv.Key)} ×{kv.Value}")) : ItemNames.Of(e.Load);
-            string via = e.Via == "rampa" ? $"rampaya {cat.Seconds(e.Via):0} sn" : $"kapsülle {cat.Seconds(e.Via):0} sn";
-            items.Add(new Hud.MenuItem($"{e.Name}   ←   {price} Kredi · {what} · {via}", () => State.Credits >= price, () => BuyCatalog(entry.Id),
+            string via = e.Via == "rampa" ? Loc.T("dir.via_ramp", cat.Seconds(e.Via).ToString("0", System.Globalization.CultureInfo.InvariantCulture)) : Loc.T("dir.via_pod", cat.Seconds(e.Via).ToString("0", System.Globalization.CultureInfo.InvariantCulture));
+            items.Add(new Hud.MenuItem(Loc.T("dir.catalog_row", e.Name, price, what, via), () => State.Credits >= price, () => BuyCatalog(entry.Id),
                 e.Items.Keys.FirstOrDefault() ?? (e.Load.Length > 0 ? e.Load : null)));
         }
         items.Add(BackToRamp());
         Hud.SetMarketPanel("katalog", CatalogTitle);
-        Hud.ShowMenu(CatalogTitle, items, $"Cüzdan: {State.Credits} Kredi (ekipçe ortak).  ·  {{act:interact}} / {{act:ui_cancel}}: kapat");
+        Hud.ShowMenu(CatalogTitle, items, Loc.T("dir.catalog_foot", State.Credits));
     }
 
     /// <summary>Katalog satiri: Krediyi duser, teslimat yola cikar.</summary>
@@ -91,10 +93,10 @@ public partial class Director
         var e = State.Catalog.Entry(entryId);
         int price = e == null ? 0 : State.Catalog.Price(e);
         var dl = State.BuyCatalog(entryId);
-        if (dl == null) { Hud.Hint("Kredi yetmiyor", 1.5f); Sfx.Play("hit", null, -12f); return false; }
+        if (dl == null) { Hud.Hint(Loc.T("dir.hint_no_credits"), 1.5f); Sfx.Play("hit", null, -12f); return false; }
         Sfx.Play("pickup", null, -4f);
-        Hud.Big($"-{price} Kredi", Palette.Warning, 2f);
-        if (dl.Id == 0) Hud.Hint($"{e.Name}: dolapta (K)", 3f); else Hud.Hint(dl.Via == "rampa" ? $"{e.Name}: {dl.Left:0} sn sonra Kargo Rampası'na iner" : $"{e.Name}: kapsül {dl.Left:0} sn sonra Ocak'ın yanına iner", 3f);
+        Hud.Big(Loc.T("dir.big_credits_minus", price), Palette.Warning, 2f);
+        if (dl.Id == 0) Hud.Hint(Loc.T("dir.hint_in_wardrobe", e.Name), 3f); else Hud.Hint(dl.Via == "rampa" ? Loc.T("dir.hint_arrives_ramp", e.Name, dl.Left.ToString("0", System.Globalization.CultureInfo.InvariantCulture)) : Loc.T("dir.hint_arrives_pod", e.Name, dl.Left.ToString("0", System.Globalization.CultureInfo.InvariantCulture)), 3f);
         GD.Print($"CATALOG buy {entryId} -{price} credits={State.Credits} via={dl.Via} id={dl.Id}");
         Events.RaiseCatalogBought(entryId, price);
         OpenCatalogMenu();
@@ -107,19 +109,19 @@ public partial class Director
     {
         var items = new List<Hud.MenuItem>
         {
-            new(State.WheelFreeToday ? "Çevir   ←   bugün bedava (günün ilk çevirmesi)" : $"Çevir   ←   {State.Wheel.Cost} Kredi",
+            new(State.WheelFreeToday ? Loc.T("dir.wheel_spin_free") : Loc.T("dir.wheel_spin_cost", State.Wheel.Cost),
                 () => State.WheelFreeToday || State.Credits >= State.Wheel.Cost, () => SpinWheel()),
             BackToRamp(),
         };
         Hud.SetMarketPanel("cark", WheelTitle);
-        Hud.ShowMenu(WheelTitle, items, "Gerçek para yok: çark yalnız oyun içi Krediyle döner. Alaca ürünle çevirme tarım gelince.  ·  {act:interact} / {act:ui_cancel}: kapat");
+        Hud.ShowMenu(WheelTitle, items, Loc.T("dir.wheel_foot"));
     }
 
     public WheelResult SpinWheel()
     {
         var r = State.SpinWheel();
-        if (r == null) { Hud.Hint("Kredi yetmiyor", 1.5f); Sfx.Play("hit", null, -12f); return null; }
-        string got = r.Reward.Kind == "credits" ? $"+{r.Credits} Kredi" : r.Reward.Kind == "items" ? $"{r.Reward.Name}: kapsülle gelir" : $"{r.Reward.Name}: Kooperatif deposunda";
+        if (r == null) { Hud.Hint(Loc.T("dir.hint_no_credits"), 1.5f); Sfx.Play("hit", null, -12f); return null; }
+        string got = r.Reward.Kind == "credits" ? Loc.T("dir.big_credits_plus", r.Credits) : r.Reward.Kind == "items" ? Loc.T("dir.wheel_reward_pod", r.Reward.Name) : Loc.T("dir.wheel_reward_depot", r.Reward.Name);
         Hud.Big(got, Palette.Warning, 2.5f);
         Sfx.Play("pickup", null, 0f);
         Fx.Burst(Pod.PadCenter + Vector3.Up * 1.5f, Palette.Warning, 24, 5f, 0.1f, 0.8f, true, 3f);
@@ -143,7 +145,7 @@ public partial class Director
         var pod = new EconomyDeliveryPod(dl, DeliverySpot(dl.Id));
         AddChild(pod);
         GD.Print($"DELIVERY {dl.Id} {dl.Source} landing at {DeliverySpot(dl.Id)}");
-        Hud.Hint("Katalog kapsülü iniyor: Ocak'ın yanında, E ile aç", 3f);
+        Hud.Hint(Loc.T("dir.hint_catalog_pod_landing"), 3f);
     }
 
     /// <summary>Kapsulun inecegi yer: Ocak'in yaninda (Ocak yoksa rampanin yaninda), istasyon ve esyalardan uzak.</summary>
@@ -182,7 +184,7 @@ public partial class Director
             Sfx.Play("place", at, 0f);
         }
         GD.Print($"DELIVERY {dl.Id} {dl.Source} ramp load {dl.Load}");
-        Hud.Hint($"{ItemNames.Of(dl.Load)} Kargo Rampası'na indi", 3f);
+        Hud.Hint(Loc.T("dir.hint_ramp_arrived", ItemNames.Of(dl.Load)), 3f);
         State.Catalog.LoadTaken(dl);
         Events.RaiseDelivered(dl.Source, 1);
     }
@@ -198,7 +200,7 @@ public partial class Director
         int n = State.Catalog.Collect(dl, State.Backpack);
         if (n <= 0)
         {
-            Hud.Hint("Çanta dolu: kapsül yerinde bekler", 2f);
+            Hud.Hint(Loc.T("dir.hint_bag_full_pod"), 2f);
             Sfx.Play("hit", null, -12f);
             return true;
         }
@@ -209,9 +211,9 @@ public partial class Director
         {
             Fx.Burst(pod.GlobalPosition + Vector3.Up * 0.5f, Palette.OffWhite, 20, 4f, 0.1f, 0.6f);
             pod.QueueFree();
-            Hud.Hint($"Kapsül açıldı: +{n} çantaya", 2f);
+            Hud.Hint(Loc.T("dir.hint_pod_opened", n), 2f);
         }
-        else Hud.Hint($"+{n} çantaya; çanta dolu, kalan kapsülde", 2.5f);
+        else Hud.Hint(Loc.T("dir.hint_pod_partial", n), 2.5f);
         return true;
     }
 }

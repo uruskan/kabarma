@@ -133,7 +133,7 @@ public partial class MudurEncounter : Node3D
                     AddPart(sp, $"hoparlor:{i}", new Vector3(0, 3.2f, 0), 0.9f, () => F is { Stage: 1 } && idx < F.Speakers.Count && F.Speakers[idx] > 0);
                 }
                 _fireT = 2f;
-                D.Hud.Say("Müdür araçtan indi: kalkan jeneratörlerini kapat, hoparlörleri sustur!");
+                D.Hud.Say(Loc.T("holding.mudur_out"));
                 break;
             case 2:
                 _zeppelin = BuildZeppelin(Def.Mudur.Roof.Balloons);
@@ -148,7 +148,7 @@ public partial class MudurEncounter : Node3D
                     AddPart(b, $"balon:{i}", Vector3.Zero, 1.2f, () => F is { Stage: 2 } && idx < F.Balloons.Count && F.Balloons[idx] > 0, weak: true);
                 }
                 _fireT = 2.5f;
-                D.Hud.Say("Kaçış zeplini! Balonları tek tek patlat.");
+                D.Hud.Say(Loc.T("holding.mudur_zeppelin"));
                 break;
         }
     }
@@ -166,9 +166,9 @@ public partial class MudurEncounter : Node3D
         _label.GlobalPosition = (f.Stage == 0 ? TruckPos : _boss?.GlobalPosition ?? _center) + Vector3.Up * 5.5f;
         _label.Text = f.Stage switch
         {
-            0 => $"Müdür · zırhlı kamyon  {Mathf.CeilToInt(f.TruckHp)}",
-            1 => $"Müdür  {Mathf.CeilToInt(f.BossHp)}  · jeneratör {f.Generators.Count(g => g > 0)}/{f.Generators.Count}  · hoparlör {f.Speakers.Count(s => s > 0)}",
-            _ => $"Müdür  {Mathf.CeilToInt(f.BossHp)}  · balon {MudurRules.BalloonsLeft(f)}/{f.Balloons.Count}",
+            0 => Loc.T("holding.mudur_truck", Mathf.CeilToInt(f.TruckHp)),
+            1 => Loc.T("holding.mudur_stage1", Mathf.CeilToInt(f.BossHp), f.Generators.Count(g => g > 0), f.Generators.Count, f.Speakers.Count(s => s > 0)),
+            _ => Loc.T("holding.mudur_stage2", Mathf.CeilToInt(f.BossHp), MudurRules.BalloonsLeft(f), f.Balloons.Count),
         };
         if (!_w.Host) return;
         foreach (var c in H.MudurTick(dt, H.MechanicsAlive(f.CampId))) Dispatch(c);
@@ -191,7 +191,7 @@ public partial class MudurEncounter : Node3D
             case MudurCue.CallUstabasi:
                 Calls++;
                 for (int i = 0; i < c.Count; i++) H.SpawnUnit(F.CampId, "ustabasi");
-                D.Hud.Say("Müdür Ustabaşı çağırdı!");
+                D.Hud.Say(Loc.T("holding.mudur_called"));
                 GD.Print($"MUDUR call ustabasi x{c.Count}");
                 break;
         }
@@ -303,11 +303,11 @@ public partial class MudurEncounter : Node3D
             var loot = H.MudurReward(D.State.Backpack, out var left);
             foreach (var (id, n) in left) H.State.Depot[id] = H.State.Depot.GetValueOrDefault(id) + n;
             if (loot != null && loot.Credits > 0) D.State.ApplyLoot(new HoldingLoot("mudur", new Dictionary<string, int>(), loot.Credits, ""), D.State.Backpack);
-            if (D.State.DropChip("holding:genel_merkez") != null) D.Hud.Say("Genel Merkez bir çip düşürdü.");
+            if (D.State.DropChip("holding:genel_merkez") != null) D.Hud.Say(Loc.T("holding.hq_chip"));
         }
         GD.Print($"MUDUR defeated t={_t:0.0} unlocks={string.Join(",", H.State.Unlocks)}");
-        D.Hud.Big("MÜDÜR YENİLDİ", Palette.HoldingRed, 3f);
-        D.Hud.Say("Genel Merkez senin: Yerçekimi başlığı, Efsane çip planları, Holding kaskı ve kaplaması açıldı.");
+        D.Hud.Big(Loc.T("holding.mudur_defeated"), Palette.HoldingRed, 3f);
+        D.Hud.Say(Loc.T("holding.hq_yours"));
         ClearStage();
     }
 

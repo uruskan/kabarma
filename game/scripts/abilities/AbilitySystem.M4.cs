@@ -89,11 +89,11 @@ public partial class AbilitySystem
             case "yorunge_sulamasi":
                 _rainT = def.Duration; _rainTick = 0f; _rainPos = D.World.Ground(at + aim * def.Distance);
                 Vfx.Ring(_rainPos + Vector3.Up * 0.1f, def.Radius, def.Duration, new Color("8CC8E8"), 0.5f);
-                Hud().Big("YÖRÜNGE SULAMASI", new Color("8CC8E8"), 2f);
+                Hud().Big(Loc.T("ability.big_orbital"), new Color("8CC8E8"), 2f);
                 break;
             case "zaman_durdu":
                 FreezeAll();
-                Hud().Big("ZAMAN DURDU", Palette.MayaTeal, 2f);
+                Hud().Big(Loc.T("ability.big_time_stop"), Palette.MayaTeal, 2f);
                 break;
         }
     }

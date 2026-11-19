@@ -98,14 +98,14 @@ public partial class AtaBar : CanvasLayer
     public void Phase(int p)
     {
         if (_def == null) return;
-        _phase.Text = $"  AŞAMA {p + 1}/{_def.Phases.Count} · {UiTheme.Upper(_def.Phases[p].Name)}";
+        _phase.Text = "  " + Loc.T("ata.phase", p + 1, _def.Phases.Count, UiTheme.Upper(_def.Phases[p].Name));
     }
 
     public new void Hide() { Visible = false; _def = null; _fight = null; }
 
     public void Victory(AtaDef def)
     {
-        _name.Text = UiTheme.Upper(def.Name) + " YENİLDİ";
+        _name.Text = UiTheme.Upper(def.Name) + " " + Loc.T("ata.defeated_tag");
         _tag.Text = "";
         _phase.Text = "";
         _hp.Value = 0;
@@ -124,6 +124,6 @@ public partial class AtaBar : CanvasLayer
         _hp.Value = _shown;
         _armor.Visible = _fight.Armor > 0;
         _armor.Value = _def != null && AtaRules.PhaseOf(_fight, _def).Armor > 0 ? _fight.Armor / AtaRules.PhaseOf(_fight, _def).Armor : 0;
-        _tag.Text = _fight.StunT > 0 ? "SERSEM  " : _fight.ShieldT > 0 ? "KALKAN  " : _fight.Armor > 0 ? $"YÜN %{_fight.Armor * 100:0}  " : "";
+        _tag.Text = _fight.StunT > 0 ? Loc.T("ata.tag_stun") + "  " : _fight.ShieldT > 0 ? Loc.T("ata.tag_shield") + "  " : _fight.Armor > 0 ? Loc.T("ata.tag_wool", (_fight.Armor * 100).ToString("0", System.Globalization.CultureInfo.InvariantCulture)) + "  " : "";
     }
 }

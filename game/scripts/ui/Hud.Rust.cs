@@ -193,14 +193,14 @@ void fragment() {
         var p = _d.Player.GlobalPosition;
         _promptKey = KeyText("interact", PadDevice ? "X" : "E");
         var st = _d.Stations.Where(s => s.InReach(p)).OrderBy(s => s.GlobalPosition.DistanceTo(p)).FirstOrDefault();
-        if (st != null) { _promptVerb = "Kullan"; _promptObject = st.Def.Name; return; }
+        if (st != null) { _promptVerb = Loc.T("hud.use"); _promptObject = st.Def.Name; return; }
         if (_d.Explorer?.Prompt(p) is { } ex) { _promptVerb = ex.verb; _promptObject = ex.obj; return; } // dunya2: kule, mancinik, yuva
         if (_d.Oyuk?.Prompt(p) is { } oy) { _promptVerb = oy.verb; _promptObject = oy.obj; return; } // oyuk (M3): agiz, kapi, sandik, kandil
         if (_d.Pod != null && _d.Pod.IsRamp && new Vector2(p.X - _d.Pod.PadCenter.X, p.Z - _d.Pod.PadCenter.Z).Length() < 4.5f)
-        { _promptVerb = "Sat"; _promptObject = "Kargo Rampası"; return; }
+        { _promptVerb = Loc.T("hud.sell"); _promptObject = Loc.T("hud.kargo_rampasi"); return; }
         var g = _d.Gidak;
         if (g != null && g.Visible && !g.Swollen && g.GlobalPosition.DistanceTo(p) < 3f && _d.State.Backpack.Count("wheat") > 0)
-        { _promptVerb = "Buğday ver"; _promptObject = "Gıdak"; }
+        { _promptVerb = Loc.T("hud.give_wheat"); _promptObject = "Gıdak"; }
     }
 
     // ---------- Suna (sol ust) ----------
@@ -215,7 +215,7 @@ void fragment() {
         float h = pad + 18 + 6 + lines.Count * (size + 5) + pad - 4;
         Rect(x, y, w, h, T.A(T.Dialog, 0.86f));
         Rect(x, y, 3, h, T.Teal);
-        Text("SUNA · KOOPERATİF SANTRALİ", x + pad, y + pad - 2, T.Data.Type.Caption + 2, T.Teal, true, true);
+        Text(Loc.T("hud.suna_title"), x + pad, y + pad - 2, T.Data.Type.Caption + 2, T.Teal, true, true);
         // Daktilo: gorunen harf sayisi kadar
         int shown = _sunaText.Text.Length, used = 0;
         for (int i = 0; i < lines.Count && used < shown; i++)

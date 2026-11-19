@@ -52,7 +52,7 @@ public partial class FarmView
     public void CycleSeed()
     {
         var list = SeedChoices();
-        if (list.Count == 0) { D?.Hud.Hint("Tohum yok: yabani bitkiyi Biçme ile topla", 1.4f); return; }
+        if (list.Count == 0) { D?.Hud.Hint(Loc.T("world.no_seeds"), 1.4f); return; }
         int i = list.FindIndex(c => c.Id == Farm.Selected);
         Farm.Selected = list[(i + 1) % list.Count].Id;
         Sfx.Play("hit", null, -14f);
@@ -169,14 +169,14 @@ public partial class FarmView
         var color = CropVisuals.ProduceColor(h.Crop);
         string name = ItemNames.Of(h.Item);
         Fx.Text3D(at + Vector3.Up * 1.0f, $"+{h.Yield} {name} {new string('★', h.Stars)}", Palette.Warning, 48, 1.2f, 1.3f);
-        Fx.Text3D(at + Vector3.Up * 0.55f, $"+{h.Seeds} tohum" + (h.Crossed ? " · çaprazlandı" : ""), Palette.OffWhite, 34, 1.0f, 1.2f);
+        Fx.Text3D(at + Vector3.Up * 0.55f, Loc.T("world.seeds_gain", h.Seeds) + (h.Crossed ? " · " + Loc.T("world.crossed") : ""), Palette.OffWhite, 34, 1.0f, 1.2f);
         if (d != null)
             for (int i = 0; i < Mathf.Min(h.Yield, 4); i++)
                 Fx.FlyTo(at + Vector3.Up * 0.3f, () => d.Player.BackpackPoint.GlobalPosition, color, 0.12f);
         if (h.Alaca != null)
         {
             var a = _data.Crops.Genetics.AlacaOf(h.Alaca);
-            d?.Hud.Hint($"Alaca! {name}: satışta ×{a?.PriceMult}", 2.5f);
+            d?.Hud.Hint(Loc.T("world.alaca_found", name, a?.PriceMult), 2.5f);
             Fx.Burst(at + Vector3.Up * 0.6f, CropVisuals.AlacaTint(h.Alaca), 30, 6f, 0.12f, 0.9f);
         Vfx.Play("farm_alaca", at + Vector3.Up * 0.5f, null, CropVisuals.AlacaTint(h.Alaca));
             Sfx.Play("swell", at, -2f);

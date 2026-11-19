@@ -47,12 +47,12 @@ public partial class Director
 
     public bool EatFood(FoodDef ff)
     {
-        if (State.Backpack.Count(ff.Id) <= 0) { Hud.Hint($"{ff.Name} yok", 1f); return false; }
-        if (!State.Food.Eat(ff)) { Hud.Hint("Üç yemek yuvası dolu", 1.2f); return false; }
+        if (State.Backpack.Count(ff.Id) <= 0) { Hud.Hint(Loc.T("dir.hint_none_left", ff.Name), 1f); return false; }
+        if (!State.Food.Eat(ff)) { Hud.Hint(Loc.T("dir.hint_food_slots_full"), 1.2f); return false; }
         State.Backpack.Remove(ff.Id, 1);
         Net?.ForwardEat(ff.Id); // ortak: istemcinin cantasi host'ta
         Sfx.Play("pickup", null, -2f);
-        Hud.Hint($"{ff.Name}: doydun, güçlendin", 1.5f);
+        Hud.Hint(Loc.T("dir.hint_ate", ff.Name), 1.5f);
         GD.Print($"ATE {ff.Id}");
         Events.RaiseAte(ff.Id);
         return true;
@@ -88,7 +88,7 @@ public partial class Director
         if (s is CargoCrateNode crate) { LoadCrateOnRamp(crate); return; }
         if (!State.Cargo.CanShipSwollen)
         {
-            Hud.Hint("Rampada kasa var: önce kasaları gönder", 2f);
+            Hud.Hint(Loc.T("dir.hint_ramp_has_crates"), 2f);
             var g = World.Ground(Pod.PadCenter + (Player.GlobalPosition - Pod.PadCenter).Normalized() * 3.5f);
             s.CreateTween().TweenProperty(s, "global_position", g + Vector3.Up * s.Radius * 0.6f, 0.35f);
             return;
@@ -102,7 +102,7 @@ public partial class Director
         tw.TweenCallback(Callable.From(s.QueueFree));
         Pod.Launch();
         Sfx.Play("rocket", Pod.PadCenter, 2f);
-        if (!instant) Hud.Big($"Gönderildi: {v} Kredi ({Data.Economy.Ramp.PayoutSeconds:0} sn)", Palette.Warning, 3.5f);
+        if (!instant) Hud.Big(Loc.T("dir.big_sent", v, Data.Economy.Ramp.PayoutSeconds.ToString("0", System.Globalization.CultureInfo.InvariantCulture)), Palette.Warning, 3.5f);
         Fx.Burst(Pod.PadCenter + Vector3.Up, Palette.Warning, 40, 8f, 0.12f, 1.2f, true, 6f);
         GD.Print($"SOLD {s.CropId} {s.Size.Id} +{v} credits={State.Credits} instant={instant}");
         Events.RaiseCropShipped(s.CropId, s.Size.Id, v);

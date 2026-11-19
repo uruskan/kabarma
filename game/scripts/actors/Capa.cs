@@ -82,7 +82,7 @@ public partial class Capa : Node3D
     public void Select(Head h)
     {
         if (Current == h) return;
-        if (!IsAvailable(h)) { _d.Hud.Hint($"{HeadNames[(int)h]} henüz yok: Tezgâh'ta yapılır", 1.5f); return; }
+        if (!IsAvailable(h)) { _d.Hud.Hint(Loc.T("capa.head_missing", HeadNames[(int)h]), 1.5f); return; }
         if (Current == Head.Cekim && Held != null) Drop();
         Current = h;
         _shotBuffer = 0f;

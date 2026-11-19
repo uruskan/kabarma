@@ -140,9 +140,9 @@ public partial class MapPanel : Control
         DrawRect(frame, T.A(T.Dialog, 0.94f));
         DrawRect(new Rect2(frame.Position, new Vector2(frame.Size.X, T.Pxf(3))), T.Teal);
         var title = T.Font(22, true, true);
-        DrawString(title, frame.Position + new Vector2(pad, T.Pxf(30)), "HARİTA", HorizontalAlignment.Left, -1, T.Px(22), T.Ink);
+        DrawString(title, frame.Position + new Vector2(pad, T.Pxf(30)), Loc.T("menu.map_title"), HorizontalAlignment.Left, -1, T.Px(22), T.Ink);
         var small = T.Font(14, false, true);
-        DrawString(small, frame.Position + new Vector2(frame.Size.X - pad, T.Pxf(28)), $"KEŞFEDİLEN %{X.Percent:0}  ·  NOKTA {X.Found.Count}/{W.Pois.Count}", HorizontalAlignment.Right, -1, T.Px(14), T.A(T.Ink, 0.8f));
+        DrawString(small, frame.Position + new Vector2(frame.Size.X - pad, T.Pxf(28)), Loc.T("menu.map_stats", X.Percent.ToString("0", System.Globalization.CultureInfo.InvariantCulture), X.Found.Count, W.Pois.Count), HorizontalAlignment.Right, -1, T.Px(14), T.A(T.Ink, 0.8f));
 
         DrawTextureRect(_base, r, false);
         // Sis: acilmamis alan (yumusak kenar icin dogrusal suzgec).
@@ -157,7 +157,7 @@ public partial class MapPanel : Control
             DrawLine(new Vector2(r.Position.X, r.Position.Y + u * r.Size.Y), new Vector2(r.End.X, r.Position.Y + u * r.Size.Y), new Color(1, 1, 1, 0.05f), 1f);
         }
         DrawRect(r, T.A(T.Ink, 0.35f), false, 1.5f);
-        DrawString(small, new Vector2(r.Position.X + r.Size.X / 2f - T.Pxf(4), r.Position.Y - T.Pxf(4)), "K", HorizontalAlignment.Left, -1, T.Px(14), T.Teal);
+        DrawString(small, new Vector2(r.Position.X + r.Size.X / 2f - T.Pxf(4), r.Position.Y - T.Pxf(4)), Loc.T("menu.map_north"), HorizontalAlignment.Left, -1, T.Px(14), T.Teal);
 
         // Kesif noktalari (bulunanlar).
         foreach (var poi in W.Pois.Where(p => X.Found.Contains(p.Id)))
@@ -204,7 +204,7 @@ public partial class MapPanel : Control
         DrawPolyline(new[] { tri[0], tri[1], tri[2], tri[0] }, new Color(0, 0, 0, 0.8f), 1.5f);
 
         // Alt satir: tuslar.
-        DrawString(small, new Vector2(frame.Position.X + pad, frame.End.Y - T.Pxf(10)), "SOL TIK: İŞARET KOY   ·   SAĞ TIK: İŞARETİ KALDIR   ·   M / ESC: KAPAT", HorizontalAlignment.Left, -1, T.Px(13), T.A(T.Ink, 0.7f));
+        DrawString(small, new Vector2(frame.Position.X + pad, frame.End.Y - T.Pxf(10)), Loc.T("menu.map_keys"), HorizontalAlignment.Left, -1, T.Px(13), T.A(T.Ink, 0.7f));
     }
 
     public override void _GuiInput(InputEvent e)
@@ -215,7 +215,7 @@ public partial class MapPanel : Control
         var w = ToWorld(r, mb.Position);
         if (mb.ButtonIndex == MouseButton.Left)
         {
-            var m = X.AddMarker(w.X, w.Y, $"İşaret {X.NextMarker - 1}");
+            var m = X.AddMarker(w.X, w.Y, Loc.T("menu.map_marker", X.NextMarker - 1));
             GD.Print($"MAP marker add {m.Id} at={w.X:0},{w.Y:0}");
         }
         else if (mb.ButtonIndex == MouseButton.Right && X.Markers.Count > 0)

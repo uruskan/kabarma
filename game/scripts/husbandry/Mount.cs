@@ -54,7 +54,7 @@ public partial class RanchSystem
         _rideMult = Ranch.Mount.Speed(ag.Animal, bonus) / Mathf.Max(0.1f, _d.Player.WalkSpeed);
         _d.Player.SpeedMult = _rideBase * _rideMult;
         _ridePrev = _d.Player.GlobalPosition;
-        Fx.Text3D(ag.Host.GlobalPosition + Vector3.Up * (ag.Species.Size + 0.8f), "Bindin", Palette.CoopBlue, 64, 1f, 1.2f);
+        Fx.Text3D(ag.Host.GlobalPosition + Vector3.Up * (ag.Species.Size + 0.8f), Loc.T("ranch.mounted"), Palette.CoopBlue, 64, 1f, 1.2f);
         Sfx.Play("pickup", ag.Host.GlobalPosition, -4f);
         GD.Print($"RANCH mounted {ag.Species.Id} id={ag.Animal.Id} speed={Ranch.Mount.Speed(ag.Animal, bonus):0.00}");
     }
@@ -72,7 +72,7 @@ public partial class RanchSystem
         var at = _d.World.Ground(p + (side.LengthSquared() > 0.01f ? side.Normalized() : Vector3.Right) * (ag.Species.Size * 0.6f + 0.4f));
         ag.Host.GlobalPosition = at;
         var post = Ranch.Mount.Dismount(ag.Animal, at.X, at.Z);
-        if (post != null) Fx.Text3D(at + Vector3.Up * (ag.Species.Size + 0.6f), "Bağlandı", Palette.CoopBlue, 64, 1f, 1.2f);
+        if (post != null) Fx.Text3D(at + Vector3.Up * (ag.Species.Size + 0.6f), Loc.T("ranch.tied"), Palette.CoopBlue, 64, 1f, 1.2f);
         GD.Print($"RANCH dismounted {ag.Species.Id} id={ag.Animal.Id}{(post != null ? " tied" : "")}");
     }
 

@@ -42,7 +42,7 @@ public partial class DefenseSystem : Node3D
 
     public static string PriorityName(string p) => p switch
     {
-        "nearest" => "en yakın", "strongest" => "en güçlü", "flying" => "uçan", "thief" => "hırsız", "off" => "kapalı", _ => p,
+        "nearest" => Loc.T("defense.prio_nearest"), "strongest" => Loc.T("defense.prio_strongest"), "flying" => Loc.T("defense.prio_flying"), "thief" => Loc.T("defense.prio_thief"), "off" => Loc.T("power.off"), _ => p,
     };
 
     // ---------------------------------------------------------------- kurma, sokme, kayittan donus
@@ -265,7 +265,7 @@ public partial class DefenseSystem : Node3D
         {
             if (n.Trap.Kind is "pit" or "oil" && !TrapRules.Broken(s)) Act(Op.Toggle, n); // Cukur: ac/kapa; Yag Hendegi: tutustur (M4)
             else if (s.Hp < n.Trap.Hp - 0.01f) Act(Op.Repair, n);
-            else _d.Hud.Hint($"{n.Trap.Name}: bakım gerekmiyor", 1.5f);
+            else _d.Hud.Hint(Loc.T("defense.no_repair_needed", n.Trap.Name), 1.5f);
         }
         return true;
     }
@@ -305,8 +305,8 @@ public partial class DefenseSystem : Node3D
             {
                 var d = F.Tower(t.Def);
                 int k = TowerRules.Load(t, d, bag);
-                if (k == 0) { Say(t.Loaded >= d.Magazine ? $"{name}: depo dolu" : $"{name}: çantada {string.Join(" ya da ", d.Ammo.Select(ItemNames.Of))} yok"); return false; }
-                Say($"{name}: +{k} cephane ({t.Loaded}/{d.Magazine})");
+                if (k == 0) { Say(t.Loaded >= d.Magazine ? Loc.T("defense.mag_full", name) : Loc.T("defense.no_ammo_in_bag", name, string.Join(" " + Loc.T("defense.or") + " ", d.Ammo.Select(ItemNames.Of)))); return false; }
+                Say(Loc.T("defense.ammo_added", name, k, t.Loaded, d.Magazine));
                 if (local && node != null) Fx.FlyTo(_d.Player.BackpackPoint.GlobalPosition, () => node.GlobalPosition + Vector3.Up * 1.5f, Palette.Accent, 0.12f);
                 Sfx.Play("pickup", node?.GlobalPosition, -6f, 1.2f);
                 GD.Print($"DEFENSE load {t.Def}({id}) +{k} = {t.Loaded}");
@@ -320,24 +320,24 @@ public partial class DefenseSystem : Node3D
                 float hp = t?.Hp ?? s.Hp;
                 var recipe = _d.Data.Tool.RecipeFor(def);
                 var cost = TowerRules.RepairCost(recipe?.In ?? new Dictionary<string, int>(), hp, max, F.RepairFraction);
-                if (cost.Count == 0) { Say($"{name}: bakım gerekmiyor"); return false; }
-                if (cost.Any(kv => bag.Count(kv.Key) < kv.Value)) { Say($"{name}: onarım için {string.Join(", ", cost.Select(kv => $"{kv.Value} {ItemNames.Of(kv.Key)}"))} gerek"); return false; }
+                if (cost.Count == 0) { Say(Loc.T("defense.no_repair_needed", name)); return false; }
+                if (cost.Any(kv => bag.Count(kv.Key) < kv.Value)) { Say(Loc.T("defense.repair_needs", name, string.Join(", ", cost.Select(kv => $"{kv.Value} {ItemNames.Of(kv.Key)}")))); return false; }
                 foreach (var (item, k) in cost) bag.Remove(item, k);
                 if (t != null) t.Hp = max; else s.Hp = max;
-                Say($"{name}: onarıldı");
+                Say(Loc.T("defense.repaired", name));
                 Sfx.Play("place", node?.GlobalPosition, -4f, 1.1f);
                 GD.Print($"DEFENSE repair {def}({id}) cost={string.Join(",", cost.Select(kv => $"{kv.Key}:{kv.Value}"))}");
                 return true;
             }
             case Op.Priority when t != null:
                 t.Priority = TowerRules.NextPriority(F, t.Priority);
-                Say($"{name}: öncelik {PriorityName(t.Priority)}");
+                Say(Loc.T("defense.priority_set", name, PriorityName(t.Priority)));
                 Sfx.Play("place", node?.GlobalPosition, -10f, 1.5f);
                 GD.Print($"DEFENSE priority {t.Def}({id}) {t.Priority}");
                 return true;
             case Op.Toggle when s != null:
                 TrapRules.Toggle(s, F.Trap(s.Def));
-                Say($"{name}: {(F.Trap(s.Def)?.Kind == "oil" ? (s.Open ? "tutuştu" : "yağ yok") : s.Open ? "açık" : "kapalı")}");
+                Say($"{name}: {(F.Trap(s.Def)?.Kind == "oil" ? (s.Open ? Loc.T("defense.ignited") : Loc.T("defense.no_oil")) : s.Open ? Loc.T("defense.open") : Loc.T("power.off"))}");
                 if (F.Trap(s.Def)?.Kind == "oil" && s.Open && node != null) Vfx.Play("trap_yag", node.GlobalPosition + Vector3.Up * 0.3f);
                 Sfx.Play("place", node?.GlobalPosition, -4f, s.Open ? 0.8f : 1.1f);
                 GD.Print($"DEFENSE pit {(s.Open ? "open" : "closed")} ({id})");

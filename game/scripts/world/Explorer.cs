@@ -96,7 +96,7 @@ public partial class Explorer : Node
             if (new Vector2(p.X - poi.X, p.Z - poi.Z).Length() > type.DiscoverRadius) continue;
             X.Discover(poi.Id);
             changed = true;
-            _d.Hud.Big($"Keşfedildi: {type.Name}", Palette.Warning, 2f);
+            _d.Hud.Big(Loc.T("world.discovered", type.Name), Palette.Warning, 2f);
             GD.Print($"EXPLORE found {poi.Id} at={poi.X:0},{poi.Z:0}");
         }
         SyncUses();
@@ -149,10 +149,10 @@ public partial class Explorer : Node
         var (k, poi, stop) = Nearest(p);
         return k switch
         {
-            Kind.Climb => ("Tırman", "Seyir Kulesi"),
-            Kind.Descend => ("İn", "Seyir Kulesi"),
-            Kind.Catapult => stop.Open ? ("Fırlat", stop.Name) : ("Kapalı", stop.Name),
-            Kind.Nest => ("Al", "Yuva"),
+            Kind.Climb => (Loc.T("world.climb"), Loc.T("world.lookout")),
+            Kind.Descend => (Loc.T("world.descend"), Loc.T("world.lookout")),
+            Kind.Catapult => stop.Open ? (Loc.T("world.launch"), stop.Name) : (Loc.T("world.closed"), stop.Name),
+            Kind.Nest => (Loc.T("world.take"), Loc.T("world.nest")),
             _ => null,
         };
     }
@@ -234,7 +234,7 @@ public partial class Explorer : Node
                 var type = W.PoiType(tower.Type);
                 int before = X.Revealed;
                 bool first = X.Climb(tower, type);
-                _d.Hud.Big(first ? $"HARİTA AÇILDI · %{X.Percent:0}" : "Seyir Kulesi", Palette.Warning, 2.5f);
+                _d.Hud.Big(first ? Loc.T("world.map_opened", X.Percent.ToString("0", System.Globalization.CultureInfo.InvariantCulture)) : Loc.T("world.lookout"), Palette.Warning, 2.5f);
                 if (first) Sfx.Play("pickup", top, 0f);
                 GD.Print($"EXPLORE climb {tower.Id} first={first} revealed={X.Revealed - before} percent={X.Percent:0.0}");
                 Bump();
@@ -259,13 +259,13 @@ public partial class Explorer : Node
         foreach (var f in _d.Furniture.Where(f => IsInstanceValid(f) && f.Def.Id == "mancinik"))
         {
             var at = f.GlobalPosition;
-            list.Add(new CatapultStop { Id = $"mancinik_{k++}", Name = k == 1 ? "Mancınık · Üs" : $"Mancınık {k}", X = at.X, Y = at.Y, Z = at.Z, Open = true });
+            list.Add(new CatapultStop { Id = $"mancinik_{k++}", Name = k == 1 ? Loc.T("world.catapult_base") : Loc.T("world.catapult_n", k), X = at.X, Y = at.Y, Z = at.Z, Open = true });
         }
         foreach (var poi in W.Pois.Where(q => q.Type == "seyir_kulesi" && W.PoiType(q.Type).Catapult))
         {
             var at = W.TowerCatapult(poi);
             var biome = _d.Data.Biomes.Biomes.TryGetValue(poi.Biome, out var b) ? b.Name : poi.Biome;
-            list.Add(new CatapultStop { Id = poi.Id, Name = $"Seyir Kulesi · {biome}", X = at.X, Y = at.Y, Z = at.Z, Open = X.Climbed.Contains(poi.Id) });
+            list.Add(new CatapultStop { Id = poi.Id, Name = Loc.T("world.lookout_biome", biome), X = at.X, Y = at.Y, Z = at.Z, Open = X.Climbed.Contains(poi.Id) });
         }
         return list;
     }
@@ -284,9 +284,9 @@ public partial class Explorer : Node
                 () => Catapult.Check(Cat, from, target, Carrying) == Catapult.Refusal.None,
                 () => { _d.Hud.HideMenu(); Launch(from, target); }));
         }
-        if (items.Count == 0) { _d.Hud.Hint("Başka açık durak yok: Seyir Kulesi'ne tırman ya da Mancınık kur", 3f); return; }
-        string why = Carrying ? Catapult.Text(Catapult.Refusal.Carrying) : "Paraşütle inilir";
-        _d.Hud.ShowMenu("MANCINIK", items, why);
+        if (items.Count == 0) { _d.Hud.Hint(Loc.T("world.no_other_stop"), 3f); return; }
+        string why = Carrying ? Catapult.Text(Catapult.Refusal.Carrying) : Loc.T("world.parachute");
+        _d.Hud.ShowMenu(Loc.T("world.catapult_title"), items, why);
     }
 
     /// <summary>Firlat: kural Sim'de (Catapult.Check, Plan). Yay boyunca ucar, parasut chuteHeight'ta acilir.</summary>

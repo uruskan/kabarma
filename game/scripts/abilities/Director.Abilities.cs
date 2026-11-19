@@ -30,7 +30,7 @@ public partial class Director
         if (Abilities.Stones.Interact() || Abilities.Drill.Interact()) return true;
         // Ocak'in E menusu: Tatbikat (GDD 14.7). Erisimde istasyon varsa E istasyona gider.
         if (Ocak == null || Ocak.GlobalPosition.DistanceTo(Player.GlobalPosition) > 2.6f || StationInFocus() != null || NetClient) return false;
-        Hud.ShowMenu("Ocak", new System.Collections.Generic.List<Hud.MenuItem>(Abilities.Drill.OcakMenuItems()), "Tatbikat: seçilen KS'nin dalgaları hayalet gelir; hasar gerçek, onarım bedava, ödül yok.\n{act:interact} / {act:ui_cancel}: kapat");
+        Hud.ShowMenu("Ocak", new System.Collections.Generic.List<Hud.MenuItem>(Abilities.Drill.OcakMenuItems()), Loc.T("tatbikat.menu_footer") + "\n" + Loc.T("world.close_footer"));
         return true;
     }
 }

@@ -14,7 +14,10 @@ public partial class Hud
 {
     int _defterTab;   // 0 Is emirleri, 1 Ustalik, 2 Basarimlar
     int _defterSel;   // sekmedeki secili satir
-    static readonly string[] DefterTabNames = { "İŞ EMİRLERİ", "USTALIK", "BAŞARIMLAR", "ÇİPLER" };
+    static string[] DefterTabNames => new[]
+    {
+        Loc.T("defter.tab_orders"), Loc.T("defter.tab_mastery"), Loc.T("defter.tab_achievements"), Loc.T("defter.tab_chips"),
+    };
 
     /// <summary>Acik Defter alt sekmesi: 0 Is emirleri, 1 Ustalik, 2 Basarimlar, 3 Cipler.</summary>
     public int DefterTab => _defterTab;
@@ -34,16 +37,17 @@ public partial class Hud
 
         var head = new HBoxContainer();
         head.AddThemeConstantOverride("separation", T.Px(14));
-        for (int i = 0; i < DefterTabNames.Length; i++)
+        var tabNames = DefterTabNames;
+        for (int i = 0; i < tabNames.Length; i++)
         {
-            string label = DefterTabNames[i];
+            string label = tabNames[i];
             if (i == 1 && s.Mastery.PendingCount > 0) label += $" ({s.Mastery.PendingCount})";
             head.AddChild(UL(label, i == _defterTab ? T.Data.Type.Section : 20, i == _defterTab ? T.Ink : T.Muted, true, true));
         }
         var gap = new Control { SizeFlagsHorizontal = Control.SizeFlags.ExpandFill };
         head.AddChild(gap);
         var cal = s.Calendar;
-        head.AddChild(UL(T.Upper(cal.Running ? $"Gün {cal.Day} · {cal.Part.Name}" : "Gün 1 · İlk gün"), 18, T.Muted, true, true));
+        head.AddChild(UL(T.Upper(cal.Running ? Loc.T("defter.day", cal.Day, cal.Part.Name) : Loc.T("defter.day_first")), 18, T.Muted, true, true));
         _defterPage.AddChild(head);
 
         switch (_defterTab)
@@ -66,21 +70,21 @@ public partial class Hud
         var opened = o.Chains.Where(c => c.Opened).ToList();
         _defterSel = Mathf.Clamp(_defterSel, 0, Mathf.Max(0, opened.Count - 1));
         _defterPage.AddChild(UL(o.DefterOpen
-            ? $"{opened.Count}/{o.ChainsTotal} zincir açık · {o.OrdersTotal} iş emri. Suna okur, Defter tutar. Kredi {s.Credits} · Veri {s.Research.Veri}"
-            : "Defter ilk Kabarma'dan sonra açılır. Şimdilik Çıraklık.", 16, T.Muted));
+            ? Loc.T("defter.orders_open", opened.Count, o.ChainsTotal, o.OrdersTotal, s.Credits, s.Research.Veri)
+            : Loc.T("defter.orders_closed"), 16, T.Muted));
 
         // Ogretici adimi (GDD 24): senaryo surerken
         var step = s.Scenario.Current;
         if (step != null)
         {
-            _defterPage.AddChild(DefterSection("ÖĞRETİCİ"));
+            _defterPage.AddChild(DefterSection(Loc.T("defter.tutorial")));
             _defterPage.AddChild(OrderRow(false, true, GoalText(step.Goal), step.Target > 1 ? $"{s.Scenario.Progress}/{step.Target}" : ""));
         }
 
         // Ekrana sigsin diye secili zinciri ortalayan 9 zincirlik pencere (yukari/asagi kaydirir).
         const int Window = 9;
         int first = Mathf.Clamp(_defterSel - 3, 0, Mathf.Max(0, opened.Count - Window));
-        if (first > 0) _defterPage.AddChild(UL($"↑ {first} zincir daha", 14, T.Muted, true, true));
+        if (first > 0) _defterPage.AddChild(UL(Loc.T("defter.chains_up", first), 14, T.Muted, true, true));
         string group = "";
         for (int k = first; k < Mathf.Min(opened.Count, first + Window); k++)
         {
@@ -90,11 +94,11 @@ public partial class Hud
             _defterPage.AddChild(ChainRow(chain, sel, o.Tracked == chain));
             if (sel) AddChainDetail(chain);
         }
-        if (first + Window < opened.Count) _defterPage.AddChild(UL($"↓ {opened.Count - first - Window} zincir daha", 14, T.Muted, true, true));
+        if (first + Window < opened.Count) _defterPage.AddChild(UL(Loc.T("defter.chains_down", opened.Count - first - Window), 14, T.Muted, true, true));
         if (!o.DefterOpen)
         {
             var next = o.Chains.Count > 1 ? o.Chains[1] : null;
-            if (next?.Current != null) _defterPage.AddChild(UL($"Sıradaki (Defter açılınca): {next.Def.Name} · {next.Current.Goal}", 15, T.Muted, true));
+            if (next?.Current != null) _defterPage.AddChild(UL(Loc.T("defter.next_chain", next.Def.Name, next.Current.Goal), 15, T.Muted, true));
         }
     }
 
@@ -111,12 +115,12 @@ public partial class Hud
         var name = UL(chain.Def.Name, 19, chain.Done ? T.Muted : T.Ink, true);
         h.AddChild(name);
         var cur = chain.Current;
-        var goal = UL(cur == null ? "Tamamlandı" : $"{cur.Goal}  {chain.Progress(chain.CurrentStep)}/{cur.Target}", 16, T.Muted);
+        var goal = UL(cur == null ? Loc.T("defter.completed") : $"{cur.Goal}  {chain.Progress(chain.CurrentStep)}/{cur.Target}", 16, T.Muted);
         goal.SizeFlagsHorizontal = Control.SizeFlags.ExpandFill;
         goal.HorizontalAlignment = HorizontalAlignment.Right;
         goal.ClipText = true;
         h.AddChild(goal);
-        h.AddChild(UL((tracked ? "TAKİP · " : "") + $"{chain.DoneCount}/{chain.Def.Steps.Count}", 17, tracked ? T.Ivory : T.Muted, true, true));
+        h.AddChild(UL((tracked ? Loc.T("defter.track") + " · " : "") + $"{chain.DoneCount}/{chain.Def.Steps.Count}", 17, tracked ? T.Ivory : T.Muted, true, true));
         row.AddChild(h);
         return row;
     }
@@ -129,12 +133,12 @@ public partial class Hud
             var st = chain.Def.Steps[i];
             bool done = chain.StepDone(i);
             bool current = !done && i == chain.CurrentStep;
-            string reward = $"{rw.Credits.ElementAtOrDefault(i):N0} Kr · {rw.Veri.ElementAtOrDefault(i)} Veri";
+            string reward = Loc.T("defter.reward", rw.Credits.ElementAtOrDefault(i).ToString("N0", System.Globalization.CultureInfo.InvariantCulture), rw.Veri.ElementAtOrDefault(i));
             string prog = done ? "✓" : current ? $"{chain.Progress(i)}/{st.Target}" : "";
             _defterPage.AddChild(OrderRow(done, current, $"{st.Goal}   ·   {reward}", prog));
         }
-        _defterPage.AddChild(UL($"Zincir ödülü: {chain.Def.Reward}", 15, T.Teal, true));
-        if (_d.State.Orders.Tracked != chain) _defterPage.AddChild(UL(_padLast ? "A: TAKİP ET" : "ENTER: TAKİP ET", 14, T.Muted, true, true));
+        _defterPage.AddChild(UL(Loc.T("defter.chain_reward", chain.Def.Reward), 15, T.Teal, true));
+        if (_d.State.Orders.Tracked != chain) _defterPage.AddChild(UL(_padLast ? Loc.T("defter.track_pad") : Loc.T("defter.track_kb"), 14, T.Muted, true, true));
     }
 
     Control DefterSection(string text)
@@ -148,7 +152,7 @@ public partial class Hud
     void BuildAchievementsPage()
     {
         var book = _d.State.Achievements;
-        _defterPage.AddChild(UL($"{book.Unlocked.Count}/{book.Total} başarım · zincirler 48'e tamamlanınca {book.Total}", 16, T.Muted));
+        _defterPage.AddChild(UL(Loc.T("defter.achievements_summary", book.Unlocked.Count, book.Total), 16, T.Muted));
         var list = book.All;
         _defterSel = Mathf.Clamp(_defterSel, 0, Mathf.Max(0, list.Count - 1));
         // Sayfa kaydirmasi yok: seciliyi ortalayan 12 satirlik pencere

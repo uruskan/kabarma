@@ -66,7 +66,7 @@ public partial class AtaStone : Node3D
         bool beaten = p.IsDefeated(_def.Id);
         float have = _def.Offering.Sum(o => o.Count - AtaRules.Missing(p, _def, o));
         float need = _def.Offering.Sum(o => o.Count);
-        _label.Text = beaten ? $"{UiTheme.Upper(_def.Name)}\nyenildi" : $"ATA TAŞI · {UiTheme.Upper(_def.Name)}\n{_def.OfferingName} {have:0}/{need:0}";
+        _label.Text = beaten ? Loc.T("ata.stone_beaten", UiTheme.Upper(_def.Name)) : Loc.T("ata.stone_label", UiTheme.Upper(_def.Name), _def.OfferingName, have.ToString("0", System.Globalization.CultureInfo.InvariantCulture), need.ToString("0", System.Globalization.CultureInfo.InvariantCulture));
         _runeMat.EmissionEnergyMultiplier = beaten ? 0.2f : 1f + 3f * (need > 0 ? have / need : 0);
     }
 

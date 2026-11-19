@@ -1,0 +1,47 @@
+key,tr,en,de,fr,es,pt_BR,ru,zh_CN,ja,ko
+hud.suna_title_legacy,◉ SUNA · Kooperatif Santrali,◉ SUNA · Co-op Switchboard,◉ SUNA · Kooperativ-Zentrale,◉ SUNA · Standard coopératif,◉ SUNA · Central cooperativa,◉ SUNA · Central cooperativa,◉ SUNA · Кооперативная станция,◉ SUNA · 合作社总机,◉ SUNA · 協同組合交換所,◉ SUNA · 협동조합 교환대
+hud.suna_title,SUNA · KOOPERATİF SANTRALİ,SUNA · CO-OP SWITCHBOARD,SUNA · KOOPERATIV-ZENTRALE,SUNA · STANDARD COOPÉRATIF,SUNA · CENTRAL COOPERATIVA,SUNA · CENTRAL COOPERATIVA,SUNA · КООПЕРАТИВНАЯ СТАНЦИЯ,SUNA · 合作社总机,SUNA · 協同組合交換所,SUNA · 협동조합 교환대
+hud.defter_order_title,DEFTER · İş emri,NOTEBOOK · Work order,NOTIZBUCH · Arbeitsauftrag,CARNET · Ordre de travail,CUADERNO · Orden de trabajo,CADERNO · Ordem de serviço,БЛОКНОТ · Наряд,笔记本 · 工单,ノート · 作業指示,수첩 · 작업 지시
+hud.head_hint_init,Q: çark  ·  1–8  ·  tekerlek,Q: wheel  ·  1–8  ·  scroll,Q: Rad  ·  1–8  ·  Mausrad,Q : roue  ·  1–8  ·  molette,Q: rueda  ·  1–8  ·  rueda del ratón,Q: roda  ·  1–8  ·  rolagem,Q: колесо  ·  1–8  ·  прокрутка,Q：轮盘  ·  1–8  ·  滚轮,Q: ホイール  ·  1–8  ·  スクロール,Q: 휠  ·  1–8  ·  스크롤
+hud.hp,CAN,HEALTH,LEBEN,VIE,VIDA,VIDA,ЗДОРОВЬЕ,生命,体力,체력
+hud.menu_empty,Burada yapılacak bir şey yok.,Nothing to do here.,Hier gibt es nichts zu tun.,Rien à faire ici.,Aquí no hay nada que hacer.,Não há nada para fazer aqui.,Здесь нечего делать.,这里没有可做的事。,ここでできることはありません。,여기서 할 수 있는 일이 없습니다.
+hud.head_hint,{act:head_wheel}: çark  ·  {act:head_keys},{act:head_wheel}: wheel  ·  {act:head_keys},{act:head_wheel}: Rad  ·  {act:head_keys},{act:head_wheel} : roue  ·  {act:head_keys},{act:head_wheel}: rueda  ·  {act:head_keys},{act:head_wheel}: roda  ·  {act:head_keys},{act:head_wheel}: колесо  ·  {act:head_keys},{act:head_wheel}：轮盘  ·  {act:head_keys},{act:head_wheel}: ホイール  ·  {act:head_keys},{act:head_wheel}: 휠  ·  {act:head_keys}
+hud.wheel_equipped,TAKILI,EQUIPPED,ANGELEGT,ÉQUIPÉ,EQUIPADO,EQUIPADO,УСТАНОВЛЕНО,已装备,装備中,장착됨
+hud.wheel_selected,SEÇİLİ,SELECTED,AUSGEWÄHLT,SÉLECTIONNÉ,SELECCIONADO,SELECIONADO,ВЫБРАНО,已选择,選択中,선택됨
+hud.key_right_click,SAĞ TIK,RIGHT CLICK,RECHTSKLICK,CLIC DROIT,CLIC DERECHO,BOTÃO DIREITO,ПКМ,右键,右クリック,우클릭
+hud.wheel_foot_pieces,{0} BIRAKILINCA SEÇİLİR   ·   ESC: VAZGEÇ,RELEASE {0} TO SELECT   ·   ESC: CANCEL,{0} LOSLASSEN ZUM AUSWÄHLEN   ·   ESC: ABBRECHEN,RELÂCHER {0} POUR CHOISIR   ·   ÉCHAP : ANNULER,SUELTA {0} PARA ELEGIR   ·   ESC: CANCELAR,SOLTE {0} PARA ESCOLHER   ·   ESC: CANCELAR,ОТПУСТИТЕ {0} ДЛЯ ВЫБОРА   ·   ESC: ОТМЕНА,松开 {0} 选择   ·   ESC：取消,{0} を離すと選択   ·   ESC: キャンセル,{0} 떼면 선택   ·   ESC: 취소
+hud.wheel_foot_plan,{0} BIRAKILINCA YAPILIR   ·   ESC / SAĞ TIK: VAZGEÇ,RELEASE {0} TO DO IT   ·   ESC / RIGHT CLICK: CANCEL,{0} LOSLASSEN ZUM AUSFÜHREN   ·   ESC / RECHTSKLICK: ABBRECHEN,RELÂCHER {0} POUR EXÉCUTER   ·   ÉCHAP / CLIC DROIT : ANNULER,SUELTA {0} PARA HACERLO   ·   ESC / CLIC DERECHO: CANCELAR,SOLTE {0} PARA EXECUTAR   ·   ESC / BOTÃO DIREITO: CANCELAR,ОТПУСТИТЕ {0} ДЛЯ ДЕЙСТВИЯ   ·   ESC / ПКМ: ОТМЕНА,松开 {0} 执行   ·   ESC / 右键：取消,{0} を離すと実行   ·   ESC / 右クリック: キャンセル,{0} 떼면 실행   ·   ESC / 우클릭: 취소
+hud.wheel_foot_book,"{0} BIRAKILINCA: BOŞ YUVA KAYDEDER, DOLU YUVA YERLEŞTİRİR   ·   ESC: VAZGEÇ",RELEASE {0}: EMPTY SLOT SAVES; FILLED SLOT PLACES   ·   ESC: CANCEL,{0} LOSLASSEN: LEERER PLATZ SPEICHERT; BELEGTER PLATZ PLATZIERT   ·   ESC: ABBRECHEN,RELÂCHER {0} : EMPLACEMENT VIDE ENREGISTRE; EMPLACEMENT PLEIN PLACE   ·   ÉCHAP : ANNULER,SUELTA {0}: RANURA VACÍA GUARDA; RANURA LLENA COLOCA   ·   ESC: CANCELAR,SOLTE {0}: SLOT VAZIO SALVA; SLOT CHEIO POSICIONA   ·   ESC: CANCELAR,ОТПУСТИТЕ {0}: ПУСТОЙ СЛОТ СОХРАНЯЕТ; ЗАНЯТЫЙ РАЗМЕЩАЕТ   ·   ESC: ОТМЕНА,松开 {0}：空槽保存；有内容的槽放置   ·   ESC：取消,{0} を離す: 空きスロットは保存; 使用中スロットは配置   ·   ESC: キャンセル,{0} 떼면: 빈 슬롯은 저장; 찬 슬롯은 배치   ·   ESC: 취소
+hud.wheel_foot_heads,{0} BIRAKILINCA TAKILIR   ·   ESC / SAĞ TIK: VAZGEÇ,RELEASE {0} TO EQUIP   ·   ESC / RIGHT CLICK: CANCEL,{0} LOSLASSEN ZUM ANLEGEN   ·   ESC / RECHTSKLICK: ABBRECHEN,RELÂCHER {0} POUR ÉQUIPER   ·   ÉCHAP / CLIC DROIT : ANNULER,SUELTA {0} PARA EQUIPAR   ·   ESC / CLIC DERECHO: CANCELAR,SOLTE {0} PARA EQUIPAR   ·   ESC / BOTÃO DIREITO: CANCELAR,ОТПУСТИТЕ {0} ДЛЯ УСТАНОВКИ   ·   ESC / ПКМ: ОТМЕНА,松开 {0} 装备   ·   ESC / 右键：取消,{0} を離すと装備   ·   ESC / 右クリック: キャンセル,{0} 떼면 장착   ·   ESC / 우클릭: 취소
+hud.defter_prefix,DEFTER · {0},NOTEBOOK · {0},NOTIZBUCH · {0},CARNET · {0},CUADERNO · {0},CADERNO · {0},БЛОКНОТ · {0},笔记本 · {0},ノート · {0},수첩 · {0}
+hud.defter_total,Defter: {0} iş emri,Notebook: {0} work orders,Notizbuch: {0} Arbeitsaufträge,Carnet : {0} ordres de travail,Cuaderno: {0} órdenes de trabajo,Caderno: {0} ordens de serviço,Блокнот: {0} нарядов,笔记本：{0} 个工单,ノート: 作業指示 {0} 件,수첩: 작업 지시 {0}건
+hud.next_goal,Sıradaki: 5 kabarık ürün yetiştir,Next: grow 5 Kabarık crops,Als Nächstes: 5 Kabarık-Produkte anbauen,Ensuite : cultiver 5 produits Kabarık,Siguiente: cultiva 5 productos Kabarık,Próximo: cultive 5 produtos Kabarık,Далее: вырастить 5 продуктов Kabarık,下一步：种出 5 个 Kabarık 作物,次: Kabarık 作物を5つ育てる,다음: Kabarık 작물 5개 키우기
+hud.compass_n,K,N,N,N,N,N,С,北,北,북
+hud.compass_ne,KD,NE,NO,NE,NE,NE,СВ,东北,北東,북동
+hud.compass_e,D,E,O,E,E,L,В,东,東,동
+hud.compass_se,GD,SE,SO,SE,SE,SE,ЮВ,东南,南東,남동
+hud.compass_s,G,S,S,S,S,S,Ю,南,南,남
+hud.compass_sw,GB,SW,SW,SO,SO,SO,ЮЗ,西南,南西,남서
+hud.compass_w,B,W,W,O,O,O,З,西,西,서
+hud.compass_nw,KB,NW,NW,NO,NO,NO,СЗ,西北,北西,북서
+hud.bag_line,{0} Kredi   ·   Yumurta {1}   ·   Çanta {2}/{3} ({4}),{0} Credits   ·   Eggs {1}   ·   Bag {2}/{3} ({4}),{0} Kredit   ·   Eier {1}   ·   Tasche {2}/{3} ({4}),{0} Crédits   ·   Œufs {1}   ·   Sac {2}/{3} ({4}),{0} Créditos   ·   Huevos {1}   ·   Mochila {2}/{3} ({4}),{0} Créditos   ·   Ovos {1}   ·   Mochila {2}/{3} ({4}),{0} Кредитов   ·   Яйца {1}   ·   Сумка {2}/{3} ({4}),{0} 信用点   ·   鸡蛋 {1}   ·   背包 {2}/{3} ({4}),{0} クレジット   ·   卵 {1}   ·   バッグ {2}/{3} ({4}),{0} 크레딧   ·   달걀 {1}   ·   가방 {2}/{3} ({4})
+hud.belt,KEMER,BELT,GÜRTEL,CEINTURE,CINTURÓN,CINTO,ПОЯС,腰带,ベルト,벨트
+hud.nail,ÇİVİ,NAIL,NAGEL,CLOU,CLAVO,PREGO,ГВОЗДЬ,钉子,釘,못
+hud.ammo_unlimited,KABARMA'DA SINIRSIZ,UNLIMITED IN KABARMA,UNBEGRENZT IN KABARMA,ILLIMITÉ PENDANT KABARMA,ILIMITADO EN KABARMA,ILIMITADO NO KABARMA,БЕЗ ОГРАНИЧЕНИЙ В KABARMA,KABARMA 中无限,KABARMA中は無制限,KABARMA 중 무제한
+hud.rarity_n,Nadir,Rare,Selten,Rare,Raro,Raro,Редкий,稀有,レア,희귀
+hud.rarity_d,Destansı,Epic,Episch,Épique,Épico,Épico,Эпический,史诗,エピック,영웅
+hud.rarity_e,Efsane,Legendary,Legendär,Légendaire,Legendario,Lendário,Легендарный,传说,レジェンド,전설
+hud.rarity_c,Sıradan,Common,Gewöhnlich,Commun,Común,Comum,Обычный,普通,コモン,일반
+hud.kabarma_coming,KABARMA GELİYOR,KABARMA IS COMING,KABARMA NAHT,KABARMA ARRIVE,KABARMA SE ACERCA,KABARMA ESTÁ CHEGANDO,KABARMA БЛИЗИТСЯ,KABARMA 来袭,KABARMA 接近中,KABARMA 접근 중
+hud.wave_n,DALGA {0}/{1},WAVE {0}/{1},WELLE {0}/{1},VAGUE {0}/{1},OLEADA {0}/{1},ONDA {0}/{1},ВОЛНА {0}/{1},波次 {0}/{1},ウェーブ {0}/{1},웨이브 {0}/{1}
+hud.gosteri,GÖSTERİ,SHOW,SHOW,SPECTACLE,ESPECTÁCULO,ESPETÁCULO,ЗРЕЛИЩЕ,演出,ショー,쇼
+hud.oz_capped,ÖZ · SEVİYE {0}/{1} · DOLU,ESSENCE · LEVEL {0}/{1} · FULL,ESSENZ · STUFE {0}/{1} · VOLL,ESSENCE · NIVEAU {0}/{1} · PLEIN,ESENCIA · NIVEL {0}/{1} · LLENO,ESSÊNCIA · NÍVEL {0}/{1} · CHEIO,СУТЬ · УРОВЕНЬ {0}/{1} · МАКС.,精华 · 等级 {0}/{1} · 已满,エッセンス · レベル {0}/{1} · 満タン,정수 · 레벨 {0}/{1} · 가득
+hud.oz_level,ÖZ {0}/{1} · SEVİYE {2}/{3},ESSENCE {0}/{1} · LEVEL {2}/{3},ESSENZ {0}/{1} · STUFE {2}/{3},ESSENCE {0}/{1} · NIVEAU {2}/{3},ESENCIA {0}/{1} · NIVEL {2}/{3},ESSÊNCIA {0}/{1} · NÍVEL {2}/{3},СУТЬ {0}/{1} · УРОВЕНЬ {2}/{3},精华 {0}/{1} · 等级 {2}/{3},エッセンス {0}/{1} · レベル {2}/{3},정수 {0}/{1} · 레벨 {2}/{3}
+hud.kills,{0} SÖNDÜ,{0} SNUFFED,{0} GELÖSCHT,{0} ÉTEINTS,{0} APAGADOS,{0} APAGADOS,{0} ПОГАШЕНО,已熄灭 {0},{0} 消灯,{0} 소멸
+hud.on_ground,YERDE {0} ÖZ,{0} ESSENCE ON GROUND,{0} ESSENZ AM BODEN,{0} ESSENCE AU SOL,{0} ESENCIA EN EL SUELO,{0} ESSÊNCIA NO CHÃO,{0} СУТИ НА ЗЕМЛЕ,地上 {0} 精华,地面に {0} エッセンス,바닥에 정수 {0}
+hud.next_rank,SIRADAKİ: {0}. RÜTBE,NEXT: RANK {0},NÄCHSTER: RANG {0},SUIVANT : RANG {0},SIGUIENTE: RANGO {0},PRÓXIMO: POSTO {0},СЛЕДУЮЩИЙ: РАНГ {0},下一级：{0} 阶,次: ランク {0},다음: {0} 등급
+hud.new_card,YENİ KART,NEW CARD,NEUE KARTE,NOUVELLE CARTE,NUEVA CARTA,NOVA CARTA,НОВАЯ КАРТА,新卡牌,新カード,새 카드
+hud.use,Kullan,Use,Benutzen,Utiliser,Usar,Usar,Использовать,使用,使う,사용
+hud.sell,Sat,Sell,Verkaufen,Vendre,Vender,Vender,Продать,出售,売る,판매
+hud.kargo_rampasi,Kargo Rampası,Cargo Ramp,Frachtrampe,Rampe de fret,Rampa de carga,Rampa de carga,Грузовая рампа,货运坡道,貨物ランプ,화물 경사로
+hud.give_wheat,Buğday ver,Give wheat,Weizen geben,Donner du blé,Dar trigo,Dar trigo,Дать пшеницу,喂小麦,小麦をあげる,밀 주기

@@ -9,8 +9,8 @@ public partial class Station
     string QueueTail()
     {
         var jobs = Queue.Jobs;
-        string next = jobs.Count > 1 ? "\nsonra: " + string.Join(", ", jobs.Skip(1).Take(3).Select(j => $"{j.Recipe.Name} ×{j.Left}")) + (jobs.Count > 4 ? " …" : "") : "";
-        string why = Queue.Blocked ? "\nbekliyor: çanta ve Sandıklar dolu" : Queue.PowerOk != null && !Queue.PowerOk() ? $"\nbekliyor: güç yok ({Queue.Watts} W)" : "";
+        string next = jobs.Count > 1 ? "\n" + Loc.T("world.queue_next", string.Join(", ", jobs.Skip(1).Take(3).Select(j => $"{j.Recipe.Name} ×{j.Left}"))) + (jobs.Count > 4 ? " …" : "") : "";
+        string why = Queue.Blocked ? "\n" + Loc.T("world.queue_blocked") : Queue.PowerOk != null && !Queue.PowerOk() ? "\n" + Loc.T("world.queue_no_power", Queue.Watts) : "";
         return next + why;
     }
 }

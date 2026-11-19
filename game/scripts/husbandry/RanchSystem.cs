@@ -194,16 +194,16 @@ public partial class RanchSystem : Node
             case RanchEventKind.Born:
             case RanchEventKind.Hatched:
                 if (a != null) SpawnActor(a);
-                Fx.Text3D(at, $"Yeni {Ranch.Rules.Species(e.Item).Name}!", Palette.Accent, 64, 1.2f, 1.6f);
+                Fx.Text3D(at, Loc.T("ranch.new_animal", Ranch.Rules.Species(e.Item).Name), Palette.Accent, 64, 1.2f, 1.6f);
                 Sfx.Play("pickup", at, 0f);
                 GD.Print($"RANCH born {e.Item} id={e.AnimalId} genes={a?.Genes}");
                 Events.RaiseAnimalBorn(e.Item);
                 break;
             case RanchEventKind.WantsOut:
-                if (a != null) _d.Hud.Hint($"{Ranch.Rules.Species(a.Species).Name} mutsuz: kapı açıksa kaçar", 3f);
+                if (a != null) _d.Hud.Hint(Loc.T("ranch.unhappy_hint", Ranch.Rules.Species(a.Species).Name), 3f);
                 break;
             case RanchEventKind.Escaped:
-                Fx.Text3D(at, "Kaçtı!", Palette.Warning, 64, 1.2f, 1.6f);
+                Fx.Text3D(at, Loc.T("ranch.fled"), Palette.Warning, 64, 1.2f, 1.6f);
                 GD.Print($"RANCH escaped {a?.Species} id={e.AnimalId}");
                 if (a != null) Events.RaiseAnimalEscaped(a.Species);
                 break;
@@ -304,7 +304,7 @@ public partial class RanchSystem : Node
         float range = Ranch.Rules.Def.PetRange + 0.6f;
         var bag = _d.State.Backpack;
         float D(Vector3 q) => new Vector2(q.X - p.X, q.Z - p.Z).Length();
-        if (Riding) { act = Dismount; dist = 0f; return "Binekten in"; } // M3: binekteyken E iner (Interact)
+        if (Riding) { act = Dismount; dist = 0f; return Loc.T("ranch.dismount"); } // M3: binekteyken E iner (Interact)
         foreach (var ag in _agents)
         {
             if (!IsInstanceValid(ag) || !IsInstanceValid(ag.Host)) continue;
@@ -319,16 +319,16 @@ public partial class RanchSystem : Node
                 if (s.Tame == "subdue" && !a.Bound)
                 {
                     bool can = ag.HpFraction < Ranch.Rules.Def.Subdue.HpFraction && Ranch.Rules.Def.Subdue.Tools.Contains(HeadId());
-                    label = can ? $"{s.Name}'u tut" : $"{s.Name}: önce canını %25'in altına indir, Çekim ile tut";
+                    label = can ? Loc.T("ranch.hold", s.Name) : Loc.T("ranch.weaken_first", s.Name);
                     act = can ? () => Bind(gg) : () => _d.Hud.Hint(label, 1.5f);
                 }
-                else if (s.Tame == "egg") { label = $"{s.Name} yumurtadan çıkar (Kuluçka)"; act = () => _d.Hud.Hint(label, 1.5f); }
-                else if (bag.Count(s.Food) > 0) { label = $"{s.Name}'a {ItemNames.Of(s.Food)} ver ({a.Trust * 100:0}%)"; act = () => Feed(gg); }
-                else { label = $"{s.Name} {ItemNames.Of(s.Food)} sever"; act = () => _d.Hud.Hint(label, 1.5f); }
+                else if (s.Tame == "egg") { label = Loc.T("ranch.hatches", s.Name); act = () => _d.Hud.Hint(label, 1.5f); }
+                else if (bag.Count(s.Food) > 0) { label = Loc.T("ranch.give_food", s.Name, ItemNames.Of(s.Food), (a.Trust * 100).ToString("0", System.Globalization.CultureInfo.InvariantCulture)); act = () => Feed(gg); }
+                else { label = Loc.T("ranch.likes_food", s.Name, ItemNames.Of(s.Food)); act = () => _d.Hud.Hint(label, 1.5f); }
             }
-            else if (a.Pending.Count > 0) { label = $"{s.Name}: {string.Join(", ", a.Pending.Select(x => $"{x.Count} {ItemNames.Of(x.Item)}"))} al"; act = () => Collect(gg); }
-            else if (a.LastPetDay != Ranch.Day) { label = $"{s.Name}'u okşa"; act = () => Pet(gg); }
-            else { label = $"{s.Name}: panel"; act = () => OpenPanel(gg); }
+            else if (a.Pending.Count > 0) { label = Loc.T("ranch.collect_pending", s.Name, string.Join(", ", a.Pending.Select(x => $"{x.Count} {ItemNames.Of(x.Item)}"))); act = () => Collect(gg); }
+            else if (a.LastPetDay != Ranch.Day) { label = Loc.T("ranch.pet", s.Name); act = () => Pet(gg); }
+            else { label = Loc.T("ranch.panel", s.Name); act = () => OpenPanel(gg); }
             dist = d;
         }
         foreach (var m in Ranch.Manure)
@@ -336,7 +336,7 @@ public partial class RanchSystem : Node
             float d = D(new Vector3(m.X, 0, m.Z));
             if (d > 1.6f || d >= dist) continue;
             var mm = m;
-            dist = d; label = $"{m.Count} Gübre al"; act = () => CollectManure(mm);
+            dist = d; label = Loc.T("ranch.collect_manure", m.Count); act = () => CollectManure(mm);
         }
         return label;
     }
@@ -371,7 +371,7 @@ public partial class RanchSystem : Node
         bool tamed = Ranch.Rules.Feed(ag.Animal, s.Food);
         var at = ag.Host.GlobalPosition + Vector3.Up * (s.Size + 0.4f);
         Fx.Burst(at, Palette.Accent, 6, 1.5f, 0.1f, 0.8f, true, -2f);
-        Fx.Text3D(at, tamed ? "♥ Seni izliyor" : "♥", Palette.Accent, 72, 1.2f, 1.2f);
+        Fx.Text3D(at, tamed ? Loc.T("ranch.watching_you") : "♥", Palette.Accent, 72, 1.2f, 1.2f);
         Sfx.Play("pickup", ag.Host.GlobalPosition, -6f);
         GD.Print($"RANCH fed {s.Id} trust={ag.Animal.Trust:0.00} tame={ag.Animal.Tame}");
         if (tamed) Events.RaiseAnimalTamed(s.Id);
@@ -388,7 +388,7 @@ public partial class RanchSystem : Node
     {
         var items = ag.Animal.Pending.Select(x => (x.Item, x.Count)).ToList();
         int n = HusbandryRules.Collect(ag.Animal, _d.State.Backpack);
-        if (n <= 0) { _d.Hud.Hint("Çanta dolu", 1f); return; }
+        if (n <= 0) { _d.Hud.Hint(Loc.T("ranch.bag_full"), 1f); return; }
         Fx.FlyTo(ag.Host.GlobalPosition + Vector3.Up * 0.6f, () => _d.Player.BackpackPoint.GlobalPosition, Palette.OffWhite, 0.12f);
         Sfx.Play("pickup", ag.Host.GlobalPosition, -2f);
         foreach (var (item, count) in items) { Events.RaiseGathered(item, count); Events.RaiseAnimalCollected(item, count); }
@@ -420,33 +420,33 @@ public partial class RanchSystem : Node
         var a = ag.Animal; var s = ag.Species; var r = Ranch.Rules;
         var items = new List<Hud.MenuItem>
         {
-            new($"Ürünleri al ({a.Pending.Sum(x => x.Count)})", () => a.Pending.Count > 0, () => Collect(ag)),
-            new("Okşa", () => a.LastPetDay != Ranch.Day, () => Pet(ag)),
+            new(Loc.T("ranch.take_products", a.Pending.Sum(x => x.Count)), () => a.Pending.Count > 0, () => Collect(ag)),
+            new(Loc.T("ranch.pet_menu"), () => a.LastPetDay != Ranch.Day, () => Pet(ag)),
         };
         foreach (var role in s.Roles)
         {
             var name = r.Def.Roles.FirstOrDefault(x => x.Id == role)?.Name ?? role;
-            items.Add(new($"Rol: {name}{(a.Role == role ? "  ✓" : "")}", () => a.Role != role, () => { if (r.SetRole(a, role)) OpenPanel(ag); }));
+            items.Add(new(Loc.T("ranch.role_item", name, (a.Role == role ? "  ✓" : "")), () => a.Role != role, () => { if (r.SetRole(a, role)) OpenPanel(ag); }));
         }
         foreach (var c in ag.Passive ? new List<NamedId>() : r.Def.Commands) // ilk gunun Gidak'i kendi yolunu yurur
-            items.Add(new($"Komut: {c.Name}{(a.Command == c.Id ? "  ✓" : "")}", () => true, () =>
+            items.Add(new(Loc.T("ranch.command_item", c.Name, (a.Command == c.Id ? "  ✓" : "")), () => true, () =>
             {
                 bool ok = r.Command(a, c.Id, Ranch.Rng);
-                _d.Hud.Hint(ok ? $"{s.Name}: {c.Name}" : $"{s.Name} dinlemedi (U {a.Genes.U})", 1.5f);
+                _d.Hud.Hint(ok ? $"{s.Name}: {c.Name}" : Loc.T("ranch.ignored", s.Name, a.Genes.U), 1.5f);
                 OpenPanel(ag);
             }));
         if (a.Role == "yuk")
         {
-            items.Add(new("Heybeye yükle (en çok taşıdığın kaynak)", () => _d.State.Backpack.Stacks.Any(x => !_d.State.Belt.IsTool(x.id)), () =>
+            items.Add(new(Loc.T("ranch.load_pack"), () => _d.State.Backpack.Stacks.Any(x => !_d.State.Belt.IsTool(x.id)), () =>
             {
                 var top = _d.State.Backpack.Contents.Where(x => !_d.State.Belt.IsTool(x.id)).OrderByDescending(x => x.count).FirstOrDefault();
                 if (top.id != null) r.PackLoad(a, _d.State.Backpack, top.id, top.count);
                 OpenPanel(ag);
             }));
-            items.Add(new($"Heybeyi boşalt ({a.Pack.Values.Sum()})", () => a.Pack.Count > 0, () => { r.PackUnload(a, _d.State.Backpack); OpenPanel(ag); }));
+            items.Add(new(Loc.T("ranch.unload_pack", a.Pack.Values.Sum()), () => a.Pack.Count > 0, () => { r.PackUnload(a, _d.State.Backpack); OpenPanel(ag); }));
         }
         if (Ranch.Mount.Rideable(s.Id)) // M3 binek (Mount.cs)
-            items.Add(new(a.Saddled ? "Bin" : "Bin (eyer yok: Eyerlik)", () => CanMount(ag), () => { _d.Hud.HideMenu(); MountUp(ag); }));
-        _d.Hud.ShowMenu($"{PanelTitle}: {ag.Title}", items, AnimalCard.Summary(this, _d, ag));
+            items.Add(new(a.Saddled ? Loc.T("ranch.ride") : Loc.T("ranch.ride_no_saddle"), () => CanMount(ag), () => { _d.Hud.HideMenu(); MountUp(ag); }));
+        _d.Hud.ShowMenu(Loc.T("ranch.panel_title") + ": " + ag.Title, items, AnimalCard.Summary(this, _d, ag));
     }
 }

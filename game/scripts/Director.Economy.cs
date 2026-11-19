@@ -23,7 +23,7 @@ public partial class Director
     {
         State.Cargo.Paid += (v, what) =>
         {
-            Hud.Big($"+{v} Kredi", Palette.Warning, 2.5f);
+            Hud.Big(Loc.T("dir.big_credits_plus", v), Palette.Warning, 2.5f);
             Sfx.Play("pickup", null, 0f);
             GD.Print($"PAID {what} +{v} credits={State.Credits}");
             Events.RaisePaid(v, what);
@@ -38,7 +38,7 @@ public partial class Director
         State.Cargo.Tick(dt);
         State.Catalog.Tick(dt); // teslimatlar (Director.EconomyMarket.cs Arrived'i dinler)
         WatchCrates(dt);
-        foreach (var c in Carts) if (c.Pushed) Hud.Hint("El Arabası: it  ·  E: bırak", 0.2f);
+        foreach (var c in Carts) if (c.Pushed) Hud.Hint(Loc.T("dir.hint_cart_pushing"), 0.2f);
     }
 
     // ---------- yerlestirme ----------
@@ -54,7 +54,7 @@ public partial class Director
         Furniture.Add(f);
         Sfx.Play("place", at, 2f);
         Fx.Burst(at + Vector3.Up * 0.3f, Palette.Wood, 20, 4f, 0.1f, 0.7f);
-        if (def.Spawn) { Player.RespawnPoint = at + Vector3.Up * 0.3f; Hud.Hint("Doğma noktası: Uyku Tulumu", 2f); }
+        if (def.Spawn) { Player.RespawnPoint = at + Vector3.Up * 0.3f; Hud.Hint(Loc.T("dir.hint_spawn_point"), 2f); }
         GD.Print($"PLACED {def.Id} at {at}");
         Events.RaiseStationPlaced(def.Id);
         return f;
@@ -121,7 +121,7 @@ public partial class Director
     public bool Sleep(Furniture bag)
     {
         Player.RespawnPoint = bag.GlobalPosition + Vector3.Up * 0.3f;
-        if (NightActive) { Hud.Hint("Kabarma'da uyunmaz", 1.5f); return false; }
+        if (NightActive) { Hud.Hint(Loc.T("dir.hint_no_sleep_kabarma"), 1.5f); return false; }
         bag.Bounce();
         Sfx.Play("place", bag.GlobalPosition, -8f);
         Hud.Big("Zzz", Palette.CoopBlue, 1.5f);
@@ -132,7 +132,7 @@ public partial class Director
 
     // ---------- menuler ----------
 
-    static string Stack(Inventory inv) => inv.IsEmpty ? "boş" : string.Join("  ·  ", inv.Contents.GroupBy(c => c.id).Select(g => $"{ItemNames.Of(g.Key)} {g.Sum(c => c.count)}{Stars(inv, g.Key)}"));
+    static string Stack(Inventory inv) => inv.IsEmpty ? Loc.T("dir.stack_empty") : string.Join("  ·  ", inv.Contents.GroupBy(c => c.id).Select(g => $"{ItemNames.Of(g.Key)} {g.Sum(c => c.count)}{Stars(inv, g.Key)}"));
 
     /// <summary>Kalite dokumu: hepsi ★1 ise bos, degilse " (★1 4 · ★3 2)".</summary>
     static string Stars(Inventory inv, string id)
@@ -149,14 +149,14 @@ public partial class Director
         {
             var iid = id;
             if (items.Count >= max) break;
-            items.Add(new Hud.MenuItem($"Al: {ItemNames.Of(iid)} ×{store.Count(iid)}", () => store.Count(iid) > 0 && State.Backpack.Room(iid) > 0,
+            items.Add(new Hud.MenuItem(Loc.T("dir.chest_take", ItemNames.Of(iid), store.Count(iid)), () => store.Count(iid) > 0 && State.Backpack.Room(iid) > 0,
                 () => { Net?.ForwardChest(store, iid, true, store.Count(iid)); store.MoveTo(State.Backpack, iid, store.Count(iid)); Sfx.Play("pickup", null, -6f); reopen(); }, iid));
         }
         foreach (var id in State.Backpack.Contents.Select(c => c.id).Distinct().ToList())
         {
             var iid = id;
             if (items.Count >= max) break;
-            items.Add(new Hud.MenuItem($"Koy: {ItemNames.Of(iid)} ×{State.Backpack.Count(iid)}", () => allowPut() && State.Backpack.Count(iid) > 0 && store.Room(iid) > 0,
+            items.Add(new Hud.MenuItem(Loc.T("dir.chest_put", ItemNames.Of(iid), State.Backpack.Count(iid)), () => allowPut() && State.Backpack.Count(iid) > 0 && store.Room(iid) > 0,
                 () => { Net?.ForwardChest(store, iid, false, State.Backpack.Count(iid)); State.Backpack.MoveTo(store, iid, State.Backpack.Count(iid)); Sfx.Play("place", null, -8f); reopen(); }, iid));
         }
     }
@@ -167,20 +167,20 @@ public partial class Director
         var items = new List<Hud.MenuItem>();
         AddChestTools(items, chest); // zincir: hizli yigma ve siralama (Director.Zincir.cs, GDD 5)
         TransferItems(items, chest.Storage, () => true, () => OpenChestMenu(chest));
-        Hud.ShowMenu($"{chest.Def.Name} · {chest.Storage.UsedSlots}/{chest.Storage.Slots} yuva", items, Stack(chest.Storage) + "\n{act:interact} / {act:ui_cancel}: kapat");
+        Hud.ShowMenu(Loc.T("dir.chest_title", chest.Def.Name, chest.Storage.UsedSlots, chest.Storage.Slots), items, Stack(chest.Storage) + "\n" + Loc.T("dir.menu_close"));
     }
 
     public void OpenCartMenu(ElArabasi cart)
     {
         var items = new List<Hud.MenuItem>
         {
-            new("Tutamağa geç (it)", () => !cart.Tipped, () => { Hud.HideMenu(); cart.Grab(); }),
+            new(Loc.T("dir.cart_grab"), () => !cart.Tipped, () => { Hud.HideMenu(); cart.Grab(); }),
         };
-        if (cart.Load != null) items.Add(new Hud.MenuItem("Yükü indir", () => true, () => { cart.DropLoad(); OpenCartMenu(cart); }));
+        if (cart.Load != null) items.Add(new Hud.MenuItem(Loc.T("dir.cart_unload"), () => true, () => { cart.DropLoad(); OpenCartMenu(cart); }));
         TransferItems(items, cart.Slots, () => cart.CanUseSlots, () => OpenCartMenu(cart));
-        string what = cart.Load != null ? $"Yük: {(cart.Load is CargoCrateNode cc ? $"Kargo Kasası ({State.Cargo.Value(cc.Crate)} Kredi)" : ItemNames.Of(cart.Load.CropId))}, {cart.Load.Size.Kg} kg (yuvalar kapalı)" : Stack(cart.Slots);
-        Hud.ShowMenu($"El Arabası · {cart.Slots.UsedSlots}/{cart.Slots.Slots} yuva", items,
-            what + $"\nTek yük nesnesi (en fazla {Data.Economy.Cart.MaxLoadKg:0} kg) ya da {Data.Economy.Cart.Slots} yuva; ikisi birden değil.  ·  Kasayı Çekim ile arabaya bırak.  ·  {{act:interact}} / {{act:ui_cancel}}: kapat");
+        string what = cart.Load != null ? Loc.T("dir.cart_load_line", cart.Load is CargoCrateNode cc ? Loc.T("dir.cargo_crate_value", State.Cargo.Value(cc.Crate)) : ItemNames.Of(cart.Load.CropId), cart.Load.Size.Kg) : Stack(cart.Slots);
+        Hud.ShowMenu(Loc.T("dir.cart_title", cart.Slots.UsedSlots, cart.Slots.Slots), items,
+            what + Loc.T("dir.cart_foot", Data.Economy.Cart.MaxLoadKg.ToString("0", System.Globalization.CultureInfo.InvariantCulture), Data.Economy.Cart.Slots));
     }
 
     /// <summary>Paketleme Tezgahi: cantadan acik kasaya mal koy, kasayi kapat (kasa yuk nesnesi olarak cikar).</summary>
@@ -189,20 +189,20 @@ public partial class Director
         var cargo = State.Cargo;
         var items = new List<Hud.MenuItem>();
         var r = st.Queue.Recipes.First(x => x.Id == "kargo_kasasi");
-        items.Add(new Hud.MenuItem($"Kasayı kapat ({r.Seconds:0.#} sn)", () => cargo.Open != null && !cargo.Open.Items.IsEmpty && st.Queue.Active == null, () =>
+        items.Add(new Hud.MenuItem(Loc.T("dir.pack_close", r.Seconds.ToString("0.#", System.Globalization.CultureInfo.InvariantCulture)), () => cargo.Open != null && !cargo.Open.Items.IsEmpty && st.Queue.Active == null, () =>
         {
             if (cargo.Close() != null && st.Queue.Enqueue(r, State.Backpack)) { Sfx.Play("place", st.GlobalPosition, -4f); GD.Print($"QUEUED {r.Id}"); Hud.HideMenu(); }
         }));
         foreach (var id in State.Backpack.Contents.Select(c => c.id).Distinct().Where(cargo.Pricing.Sellable).Take(8).ToList())
         {
             var iid = id;
-            items.Add(new Hud.MenuItem($"Kasaya koy: {ItemNames.Of(iid)} ×{State.Backpack.Count(iid)}{Stars(State.Backpack, iid)}  ({cargo.Pricing.Base(iid):0.##} Kredi/adet × kalite)",
+            items.Add(new Hud.MenuItem(Loc.T("dir.pack_put", ItemNames.Of(iid), State.Backpack.Count(iid), Stars(State.Backpack, iid), cargo.Pricing.Base(iid).ToString("0.##", System.Globalization.CultureInfo.InvariantCulture)),
                 () => State.Backpack.Count(iid) > 0 && st.Queue.Active == null && (cargo.Open == null || cargo.Open.Items.Room(iid) > 0),
                 () => { int n = cargo.Pack(State.Backpack, iid, State.Backpack.Count(iid)); if (n > 0) { Sfx.Play("place", st.GlobalPosition, -8f); GD.Print($"PACKED {iid} x{n}"); } OpenPackingMenu(st); }, iid));
         }
         var open = cargo.Open;
-        string foot = open == null ? "Kasa boş." : $"Kasa: {open.Items.UsedSlots}/{open.Items.Slots} yığın · değeri {cargo.Value(open)} Kredi · {open.Kg:0} kg\n{Stack(open.Items)}";
-        Hud.ShowMenu(st.Def.Name, items, foot + "\nSatılan mal kasayla gider: kasayı Çekim ile Kargo Rampası'na taşı.  ·  {act:interact} / {act:ui_cancel}: kapat");
+        string foot = open == null ? Loc.T("dir.pack_empty") : Loc.T("dir.pack_status", open.Items.UsedSlots, open.Items.Slots, cargo.Value(open), open.Kg.ToString("0", System.Globalization.CultureInfo.InvariantCulture), Stack(open.Items));
+        Hud.ShowMenu(st.Def.Name, items, foot + Loc.T("dir.pack_foot"));
     }
 
     /// <summary>Kargo Rampasi menusu (Director.Input: rampanin dibinde E): rampadaki kasalari gonder.</summary>
@@ -212,19 +212,19 @@ public partial class Director
         var items = new List<Hud.MenuItem>();
         int n = cargo.Pad.Count;
         int value = cargo.Pad.Sum(cargo.Value);
-        string pay = cargo.FirstSaleDone ? $"ödeme {Data.Economy.Ramp.PayoutSeconds:0} sn sonra" : "ilk satış: ödeme hemen";
-        items.Add(new Hud.MenuItem($"Gönder: {n} kasa · {value} Kredi ({pay})", () => cargo.Pad.Count > 0, LaunchRamp));
+        string pay = cargo.FirstSaleDone ? Loc.T("dir.ramp_pay_later", Data.Economy.Ramp.PayoutSeconds.ToString("0", System.Globalization.CultureInfo.InvariantCulture)) : Loc.T("dir.ramp_pay_now");
+        items.Add(new Hud.MenuItem(Loc.T("dir.ramp_send", n, value, pay), () => cargo.Pad.Count > 0, LaunchRamp));
         var cart = Carts.FirstOrDefault(c => c.Load is CargoCrateNode && c.GlobalPosition.DistanceTo(Pod.PadCenter) < 6f);
-        if (cart != null) items.Add(new Hud.MenuItem("Arabadaki kasayı rampaya yükle", () => cart.Load is CargoCrateNode && cargo.CanLoadCrate, () =>
+        if (cart != null) items.Add(new Hud.MenuItem(Loc.T("dir.ramp_load_cart"), () => cart.Load is CargoCrateNode && cargo.CanLoadCrate, () =>
         {
             var c = (CargoCrateNode)cart.Load;
             cart.Detach(c);
             LoadCrateOnRamp(c);
             OpenRampMenu();
         }));
-        string pending = cargo.Pending.Count > 0 ? $"\nYolda: {string.Join(", ", cargo.Pending.Select(x => $"{x.Credits} Kredi ({x.Left:0} sn)"))}" : "";
+        string pending = cargo.Pending.Count > 0 ? Loc.T("dir.ramp_pending", string.Join(", ", cargo.Pending.Select(x => Loc.T("dir.ramp_pending_item", x.Credits, x.Left.ToString("0", System.Globalization.CultureInfo.InvariantCulture))))) : "";
         AddTerminalRows(items); // Director.EconomyMarket.cs: Borsa, Katalog, Tohum Carki (satirlarin sonunda; Gonder hep 0)
-        Hud.ShowMenu("Kargo Rampası", items, $"Rampada {n}/{Data.Economy.Ramp.MaxCrates} kasa. Rampa 1–{Data.Economy.Ramp.MaxCrates} kasa ya da tek bir kabarık ürün alır.{pending}\nKasaları ve kabarık ürünü Çekim başlığıyla rampaya taşı.  ·  {{act:interact}} / {{act:ui_cancel}}: kapat");
+        Hud.ShowMenu(Loc.T("dir.ramp_title"), items, Loc.T("dir.ramp_foot", n, Data.Economy.Ramp.MaxCrates, pending));
     }
 
     // ---------- rampa ----------
@@ -236,7 +236,7 @@ public partial class Director
         if (c.OnCart != null) c.OnCart.Detach(c);
         if (!State.Cargo.LoadCrate(c.Crate))
         {
-            Hud.Hint($"Rampa dolu ({Data.Economy.Ramp.MaxCrates} kasa): önce gönder", 2f);
+            Hud.Hint(Loc.T("dir.hint_ramp_full", Data.Economy.Ramp.MaxCrates), 2f);
             var g = World.Ground(Pod.PadCenter + (Player.GlobalPosition - Pod.PadCenter).Normalized() * 3.5f);
             c.CreateTween().TweenProperty(c, "global_position", g + Vector3.Up * c.Radius, 0.35f);
             return false;
@@ -280,7 +280,7 @@ public partial class Director
         Pod.Launch();
         Sfx.Play("rocket", Pod.PadCenter, 0f);
         Fx.Burst(Pod.PadCenter + Vector3.Up, Palette.Warning, 40, 8f, 0.12f, 1.2f, true, 6f);
-        if (!instant) Hud.Big($"Gönderildi: {v} Kredi ({Data.Economy.Ramp.PayoutSeconds:0} sn)", Palette.Warning, 2.5f);
+        if (!instant) Hud.Big(Loc.T("dir.big_sent", v, Data.Economy.Ramp.PayoutSeconds.ToString("0", System.Globalization.CultureInfo.InvariantCulture)), Palette.Warning, 2.5f);
         Hud.HideMenu();
         GD.Print($"SOLD kargo_kasasi x{n} +{v} instant={instant}");
         Events.RaiseSold("kargo_kasasi", n, v);
@@ -306,8 +306,8 @@ public partial class Director
             var cart = Carts.Where(k => !k.Pushed && !k.Tipped && new Vector2(k.Bed.X - at.X, k.Bed.Z - at.Z).Length() < k.Length * 0.6f)
                 .OrderBy(k => k.Bed.DistanceTo(at)).FirstOrDefault();
             if (cart == null) continue;
-            if (cart.TryLoad(s, out var why)) Hud.Hint("Yük arabada. Tutamağa geç ve it.", 1.5f);
-            else Hud.Hint($"Arabaya konmaz: {why}", 1.5f);
+            if (cart.TryLoad(s, out var why)) Hud.Hint(Loc.T("dir.hint_load_on_cart"), 1.5f);
+            else Hud.Hint(Loc.T("dir.hint_cant_load", why), 1.5f);
         }
         foreach (var k in _dropWatch.Keys.Where(x => !IsInstanceValid(x)).ToList()) _dropWatch.Remove(k);
     }

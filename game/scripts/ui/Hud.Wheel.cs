@@ -136,14 +136,14 @@ public partial class Hud
             else Glyph(sl.Glyph, new Vector2(cx, cy - 105), w.CenterIconSize * 0.62f, T.Brick);
             WheelText(T.Upper(sl.Title), cy - 35, 330, 60, 30, sl.Enabled ? T.Ivory : T.Muted, true);
             WheelText(sl.Text, cy + 26, 320, 50, 18, T.Ivory, false);
-            if (shown == _wheelCurrent && OpenWheelKind != WheelKind.Plan) WheelText(OpenWheelKind == WheelKind.Heads ? "TAKILI" : "SEÇİLİ", cy + 80, 300, 30, 16, T.Short, true);
+            if (shown == _wheelCurrent && OpenWheelKind != WheelKind.Plan) WheelText(OpenWheelKind == WheelKind.Heads ? Loc.T("hud.wheel_equipped") : Loc.T("hud.wheel_selected"), cy + 80, 300, 30, 16, T.Short, true);
         }
         string foot = OpenWheelKind switch
         {
-            WheelKind.Pieces => $"{KeyText("build_wheel", PadDevice ? "LB" : "SAĞ TIK")} BIRAKILINCA SEÇİLİR   ·   ESC: VAZGEÇ",
-            WheelKind.Plan => $"{KeyText("interact", PadDevice ? "X" : "E")} BIRAKILINCA YAPILIR   ·   ESC / SAĞ TIK: VAZGEÇ",
-            WheelKind.Book => $"{KeyText("plan_book", PadDevice ? "→" : "B")} BIRAKILINCA: BOŞ YUVA KAYDEDER, DOLU YUVA YERLEŞTİRİR   ·   ESC: VAZGEÇ",
-            _ => $"{KeyText("head_wheel", PadDevice ? "LB" : "Q")} BIRAKILINCA TAKILIR   ·   ESC / SAĞ TIK: VAZGEÇ",
+            WheelKind.Pieces => Loc.T("hud.wheel_foot_pieces", KeyText("build_wheel", PadDevice ? "LB" : Loc.T("hud.key_right_click"))),
+            WheelKind.Plan => Loc.T("hud.wheel_foot_plan", KeyText("interact", PadDevice ? "X" : "E")),
+            WheelKind.Book => Loc.T("hud.wheel_foot_book", KeyText("plan_book", PadDevice ? "→" : "B")),
+            _ => Loc.T("hud.wheel_foot_heads", KeyText("head_wheel", PadDevice ? "LB" : "Q")),
         };
         CentreText(foot, T.DesignH - 108, 17, T.Ivory, false, false, true);
     }

@@ -58,7 +58,7 @@ public partial class Director
     public void RingBell(int ks)
     {
         _bellKs = Mathf.Clamp(ks, 1, State.UnlockedKs);
-        Hud.Big($"ÇAN · KS {_bellKs}", Palette.MayaViolet, 2.5f);
+        Hud.Big(Loc.T("dir.big_bell", _bellKs), Palette.MayaViolet, 2.5f);
         GD.Print($"KABARMA bell ks={_bellKs}");
     }
 
@@ -112,7 +112,7 @@ public partial class Director
         _pendingSpec = null;
         if (spec == null) return State.StartNight();
         var n = State.StartKabarma(spec);
-        n.DorukStarted += w => { Hud.Big(w.Slots.Any(s => s.Azman) ? "DORUK · AZMAN" : "DORUK", Palette.HoldingRed, 3f); GD.Print($"KABARMA doruk slots={w.Slots.Count} azman={w.Slots.Any(s => s.Azman)}"); };
+        n.DorukStarted += w => { Hud.Big(w.Slots.Any(s => s.Azman) ? Loc.T("dir.big_peak_azman") : Loc.T("dir.big_peak"), Palette.HoldingRed, 3f); GD.Print($"KABARMA doruk slots={w.Slots.Count} azman={w.Slots.Any(s => s.Azman)}"); };
         n.Ended += e => GD.Print($"KABARMA end reason={e} ks={n.Ks} kills={n.Kills} maya={n.Maya:0} kazan={n.Kazan?.Hp:0}/{n.Kazan?.MaxHp:0} highest={State.Kabarma.HighestCleared}");
         ShowKazan(n);
         GD.Print($"KABARMA plan ks={n.Ks} waves={n.Plan.Waves.Count} slots={n.Plan.TotalSlots} hpx={n.Plan.HpMult:0.00} maya={n.Plan.MayaMult:0.0}");
@@ -137,7 +137,7 @@ public partial class Director
     {
         var k = Night?.Kazan;
         if (_kazanLabel == null || k == null) return;
-        _kazanLabel.Text = $"Maya Kazanı {k.Hp:0}/{k.MaxHp:0}";
+        _kazanLabel.Text = Loc.T("dir.kazan_label", k.Hp.ToString("0", System.Globalization.CultureInfo.InvariantCulture), k.MaxHp.ToString("0", System.Globalization.CultureInfo.InvariantCulture));
         _kazanLabel.Modulate = k.Hp < k.MaxHp * 0.3f ? Palette.HoldingRed : Palette.MayaTeal;
     }
 
@@ -151,7 +151,7 @@ public partial class Director
         Fx.Burst(OcakPos + Vector3.Up * 1.2f, Palette.MayaViolet, 6, 2.5f, 0.08f, 0.4f, true, -2f);
         if (toppled)
         {
-            Hud.Big("KAZAN DEVRİLDİ", Palette.HoldingRed, 3.5f);
+            Hud.Big(Loc.T("dir.big_kazan_down"), Palette.HoldingRed, 3.5f);
             Sfx.Play("hit", OcakPos, 2f);
         }
     }
@@ -179,7 +179,7 @@ public partial class Director
         TickElites(n, dt);
         // Bozgun (GDD 14.4): butun oyuncular yerde. Tek oyuncuda: oyuncu yere dusunce bir kez.
         bool allDown = Player.Down && (Net == null || Net.Players().All(p => p.down));
-        if (allDown && !_routed) { _routed = true; if (n.Rout()) Hud.Big("BOZGUN", Palette.HoldingRed, 3f); UpdateKazanLabel(); GD.Print($"KABARMA rout kazan={n.Kazan?.Hp:0}"); }
+        if (allDown && !_routed) { _routed = true; if (n.Rout()) Hud.Big(Loc.T("dir.big_rout"), Palette.HoldingRed, 3f); UpdateKazanLabel(); GD.Print($"KABARMA rout kazan={n.Kazan?.Hp:0}"); }
         if (!allDown) _routed = false;
         if (n.PendingSpawns == 0 && !Kabarans.Live.Any() && _nightSwarms.Count == 0) n.WaveCleared();
     }

@@ -11,5 +11,15 @@ public partial class Director
     /// <summary>Cekisme + ortak oyun probu (--test=coop): iki takim, gunduz dokunulmazlik, gece baskini. Host'ta.</summary>
     public string CoopRivalryProbe() => Riv.CoopProbe();
 
-    void TickRivalry(float dt) { if (State.Rivalry.Enabled) Riv.Tick(dt); }
+    void TickRivalry(float dt)
+    {
+        // Dunya ayari "Cekisme": --rivalry=N (CoopPanel host satiri ya da komut satiri), host/tek oyuncu, Ocak varken bir kez.
+        if (!_rivalryAsked && Main.Args.TryGetValue("rivalry", out var rv) && Ocak != null && !NetClient)
+        {
+            _rivalryAsked = true;
+            if (!State.Rivalry.Enabled && int.TryParse(rv, out int n) && n >= 2) Riv.AutoStart(n, Net?.Dedicated ?? false);
+        }
+        if (State.Rivalry.Enabled) Riv.Tick(dt);
+    }
+    bool _rivalryAsked;
 }

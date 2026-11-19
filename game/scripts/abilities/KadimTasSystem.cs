@@ -97,7 +97,7 @@ public partial class KadimTasSystem : Node3D
     {
         var s = Nearest(out float dist);
         if (s == null || dist > UseRadius) return false;
-        if (Run != null && !Run.Over) { D.Hud.Hint("Deneme sürüyor", 1f); return true; }
+        if (Run != null && !Run.Over) { D.Hud.Hint(Loc.T("kadim.trial_running"), 1f); return true; }
         if (D.State.KadimTas.Done.Contains(s.Id)) { OpenLoadout(s); return true; }
         return StartTrial(s.Id);
     }
@@ -107,7 +107,7 @@ public partial class KadimTasSystem : Node3D
     {
         var run = KadimTasRules.Start(F, D.State.KadimTas, id, out var why);
         if (run == null) { D.Hud.Hint(why, 1.5f); return true; }
-        if (_sys.Drill.Active || D.NightActive) { D.Hud.Hint("Kabarma sürerken taş susar", 1.5f); return true; }
+        if (_sys.Drill.Active || D.NightActive) { D.Hud.Hint(Loc.T("kadim.silent"), 1.5f); return true; }
         Run = run;
         _def = F.Stone(id);
         BuildProps();
@@ -120,10 +120,10 @@ public partial class KadimTasSystem : Node3D
 
     static string Brief(KadimTasDef s) => s.Trial switch
     {
-        "parkur" => $"Halkalardan sırayla geç: {s.Rings.Count} halka, {s.Seconds:0} saniye.",
-        "koru" => $"Taşın Gıdak'ını {s.Seconds:0} saniye koru.",
-        "dalga" => s.NoDown ? $"{s.Waves.Count} dalga. Kimse yere düşmesin." : $"{s.Waves.Count} dalgaya dayan.",
-        "gizlen" => $"Gözcülere görünmeden işarete var: {s.Seconds:0} saniye.",
+        "parkur" => Loc.T("kadim.task_parkur", s.Rings.Count, s.Seconds.ToString("0", System.Globalization.CultureInfo.InvariantCulture)),
+        "koru" => Loc.T("kadim.task_koru", s.Seconds.ToString("0", System.Globalization.CultureInfo.InvariantCulture)),
+        "dalga" => s.NoDown ? Loc.T("kadim.task_dalga_nodown", s.Waves.Count) : Loc.T("kadim.task_dalga", s.Waves.Count),
+        "gizlen" => Loc.T("kadim.task_gizlen", s.Seconds.ToString("0", System.Globalization.CultureInfo.InvariantCulture)),
         _ => "",
     };
 
@@ -189,7 +189,7 @@ public partial class KadimTasSystem : Node3D
         kit.Pillow(new Vector3(0.1f, 0.18f, 0.18f), MeshKit.At(0, 1.2f, 0.28f), Palette.Accent, 0.4f);
         var n = new Node3D { Name = "TasinGidagi" };
         n.AddChild(kit.Instance(AbilitySystem.GhostMaterial(Palette.MayaTeal, 0.85f)));
-        n.AddChild(new Label3D { Text = "Taşın Gıdak'ı", Position = new Vector3(0, 1.7f, 0), Billboard = BaseMaterial3D.BillboardModeEnum.Enabled, FontSize = 32, PixelSize = 0.006f, OutlineSize = 8 });
+        n.AddChild(new Label3D { Text = Loc.T("kadim.guard_label"), Position = new Vector3(0, 1.7f, 0), Billboard = BaseMaterial3D.BillboardModeEnum.Enabled, FontSize = 32, PixelSize = 0.006f, OutlineSize = 8 });
         return n;
     }
 
@@ -274,10 +274,10 @@ public partial class KadimTasSystem : Node3D
         var s = _def;
         return s.Trial switch
         {
-            "parkur" => $"{s.Name} · halka {Run.Ring}/{s.Rings.Count} · {Mathf.Max(0, s.Seconds - Run.Time):0} sn",
-            "koru" => $"{s.Name} · Gıdak {Mathf.Max(0, Run.GuardHp):0}/{s.GuardHp:0} · {Mathf.Max(0, s.Seconds - Run.Time):0} sn",
-            "dalga" => $"{s.Name} · dalga {Run.Wave + 1}/{s.Waves.Count} · kalan {_mine.Count}",
-            "gizlen" => $"{s.Name} · {(Run.SeenT > 0 ? "GÖRÜLÜYORSUN!" : "gizli")} · {Mathf.Max(0, s.Seconds - Run.Time):0} sn",
+            "parkur" => Loc.T("kadim.st_parkur", s.Name, Run.Ring, s.Rings.Count, Mathf.Max(0, s.Seconds - Run.Time).ToString("0", System.Globalization.CultureInfo.InvariantCulture)),
+            "koru" => Loc.T("kadim.st_koru", s.Name, Mathf.Max(0, Run.GuardHp).ToString("0", System.Globalization.CultureInfo.InvariantCulture), s.GuardHp.ToString("0", System.Globalization.CultureInfo.InvariantCulture), Mathf.Max(0, s.Seconds - Run.Time).ToString("0", System.Globalization.CultureInfo.InvariantCulture)),
+            "dalga" => Loc.T("kadim.st_dalga", s.Name, Run.Wave + 1, s.Waves.Count, _mine.Count),
+            "gizlen" => Loc.T("kadim.st_gizlen", s.Name, (Run.SeenT > 0 ? Loc.T("kadim.seen") : Loc.T("kadim.hidden")), Mathf.Max(0, s.Seconds - Run.Time).ToString("0", System.Globalization.CultureInfo.InvariantCulture)),
             _ => s.Name,
         };
     }
@@ -300,8 +300,8 @@ public partial class KadimTasSystem : Node3D
         AbilityRules.AutoEquip(F, D.State.Abilities, _sys.L, D.State.Atalar.Ultis);
         Results.Add($"{s.Id}:won");
         GD.Print($"KADIM won {s.Id} ability={s.Ability} fresh={fresh} t={Run.Time:0.0} slots={string.Join(",", _sys.L.Slots)}");
-        D.Hud.Big($"GÜÇ: {F.Def(s.Ability).Name.ToUpperInvariant()}", Palette.MayaTeal, 3f);
-        D.Hud.Hint($"{F.Def(s.Ability).Name} açıldı: {{act:ability_1}} ile kullan. Yuvayı tamamlanmış bir Kadim Taş'ta değiştirirsin.", 5f);
+        D.Hud.Big(Loc.T("kadim.big_power", F.Def(s.Ability).Name.ToUpperInvariant()), Palette.MayaTeal, 3f);
+        D.Hud.Hint(Loc.T("kadim.power_unlocked", F.Def(s.Ability).Name), 5f);
         Sfx.Play("levelup", StonePos(s), 0f);
         Fx.Burst(StonePos(s) + Vector3.Up * 2.3f, Palette.MayaTeal, 40, 6f, 0.12f, 0.9f, true, -1f);
         ClearProps();
@@ -313,8 +313,8 @@ public partial class KadimTasSystem : Node3D
     {
         Results.Add($"{_def.Id}:lost:{Run.Reason}");
         GD.Print($"KADIM lost {_def.Id} reason={Run.Reason} t={Run.Time:0.0}");
-        D.Hud.Big("DENEME BİTTİ", Palette.Warning, 2f);
-        D.Hud.Hint($"{Run.Reason}. Taş {F.Trial.RetrySeconds:0} saniye dinlenecek.", 3f);
+        D.Hud.Big(Loc.T("kadim.trial_over"), Palette.Warning, 2f);
+        D.Hud.Hint(Loc.T("kadim.rest", Run.Reason, F.Trial.RetrySeconds.ToString("0", System.Globalization.CultureInfo.InvariantCulture)), 3f);
         ClearProps();
     }
 
@@ -329,18 +329,18 @@ public partial class KadimTasSystem : Node3D
         {
             var def = F.Def(id);
             bool on = l.Slots[0] == id;
-            items.Add(new Hud.MenuItem($"{(on ? "● " : "")}{def.Name}  ·  Şarj {def.Charge:0} · {def.Cooldown:0} sn", () => !on, () => { var e = _sys.Equip(0, id); if (e != null) D.Hud.Hint(e, 1.5f); Sfx.Play("place", null, -8f); Re(); }));
+            items.Add(new Hud.MenuItem(Loc.T("kadim.power_item", (on ? "● " : ""), def.Name, def.Charge.ToString("0", System.Globalization.CultureInfo.InvariantCulture), def.Cooldown.ToString("0", System.Globalization.CultureInfo.InvariantCulture)), () => !on, () => { var e = _sys.Equip(0, id); if (e != null) D.Hud.Hint(e, 1.5f); Sfx.Play("place", null, -8f); Re(); }));
         }
-        items.Add(new Hud.MenuItem("2. yuva: kilitli (Kurbağa Ağa)", () => false, () => { }));
+        items.Add(new Hud.MenuItem(Loc.T("kadim.slot2_locked"), () => false, () => { }));
         foreach (var u in D.State.Atalar.Ultis)
         {
             var def = F.Def(u);
             if (def == null) continue;
             bool on = l.Ulti == u;
-            items.Add(new Hud.MenuItem($"{(on ? "● " : "")}Ulti: {def.Name}", () => !on, () => { var e = _sys.Equip(-1, u); if (e != null) D.Hud.Hint(e, 1.5f); Sfx.Play("place", null, -8f); Re(); }));
+            items.Add(new Hud.MenuItem(Loc.T("kadim.ulti_item", (on ? "● " : ""), def.Name), () => !on, () => { var e = _sys.Equip(-1, u); if (e != null) D.Hud.Hint(e, 1.5f); Sfx.Play("place", null, -8f); Re(); }));
         }
-        if (D.State.Atalar.Ultis.Count == 0) items.Add(new Hud.MenuItem("Ulti: yok (Atalar verir)", () => false, () => { }));
-        D.Hud.ShowMenu(s.Name, items, $"Şarj {l.Charge:0}/{F.Charge.Max:0} · Maya ölçeri {l.Meter:0}/{F.UltiMeter.Max:0}\n{{act:interact}} / {{act:ui_cancel}}: kapat");
+        if (D.State.Atalar.Ultis.Count == 0) items.Add(new Hud.MenuItem(Loc.T("kadim.no_ulti_item"), () => false, () => { }));
+        D.Hud.ShowMenu(s.Name, items, Loc.T("kadim.menu_footer", l.Charge.ToString("0", System.Globalization.CultureInfo.InvariantCulture), F.Charge.Max.ToString("0", System.Globalization.CultureInfo.InvariantCulture), l.Meter.ToString("0", System.Globalization.CultureInfo.InvariantCulture), F.UltiMeter.Max.ToString("0", System.Globalization.CultureInfo.InvariantCulture)));
     }
 
     /// <summary>Denemeyi bitirir (oyuncu oldu, Kabarma basladi, yukleme).</summary>

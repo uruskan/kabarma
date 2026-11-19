@@ -90,7 +90,7 @@ public partial class NetSync : Node
     {
         IsHost = host;
         Joined = host;
-        LocalName = Main.Args.TryGetValue("name", out var nm) ? nm : host ? "Host" : $"Oyuncu {OS.GetProcessId() % 1000}";
+        LocalName = Main.Args.TryGetValue("name", out var nm) ? nm : host ? "Host" : Loc.T("net.player_n", OS.GetProcessId() % 1000);
         int port = Main.Args.TryGetValue("port", out var ps) && int.TryParse(ps, out var pp) ? pp : Cfg.Port;
         _port = port; // NetSync.Handover.cs
         string transport = Main.Args.TryGetValue("transport", out var tr) ? tr : "enet";
@@ -109,8 +109,8 @@ public partial class NetSync : Node
         RegisterSpawns();   // NetSync.Spawns.cs
         Srv = new ServerNet(this); // sunucu duyurusu ve yonetici cevabi (server/ServerNet.cs)
         CallDeferred(nameof(RegisterSaveBridge)); // NetSync.Save.cs: butun _Ready'lerden sonra (kayit bolumleri eklenmis olsun)
-        if (_tx == null) { Fail(err ?? "taşıma kurulamadı"); return; }
-        Status = host ? $"host · {_tx.Address}" : $"bağlanıyor · {_tx.Address}";
+        if (_tx == null) { Fail(err ?? Loc.T("net.transport_failed")); return; }
+        Status = host ? Loc.T("net.status_host", _tx.Address) : Loc.T("net.status_connecting", _tx.Address);
         if (host) RebuildRoster();
         GD.Print($"NET {(host ? "host" : "client")} {transport} {_tx.Address} name={LocalName}");
     }
@@ -186,8 +186,8 @@ public partial class NetSync : Node
             try { Handle(ev, now); }
             catch (NetFormatException e) { GD.PushWarning($"NET bozuk mesaj peer={ev.Peer}: {e.Message}"); }
         }
-        if (IsClient && !Joined && now - _startT > Cfg.ConnectSeconds && !Failed) Fail("bağlanılamadı (zaman aşımı)");
-        if (IsClient && Joined && now - _lastHeard > Cfg.TimeoutSeconds && !Failed) Fail("host'tan ses yok (zaman aşımı)");
+        if (IsClient && !Joined && now - _startT > Cfg.ConnectSeconds && !Failed) Fail(Loc.T("net.timeout_connect"));
+        if (IsClient && Joined && now - _lastHeard > Cfg.TimeoutSeconds && !Failed) Fail(Loc.T("net.timeout_host"));
 
         _frameAcc += dt; _sectionAcc += dt; _digestAcc += dt;
         if (_frameAcc >= 1.0 / Cfg.FrameHz)
@@ -222,11 +222,11 @@ public partial class NetSync : Node
         switch (ev.Kind)
         {
             case NetEventKind.Connected:
-                if (IsClient) { _tx.Send(0, NetPackets.Hello(Cfg.Protocol, Main.Args.TryGetValue("password", out var pw) && pw.Length > 0 ? LocalName + "\u001f" + pw : LocalName, WorldHash()), NetChannel.Reliable); Status = "katılıyor"; }
+                if (IsClient) { _tx.Send(0, NetPackets.Hello(Cfg.Protocol, Main.Args.TryGetValue("password", out var pw) && pw.Length > 0 ? LocalName + "\u001f" + pw : LocalName, WorldHash()), NetChannel.Reliable); Status = Loc.T("net.joining"); }
                 return;
             case NetEventKind.Disconnected:
                 if (IsHost) DropPeer(ev.Peer, "ayrıldı");
-                else { Joined = false; Fail("bağlantı koptu"); }
+                else { Joined = false; Fail(Loc.T("net.disconnected")); }
                 return;
         }
         if (ev.Data == null || ev.Data.Length == 0) return;
@@ -279,9 +279,9 @@ public partial class NetSync : Node
         int sep = name.IndexOf('\u001f');
         if (sep >= 0) { password = name[(sep + 1)..]; name = name[..sep]; }
         ulong world = r.U64();
-        string why = proto != Cfg.Protocol ? $"sürüm farklı ({proto} ≠ {Cfg.Protocol})"
-            : world != WorldHash() ? "dünya farklı (sürüm ya da tohum)"
-            : Actors.Count >= SlotLimit - 1 ? "oyun dolu" : JoinGate?.Invoke(name, password, _tx.PeerAddress(conn));
+        string why = proto != Cfg.Protocol ? Loc.T("net.reject_version", proto, Cfg.Protocol)
+            : world != WorldHash() ? Loc.T("net.reject_world")
+            : Actors.Count >= SlotLimit - 1 ? Loc.T("net.reject_full") : JoinGate?.Invoke(name, password, _tx.PeerAddress(conn));
         if (why != null)
         {
             GD.Print($"NET reject conn={conn} {why}");
@@ -291,7 +291,7 @@ public partial class NetSync : Node
         }
         byte peer = 1;
         while (Actors.ContainsKey(peer)) peer++;
-        var a = new NetActor(peer, D.Data) { Name = string.IsNullOrWhiteSpace(name) ? $"Oyuncu {peer}" : name };
+        var a = new NetActor(peer, D.Data) { Name = string.IsNullOrWhiteSpace(name) ? Loc.T("net.player_n", peer) : name };
         Actors[peer] = a;
         _byConn[conn] = peer;
         _conn[peer] = conn;
@@ -369,13 +369,13 @@ public partial class NetSync : Node
             case NetMsg.Welcome:
                 LocalPeer = r.U8();
                 ulong seed = r.U64();
-                if (seed != D.State.Seed) { Fail($"tohum farklı {seed} ≠ {D.State.Seed}"); return; }
+                if (seed != D.State.Seed) { Fail(Loc.T("net.seed_diff", seed, D.State.Seed)); return; }
                 Joined = true;
-                Status = $"bağlı · {_tx.Address}";
+                Status = Loc.T("net.status_connected", _tx.Address);
                 SendHost(new[] { (byte)NetMsg.Ready });
                 GD.Print($"NET welcome peer={LocalPeer}");
                 break;
-            case NetMsg.Reject: Fail("host reddetti: " + r.Str()); break;
+            case NetMsg.Reject: Fail(Loc.T("net.host_rejected", r.Str())); break;
             case NetMsg.Handover: OnHandover(r); break; // NetSync.Handover.cs
             case NetMsg.Roster:
                 Roster = NetPackets.ReadRoster(r);

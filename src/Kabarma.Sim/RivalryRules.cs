@@ -159,34 +159,35 @@ public static class RivalryRules
         {
             int pool = (int)MathF.Floor(Math.Max(0f, t.NightMaya));
             int silo = (int)MathF.Floor(pool * d.SiloMayaShare);
-            s.SiloMaya += silo;
+            t.SiloMaya += silo;
             t.CollectedMaya += pool - silo;
-            foreach (var (item, n) in t.ExportReady) s.Silo[item] = s.Silo.GetValueOrDefault(item) + n;
+            foreach (var (item, n) in t.ExportReady) t.Silo[item] = t.Silo.GetValueOrDefault(item) + n;
             t.Exports += t.ExportReady.Values.Sum() * d.ExportMayaValue;
             t.ExportReady.Clear();
             t.NightMaya = 0;
-            t.KazanToppled = false; // muhur safakta kalkar
         }
         // Enkaz plani safakta da kalir (kural 6): gunduz tek tusla kurulur.
     }
 
-    /// <summary>Acik Silo'dan yagma: yabanci takim sandigi kendi cantasina bosaltir. Donen: (esya adedi, Maya).</summary>
-    public static (int items, int maya) LootSilo(RivalryState s, string looterTeam, Inventory bag)
+    /// <summary>Acik Silo'dan yagma (kural 5): yalniz hedef takimin silosu, yagmaci baska bir takimdan olmali. Donen: (esya adedi, Maya).</summary>
+    public static (int items, int maya) LootSilo(RivalryState s, string targetTeam, string looterTeam, Inventory bag)
     {
+        var target = s.Team(targetTeam);
+        if (target == null || targetTeam == looterTeam || s.Team(looterTeam) == null) return (0, 0);
         int items = 0;
-        foreach (var k in s.Silo.Keys.ToList())
+        foreach (var k in target.Silo.Keys.ToList())
         {
-            int put = bag.Add(k, s.Silo[k]);
+            int put = bag.Add(k, target.Silo[k]);
             items += put;
-            if (put >= s.Silo[k]) s.Silo.Remove(k); else s.Silo[k] -= put;
+            if (put >= target.Silo[k]) target.Silo.Remove(k); else target.Silo[k] -= put;
         }
-        int maya = s.SiloMaya;
+        int maya = target.SiloMaya;
         if (maya > 0)
         {
             int put = bag.Add(MayaVault.Item, maya);
-            s.SiloMaya -= put;
+            target.SiloMaya -= put;
             maya = put;
-            if (s.Team(looterTeam) is { } t) t.CollectedMaya += put;
+            s.Team(looterTeam)!.CollectedMaya += put;
         }
         return (items, maya);
     }
@@ -263,6 +264,9 @@ public static class RivalryRules
         s.Ruins.Remove(r);
         return null;
     }
+
+    /// <summary>Muhurler yeni gun baslayinca kalkar (kural 6): Kazan'i devrilen takimin tapusu o gecenin kalani boyunca muhurluydu.</summary>
+    public static void ClearSeals(RivalryState s) { foreach (var t in s.Teams) t.KazanToppled = false; }
 
     /// <summary>Kazan devrildi (kural 6): takimin gecesi biter, tapusu safaga dek muhurlu.</summary>
     public static void ToppleKazan(RivalryState s, string teamId)

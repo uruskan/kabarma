@@ -74,7 +74,7 @@ public partial class NetSync
         if (IsHost)
         {
             if (CraftRules.IsHand(r) || D.NearStation(r.Station) is not { } st || !_stationOwner.ContainsKey(st.Queue)) return false;
-            D.Hud.Hint($"{st.Def.Name}: başka oyuncunun işi sürüyor", 1.5f);
+            D.Hud.Hint(Loc.T("net.station_busy", st.Def.Name), 1.5f);
             return true;
         }
         Forward("craft", w => { w.Str(r.Id); w.VarU((uint)Mathf.Clamp(count, 1, 99)); });

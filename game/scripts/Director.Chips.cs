@@ -31,7 +31,7 @@ public partial class Director
         if (c == null) return;
         var def = State.Chips.TypeOf(c.Type);
         var rar = State.Chips.RarityOf(c.Rarity);
-        Hud.Big($"ÇİP · {def?.Name} ({rar?.Name})", Color.FromHtml("#" + (rar?.Color ?? "FFFFFF")), 2.8f);
+        Hud.Big(Loc.T("dir.big_chip", def?.Name, rar?.Name), Color.FromHtml("#" + (rar?.Color ?? "FFFFFF")), 2.8f);
         Sfx.Play("levelup", null, -8f);
     }
 }

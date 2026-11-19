@@ -74,7 +74,7 @@ public partial class Hud : CanvasLayer
         _suna = new PanelContainer { Position = new Vector2(24, 24), CustomMinimumSize = new Vector2(520, 0), Visible = false };
         _suna.AddThemeStyleboxOverride("panel", Box(new Color(Palette.NightDeep, 0.82f), 16, Palette.CoopBlue, 3));
         var sv = new VBoxContainer();
-        sv.AddChild(L("◉ SUNA · Kooperatif Santrali", 17, Palette.MayaTeal, true));
+        sv.AddChild(L(Loc.T("hud.suna_title_legacy"), 17, Palette.MayaTeal, true));
         _sunaText = L("", 22, Palette.OffWhite);
         UserSettings.Current.Changed += ApplySubtitleScale; // M6: altyazi boyu
         Callable.From(ApplySubtitleScale).CallDeferred();
@@ -90,7 +90,7 @@ public partial class Hud : CanvasLayer
         _goalPanel.SetAnchorsPreset(Control.LayoutPreset.TopRight);
         _goalPanel.Position = new Vector2(-404, 24);
         var gv = new VBoxContainer();
-        gv.AddChild(L("DEFTER · İş emri", 16, Palette.CoopBlue, true));
+        gv.AddChild(L(Loc.T("hud.defter_order_title"), 16, Palette.CoopBlue, true));
         _goal = L("", 22, Palette.DarkGrey, true);
         _goal.AutowrapMode = TextServer.AutowrapMode.WordSmart;
         _goal.CustomMinimumSize = new Vector2(340, 0);
@@ -125,7 +125,7 @@ public partial class Hud : CanvasLayer
         _headTag = new PanelContainer();
         var hv = new VBoxContainer();
         _headName = L("", 22, Palette.OffWhite, true);
-        _headHint = L("Q: çark  ·  1–8  ·  tekerlek", 13, Palette.Fog, true);
+        _headHint = L(Loc.T("hud.head_hint_init"), 13, Palette.Fog, true);
         hv.AddChild(_headName); hv.AddChild(_headHint);
         _headTag.AddChild(hv);
         root.AddChild(_headTag);
@@ -150,7 +150,7 @@ public partial class Hud : CanvasLayer
         var hpFill = Box(Palette.Accent, 10); hpFill.ContentMarginTop = hpFill.ContentMarginBottom = 0;
         _hp.AddThemeStyleboxOverride("fill", hpFill);
         _hp.AddThemeStyleboxOverride("background", Box(new Color(Palette.NightDeep, 0.7f), 10));
-        bl.AddChild(L("CAN", 15, Palette.OffWhite, true));
+        bl.AddChild(L(Loc.T("hud.hp"), 15, Palette.OffWhite, true));
         bl.AddChild(_hp);
         _bag = L("", 19, Palette.OffWhite, true);
         _bag.AddThemeConstantOverride("outline_size", 6);

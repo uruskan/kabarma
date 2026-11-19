@@ -40,7 +40,7 @@ public partial class NetSync
         if (_slapping)
         {
             _slapLocal += dt;
-            D.Hud?.Hint($"Şok tokadı: {target.PlayerName}  {Mathf.Min(100, (int)(_slapLocal / Cfg.Downed.ReviveHold * 100))}%", 0.2f);
+            D.Hud?.Hint(Loc.T("net.slap", target.PlayerName, Mathf.Min(100, (int)(_slapLocal / Cfg.Downed.ReviveHold * 100))), 0.2f);
             _slapSend -= dt;
             if (_slapSend <= 0)
             {

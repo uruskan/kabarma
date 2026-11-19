@@ -17,7 +17,7 @@ public partial class ServerConsolePanel : CanvasLayer
 
     public static void Toggle(Director d)
     {
-        if (d?.Net == null || !d.Net.IsClient || !d.Net.Joined) { d?.Hud?.Hint("Yönetim konsolu yalnız bir sunucuya bağlıyken açılır", 2f); return; }
+        if (d?.Net == null || !d.Net.IsClient || !d.Net.Joined) { d?.Hud?.Hint(Loc.T("server.console_only"), 2f); return; }
         if (_open != null && IsInstanceValid(_open)) { _open.QueueFree(); _open = null; return; }
         _open = new ServerConsolePanel { Name = "ServerConsole", _d = d, Layer = 61 };
         d.AddChild(_open);
@@ -40,10 +40,10 @@ public partial class ServerConsolePanel : CanvasLayer
         AddChild(box);
         var v = new VBoxContainer();
         box.AddChild(v);
-        v.AddChild(new Label { Text = "SUNUCU YÖNETİMİ (F8 kapatır) · giris <şifre> · yardim" });
+        v.AddChild(new Label { Text = Loc.T("server.console_title") });
         _log = new Label { Text = "", AutowrapMode = TextServer.AutowrapMode.WordSmart, SizeFlagsVertical = Control.SizeFlags.ExpandFill };
         v.AddChild(_log);
-        _line = new LineEdit { PlaceholderText = "komut" };
+        _line = new LineEdit { PlaceholderText = Loc.T("server.ph_command") };
         _line.TextSubmitted += Submit;
         v.AddChild(_line);
         _line.CallDeferred(Control.MethodName.GrabFocus);

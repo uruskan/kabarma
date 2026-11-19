@@ -76,7 +76,7 @@ public partial class Director
             var plot = farm.Get(x, y);
             if (plot == null || plot.Crop != null || !Tapu(c)) continue;
             string seed = FarmView.PlantableSeed();
-            if (seed == null || !farm.Plant(x, y, seed, State.Backpack, State.Rng)) { Hud.Hint("Tohum kalmadı", 1f); return; }
+            if (seed == null || !farm.Plant(x, y, seed, State.Backpack, State.Rng)) { Hud.Hint(Loc.T("dir.hint_no_seed_left"), 1f); return; }
             VehicleSown++;
             Fx.Burst(c + Vector3.Up * 0.2f, Palette.Plant, 5, 2f, 0.05f, 0.4f);
             State.Scenario.SetProgress("plant", farm.Plots.Count(q => q.Crop != null));
@@ -90,7 +90,7 @@ public partial class Director
         {
             var plot = farm.Get(x, y);
             if (plot == null || plot.Moisture > 92f) continue;
-            if (v.State.Water <= 0) { Hud.Hint("Su bitti: göle yaklaş, menüden doldur", 1.2f); return; }
+            if (v.State.Water <= 0) { Hud.Hint(Loc.T("dir.hint_out_of_water"), 1.2f); return; }
             v.State.Water--;
             farm.Water(x, y);
             VehicleWatered++;

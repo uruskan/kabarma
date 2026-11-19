@@ -90,7 +90,7 @@ public partial class Director
             LastRestore = null;
             SaveRoot = null;
             Loaded?.Invoke();
-            if (GetParent() is Main m) m.CallDeferred(Main.MethodName.ReturnToMenuWith, $"Kayıt yüklenemedi: {e.Message}");
+            if (GetParent() is Main m) m.CallDeferred(Main.MethodName.ReturnToMenuWith, Loc.T("menu.load_error", e.Message));
             return;
         }
         FarmView.Rebuild();
@@ -106,13 +106,13 @@ public partial class Director
     /// </summary>
     public bool CanSave(out string why)
     {
-        why = Phase is not (Act.Day or Act.Free) ? "gece" :
-            NightActive ? "gece" :
-            Hud.ReportOpen ? "rapor acik" :
-            Player.Down ? "oyuncu yerde" :
-            Capa.Held != null ? "elde yuk var" :
-            Carts.Any(c => IsInstanceValid(c) && c.Pushed) ? "araba itiliyor" :
-            !Pod.IntroDone ? "acilis" : "";
+        why = Phase is not (Act.Day or Act.Free) ? Loc.T("menu.why_night") :
+            NightActive ? Loc.T("menu.why_night") :
+            Hud.ReportOpen ? Loc.T("menu.why_report") :
+            Player.Down ? Loc.T("menu.why_down") :
+            Capa.Held != null ? Loc.T("menu.why_held") :
+            Carts.Any(c => IsInstanceValid(c) && c.Pushed) ? Loc.T("menu.why_cart") :
+            !Pod.IntroDone ? Loc.T("menu.why_intro") : "";
         return why == "";
     }
 

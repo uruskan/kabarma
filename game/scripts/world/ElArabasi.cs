@@ -131,7 +131,7 @@ public partial class ElArabasi : RigidBody3D
         _settleT = 0;
         Sfx.Play("hit", GlobalPosition, 0f);
         Fx.Burst(GlobalPosition + Vector3.Up * 0.4f, Palette.Ground, 18, 4f, 0.1f, 0.6f);
-        _d.Hud.Hint("Araba devrildi. E: düzelt", 2f);
+        _d.Hud.Hint(Loc.T("world.cart_tipped_hint"), 2f);
         GD.Print("CART tipped");
     }
 
@@ -153,9 +153,9 @@ public partial class ElArabasi : RigidBody3D
     public bool TryLoad(SwollenCrop s, out string why)
     {
         why = "";
-        if (Load != null) { why = "arabada zaten yük var"; return false; }
-        if (!Slots.IsEmpty) { why = "arabanın yuvaları dolu: önce eşyaları al"; return false; }
-        if (s.Size.Kg > _def.MaxLoadKg) { why = $"çok ağır ({s.Size.Kg} kg > {_def.MaxLoadKg:0} kg)"; return false; }
+        if (Load != null) { why = Loc.T("world.cart_has_load"); return false; }
+        if (!Slots.IsEmpty) { why = Loc.T("world.cart_slots_full"); return false; }
+        if (s.Size.Kg > _def.MaxLoadKg) { why = Loc.T("world.cart_too_heavy", s.Size.Kg, _def.MaxLoadKg.ToString("0", System.Globalization.CultureInfo.InvariantCulture)); return false; }
         Load = s;
         if (s is CargoCrateNode c) c.OnCart = this;
         s.Held = false;
@@ -229,9 +229,9 @@ public partial class ElArabasi : RigidBody3D
         bool near = !Pushed && InReach(_d.Player.GlobalPosition);
         _label.Visible = near;
         if (!near) return;
-        string what = Load != null ? $"yük: {(Load is CargoCrateNode ? "Kargo Kasası" : ItemNames.Of(Load.CropId))} ({Load.Size.Kg} kg)"
-            : Slots.IsEmpty ? "boş" : $"{Slots.UsedSlots}/{Slots.Slots} yuva";
-        _label.Text = Tipped ? "El Arabası (devrik)\nE: düzelt" : $"El Arabası · {what}\nE: tutamağa geç (arkadan) · yük ve yuvalar (yandan)";
+        string what = Load != null ? Loc.T("world.cart_load", (Load is CargoCrateNode ? Loc.T("world.cargo_crate") : ItemNames.Of(Load.CropId)), Load.Size.Kg)
+            : Slots.IsEmpty ? Loc.T("world.cart_empty") : Loc.T("world.cart_slots", Slots.UsedSlots, Slots.Slots);
+        _label.Text = Tipped ? Loc.T("world.cart_label_tipped") : Loc.T("world.cart_label", what);
     }
 
     public override void _ExitTree() => Release();

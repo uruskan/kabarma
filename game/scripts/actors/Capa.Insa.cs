@@ -72,8 +72,8 @@ public partial class Capa
     {
         var def = DefOf(_ghostId);
         if (def == null) return;
-        if (!_ghostOk) { _d.Hud.Hint(def.Id != "ocak" && _d.Ocak == null ? "Önce Ocak'ı kur: tapu Ocak'la gelir" : "Buraya konmaz", 1.2f); Sfx.Play("hit", null, -10f); return; }
-        if (_d.State.Backpack.Count(def.Id) < 1) { _d.Hud.Hint($"{def.Name} yok: Tab → Üretim", 1.5f); Sfx.Play("hit", null, -10f); return; }
+        if (!_ghostOk) { _d.Hud.Hint(def.Id != "ocak" && _d.Ocak == null ? Loc.T("capa.ocak_first") : Loc.T("capa.cant_place_here"), 1.2f); Sfx.Play("hit", null, -10f); return; }
+        if (_d.State.Backpack.Count(def.Id) < 1) { _d.Hud.Hint(Loc.T("capa.def_none", def.Name), 1.5f); Sfx.Play("hit", null, -10f); return; }
         if (_d.Net?.ForwardPlaceItem(def.Id, _ghost.GlobalPosition, _ghostYaw) == true) { _ghost.Visible = false; return; } // ortak: host kurar
         _d.State.Backpack.Remove(def.Id, 1);
         var at = _ghost.GlobalPosition; float yaw = _ghostYaw;
@@ -129,7 +129,7 @@ public partial class Capa
         _badOverlay ??= new StandardMaterial3D { ShadingMode = BaseMaterial3D.ShadingModeEnum.Unshaded, Transparency = BaseMaterial3D.TransparencyEnum.Alpha, AlbedoColor = new Color(1f, 0.3f, 0.25f, 0.4f) };
         foreach (var mi in _ghost.FindChildren("*", "MeshInstance3D", true, false).OfType<MeshInstance3D>()) { mi.Transparency = 0.4f; mi.MaterialOverlay = _ghostOk ? _okOverlay : _badOverlay; mi.CastShadow = GeometryInstance3D.ShadowCastingSetting.Off; }
         int have = _d.State.Backpack.Count(id);
-        _d.Hud.Hint($"{def.Name} ×{have}  ·  {{act:fire}}: kur  ·  {{act:build_rotate}}: döndür", 0.2f);
+        _d.Hud.Hint(Loc.T("capa.build_hint", def.Name, have), 0.2f);
     }
 
     public void PlaceOcak(Vector3 at)

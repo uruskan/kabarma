@@ -102,16 +102,16 @@ public sealed class SteamServerBrowser
         Cancel();
         try
         {
-            if (!SteamBoot.Ensure((uint)data.Net.Steam.AppId)) { Status = "Steam kapalı: " + SteamBoot.Error; return; }
+            if (!SteamBoot.Ensure((uint)data.Net.Steam.AppId)) { Status = Loc.T("server.steam_off", SteamBoot.Error); return; }
             _max = data.Server.Ping.SteamMaxResults;
             _timeout = data.Server.Ping.SteamTimeoutSeconds;
             _resp = new ISteamMatchmakingServerListResponse(OnResponded, OnFailed, OnComplete);
             var filters = new[] { new MatchMakingKeyValuePair_t { m_szKey = "gamedir", m_szValue = data.Server.Steam.GameDir } };
             _req = SteamMatchmakingServers.RequestInternetServerList(SteamUtils.GetAppID(), filters, (uint)filters.Length, _resp);
             Busy = true;
-            Status = "Steam sunucuları aranıyor…";
+            Status = Loc.T("server.steam_searching");
         }
-        catch (Exception e) { Status = "Steam listesi alınamadı: " + e.GetType().Name; Busy = false; }
+        catch (Exception e) { Status = Loc.T("server.steam_failed", e.GetType().Name); Busy = false; }
     }
 
     void OnResponded(HServerListRequest req, int i)
@@ -134,7 +134,7 @@ public sealed class SteamServerBrowser
     void OnComplete(HServerListRequest req, EMatchMakingServerResponse r)
     {
         Busy = false;
-        Status = Entries.Count > 0 ? $"{Entries.Count} sunucu" : "Steam'de sunucu bulunamadı";
+        Status = Entries.Count > 0 ? Loc.T("server.count", Entries.Count) : Loc.T("server.none");
     }
 
     /// <summary>Her kare (Steam geri cagirimlari + zaman asimi).</summary>
@@ -143,7 +143,7 @@ public sealed class SteamServerBrowser
         if (!Busy) return;
         SteamBoot.Pump();
         _timeout -= dt;
-        if (_timeout <= 0) { Cancel(); Busy = false; Status = Entries.Count > 0 ? $"{Entries.Count} sunucu" : "Steam'de sunucu bulunamadı"; }
+        if (_timeout <= 0) { Cancel(); Busy = false; Status = Entries.Count > 0 ? Loc.T("server.count", Entries.Count) : Loc.T("server.none"); }
     }
 
     public void Cancel()

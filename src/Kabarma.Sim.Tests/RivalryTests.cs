@@ -93,17 +93,21 @@ public class RivalryTests
         k.NightMaya = 100f;
         RivalryRules.MarkExportReady(k, "turnip", 8);
         RivalryRules.Dawn(d.Rivalry, s);
-        Assert.Equal(30, s.SiloMaya);
+        Assert.Equal(30, k.SiloMaya);
         Assert.Equal(70, k.CollectedMaya);
-        Assert.Equal(8, s.Silo["turnip"]);
+        Assert.Equal(8, k.Silo["turnip"]);
         Assert.Equal(8, k.Exports);
         // Yagma
         var bag = new Inventory(20, id => 99);
-        var (items, maya) = RivalryRules.LootSilo(s, "guney", bag);
+        var own = RivalryRules.LootSilo(s, "kuzey", "kuzey", new Inventory(20, id => 99)); // kendi silosunu yagmalayamaz
+        Assert.Equal((0, 0), own);
+        var (items, maya) = RivalryRules.LootSilo(s, "kuzey", "guney", bag);
         Assert.Equal(8, items); Assert.Equal(30, maya);
         Assert.Equal(30, bag.Count("maya")); Assert.Equal(8, bag.Count("turnip"));
         Assert.Equal(30, s.Team("guney")!.CollectedMaya);
-        Assert.Empty(s.Silo);
+        Assert.Empty(k.Silo);
+        Assert.Equal(0, k.SiloMaya);
+        Assert.Equal((0, 0), RivalryRules.LootSilo(s, "guney", "guney", bag)); // baska takimin silosuna dokunmaz: guney'in silosu ayri
         // Yagmalanabilirlik
         Assert.True(RivalryRules.Lootable(d.Rivalry, s, true, "swollen_crop", 5, 5, "guney"));
         Assert.False(RivalryRules.Lootable(d.Rivalry, s, false, "swollen_crop", 5, 5, "guney"));
@@ -147,6 +151,8 @@ public class RivalryTests
         RivalryRules.ToppleKazan(s, "kuzey");
         Assert.Equal(RivalryVerdict.Sealed, RivalryRules.CanHit(d.Rivalry, s, true, 10, 10, "guney"));
         RivalryRules.Dawn(d.Rivalry, s);
+        Assert.Equal(RivalryVerdict.Sealed, RivalryRules.CanHit(d.Rivalry, s, true, 10, 10, "guney")); // muhur gece kalani boyunca
+        RivalryRules.ClearSeals(s); // yeni gun
         Assert.Equal(RivalryVerdict.Allowed, RivalryRules.CanHit(d.Rivalry, s, true, 10, 10, "guney"));
     }
 
@@ -227,13 +233,13 @@ public class RivalryTests
     {
         var d = D();
         var rv = Two(d);
-        rv.Silo["turnip"] = 3; rv.SiloMaya = 12;
+        rv.Team("kuzey")!.Silo["turnip"] = 3; rv.Team("kuzey")!.SiloMaya = 12;
         rv.Ruins.Add(new RuinPlan { Id = 4, Team = "kuzey", Shape = "kare_temel" });
         rv.Team("kuzey")!.ExportReady["egg"] = 2;
         var json = JsonSerializer.Serialize(rv);
         var back = JsonSerializer.Deserialize<RivalryState>(json)!;
         Assert.Equal(JsonSerializer.Serialize(back), json);
-        Assert.Equal(12, back.SiloMaya);
+        Assert.Equal(12, back.Team("kuzey")!.SiloMaya);
         Assert.Equal(2, back.Team("kuzey")!.ExportReady["egg"]);
     }
 }

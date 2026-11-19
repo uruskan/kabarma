@@ -75,7 +75,7 @@ public partial class Hud
             }
             PaintAmmo();
         }
-        else Text("KEMER", BeltX(0), b.Y - 22, T.Data.Type.Caption + 1, T.A(T.Ink, 0.8f), true, true);
+        else Text(Loc.T("hud.belt"), BeltX(0), b.Y - 22, T.Data.Type.Caption + 1, T.A(T.Ink, 0.8f), true, true);
     }
 
     /// <summary>
@@ -107,8 +107,8 @@ public partial class Hud
         bool free = _d.NightActive;
         int n = string.IsNullOrEmpty(ammo) ? 0 : _d.State.Backpack.Count(ammo);
         Glyph("civi", new Vector2(v.X + 12, top + 18), 11, T.Ink);
-        Text("ÇİVİ", v.X + 28, top + 9, T.Data.Type.Small, T.A(T.Ink, 0.85f), true, true, true);
-        if (free) TextIn("KABARMA'DA SINIRSIZ", v.X, top + 7, v.Width - 6, T.Data.Type.Body, T.Short, HorizontalAlignment.Right, true, true, true);
+        Text(Loc.T("hud.nail"), v.X + 28, top + 9, T.Data.Type.Small, T.A(T.Ink, 0.85f), true, true, true);
+        if (free) TextIn(Loc.T("hud.ammo_unlimited"), v.X, top + 7, v.Width - 6, T.Data.Type.Body, T.Short, HorizontalAlignment.Right, true, true, true);
         else TextIn(n.ToString(CultureInfo.InvariantCulture), v.X, top, v.Width - 6, 30, n == 0 ? T.Red : T.Ink, HorizontalAlignment.Right, true, true, true);
     }
 

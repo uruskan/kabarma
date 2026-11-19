@@ -20,11 +20,11 @@ public partial class Director
     public bool PinSource(string item)
     {
         var src = Kabarma.Sim.CraftRules.Source(Data.Tool, item);
-        if (src == null || ResolveTarget(src.Target) == null) { Hud.Hint($"{ItemNames.Of(item)}: yakında kaynak yok", 1.4f); return false; }
+        if (src == null || ResolveTarget(src.Target) == null) { Hud.Hint(Loc.T("dir.hint_no_source", ItemNames.Of(item)), 1.4f); return false; }
         if (_pinItem == null) State.Backpack.Changed += OnPinnedGathered;
         _pinItem = item;
         _pinKind = src.Target;
-        Hud.Hint($"Pusula: {ItemNames.Of(item)} ({src.Text})", 2f);
+        Hud.Hint(Loc.T("dir.hint_compass_pin", ItemNames.Of(item), src.Text), 2f);
         Sfx.Play("place", null, -10f);
         GD.Print($"PIN {item} -> {src.Target}");
         return true;

@@ -17,9 +17,9 @@ public partial class BuildBridge
         string yuk = UpgradePreview(t, out bool okYuk); // BuildBridge.Yapi.cs (M2)
         return new[]
         {
-            ("Yükselt", yuk, okYuk),
-            ("Onar", onar, okOnar),
-            ("Sök", sok, okSok),
+            (Loc.T("build.upgrade"), yuk, okYuk),
+            (Loc.T("build.repair"), onar, okOnar),
+            (Loc.T("build.dismantle"), sok, okSok),
         };
     }
 

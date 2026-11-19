@@ -77,19 +77,19 @@ public partial class PowerDevice : Node3D
         switch (PDef.Kind)
         {
             case "generator":
-                if (PDef.Source == "fuel") return $"{n.OutputW:0} / {PDef.Watts:0} W · yakıt {n.Fuel:0} sn";
-                if (PDef.Source == "water" && !n.Occupied) return $"0 / {PDef.Watts:0} W · akan su yok";
-                if (PDef.Source == "kabarma" && n.OutputW <= 0) return $"0 / {PDef.Watts:0} W · yalnız Kabarma'da";
-                return PDef.Source == "animal" && !n.Occupied ? $"0 / {PDef.Watts:0} W · içinde hayvan yok" : $"{n.OutputW:0} / {PDef.Watts:0} W";
+                if (PDef.Source == "fuel") return Loc.T("power.fuel_status", n.OutputW.ToString("0", System.Globalization.CultureInfo.InvariantCulture), PDef.Watts.ToString("0", System.Globalization.CultureInfo.InvariantCulture), n.Fuel.ToString("0", System.Globalization.CultureInfo.InvariantCulture));
+                if (PDef.Source == "water" && !n.Occupied) return Loc.T("power.no_water", PDef.Watts.ToString("0", System.Globalization.CultureInfo.InvariantCulture));
+                if (PDef.Source == "kabarma" && n.OutputW <= 0) return Loc.T("power.kabarma_only", PDef.Watts.ToString("0", System.Globalization.CultureInfo.InvariantCulture));
+                return PDef.Source == "animal" && !n.Occupied ? Loc.T("power.no_animal", PDef.Watts.ToString("0", System.Globalization.CultureInfo.InvariantCulture)) : $"{n.OutputW:0} / {PDef.Watts:0} W";
             case "battery":
                 return $"{n.StoredWh:0} / {PDef.CapacityWh:0} Wh";
             case "consumer":
-                if (!n.On) return "kapalı";
-                if (n.SignalWired && n.Signal <= 0) return $"sinyal bekliyor · {PDef.Watts:0} W";
-                return n.Powered ? $"yanıyor · {PDef.Watts:0} W" : n.Shed ? "güç yetmiyor" : net.UsedSockets(NodeId) == 0 ? "kablo yok" : "güç yok";
+                if (!n.On) return Loc.T("power.off");
+                if (n.SignalWired && n.Signal <= 0) return Loc.T("power.wait_signal_w", PDef.Watts.ToString("0", System.Globalization.CultureInfo.InvariantCulture));
+                return n.Powered ? Loc.T("power.lit_w", PDef.Watts.ToString("0", System.Globalization.CultureInfo.InvariantCulture)) : n.Shed ? Loc.T("power.shed") : net.UsedSockets(NodeId) == 0 ? Loc.T("power.no_cable") : Loc.T("power.no_power");
             case "switch":
                 bool closed = n.SignalWired ? n.Signal > 0 : n.On;
-                return (closed ? "kapalı (iletir)" : "açık (keser)") + (n.SignalWired ? $" · sinyal {n.Signal}" : "");
+                return (closed ? Loc.T("power.closed") : Loc.T("power.open")) + (n.SignalWired ? " · " + Loc.T("power.signal", n.Signal) : "");
             case "button":
             case "plate":
             case "lever":
@@ -99,26 +99,26 @@ public partial class PowerDevice : Node3D
             case "reading":
             case "power_sensor":
             case "timer":
-                return $"sinyal {n.Signal}" + (PDef.Kind == "reading" ? $" · ölçüm {n.Reading}" : "");
+                return Loc.T("power.signal", n.Signal) + (PDef.Kind == "reading" ? " · " + Loc.T("power.reading", n.Reading) : "");
             case "and": case "or": case "not": case "compare": case "memory":
-                return $"çıkış {n.Signal}" + (n.SignalWired ? "" : " · tel yok");
+                return Loc.T("power.output", n.Signal) + (n.SignalWired ? "" : " · " + Loc.T("power.no_wire"));
             case "counter":
-                return $"{n.Count}/{PDef.Target} · çıkış {n.Signal}";
+                return Loc.T("power.counter", n.Count, PDef.Target, n.Signal);
             case "fuse":
-                return $"öncelik {n.Priority}";
+                return Loc.T("power.priority", n.Priority);
             case "belt": case "pipe": case "splitter": case "merger":
-                return (n.SignalWired && n.Signal <= 0 ? "sinyal bekliyor" : "akıyor") + $" · {_d.State.Power.Transport.Lane(NodeId).Items.Count} nesne";
+                return (n.SignalWired && n.Signal <= 0 ? Loc.T("power.wait_signal") : Loc.T("power.flowing")) + " · " + Loc.T("power.n_items", _d.State.Power.Transport.Lane(NodeId).Items.Count);
             case "arm": case "pump":
-                return (!n.On ? "kapalı" : n.SignalWired && n.Signal <= 0 ? "sinyal bekliyor" : n.Powered ? "çalışıyor" : n.Shed ? "güç yetmiyor" : "güç yok") + (n.Filter.Length > 0 ? $" · {ItemNames.Of(n.Filter)}" : " · hepsi");
+                return (!n.On ? Loc.T("power.off") : n.SignalWired && n.Signal <= 0 ? Loc.T("power.wait_signal") : n.Powered ? Loc.T("power.working") : n.Shed ? Loc.T("power.shed") : Loc.T("power.no_power")) + (n.Filter.Length > 0 ? $" · {ItemNames.Of(n.Filter)}" : " · " + Loc.T("power.all_word"));
             case "drone_station":
                 {
                     var s = _d.State.Power.Transport.Drones.Station(NodeId);
-                    return $"{s.Fleet.Count(x => x.Phase != 0)}/{PDef.Drones} uçuşta · {s.Orders.Count} görev" + (n.Powered ? "" : " · güç yok");
+                    return Loc.T("power.drones", s.Fleet.Count(x => x.Phase != 0), PDef.Drones, s.Orders.Count) + (n.Powered ? "" : " · " + Loc.T("power.no_power"));
                 }
             case "ropeway_station":
-                return $"{_d.State.Power.Transport.Ropeways.Lines.Count(l => l.A == NodeId)} hat" + (n.Powered ? "" : " · güç yok");
+                return Loc.T("power.lines", _d.State.Power.Transport.Ropeways.Lines.Count(l => l.A == NodeId)) + (n.Powered ? "" : " · " + Loc.T("power.no_power"));
         }
-        return st == null ? "kablo yok" : $"{st.ServedW:0} / {st.SupplyW:0} W";
+        return st == null ? Loc.T("power.no_cable") : $"{st.ServedW:0} / {st.SupplyW:0} W";
     }
 
     public override void _Process(double delta)

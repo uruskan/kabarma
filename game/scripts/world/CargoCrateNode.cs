@@ -67,6 +67,6 @@ public partial class CargoCrateNode : SwollenCrop
         base._Process(delta);
         bool near = _d.Player.GlobalPosition.DistanceTo(GlobalPosition) < 4f;
         _label.Visible = (near || Held) && OnCart == null; // arabadayken arabanin etiketi yuku yazar
-        if (_label.Visible) _label.Text = $"Kargo Kasası · {Crate.Items.UsedSlots} yığın · {_d.State.Cargo.Value(Crate)} Kredi · {Crate.Kg:0} kg";
+        if (_label.Visible) _label.Text = Loc.T("world.crate_label", Crate.Items.UsedSlots, _d.State.Cargo.Value(Crate), Crate.Kg.ToString("0", System.Globalization.CultureInfo.InvariantCulture));
     }
 }

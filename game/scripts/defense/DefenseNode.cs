@@ -87,18 +87,18 @@ public partial class DefenseNode : Furniture
         var f = _dd.Data.Defense;
         if (Tower != null && TowerState is TowerState t)
         {
-            string ammo = Tower.Ammo.Count == 0 ? "cephanesiz" : string.Join(", ", Tower.Ammo.Where(a => t.Mag.GetValueOrDefault(a) > 0).Select(a => $"{ItemNames.Of(a)} {t.Mag[a]}"));
-            string st = TowerRules.Status(t, Tower) switch { TowerStatus.Broken => "bakım ister", TowerStatus.Empty => "cephane yok", TowerStatus.Off => "kapalı", _ => Tower.Powered && !PowerOk ? $"güç yok ({Port?.Watts:0} W)" : "hazır" };
-            return $"{Tower.Name} · {st} · {(ammo == "" ? "boş" : ammo)}{(Tower.Magazine > 0 ? $" ({t.Loaded}/{Tower.Magazine})" : "")} · can {t.Hp:0}/{Tower.Hp:0} · öncelik: {DefenseSystem.PriorityName(t.Priority)}  ·  {{act:interact}}: {(DefenseSystem.NeedsRepair(t.Hp, Tower.Hp) ? "onar" : "doldur")}  ·  {{act:interact}} basılı: öncelik";
+            string ammo = Tower.Ammo.Count == 0 ? Loc.T("defense.no_ammo_word") : string.Join(", ", Tower.Ammo.Where(a => t.Mag.GetValueOrDefault(a) > 0).Select(a => $"{ItemNames.Of(a)} {t.Mag[a]}"));
+            string st = TowerRules.Status(t, Tower) switch { TowerStatus.Broken => Loc.T("defense.needs_repair"), TowerStatus.Empty => Loc.T("defense.empty"), TowerStatus.Off => Loc.T("power.off"), _ => Tower.Powered && !PowerOk ? Loc.T("defense.no_power_w", Port?.Watts.ToString("0", System.Globalization.CultureInfo.InvariantCulture)) : Loc.T("defense.ready") };
+            return Loc.T("defense.tower_line", Tower.Name, st, (ammo == "" ? Loc.T("defense.empty_word") : ammo), (Tower.Magazine > 0 ? $" ({t.Loaded}/{Tower.Magazine})" : ""), t.Hp.ToString("0", System.Globalization.CultureInfo.InvariantCulture), Tower.Hp.ToString("0", System.Globalization.CultureInfo.InvariantCulture), DefenseSystem.PriorityName(t.Priority), (DefenseSystem.NeedsRepair(t.Hp, Tower.Hp) ? Loc.T("defense.repair") : Loc.T("defense.refill")));
         }
         if (Trap != null && TrapState is TrapState s)
         {
-            string st = TrapRules.Broken(s) ? (Trap.Kind is "mine" or "oil" ? "kullanıldı: onar ya da yeniden kur" : "bakım ister")
-                : Trap.Kind == "pit" ? (s.Open ? $"açık ({s.Held.Count}/{Trap.Capacity})" : "kapalı")
-                : Trap.Kind == "oil" ? (s.Open ? $"yanıyor ({s.Fuel:0} sn)" : "yağlı: tutuşturulabilir")
-                : Trap.Powered && !PowerOk ? $"güç yok ({Port?.Watts:0} W)" : "kurulu";
-            string act = Trap.Kind == "pit" ? "aç / kapat" : Trap.Kind == "oil" && !TrapRules.Broken(s) ? "tutuştur" : "onar";
-            return $"{Trap.Name} · {st} · can {s.Hp:0}/{Trap.Hp:0}  ·  {{act:interact}}: {act}";
+            string st = TrapRules.Broken(s) ? (Trap.Kind is "mine" or "oil" ? Loc.T("defense.used_up") : Loc.T("defense.needs_repair"))
+                : Trap.Kind == "pit" ? (s.Open ? Loc.T("defense.pit_open", s.Held.Count, Trap.Capacity) : Loc.T("power.off"))
+                : Trap.Kind == "oil" ? (s.Open ? Loc.T("defense.burning", s.Fuel.ToString("0", System.Globalization.CultureInfo.InvariantCulture)) : Loc.T("defense.oiled"))
+                : Trap.Powered && !PowerOk ? Loc.T("defense.no_power_w", Port?.Watts.ToString("0", System.Globalization.CultureInfo.InvariantCulture)) : Loc.T("defense.installed");
+            string act = Trap.Kind == "pit" ? Loc.T("defense.toggle") : Trap.Kind == "oil" && !TrapRules.Broken(s) ? Loc.T("defense.ignite") : Loc.T("defense.repair");
+            return Loc.T("defense.trap_line", Trap.Name, st, s.Hp.ToString("0", System.Globalization.CultureInfo.InvariantCulture), Trap.Hp.ToString("0", System.Globalization.CultureInfo.InvariantCulture), act);
         }
         return Def.Name;
     }

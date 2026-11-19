@@ -46,7 +46,7 @@ public partial class Director
         s.OrderPaid += (credits, veri, what) =>
         {
             GD.Print($"ORDER PAID {what} credits={credits} veri={veri}");
-            if (State.Orders.DefterOpen) Hud.Hint($"+{credits:N0} Kredi · +{veri} Veri", 3f);
+            if (State.Orders.DefterOpen) Hud.Hint(Loc.T("dir.hint_order_paid", credits.ToString("N0", System.Globalization.CultureInfo.InvariantCulture), veri), 3f);
         };
         s.Orders.GrantMade += (chain, g) =>
         {
@@ -56,17 +56,17 @@ public partial class Director
         s.Achievements.UnlockedEvent += a =>
         {
             GD.Print($"ACHIEVEMENT {a.Id}");
-            Hud.Big($"BAŞARIM · {a.Name}", Palette.Warning, 2.6f);
+            Hud.Big(Loc.T("dir.big_achievement", a.Name), Palette.Warning, 2.6f);
             Sfx.Play("levelup", null, -8f);
         };
         m.LevelUp += (b, lv) =>
         {
-            if (lv % 5 == 0 || lv < 5) Hud.Hint($"{m.Branches.First(x => x.Id == b).Name}: seviye {lv}", 2f);
+            if (lv % 5 == 0 || lv < 5) Hud.Hint(Loc.T("dir.hint_mastery_level", m.Branches.First(x => x.Id == b).Name, lv), 2f);
         };
         m.PerkUnlocked += (b, tier) =>
         {
             GD.Print($"MASTERY perk tier open {b} {tier}");
-            Hud.Big($"USTALIK · {m.Branches.First(x => x.Id == b).Name} {tier}: özellik seç (Defter)", Palette.CoopBlue.Lerp(Palette.OffWhite, 0.3f), 3.2f);
+            Hud.Big(Loc.T("dir.big_mastery_perk", m.Branches.First(x => x.Id == b).Name, tier), Palette.CoopBlue.Lerp(Palette.OffWhite, 0.3f), 3.2f);
         };
 
         if (Main.Args.ContainsKey("ilerlemetest")) AddChild(new IlerlemeTest(this) { Name = "IlerlemeTest" }); // --test=ilerleme

@@ -50,8 +50,8 @@ public partial class HoldingWorld : Node3D
         {
             GD.Print($"HOLDING founded camp#{c.Id} slot={c.Slot} kind={c.Kind} at {c.X:0},{c.Z:0} level={c.Level}");
             bool hq = c.Kind == "hq";
-            D.Hud.Big(hq ? "BEREKET HOLDING GENEL MERKEZ" : "BEREKET HOLDING KAMP KURDU", Palette.HoldingRed, 3f);
-            D.Hud.Hint(hq ? "Krater eteğinde Holding Genel Merkezi belirdi: yalnız Kabarma gecesi girilir; sonunda Müdür var." : c.Slot == 1 ? "Sis Korusu kıyısında bir Holding şubesi belirdi. Gündüz Perde si var; Kabarma gecesi iner." : $"Yeni bir Holding şubesi kuruldu ({c.Slot}. kamp). Gündüz Perde si var; Kabarma gecesi iner.", 5f);
+            D.Hud.Big(hq ? Loc.T("holding.big_hq") : Loc.T("holding.big_camp"), Palette.HoldingRed, 3f);
+            D.Hud.Hint(hq ? Loc.T("holding.hint_hq") : c.Slot == 1 ? Loc.T("holding.hint_branch") : Loc.T("holding.hint_new_branch", c.Slot), 5f);
         };
         H.LevelUp += (c, l) => { GD.Print($"HOLDING camp#{c.Id} levelup {l}"); D.Hud.Big($"Holding kampı · Sv. {l}", Palette.HoldingRed, 2f); };
         H.CaravanDeparted += (c, k) => GD.Print($"HOLDING caravan camp#{c.Id} day={k.Day} guards={c.Units.Count(u => u.Job == "caravan")}");
@@ -133,7 +133,7 @@ public partial class HoldingWorld : Node3D
         t.GlobalPosition = Host || from.DistanceTo(to) > 10f ? to : from.Lerp(to, Mathf.Min(1f, dt * 6f));
         var dir = new Vector3(to.X - from.X, 0, to.Z - from.Z);
         if (dir.LengthSquared() > 1e-5f) t.Rotation = new Vector3(0, Mathf.LerpAngle(t.Rotation.Y, Mathf.Atan2(dir.X, dir.Z), Mathf.Min(1f, dt * 4f)), 0);
-        if (t.GetNodeOrNull<Label3D>("Label") is Label3D l) l.Text = $"Holding kervanı  {Mathf.CeilToInt(k.VehicleHp)}";
+        if (t.GetNodeOrNull<Label3D>("Label") is Label3D l) l.Text = Loc.T("holding.caravan_label", Mathf.CeilToInt(k.VehicleHp));
     }
 
     /// <summary>YER TUTUCU kervan araci: kirmizi kabin, kasa, sandiklar (gercek model uretim isteginde).</summary>
@@ -223,7 +223,7 @@ public partial class HoldingWorld : Node3D
             var np = p.GlobalPosition + dir * Mathf.Min(deep + 0.05f, Def.Camp.PerdePush * (deep > 3f ? 3f : 1f) * dt);
             np.Y = Mathf.Max(np.Y, D.World.HeightAt(np.X, np.Z) + 0.05f); // yokusta toprağa gömülmesin
             p.GlobalPosition = np;
-            if (!_perdeHinted) { _perdeHinted = true; D.Hud.Hint("Holding Perde'si: gündüz tapularına girilmez, hasar geçmez. Kabarma gecesi iner.", 4f); }
+            if (!_perdeHinted) { _perdeHinted = true; D.Hud.Hint(Loc.T("holding.perde_hint"), 4f); }
         }
     }
 
@@ -300,7 +300,7 @@ public partial class HoldingWorld : Node3D
         H.OnRaidEntered(campId);
         if (!first) return;
         GD.Print($"HOLDING raid entered camp#{campId} husumet={c.Husumet:0}");
-        D.Hud.Big("Holding tapuya girdi!", Palette.HoldingRed, 2f);
+        D.Hud.Big(Loc.T("holding.entered_claim"), Palette.HoldingRed, 2f);
     }
 
     public void Stolen(HoldingUnitActor a, HoldingUnit u)
@@ -309,7 +309,7 @@ public partial class HoldingWorld : Node3D
         a.ConsumeCrop();
         u.Carrying = false;
         GD.Print($"HOLDING stolen {crop} camp#{a.CampId}");
-        D.Hud.Big("Holding bir kabarık ürün kaçırdı", Palette.HoldingRed, 2f);
+        D.Hud.Big(Loc.T("holding.stole_crop"), Palette.HoldingRed, 2f);
     }
 
     // ---------------------------------------------------------------- vuruslar
@@ -379,7 +379,7 @@ public partial class HoldingWorld : Node3D
             case HitKind.Structure:
                 var r = H.HitStructure(f.Camp, f.Structure, damage, out var loot);
                 Provoke(f.Camp);
-                if (r == HoldingHit.Locked) { Fx.Text3D(f.Point + Vector3.Up * 2f, "Kilitli: önce öteki binalar", Palette.Warning, 48, 1.2f, 1.2f); return; }
+                if (r == HoldingHit.Locked) { Fx.Text3D(f.Point + Vector3.Up * 2f, Loc.T("holding.locked_first"), Palette.Warning, 48, 1.2f, 1.2f); return; }
                 if (r == HoldingHit.Blocked) { Fx.Burst(f.Point, Palette.HoldingRed.Lightened(0.4f), 6, 2f, 0.06f, 0.35f, true, 0f); return; }
                 Fx.DamageNumber(f.Point + Vector3.Up * 1.5f, damage, false);
                 Fx.Burst(f.Point, Palette.Wood, 6, 3f, 0.1f, 0.5f, false, 9f);
@@ -405,13 +405,13 @@ public partial class HoldingWorld : Node3D
         DropLeftovers(left, c);
         string name = Def.Camp.Structures.FirstOrDefault(s => s.Id == id)?.Name ?? id;
         GD.Print($"HOLDING destroyed camp#{c.Id} {id} credits={loot.Credits} items={string.Join(",", loot.Items.Select(kv => kv.Key + "x" + kv.Value))} token={loot.Token}");
-        D.Hud.Big($"{name} yıkıldı · {LootText(loot)}", Palette.Warning, 2.5f);
+        D.Hud.Big(Loc.T("holding.destroyed", name, LootText(loot)), Palette.Warning, 2.5f);
         Sfx.Play("pop", new Vector3(c.X, D.World.HeightAt(c.X, c.Z) + 2f, c.Z), 0f);
         Events.RaiseHoldingRaided(c.Id, id);
         if (Def.Camp.Structures.Any(s => s.Id == id && s.Core))
         {
             Events.RaiseHoldingCoreDestroyed(c.Id);
-            D.Hud.Big("ŞUBE ÇEKİRDEĞİ DÜŞTÜ", Palette.Warning, 3f);
+            D.Hud.Big(Loc.T("holding.core_fell"), Palette.Warning, 3f);
         }
     }
 
@@ -421,14 +421,14 @@ public partial class HoldingWorld : Node3D
         var left = D.State.ApplyLoot(loot, bag);
         DropLeftovers(left, c);
         GD.Print($"HOLDING ambush camp#{c.Id} credits={loot.Credits} items={string.Join(",", loot.Items.Select(kv => kv.Key + "x" + kv.Value))}");
-        D.Hud.Big($"Kervan düştü · {LootText(loot)}", Palette.Warning, 2.5f);
+        D.Hud.Big(Loc.T("holding.caravan_fell", LootText(loot)), Palette.Warning, 2.5f);
         Events.RaiseHoldingAmbushed(c.Id);
     }
 
     static string LootText(HoldingLoot l)
     {
         var parts = l.Items.Select(kv => $"{ItemNames.Of(kv.Key)} ×{kv.Value}").ToList();
-        if (l.Credits > 0) parts.Add($"{l.Credits} Kredi");
+        if (l.Credits > 0) parts.Add(Loc.T("holding.credits", l.Credits));
         if (l.Token.Length > 0) parts.Add(ItemNames.Of(l.Token) + " (depoda)");
         return string.Join(", ", parts);
     }
@@ -439,6 +439,6 @@ public partial class HoldingWorld : Node3D
         if (left.Count == 0) return;
         foreach (var (id, n) in left) H.State.Depot[id] = H.State.Depot.GetValueOrDefault(id) + n;
         GD.Print($"HOLDING loot overflow->depot camp#{c.Id} {string.Join(",", left.Select(kv => kv.Key + "x" + kv.Value))}");
-        D.Hud.Hint("Çanta dolu: ganimetin kalanı Kooperatif deposuna gönderildi.", 3f);
+        D.Hud.Hint(Loc.T("holding.bag_full_loot"), 3f);
     }
 }

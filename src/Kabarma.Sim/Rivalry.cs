@@ -36,6 +36,9 @@ public sealed class RivalryTeam
     public bool Offline { get; set; }
     /// <summary>Ihracata hazir isaretli mallar (kural 5): Acik Silo'ya girer.</summary>
     public SortedDictionary<string, int> ExportReady { get; set; } = new(StringComparer.Ordinal);
+    /// <summary>Takimin kendi Acik Silo'su (kural 5): safakta dolar, yalniz rakipler yagmalar.</summary>
+    public SortedDictionary<string, int> Silo { get; set; } = new(StringComparer.Ordinal);
+    public int SiloMaya { get; set; }
     public int Score => CollectedMaya + Exports;
 }
 
@@ -63,12 +66,10 @@ public sealed class RivalryState
     public List<RivalryTeam> Teams { get; set; } = new();
     public List<RuinPlan> Ruins { get; set; } = new();
     public int NextRuin { get; set; } = 1;
-    /// <summary>Acik Silo (kural 5): gecenin payi + ihracata hazir mallar; yagmalanir.</summary>
-    public SortedDictionary<string, int> Silo { get; set; } = new(StringComparer.Ordinal);
-    public int SiloMaya { get; set; }
 
     public RivalryTeam? Team(string id) => Teams.FirstOrDefault(t => t.Id == id);
     public RivalryTeam? TeamOf(string player) => Teams.FirstOrDefault(t => t.Players.Contains(player));
+    public int SiloMayaTotal => Teams.Sum(t => t.SiloMaya);
 }
 
 public sealed partial class GameState

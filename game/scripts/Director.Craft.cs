@@ -36,19 +36,19 @@ public partial class Director
         if (TryResearch(r)) return !ResearchLocked(r); // zincir: arastirmayla kilitli satir Masa yaninda arastirilir (Director.Zincir.cs)
         IItemStore inv = StoreFor(r); // zincir: istasyon tarifi canta + tapudaki Sandiklar (GDD 5 ambardan uretim)
         string need = CraftRules.NeedStation(r, NearStations());
-        if (need != null) { Hud.Hint($"{ItemNames.Of(need)} gerekir: yanına git", 1.5f); Sfx.Play("hit", null, -12f); return false; }
+        if (need != null) { Hud.Hint(Loc.T("dir.hint_need_nearby", ItemNames.Of(need)), 1.5f); Sfx.Play("hit", null, -12f); return false; }
         var miss = CraftRules.Missing(r, count, inv);
         if (miss.Count > 0)
         {
             var (item, have, n) = miss[0];
-            Hud.Hint($"{ItemNames.Of(item)} yetmiyor ({have}/{n})", 1.5f);
+            Hud.Hint(Loc.T("dir.hint_not_enough", ItemNames.Of(item), have, n), 1.5f);
             Sfx.Play("hit", null, -12f);
             return false;
         }
         if (Net?.ForwardCraft(r, count) == true) return true; // ortak: istemcide host'a gider (NetSync.Stations.cs)
         if (CraftRules.IsHand(r))
         {
-            if (!State.Craft.Enqueue(r, count, inv)) { Hud.Hint(!State.Craft.IsUnlocked(r) ? "Tarif kilitli" : "Üretim sırası dolu", 1.5f); Sfx.Play("hit", null, -12f); return false; }
+            if (!State.Craft.Enqueue(r, count, inv)) { Hud.Hint(!State.Craft.IsUnlocked(r) ? Loc.T("dir.hint_recipe_locked") : Loc.T("dir.hint_queue_full"), 1.5f); Sfx.Play("hit", null, -12f); return false; }
         }
         else
         {
@@ -57,7 +57,7 @@ public partial class Director
             for (int i = 0; i < count; i++) if (st != null && st.Queue.Enqueue(r, inv)) queued++; else break;
             if (queued == 0)
             {
-                Hud.Hint(st == null ? $"{ItemNames.Of(r.Station)} gerekir" : !st.Queue.IsUnlocked(r) ? LockText(r) : !st.Queue.HasFuel(r, inv) ? $"Yakıt yok: {ItemNames.Of(st.Queue.FuelFor(r, inv) ?? "wood")}" : $"{st.Def.Name} sırası dolu", 1.6f);
+                Hud.Hint(st == null ? Loc.T("dir.hint_need_station", ItemNames.Of(r.Station)) : !st.Queue.IsUnlocked(r) ? LockText(r) : !st.Queue.HasFuel(r, inv) ? Loc.T("dir.hint_no_fuel", ItemNames.Of(st.Queue.FuelFor(r, inv) ?? "wood")) : Loc.T("dir.hint_station_queue_full", st.Def.Name), 1.6f);
                 Sfx.Play("hit", null, -12f);
                 return false;
             }
@@ -75,7 +75,7 @@ public partial class Director
         var name = jobs[index].Recipe.Name;
         if (Net?.ForwardCraftCancel(index) == true) return;
         var back = State.Craft.Cancel(index, State.Backpack);
-        Hud.Hint($"{name} iptal: malzeme geri döndü", 1.4f);
+        Hud.Hint(Loc.T("dir.hint_cancelled_refund", name), 1.4f);
         Sfx.Play("place", null, -10f);
         GD.Print($"CANCELLED {name} back={string.Join(",", back.Select(kv => kv.Key + ":" + kv.Value))}");
     }
@@ -87,7 +87,7 @@ public partial class Director
         var name = st.Queue.Active.Name;
         if (Net?.ForwardStationCancel(st) == true) return;
         st.Queue.Cancel(StationStore()); // zincir: malzeme cantaya, sigmazsa Sandiklara
-        Hud.Hint($"{name} iptal: malzeme geri döndü", 1.4f);
+        Hud.Hint(Loc.T("dir.hint_cancelled_refund", name), 1.4f);
         Sfx.Play("place", null, -10f);
     }
 

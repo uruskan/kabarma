@@ -94,8 +94,8 @@ public partial class KocaPofuduk : AtaActor
         bool naked = phase >= 2;
         _decor.GetChild<Node3D>(0).Visible = !naked;
         _frame.Scale = new Vector3(_baseScale * (naked ? 0.82f : 1f), _baseScale * (naked ? 0.92f : 1f), _baseScale * (naked ? 0.9f : 1f));
-        if (!quiet && phase == 1) { Fx.Burst(Center, Palette.OffWhite, 60, 6f, 0.25f, 1.2f); D.Hud.Say("Yünü kabardı: Biçme ile kırk!"); }
-        if (!quiet && phase == 2) { Fx.Burst(Center, Palette.OffWhite, 80, 8f, 0.3f, 1.4f); D.Hud.Say("Çıplak ve hızlı: taş sütuna toslat!"); }
+        if (!quiet && phase == 1) { Fx.Burst(Center, Palette.OffWhite, 60, 6f, 0.25f, 1.2f); D.Hud.Say(Loc.T("ata.say_wool")); }
+        if (!quiet && phase == 2) { Fx.Burst(Center, Palette.OffWhite, 80, 8f, 0.3f, 1.4f); D.Hud.Say(Loc.T("ata.say_bare")); }
     }
 
     public override void OnSheared(float before, float after, Vector3 at)
@@ -111,7 +111,7 @@ public partial class KocaPofuduk : AtaActor
             Fx.Burst(m.GlobalPosition, Palette.OffWhite, 8, 4f, 0.16f, 0.8f);
         }
         Sfx.Play("bicme_supurme", at, 2f, 0.8f);
-        Fx.Text3D(Center + Vector3.Up * Def.Height * 0.55f, after <= 0 ? "YÜN KIRKILDI" : $"zırh %{after * 100:0}", Palette.OffWhite, 56, 1f, 0.9f);
+        Fx.Text3D(Center + Vector3.Up * Def.Height * 0.55f, after <= 0 ? Loc.T("ata.wool_sheared") : Loc.T("ata.armor_pct", (after * 100).ToString("0", System.Globalization.CultureInfo.InvariantCulture)), Palette.OffWhite, 56, 1f, 0.9f);
     }
 
     public override void OnStunned()

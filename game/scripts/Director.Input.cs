@@ -119,7 +119,7 @@ public partial class Director
     {
         var pieces = Capa.PlanPieces;
         if (pieces.Count == 0 || Build == null) return;
-        var slices = pieces.Select(id => new Hud.WheelSlice("insa", id, Build.NameOf(id), $"{Build.CostOf(id)} Odun", State.Backpack.Count("wood") >= Build.CostOf(id))).ToList();
+        var slices = pieces.Select(id => new Hud.WheelSlice("insa", id, Build.NameOf(id), Loc.T("dir.cost_wood", Build.CostOf(id)), State.Backpack.Count("wood") >= Build.CostOf(id))).ToList();
         Hud.OpenWheel(Hud.WheelKind.Pieces, slices, Mathf.Max(0, pieces.IndexOf(Capa.PlanPiece)));
         Player.LookLocked = true;
     }

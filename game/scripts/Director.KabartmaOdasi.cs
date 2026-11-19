@@ -23,13 +23,13 @@ public partial class Director
         int maya = State.Backpack.Count(MayaVault.Item);
         var items = new List<Hud.MenuItem>
         {
-            new($"Tarla karesi kabart ({def.MayaCost} Maya)", () => powered && plot != null && maya >= def.MayaCost, () => UseSwellRoomPlot(st, plot), MayaVault.Item),
-            new($"Hayvan kabart ({def.MayaCost} Maya, {def.AnimalSeconds / 60f:0} dk)", () => powered && animal != null && maya >= def.MayaCost, () => UseSwellRoomAnimal(st, animal), MayaVault.Item),
+            new(Loc.T("dir.swell_plot", def.MayaCost), () => powered && plot != null && maya >= def.MayaCost, () => UseSwellRoomPlot(st, plot), MayaVault.Item),
+            new(Loc.T("dir.swell_animal", def.MayaCost, (def.AnimalSeconds / 60f).ToString("0", System.Globalization.CultureInfo.InvariantCulture)), () => powered && animal != null && maya >= def.MayaCost, () => UseSwellRoomAnimal(st, animal), MayaVault.Item),
         };
-        string foot = !powered ? "Güç yok: Kabartma Odası 800 W ister."
-            : NightActive ? "Kabarma sürerken çalışmaz."
-            : $"Çantada {maya} Maya  ·  {(plot != null ? "olgun kare var" : "yakında olgun kare yok")}  ·  {(animal != null ? $"hayvan: {animal.Species}" : "yakında evcil hayvan yok")}";
-        Hud.ShowMenu(st.Def.Name, items, foot + "  ·  {act:interact} / {act:ui_cancel}: kapat");
+        string foot = !powered ? Loc.T("dir.swell_nopower_dot")
+            : NightActive ? Loc.T("dir.swell_kabarma_dot")
+            : Loc.T("dir.swell_status", maya, plot != null ? Loc.T("dir.swell_plot_yes") : Loc.T("dir.swell_plot_no"), animal != null ? Loc.T("dir.swell_animal_yes", animal.Species) : Loc.T("dir.swell_animal_no"));
+        Hud.ShowMenu(st.Def.Name, items, foot + "  ·  " + Loc.T("dir.menu_close"));
     }
 
     void UseSwellRoomPlot(Station st, Plot target)
@@ -71,11 +71,11 @@ public partial class Director
     {
         switch (r)
         {
-            case SwellRoomResult.Ok: ok(); Hud.Hint("Kabarttı", 1.5f); break;
-            case SwellRoomResult.NoPower: Hud.Hint("Güç yok: Kabartma Odası 800 W ister", 2f); break;
-            case SwellRoomResult.KabarmaActive: Hud.Hint("Kabarma sürerken çalışmaz", 2f); break;
-            case SwellRoomResult.NoMaya: Hud.Hint($"{Data.Tuzuk.SwellRoom.MayaCost} Maya gerekir", 2f); break;
-            default: Hud.Hint("Yakında uygun hedef yok", 2f); break;
+            case SwellRoomResult.Ok: ok(); Hud.Hint(Loc.T("dir.hint_swelled"), 1.5f); break;
+            case SwellRoomResult.NoPower: Hud.Hint(Loc.T("dir.swell_nopower"), 2f); break;
+            case SwellRoomResult.KabarmaActive: Hud.Hint(Loc.T("dir.swell_kabarma"), 2f); break;
+            case SwellRoomResult.NoMaya: Hud.Hint(Loc.T("dir.hint_need_maya", Data.Tuzuk.SwellRoom.MayaCost), 2f); break;
+            default: Hud.Hint(Loc.T("dir.hint_no_target"), 2f); break;
         }
     }
 }

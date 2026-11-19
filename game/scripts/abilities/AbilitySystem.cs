@@ -126,9 +126,9 @@ public partial class AbilitySystem : Node3D
     public bool TryUse(int slot)
     {
         AbilityRules.Normalize(F, L);
-        if (slot >= F.ActiveSlots) { D.Hud.Hint("Bu yuva henüz kilitli (Kurbağa Ağa)", 1.5f); return false; }
+        if (slot >= F.ActiveSlots) { D.Hud.Hint(Loc.T("ability.slot_locked_hint"), 1.5f); return false; }
         string id = slot < 0 ? L.Ulti : L.Slots[slot];
-        if (string.IsNullOrEmpty(id)) { D.Hud.Hint(slot < 0 ? "Ulti yok: Atalar ulti verir" : "Güç yok: Kadim Taş denemesini geç", 1.5f); return false; }
+        if (string.IsNullOrEmpty(id)) { D.Hud.Hint(slot < 0 ? Loc.T("ability.no_ulti") : Loc.T("ability.no_power"), 1.5f); return false; }
         var why = AbilityRules.CanUse(F, L, id);
         if (why != null) { D.Hud.Hint($"{Def(id).Name}: {why}", 1.2f); Sfx.Play("hit", null, -12f); return false; }
         var aim = AimFlat();
@@ -197,7 +197,7 @@ public partial class AbilitySystem : Node3D
                 break;
             case "dev_mod":
                 if (!local) break;
-                Hud().Big("DEV MOD", Palette.MayaViolet, 2f);
+                Hud().Big(Loc.T("ability.big_giant"), Palette.MayaViolet, 2f);
                 Sfx.Play("levelup", at, -2f);
                 break;
             default:
@@ -340,7 +340,7 @@ public partial class AbilitySystem : Node3D
         }
         _herdT = def.Duration;
         Sfx.Play("siren", at, -10f);
-        Hud().Big("SÜRÜ ÇAĞRISI", Palette.Warning, 1.6f);
+        Hud().Big(Loc.T("ability.big_swarm"), Palette.Warning, 1.6f);
     }
 
     void TickHerd(float dt)

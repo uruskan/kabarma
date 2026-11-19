@@ -48,29 +48,33 @@ public partial class CoopPanel : CanvasLayer
         v.AddThemeConstantOverride("separation", UiTheme.Px(8));
         panel.AddChild(v);
 
-        v.AddChild(Lbl(UiTheme.Upper("Ortak oyun"), 30, true, UiTheme.Ivory));
-        v.AddChild(Lbl($"1–{_data.Net.MaxPlayers} oyuncu · dünya host'ta kalır · çanta kişisel", 15, false, UiTheme.Muted));
-        _name = Field(v, "Adın", Main.Args.TryGetValue("name", out var nm) ? nm : SteamBoot.Ready ? SteamBoot.PersonaName : "Oyuncu");
+        v.AddChild(Lbl(UiTheme.Upper(Loc.T("menu.coop")), 30, true, UiTheme.Ivory));
+        v.AddChild(Lbl(Loc.T("menu.coop_desc", _data.Net.MaxPlayers), 15, false, UiTheme.Muted));
+        _name = Field(v, Loc.T("menu.your_name"), Main.Args.TryGetValue("name", out var nm) ? nm : SteamBoot.Ready ? SteamBoot.PersonaName : Loc.T("menu.player"));
 
-        v.AddChild(Header("Kur"));
+        v.AddChild(Header(Loc.T("menu.coop_host")));
         var hostRow = Row(v);
-        hostRow.AddChild(Btn("Steam lobisi kur", () => Restart("host", "steam")));
-        hostRow.AddChild(Btn("Yerel ağda kur (ENet)", () => Restart("host", "enet")));
-        if (_d?.Net?.Transport is SteamTransport st && _d.Net.IsHost) v.AddChild(Btn("Steam'den arkadaş davet et", st.Invite));
+        hostRow.AddChild(Btn(Loc.T("menu.coop_steam_host"), () => Restart("host", "steam")));
+        hostRow.AddChild(Btn(Loc.T("menu.coop_enet_host"), () => Restart("host", "enet")));
+        // Dunya ayari "Cekisme" (GDD 22.2): kapali / 2, 3, 4 takim. Bir sonraki kurulumda gecerli (--rivalry=N).
+        var rivBtn = Btn(RivalryLabel(), () => { });
+        rivBtn.Pressed += () => { int n = Main.Args.TryGetValue("rivalry", out var r0) && int.TryParse(r0, out var v0) ? v0 : 0; n = n == 0 ? 2 : n >= 4 ? 0 : n + 1; if (n == 0) Main.Args.Remove("rivalry"); else Main.Args["rivalry"] = n.ToString(); rivBtn.Text = UiTheme.Upper(RivalryLabel()); };
+        v.AddChild(rivBtn);
+        if (_d?.Net?.Transport is SteamTransport st && _d.Net.IsHost) v.AddChild(Btn(Loc.T("menu.coop_invite"), st.Invite));
 
-        v.AddChild(Header("Katıl"));
-        _lobby = Field(v, "Steam lobi no (davetle gelince kendiliğinden)", Main.Args.GetValueOrDefault("connect_lobby", ""));
-        v.AddChild(Btn("Steam davetiyle katıl", () => Restart("client", "steam")));
+        v.AddChild(Header(Loc.T("menu.coop_join")));
+        _lobby = Field(v, Loc.T("menu.coop_lobby"), Main.Args.GetValueOrDefault("connect_lobby", ""));
+        v.AddChild(Btn(Loc.T("menu.coop_steam_join"), () => Restart("client", "steam")));
         var ipRow = Row(v);
         _ip = new LineEdit { Text = Main.Args.GetValueOrDefault("connect", "127.0.0.1"), PlaceholderText = "IP", CustomMinimumSize = new Vector2(UiTheme.Px(220), 0) };
         _port = new LineEdit { Text = Main.Args.GetValueOrDefault("port", _data.Net.Port.ToString()), PlaceholderText = "port", CustomMinimumSize = new Vector2(UiTheme.Px(90), 0) };
         ipRow.AddChild(_ip); ipRow.AddChild(_port);
-        ipRow.AddChild(Btn("IP ile katıl (ENet)", () => Restart("client", "enet")));
+        ipRow.AddChild(Btn(Loc.T("menu.coop_ip_join"), () => Restart("client", "enet")));
 
         var bottom = Row(v);
-        if (_d?.Net != null) bottom.AddChild(Btn("Ayrıl (tek oyuncu)", Leave));
-        bottom.AddChild(Btn("Kapat", QueueFree));
-        _status = Lbl(_d?.Net?.Status ?? "Tek oyuncu", 15, false, UiTheme.Muted);
+        if (_d?.Net != null) bottom.AddChild(Btn(Loc.T("menu.coop_leave"), Leave));
+        bottom.AddChild(Btn(Loc.T("menu.close"), QueueFree));
+        _status = Lbl(_d?.Net?.Status ?? Loc.T("menu.coop_single"), 15, false, UiTheme.Muted);
         v.AddChild(_status);
     }
 
@@ -117,16 +121,18 @@ public partial class CoopPanel : CanvasLayer
         return b;
     }
 
+    static string RivalryLabel() => Main.Args.TryGetValue("rivalry", out var r) ? Loc.T("menu.rivalry_n", r) : Loc.T("menu.rivalry_off");
+
     void Restart(string role, string transport)
     {
         var a = Main.Args;
         a["coop"] = role;
         a["transport"] = transport;
-        a["name"] = string.IsNullOrWhiteSpace(_name.Text) ? "Oyuncu" : _name.Text.Trim();
+        a["name"] = string.IsNullOrWhiteSpace(_name.Text) ? Loc.T("menu.player") : _name.Text.Trim();
         if (role == "client" && transport == "enet") { a["connect"] = _ip.Text.Trim(); a["port"] = _port.Text.Trim(); }
         if (role == "client" && transport == "steam" && ulong.TryParse(_lobby.Text.Trim(), out _)) a["connect_lobby"] = _lobby.Text.Trim();
         if (role == "host" && transport == "enet") a["port"] = _port.Text.Trim();
-        _status.Text = role == "host" ? "Kuruluyor…" : "Bağlanılıyor…";
+        _status.Text = role == "host" ? Loc.T("menu.coop_starting") : Loc.T("menu.connecting");
         GetTree().ReloadCurrentScene();
     }
 

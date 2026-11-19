@@ -30,17 +30,17 @@ public partial class MainMenu : RustMenu
     {
         UiTheme.Load(_data.Ui);
         Input.MouseMode = Input.MouseModeEnum.Visible;
-        Build("Kabarma", "Kooperatif çiftliği · Altın Çayır", dimBackground: false);
+        Build("Kabarma", Loc.T("menu.subtitle"), dimBackground: false);
         var latest = _store.Latest();
-        Item("Devam", () => Load(latest), latest != null, "kayıt yok");
-        Item("Yeni oyun", ShowNew);
-        Item("Yükle", ShowLoad, _store.List().Any(s => s.Exists));
+        Item(Loc.T("menu.continue"), () => Load(latest), latest != null, Loc.T("menu.no_save"));
+        Item(Loc.T("menu.new_game"), ShowNew);
+        Item(Loc.T("menu.load"), ShowLoad, _store.List().Any(s => s.Exists));
         bool coop = _main.CoopAvailable;
-        Item("Ortak oyun", () => _main.OpenCoop(this), coop, "yakında");
-        Item("Sunucular", () => ServerListPanel.Open(this)); // adanmis sunucu listesi (server/ServerListPanel.cs)
-        Item("Ayarlar", ShowSettings);
-        Item("Çıkış", () => GetTree().Quit());
-        if (Notice != null) { ClearContent(); Header("Uyarı", Notice); }
+        Item(Loc.T("menu.coop"), () => _main.OpenCoop(this), coop, Loc.T("menu.soon"));
+        Item(Loc.T("menu.servers"), () => ServerListPanel.Open(this)); // adanmis sunucu listesi (server/ServerListPanel.cs)
+        Item(Loc.T("settings.title"), ShowSettings);
+        Item(Loc.T("menu.quit"), () => GetTree().Quit());
+        if (Notice != null) { ClearContent(); Header(Loc.T("menu.notice"), Notice); }
         else if (latest != null) ShowLatest(latest); else ShowNew();
         FocusFirst();
         // Gorsel sinama (--menu_auto=load): Yukle panelini gosterir, sonra en son kaydi acar.
@@ -54,7 +54,7 @@ public partial class MainMenu : RustMenu
     void ShowLatest(string slot)
     {
         ClearContent();
-        Header("Son kayıt");
+        Header(Loc.T("menu.latest_save"));
         var info = _store.List().First(s => s.Slot == slot);
         Row(SlotLine(info), () => Load(slot));
     }
@@ -62,23 +62,23 @@ public partial class MainMenu : RustMenu
     void ShowNew()
     {
         ClearContent();
-        Header("Yeni oyun", "Dünya ayarını seç, sonra bir yuva. Dolu yuvada eski kayıt yedeklenir, sonra üzerine yazılır.");
+        Header(Loc.T("menu.new_game"), Loc.T("menu.new_game_note"));
         var presets = _data.Save.WorldPresets;
         _preset ??= _data.Save.DefaultPreset;
         var cur = presets.FirstOrDefault(p => p.Id == _preset);
         if (presets.Count > 0)
-            Row($"Dünya ayarı: {cur?.Name ?? _preset}   ·   {cur?.Note}   (tıkla: değiştir)", () =>
+            Row(Loc.T("menu.world_preset", cur?.Name ?? _preset, cur?.Note), () =>
             {
                 int i = presets.FindIndex(p => p.Id == _preset);
                 _preset = presets[(i + 1) % presets.Count].Id;
                 ShowNew();
             });
-        Row($"Yeni Ay: {(_newMoon.Count == 0 ? "tüzük maddesi yok" : _newMoon.Count + " madde seçili")}   (tıkla: maddeleri seç)", ShowNewMoon);
+        Row(Loc.T("menu.newmoon_row", _newMoon.Count == 0 ? Loc.T("menu.newmoon_none") : Loc.T("menu.newmoon_n", _newMoon.Count)), ShowNewMoon);
         foreach (var s in _store.List())
         {
             var slot = s.Slot;
             if (_confirm == slot)
-                Row($"{SlotLine(s)}   ·   ÜZERİNE YAZ?  (tekrar tıkla)", () => { _confirm = null; _main.StartGame(null, slot, _preset, _newMoon.ToList()); });
+                Row(Loc.T("menu.overwrite", SlotLine(s)), () => { _confirm = null; _main.StartGame(null, slot, _preset, _newMoon.ToList()); });
             else
                 Row(SlotLine(s), () => { if (s.Exists) { _confirm = slot; ShowNew(); } else _main.StartGame(null, slot, _preset, _newMoon.ToList()); });
         }
@@ -90,13 +90,13 @@ public partial class MainMenu : RustMenu
     void ShowNewMoon()
     {
         ClearContent();
-        Header("Yeni Ay", $"Seçilen madde KS 1'den açık olur ve Maya kazancını madde başına %{_data.Tuzuk.NewMoon.MayaPerClause * 100:0} artırır. Seçim dünya kaydında durur.");
+        Header(Loc.T("menu.newmoon"), Loc.T("menu.newmoon_note", (_data.Tuzuk.NewMoon.MayaPerClause * 100).ToString("0", System.Globalization.CultureInfo.InvariantCulture)));
         foreach (var c in _data.Tuzuk.Clauses)
         {
             var id = c.Id;
             Row($"[{(_newMoon.Contains(id) ? "x" : " ")}] {c.Name}   ·   {c.Note}", () => { if (!_newMoon.Remove(id)) _newMoon.Add(id); ShowNewMoon(); });
         }
-        Row($"Tamam ({_newMoon.Count} madde)", ShowNew);
+        Row(Loc.T("menu.newmoon_ok", _newMoon.Count), ShowNew);
     }
 
     string _preset;
@@ -104,7 +104,7 @@ public partial class MainMenu : RustMenu
     void ShowLoad()
     {
         ClearContent();
-        Header("Yükle");
+        Header(Loc.T("menu.load"));
         foreach (var s in _store.List()) { var slot = s.Slot; Row(SlotLine(s), () => Load(slot), s.Exists && s.Manifest != null); }
     }
 
@@ -113,7 +113,7 @@ public partial class MainMenu : RustMenu
         if (slot == null) return;
         SaveGame g;
         try { g = _store.Read(slot, out var from); GD.Print($"MENU load {slot} from {from}"); }
-        catch (SaveException e) { ClearContent(); Header("Yüklenemedi", e.Message); return; }
+        catch (SaveException e) { ClearContent(); Header(Loc.T("menu.load_failed"), e.Message); return; }
         _main.StartGame(g, slot);
     }
 }

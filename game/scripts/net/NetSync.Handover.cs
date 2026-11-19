@@ -22,13 +22,13 @@ public partial class NetSync
     public bool Handover()
     {
         if (!IsHost || HandingOver) return false;
-        if (_tx is not EnetTransport enet) { Status = "devir yalnız ENet'te"; return false; }
+        if (_tx is not EnetTransport enet) { Status = Loc.T("net.handover_enet_only"); return false; }
         var cands = Actors.Values.Select(a => new HandoverCandidate(a.Peer, a.Ready, (float)(Now - _readyAt.GetValueOrDefault(a.Peer, Now)),
             (a.Last.Flags & NetFrameFlags.Down) != 0)).ToList();
         var succ = NetHandover.Successor(Cfg.Handover, cands);
-        if (succ == null || !_conn.TryGetValue(succ.Value, out int conn)) { Status = "devralacak uygun oyuncu yok"; return false; }
+        if (succ == null || !_conn.TryGetValue(succ.Value, out int conn)) { Status = Loc.T("net.handover_no_successor"); return false; }
         string ip = enet.RemoteAddress(conn);
-        if (string.IsNullOrEmpty(ip)) { Status = "devralanın adresi bilinmiyor"; return false; }
+        if (string.IsNullOrEmpty(ip)) { Status = Loc.T("net.handover_no_address"); return false; }
         int port = NetHandover.NewPort(Cfg.Handover, _port);
         HandingOver = true;
         SendTo(succ.Value, NetHandover.Pack(1, succ.Value, "", port));
@@ -58,12 +58,12 @@ public partial class NetSync
     {
         _tx?.Dispose();
         _tx = EnetTransport.Host(port, Cfg.MaxPlayers - 1, out var err);
-        if (_tx == null) { Fail(err ?? "devir: dinleyici kurulamadı"); return; }
+        if (_tx == null) { Fail(err ?? Loc.T("net.handover_listener_failed")); return; }
         ClearPeers();
         IsHost = true; Joined = true; LocalPeer = 0; Failed = false; HandingOver = false; _port = port;
         _startT = _lastHeard = Now;
         RebuildRoster();
-        Status = $"host (devralındı) · {_tx.Address}";
+        Status = Loc.T("net.handover_host", _tx.Address);
         GD.Print($"NET promoted to host {_tx.Address}");
     }
 
@@ -74,9 +74,9 @@ public partial class NetSync
         ClearPeers();
         IsHost = false; Joined = false; Failed = false; HandingOver = false; _port = port;
         _tx = EnetTransport.Connect(address, port, out var err);
-        if (_tx == null) { Fail(err ?? "devir: yeni host'a bağlanılamadı"); return; }
+        if (_tx == null) { Fail(err ?? Loc.T("net.handover_connect_failed")); return; }
         _startT = _lastHeard = Now;
-        Status = $"yeni host'a bağlanıyor · {_tx.Address}";
+        Status = Loc.T("net.handover_connecting", _tx.Address);
         GD.Print($"NET rejoin {_tx.Address}");
     }
 }
