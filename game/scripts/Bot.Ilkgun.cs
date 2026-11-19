@@ -75,6 +75,7 @@ public partial class Bot
             var tuft = _d.World.Tufts.Where(x => x.Left > 0 && x.Item == item).OrderBy(x => x.Position.DistanceTo(P.GlobalPosition)).FirstOrDefault();
             if (tuft == null) { GD.Print($"BOT no {item} tufts left"); return; }
             Aim(tuft.Position + Vector3.Up * 0.3f);
+            if (BackOffTuft(tuft.Position)) return;
             if (MoveTo(tuft.Position, 3.0f)) Fire = true;
             return;
         }
