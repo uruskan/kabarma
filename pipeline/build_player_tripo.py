@@ -1,4 +1,4 @@
-﻿"""
+"""
 Oyuncu modelini Tripo'dan gelen insan bicimli (Mixamo) iskeletli modelden kurar: game/assets/models/player/player.glb.
 Kredi harcamaz. Eski hat (Genex/Meshy) icin pipeline/merge_player.py; bu betik onun yerini alir.
 
@@ -17,8 +17,8 @@ Asamalar:
     G_eski okunur; yeni kemik G_yeni = G_eski * L (L: dinlenme durusunun yalniz Y-ekseni burulmasi; yonu eskisiyle ayni
     tutar, A-durus/T-durus farkini siler). Kalca konumu kalca yuksekligi oraniyla olceklenir. Yerel donus
     pozlama zincirinden hesaplanir (ust kemik once).
- 4. Canta: ayri, derisiz, KATI mesh; ust kemigi Spine (gogus) olan "Backpack" kemigine bagli (BoneAttachment3D).
- 5. Denetim: beklenen klipler var, Backpack eklemi var, Backpack_Mesh derisiz ve Backpack'in cocugu.
+ 4. Canta: ayri, KATI mesh; butun koseleri gogus kemigine (Spine) %100 agirlikli (BoneAttachment yerine deri: Godot bone-cocuk donusumu cantayi yana kaydiriyordu). "Backpack" kemigi bos eklem olarak durur.
+ 5. Denetim: beklenen klipler var, Backpack eklemi var, Backpack_Mesh derili (yalniz Spine agirligi).
 """
 import bpy, sys, os, json, math, argparse
 from mathutils import Matrix, Vector, Quaternion
@@ -318,14 +318,15 @@ bp.length = 0.1
 bp.use_deform = True
 bpy.ops.object.mode_set(mode="OBJECT")
 
-keep = bag.matrix_world.copy()
+# Canta gogus kemigine (Spine) %100 agirlikli ayri mesh: Godot kemik-cocugu (BoneAttachment) donusumu Mixamo kemik cerceveleriyle
+# yanlis birlesip cantayi yana kaydirmisti (olculdu: x -0,24 m). Deri agirligi bunu kendiliginden dogru cozer ve canta yine
+# KATI hareket eder (tek kemik). "Backpack" kemigi bos eklem olarak durur.
 bag.parent = arm
-bag.parent_type = "BONE"
-bag.parent_bone = "Backpack"
-bpy.context.view_layer.update()
-bag.matrix_world = keep
-bpy.context.view_layer.update()
-bag.modifiers.clear() if hasattr(bag.modifiers, "clear") else None
+bag.parent_type = "OBJECT"
+vg = bag.vertex_groups.new(name=CHEST)
+vg.add([v.index for v in bag.data.vertices], 1.0, "REPLACE")
+mod = bag.modifiers.new("Armature", "ARMATURE")
+mod.object = arm
 
 # ---------- NLA ve disa aktarim ----------
 arm.animation_data_create()
@@ -368,10 +369,8 @@ bn = [i for i, nd in enumerate(js["nodes"]) if nd.get("name") == "Backpack_Mesh"
 bj = [i for i, nd in enumerate(js["nodes"]) if nd.get("name") == "Backpack"]
 if not bn:
     problems.append("Backpack_Mesh dugumu yok")
-elif "skin" in js["nodes"][bn[0]]:
-    problems.append("Backpack_Mesh derili")
-elif not bj or bn[0] not in js["nodes"][bj[0]].get("children", []):
-    problems.append("Backpack_Mesh Backpack'in cocugu degil")
+elif "skin" not in js["nodes"][bn[0]]:
+    problems.append("Backpack_Mesh derili degil (gogse agirlikli olmali)")
 tri = 0
 for nd in js["nodes"]:
     if "mesh" in nd:

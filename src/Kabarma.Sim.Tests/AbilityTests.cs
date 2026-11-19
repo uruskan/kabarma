@@ -22,9 +22,9 @@ public class AbilityTests
         var f = F();
         Assert.Equal(12, f.Abilities.Count(a => !a.IsUlti)); // M4 kusam: PLAN 7.1 Guc 12 (5 M3 + 7 M4)
         Assert.Equal(4, f.Abilities.Count(a => a.IsUlti));   // Ulti 4
-        Assert.Equal(5, f.Stones.Count);                     // M3 Kadim Tas denemeleri; M4 gucleri icin deneme henuz yok
+        Assert.Equal(12, f.Stones.Count);                    // 5 M3 + 7 M4 Kadim Tas (her gucun bir tasi)
         foreach (var s in f.Stones) Assert.False(f.Def(s.Ability)!.IsUlti);
-        Assert.Equal(f.Stones.Select(s => s.Ability).OrderBy(x => x), f.Abilities.Where(a => !a.IsUlti).Select(a => a.Id).Intersect(f.Stones.Select(s => s.Ability)).OrderBy(x => x));
+        Assert.Equal(f.Abilities.Where(a => !a.IsUlti).Select(a => a.Id).OrderBy(x => x), f.Stones.Select(s => s.Ability).OrderBy(x => x));
         // GDD 17: Sarj 25-50, bekleme 8-30 sn
         foreach (var a in f.Abilities.Where(a => !a.IsUlti))
         {
@@ -312,5 +312,42 @@ public class AbilityTests
         Assert.Equal(42f, back.Abilities.Local.Meter);
         Assert.Equal(new[] { "kadim_atilma" }, back.KadimTas.Done);
         Assert.Equal(2, back.Fener.LitDay["e1"]);
+    }
+    [Fact]
+    public void Every_m4_power_unlocks_through_its_kadim_tas_trial()
+    {
+        var d = TestData.Load();
+        var f = d.Abilities;
+        var biomes = new HashSet<string>(new[] { "altin_cayir", "sis_korusu", "isil_sazlik", "kizil_kanyon", "ayaz_yaylasi", "gobek" });
+        var ids = new[] { "kadim_bal", "kadim_kuyu", "kadim_roket", "kadim_alev", "kadim_isin", "kadim_duvar", "kadim_pelerin" };
+        var powers = new[] { "zaman_bali", "cekim_kuyusu", "roket_ziplama", "alev_cemberi", "isinlan", "buz_duvari", "gorunmez_pelerin" };
+        for (int i = 0; i < ids.Length; i++)
+        {
+            var s = f.Stone(ids[i])!;
+            Assert.Equal(powers[i], s.Ability);
+            Assert.Contains(s.Biome, biomes);
+            Assert.NotEqual("altin_cayir", s.Biome); Assert.NotEqual("sis_korusu", s.Biome); // yeni biyomlar
+            var prog = new KadimTasProgress();
+            var run = KadimTasRules.Start(f, prog, s.Id, out _);
+            Assert.NotNull(run);
+            TrialStep step = default;
+            for (int t = 0; t < 4000 && !run!.Over; t++)
+            {
+                var sense = new TrialSense { Height = 1f };
+                switch (s.Trial)
+                {
+                    case "parkur": if (run.Ring < s.Rings.Count) { var g = s.Rings[run.Ring]; sense.Dx = g[0]; sense.Dz = g[1]; sense.Height = g.Length > 2 ? g[2] : 1f; } break;
+                    case "gizlen": sense.Dx = s.Goal[0]; sense.Dz = s.Goal[1]; break;
+                    case "dalga": sense.Alive = 0; break;
+                    case "koru": break;
+                }
+                step = KadimTasRules.Tick(f, prog, run, sense, 0.25f);
+            }
+            Assert.True(run!.Won, $"{s.Id} ({s.Trial}) kazanilamadi: {run.Reason}");
+            // kazanan gucu acar (Godot: AbilitySystem tasi bitirince AbilityRules.Unlock)
+            var ap = new AbilityProgress();
+            Assert.True(AbilityRules.Unlock(f, ap, s.Ability));
+            Assert.Contains(s.Ability, ap.Unlocked);
+        }
     }
 }
