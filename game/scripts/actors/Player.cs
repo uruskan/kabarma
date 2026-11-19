@@ -23,6 +23,8 @@ public partial class Player : CharacterBody3D
 
     public float WalkSpeed = 5f, SprintSpeed = 8f, JumpVelocity = 6.5f, MaxHp = 100f;
     public float SpeedMult = 1f;
+    /// <summary>Yemek hiz eki (Kozde Misir +0,05); Director.ApplyFoodEffects yazar.</summary>
+    public float FoodSpeed;
     public float Hp;
     public bool Down { get; private set; }
     float _downT;
@@ -312,7 +314,7 @@ public partial class Player : CharacterBody3D
         if (MovementLocked) wish = Vector3.Zero; // kalkis bitene kadar
         if (UiCapture && MoveOverride == null) wish = Vector3.Zero; // panel acik: yon tuslari / sol cubuk paneli gezer (girdi)
         sprint = SprintGate(sprint && wish.LengthSquared() > 0.01f, dt); // Player.Stamina.cs: GDD §3.2
-        float speed = (sprint ? SprintSpeed : WalkSpeed) * SpeedMult;
+        float speed = (sprint ? SprintSpeed : WalkSpeed) * SpeedMult * (1f + FoodSpeed);
         var v = Velocity;
         var target = wish * speed;
         float accel = IsOnFloor() ? 14f : 4f;

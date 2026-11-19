@@ -78,7 +78,7 @@
     "outOfBand": 0.25,
     "dBandBonus": 0.03,
     "bands": { "cayir": "ilik", "koru": "ilik", "sazlik": "nemli", "kanyon": "sicak", "ayaz": "soguk", "gobek": "maya" },
-    "greenhouse": { "bandFactor": 1.0, "floodedOutOfWater": 0.25 },
+    "greenhouse": { "bandFactor": 1.0, "floodedOutOfWater": 0.25, "radius": 5 },
     "graft": { "seconds": 8, "maxStep": 2, "sameFamily": true, "minGene": 1 },
     "farmBand": "ilik",
     "biteDamage": 0.10,

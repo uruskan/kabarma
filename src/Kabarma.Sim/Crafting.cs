@@ -167,9 +167,10 @@ public sealed partial class FoodBuffs
     public bool Eat(FoodDef f)
     {
         int i = _active.FindIndex(a => a.food.Id == f.Id);
-        if (i >= 0) { _active[i] = (f, f.Seconds); return true; }  // ayni yemek suresini yeniler, ikinci yuvaya girmez
+        float seconds = f.Seconds * Math.Max(1f, f.Effect("durationMult")); // Tursu: suresi iki kat (ICERIK 15)
+        if (i >= 0) { _active[i] = (f, seconds); return true; }  // ayni yemek suresini yeniler, ikinci yuvaya girmez
         if (_active.Count >= Slots) return false;
-        _active.Add((f, f.Seconds));
+        _active.Add((f, seconds));
         return true;
     }
 
@@ -186,4 +187,8 @@ public sealed partial class FoodBuffs
     public float BonusMaxHp => _active.Sum(a => a.food.MaxHp);
     public float BonusStamina => _active.Sum(a => a.food.Stamina);
     public float Regen => _active.Sum(a => a.food.Regen);
+    /// <summary>Etkin yemeklerin ozel etkisi (foods.json effects) toplami; durationMult toplanmaz (yemegin kendi suresini uzatir).</summary>
+    public float Effect(string key) => _active.Sum(a => a.food.Effect(key));
+    /// <summary>Masadaki butun ekibe gecen yemek (Kooperatif Ziyafeti, "table"): ilk etkin olan.</summary>
+    public FoodDef? TableFood => _active.Select(a => a.food).FirstOrDefault(f => f.Effect("table") > 0);
 }

@@ -35,6 +35,8 @@ public sealed class GreenhouseRules
     public float BandFactor { get; set; } = 1f;
     /// <summary>Su basmis (flooded) ekin sig su olmayan karede bu carpanla buyur.</summary>
     public float FloodedOutOfWater { get; set; } = 0.25f;
+    /// <summary>Sera Kontrol Unitesinin etkiledigi tarla yaricapi (m).</summary>
+    public float Radius { get; set; } = 5f;
 }
 
 /// <summary>Asi Tezgahi (ICERIK 11, 200 W): iki tohum kaydi arasinda gen aktarma.</summary>
