@@ -101,7 +101,7 @@ public partial class Ata4Test : Node
     {
         yield return 0.5;
         Check(_d.Data.Atalar.Atalar.Count == 6 && _d.Data.Azman.Azmanlar.Count == 6 && _d.Data.Oyuk.Guardians.Count == 5, "veri: 6 Ata, 6 Azman, 5 koruyucu");
-        Check(S.IsTemporary(Def("kurbaga_aga")) && S.IsTemporary(Def("ana_maya")), "yeni arenalar gecici isaretli ve dunyada kurulu degil (biyom akisi bekleniyor)");
+        Check(!S.IsTemporary(Def("kurbaga_aga")) && !S.IsTemporary(Def("ana_maya")), "yeni arenalar Ata Taslarinda (M4 kabul: GECICI isareti kalkti)");
 
         // ================= Kurbaga Aga =================
         Check(Summon("kurbaga_aga"), "kurbaga_aga indi");

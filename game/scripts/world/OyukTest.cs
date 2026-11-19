@@ -80,7 +80,7 @@ public partial class OyukTest : Node
     {
         yield return 1.0; // dunya ve odalar kurulsun
         var rooms = O.Rooms;
-        Check(rooms.Count == 6, $"rooms {rooms.Count}");
+        Check(rooms.Count == 15, $"rooms {rooms.Count}"); // M4: Cayir ve Koru 3 + 3, Sazlik, Kanyon, Ayaz 3 x 3
         Check(rooms.Count(r => r.Guardian.Kind == "kostebek") == 3 && rooms.Count(r => r.Guardian.Kind == "yarasa") == 3, "3 Kostebek + 3 Yarasa odasi");
         var r0 = rooms.First(r => r.Guardian.Kind == "kostebek" && r.Tier == 0);
         Check(Mathf.Abs(W.HeightAt(r0.Center.X + 3, r0.Center.Z - 2) - r0.Center.Y) < 0.01f, "HeightAt oda icinde oda tabani");
