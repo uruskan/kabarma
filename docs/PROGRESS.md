@@ -130,3 +130,7 @@ Ortak oyun (koşul 4) ve kayıt (koşul 5) M2 teslimidir. M1'deki hiçbir özell
 - 2026-11-19 oyuncu2: yeni oyuncu modeli (Tripo, Mixamo iskeleti) player.glb; govde ~13,6k + canta 3k ucgen (butce 8k: optimizasyon listesine). Klipler Meshy'den yeniden hedeflendi; ayrinti game/assets/models/player/README.md.
 
 - 2026-11-19 dolap: 12 uye tipi (pasifler: members.json liveKeys baglananlar), 72 kozmetik (kodla cizilen kask, vizor yuzu, tulum deseni golgelendiricisi, canta susu, Capa kaplamasi, jest klibi), karakter dosyasinda kayit, K dolap menusu, ortak oyunda gorunum. Canta artik gogse agirlikli ayri mesh (Godot kemik-cocugu yana kaydiriyordu).
+
+- 2026-11-19 ilerleme4: 24 is emri zinciri (#13-24, #37-48; 36/48), olcu kaynaklari (9 bagli, 15 sistem bekliyor), zincir odulleri dolaba ve kartlara bagli, katalog (23 tohum, 36 kozmetik), cark kozmetik odulu.
+
+- 2026-11-19 arayuz (M6): ayarlar sayfasi (arayuz boyu, renk korlugu suzgeci, sarsinti, altyazi ve boyu, tus atamalari), fotograf modu (P / Esc menusu), eski paneller tek Rust dilinde (UiPanels, Hud.Box). Renk korlugu: Machado tabanli daltonizasyon (gorsel dogrulama yalniz sahibin gozunde).

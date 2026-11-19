@@ -28,9 +28,22 @@ public partial class Hud : CanvasLayer
 
     StyleBoxFlat Box(Color bg, int radius = 14, Color? border = null, int bw = 0)
     {
-        var s = new StyleBoxFlat { BgColor = bg, CornerRadiusBottomLeft = radius, CornerRadiusBottomRight = radius, CornerRadiusTopLeft = radius, CornerRadiusTopRight = radius, ContentMarginLeft = 16, ContentMarginRight = 16, ContentMarginTop = 10, ContentMarginBottom = 10 };
-        if (border is Color b) { s.BorderColor = b; s.BorderWidthBottom = s.BorderWidthTop = s.BorderWidthLeft = s.BorderWidthRight = bw; }
+        // M6 arayuz cilasi: tek panel dili (Rust tarzi): yuvarlak kose yok, kenar rengi yalniz sol seritte (radius ve bw eski cagrilarla uyum icin durur).
+        var s = new StyleBoxFlat { BgColor = bg, ContentMarginLeft = 18, ContentMarginRight = 16, ContentMarginTop = 10, ContentMarginBottom = 10 };
+        if (border is Color b) { s.BorderColor = b; s.BorderWidthLeft = 4; }
         return s;
+    }
+
+    /// <summary>Sinama: Suna kutusu yazi boyu ve gorunurlugu.</summary>
+    public int SubtitleFontSize => _sunaText?.GetThemeFontSize("font_size") ?? 0;
+    public bool SubtitleBoxVisible => _suna?.Visible ?? false;
+    public Control SubtitleBox => _suna;
+
+    void ApplySubtitleScale()
+    {
+        if (_sunaText == null) return;
+        _sunaText.AddThemeFontSizeOverride("font_size", Mathf.RoundToInt(22 * UserSettings.Current.SubtitleScale));
+        if (!UserSettings.Current.Subtitles) _suna.Visible = false;
     }
 
     Label L(string text, int size, Color c, bool bold = false)
@@ -63,6 +76,8 @@ public partial class Hud : CanvasLayer
         var sv = new VBoxContainer();
         sv.AddChild(L("◉ SUNA · Kooperatif Santrali", 17, Palette.MayaTeal, true));
         _sunaText = L("", 22, Palette.OffWhite);
+        UserSettings.Current.Changed += ApplySubtitleScale; // M6: altyazi boyu
+        Callable.From(ApplySubtitleScale).CallDeferred();
         _sunaText.AutowrapMode = TextServer.AutowrapMode.WordSmart;
         _sunaText.CustomMinimumSize = new Vector2(480, 0);
         sv.AddChild(_sunaText);
@@ -255,7 +270,7 @@ public partial class Hud : CanvasLayer
             _full = G(_lines.Dequeue()); // {act:x} → glif (Hud.Controls.cs)
             _typeT = 0;
             _lineT = Mathf.Clamp(_full.Length * 0.055f, 2.8f, 6f) * (_lines.Count > 1 ? 0.6f : 1f);
-            _suna.Visible = true;
+            _suna.Visible = UserSettings.Current.Subtitles; // M6: altyazi ayari
             Sfx.Play("place", null, -22f); // telsiz mandali
             VoiceLineStarted(_full); // Hud.Voice.cs: mandal, Suna'nin sesi, altyazi suresi (ses akisi)
         }

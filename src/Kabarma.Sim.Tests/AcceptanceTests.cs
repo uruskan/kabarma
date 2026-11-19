@@ -46,6 +46,8 @@ public class AcceptanceTests
         Assert.Equal(32, D.Tool.Foods.Count);
         // Zirh takimi 7 / modul 18
         Assert.Equal((7, 18), (D.Armor.Sets.Count, D.Armor.Modules.Count));
+        // Uye tipi 12 / kozmetik 72 (dolap akisi)
+        Assert.Equal((12, 72), (D.Members.Members.Count, D.Cosmetics.Cosmetics.Count));
         // Kesif noktasi turu 9, borsa kategorisi 12, ustalik 8 dal / 80 ozellik
         Assert.Equal(9, D.Biomes.World.PoiTypes.Count);
         Assert.Equal(12, D.Market.Categories.Count);
@@ -110,6 +112,63 @@ public class AcceptanceTests
         // Maya: Kabarma safagi (MayaVault); Ham Maya: Gobek dugumu
         Assert.Equal("mayavault", D.Research.RawSources.Single(s => s.Id == "maya").Via);
         Assert.Equal("node:gobek", D.Research.RawSources.Single(s => s.Id == "ham_maya").Via);
+    }
+
+    /// <summary>Bir esyanin ham dugum gereksinimi: tarifle yapiliyorsa girdilerine acilir; dugum esyasi (kaya, bakir...) sayilir.</summary>
+    static void NodeNeed(string item, int n, HashSet<string> nodeItems, Dictionary<string, double> into, int depth = 0)
+    {
+        if (depth > 12) return;
+        var r = D.Tool.Recipes.FirstOrDefault(x => x.Id == item && !x.Load);
+        if (r != null && !nodeItems.Contains(item))
+        {
+            double batches = Math.Ceiling(n / (double)Math.Max(1, r.Out));
+            foreach (var (k, v) in r.In) NodeNeed(k, (int)(v * batches), nodeItems, into, depth + 1);
+            return;
+        }
+        if (nodeItems.Contains(item)) into[item] = into.GetValueOrDefault(item) + n;
+    }
+
+    [Fact]
+    public void World_node_supply_covers_every_ata_offering_and_its_ingredient_chain()
+    {
+        // Dugum arzi: her biyomun dugum satiri (sabit konum + kiyi + serpme) x ortalama birim. Dugumler yenilenmez (World.RemoveRock).
+        var supply = new Dictionary<string, double>();
+        foreach (var b in D.Biomes.Biomes.Values)
+            foreach (var n in b.Nodes)
+            {
+                double count = n.Positions.Count + n.ShoreCount + n.ScatterCount;
+                double units = n.Units.Count >= 2 ? (n.Units[0] + n.Units[1]) / 2.0 : 1;
+                supply[n.Item] = supply.GetValueOrDefault(n.Item) + count * units;
+            }
+        var nodeItems = supply.Keys.ToHashSet();
+        var short_ = new List<string>();
+        var total = new Dictionary<string, double>(); // butun Ata adaklarinin toplami (dugumler yenilenmez)
+        foreach (var a in D.Atalar.Atalar)
+        {
+            var need = new Dictionary<string, double>();
+            foreach (var o in a.Offering) NodeNeed(o.Item, o.Count, nodeItems, need);
+            foreach (var (item, n) in need) total[item] = total.GetValueOrDefault(item) + n;
+        }
+        foreach (var (item, n) in total)
+            if (supply.GetValueOrDefault(item) < n * 1.25) short_.Add($"{item}: adaklar toplam {n:0} (+%25 pay), dunyada {supply.GetValueOrDefault(item):0}");
+        Assert.True(short_.Count == 0, "Adak icin dugum arzi yetmiyor: " + string.Join("; ", short_));
+    }
+
+    [Fact]
+    public void Every_ata_offering_item_has_a_source_in_the_game()
+    {
+        var nodeItems = D.Biomes.Biomes.Values.SelectMany(b => b.Nodes.Select(n => n.Item)).ToHashSet();
+        var recipes = D.Tool.Recipes.Select(r => r.Id).ToHashSet();
+        var crops = D.Crops.Crops.Select(c => c.Id).ToHashSet();
+        var raw = D.Research.RawSources.Select(s => s.Id).ToHashSet();
+        var missing = new List<string>();
+        foreach (var a in D.Atalar.Atalar)
+            foreach (var o in a.Offering)
+            {
+                bool ok = o.Swollen ? crops.Contains(o.Item) : nodeItems.Contains(o.Item) || recipes.Contains(o.Item) || crops.Contains(o.Item) || raw.Contains(o.Item);
+                if (!ok) missing.Add($"{a.Id}: {o.Item}{(o.Swollen ? " (kabarik)" : "")}");
+            }
+        Assert.True(missing.Count == 0, "Adak esyasinin kaynagi yok: " + string.Join("; ", missing));
     }
 
     [Fact]

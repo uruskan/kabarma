@@ -159,28 +159,4 @@ void fragment() { COLOR = vec4(textureLod(screen_texture, SCREEN_UV, 3.0).rgb * 
         string dur = play.TotalHours >= 1 ? $"{(int)play.TotalHours} sa {play.Minutes} dk" : $"{play.Minutes} dk";
         return $"{name}  ·  Gün {m.Day}  ·  {when}  ·  {dur}";
     }
-
-    /// <summary>Ayarlar paneli: tam ekran ve ana ses (ayrintili ses ve tus paneli oyunda F-tuslarinda).</summary>
-    protected void ShowSettings()
-    {
-        ClearContent();
-        Header("Ayarlar", "Tuş atamaları ve ses kanalları oyunda kendi panellerinde.");
-        bool full = DisplayServer.WindowGetMode() is DisplayServer.WindowMode.Fullscreen or DisplayServer.WindowMode.ExclusiveFullscreen;
-        Row($"Tam ekran: {(full ? "açık" : "kapalı")}", () =>
-        {
-            DisplayServer.WindowSetMode(full ? DisplayServer.WindowMode.Windowed : DisplayServer.WindowMode.Fullscreen);
-            ShowSettings();
-        });
-        int bus = AudioServer.GetBusIndex("Master");
-        float db = bus >= 0 ? AudioServer.GetBusVolumeDb(bus) : 0f;
-        int pct = (int)Mathf.Round(Mathf.DbToLinear(db) * 100f);
-        Row($"Ana ses: %{pct}   (tıkla: −%10)", () =>
-        {
-            if (bus < 0) return;
-            float lin = Mathf.DbToLinear(AudioServer.GetBusVolumeDb(bus)) - 0.1f;
-            if (lin < 0.05f) lin = 1f; // sifirin altina inince basa doner
-            AudioServer.SetBusVolumeDb(bus, Mathf.LinearToDb(lin));
-            ShowSettings();
-        });
-    }
 }

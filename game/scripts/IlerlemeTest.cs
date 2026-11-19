@@ -63,14 +63,20 @@ public partial class IlerlemeTest : Node
         {
             case 0:
                 if (_stageT < 0.5f) break;
-                Check(!s.Orders.DefterOpen && s.Orders.Chains.Count == 12, "12 zincir, Defter kapali olmali");
-                Check(s.Achievements.Count == 14, "basarimlar: 12 zincir + 2");
+                Check(!s.Orders.DefterOpen && s.Orders.Chains.Count == 36, "36 zincir (12 + ilerleme4'un 24'u), Defter kapali olmali");
+                Check(s.Achievements.Count == 38, "basarimlar: 36 zincir + 2");
                 // Is emri odemesi: Defter acilinca adim biter bitmez Kredi ve Veri
                 s.Orders.OpenDefter();
                 int c0 = s.Credits, v0 = s.Research.Veri;
                 s.Orders.Report("swollen_crop", 5);
                 Check(s.Credits == c0 + 100 && s.Research.Veri == v0 + 10, $"adim odulu: kredi {s.Credits - c0} veri {s.Research.Veri - v0}");
                 Check(s.Orders.Tracked?.Def.Id == "salgam_baronu", "takip: Salgam Baronu");
+                // ilerleme4: yeni zincirin bir adimi (Usta: 20 yapi parcasi) ayni yoldan odenir; Carkci gercek cevirmeyle ilerler
+                int c1 = s.Credits, v1 = s.Research.Veri;
+                s.Orders.Report("build_piece", 20);
+                Check(s.Orders.Chain("usta")!.StepDone(0) && s.Credits == c1 + 100 && s.Research.Veri == v1 + 10, $"usta adim 1: kredi {s.Credits - c1} veri {s.Research.Veri - v1}");
+                s.SpinWheel();
+                Check(s.Orders.Chain("carkci")!.StepDone(0), "carkci adim 1: Tohum Carki cevirmesi");
                 // Ustalik: ciftcilik 10. seviye, secim bekliyor
                 s.Mastery.AddXp("ciftcilik", s.Mastery.Threshold(10));
                 Check(s.Mastery.PendingTiers("ciftcilik").Contains(10), "ciftcilik 10. seviye secim bekliyor");
