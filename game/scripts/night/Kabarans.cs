@@ -44,9 +44,10 @@ public static class Kabarans
     /// Tek vurus girisi (GECICI arayuz: savas sozlesmesi gelince burasi Combat'a gecer). Zirh GDD 16.1 ile duser.
     /// environment: cevreyle oldurme (tuzak, firlatma pedi, arac) Gosteri'yi artirir (GDD 14.5).
     /// </summary>
-    public static void Hit(IKabaran k, float damage, Vector3 from, float knock = 0f, int attacker = 0, bool environment = false, KabarmaNight night = null)
+    public static void Hit(IKabaran k, float damage, Vector3 from, float knock = 0f, int attacker = 0, bool environment = false, KabarmaNight night = null, DamageType type = DamageType.Darbe)
     {
         if (k == null || k.Dead || !GodotObject.IsInstanceValid(k.Node)) return;
+        if (night?.Plan != null && type != DamageType.Darbe) damage *= night.Plan.Spec.Tuzuk.DamageMult(type); // Tuzuk Saganak: Ates etkisiz, Sok guclu (gece4)
         k.ApplyHit(Waves.AfterArmor(damage, k.State.Armor), from, knock, attacker);
         if (k.Dead && environment) night?.ReportGosteri(GosteriEvent.EnvironmentKill);
         if (k.Dead && k.Flying) night?.ReportGosteri(GosteriEvent.AirKill);

@@ -54,6 +54,8 @@ public sealed class GeneticsRules
     public int GeneMin { get; set; } = 1;
     public int GeneMax { get; set; } = 10;
     public List<CropMutationStep> Mutation { get; set; } = new();
+    /// <summary>Mutasyon sansi carpani (dolap: Arici x1,5). Oyun kurulurken Director ayarlar; veri dosyasinda yok.</summary>
+    [System.Text.Json.Serialization.JsonIgnore] public float MutationMult { get; set; } = 1f;
     public int WildMin { get; set; } = 1;
     public int WildMax { get; set; } = 3;
     public float CrossRadius { get; set; }
