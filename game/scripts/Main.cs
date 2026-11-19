@@ -56,6 +56,7 @@ public partial class Main : Node3D
         ["lineup"] =m => { m.AddChild(new ModelLineup()); return true; }, // gorsel-model: her model ayni isikta (progress/gorsel/model/)
         ["camera"] = m => { m.AddChild(new CameraTest()); return false; }, // oyuncu akisi: kamera kipleri, tekerlek, carpisma, nisan, ayar dosyasi
         ["grip"] = m => { Args["mute"] = "1"; Sfx.Muted = true; m.AddChild(new GripTest()); return false; }, // oyuncu akisi: Capa elde, namlu nisanda, araba iki elle
+        ["playershots"] = m => { Args["mute"] = "1"; Sfx.Muted = true; m.AddChild(new PlayerShots()); return false; }, // oyuncu2: karakter goruntuleri (progress/oyuncu2/, pencereli kosulur)
         ["kemer"] = m => { Args["bot"] = "1"; if (m._quitAfter <= 0) m._quitAfter = 600; m.AddChild(new KemerShots()); return false; }, // karar 23 kaniti: progress/kemer/*.png
         ["save"] = m => { SaveTest.Prepare(); m.AddChild(new SaveTest(m)); return false; }, // kayit: bot bir gun oynar, kaydeder, sahne bastan yuklenir; fark 0 (save/SaveTest.cs)
         ["menu"] = m => { MenuFlowTest.Prepare(); m.AddChild(new MenuFlowTest(m)); return false; }, // kayit: ana menu -> yeni oyun -> Esc ana menu -> Devam -> kapatma kaydi (save/MenuFlowTest.cs)

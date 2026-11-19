@@ -2,19 +2,19 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://d4ikt5rr2pu3a"
-path="res://.godot/imported/player_Material_0.004_metallic-Material_0.png-4d2462d21b1465880448cf296b73b247.ctex"
+uid="uid://du3t24q78k5ra"
+path="res://.godot/imported/player_prepbag_kabarma_canta_normal.jpg-c05e9350fd317e8b54c413f84bd69382.ctex"
 metadata={
 "vram_texture": false
 }
 generator_parameters={
-"md5": "6fcfaeb34969bb56506f744a40219c90"
+"md5": "c813381596fe4212f733eadd7d390f4f"
 }
 
 [deps]
 
-source_file="res://assets/models/player/player_Material_0.004_metallic-Material_0.png"
-dest_files=["res://.godot/imported/player_Material_0.004_metallic-Material_0.png-4d2462d21b1465880448cf296b73b247.ctex"]
+source_file="res://assets/models/player/player_prepbag_kabarma_canta_normal.jpg"
+dest_files=["res://.godot/imported/player_prepbag_kabarma_canta_normal.jpg-c05e9350fd317e8b54c413f84bd69382.ctex"]
 
 [params]
 

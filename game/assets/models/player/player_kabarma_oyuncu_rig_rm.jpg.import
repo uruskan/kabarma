@@ -2,19 +2,19 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://b46jwsq6mafam"
-path="res://.godot/imported/player_Image_1.jpg-70425e6e8271ae86d94e3f233ef2c4d9.ctex"
+uid="uid://rem1n636dnfw"
+path="res://.godot/imported/player_kabarma_oyuncu_rig_rm.jpg-b16ffe750d1ce19ec5a9b853b9d174e7.ctex"
 metadata={
 "vram_texture": false
 }
 generator_parameters={
-"md5": "9b156134e1da92a25384caf1dc703670"
+"md5": "342ea58c4e3278f466122e7d0cbaab3d"
 }
 
 [deps]
 
-source_file="res://assets/models/player/player_Image_1.jpg"
-dest_files=["res://.godot/imported/player_Image_1.jpg-70425e6e8271ae86d94e3f233ef2c4d9.ctex"]
+source_file="res://assets/models/player/player_kabarma_oyuncu_rig_rm.jpg"
+dest_files=["res://.godot/imported/player_kabarma_oyuncu_rig_rm.jpg-b16ffe750d1ce19ec5a9b853b9d174e7.ctex"]
 
 [params]
 
