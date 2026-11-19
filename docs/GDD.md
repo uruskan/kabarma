@@ -436,6 +436,29 @@ Ocak'tan başlatılır. Seçilen KS'nin dalgaları hayalet olarak gelir; hasar g
 
 26'dan sonra her seviye 12 maddelik havuzdan birini kalıcı olarak ekler ([ICERIK.md](ICERIK.md) §8.4). 37'den sonra maddeler ikinci kez eklenip şiddetlenir.
 
+**M4 kuralı (gece4; sayılar `data/tuzuk.json`):**
+
+- **Sıra:** 12 maddenin dünya tohumuyla karıştırılmış tek bir sırası vardır (dünya kurulurken belirlenir, sonra değişmez). KS 26'ya girince sıranın 1., KS 27'de 2., … KS 37'de 12. maddesi eklenir. KS 38'den KS 49'a kadar aynı sıra bir kez daha işler ve her madde **ikinci kat** olur (şiddetlenir). KS 50'de yeni madde yoktur.
+- **Yığılma:** bir madde en çok iki kat olur. İki kat: çarpan etkileri iki katı sapar (ör. Kör Kule −%30 yerine −%60), toplamalı etkiler iki katı eklenir (Kalın Kabuk +%20, Uzun Gece sekiz dalga, Çift Azman'da üç Azman), Sis 20 m olur, Cimri Ay'da seviye başına 1 kart sunulur. Evet/hayır maddeleri (Kırık Çan, Holding Seferberliği, Göçmen Sürü) ikinci katta değişmez.
+- **Kapsam:** KS ile gelen maddeler yalnız tam Kabarma'da işler. Küçük Kabarma ve Tatbikat'ta yalnız Yeni Ay'da seçilen maddeler geçerlidir (Tatbikat, savunma düzenini gerçek koşulda sınamak içindir).
+- **Yeni Ay:** karakteri koruyup yeni tohumla dünya kurmak. Kurarken 12 maddeden istenen sayıda seçilir; seçilenler **KS 1'den** tek kat olarak açıktır. Seçilen her madde o dünyanın Maya kazancını %5 artırır (yük zam). Seçilen bir madde KS 26+ sırasında yine gelirse ikinci kata çıkar (tavan iki). Karakter dosyasını korumak kayıt akışının işidir; burada yalnız seçim ve etkisi vardır.
+
+### 14.9 KS 11 ve üstü (M4)
+
+- Açılabilen en yüksek KS 50'dir (`full.maxKs`). Her KS'nin ilk geçişi bir üst KS'yi açar (§14.4); KS 10'dan sonra da aynı kural.
+- Formüller (§14.3) değişmeden sürer: sayı `(30 + 8 × KS)`, can `1,15^(KS−1)`, hasar `1,08^(KS−1)`, elit oranı `min(%40, %2 × KS)`. Kalın Kabuk elit oranını bu tavanın **üstüne** ekler.
+- **Ne ekersen onu çekersin** M4'te dokuz ailenin tamamı için çalışır: yeni 13 ekin ailesinden gelir, yeni biyomların 15 yaratığı ailelerin ve biyomların tablosundadır (`kabarma.json` `families`, `natives`; ICERIK §5 aile tablosu). Dört yeni biyomun yerlileri o biyomda yerli, komşu biyomda komşu paydır.
+- KS 26'dan sonra tüzük (§14.8) işler.
+
+### 14.10 Kabartma Odası (M4)
+
+Kabartma Odası (T6, 800 W; Ana Maya tarifi) gündüz tek bir hedefi kabartır:
+
+- **Hedef:** istasyonun 12 m çevresindeki bir olgun tarla karesi **ya da** bir evcil hayvan. İstasyon menüsünden seçilir.
+- **Bedel:** çalışma başına **50 Maya** (çantadaki `maya` eşyası; Maya Kazanı deposundan alınır). Güç yoksa çalışmaz.
+- **Etki:** tarla karesi KS'ye bağlı boy sınıfıyla kabarır (açılmış en yüksek KS), kabarık ürün Şafak kuralıyla değil **kabarma anından** itibaren sönme saatine girer; hayvan 2 dakika kabarık kalır (savaş hayvanı kuralları `savas-hayvan` akışında). Gece sayacını, Öz'ü ve kartları etkilemez.
+- Gündüz çalışır; bir Kabarma sürerken çalışmaz.
+
 ## 15. Kabarma kartları
 
 - **Gece seviyesi:** Öldürmeler Öz verir (türün Öz değeri × Gösteri). `n. seviye eşiği = 20 × n^1,5`. Tipik bir gecede 18–26 seviye atlanır.

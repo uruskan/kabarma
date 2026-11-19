@@ -33,6 +33,7 @@ public sealed partial class KabarmaNight
         : this(data, Waves.ToNightDef(plan, data.Kabarma.FirstNight), seed, memberCard, book)
     {
         Plan = plan;
+        if (plan.Spec.Tuzuk.OfferSize > 0) Hand.OfferCap = plan.Spec.Tuzuk.OfferSize; // Cimri Ay
         if (plan.Spec.Kind != KabarmaKind.Small)
         {
             float hp = Waves.KazanHp(data.Kabarma.Full, plan.Spec.OcakTier);
