@@ -391,7 +391,7 @@ public sealed class InputDriver
         public override bool OwnsLook => _sub?.OwnsLook == true;
         protected override bool Run(InputDriver d)
         {
-            int n = Math.Min(Capa.HeadNames.Length, (int)Capa.Head.Civi + 1);
+            int n = System.Math.Min(Capa.HeadNames.Length, (int)Capa.Head.Civi + 1);
             if (_sub != null)
             {
                 if (!_sub.Step(d)) return false;
@@ -482,7 +482,7 @@ public sealed class InputDriver
             if (F <= hold)
             {
                 // Hud.WheelMotion: yuva i, ust ortadan saat yonunde i x 360/n derece; ekran y asagi.
-                int n = _count > 0 ? _count : Math.Min(Capa.HeadNames.Length, (int)Capa.Head.Civi + 1);
+                int n = _count > 0 ? _count : System.Math.Min(Capa.HeadNames.Length, (int)Capa.Head.Civi + 1);
                 float a = _head * Mathf.Tau / n;
                 var dir = new Vector2(Mathf.Sin(a), -Mathf.Cos(a));
                 if (d.Device == InputDevice.Kbm)
