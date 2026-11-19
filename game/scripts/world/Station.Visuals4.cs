@@ -40,6 +40,7 @@ public static class ZincirVisuals4
         ["sondaj_kulesi"] = (1.8f, 3.0f, 1.8f, 4, Sym.Tower),
         ["kristal_kesici"] = (1.4f, 0.9f, 1.0f, 5, Sym.Dome),
         ["batarya_tezgahi"] = (1.6f, 0.9f, 1.0f, 5, Sym.Tank),
+        ["asi_tezgahi"] = (1.5f, 1.0f, 1.0f, 5, Sym.Arm), // tarim4'ün istasyonu: yer tutucu burada (zincir sinamasi her istasyonun gorunusunu ister)
         ["zeplin_hangari"] = (6.0f, 3.2f, 3.5f, 5, Sym.Dome),
         ["maya_dokumhanesi"] = (3.0f, 1.8f, 2.4f, 6, Sym.Chimney),
         ["kabartma_odasi"] = (4.0f, 2.6f, 4.0f, 6, Sym.Dome),

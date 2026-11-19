@@ -18,6 +18,48 @@
     { "id": "salter", "kind": "switch", "sockets": 2, "signalIn": true, "tier": 2 },
     { "id": "elektrik_lambasi", "kind": "consumer", "watts": 5, "sockets": 1, "signalIn": true, "lightRange": 8.0, "tier": 2 },
     { "id": "dugme", "kind": "button", "sockets": 0, "tier": 2 },
-    { "id": "basinc_plakasi", "kind": "plate", "sockets": 0, "tier": 2 }
-  ]
+    { "id": "basinc_plakasi", "kind": "plate", "sockets": 0, "tier": 2 },
+
+    { "_not": "M4 tasima (ICERIK §12; kimlikler-m4.md §12). Ureticiler: source water (Su Carki: akar suya oturunca Occupied), fuel (Biyoyakit Jeneratoru: fuelItem esyasi fuelSeconds sn yanar), solar (gunduz), animal (Cizbiz Tanki: icinde Cizbiz), kabarma (yalniz Kabarma'da), fixed.", "id": "su_carki", "kind": "generator", "source": "water", "watts": 120, "sockets": 2, "tier": 3, "animalRadius": 2.0 },
+    { "id": "biyoyakit_jeneratoru", "kind": "generator", "source": "fuel", "watts": 250, "sockets": 2, "tier": 3, "fuelItem": "biyoyakit", "fuelSeconds": 120 },
+    { "id": "gunes_paneli", "kind": "generator", "source": "solar", "watts": 60, "sockets": 2, "tier": 4 },
+    { "id": "cizbiz_tanki", "kind": "generator", "source": "animal", "watts": 150, "sockets": 2, "tier": 3, "animalRadius": 2.0 },
+    { "id": "kabarma_toplayicisi", "kind": "generator", "source": "kabarma", "watts": 1000, "sockets": 2, "tier": 4 },
+    { "id": "maya_reaktoru", "kind": "generator", "source": "fixed", "watts": 2000, "sockets": 2, "tier": 6 },
+    { "id": "aku_mk2", "kind": "battery", "capacityWh": 2000, "watts": 400, "sockets": 2, "tier": 3 },
+    { "id": "aku_mk3", "kind": "battery", "capacityWh": 8000, "watts": 800, "sockets": 2, "tier": 4 },
+    { "id": "aku_mk4", "kind": "battery", "capacityWh": 30000, "watts": 2000, "sockets": 2, "tier": 5 },
+    { "_not": "Sigorta Kutusu: kablosuyla bagli tuketici, kutunun onceligini (E menusu) kullanir.", "id": "sigorta_kutusu", "kind": "fuse", "sockets": 4, "tier": 3 },
+
+    { "_not": "Sinyal kaynaklari (GDD 11.2). lever: elle ac/kapa; motion: Occupied (Godot: oyuncu, hayvan, dusman suzgeci); daynight: gece 100; kabarma_sensor: Kabarma asamasi ve dalgasi 0-100; reading: Godot olcumu 0-100 (depo doluluk, nem); power_sensor: aku doluluk ya da uretim/talep; counter: giris kenarini sayar, target kenarda 100; timer: period sn dongude pulse sn 100.", "id": "salter_kolu", "kind": "lever", "sockets": 0, "tier": 3 },
+    { "id": "hareket_sensoru", "kind": "motion", "sockets": 0, "tier": 4 },
+    { "id": "gun_gece_sensoru", "kind": "daynight", "sockets": 0, "tier": 4 },
+    { "id": "kabarma_sensoru", "kind": "kabarma_sensor", "sockets": 0, "tier": 4 },
+    { "id": "depo_sensoru", "kind": "reading", "sockets": 0, "tier": 4 },
+    { "id": "guc_sensoru", "kind": "power_sensor", "sockets": 1, "tier": 4 },
+    { "id": "nem_sensoru", "kind": "reading", "sockets": 0, "tier": 4 },
+    { "id": "sayac", "kind": "counter", "sockets": 0, "signalIn": true, "target": 5, "tier": 3 },
+    { "id": "zamanlayici", "kind": "timer", "sockets": 0, "period": 10.0, "pulse": 2.0, "tier": 3 },
+
+    { "_not": "Kapilar: girisleri tel sirasina gore; karsilastirici ilk > ikinci (tek girisliyse > target); bellek: ilk giris kurar, ikinci sifirlar.", "id": "kapi_ve", "kind": "and", "sockets": 0, "signalIn": true, "tier": 4 },
+    { "id": "kapi_veya", "kind": "or", "sockets": 0, "signalIn": true, "tier": 4 },
+    { "id": "kapi_degil", "kind": "not", "sockets": 0, "signalIn": true, "tier": 4 },
+    { "id": "karsilastirici", "kind": "compare", "sockets": 0, "signalIn": true, "target": 50, "tier": 4 },
+    { "id": "bellek", "kind": "memory", "sockets": 0, "signalIn": true, "tier": 4 },
+
+    { "id": "siren", "kind": "consumer", "watts": 10, "sockets": 1, "signalIn": true, "tier": 3 },
+    { "id": "sinyal_lambasi", "kind": "consumer", "watts": 2, "sockets": 1, "signalIn": true, "lightRange": 5.0, "tier": 3 },
+
+    { "_not": "Tasima (GDD 11.3). Parcalar kablosuz: onundeki nokta (yon = donus) bir sonraki parca ya da depodur. Bant saniyede 2 nesne (gap 0.5). Kol/Pompa arkadaki depodan onune tasir (rate nesne/sn, filtre E menusunde). Drone: 6 adet, 80 m. Teleferik: range m hat, span m'de bir direk.", "id": "bant", "kind": "belt", "sockets": 0, "signalIn": true, "speed": 2.0, "gap": 0.5, "capacity": 2, "range": 1.0, "tier": 3 },
+    { "id": "ayirici", "kind": "splitter", "sockets": 0, "signalIn": true, "speed": 2.0, "gap": 0.5, "capacity": 2, "range": 1.0, "tier": 3 },
+    { "id": "birlestirici", "kind": "merger", "sockets": 0, "signalIn": true, "speed": 2.0, "gap": 0.5, "capacity": 2, "range": 1.0, "tier": 3 },
+    { "id": "tasima_kolu", "kind": "arm", "watts": 10, "sockets": 1, "signalIn": true, "rate": 1.0, "tier": 3 },
+    { "id": "boru", "kind": "pipe", "sockets": 0, "signalIn": true, "speed": 3.0, "gap": 0.25, "capacity": 4, "range": 1.0, "fluid": true, "tier": 3 },
+    { "id": "pompa", "kind": "pump", "watts": 30, "sockets": 1, "signalIn": true, "rate": 4.0, "fluid": true, "tier": 3 },
+    { "id": "drone_istasyonu", "kind": "drone_station", "watts": 40, "sockets": 1, "signalIn": true, "drones": 6, "range": 80.0, "speed": 8.0, "capacity": 8, "tier": 5 },
+    { "id": "teleferik_istasyonu", "kind": "ropeway_station", "watts": 60, "sockets": 1, "signalIn": true, "range": 400.0, "speed": 6.0, "rate": 0.25, "capacity": 20, "tier": 5 },
+    { "id": "teleferik_diregi", "kind": "ropeway_post", "sockets": 0, "span": 60.0, "tier": 5 }
+  ],
+  "fluids": ["su", "biyoyakit", "sut"],
+  "tileSize": 1.0
 }

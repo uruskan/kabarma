@@ -92,6 +92,13 @@ public partial class Director
             State.Research.TierChanged += t => { Hud.Big($"Ocak T{t}: tapu {State.Research.ClaimRadius:0} m", Palette.Warning, 3f); GD.Print($"OCAK_TIER {t}"); };
         }
         if (!Hud.MenuOpen && Input.IsActionJustPressed("scan")) Scan();
+        // Maya Kazani (GDD 6, 14.4): safakta biriken Maya, Ocak'in yaninda "maya" esyasi olarak canta ve Sandiklara alinir.
+        if (Ocak != null && State.MayaStock.Stock > 0 && OcakPos.DistanceTo(Player.GlobalPosition) < 4.5f)
+        {
+            int got = State.MayaStock.Withdraw(StationStore());
+            if (got > 0) { Hud.Big($"+{got} Maya (Kazan)", Palette.MayaTeal, 2f); Sfx.Play("pickup", null, -4f); GD.Print($"MAYA withdrawn {got} left={State.MayaStock.Stock}"); }
+            else Hud.Hint($"Maya Kazanı'nda {State.MayaStock.Stock} Maya var: çanta ve Sandıklar dolu", 1.2f);
+        }
         // Ocak basamagi: siradaki Cekirdek cantadaysa Ocak'in yaninda takilir (GDD §6).
         _coreHintT -= dt;
         if (Ocak != null && _coreHintT <= 0)

@@ -77,6 +77,9 @@ public partial class PowerDevice : Node3D
         switch (PDef.Kind)
         {
             case "generator":
+                if (PDef.Source == "fuel") return $"{n.OutputW:0} / {PDef.Watts:0} W · yakıt {n.Fuel:0} sn";
+                if (PDef.Source == "water" && !n.Occupied) return $"0 / {PDef.Watts:0} W · akan su yok";
+                if (PDef.Source == "kabarma" && n.OutputW <= 0) return $"0 / {PDef.Watts:0} W · yalnız Kabarma'da";
                 return PDef.Source == "animal" && !n.Occupied ? $"0 / {PDef.Watts:0} W · içinde hayvan yok" : $"{n.OutputW:0} / {PDef.Watts:0} W";
             case "battery":
                 return $"{n.StoredWh:0} / {PDef.CapacityWh:0} Wh";
@@ -89,7 +92,31 @@ public partial class PowerDevice : Node3D
                 return (closed ? "kapalı (iletir)" : "açık (keser)") + (n.SignalWired ? $" · sinyal {n.Signal}" : "");
             case "button":
             case "plate":
-                return $"sinyal {n.Signal}";
+            case "lever":
+            case "motion":
+            case "daynight":
+            case "kabarma_sensor":
+            case "reading":
+            case "power_sensor":
+            case "timer":
+                return $"sinyal {n.Signal}" + (PDef.Kind == "reading" ? $" · ölçüm {n.Reading}" : "");
+            case "and": case "or": case "not": case "compare": case "memory":
+                return $"çıkış {n.Signal}" + (n.SignalWired ? "" : " · tel yok");
+            case "counter":
+                return $"{n.Count}/{PDef.Target} · çıkış {n.Signal}";
+            case "fuse":
+                return $"öncelik {n.Priority}";
+            case "belt": case "pipe": case "splitter": case "merger":
+                return (n.SignalWired && n.Signal <= 0 ? "sinyal bekliyor" : "akıyor") + $" · {_d.State.Power.Transport.Lane(NodeId).Items.Count} nesne";
+            case "arm": case "pump":
+                return (!n.On ? "kapalı" : n.SignalWired && n.Signal <= 0 ? "sinyal bekliyor" : n.Powered ? "çalışıyor" : n.Shed ? "güç yetmiyor" : "güç yok") + (n.Filter.Length > 0 ? $" · {ItemNames.Of(n.Filter)}" : " · hepsi");
+            case "drone_station":
+                {
+                    var s = _d.State.Power.Transport.Drones.Station(NodeId);
+                    return $"{s.Fleet.Count(x => x.Phase != 0)}/{PDef.Drones} uçuşta · {s.Orders.Count} görev" + (n.Powered ? "" : " · güç yok");
+                }
+            case "ropeway_station":
+                return $"{_d.State.Power.Transport.Ropeways.Lines.Count(l => l.A == NodeId)} hat" + (n.Powered ? "" : " · güç yok");
         }
         return st == null ? "kablo yok" : $"{st.ServedW:0} / {st.SupplyW:0} W";
     }

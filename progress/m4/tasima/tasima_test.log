@@ -1,0 +1,48 @@
+﻿TASIMA GEVSETILDI Tezgah PlaceStation ile kuruldu (M1 botu gercek yolunu sinar)
+TASIMA GEVSETILDI Ocak basamagi dogrudan T5 (Ata yolu: boss akisi)
+TASIMA GEVSETILDI celik, copper_wire, kaucuk, fiber, wood, plank, titan_ingot, devre, plastik, aku_hucresi ve biyoyakit verildi (ara urun zincirleri ayri sinanir)
+TASIMA OK   Kablo uretildi (Tezgah, 3 is x 2)
+TASIMA OK   Biyoyakit Jeneratoru uretildi (Ocak T3 tarifi)
+TASIMA OK   Kol uretildi
+TASIMA OK   4 Bant uretildi (tek is)
+TASIMA OK   Salter Kolu uretildi
+TASIMA OK   Drone Istasyonu uretildi (Ocak T5 tarifi)
+TASIMA OK   2 Direk uretildi (el tarifi)
+TASIMA OK   4 Sandik uretildi (el tarifi)
+TASIMA OK   uretilen parcalar cantada: 4 Bant, 6 Kablo
+TASIMA GEVSETILDI parcalar Power.Place / PlaceFurniture ile kuruldu (kemer hayaleti ve R donusu Capa.Insa testinde)
+TASIMA OK   guc kablosu: Jenerator -> Direk -> Kol (2 Kablo harcandi)
+TASIMA OK   Jenerator Biyoyakit ile beslendi (120 sn)
+TASIMA GEVSETILDI Kol filtresi dugume yazildi (E paneli Op.Filter yolu Godot'ta ayri denetlenmedi)
+TASIMA OK   Kol beslendi (Jenerator 250 W, Kol 10 W)
+TASIMA OK   Kol + Bant: Sandik A'dan Sandik B'ye 3 Bakir Kulce ulasti
+TASIMA OK   bantta giden nesneler gorunur (en cok 2)
+TASIMA OK   12 Bakir Kulce kaybolmadan tasindi
+TASIMA OK   cantada Bakir Kulce yok
+TASIMA OK   Tezgah Civi isini Sandik B'deki (bantin getirdigi) Kulce'den kuyruga aldi
+TASIMA OK   istasyon bantin getirdigiyle 20 Civi uretti
+TASIMA OK   sinyal teli: Salter Kolu -> orta Bant (1 Kablo)
+TASIMA OK   kol kapaliyken Bant durur (11 -> 11)
+TASIMA OK   kol acilinca akis surer, 6 Kulce daha ulasti
+TASIMA GEVSETILDI Veri verildi (Hasat Robotu arastirmasi); celik, copper_wire, kaucuk ek olarak verildi; ekin buyumesi Sim'de hizlandirildi (Farm.Tick)
+TASIMA OK   Hasat Robotu tarifi arastirilmadan kilitli
+TASIMA OK   Hasat Robotu arastirildi (Arastirma Masasi kurali)
+TASIMA OK   Hasat Robotu uretildi (Tezgah)
+TASIMA OK   Hasat Robotu 60 W'lik guc ucu acti
+TASIMA OK   guc kablosu: Direk -> Hasat Robotu
+TASIMA OK   Sandiktaki tohum ekildi (1/3)
+TASIMA OK   Sandiktaki tohum ekildi (2/3)
+TASIMA OK   Sandiktaki tohum ekildi (3/3)
+TASIMA OK   3 ekin olgun
+TASIMA OK   robot 3 ekini hasat edip Sandiga koydu (8 Salgam, 6 tohum)
+TASIMA OK   hasatta tohum da geldi
+TASIMA OK   guc: Direk -> Direk -> Drone Istasyonu
+TASIMA OK   80 m disindaki hedef reddedildi: Menzil dÄ±ÅŸÄ± (en fazla 80 m)
+TASIMA OK   drone gorevi eklendi (28 m ve 32 m) 
+TASIMA OK   drone'lar ucustu
+TASIMA OK   40 Tas kaybolmadan Sandik C'den D'ye tasindi (40/40)
+TASIMA OK   6 drone gorunur (6)
+TASIMA OK   tasima durumu kayitta gidip geliyor (Sim JSON; tam kayit/yukleme save testinde)
+TASIMA GEVSETILDI Ag (ortak oyun) denetlenmedi: tasima host'ta isler, 'power' bolumu yeni alanlari tasir ama 4 kisilik sinama yok
+TASIMA GEVSETILEN ADIMLAR (7): Tezgah PlaceStation ile kuruldu (M1 botu gercek yolunu sinar); Ocak basamagi dogrudan T5 (Ata yolu: boss akisi); celik, copper_wire, kaucuk, fiber, wood, plank, titan_ingot, devre, plastik, aku_hucresi ve biyoyakit verildi (ara urun zincirleri ayri sinanir); parcalar Power.Place / PlaceFurniture ile kuruldu (kemer hayaleti ve R donusu Capa.Insa testinde); Kol filtresi dugume yazildi (E paneli Op.Filter yolu Godot'ta ayri denetlenmedi); Veri verildi (Hasat Robotu arastirmasi); celik, copper_wire, kaucuk ek olarak verildi; ekin buyumesi Sim'de hizlandirildi (Farm.Tick); Ag (ortak oyun) denetlenmedi: tasima host'ta isler, 'power' bolumu yeni alanlari tasir ama 4 kisilik sinama yok
+TASIMA RESULT ok=39 fail=0

@@ -8,15 +8,20 @@ public partial class Director
 {
     /// <summary>Guc agi (power/PowerSystem.cs). Guc isteyen istasyonlar: Power?.Attach(this, Def.Id) (PowerPort).</summary>
     public PowerSystem Power { get; private set; }
+    /// <summary>Tasima gorunusu (power/TransportView.cs; M4 tasima).</summary>
+    public TransportView Transport { get; private set; }
 
     /// <summary>Director._Ready'den bir kez.</summary>
     void InitPower()
     {
         Power = new PowerSystem(this);
         AddChild(Power);
+        Transport = new TransportView(this); // M4 tasima: bant, drone, teleferik gorunusu
+        AddChild(Transport);
         // Kayit (TEKNIK 9.1): durum Sim'in "power" bolumunde; yuklemeden sonra gorunus yeniden kurulur.
         Save.Add(SaveSection.Json("power.view", 1, () => 0, _ => { }, SaveOrder.Spawn, afterRestore: Power.Rebuild));
         if (Main.Args.ContainsKey("power")) GD.Print("POWER test: bot zinciri bitince guc adimi (Bot.Power.cs)");
+        if (Main.Args.ContainsKey("tasimatest")) AddChild(new TasimaTest(this)); // M4 tasima: bant, kol, drone (power/TasimaTest.cs)
         if (Main.Args.ContainsKey("powershots")) AddChild(new PowerShots(this)); // gorsel kanit (power/PowerShots.cs)
         Callable.From(Power.BindNet).CallDeferred(); // ortak oyun: InitNet'ten sonra "power" bolumu ve istekler (PowerSystem.Net.cs)
     }

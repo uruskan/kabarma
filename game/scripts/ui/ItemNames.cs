@@ -209,6 +209,17 @@ public static class ItemNames
         ["sera_kontrol_unitesi"] = "Sera Kontrol Ünitesi", ["ekim_robotu"] = "Ekim Robotu", ["sagim_kirkim_kolu"] = "Sağım-Kırkım Kolu", ["paketleyici"] = "Paketleyici", ["sondaj_kulesi"] = "Sondaj Kulesi",
         ["kristal_kesici"] = "Kristal Kesici", ["batarya_tezgahi"] = "Batarya Tezgâhı", ["zeplin_hangari"] = "Zeplin Hangarı",
         ["maya_dokumhanesi"] = "Maya Dökümhanesi", ["kabartma_odasi"] = "Kabartma Odası",
+        // tasima (M4, ICERIK §12): guc, sinyal ve tasima parcalari.
+        ["su_carki"] = "Su Çarkı", ["biyoyakit_jeneratoru"] = "Biyoyakıt Jeneratörü", ["gunes_paneli"] = "Güneş Paneli", ["cizbiz_tanki"] = "Cızbız Tankı",
+        ["kabarma_toplayicisi"] = "Kabarma Toplayıcısı", ["maya_reaktoru"] = "Maya Reaktörü", ["aku_mk2"] = "Akü Mk2", ["aku_mk3"] = "Akü Mk3", ["aku_mk4"] = "Akü Mk4",
+        ["sigorta_kutusu"] = "Sigorta Kutusu", ["salter_kolu"] = "Şalter Kolu", ["hareket_sensoru"] = "Hareket Sensörü", ["gun_gece_sensoru"] = "Gün-Gece Sensörü",
+        ["kabarma_sensoru"] = "Kabarma Sensörü", ["depo_sensoru"] = "Depo Sensörü", ["guc_sensoru"] = "Güç Sensörü", ["nem_sensoru"] = "Nem Sensörü",
+        ["sayac"] = "Sayaç", ["zamanlayici"] = "Zamanlayıcı", ["kapi_ve"] = "VE Kapısı", ["kapi_veya"] = "VEYA Kapısı", ["kapi_degil"] = "DEĞİL Kapısı",
+        ["karsilastirici"] = "Karşılaştırıcı", ["bellek"] = "Bellek", ["siren"] = "Siren", ["sinyal_lambasi"] = "Sinyal Lambası",
+        ["bant"] = "Bant", ["ayirici"] = "Ayırıcı", ["birlestirici"] = "Birleştirici", ["tasima_kolu"] = "Kol", ["boru"] = "Boru", ["pompa"] = "Pompa",
+        ["drone_istasyonu"] = "Drone İstasyonu", ["teleferik_istasyonu"] = "Teleferik İstasyonu", ["teleferik_diregi"] = "Teleferik Direği",
+        ["su"] = "Su", ["biyoyakit"] = "Biyoyakıt",
+        ["tabaklanmis_deri"] = "Tabaklanmış Deri", ["sira"] = "Şıra", ["tursu"] = "Turşu", // istasyon islevleri (tasima, ICERIK §11)
     };
 
     public static string Of(string id) => Names.TryGetValue(id, out var n) ? n : id;
