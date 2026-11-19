@@ -49,8 +49,12 @@ public sealed class Wardrobe
     }
 
     /// <summary>Is emri odulu, katalog, cark ya da Genel Merkez: kimlik bilinmiyorsa da saklanir (sonradan gelen veri tanir). Yeni ise true.</summary>
+    /// <summary>Is emri zincirlerinin kullandigi eski kimlikler -> cosmetics.json kimligi.</summary>
+    static readonly Dictionary<string, string> Aliases = new() { ["kaplama_krom"] = "capa_krom" };
+
     public bool Unlock(string kind, string id)
     {
+        if (kind == "cosmetic" && Aliases.TryGetValue(id, out var real)) id = real;
         bool added = kind == "member" ? _members.Add(id) : kind == "cosmetic" && _cosmetics.Add(id);
         if (added) { Unlocked?.Invoke(kind, id); Changed?.Invoke(); }
         return added;
@@ -77,6 +81,13 @@ public sealed class Wardrobe
     public void Unequip(string slot)
     {
         if (_equipped.Remove(slot)) Changed?.Invoke();
+    }
+
+    /// <summary>Tohum Carki'nin kozmetik odulu: sahip olunmayan cark ya da katalog kozmetiklerinden biri (kimlik sirasi sabit, secim Rng ile); yoksa null.</summary>
+    public string? WheelPick(Rng rng)
+    {
+        var pool = _d.Cosmetics.Cosmetics.Where(c => c.Source is "wheel" or "catalog" && !_cosmetics.Contains(c.Id)).Select(c => c.Id).OrderBy(x => x, StringComparer.Ordinal).ToList();
+        return pool.Count == 0 ? null : pool[(int)(rng.NextFloat() * pool.Count) % pool.Count];
     }
 
     // ---------------- pasif ----------------

@@ -216,8 +216,11 @@ public partial class GeceHudTest : Node
             case 12: // M1 karari 20: 1-8 kemeri secer, baslik yalniz Q carkindan; envanterde surukle-birak ve Shift+tik
             {
                 var head0 = d.Capa.Current;
-                int t = ((int)head0 + 4) % Capa.HeadNames.Length, u = (t + 2) % Capa.HeadNames.Length;
-                static Vector2 Dir(int i) { float a = i * Mathf.Tau / Capa.HeadNames.Length; return new Vector2(Mathf.Sin(a), -Mathf.Cos(a)) * 60f; }
+                // Cark dilim sayisi: acik basliklarin sonuna kadar (Hud.OpenWheel; kusam: yeni basliklar cantada yoksa 7)
+                int sl = Capa.HeadNames.Length;
+                while (sl > (int)Capa.Head.Civi + 1 && !d.Capa.IsAvailable((Capa.Head)(sl - 1))) sl--;
+                int t = ((int)head0 + 4) % sl, u = (t + 2) % sl;
+                Vector2 Dir(int i) { float a = i * Mathf.Tau / sl; return new Vector2(Mathf.Sin(a), -Mathf.Cos(a)) * 60f; }
                 Tap(global::Godot.Key.Key2);
                 Then(() => Check(d.Hud.BeltSelected == 1 && d.Capa.Current == head0, $"2 tusu kemeri secmeli, basligi degil (kemer {d.Hud.BeltSelected}, baslik {d.Capa.Current})"));
                 Then(() => Mouse(MouseButton.WheelDown, true, Vector2.Zero));

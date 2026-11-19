@@ -40,6 +40,7 @@ public partial class Director
             if (!string.IsNullOrEmpty(name)) Hud?.Hint($"Dolap: {name} açıldı (K)", 3.5f);
         };
         AddChild(new DolapInput(this) { Name = "DolapInput" });
+        WireProgress4(); // Director.Ilerleme4.cs: zincir odulleri ve yeni is emri olculeri
         Callable.From(InitDolapNet).CallDeferred();
         Callable.From(OnWardrobeChanged).CallDeferred(); // karakter dosyasi yuklendikten sonra
     }
@@ -172,6 +173,8 @@ public partial class DolapInput : Node
 {
     readonly Director _d;
     public DolapInput(Director d) { _d = d; }
+
+    public override void _Process(double delta) => _d.TickProgress4Public();
 
     public override void _UnhandledKeyInput(InputEvent e)
     {

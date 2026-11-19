@@ -94,7 +94,7 @@ public partial class Director
         if (dl == null) { Hud.Hint("Kredi yetmiyor", 1.5f); Sfx.Play("hit", null, -12f); return false; }
         Sfx.Play("pickup", null, -4f);
         Hud.Big($"-{price} Kredi", Palette.Warning, 2f);
-        Hud.Hint(dl.Via == "rampa" ? $"{e.Name}: {dl.Left:0} sn sonra Kargo Rampası'na iner" : $"{e.Name}: kapsül {dl.Left:0} sn sonra Ocak'ın yanına iner", 3f);
+        if (dl.Id == 0) Hud.Hint($"{e.Name}: dolapta (K)", 3f); else Hud.Hint(dl.Via == "rampa" ? $"{e.Name}: {dl.Left:0} sn sonra Kargo Rampası'na iner" : $"{e.Name}: kapsül {dl.Left:0} sn sonra Ocak'ın yanına iner", 3f);
         GD.Print($"CATALOG buy {entryId} -{price} credits={State.Credits} via={dl.Via} id={dl.Id}");
         Events.RaiseCatalogBought(entryId, price);
         OpenCatalogMenu();
@@ -125,6 +125,7 @@ public partial class Director
         Fx.Burst(Pod.PadCenter + Vector3.Up * 1.5f, Palette.Warning, 24, 5f, 0.1f, 0.8f, true, 3f);
         GD.Print($"WHEEL spin reward={r.Reward.Id} credits={r.Credits} free={r.Free} paid={r.Paid} wallet={State.Credits}");
         Events.RaiseWheelSpun(r.Reward.Id, r.Credits);
+        WheelCosmetic(r.Reward.Id); // actors/Director.Ilerleme4.cs: kozmetik odulu dolapta
         OpenWheelMenu();
         return r;
     }
