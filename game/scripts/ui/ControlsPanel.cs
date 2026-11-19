@@ -31,9 +31,7 @@ public partial class ControlsPanel : CanvasLayer
     {
         Layer = 60;
         _box = new PanelContainer { Visible = false };
-        var sb = new StyleBoxFlat { BgColor = new Color(Palette.NightDeep, 0.95f), BorderColor = Palette.CoopBlue, ContentMarginLeft = 18, ContentMarginRight = 18, ContentMarginTop = 12, ContentMarginBottom = 12 };
-        sb.SetBorderWidthAll(3); sb.SetCornerRadiusAll(16);
-        _box.AddThemeStyleboxOverride("panel", sb);
+        UiPanels.Skin(_box); // M6: tek panel dili (Rust tarzi)
         var v = new VBoxContainer { CustomMinimumSize = new Vector2(760, 0) };
         v.AddChild(Text("TUŞ ATAMALARI", 28, Palette.Warning));
         _scroll = new ScrollContainer { CustomMinimumSize = new Vector2(760, 560), HorizontalScrollMode = ScrollContainer.ScrollMode.Disabled };

@@ -117,6 +117,7 @@ public partial class NetSync : Node
 
     void Fail(string why)
     {
+        if (Failed) return; // ilk neden kalir (Reject, ardindan gelen baglanti kopmasi onu ezmesin)
         Failed = true;
         Status = why;
         GD.PrintErr($"NET fail {why}");

@@ -144,9 +144,7 @@ public partial class FeelPanel : CanvasLayer
         _d = GetParent<Director>();
         _headless = DisplayServer.GetName() == "headless";
         _panel = new PanelContainer { Visible = false, Position = new Vector2(24, 120) };
-        var sb = new StyleBoxFlat { BgColor = new Color(Palette.NightDeep, 0.92f), ContentMarginLeft = 14, ContentMarginRight = 14, ContentMarginTop = 10, ContentMarginBottom = 10 };
-        sb.SetCornerRadiusAll(12);
-        _panel.AddThemeStyleboxOverride("panel", sb);
+        UiPanels.Skin(_panel); // M6: tek panel dili (Rust tarzi)
         var v = new VBoxContainer { CustomMinimumSize = new Vector2(470, 0) };
         v.AddChild(new Label { Text = "F1 · His ayarları (feel.json)" });
         v.AddChild(NightRestartButton()); // FeelPanel.Night.cs (gecehud): Kucuk Kabarma yeniden

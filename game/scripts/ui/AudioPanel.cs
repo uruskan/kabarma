@@ -16,11 +16,9 @@ public partial class AudioPanel : CanvasLayer
     {
         Layer = 51;
         _panel = new PanelContainer { Visible = false, Position = new Vector2(420, 160) };
-        var sb = new StyleBoxFlat { BgColor = new Color(Palette.NightDeep, 0.9f), ContentMarginLeft = 14, ContentMarginRight = 14, ContentMarginTop = 10, ContentMarginBottom = 10 };
-        sb.SetCornerRadiusAll(12);
-        _panel.AddThemeStyleboxOverride("panel", sb);
+        UiPanels.Skin(_panel); // M6: tek panel dili (Rust tarzi)
         var v = new VBoxContainer { CustomMinimumSize = new Vector2(380, 0) };
-        v.AddChild(new Label { Text = "F2 · Ses" });
+        v.AddChild(UiPanels.Title("F2 · Ses", 28));
         if (Sfx.Data != null)
             foreach (var b in Sfx.Data.Buses) Slider(v, b.Id, b.Name);
         _panel.AddChild(v);

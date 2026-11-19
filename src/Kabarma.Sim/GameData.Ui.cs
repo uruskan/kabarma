@@ -138,6 +138,8 @@ public sealed class UiFile
 {
     public UiDesignDef Design { get; set; } = new();
     public UiScaleDef Scale { get; set; } = new();
+    /// <summary>Erisilebilirlik ve fotograf modu sayilari (M6 arayuz).</summary>
+    public UiAccessDef Access { get; set; } = new();
     /// <summary>Ad -> sRGB onaltilik renk (RRGGBB ya da RRGGBBAA).</summary>
     public Dictionary<string, string> Palette { get; set; } = new();
     public UiTypeDef Type { get; set; } = new();
@@ -155,4 +157,31 @@ public sealed partial class GameData
 {
     [DataFile("ui.json")]
     public UiFile Ui { get; private set; } = new();
+}
+
+/// <summary>Erisilebilirlik ayarlari ve fotograf modu (SANAT-SES §8.3, §8.2 "fotograf modu"; M6 arayuz).</summary>
+public sealed class UiAccessDef
+{
+    /// <summary>Arayuz boyu secenekleri (UiScaler tercihi) ve adlari.</summary>
+    public List<float> UiScales { get; set; } = new() { 0.8f, 1f, 1.25f, 1.5f, 2f };
+    /// <summary>Altyazi boyu carpanlari (Suna kutusu).</summary>
+    public List<float> SubtitleScales { get; set; } = new() { 0.85f, 1f, 1.3f, 1.7f };
+    /// <summary>Renk korlugu ad listesi: ilki kapali; ardindan protanopi, deuteranopi, tritanopi (renk duzeltme matrisi).</summary>
+    public List<string> ColorBlindModes { get; set; } = new() { "Kapalı", "Protanopi", "Döteranopi", "Tritanopi" };
+    /// <summary>Renk duzeltme gucu (0..1).</summary>
+    public float ColorBlindStrength { get; set; } = 1f;
+    public float PhotoFovMin { get; set; } = 25f;
+    public float PhotoFovMax { get; set; } = 100f;
+    public float PhotoFovDefault { get; set; } = 60f;
+    public float PhotoFovStep { get; set; } = 5f;
+    /// <summary>Serbest kamera hizi (m/sn), Shift ile carpan, fare hassasiyeti (rad/piksel).</summary>
+    public float PhotoSpeed { get; set; } = 6f;
+    public float PhotoFastMult { get; set; } = 3f;
+    public float PhotoLook { get; set; } = 0.0025f;
+    /// <summary>Oyuncudan en uzak serbest kamera mesafesi (m).</summary>
+    public float PhotoRange { get; set; } = 60f;
+    /// <summary>Poz listesi: oyuncu klibi ya da kodla poz kimlikleri (player_anims.json).</summary>
+    public List<string> PhotoPoses { get; set; } = new() { "idle", "wave", "cheer", "kneel", "sleep", "eat", "run", "jump" };
+    /// <summary>Foto kaydi klasoru (user://).</summary>
+    public string PhotoFolder { get; set; } = "photos";
 }

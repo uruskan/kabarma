@@ -206,6 +206,7 @@ public partial class KabarmaTest : Node
                 // Tuzuk etkileri oyun yolunda (KS 30, dunya tohumu 4417: saganak ve ters_ruzgar dahil)
                 Check(tz.Has("saganak") && _d.TuzukHit(new CombatHit(10f, DamageType.Ates, CombatTeam.Player)).Amount == 0f, "Saganak: Ates isabeti sifirlanmadi");
                 Check(_d.TuzukHit(new CombatHit(10f, DamageType.Sok, CombatTeam.Player)).Amount > 10f, "Saganak: Sok guclenmedi");
+                Check(!tz.Has("saganak") || (_d.TuzukMult("ates") == 0f && _d.TuzukMult("sok") > 1f && _d.TuzukMult("darbe") == 1f && _d.TuzukMult(null) == 1f), "Saganak: tur adiyla (Baslik/Guc) carpan yanlis");
                 Check(!tz.Has("ters_ruzgar") || _d.TuzukNow.RangeMult < 1f, "Ters Ruzgar menzili kismadi");
                 GD.Print($"KABARMA tuzuk ks=30 maddeler={string.Join(",", tz.Stacks.Select(kv => kv.Key + ":" + kv.Value))} dalga={n.Plan.Waves.Count} slot={n.Plan.TotalSlots}");
                 GD.Print($"KABARMA RESULT ok checks={_checks} species={_species.Count} t={_t:0}");

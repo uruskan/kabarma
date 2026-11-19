@@ -13,8 +13,25 @@ public partial class UiScaler : Node
     const string SettingsPath = "user://ui.cfg";
     float _preference = 1f;
 
+    public static UiScaler Instance { get; private set; }
+    /// <summary>Kullanicinin arayuz boyu tercihi (1 = otomatik olcek).</summary>
+    public float Preference => _preference;
+
+    /// <summary>Ayarlar menusu: tercihi dogrudan ayarlar (Ctrl +/- ile ayni sinirlar), yazar ve uygular.</summary>
+    public void SetPreference(float p)
+    {
+        var s = UiTheme.Data.Scale;
+        _preference = Math.Clamp(p, s.PreferenceMin, s.PreferenceMax);
+        var cfg = new ConfigFile();
+        cfg.Load(SettingsPath);
+        cfg.SetValue("ui", "scale", _preference);
+        cfg.Save(SettingsPath);
+        Apply();
+    }
+
     public override void _Ready()
     {
+        Instance = this;
         var s = UiTheme.Data.Scale;
         var cfg = new ConfigFile();
         if (cfg.Load(SettingsPath) == Error.Ok)

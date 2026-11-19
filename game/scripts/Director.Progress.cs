@@ -18,6 +18,7 @@ public partial class Director
     {
         var s = State;
         var m = s.Mastery;
+        AddChild(new SteamService(this)); // M6 steam: basarim defteri, Steam, bulut, zengin durum (steam/)
 
         // --- Ustalik XP'si ve toplama bonusu ---
         Events.Gathered += (item, n) =>

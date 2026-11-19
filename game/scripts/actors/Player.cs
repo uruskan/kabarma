@@ -280,7 +280,7 @@ public partial class Player : CharacterBody3D
         return hit.Count > 0 ? (Vector3)hit["position"] + Vector3.Up * 0.02f : p + Vector3.Down * 0.13f;
     }
 
-    public void Shake(float amount) => _shake = Mathf.Max(_shake, amount);
+    public void Shake(float amount) { if (UserSettings.Current.Shake) _shake = Mathf.Max(_shake, amount); } // M6 arayuz: erisilebilirlik ayari ekran sarsintisini kapatir
 
     /// <summary>Geri tepme yayi (GDD 4): Capa geriye ve yukari teper, yayla yerine doner.</summary>
     public void Recoil(float amount) => _recoilVel += amount * RecoilImpulse; // Player.Feel.cs

@@ -23,6 +23,12 @@
   "mayaPerWeight": 2,
   "mayaKsFactor": 0.15,
   "hpGrowth": 1.15,
+  "hpGrowthLate": 1.10,
+  "hpGrowthEnd": 1.05,
+  "lateFromKs": 10,
+  "endFromKs": 25,
+  "damageGrowthLate": 1.06,
+  "damageGrowthEnd": 1.04,
   "damageGrowth": 1.08,
   "full": {
     "_not": "GDD 14.1-14.6 tam Kabarma (kabarma3, M3). Sureler ve formul sabitleri belgeden; elit etkileri, Kazan cani ve kucuk/tatbikat carpanlari denge yer tutucusu (balance: placeholder), denge simulasyonu sonrasi ayarlanir.",
@@ -34,8 +40,8 @@
     "dorukSeconds": 120,
     "countBase": 30,
     "countPerKs": 8,
-    "playerFactor": 0.6,
-    "playerExponent": 0.85,
+    "playerFactor": 1.0,
+    "playerExponent": 1.0,
     "maxActive": 220,
     "eliteMax": 0.4,
     "elitePerKs": 0.02,
@@ -81,6 +87,6 @@
     "kazan": { "hpByTier": [600, 900, 1300, 1800, 2400], "routDamage": 0.25, "toppleMayaLoss": 0.5, "repairAtDawn": true },
     "small": { "radius": 40, "seconds": 240, "ksFactor": 0.5, "maxCardLevels": 3, "waveCount": 3 },
     "drill": { "rewards": false, "freeRepair": true },
-    "balance": { "_not": "GECICI onerilen donanim (savas, kartlar, savunma sayilari gelene kadar). URETIM M3 kabul: ilk denemede gecme %60-80. Bulgu: dalga cani KS 1->10 yaklasik 10 kat buyur; bandi tutmak icin onerilen donanimin toplam etkin hasari KS basina ~%28 artmali (Capa basamagi + cip + kart + savunma birlikte). baseDps: etkin saniye hasari (isabet ve alan dahil).", "baseDps": 31, "accuracy": 1.0, "areaTargets": 1.0, "gearPerKs": 0.28, "cardPerLevel": 0.03, "levelsPerWave": 2.6, "towerDpsPerKs": 0, "skillSd": 0.22, "travelSeconds": 9, "attackInterval": 1.3, "ksPerOcakTier": 2, "runs": 300, "passMin": 0.6, "passMax": 0.8 }
+    "balance": { "_not": "GECICI onerilen donanim (savas, kartlar, savunma sayilari gelene kadar). URETIM M3 kabul: ilk denemede gecme %60-80. Bulgu: dalga cani KS 1->10 yaklasik 10 kat buyur; bandi tutmak icin onerilen donanimin toplam etkin hasari KS basina ~%28 artmali (Capa basamagi + cip + kart + savunma birlikte). baseDps: etkin saniye hasari (isabet ve alan dahil).", "baseDps": 32, "accuracy": 1.0, "areaTargets": 1.0, "gearPerKs": 0.28, "gearPerKsLate": 0.16, "gearPerKsEnd": 0.08, "cardPerLevel": 0.03, "levelsPerWave": 2.6, "towerDpsPerKs": 0, "skillSd": 0.22, "travelSeconds": 9, "attackInterval": 1.3, "ksPerOcakTier": 2, "runs": 300, "passMin": 0.6, "passMax": 0.8 }
   }
 }

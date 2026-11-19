@@ -115,8 +115,8 @@ public static class Waves
         (int)MathF.Round((d.CountBase + d.CountPerKs * ks) * PlayerMult(d, players));
 
     public static float EliteRate(FullKabarmaDef d, int ks) => Math.Min(d.EliteMax, d.ElitePerKs * ks);
-    public static float HpMult(KabarmaFile k, int ks) => MathF.Pow(k.HpGrowth, ks - 1);
-    public static float DamageMult(KabarmaFile k, int ks) => MathF.Pow(k.DamageGrowth, ks - 1);
+    public static float HpMult(KabarmaFile k, int ks) => k.GrowthMult(k.HpGrowth, k.HpGrowthLate, ks, k.HpGrowthEnd);
+    public static float DamageMult(KabarmaFile k, int ks) => k.GrowthMult(k.DamageGrowth, k.DamageGrowthLate, ks, k.DamageGrowthEnd);
     public static float MayaKsMult(KabarmaFile k, int ks) => 1f + k.MayaKsFactor * ks;
 
     /// <summary>Haritada bitisik biyom (biomeMap.order sirasi); yoksa null.</summary>

@@ -26,7 +26,7 @@
    "slot": "kask",
    "name": "Hasır Şapkalı",
    "source": "catalog",
-   "price": 400,
+   "price": 500,
    "look": {
     "kind": "straw",
     "c1": "#D9B25F",
@@ -38,7 +38,7 @@
    "slot": "kask",
    "name": "Kasketli",
    "source": "catalog",
-   "price": 350,
+   "price": 750,
    "look": {
     "kind": "cap",
     "c1": "#3E78B2",
@@ -50,7 +50,7 @@
    "slot": "kask",
    "name": "Takkeli",
    "source": "catalog",
-   "price": 300,
+   "price": 1000,
    "look": {
     "kind": "takke",
     "c1": "#EDE6D6",
@@ -74,7 +74,7 @@
    "slot": "kask",
    "name": "Dalgıç",
    "source": "catalog",
-   "price": 900,
+   "price": 1500,
    "look": {
     "kind": "diver",
     "c1": "#B07A4A",
@@ -86,7 +86,7 @@
    "slot": "kask",
    "name": "Arıcı Tülü",
    "source": "catalog",
-   "price": 600,
+   "price": 2000,
    "look": {
     "kind": "veil",
     "c1": "#EDE6D6",
@@ -98,7 +98,7 @@
    "slot": "kask",
    "name": "Kaynakçı",
    "source": "catalog",
-   "price": 700,
+   "price": 3000,
    "look": {
     "kind": "welder",
     "c1": "#3B3F4A",
@@ -121,8 +121,8 @@
    "id": "kask_yumurta_kabugu",
    "slot": "kask",
    "name": "Yumurta Kabuğu",
-   "source": "catalog",
-   "price": 500,
+   "source": "order",
+   "price": 0,
    "look": {
     "kind": "egg",
     "c1": "#F3D9A4",
@@ -133,7 +133,7 @@
    "id": "kask_aurora",
    "slot": "kask",
    "name": "Aurora",
-   "source": "wheel",
+   "source": "order",
    "price": 0,
    "look": {
     "kind": "aurora",
@@ -168,7 +168,7 @@
    "slot": "vizor",
    "name": "Uykulu",
    "source": "catalog",
-   "price": 250,
+   "price": 5000,
    "look": {
     "style": "sleepy"
    }
@@ -178,7 +178,7 @@
    "slot": "vizor",
    "name": "Şaşkın",
    "source": "catalog",
-   "price": 250,
+   "price": 500,
    "look": {
     "style": "surprised"
    }
@@ -188,7 +188,7 @@
    "slot": "vizor",
    "name": "Kızgın",
    "source": "catalog",
-   "price": 250,
+   "price": 750,
    "look": {
     "style": "angry"
    }
@@ -198,7 +198,7 @@
    "slot": "vizor",
    "name": "Tek Kaş",
    "source": "catalog",
-   "price": 300,
+   "price": 1000,
    "look": {
     "style": "brow1"
    }
@@ -228,7 +228,7 @@
    "slot": "vizor",
    "name": "Piksel",
    "source": "catalog",
-   "price": 400,
+   "price": 1500,
    "look": {
     "style": "pixel"
    }
@@ -238,7 +238,7 @@
    "slot": "vizor",
    "name": "Bıyıklı",
    "source": "catalog",
-   "price": 450,
+   "price": 2000,
    "look": {
     "style": "mustache"
    }
@@ -247,8 +247,8 @@
    "id": "vizor_gozluklu",
    "slot": "vizor",
    "name": "Gözlüklü",
-   "source": "catalog",
-   "price": 450,
+   "source": "order",
+   "price": 0,
    "look": {
     "style": "glasses"
    }
@@ -258,7 +258,7 @@
    "slot": "vizor",
    "name": "Ağlamaklı",
    "source": "catalog",
-   "price": 300,
+   "price": 3000,
    "look": {
     "style": "teary"
    }
@@ -290,7 +290,7 @@
    "slot": "tulum",
    "name": "Çamurlu",
    "source": "catalog",
-   "price": 200,
+   "price": 5000,
    "look": {
     "c1": "#5A4A6B",
     "c2": "#B07A4A",
@@ -314,7 +314,7 @@
    "slot": "tulum",
    "name": "Çizgili",
    "source": "catalog",
-   "price": 500,
+   "price": 750,
    "look": {
     "c1": "#3E78B2",
     "c2": "#EDE6D6",
@@ -326,7 +326,7 @@
    "slot": "tulum",
    "name": "Benekli",
    "source": "catalog",
-   "price": 500,
+   "price": 1000,
    "look": {
     "c1": "#7FA650",
     "c2": "#F3D9A4",
@@ -337,7 +337,7 @@
    "id": "tulum_altin",
    "slot": "tulum",
    "name": "Altın",
-   "source": "wheel",
+   "source": "order",
    "price": 0,
    "look": {
     "c1": "#E2B54A",
@@ -350,7 +350,7 @@
    "slot": "tulum",
    "name": "Kamuflaj",
    "source": "catalog",
-   "price": 600,
+   "price": 1500,
    "look": {
     "c1": "#7FA650",
     "c2": "#5A4A6B",
@@ -362,7 +362,7 @@
    "slot": "tulum",
    "name": "Sazlık Moru",
    "source": "catalog",
-   "price": 700,
+   "price": 2000,
    "look": {
     "c1": "#9B5BC4",
     "c2": "#5FF0C8",
@@ -374,7 +374,7 @@
    "slot": "tulum",
    "name": "Kanyon Kızılı",
    "source": "catalog",
-   "price": 700,
+   "price": 3000,
    "look": {
     "c1": "#C8512D",
     "c2": "#F2B632",
@@ -386,7 +386,7 @@
    "slot": "tulum",
    "name": "Ayaz Beyazı",
    "source": "catalog",
-   "price": 700,
+   "price": 5000,
    "look": {
     "c1": "#EDF4FA",
     "c2": "#7FC4F0",
@@ -397,7 +397,7 @@
    "id": "tulum_aurora",
    "slot": "tulum",
    "name": "Aurora",
-   "source": "wheel",
+   "source": "order",
    "price": 0,
    "look": {
     "c1": "#5FF0C8",
@@ -422,7 +422,7 @@
    "slot": "canta",
    "name": "Tencere",
    "source": "catalog",
-   "price": 250,
+   "price": 500,
    "look": {
     "kind": "pot",
     "c1": "#8A8F9A"
@@ -433,7 +433,7 @@
    "slot": "canta",
    "name": "Tava",
    "source": "catalog",
-   "price": 250,
+   "price": 750,
    "look": {
     "kind": "pan",
     "c1": "#3B3F4A"
@@ -444,7 +444,7 @@
    "slot": "canta",
    "name": "Sürahi",
    "source": "catalog",
-   "price": 300,
+   "price": 1000,
    "look": {
     "kind": "jug",
     "c1": "#9BD8F5"
@@ -455,7 +455,7 @@
    "slot": "canta",
    "name": "Fener",
    "source": "catalog",
-   "price": 350,
+   "price": 1500,
    "look": {
     "kind": "lantern",
     "c1": "#F2B632"
@@ -466,7 +466,7 @@
    "slot": "canta",
    "name": "Kürek",
    "source": "catalog",
-   "price": 300,
+   "price": 2000,
    "look": {
     "kind": "shovel",
     "c1": "#B07A4A"
@@ -488,7 +488,7 @@
    "slot": "canta",
    "name": "Bayrak",
    "source": "catalog",
-   "price": 350,
+   "price": 3000,
    "look": {
     "kind": "flag",
     "c1": "#3E78B2"
@@ -499,7 +499,7 @@
    "slot": "canta",
    "name": "Rüzgâr Fırıldağı",
    "source": "catalog",
-   "price": 350,
+   "price": 5000,
    "look": {
     "kind": "pinwheel",
     "c1": "#F26B3A"
@@ -510,7 +510,7 @@
    "slot": "canta",
    "name": "Saksı",
    "source": "catalog",
-   "price": 300,
+   "price": 500,
    "look": {
     "kind": "planter",
     "c1": "#C8512D"
@@ -520,8 +520,8 @@
    "id": "canta_caydanlik",
    "slot": "canta",
    "name": "Çaydanlık",
-   "source": "catalog",
-   "price": 350,
+   "source": "order",
+   "price": 0,
    "look": {
     "kind": "teapot",
     "c1": "#8A8F9A"
@@ -543,7 +543,7 @@
    "slot": "canta",
    "name": "Maya Kavanozu",
    "source": "catalog",
-   "price": 500,
+   "price": 750,
    "look": {
     "kind": "jar",
     "c1": "#5FF0C8"
@@ -566,7 +566,7 @@
    "slot": "capa",
    "name": "Paslı",
    "source": "catalog",
-   "price": 250,
+   "price": 1000,
    "look": {
     "c1": "#B0602D",
     "c2": "#7A3F1F",
@@ -577,8 +577,8 @@
    "id": "capa_krom",
    "slot": "capa",
    "name": "Krom",
-   "source": "catalog",
-   "price": 600,
+   "source": "order",
+   "price": 0,
    "look": {
     "c1": "#D8DEE8",
     "c2": "#8A8F9A",
@@ -590,7 +590,7 @@
    "slot": "capa",
    "name": "Ahşap Saplı",
    "source": "catalog",
-   "price": 300,
+   "price": 1500,
    "look": {
     "c1": "#B07A4A",
     "c2": "#EDE6D6",
@@ -602,7 +602,7 @@
    "slot": "capa",
    "name": "Sarı-Siyah",
    "source": "catalog",
-   "price": 350,
+   "price": 2000,
    "look": {
     "c1": "#F2B632",
     "c2": "#1A2238",
@@ -614,7 +614,7 @@
    "slot": "capa",
    "name": "Çiçekli",
    "source": "catalog",
-   "price": 400,
+   "price": 3000,
    "look": {
     "c1": "#FF9FC0",
     "c2": "#7FA650",
@@ -649,8 +649,8 @@
    "id": "capa_kemik",
    "slot": "capa",
    "name": "Kemik",
-   "source": "catalog",
-   "price": 500,
+   "source": "order",
+   "price": 0,
    "look": {
     "c1": "#F3E9D2",
     "c2": "#B0A58A",
@@ -685,8 +685,8 @@
    "id": "capa_eksi_maya",
    "slot": "capa",
    "name": "Ekşi Maya",
-   "source": "catalog",
-   "price": 600,
+   "source": "order",
+   "price": 0,
    "look": {
     "c1": "#D4E86A",
     "c2": "#5FF0C8",
@@ -710,7 +710,7 @@
    "slot": "jest",
    "name": "Alkış",
    "source": "catalog",
-   "price": 200,
+   "price": 5000,
    "look": {
     "clip": "cheer",
     "speed": "1.4",
@@ -722,7 +722,7 @@
    "slot": "jest",
    "name": "Halay",
    "source": "catalog",
-   "price": 300,
+   "price": 500,
    "look": {
     "clip": "cheer",
     "speed": "0.8",
@@ -733,8 +733,8 @@
    "id": "jest_zafer",
    "slot": "jest",
    "name": "Zafer",
-   "source": "catalog",
-   "price": 250,
+   "source": "wheel",
+   "price": 0,
    "look": {
     "clip": "cheer",
     "speed": "1",
@@ -745,8 +745,8 @@
    "id": "jest_omuz_silk",
    "slot": "jest",
    "name": "Omuz Silk",
-   "source": "catalog",
-   "price": 200,
+   "source": "wheel",
+   "price": 0,
    "look": {
     "clip": "hurt",
     "speed": "0.5",
@@ -757,8 +757,8 @@
    "id": "jest_otur",
    "slot": "jest",
    "name": "Otur",
-   "source": "catalog",
-   "price": 250,
+   "source": "wheel",
+   "price": 0,
    "look": {
     "clip": "kneel",
     "speed": "1",
@@ -769,8 +769,8 @@
    "id": "jest_uzan",
    "slot": "jest",
    "name": "Uzan",
-   "source": "catalog",
-   "price": 300,
+   "source": "wheel",
+   "price": 0,
    "look": {
     "clip": "sleep",
     "speed": "1",
@@ -781,8 +781,8 @@
    "id": "jest_parmak_salla",
    "slot": "jest",
    "name": "Parmak Salla",
-   "source": "catalog",
-   "price": 200,
+   "source": "wheel",
+   "price": 0,
    "look": {
     "clip": "wave",
     "speed": "2.2",
@@ -793,8 +793,8 @@
    "id": "jest_cay_ic",
    "slot": "jest",
    "name": "Çay İç",
-   "source": "catalog",
-   "price": 300,
+   "source": "wheel",
+   "price": 0,
    "look": {
     "clip": "eat",
     "speed": "1",
@@ -805,8 +805,8 @@
    "id": "jest_islik",
    "slot": "jest",
    "name": "Islık",
-   "source": "catalog",
-   "price": 200,
+   "source": "wheel",
+   "price": 0,
    "look": {
     "clip": "wave",
     "speed": "0.5",
@@ -817,8 +817,8 @@
    "id": "jest_reveranz",
    "slot": "jest",
    "name": "Reveranz",
-   "source": "catalog",
-   "price": 250,
+   "source": "wheel",
+   "price": 0,
    "look": {
     "clip": "kneel",
     "speed": "1.6",

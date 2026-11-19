@@ -52,7 +52,12 @@ public sealed class Catalog
     public void Restore(CatalogState s) => State = s;
 
     /// <summary>Kalemin gerektirdigi kimlikler veride var mi (tarif, yerlestirilebilir, fiyat ya da ekin).</summary>
-    public bool Available(CatalogEntryDef e) => e.Requires.All(Known);
+    /// <summary>Kozmetik zaten dolapta mi (dolap): sahip olunan kalem gizlenir. Director baglar.</summary>
+    public Func<string, bool>? OwnsCosmetic { get; set; }
+    /// <summary>Kozmetik satin alindi (kimlik): dolaba acilir.</summary>
+    public event Action<string>? CosmeticBought;
+
+    public bool Available(CatalogEntryDef e) => e.Requires.All(Known) && !(e.Cosmetic.Length > 0 && (OwnsCosmetic?.Invoke(e.Cosmetic) ?? false));
 
     bool Known(string id) =>
         _d.Tool.Recipes.Any(r => r.Id == id) || _d.Tool.Placeables.Any(p => p.Id == id) || _d.Tool.Prices.ContainsKey(id) || _d.Crops.Crops.Any(c => c.Id == id);
@@ -82,6 +87,11 @@ public sealed class Catalog
         int price = Price(e);
         if (price <= 0 || !spend(price)) return null;
         State.Bought[e.Id] = State.Bought.GetValueOrDefault(e.Id) + 1;
+        if (e.Cosmetic.Length > 0)
+        {
+            CosmeticBought?.Invoke(e.Cosmetic); // teslimat yok: aninda dolapta
+            return new Delivery { Id = 0, Source = e.Id, Via = "kapsul", Left = 0, Arrived = true };
+        }
         return Send(e.Id, e.Via, e.Items, e.Load);
     }
 
