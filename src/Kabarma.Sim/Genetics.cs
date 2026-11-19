@@ -22,6 +22,16 @@ public static class Genetics
     public static int MutationDelta(GeneticsRules r, Rng rng)
     {
         float x = rng.NextFloat(), acc = 0f;
+        if (r.MutationMult != 1f)
+        {
+            // Degisme olasiligi (sifir disi adimlarin toplami) carpanla artar; adimlarin kendi orani korunur.
+            float change = r.Mutation.Where(m => m.Delta != 0).Sum(m => m.P);
+            float pc = Math.Clamp(change * r.MutationMult, 0f, 1f);
+            if (change <= 0f || x >= pc) return 0;
+            float y = x / pc * change;
+            foreach (var m in r.Mutation.Where(m => m.Delta != 0)) { acc += m.P; if (y < acc) return m.Delta; }
+            return r.Mutation.Last(m => m.Delta != 0).Delta;
+        }
         foreach (var m in r.Mutation)
         {
             acc += m.P;
