@@ -73,8 +73,7 @@
       "nameEn": "Toad Baron",
       "biome": "isil_sazlik",
       "placeholder": "Model: koddan (sisman govde, genis agiz, dil, isiyan karin kesesi). Uretim istegi: Ata sinifi model (30.000 ucgen), iskelet, 6 klip (yurume, dil, yutma, dalis, sisme, olum).",
-      "arena": { "center": [180, -180], "radius": 20, "stone": [10, 12], "altarReach": 3.5, "pillars": [], "pillarRadius": 1, "leash": 34,
-        "temporary": "GECICI: biyom akisi Isil Sazlik'in Ata Tasi noktasini koyana dek yer tutucu merkez; AtaArena.Resolve gercek noktayi bulunca bu merkez kullanilmaz.",
+      "arena": { "center": [91, 1241], "radius": 20, "stone": [10, 12], "altarReach": 3.5, "pillars": [], "pillarRadius": 1, "leash": 34,
         "props": [
           { "kind": "lake", "pos": [0, 0], "radius": 17 },
           { "kind": "pad", "pos": [8, 0], "radius": 1.9 }, { "kind": "pad", "pos": [4, 7], "radius": 1.9 }, { "kind": "pad", "pos": [-4, 7], "radius": 1.9 },
@@ -110,8 +109,7 @@
       "nameEn": "Pasha Centipede",
       "biome": "kizil_kanyon",
       "placeholder": "Model: koddan (14 bogumlu govde, kiskac, tirnak). Uretim istegi: Ata sinifi model, bogum zinciri iskeleti (14 kemik), 6 klip (siyirma, hucum, kum firtinasi, tirmanma, ziplama, olum).",
-      "arena": { "center": [-180, -200], "radius": 24, "stone": [-12, 10], "altarReach": 3.5, "pillars": [], "pillarRadius": 1, "leash": 38,
-        "temporary": "GECICI: biyom akisi Kizil Kanyon'un Ata Tasi noktasini koyana dek yer tutucu merkez.",
+      "arena": { "center": [-725, 1008], "radius": 24, "stone": [-12, 10], "altarReach": 3.5, "pillars": [], "pillarRadius": 1, "leash": 38,
         "props": [
           { "kind": "wall", "pos": [0, -22], "radius": 10 },
           { "kind": "barrel", "pos": [-6, -19], "radius": 0.9 }, { "kind": "barrel", "pos": [-2, -19], "radius": 0.9 },
@@ -151,8 +149,7 @@
       "nameEn": "Frost Tusk",
       "biome": "ayaz_yaylasi",
       "placeholder": "Model: koddan (iri govde, uzun dis, sirtta buzul). Uretim istegi: Ata sinifi model, dort ayak iskeleti, 6 klip (yurume, hucum, buz sutunu, gole inis, ciglik, olum); buzul ayri parca.",
-      "arena": { "center": [230, 150], "radius": 24, "stone": [12, -10], "altarReach": 3.5, "pillars": [], "pillarRadius": 1, "leash": 38,
-        "temporary": "GECICI: biyom akisi Ayaz Yaylasi'nin Ata Tasi noktasini koyana dek yer tutucu merkez.",
+      "arena": { "center": [-768, 391], "radius": 24, "stone": [12, -10], "altarReach": 3.5, "pillars": [], "pillarRadius": 1, "leash": 38,
         "props": [
           { "kind": "lake", "pos": [0, 0], "radius": 19 },
           { "kind": "warm", "pos": [10, 6], "radius": 3.5 }, { "kind": "warm", "pos": [-10, 6], "radius": 3.5 }, { "kind": "warm", "pos": [0, -12], "radius": 3.5 }
@@ -188,8 +185,7 @@
       "nameEn": "Mother Leaven",
       "biome": "gobek",
       "placeholder": "Model: koddan (yukselen hamur kutlesi, isiyan cekirdek, kabaran kollar). Uretim istegi: Ata sinifi model, kemiksiz (sekil anahtarli), klipler: yukselme, dogurma, kabarma, cekirdek acilmasi, olum.",
-      "arena": { "center": [0, -250], "radius": 28, "stone": [14, 14], "altarReach": 3.5, "pillars": [], "pillarRadius": 1, "leash": 42,
-        "temporary": "GECICI: biyom akisi Gobek kraterinin Ata Tasi noktasini koyana dek yer tutucu merkez.",
+      "arena": { "center": [-401, 523], "radius": 28, "stone": [14, 14], "altarReach": 3.5, "pillars": [], "pillarRadius": 1, "leash": 42,
         "props": [ { "kind": "lake", "pos": [0, 0], "radius": 24 } ] },
       "offeringName": "Ekşi Maya Kazanı",
       "offering": [
@@ -213,7 +209,7 @@
         { "name": "Dev Boyut", "hpUntil": 0, "moveSpeed": 2.2, "contactDamage": 12, "attacks": ["charge", "surge"], "attackEvery": 3.4, "telegraph": 0.9, "attackDamage": 22, "chargeSpeed": 15, "chargeSeconds": 1.3, "waveSpeed": 9, "waveRadius": 26, "waveWidth": 2.2, "knockback": 9, "weaponMult": 0.5, "weakPoints": 1, "weakPointHp": 500, "playerSwell": 1.8, "playerDamageMult": 1.6, "stunSeconds": 5, "stunMult": 2 }
       ],
       "reward": {
-        "items": [],
+        "items": [ { "item": "kabartma_plani", "count": 1 } ],
         "seal": "eksi_maya",
         "ulti": "",
         "unlocks": ["recipe:kabartma_odasi", "mode:yeni_ay", "cosmetic:aurora_seti"]

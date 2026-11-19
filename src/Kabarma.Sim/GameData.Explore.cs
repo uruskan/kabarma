@@ -133,6 +133,8 @@ public sealed class PoiRuleDef
     public float MinWeight { get; set; } = 0.75f;
     /// <summary>Elle konmus yerler [x, z] (once bunlar, sonra tohumdan kalanlar).</summary>
     public List<List<float>> Fixed { get; set; } = new();
+    /// <summary>0 = tur varsayilani (poiTypes flatten); dolu: bu kuraldan cikan noktalarin duzlestirme yaricapi (m; Ata arenasi turun varsayilanindan buyuk).</summary>
+    public float Flatten { get; set; }
 }
 
 /// <summary>Harita (GDD §21): gezilen yer acilir. Hucre boyu, oyuncunun cevresinde acilan yaricap, M tusu paneli.</summary>

@@ -192,11 +192,11 @@ public class AutomationTests
     }
 
     [Fact]
-    public void Raw_sources_need_an_in_game_producer_or_are_listed_as_pending()
+    public void Raw_sources_need_an_in_game_producer_and_none_is_pending()
     {
         var d = Data();
         var pending = d.Research.RawSources.Where(s => s.Via.StartsWith("pending:")).Select(s => s.Via).Distinct().OrderBy(x => x).ToArray();
-        Assert.Equal(new[] { "pending:ata4", "pending:biyom" }, pending); // kabul akisi bunlari bosaltmak zorunda
+        Assert.Empty(pending); // M4 kabul: bekleyen kaynak kalmadi (node:<biyom>, ata:<ata>, azman:<azman> gercek yollar; AcceptanceTests dogrular)
         foreach (var s in d.Research.RawSources.Where(s => s.By is "biyom" or "kabarma3" or "ata4"))
             Assert.True(s.Via.Length > 0, $"{s.Id}: kaynagin oyun yolu (via) yazilmamis");
         // "mayavault": Maya'nin gercek yolu yukaridaki gece testiyle sinanir

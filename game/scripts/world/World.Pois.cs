@@ -38,7 +38,7 @@ public partial class World
         if (Pois == null) return false;
         foreach (var poi in Pois)
         {
-            float r = PoiType(poi.Type).Flatten;
+            float r = poi.Flatten > 0 ? poi.Flatten : PoiType(poi.Type).Flatten;
             if (r <= 0) continue;
             float dx = p.X - poi.X, dz = p.Z - poi.Z;
             if (dx * dx + dz * dz < (r + 1.5f) * (r + 1.5f)) return true;
@@ -51,7 +51,7 @@ public partial class World
     {
         foreach (var poi in Pois)
         {
-            float r = PoiType(poi.Type).Flatten;
+            float r = poi.Flatten > 0 ? poi.Flatten : PoiType(poi.Type).Flatten;
             if (r <= 0) continue;
             int cx = Mathf.RoundToInt(poi.X - Origin.X), cz = Mathf.RoundToInt(poi.Z - Origin.Y);
             if (cx < 0 || cz < 0 || cx > Cells || cz > Cells) continue;
