@@ -51,7 +51,7 @@ public partial class ServerTest : Node
         _saveRoot = $"user://test/server_{id}";
         _dir = ProjectSettings.GlobalizePath($"user://test/server_{id}_ctl").Replace('\\', '/') + "/";
         DirAccess.MakeDirRecursiveAbsolute(_dir);
-        foreach (var f in new[] { "server_ready.txt", "server_commands.txt", "server_results.log", "server_status.txt", "client_1_joined.txt", "client_2_joined.txt", "client_1_admin.txt", "client_2_failed.txt", "client_1_failed.txt", "client_3_failed.txt", "server_runtime.json" })
+        foreach (var f in new[] { "server_ready.txt", "server_commands.txt", "server_results.log", "server_status.txt", "client_1_joined.txt", "client_2_joined.txt", "client_1_admin.txt", "client_2_failed.txt", "client_1_failed.txt", "client_3_failed.txt", "client_4_failed.txt", "client_4_admin.txt", "client_1_quit.txt", "server_runtime.json" })
             if (FileAccess.FileExists(_dir + f)) DirAccess.RemoveAbsolute(_dir + f);
         _port = FreePort();
         SpawnServer();
@@ -107,10 +107,22 @@ public partial class ServerTest : Node
                 else if (_stageT > 150) { _fail.Add($"istemciler baglanmadi (j1={Has("client_1_joined.txt")} j2={Has("client_2_joined.txt")} durum='{Read("server_status.txt").Trim()}')"); Finish(); }
                 break;
             case 2: // oyun ici yonetici
-                if (Has("client_1_admin.txt", "ok")) { Check(true, "oyun ici yonetici: giris + oyuncular (srv.cmd/srv.reply)"); Cmd("oyuncular", "duyuru Deneme duyurusu", "kaydet", "durum", "at 2 deneme"); Next(); }
+                if (Has("client_1_admin.txt", "ok")) { Check(true, "oyun ici yonetici: giris + oyuncular (srv.cmd/srv.reply)"); Put("client_1_quit.txt", "1"); Next(); }
                 else if (_stageT > 60) { _fail.Add($"oyun ici yonetim calismadi: '{Read("client_1_admin.txt").Trim()}'"); Finish(); }
                 break;
-            case 3: // komut dosyasi
+            case 3: // yonetici normal ayrilir: sunucuda yalniz istemci 2 kalir
+                if (Has("server_status.txt", "oyuncu=1/")) { Check(true, "yonetici ayrildi (oyuncu=1)"); SpawnClient(4); Next(); }
+                else if (_stageT > 40) { _fail.Add("yonetici ayrilmadi: " + Read("server_status.txt").Trim()); Finish(); }
+                break;
+            case 4: // ayni es kimligini alan yeni oyuncu yonetici DEGILDIR
+                if (Has("client_4_admin.txt"))
+                {
+                    Check(Read("client_4_admin.txt").Contains("ok"), "yeni oyuncu (yeniden kullanilan es kimligi) yonetici degil (" + Read("client_4_admin.txt").Trim() + ")");
+                    Cmd("oyuncular", "duyuru Deneme duyurusu", "kaydet", "durum", "at 2 deneme"); Next();
+                }
+                else if (_stageT > 90) { _fail.Add("istemci 4 sinamasi calismadi"); Finish(); }
+                break;
+            case 5: // komut dosyasi
                 if (Has("server_results.log", "at 2 deneme =>"))
                 {
                     string r = Read("server_results.log");
@@ -124,19 +136,19 @@ public partial class ServerTest : Node
                 }
                 else if (_stageT > 60) { _fail.Add($"komutlar calismadi: '{Read("server_results.log").Replace('\n', '|')}'"); Finish(); }
                 break;
-            case 4: // atilan istemci reddedildi
-                if (Has("client_2_failed.txt")) { Check(Read("client_2_failed.txt").Contains("deneme"), "atilan istemci nedeni gordu (" + Read("client_2_failed.txt").Trim() + ")"); Cmd("yasakla Bot 1 5 hile"); Next(); }
+            case 6: // atilan istemci reddedildi
+                if (Has("client_2_failed.txt")) { Check(Read("client_2_failed.txt").Contains("deneme"), "atilan istemci nedeni gordu (" + Read("client_2_failed.txt").Trim() + ")"); Cmd("yasakla Bot 4 5 hile"); Next(); }
                 else if (_stageT > 30) { _fail.Add("atilan istemci kopmadi"); Finish(); }
                 break;
-            case 5: // yasaklanan atildi, ayni adla yeniden gelen girmez
-                if (Has("client_1_failed.txt")) { Check(Read("client_1_failed.txt").Contains("yasak"), "yasaklanan istemci atildi (" + Read("client_1_failed.txt").Trim() + ")"); SpawnClient(3, "Bot 1"); Next(); }
+            case 7: // yasaklanan atildi, ayni adla yeniden gelen girmez
+                if (Has("client_4_failed.txt")) { Check(Read("client_4_failed.txt").Contains("yasak"), "yasaklanan istemci atildi (" + Read("client_4_failed.txt").Trim() + ")"); SpawnClient(3, "Bot 4"); Next(); }
                 else if (_stageT > 30) { _fail.Add("yasaklanan atilmadi"); Finish(); }
                 break;
-            case 6:
-                if (Has("client_3_failed.txt")) { Check(Read("client_3_failed.txt").Contains("yasak"), "yasakli ad girmedi (" + Read("client_3_failed.txt").Trim() + ")"); Check(Has("server_runtime.json", "bot 1"), "yasak diske yazildi"); Cmd("kapat"); Next(); }
+            case 8:
+                if (Has("client_3_failed.txt")) { Check(Read("client_3_failed.txt").Contains("yasak"), "yasakli ad girmedi (" + Read("client_3_failed.txt").Trim() + ")"); Check(Has("server_runtime.json", "bot 4"), "yasak diske yazildi"); Cmd("kapat"); Next(); }
                 else if (_stageT > 90) { _fail.Add("yasakli istemci reddedilmedi"); Finish(); }
                 break;
-            case 7: // kapanis
+            case 9: // kapanis
                 if (_serverPid > 0 && !OS.IsProcessRunning(_serverPid)) { Check(Read("server_status.txt").StartsWith("kapali"), "sunucu kaydedip kapandi"); Finish(); }
                 else if (_stageT > 40) { _fail.Add("sunucu kapanmadi"); Finish(); }
                 break;
@@ -168,6 +180,9 @@ public partial class ServerTest : Node
             _adminSent2 = true;
             net.Forward("srv.cmd", w => w.Str("oyuncular"));
         }
+        if (_id == "1" && Has("client_1_quit.txt")) { GetTree().Quit(); return; } // normal ayrilis (Bye)
+        if (_id == "4" && _joinedT > 3f && !_adminStarted) { _adminStarted = true; net.Forward("srv.cmd", w => w.Str("oyuncular")); }
+        if (_id == "4" && _adminStarted && ServerConsolePanel.LastReply.Contains("yönetici değilsin") && !Has("client_4_admin.txt")) Put("client_4_admin.txt", "ok " + ServerConsolePanel.LastReply);
         if (_id == "1" && _adminSent2 && ServerConsolePanel.LastReply.Contains("oyuncu:") && !Has($"client_1_admin.txt")) Put("client_1_admin.txt", "ok " + ServerConsolePanel.LastReply.Replace('\n', ' '));
     }
 

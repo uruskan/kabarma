@@ -68,6 +68,9 @@ public partial class NetSync : Node
         return true;
     }
 
+    /// <summary>Host: bir es koptu (ayrildi ya da atildi); es kimligi bir sonraki oyuncuya verilebilir, es basina durum temizlenmeli.</summary>
+    public event Action<byte> PeerDropped;
+
     public string PeerAddress(byte peer) => _conn.TryGetValue(peer, out var c) ? _tx.PeerAddress(c) : "";
 
     public NetSync(Director d) { D = d; }
@@ -306,6 +309,7 @@ public partial class NetSync : Node
         if (!_byConn.Remove(conn, out var peer)) return;
         _conn.Remove(peer);
         Actors.Remove(peer);
+        PeerDropped?.Invoke(peer);
         Sections.Forget(peer);
         DespawnAvatar(peer);
         RebuildRoster();

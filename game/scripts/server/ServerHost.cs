@@ -87,6 +87,8 @@ public sealed class ServerHost : IServerHost
 
     public void BindNet()
     {
+        // Es kimligi bir sonraki oyuncuya verilebilir: ayrilan (ya da atilan) oyuncunun yetkisi ve eski cevabi gitmeli.
+        Net.PeerDropped += peer => { _admins.Remove(peer); Net.Srv.Replies.Remove(peer); };
         Net.Srv.Motd = _cfg.Motd; Net.Srv.ServerName = _cfg.Name; // bolumler ServerNet'te (iki yan)
         Net.On("srv.cmd", (actor, r) =>
         {
