@@ -1,0 +1,27 @@
+{
+  "_not": "Steam entegrasyonu (M6 steam akisi; TEKNIK §12, GDD §26). Steam yoksa hepsi sessizce gecer; yerel defter (steam_state.json) yine yazilir. Basarim kimligi achievements.json id'sidir ve Steamworks'te ayni API adiyla tanimlanir (apiPrefix bos).",
+  "achievements": {
+    "apiPrefix": "",
+    "syncSeconds": 3,
+    "statsWaitSeconds": 10,
+    "_ledger": "Yerel defter: acilan her basarim aninda yazilir (acilis zamani, Steam'e iletildi mi); Steam acilinca bekleyenler gonderilir."
+  },
+  "ledgerFile": "user://steam_state.json",
+  "cloud": {
+    "enabled": true,
+    "_not": "Kayit yuvalari ve karakter dosyasi (save.json root altinda): acilista bulutta daha yeni olan yerele iner, her basarili kayittan sonra yereldeki daha yeni dosya bulutta guncellenir. Yedekler (world.N.kbs) ve test koku yuklenmez.",
+    "maxFileBytes": 31457280,
+    "skipNames": ["backup", ".tmp"],
+    "pullTimeoutSeconds": 8
+  },
+  "presence": {
+    "seconds": 15,
+    "format": "{biome} · KS {ks} · {players} oyuncu · {phase}",
+    "phaseDay": "Gündüz",
+    "phaseNight": "Kabarma gecesi",
+    "biomeNames": {
+      "altin_cayir": "Altın Çayır", "sis_korusu": "Sis Korusu", "isil_sazlik": "Işıl Sazlık",
+      "kizil_kanyon": "Kızıl Kanyon", "ayaz_yaylasi": "Ayaz Yaylası", "gobek": "Göbek"
+    }
+  }
+}

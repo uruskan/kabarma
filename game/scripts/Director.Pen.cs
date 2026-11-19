@@ -52,6 +52,7 @@ public partial class Director
     {
         if (string.IsNullOrEmpty(id)) return;
         var text = Data.Scenario.Text(id);
+        if (string.IsNullOrEmpty(text)) text = Data.Suna.Text(id, SunaLang); // M6: suna.json (TR ve EN)
         if (string.IsNullOrEmpty(text)) { GD.PushWarning($"Suna: '{id}' repligi yok"); return; }
         Hud.Say(text);
         Events.RaiseSunaSaid(id);

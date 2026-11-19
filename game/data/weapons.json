@@ -3,10 +3,10 @@
   "_not_m1": "Civi Tabancasi yari otomatik (semiAuto): her basis bir civi; bekleme bitmeden gelen basis inputBufferSeconds icinde saklanir. unlockedAtStart: Tirpan bastan (B); Civi tarifle acilir (ekonomi akisi, ilk Bakir Kulce), main'de acik. Vurus hissi sayilari feel.json'da.",
   "_not_m4": "kusam (M4): ICERIK 6.2 #6-#12. kind: cone, mortar, chain, seed, beam, gravity, orb (HeadRules, Capa.Heads4.cs). damageType combat.json weaponTypes ile ayni olmali. Cephane yoksa (ammo bos) sinirsiz; ammo '{tohum}' = secili ekinin tohumu. seeds: tohumun turune gore etki (ICERIK #9). unlock A/G: tarif kimligi baslik kimligiyle ayni, tezgahta yapilir.",
   "weaponHeads": [
-    { "id": "alev_puskurtecu", "name": "Alev Püskürteci", "tier": 3, "kind": "cone", "damageType": "ates", "damage": 5, "fireInterval": 0.1, "range": 7, "coneDegrees": 38, "burnSeconds": 3, "ammo": "biyoyakit", "ammoPerSecond": 1.5, "unlock": "A" },
-    { "id": "havan", "name": "Havan", "tier": 3, "kind": "mortar", "damageType": "darbe", "damage": 60, "fireInterval": 1.6, "range": 48, "minRange": 10, "splash": 5, "chargeSeconds": 1.2, "flightSpeed": 22, "ammo": "havan_mermisi", "ammoPerShot": 1, "unlock": "A" },
-    { "id": "ark", "name": "Ark", "tier": 4, "kind": "chain", "damageType": "sok", "damage": 18, "fireInterval": 0.3, "range": 22, "chainCount": 4, "chainRange": 8, "chainDecay": 0.8, "unlock": "A" },
-    { "id": "tohum_makinalisi", "name": "Tohum Makinalısı", "tier": 4, "kind": "seed", "damageType": "darbe", "damage": 8, "fireInterval": 0.07, "range": 40, "flightSpeed": 60, "ammo": "{tohum}", "ammoPerShot": 1, "unlock": "A",
+    { "id": "alev_puskurtecu", "name": "Alev Püskürteci", "tier": 3, "kind": "cone", "damageType": "ates", "damage": 13, "fireInterval": 0.1, "range": 7, "coneDegrees": 38, "burnSeconds": 3, "ammo": "biyoyakit", "ammoPerSecond": 1.5, "unlock": "A" },
+    { "id": "havan", "name": "Havan", "tier": 3, "kind": "mortar", "damageType": "darbe", "damage": 150, "fireInterval": 1.6, "range": 48, "minRange": 10, "splash": 5, "chargeSeconds": 1.2, "flightSpeed": 22, "ammo": "havan_mermisi", "ammoPerShot": 1, "unlock": "A" },
+    { "id": "ark", "name": "Ark", "tier": 4, "kind": "chain", "damageType": "sok", "damage": 23, "fireInterval": 0.3, "range": 22, "chainCount": 4, "chainRange": 8, "chainDecay": 0.8, "unlock": "A" },
+    { "id": "tohum_makinalisi", "name": "Tohum Makinalısı", "tier": 4, "kind": "seed", "damageType": "darbe", "damage": 13, "fireInterval": 0.07, "range": 40, "flightSpeed": 60, "ammo": "{tohum}", "ammoPerShot": 1, "unlock": "A",
       "seeds": {
         "chili": { "burn": 3, "damageMult": 1.1 },
         "prickly_pear": { "pierce": 3, "damageMult": 1.25 },
@@ -14,9 +14,9 @@
         "corn": { "damageMult": 1.15 },
         "ice_grape": { "slow": 0.35, "slowSeconds": 1.5 }
       } },
-    { "id": "ayaz_lazeri", "name": "Ayaz Lazeri", "tier": 5, "kind": "beam", "damageType": "buz", "damage": 3, "fireInterval": 0.1, "range": 14, "freezeSeconds": 2, "unlock": "A" },
-    { "id": "yercekimi", "name": "Yerçekimi", "tier": 5, "kind": "gravity", "damageType": "darbe", "damage": 70, "range": 18, "grabRadius": 6, "holdDistance": 4, "throwSpeed": 26, "unlock": "G" },
-    { "id": "maya_topu", "name": "Maya Topu", "tier": 6, "kind": "orb", "damageType": "maya", "damage": 80, "fireInterval": 1.2, "range": 32, "splash": 6, "chargeSeconds": 1.5, "flightSpeed": 18, "swellSeconds": 1.0, "ammo": "maya_kesesi", "ammoPerShot": 1, "unlock": "A" }
+    { "id": "ayaz_lazeri", "name": "Ayaz Lazeri", "tier": 5, "kind": "beam", "damageType": "buz", "damage": 22, "fireInterval": 0.1, "range": 14, "freezeSeconds": 2, "unlock": "A" },
+    { "id": "yercekimi", "name": "Yerçekimi", "tier": 5, "kind": "gravity", "damageType": "darbe", "damage": 230, "range": 18, "grabRadius": 6, "holdDistance": 4, "throwSpeed": 26, "unlock": "G" },
+    { "id": "maya_topu", "name": "Maya Topu", "tier": 6, "kind": "orb", "damageType": "maya", "damage": 440, "fireInterval": 1.2, "range": 32, "splash": 6, "chargeSeconds": 1.5, "flightSpeed": 18, "swellSeconds": 1.0, "ammo": "maya_kesesi", "ammoPerShot": 1, "unlock": "A" }
   ],  "weapon": {
     "id": "tirpan_isini", "name": "Tırpan Işını", "damage": 14, "fireInterval": 0.42,
     "range": 11, "speed": 22, "width": 2.2, "spreadDegrees": 14,

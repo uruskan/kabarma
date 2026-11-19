@@ -143,6 +143,18 @@ public partial class ArayuzTest : Node
             _d.FeelPanel?.GetType();
         }
 
+        // ---- 4b) ogretici (M6 ogretici) ----
+        Events.RaiseStationPlaced("bant_istasyonu");           // otomasyon tetikleyicisi (kimlikte "bant")
+        _d.TutorialFire("biome", "sis_korusu");                // ikinci satir: bekleme suresine takilir
+        await Seconds(1.5f);
+        Check(_d.TutorialSeen.Contains("istasyon_ilk") && _d.TutorialSeen.Contains("otomasyon_ilk"), "istasyon ve otomasyon ogreticisi tetiklenmedi");
+        Check(_d.Hud.SubtitleBoxVisible, "ogretici satiri Suna kutusunda gorunmeli");
+        int pend = _d.TutorialPending;
+        Events.RaiseStationPlaced("bant_istasyonu");
+        _d.TutorialFire("biome", "sis_korusu");
+        Check(_d.TutorialPending == pend, "ogretici ikinci kez siraya girmemeli");
+        Check(_d.Data.Suna.Text("tut_otomasyon_ilk", "en") != _d.Data.Suna.Text("tut_otomasyon_ilk", "tr"), "EN metni TR'den farkli olmali");
+
         // ---- 5) fotograf modu ----
         var ph = _d.Photo;
         Check(!ph.Active, "fotograf modu kapali baslamali");
