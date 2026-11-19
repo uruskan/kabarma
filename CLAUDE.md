@@ -175,6 +175,8 @@ M4 (URETIM §6): dört yeni biyom, T3–T6 ve kalan içerik. Kurallar M3 ile ayn
 
 **Holding bağlanma notu (holding4, M4):** `holding.json` `sites`: 2. kamp Işıl Sazlık (Ocak T3), 3. kamp Kızıl Kanyon (T4), Genel Merkez (`kind: "hq"`, T5, krater eteği, seviye sabit 10); yerler `HoldingSites.Resolve` ile biyomdan çözülür (`HoldingSystem.SitePos`), kervan teslimi `DepotOf`. Genel Merkez yalnız Kabarma gecesi girilir (Perde), baskın ve kervanı yoktur; Çekirdeği düşünce Müdür gelir (`HoldingState.Mudur`, `MudurRules`; asamalar avlu, yönetim katı, çatı), safakta kaçar ve GM yeniden kurulur; yenilince `HoldingState.Unlocks`: `head:yercekimi`, `plan:efsane_cip`, `cosmetic:kask_holding_muduru`, `cosmetic:kaplama_holding` (ilgili akışlar Sim'den sorar). Müdür parçaları `IAtaTarget` (`MudurPart`, `Atalar.Targets`). GECİCİ: kamyon gövdesi `HoldingMudur.cs` `BuildTruck` (araç akışının aracı gelince onun gövdesi takılır). Test: `--test=holding`.
 
+**Tam test nöbetçide (19 Kasım 2026, Godot kuyruğu tıkandığı için):** akışlar commit öncesi tam `test.ps1` koşmaz. Yalnız `-Only build,sim` ve kendi değiştirdiği alanın Godot testlerini koşar, sonra `tools/integrate.ps1`. Tam koşuyu main üzerinde `nobetci` oturumu düzenli koşar; kırmızıyı ayırır ve ilgili akışa bildirir.
+
 ## M5 akışları (19 Kasım 2026)
 
 M5 (URETIM §6): çok oyunculunun tamamı. Kurallar M4 ile aynı (kendi dal, `tools/integrate.ps1`, Sonnet varsayılan, testler hafif, ölçüm yok, kredi yok, sahip uyurken soru yok). M4'ün son akışlarıyla (dolap, ilerleme4, kabul) aynı anda yürür; toplam en çok 5 akış. Ağ kalıbı M2 "Ortak oyuna bağlanma" notudur; her akış bitince Opus high kaba hata bakışı yapılır.
