@@ -185,6 +185,9 @@ public sealed partial class Farm
         return _data.Crops.SizeClasses.Where(c => score >= c.MinScore).OrderBy(c => c.MinScore).Last();
     }
 
+    /// <summary>Cekisme (GDD 22.2 kural 7): false donen kare kabarmaz (cevrimdisi takimin tapusu). Null: hepsi kabarir.</summary>
+    public Func<Plot, bool>? SwellFilter { get; set; }
+
     /// <summary>Kabarma: olgun ekinler kabarir.</summary>
     public List<Plot> SwellMature(int ks, float bonus)
     {
@@ -192,6 +195,7 @@ public sealed partial class Farm
         foreach (var p in _plots.Values)
         {
             if (p.Wild || !p.Planted || p.Stage != CropStage.Mature || p.Swollen != null) continue;
+            if (SwellFilter != null && !SwellFilter(p)) continue;
             p.Swollen = SizeFor(p, ks, bonus);
             list.Add(p);
             Swelled?.Invoke(p);

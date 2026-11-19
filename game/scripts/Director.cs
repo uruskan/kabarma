@@ -189,6 +189,7 @@ public partial class Director : Node3D
         if (Input.IsActionJustPressed("ui_accept") && Hud.ReportOpen) CloseReport();
         TickEconomy(dt); // Director.Economy.cs: gecikmeli odeme, kasa izleme
         TickKemer(dt);   // Director.Belt.cs: elde tutulan esya, el uretim kuyrugu (karar 23)
+        TickRivalry(dt); // Director.Rivalry.cs: Cekisme dunyasi (kapaliyken bos)
         TickZincir(dt);  // Director.Zincir.cs: Tarayici, Ocak basamagi, arastirma geri bildirimi (zincir M2)
 
         Capa.Process(dt, fire && !Hud.ReportOpen, firePressed && !Hud.ReportOpen);

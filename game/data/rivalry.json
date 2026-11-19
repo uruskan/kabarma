@@ -1,0 +1,23 @@
+{
+  "_": "GDD §22.2 Çekişme dünyası: on kuralın sayıları. Kural kodu src/Kabarma.Sim/Rivalry*.cs.",
+  "teamsMin": 2,
+  "teamsMax": 4,
+  "playersPerTeamMax": 4,
+  "ocakMinDistance": 500,
+  "listenMaxTeams": 2,
+  "listenMaxPlayers": 8,
+  "dedicatedMaxTeams": 4,
+  "dedicatedMaxPlayers": 16,
+  "plotRadiusFallback": 60,
+  "openPvpDefault": false,
+  "pvpLootStacks": 3,
+  "siloMayaShare": 0.3,
+  "rebuildCostFraction": 0.5,
+  "indestructibleShapes": [ "ocak" ],
+  "seasonOptions": [ 7, 14, 30, 0 ],
+  "seasonDefault": 14,
+  "holdingCampsDefault": false,
+  "exportMayaValue": 1,
+  "lootableKinds": [ "swollen_crop", "open_silo" ],
+  "protectedKinds": [ "warehouse", "animal" ]
+}
