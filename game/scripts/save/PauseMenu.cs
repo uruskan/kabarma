@@ -22,11 +22,14 @@ public partial class PauseMenu : RustMenu
 
     public bool Open => Visible;
 
+    protected override System.Action OpenControlsPanel => _d.ControlsPanel == null ? null : () => { Close(); _d.ControlsPanel.Toggle(); };
+
     public override void _Ready()
     {
         Build("Duraklatıldı", null, dimBackground: true);
         Item("Devam et", Close);
         Item("Kaydet", () => { _d.Saver.SaveNow("elle", quiet: true); ShowStatus(); }, _d.Saver.Enabled, "bu oyunda kayıt kapalı");
+        Item("Fotoğraf modu", () => { Close(); _d.Photo?.Enter(); });
         Item("Ayarlar", ShowSettings);
         Item("Ana menü", () => Leave(toDesktop: false), _d.GetParent() is Main);
         Item("Masaüstüne çık", () => Leave(toDesktop: true));
