@@ -30,7 +30,7 @@ public partial class Director
     /// <summary>Kayittan acildiysa kayit uygulandiktan hemen sonra (ayni karede) bir kez.</summary>
     public event Action Loaded;
     /// <summary>Kapsul acilisi oynatilmaz (yuklenen oyun).</summary>
-    public bool SkipIntro => PendingLoad != null;
+    public bool SkipIntro => PendingLoad != null || Main.Args.ContainsKey("server"); // adanmis sunucuda kapsul acilisi yok
     public SaveService Saver { get; private set; }
     /// <summary>Yeni oyunun dunya ayari (GDD 25; menude secilir). Null: save.json defaultPreset.</summary>
     public string NewPreset { get; set; }
@@ -43,7 +43,7 @@ public partial class Director
         SaveRoot ??= Main.Args.TryGetValue("save_root", out var r) ? r : null;
         SaveSlot ??= Main.Args.TryGetValue("save_slot", out var sl) ? sl : Data.Save.DefaultSlot;
         // Otomasyon kosulari (komut satiri argumanli) sahibin kaydina hic yazmaz: yalniz test kokune.
-        bool automation = Main.Args.Count > 0 && !Main.Args.ContainsKey("menu");
+        bool automation = Main.Args.Count > 0 && !Main.Args.ContainsKey("menu") && !Main.Args.ContainsKey("server"); // sunucu gercek kayit yuvasina yazar
         if (SaveRoot != null && automation && !SaveRoot.StartsWith(Data.Save.TestRoot, StringComparison.Ordinal))
         {
             GD.PushWarning($"SAVE kapali: otomasyon kosusu {SaveRoot} altina yazamaz (yalniz {Data.Save.TestRoot})");

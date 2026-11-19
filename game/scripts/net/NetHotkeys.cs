@@ -11,6 +11,7 @@ public partial class NetHotkeys : Node
 
     public override void _UnhandledInput(InputEvent e)
     {
+        if (e is InputEventKey { Pressed: true, Echo: false, PhysicalKeycode: Key.F8 }) ServerConsolePanel.Toggle(_d); // sunucu yonetim konsolu (server/)
         if (InputMap.HasAction("coop_panel") && e is InputEventKey && e.IsActionPressed("coop_panel")) CoopPanel.Open(_d, _d);
     }
 }
