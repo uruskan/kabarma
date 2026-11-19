@@ -63,7 +63,10 @@ public sealed class Catalog
     public CatalogEntryDef? Entry(string id) => _c.Entries.FirstOrDefault(e => e.Id == id);
 
     /// <summary>Fiyat: sabit fiyat ya da tohum paketi (urunun taban fiyati × 20, ICERIK §18). Borsadan etkilenmez.</summary>
-    public int Price(CatalogEntryDef e) =>
+    public Func<float>? PriceMult { get; set; } // dolap: Muhtar katalog -%10
+    public int Price(CatalogEntryDef e) => (int)Math.Round(BasePrice(e) * (PriceMult?.Invoke() ?? 1f), MidpointRounding.AwayFromZero);
+
+    int BasePrice(CatalogEntryDef e) =>
         e.Price > 0 ? e.Price : e.SeedPackOf.Length > 0 ? (int)Math.Round(_pricing.Base(e.SeedPackOf) * _c.SeedPackMult, MidpointRounding.AwayFromZero) : 0;
 
     public float Seconds(string via) => via == "rampa" ? _c.RampSeconds : _c.CapsuleSeconds;

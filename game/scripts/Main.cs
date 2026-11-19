@@ -56,6 +56,7 @@ public partial class Main : Node3D
         ["lineup"] =m => { m.AddChild(new ModelLineup()); return true; }, // gorsel-model: her model ayni isikta (progress/gorsel/model/)
         ["camera"] = m => { m.AddChild(new CameraTest()); return false; }, // oyuncu akisi: kamera kipleri, tekerlek, carpisma, nisan, ayar dosyasi
         ["grip"] = m => { Args["mute"] = "1"; Sfx.Muted = true; m.AddChild(new GripTest()); return false; }, // oyuncu akisi: Capa elde, namlu nisanda, araba iki elle
+        ["dolap"] = m => { Args["mute"] = "1"; Sfx.Muted = true; m.AddChild(new DolapTest()); return false; }, // dolap akisi: uye pasifleri, kozmetik, jest, menu, goruntuler (progress/m4/dolap/, pencereli)
         ["vfx"] = m => { Args["mute"] = "1"; Sfx.Muted = true; m.AddChild(new VfxTest()); return false; }, // efekt akisi: kitaplik, durum aurasi, goruntuler (progress/m4/efekt/, pencereli)
         ["playershots"] = m => { Args["mute"] = "1"; Sfx.Muted = true; m.AddChild(new PlayerShots()); return false; }, // oyuncu2: karakter goruntuleri (progress/oyuncu2/, pencereli kosulur)
         ["kemer"] = m => { Args["bot"] = "1"; if (m._quitAfter <= 0) m._quitAfter = 600; m.AddChild(new KemerShots()); return false; }, // karar 23 kaniti: progress/kemer/*.png

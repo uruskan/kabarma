@@ -159,7 +159,7 @@ public partial class DefenseSystem : Node3D
     {
         var d = n.Tower;
         var at = ToN(n.GlobalPosition);
-        int i = TowerRules.Pick(d, at, _targets, t.Priority);
+        int i = TowerRules.Pick(d, at, _targets, t.Priority, _d.TuzukNow.RangeMult); // Tuzuk: Ters Ruzgar (gece4)
         bool ready = TowerRules.Tick(t, dt, d);
         if (n.Port != null && _d.Power?.Net.Get(n.Port.NodeId) is { } pn) pn.Wants = i >= 0; // guc yalniz hedef varken (M4)
         if (i < 0) return;

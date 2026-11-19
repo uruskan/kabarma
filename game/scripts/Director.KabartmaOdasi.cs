@@ -19,36 +19,23 @@ public partial class Director
         bool powered = st.Queue.PowerOk == null || st.Queue.PowerOk();
         var at = st.GlobalPosition;
         var plot = SwellRoom.NearestMature(State, at.X, at.Z);
-        var animal = NearestSwellAnimal(at, def.Radius);
+        var animal = Ranch?.NearestSwellable(at, def.Radius);
         int maya = State.Backpack.Count(MayaVault.Item);
         var items = new List<Hud.MenuItem>
         {
             new($"Tarla karesi kabart ({def.MayaCost} Maya)", () => powered && plot != null && maya >= def.MayaCost, () => UseSwellRoomPlot(st, plot), MayaVault.Item),
-            new($"Hayvan kabart ({def.MayaCost} Maya)", () => powered && animal != null && maya >= def.MayaCost, () => UseSwellRoomAnimal(st, animal), MayaVault.Item),
+            new($"Hayvan kabart ({def.MayaCost} Maya, {def.AnimalSeconds / 60f:0} dk)", () => powered && animal != null && maya >= def.MayaCost, () => UseSwellRoomAnimal(st, animal), MayaVault.Item),
         };
         string foot = !powered ? "Güç yok: Kabartma Odası 800 W ister."
             : NightActive ? "Kabarma sürerken çalışmaz."
-            : $"Çantada {maya} Maya  ·  {(plot != null ? "olgun kare var" : "yakında olgun kare yok")}  ·  {(animal != null ? "evcil hayvan var" : "yakında evcil hayvan yok")}";
+            : $"Çantada {maya} Maya  ·  {(plot != null ? "olgun kare var" : "yakında olgun kare yok")}  ·  {(animal != null ? $"hayvan: {animal.Species}" : "yakında evcil hayvan yok")}";
         Hud.ShowMenu(st.Def.Name, items, foot + "  ·  {act:interact} / {act:ui_cancel}: kapat");
-    }
-
-    Node3D NearestSwellAnimal(Vector3 from, float radius)
-    {
-        Node3D best = null; float bd = float.MaxValue;
-        void Consider(Node3D n)
-        {
-            if (n == null || !IsInstanceValid(n) || !n.Visible) return;
-            float d = n.GlobalPosition.DistanceTo(from);
-            if (d <= radius && d < bd) { best = n; bd = d; }
-        }
-        if (Wildlife != null) foreach (var c in Wildlife.Creatures) if (IsInstanceValid(c) && c.State.Tamed && !c.Dead) Consider(c);
-        Consider(Gidak); Consider(Pofuduk);
-        return best;
     }
 
     void UseSwellRoomPlot(Station st, Plot target)
     {
-        if (NetClient) { Hud.Hint("Kabartma Odası ortak oyunda host'ta kullanılır", 2f); return; }
+        // ortak oyun: istemcide istek host'a gider (NetSync.SwellRoom.cs doğrular, aktörün çantasından öder)
+        if (Net?.Forward("kabartma", w => { w.U8(0); w.F32(target.X + 0.5f); w.F32(target.Y + 0.5f); }) == true) { Hud.HideMenu(); return; }
         bool powered = st.Queue.PowerOk == null || st.Queue.PowerOk();
         var r = SwellRoom.UsePlot(State, State.Backpack, powered, target);
         Hud.HideMenu();
@@ -60,25 +47,24 @@ public partial class Director
         });
     }
 
-    void UseSwellRoomAnimal(Station st, Node3D animal)
+    void UseSwellRoomAnimal(Station st, PenAnimal animal)
     {
-        if (NetClient) { Hud.Hint("Kabartma Odası ortak oyunda host'ta kullanılır", 2f); return; }
+        if (animal == null) return;
+        if (Net?.Forward("kabartma", w => { w.U8(1); w.VarU((uint)animal.Id); }) == true) { Hud.HideMenu(); return; }
         bool powered = st.Queue.PowerOk == null || st.Queue.PowerOk();
-        var r = SwellRoom.UseAnimal(State, State.Backpack, powered, animal != null && IsInstanceValid(animal));
+        var def = Data.Tuzuk.SwellRoom;
+        var r = SwellRoom.UseAnimal(State, State.Backpack, powered, true);
         Hud.HideMenu();
+        if (r == SwellRoomResult.Ok && !Ranch.SwellAnimal(animal, def.AnimalSeconds))
+        {
+            State.Backpack.Add(MayaVault.Item, def.MayaCost); // hayvan artik uygun degil: bedel iade
+            r = SwellRoomResult.NoTarget;
+        }
         ReportSwellRoom(r, () =>
         {
-            SwellAnimalVisual(animal, true);
-            GD.Print($"SWELLROOM animal {animal.Name} maya={State.Backpack.Count(MayaVault.Item)}");
-            GetTree().CreateTimer(Data.Tuzuk.SwellRoom.AnimalSeconds).Timeout += () => SwellAnimalVisual(animal, false);
-            Fx.Burst(animal.GlobalPosition + Vector3.Up * 0.6f, Palette.MayaViolet, 24, 3.5f, 0.07f, 0.8f, true, -1f);
+            GD.Print($"SWELLROOM animal {animal.Species} id={animal.Id} maya={State.Backpack.Count(MayaVault.Item)}");
+            Sfx.Play("levelup", st.GlobalPosition, -2f);
         });
-    }
-
-    static void SwellAnimalVisual(Node3D a, bool on)
-    {
-        if (a == null || !IsInstanceValid(a)) return;
-        switch (a) { case WildCreature w: w.Swell(on); break; case Gidak g: g.Swell(on); break; case Pofuduk p: p.Swell(on); break; }
     }
 
     void ReportSwellRoom(SwellRoomResult r, System.Action ok)

@@ -7,6 +7,8 @@ public sealed class TuzukClauseDef
 {
     public string Id { get; set; } = "";
     public string Name { get; set; } = "";
+    /// <summary>Menude gosterilen kisa etki yazisi (ICERIK 8.4).</summary>
+    public string Note { get; set; } = "";
     /// <summary>Gorus mesafesi (m).</summary>
     public float VisionM { get; set; }
     /// <summary>Dusmanin ekini yeme hizi carpani.</summary>

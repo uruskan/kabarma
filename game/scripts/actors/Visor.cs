@@ -27,6 +27,21 @@ public partial class Visor : Node3D
 
     public string Expression => _target;
 
+    float _styleOpen = 1f;
+    static readonly Dictionary<string, int> Decos = new()
+    {
+        ["dot"] = 0, ["sleepy"] = 1, ["surprised"] = 2, ["angry"] = 3, ["brow1"] = 4, ["heart"] = 5, ["star"] = 6, ["pixel"] = 7,
+        ["mustache"] = 8, ["glasses"] = 9, ["teary"] = 10, ["blank"] = 11,
+    };
+
+    /// <summary>Kozmetik vizor yuzu (cosmetics.json slot vizor, look.style). Bilinmeyen: nokta goz.</summary>
+    public void SetStyle(string style)
+    {
+        int d = Decos.GetValueOrDefault(style ?? "dot", 0);
+        _styleOpen = d == 1 ? 0.45f : 1f;
+        _mat?.SetShaderParameter("deco", d);
+    }
+
     static readonly Dictionary<string, int> Shapes = new() { ["round"] = 0, ["happy"] = 1, ["wide"] = 2, ["closed"] = 3, ["x"] = 4 };
 
     /// <summary>Kaskin onune egri ekran yamasi kurar ve bas kemigine baglar. Bas kemigi ya da mesh yoksa null.</summary>
@@ -37,7 +52,7 @@ public partial class Visor : Node3D
         var all = skel.FindChildren("*", "MeshInstance3D", true, false).OfType<MeshInstance3D>()
             .Concat(skel.GetParent()?.FindChildren("*", "MeshInstance3D", true, false).OfType<MeshInstance3D>() ?? Enumerable.Empty<MeshInstance3D>())
             .Where(m => m.Mesh != null).ToList();
-        var mesh = all.FirstOrDefault(m => m.Skin != null) ?? all.FirstOrDefault();
+        var mesh = all.Where(m => m.Skin != null).OrderByDescending(m => m.Mesh.GetFaces().Length).FirstOrDefault() ?? all.FirstOrDefault(); // en buyuk derili mesh = govde (canta da derili ve kucuk)
         if (head < 0 || mesh == null) return null;
         var patch = BuildPatch(skel, mesh, head);
         if (patch == null) return null;
@@ -175,9 +190,9 @@ public partial class Visor : Node3D
         _width = Mathf.Lerp(_width, e.MouthWidth, k);
         _shake = Mathf.Lerp(_shake, e.Shake, k);
         if (_mat == null) return;
-        if (_shown != e.Eye) { _mat.SetShaderParameter("eye_shape", Shapes.GetValueOrDefault(e.Eye, 0)); _shown = e.Eye; }
+        if (_shown != e.Eye) { _mat.SetShaderParameter("eye_shape_u", Shapes.GetValueOrDefault(e.Eye, 0)); _shown = e.Eye; }
         _mat.SetShaderParameter("eye_scale", _scale);
-        _mat.SetShaderParameter("eye_open", Mathf.Max(0.04f, _open));
+        _mat.SetShaderParameter("eye_open", Mathf.Max(0.04f, _open * _styleOpen));
         _mat.SetShaderParameter("mouth_curve", _curve);
         _mat.SetShaderParameter("mouth_open", _mouthOpen);
         _mat.SetShaderParameter("mouth_width", _width);
@@ -191,7 +206,7 @@ shader_type spatial;
 render_mode unshaded, blend_mix, cull_disabled, depth_draw_never, shadows_disabled;
 uniform vec4 face_color : source_color = vec4(0.93, 0.9, 0.84, 1.0);
 uniform float emission = 1.4;
-uniform int eye_shape = 0;
+uniform int eye_shape_u = 0;
 uniform float eye_scale = 1.0;
 uniform float eye_open = 1.0;
 uniform float mouth_curve = 0.3;
@@ -200,14 +215,31 @@ uniform float mouth_width = 0.45;
 uniform float shake = 0.0;
 uniform float zzz = 0.0;
 uniform vec2 look = vec2(0.0);
+uniform int deco = 0;   // kozmetik yuz (cosmetics.json vizor): 1 uykulu 2 saskin 3 kizgin 4 tek kas 5 kalp 6 yildiz 7 piksel 8 biyikli 9 gozluklu 10 aglamakli 11 bos ekran
 const float ASPECT = 1.55;
 
 float sd_seg(vec2 p, vec2 a, vec2 b) { vec2 pa = p - a, ba = b - a; float h = clamp(dot(pa, ba) / dot(ba, ba), 0.0, 1.0); return length(pa - ba * h); }
 float sd_ell(vec2 p, vec2 r) { float k = length(p / max(r, vec2(1e-4))); return (k - 1.0) * min(r.x, r.y); }
 float fillv(float d) { float aa = fwidth(d) * 1.2 + 1e-4; return 1.0 - smoothstep(-aa, aa, d); }
 
+float sd_heart(vec2 q, float r) {
+    q = q / r; q.y = -q.y + 0.1; q.x = abs(q.x);
+    float k = q.x + q.y;
+    float d = (k > 1.0) ? sqrt(dot(q - vec2(0.25, 0.75), q - vec2(0.25, 0.75))) - 0.35355
+        : sqrt(min(dot(q - vec2(0.0, 1.0), q - vec2(0.0, 1.0)), dot(q - 0.5 * k, q - 0.5 * k))) * sign(q.x - q.y);
+    return d * r * 0.8;
+}
+
+float sd_star(vec2 q, float r) {
+    float a = atan(q.x, q.y), l = length(q);
+    float k = 0.5 + 0.5 * cos(a * 5.0);
+    return l - r * (0.45 + 0.4 * k);
+}
+
 float eye(vec2 q, float r) {
     float d;
+    int eye_shape = eye_shape_u;
+    if (deco == 2) eye_shape = 2; else if (deco == 5) return sd_heart(q, r); else if (deco == 6) return sd_star(q, r);
     if (eye_shape == 1) {            // mutlu: ters U yay
         vec2 o = q - vec2(0.0, r * 0.35);
         d = abs(length(o) - r * 0.75) - 0.016;
@@ -238,6 +270,7 @@ float zglyph(vec2 p, vec2 c, float s) {
 void fragment() {
     vec2 uv = UV + vec2(sin(TIME * 63.0), cos(TIME * 51.0)) * 0.006 * shake;
     vec2 p = (uv - vec2(0.5, 0.5)) * vec2(ASPECT, 1.0);
+    if (deco == 7) p = floor(p / 0.05) * 0.05 + 0.025;   // piksel
     float r = 0.125 * eye_scale;
     float d = min(eye(p - vec2(-0.29, -0.01), r), eye(p - vec2(0.29, -0.01), r));
     // agiz: koseler gulumsemede yukari (v asagi buyur)
@@ -250,6 +283,26 @@ void fragment() {
     float inside = max(abs(m.x) - w, max(top - m.y, m.y - (top + depth)));
     float mouth = min(line, mouth_open > 0.02 ? inside : 1.0);
     d = min(d, mouth);
+    if (deco == 3) {          // kizgin: icten disa inen kaslar
+        d = min(d, sd_seg(p, vec2(-0.40, -0.19), vec2(-0.18, -0.12)) - 0.018);
+        d = min(d, sd_seg(p, vec2(0.40, -0.19), vec2(0.18, -0.12)) - 0.018);
+    } else if (deco == 4) {   // tek kas: sol kas yukarida
+        d = min(d, sd_seg(p, vec2(-0.40, -0.22), vec2(-0.18, -0.24)) - 0.018);
+    } else if (deco == 8) {   // biyik
+        vec2 b = vec2(abs(p.x), p.y - 0.17);
+        d = min(d, sd_seg(b, vec2(0.0, 0.0), vec2(0.17, -0.03 + 0.0)) - 0.02 + 0.015 * sin(b.x * 40.0));
+    } else if (deco == 9) {   // gozluk
+        float rr = 0.17;
+        d = min(d, abs(length(p - vec2(-0.29, -0.01)) - rr) - 0.012);
+        d = min(d, abs(length(p - vec2(0.29, -0.01)) - rr) - 0.012);
+        d = min(d, sd_seg(p, vec2(-0.12, -0.01), vec2(0.12, -0.01)) - 0.012);
+    } else if (deco == 10) {  // aglamakli: yanaktan inen damlalar
+        float t = fract(TIME * 0.7);
+        d = min(d, sd_ell(p - vec2(-0.33, 0.1 + t * 0.2), vec2(0.018, 0.035)) + (t > 0.8 ? 1.0 : 0.0));
+        d = min(d, sd_ell(p - vec2(0.33, 0.1 + fract(TIME * 0.7 + 0.5) * 0.2), vec2(0.018, 0.035)));
+    } else if (deco == 11) {  // bos ekran: yalniz yanip sonen imlec
+        d = (step(0.5, fract(TIME * 0.9)) > 0.5) ? sd_seg(p, vec2(-0.05, 0.0), vec2(0.05, 0.0)) - 0.02 : 1.0;
+    }
     if (zzz > 0.5) {
         float t = fract(TIME * 0.4);
         for (int i = 0; i < 3; i++) {

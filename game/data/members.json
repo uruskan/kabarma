@@ -1,0 +1,202 @@
+{
+ "_not": "Uye tipleri (ICERIK §9, GDD 23). effects anahtarlari: mastery_gain, tame_speed, happiness_add, craft_speed, build_speed, food_time, food_quality, sprint_free, speed, scythe_damage, push, max_hp, mutation, income, catalog, slipper, animals_obey, climate_immune, no_food, glide, herbivore_calm, holding_day, holding_parts. liveKeys: oyunda baglanan anahtarlar (Director.Dolap.cs ve sistem kancalari); digerleri secilir, etkisi ilgili sistem satirini ekleyince calisir (kanca: Wardrobe.Effect(anahtar)). chain/step: orders.json grants kind=member; zinciri henuz yoksa (ilerleme4) kimlik Wardrobe.Unlock ile acilir. startCard bos: rastgele Siradan kart (kanca).",
+ "defaultMember": "cirak",
+ "members": [
+  {
+   "id": "cirak",
+   "name": "Çırak",
+   "passive": "Ustalık kazanımı +%10",
+   "effects": {
+    "mastery_gain": 0.1
+   },
+   "startCard": "",
+   "unlock": "Baştan",
+   "chain": "start",
+   "step": 0,
+   "look": "Sade tulum, çırak yaması",
+   "liveKeys": [
+    "mastery_gain"
+   ]
+  },
+  {
+   "id": "coban",
+   "name": "Çoban",
+   "passive": "Evcilleştirme iki kat hızlı; hayvan mutluluğu +10",
+   "effects": {
+    "tame_speed": 1.0,
+    "happiness_add": 10
+   },
+   "startCard": "suru_cobani",
+   "unlock": "Çoban zinciri, 2. adım: 5 tür evcilleştir",
+   "chain": "coban",
+   "step": 2,
+   "look": "Hasır şapka, değnek",
+   "liveKeys": []
+  },
+  {
+   "id": "makinist",
+   "name": "Makinist",
+   "passive": "Üretim ve kurma hızı +%20",
+   "effects": {
+    "craft_speed": 0.2,
+    "build_speed": 0.2
+   },
+   "startCard": "kule_asiri_yuku",
+   "unlock": "Kalfa zinciri, 3. adım: 20 farklı makine kur",
+   "chain": "kalfa",
+   "step": 3,
+   "look": "Sarı kask, alet kemeri",
+   "liveKeys": [
+    "craft_speed"
+   ]
+  },
+  {
+   "id": "asci",
+   "name": "Aşçı",
+   "passive": "Yemek süresi +%30; pişirdiği yemek bir kalite yüksek çıkar",
+   "effects": {
+    "food_time": 0.3,
+    "food_quality": 1
+   },
+   "startCard": "yenilenme",
+   "unlock": "Gurme zinciri, 2. adım: 12 farklı yemek pişir",
+   "chain": "gurme",
+   "step": 2,
+   "look": "Önlük ve aşçı bereti",
+   "liveKeys": []
+  },
+  {
+   "id": "kacak",
+   "name": "Kaçak",
+   "passive": "Depar dayanıklılık harcamaz; hız +%8",
+   "effects": {
+    "sprint_free": 1,
+    "speed": 0.08
+   },
+   "startCard": "cevik",
+   "unlock": "Uçan Üye zinciri, 2. adım: mancınıkla 25 kez uç",
+   "chain": "ucan_uye",
+   "step": 2,
+   "look": "Eşarp ve spor tulum",
+   "liveKeys": [
+    "sprint_free",
+    "speed"
+   ]
+  },
+  {
+   "id": "pehlivan",
+   "name": "Pehlivan",
+   "passive": "Tırpan ve itme +%30; can +25",
+   "effects": {
+    "scythe_damage": 0.3,
+    "push": 0.3,
+    "max_hp": 25
+   },
+   "startCard": "tokmak",
+   "unlock": "Nakliyeci zinciri, 3. adım: 100 ton yük taşı",
+   "chain": "nakliyeci",
+   "step": 3,
+   "look": "Kuşak ve iri omuz",
+   "liveKeys": [
+    "scythe_damage",
+    "max_hp"
+   ]
+  },
+  {
+   "id": "arici",
+   "name": "Arıcı",
+   "passive": "Çaprazlamada mutasyon şansı ×1,5",
+   "effects": {
+    "mutation": 0.5
+   },
+   "startCard": "ari_kovani",
+   "unlock": "Islahçı zinciri, son adım: bir bitki genini 10'a çıkar",
+   "chain": "islahci",
+   "step": 5,
+   "look": "Tüllü şapka",
+   "liveKeys": [
+    "mutation"
+   ]
+  },
+  {
+   "id": "muhtar",
+   "name": "Muhtar",
+   "passive": "Kredi geliri +%10; katalog −%10",
+   "effects": {
+    "income": 0.1,
+    "catalog": -0.1
+   },
+   "startCard": "ortak_kasa",
+   "unlock": "Tüccar zinciri, 3. adım: 100.000 Kredi kazan",
+   "chain": "tuccar",
+   "step": 3,
+   "look": "Yelek ve kasket",
+   "liveKeys": [
+    "income",
+    "catalog"
+   ]
+  },
+  {
+   "id": "nine",
+   "name": "Nine",
+   "passive": "Tırpan yerine dönerek giden terlik fırlatır; hayvanlar hep dinler",
+   "effects": {
+    "slipper": 1,
+    "animals_obey": 1
+   },
+   "startCard": "dikenli",
+   "unlock": "Gece Bekçisi zinciri, 3. adım: 20 Kabarma bitir",
+   "chain": "gece_bekcisi",
+   "step": 3,
+   "look": "Başörtüsü ve hırka",
+   "liveKeys": []
+  },
+  {
+   "id": "robot_kahya",
+   "name": "Robot Kâhya",
+   "passive": "Soğuk, sıcak ve gazdan etkilenmez; yemek yiyemez, aküyle şarj olur",
+   "effects": {
+    "climate_immune": 1,
+    "no_food": 1
+   },
+   "startCard": "kabuk",
+   "unlock": "Otomasyoncu zinciri, 4. adım: makinelerle 50.000 ürün",
+   "chain": "otomasyoncu",
+   "step": 4,
+   "look": "Metal gövde",
+   "liveKeys": []
+  },
+  {
+   "id": "gidak_kostumlu",
+   "name": "Gıdak Kostümlü",
+   "passive": "Zıplarken süzülür; otçul yabaniler ürkmez",
+   "effects": {
+    "glide": 1,
+    "herbivore_calm": 1
+   },
+   "startCard": "yumurta_topu",
+   "unlock": "Cins Hayvan zinciri, son adım: bir hayvan genini 10'a çıkar",
+   "chain": "cins_hayvan",
+   "step": 5,
+   "look": "Gıdak kostümü",
+   "liveKeys": [
+    "glide"
+   ]
+  },
+  {
+   "id": "holding_firarisi",
+   "name": "Holding Firarisi",
+   "passive": "Holding kamplarına gündüz girebilir; Holding Parçası +%25",
+   "effects": {
+    "holding_day": 1,
+    "holding_parts": 0.25
+   },
+   "startCard": "acgozlu",
+   "unlock": "Holding Belası zinciri, 4. adım: bir Şube Çekirdeği yok et",
+   "chain": "holding_belasi",
+   "step": 4,
+   "look": "Kırmızı yaka, yırtık rozet",
+   "liveKeys": []
+  }
+ ]
+}

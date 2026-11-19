@@ -25,6 +25,9 @@ public partial class Player : CharacterBody3D
     public float SpeedMult = 1f;
     /// <summary>Yemek hiz eki (Kozde Misir +0,05); Director.ApplyFoodEffects yazar.</summary>
     public float FoodSpeed;
+    /// <summary>Dolap (uye pasifi): hiz eki (Kacak +0,08) ve suzulme (Gidak Kostumlu). Director.Dolap.cs ayarlar.</summary>
+    public float MemberSpeed;
+    public bool Glide;
     /// <summary>Zirh puani (GDD 16.1), Kalkan Jeneratoru kalkani ve en yuksegi; Director.ApplyArmor yazar (kusam, M4).</summary>
     public float ArmorPoints, Shield, ShieldMax, ShieldIdle;
     public float Hp;
@@ -317,13 +320,13 @@ public partial class Player : CharacterBody3D
         if (MovementLocked) wish = Vector3.Zero; // kalkis bitene kadar
         if (UiCapture && MoveOverride == null) wish = Vector3.Zero; // panel acik: yon tuslari / sol cubuk paneli gezer (girdi)
         sprint = SprintGate(sprint && wish.LengthSquared() > 0.01f, dt); // Player.Stamina.cs: GDD §3.2
-        float speed = (sprint ? SprintSpeed : WalkSpeed) * SpeedMult * (1f + FoodSpeed);
+        float speed = (sprint ? SprintSpeed : WalkSpeed) * SpeedMult * (1f + FoodSpeed + MemberSpeed);
         var v = Velocity;
         var target = wish * speed;
         float accel = IsOnFloor() ? 14f : 4f;
         v.X = Mathf.MoveToward(v.X, target.X, accel * speed * dt);
         v.Z = Mathf.MoveToward(v.Z, target.Z, accel * speed * dt);
-        if (!IsOnFloor()) v.Y -= _gravity * dt;
+        if (!IsOnFloor()) { v.Y -= _gravity * dt; if (Glide && v.Y < -1.6f && Input.IsActionPressed("jump") && MoveOverride == null) v.Y = -1.6f; } // dolap: Gidak Kostumlu suzulur
         else if (Input.IsActionJustPressed("jump") && MoveOverride == null && !MovementLocked && !UiCapture) { v.Y = JumpVelocity; OnJump(); }
         v += _knock;
         _knock = _knock.Lerp(Vector3.Zero, Mathf.Min(1f, dt * 8f));

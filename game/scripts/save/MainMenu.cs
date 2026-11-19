@@ -73,14 +73,30 @@ public partial class MainMenu : RustMenu
                 _preset = presets[(i + 1) % presets.Count].Id;
                 ShowNew();
             });
+        Row($"Yeni Ay: {(_newMoon.Count == 0 ? "tüzük maddesi yok" : _newMoon.Count + " madde seçili")}   (tıkla: maddeleri seç)", ShowNewMoon);
         foreach (var s in _store.List())
         {
             var slot = s.Slot;
             if (_confirm == slot)
-                Row($"{SlotLine(s)}   ·   ÜZERİNE YAZ?  (tekrar tıkla)", () => { _confirm = null; _main.StartGame(null, slot, _preset); });
+                Row($"{SlotLine(s)}   ·   ÜZERİNE YAZ?  (tekrar tıkla)", () => { _confirm = null; _main.StartGame(null, slot, _preset, _newMoon.ToList()); });
             else
-                Row(SlotLine(s), () => { if (s.Exists) { _confirm = slot; ShowNew(); } else _main.StartGame(null, slot, _preset); });
+                Row(SlotLine(s), () => { if (s.Exists) { _confirm = slot; ShowNew(); } else _main.StartGame(null, slot, _preset, _newMoon.ToList()); });
         }
+    }
+
+    readonly System.Collections.Generic.HashSet<string> _newMoon = new();
+
+    /// <summary>Yeni Ay (GDD 14.8): dünya kurulurken 12 tüzük maddesinden istenenler KS 1'den açık olur (her biri Maya kazancını %5 artırır).</summary>
+    void ShowNewMoon()
+    {
+        ClearContent();
+        Header("Yeni Ay", $"Seçilen madde KS 1'den açık olur ve Maya kazancını madde başına %{_data.Tuzuk.NewMoon.MayaPerClause * 100:0} artırır. Seçim dünya kaydında durur.");
+        foreach (var c in _data.Tuzuk.Clauses)
+        {
+            var id = c.Id;
+            Row($"[{(_newMoon.Contains(id) ? "x" : " ")}] {c.Name}   ·   {c.Note}", () => { if (!_newMoon.Remove(id)) _newMoon.Add(id); ShowNewMoon(); });
+        }
+        Row($"Tamam ({_newMoon.Count} madde)", ShowNew);
     }
 
     string _preset;

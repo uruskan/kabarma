@@ -59,7 +59,7 @@ public sealed partial class GameState
     public KabarmaNight StartKabarma(KabarmaSpec spec, string? memberCard = null)
     {
         var plan = Waves.Compose(Data, spec);
-        Night = new KabarmaNight(Data, plan, spec.Seed, memberCard, CardBook); // CardBook: kartlar (Nisan, acilmalar)
+        Night = new KabarmaNight(Data, plan, spec.Seed, memberCard ?? (string.IsNullOrEmpty(Wardrobe?.StartCard) ? null : Wardrobe.StartCard), CardBook); // CardBook: kartlar (Nisan, acilmalar)
         OnNightStarted(Night);
         var n = Night;
         n.Ended += end =>
