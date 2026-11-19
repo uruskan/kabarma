@@ -58,7 +58,7 @@ public class Ata4Tests
             for (int i = 1; i < 3; i++) Assert.True(def.Phases[i].HpUntil < def.Phases[i - 1].HpUntil);
             Assert.True(def.Hp > 0 && def.Arena.Radius > 0 && def.Arena.Center.Count == 2 && def.Arena.Stone.Count == 2);
             Assert.False(string.IsNullOrEmpty(def.Placeholder));
-            Assert.False(string.IsNullOrEmpty(def.Arena.Temporary), "arena merkezi gecici isaretli olmali");
+            Assert.True(string.IsNullOrEmpty(def.Arena.Temporary), "M4 kabul: arena Ata Tasi'na oturdu, GECICI isareti kalkti (AcceptanceTests dogrular)");
             Assert.NotNull(D.SealOf(def.Reward.Seal));
             Assert.NotNull(D.AddOf(def.Add));
             foreach (var ph in def.Phases) if (ph.AddId != "") Assert.NotNull(D.AddOf(ph.AddId));

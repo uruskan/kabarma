@@ -49,6 +49,7 @@ public partial class Bot : Node
         RegisterCoop();      // Bot.Coop.cs (ortak): --test=coop'ta butun adimlar ortak bot
         RegisterTarim();     // Bot.Tarim.cs (tarim M2): yalniz --test=tarim; ikinci ekin, Korkuluk, yabani tohum
         RegisterPower();     // Bot.Power.cs (guc): yalniz --test=power'da "end" guc adimina uzar
+        RegisterAnaMaya();   // Bot.AnaMaya.cs (M4 kabul): yalniz --test=anamaya'da "end" alti biyomu yuruyerek Ana Maya'ya gider
     }
 
     Player P => _d.Player;
