@@ -129,12 +129,17 @@ public partial class HoldingUnitActor : Node3D
         float tDist = has ? Flat(tPos - GlobalPosition).Length() : 1e9f;
         bool night = _w.H.State.NightOpen;
         bool provoked = _w.ProvokedAt(CampId) > 0;
-        float speed = Def.Speed;
+        float speed = Def.Speed * MudurRules.UnitSpeedMult(_w.Def, _w.H.State.Mudur); // Mudur hoparlor konusmasi birimleri hizlandirir
+        bool repair = u.Kind == "mekanik" && _w.Encounter is { Stage: 0 } enc0 && enc0.CampId == CampId; // Mudur avlusu: Mekanik kamyonu onarmaya kosar
         Vector3? goal = null;
         bool hostile = false;
 
-        switch (Job)
+        switch (repair ? "repair" : Job)
         {
+            case "repair":
+                goal = _w.Encounter.TruckPos;
+                speed *= 1.2f;
+                break;
             case "raid":
                 hostile = true;
                 if (Carried != null)

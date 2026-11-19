@@ -29,6 +29,23 @@ public partial class NetSync
         On("stcancel", HostStationCancel);
         On("chest", HostChest);
         On("eat", HostEat);
+        On("graft", HostGraft); // tarim4: Asi Tezgahi (Director.Asi.cs DoGraft)
+    }
+
+    /// <summary>Asi Tezgahi: aktorun cantasi ve ortak Tohum Kaydi; aktor tezgahin erisiminde olmali.</summary>
+    void HostGraft(NetActor a, NetReader r)
+    {
+        SeedLot Read()
+        {
+            string crop = r.Str();
+            var g = new Genes { V = r.U8(), H = r.U8(), D = r.U8(), M = r.U8() };
+            return D.State.Farm.Seeds.Lots.FirstOrDefault(l => l.Crop == crop && l.Genes.SameAs(g));
+        }
+        var recv = Read(); var donor = Read();
+        int gene = r.U8();
+        if (!StationsNear(a).Contains("asi_tezgahi")) { Reject(a, "graft station"); return; }
+        if (recv == null || donor == null) { Reject(a, "graft lot"); return; }
+        if (D.State.Farm.Graft(a.Bag, recv, donor, gene, out _) != GraftResult.Ok) Reject(a, "graft rule");
     }
 
     CraftQueue HandOf(NetActor a)

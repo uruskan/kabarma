@@ -59,13 +59,13 @@
     {
       "id": "surubasi", "name": "Sürübaşı", "nameEn": "Packleader", "biome": "ayaz_yaylasi",
       "base": "dalli", "decor": "surubasi", "color": "9FB8CC",
-      "placeholder": "GECICI: Dalli govdesi 2,6 kat, koddan buzlu yele; cagirdigi Ayaz Kurdu yaratik4 gelene dek Sinsi govdesi (summon.creature: sinsi, yaratik4 sonrasi ayaz_kurdu).",
+      "placeholder": "GECICI: Dalli govdesi 2,6 kat, koddan buzlu yele; cagirdigi Ayaz Kurdu gercek yaratik (summon.creature: ayaz_kurdu, yaratik4 akisinin gercek yaratigi).",
       "scale": 2.6, "radius": 1.7, "height": 2.8,
       "hp": 1900, "armor": 40, "mass": 50,
       "moveSpeed": 3.4, "contactDamage": 13, "contactEvery": 1.2,
       "attacks": ["howl", "charge"], "attackEvery": 6.5, "firstAttack": 1.5, "telegraph": 1.2,
       "charge": { "speed": 15, "seconds": 1.8, "damage": 24, "knockback": 11, "structureDamage": 90, "structureRadius": 2.2, "wallStun": 1.2 },
-      "summon": { "count": 2, "max": 6, "creature": "sinsi", "scale": 0.9, "hp": 55, "damage": 7, "speed": 5 },
+      "summon": { "count": 2, "max": 6, "creature": "ayaz_kurdu", "scale": 0.9, "hp": 55, "damage": 7, "speed": 5 },
       "reward": { "oz": 260, "items": [ { "item": "surubasi_postu", "count": 1 }, { "item": "buz", "count": 8 } ] }
     },
     {

@@ -29,7 +29,7 @@ public partial class Director
     public void HoldingNight(bool real)
     {
         if (NetClient) return; // ortak: host'ta
-        var raids = State.Holding.OnNightStart(real);
+        var raids = State.Holding.OnNightStart(real, TuzukNow.HoldingAllRaid); // Tuzuk: Holding Seferberligi
         var def = Data.Holding.Raid;
         foreach (var (camp, units) in raids)
         {

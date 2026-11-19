@@ -531,6 +531,8 @@ Havuz bittikten sonra kazanılan her kart jetonu, seçilen bir karta 1 Nişan pu
 | 11 | Göçmen Sürü | Bileşim bütün biyomlardan rastgele |
 | 12 | Ters Rüzgâr | Mermi menzili −%25 |
 
+Kimlikler: `sis`, `ac_suru`, `kalin_kabuk`, `cift_azman`, `kirik_can`, `saganak`, `holding_seferberligi`, `cimri_ay`, `uzun_gece`, `kor_kule`, `gocmen_suru`, `ters_ruzgar`. Sayılar `data/tuzuk.json`; sıra, yığılma (en çok iki kat) ve Yeni Ay seçimi [GDD.md](GDD.md) §14.8.
+
 ## 9. Üye tipleri (12)
 
 | # | Üye | Pasif | Başlangıç kartı | Nasıl açılır |

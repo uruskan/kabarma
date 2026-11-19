@@ -10,6 +10,9 @@ public sealed partial class CardHand
 {
     readonly GameData _d;
     readonly CardsFile _c;
+    /// <summary>Tuzuk (Cimri Ay, gece4): seviye basina sunulan kart siniri; 0: veri degeri.</summary>
+    public int OfferCap { get; set; }
+    int OfferSize => OfferCap > 0 ? Math.Min(_c.OfferSize, OfferCap) : _c.OfferSize;
     readonly Rng _rng;
     readonly CardBook? _book;
     readonly Dictionary<string, int> _ranks = new(StringComparer.Ordinal);
@@ -66,8 +69,8 @@ public sealed partial class CardHand
         var asi = AsiReady().FirstOrDefault(a => exclude == null || !exclude.Contains(a.Id));
         if (asi != null) picked.Add(asi);
         var must = string.IsNullOrEmpty(forced) ? null : pool.FirstOrDefault(c => c.Id == forced);
-        if (must != null && picked.Count < _c.OfferSize) { picked.Add(must); pool.Remove(must); }
-        while (picked.Count < _c.OfferSize && pool.Count > 0) picked.Add(Draw(pool));
+        if (must != null && picked.Count < OfferSize) { picked.Add(must); pool.Remove(must); }
+        while (picked.Count < OfferSize && pool.Count > 0) picked.Add(Draw(pool));
         return picked;
     }
 
@@ -114,7 +117,7 @@ public sealed partial class CardHand
         RerollsLeft--;
         var asi = Offer.Cards.FirstOrDefault(c => c.IsAsi);
         var fresh = RollOffer(exclude: asi == null ? null : new[] { asi.Id }); // asi tekrar zorlanmasin diye disarida
-        if (asi != null) { fresh.Insert(0, asi); while (fresh.Count > _c.OfferSize) fresh.RemoveAt(fresh.Count - 1); }
+        if (asi != null) { fresh.Insert(0, asi); while (fresh.Count > OfferSize) fresh.RemoveAt(fresh.Count - 1); }
         Offer = new CardOffer { Cards = fresh };
         return true;
     }

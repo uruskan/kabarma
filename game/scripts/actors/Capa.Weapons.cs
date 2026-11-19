@@ -184,7 +184,7 @@ public partial class Crescent : Node3D
         GlobalPosition += _dir * step;
         _traveled += step;
         _mesh.RotateObjectLocal(Vector3.Forward, dt * _w.Spin);
-        float life = _traveled / (_w.Range * _s.SizeMult);
+        float life = _traveled / (_w.Range * _s.SizeMult * _d.TuzukNow.RangeMult); // Tuzuk: Ters Ruzgar (gece4)
         _mesh.Transparency = Mathf.Clamp((life - _w.FadeStart) / Mathf.Max(0.01f, 1f - _w.FadeStart), 0, 1);
 
         // Zemine gomulmesin
@@ -214,7 +214,7 @@ public partial class Crescent : Node3D
         _d.HoldingProjectileHit(GlobalPosition - _dir * step, GlobalPosition, _width * 0.5f + _w.HitRadius, _w.Damage * _s.SizeMult, _hitWild); // holding: kamp, birim, kervan (HoldingWorld.cs)
         foreach (var t in _d.AtaTargetsNear(GlobalPosition, _width * 0.5f + _w.HitRadius)) if (_hitAta.Add(t)) _d.Capa.AtaWeaponHit("tirpan", _w, _s, t, t.Center, _dir, Palette.MayaTeal); // boss akisi
         while (_d.Abilities?.GhostHitSegment(GlobalPosition - _dir * step, GlobalPosition, _width * 0.5f + _w.HitRadius, _w.Damage * _s.SizeMult, _hitGhost) == true) { } // gucler: hayaletler (abilities/AbilitySystem.cs)
-        if (_traveled > _w.Range * _s.SizeMult) QueueFree();
+        if (_traveled > _w.Range * _s.SizeMult * _d.TuzukNow.RangeMult) QueueFree();
     }
 }
 
@@ -297,6 +297,6 @@ public partial class Nail : Node3D
             QueueFree();
             return;
         }
-        if (_traveled > _w.Range * _s.SizeMult) QueueFree();
+        if (_traveled > _w.Range * _s.SizeMult * _d.TuzukNow.RangeMult) QueueFree();
     }
 }

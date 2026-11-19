@@ -1,5 +1,21 @@
 {
   "_not": "Bereket Holding (GDD §19, §19.4.1 M3 netlestirmeleri; ICERIK §3.7). Kamp, birimler, kervan, baskinlar, Husumet, ganimet. holding akisi (M3). Birim modelleri YER TUTUCU: oyuncu modeli kirmizi tulumla (Holding.Unit.cs); uretim istegi raporda.",
+  "_sites": "Kamp yerleri (GDD §19.1, M4 holding4). Slot 1 = camp.anchor (Kabarma ile). 2. kamp Ocak T3, 3. kamp T4: biyomun icinde (anchor bossa biyom sinirindan, agirlik >= 0,9 noktasi cozulur: HoldingSites). Genel Merkez (slot 4, kind hq) Ocak T5, krater etegi sabit yer, seviye sabit 10; Kabarma gecesi girilir (Perde), Cekirdek dusunce Mudur gelir. Kervan teslim noktasi depotOffset (kampa gore).",
+  "sites": [
+    { "slot": 1, "kind": "camp", "biome": "sis_korusu", "ocakTier": 1, "name": "1. Kamp" },
+    { "slot": 2, "kind": "camp", "biome": "isil_sazlik", "ocakTier": 3, "depotOffset": [-90, 60], "name": "2. Kamp" },
+    { "slot": 3, "kind": "camp", "biome": "kizil_kanyon", "ocakTier": 4, "depotOffset": [80, -80], "name": "3. Kamp" },
+    { "slot": 4, "kind": "hq", "biome": "gobek", "ocakTier": 5, "anchor": [-350, 360], "level": 10, "name": "Genel Merkez" }
+  ],
+  "_mudur": "Mudur (ICERIK §4.4): 1. avlu: zirhli kamyon doner ve kuleden ates eder; kasa zirhli, arkadaki motor kapagi zayif nokta (motorMult); Mekanikler kamyonu onarir. 2. yonetim kati: araçtan iner; dort kalkan jeneratoru kapanmadan hasar almaz; Ustabasi cagirir; hoparlor calisirken birimler hizlanir (hoparlorler vurulur). 3. cati: kacis zeplini; balonlar tek tek patlatilir, hepsi inince Mudur duser ve vurulur. M4 sadeligi: zipkin yok, balonlar ayakta vurulur (reach altitude). Odul: Yercekimi basligi, Efsane cip planlari, kask, kaplama.",
+  "mudur": {
+    "teamHpPerExtra": 0.5,
+    "yardRadius": 20,
+    "truck": { "hp": 1800, "bodyArmor": 0.7, "motorMult": 3, "mechanics": 2, "repairPerMechanic": 15, "cannonDamage": 9, "cannonEvery": 1.5, "speed": 6, "ramDamage": 28 },
+    "boss": { "hp": 2200, "roofAt": 0.4, "generators": 4, "generatorHp": 160, "speakers": 2, "speakerHp": 90, "callEvery": 14, "callCount": 2, "speechSpeedMult": 1.4, "meleeDamage": 18, "fireDamage": 10, "speed": 3.4 },
+    "roof": { "balloons": 6, "balloonHp": 70, "altitude": 7 },
+    "reward": { "items": { "holding_plani": 3, "holding_parcasi": 10 }, "unlocks": ["head:yercekimi", "plan:efsane_cip", "cosmetic:kask_holding_muduru", "cosmetic:kaplama_holding"], "credits": 2000 }
+  },
   "camp": {
     "_not": "anchor [x, z]: 1. kampin yeri (Sis Korusu kenari, Ocak'tan >= minDistance). levelEveryDays: baskin yemeden kac gunde seviye. capPerOcakTier × Ocak basamagi, en fazla maxLevel. M3: Ocak T2 -> 4. firstRealNight: kacinci gece ilk gercek Kabarma (1. gece Kucuk Kabarma). GECICI: kabarma3 gercek geceyi isaretleyince ona baglanir.",
     "anchor": [160, 200],
@@ -27,7 +43,7 @@
     { "id": "bekci", "name": "Bekçi", "role": "guard", "hp": 80, "speed": 3.6, "damage": 6, "range": 18, "fireSeconds": 1.1, "aggroRange": 24, "weapon": "civi_tabancasi", "tint": "B83A2A" },
     { "id": "ustabasi", "name": "Ustabaşı", "role": "elite", "hp": 220, "speed": 3.2, "damage": 14, "range": 22, "fireSeconds": 2.2, "aggroRange": 28, "armor": 0.3, "weapon": "havan", "tint": "8E2A20" },
     { "id": "mekanik", "name": "Mekanik", "role": "mechanic", "hp": 70, "speed": 3.4, "damage": 4, "range": 10, "fireSeconds": 0.8, "aggroRange": 16, "weapon": "ark", "tint": "D06A3A" },
-    { "id": "mudur", "name": "Müdür", "role": "boss", "hp": 4000, "speed": 2.6, "damage": 30, "range": 26, "fireSeconds": 1.5, "aggroRange": 40, "armor": 0.5, "weapon": "zirhli_arac", "tint": "5E1A14", "milestone": "M5" }
+    { "id": "mudur", "name": "Müdür", "role": "boss", "hp": 4000, "speed": 2.6, "damage": 30, "range": 26, "fireSeconds": 1.5, "aggroRange": 40, "armor": 0.5, "weapon": "zirhli_arac", "tint": "5E1A14", "milestone": "M4" }
   ],
   "caravan": {
     "_not": "Her sabah departTime (gun orani) cikar, depot [x, z]'ye gider, bekler, doner. Bekci sayisi guardsBase + L/2 (en fazla guardsMax). Yuk: cargo esyalari + creditsPerLevel × L Kredi.",

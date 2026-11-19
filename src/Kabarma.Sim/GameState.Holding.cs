@@ -11,7 +11,7 @@ public sealed partial class GameState
     /// <summary>Kurucudan bir kez (InitNightAndDay'den sonra).</summary>
     void InitHolding()
     {
-        Holding = new HoldingSystem(Data);
+        Holding = new HoldingSystem(Data) { Biomes = () => BiomeMap, WorldEdge = Math.Min(Data.Biomes.World.Terrain.EdgeStart > 0 ? Data.Biomes.World.Terrain.EdgeStart : 800f, 800f), Team = () => 1 };
         Calendar.Morning += day => Holding.OnMorning(day, Research.OcakTier);
         Sold += (v, _) => Holding.RecordExport(v);
     }

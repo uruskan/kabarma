@@ -58,6 +58,13 @@ public partial class AzmanSystem : Node
 
     void BindNet()
     {
+        _d.Net?.On("azman.douse", (actor, r) =>
+        {
+            float x = r.F32(), z = r.F32(), dt = r.F32();
+            var me = new Vector3(actor.Last.X, actor.Last.Y, actor.Last.Z);
+            if (dt <= 0 || dt > 1f || new Vector2(me.X - x, me.Z - z).Length() > 40f) { actor.Rejected++; return; }
+            Douse(new Vector3(x, 0, z), dt);
+        });
         _d.Net?.On("azman.hit", (actor, r) =>
         {
             ulong id = r.U64();
@@ -208,7 +215,8 @@ public partial class AzmanSystem : Node
     /// <summary>Sulama (Capa.Sulama) ya da yagmurlama: (aim) cevresindeki yangin lekeleri sonmeye baslar (saniye = dt × douseSeconds).</summary>
     public bool Douse(Vector3 aim, float dt)
     {
-        if (Puppet) return false;
+        // Ortak oyun: istemcide sulama host'a gider (yangin leke durumu host'ta).
+        if (Puppet) return _d.Net?.Forward("azman.douse", w => { w.F32(aim.X); w.F32(aim.Z); w.F32(dt); }) == true;
         bool any = false;
         foreach (var f in Progress.Active)
         {

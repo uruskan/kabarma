@@ -184,6 +184,7 @@ public partial class Director : Node3D
         State.Food.Tick(dt);
         Player.MaxHp = Data.Tool.Player.MaxHp + State.Food.BonusMaxHp;
         if (!Player.Down && Player.Hp < Player.MaxHp) Player.Hp = Mathf.Min(Player.MaxHp, Player.Hp + State.Food.Regen * dt);
+        ApplyArmor(dt); // Director.Kusam.cs: zirh takimi, moduller
         ApplyFoodEffects(); // Director.Asi.cs: Dayaniklilik eki, depar bedeli, hiz (ICERIK 15 ozel etkileri)
         if (Input.IsActionJustPressed("ui_accept") && Hud.ReportOpen) CloseReport();
         TickEconomy(dt); // Director.Economy.cs: gecikmeli odeme, kasa izleme

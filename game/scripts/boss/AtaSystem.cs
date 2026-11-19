@@ -42,6 +42,7 @@ public partial class AtaSystem : Node3D
             if (IsTemporary(def)) continue;
             BuildArena(def);
         }
+        Callable.From(BindNet).CallDeferred(); // ortak oyun (AtaSystem.Net.cs)
         // Kayittan suren dovus geldiyse Ata arenada yeniden kurulur.
         if (Fight != null) CallDeferred(nameof(Respawn));
         GD.Print($"ATALAR arenas={string.Join(",", Data.Atalar.Where(a => _stones.ContainsKey(a.Id)).Select(a => $"{a.Id}@{ArenaCenter(a).X:0},{ArenaCenter(a).Z:0}/r{ArenaRadius(a):0}{(Spot(a).FromSite ? ":" + Spot(a).SiteId : ":yedek")}"))} temporary={string.Join(",", Data.Atalar.Where(IsTemporary).Select(a => a.Id))}");
@@ -105,6 +106,7 @@ public partial class AtaSystem : Node3D
     {
         float dt = (float)delta;
         var p = _d.Player;
+        if (_d.NetClient) { ClientTick(dt, p); return; } // ortak oyun: host dovusur, istemci durumu gorur (AtaSystem.Net.cs)
         if (Fight == null)
         {
             SetSwell(1f);
@@ -114,6 +116,7 @@ public partial class AtaSystem : Node3D
         var def0 = Data.Get(Fight.AtaId);
         if (Actor == null || !IsInstanceValid(Actor)) { SpawnActor(def0, arriving: false); return; }
         Fight.AddsAlive = Targets.OfType<AtaMinion>().Count(m => m.Alive);
+        Fight.X = Actor.GlobalPosition.X; Fight.Z = Actor.GlobalPosition.Z; Fight.Yaw = Actor.Rotation.Y; // istemci kuklasi bundan yurur
         foreach (var c in AtaRules.Tick(Fight, def0, dt)) Dispatch(def0, c);
         // savas: yanik ve zehir hasari, yanik yunu yer (AtaRules.TickStatus → Combat.Tick)
         var stCmds = new List<AtaCommand>(); var stAreas = new List<CombatArea>();
@@ -125,7 +128,10 @@ public partial class AtaSystem : Node3D
         ColdTick(def0, dt);
         SetSwell(AtaRules.PlayerSwell(Fight, def0));
         // Oyuncu arenadan uzaklasti: Ata merkezine doner; uzun sure yoksa dovus biter (adak geri gelmez, M2).
-        float away = new Vector2(p.GlobalPosition.X - ArenaCenter(def0).X, p.GlobalPosition.Z - ArenaCenter(def0).Z).Length();
+        var ctr = ArenaCenter(def0);
+        float away = _d.Net != null
+            ? _d.Net.Players().Where(x => !x.down).Select(x => new Vector2(x.pos.X - ctr.X, x.pos.Z - ctr.Z).Length()).DefaultIfEmpty(0f).Min() // ortak: en yakin oyuncu
+            : new Vector2(p.GlobalPosition.X - ctr.X, p.GlobalPosition.Z - ctr.Z).Length();
         _awayT = away > def0.Arena.Leash ? _awayT + dt : 0f;
         if (_awayT > Data.AbandonSeconds) { GD.Print($"ATA abandon {def0.Id}"); _d.Hud.Say($"{def0.Name} ormana çekildi."); Cleanup(); AtaRules.Abandon(Progress); }
     }
@@ -134,9 +140,9 @@ public partial class AtaSystem : Node3D
     {
         var altar = AltarPos(def);
         bool kab = Progress.IsDefeated(def.Id);
-        DrumTick(def, dt, kab);
+        if (!_d.NetClient) DrumTick(def, dt, kab);
         // Kabarik urun sunaga birakildi (Cekim): adakta eksikse kabul.
-        foreach (var sc in GetTree().GetNodesInGroup("swollen").OfType<SwollenCrop>())
+        foreach (var sc in _d.NetClient ? System.Array.Empty<SwollenCrop>() : GetTree().GetNodesInGroup("swollen").OfType<SwollenCrop>().ToArray())
         {
             if (sc.Held || sc.Gone || sc.GlobalPosition.DistanceTo(altar) > def.Arena.AltarReach) continue;
             if (!AtaRules.OfferSwollen(Progress, def, sc.CropId, kab)) continue;
@@ -145,7 +151,7 @@ public partial class AtaSystem : Node3D
             Sfx.Play("ui_onay", altar);
             sc.QueueFree();
             _stones[def.Id].Refresh();
-            TrySummon(def);
+            TrySummon(def, _d.State.Backpack, KabarikKs);
         }
         if (p.GlobalPosition.DistanceTo(altar) > def.Arena.AltarReach + 1f) return;
         if (kab)
@@ -190,23 +196,31 @@ public partial class AtaSystem : Node3D
         }
         bool items = AtaRules.ItemsComplete(Progress, def, kab);
         bool powered = port.Gate(items);
-        if (AtaRules.ChargeDrum(Progress, def, items && powered && port.Powered, dt, kab)) TrySummon(def);
+        if (AtaRules.ChargeDrum(Progress, def, items && powered && port.Powered, dt, kab)) TrySummon(def, _d.State.Backpack, KabarikKs);
     }
 
     /// <summary>Etkilesim: cantadaki eksik bilesenler sunaga gecer; tamamlaninca Ata gelir.</summary>
     public void Offer(AtaDef def)
     {
         bool kab = Progress.IsDefeated(def.Id);
-        int n = AtaRules.OfferFromBag(Progress, def, _d.State.Backpack, kab);
-        if (n > 0) { Sfx.Play("ui_onay", AltarPos(def)); Fx.Burst(AltarPos(def) + Vector3.Up, Palette.MayaTeal, 12, 3f, 0.1f, 0.6f, true); _stones[def.Id].Refresh(); }
-        else Sfx.Play("ui_hata", AltarPos(def));
-        if (!TrySummon(def) && n == 0) _d.Hud.Hint(kab && AtaRules.OfferingComplete(Progress, def, true) ? $"Maya yetmiyor: {AtaRules.MayaCost(Data, KabarikKs)} gerekir" : $"Adak eksik: {OfferingText(def, kab)}", 2f);
+        // Ortak oyun: istemcide adak ve cagirma host'ta, aktorun cantasiyla yapilir (Maya da oradan dusulur).
+        if (_d.Net?.Forward("ata.offer", w => { w.Str(def.Id); w.U8((byte)KabarikKs); }) == true) return;
+        HostOffer(def, kab, _d.State.Backpack, KabarikKs, true);
     }
 
-    bool TrySummon(AtaDef def)
+    /// <summary>Adak sunma ve cagirma (host ya da tek oyuncu): bag sunan oyuncunun cantasi. local: ipucu goster.</summary>
+    void HostOffer(AtaDef def, bool kab, Inventory bag, int ks, bool local)
+    {
+        int n = AtaRules.OfferFromBag(Progress, def, bag, kab);
+        if (n > 0) { Sfx.Play("ui_onay", AltarPos(def)); Fx.Burst(AltarPos(def) + Vector3.Up, Palette.MayaTeal, 12, 3f, 0.1f, 0.6f, true); _stones[def.Id].Refresh(); }
+        else Sfx.Play("ui_hata", AltarPos(def));
+        if (!TrySummon(def, bag, ks) && n == 0 && local) _d.Hud.Hint(kab && AtaRules.OfferingComplete(Progress, def, true) ? $"Maya yetmiyor: {AtaRules.MayaCost(Data, KabarikKs)} gerekir" : $"Adak eksik: {OfferingText(def, kab)}", 2f);
+    }
+
+    bool TrySummon(AtaDef def, Inventory bag, int ks)
     {
         bool kab = Progress.IsDefeated(def.Id);
-        var f = kab ? AtaRules.SummonKabarik(Progress, Data, def, KabarikKs, TeamSize, _d.State.Backpack) : AtaRules.Summon(Progress, Data, def, TeamSize);
+        var f = kab ? AtaRules.SummonKabarik(Progress, Data, def, ks, TeamSize, bag) : AtaRules.Summon(Progress, Data, def, TeamSize);
         if (f == null) return false;
         Arrive(def);
         return true;
@@ -381,6 +395,8 @@ public partial class AtaSystem : Node3D
     public CombatResult Damage(CombatHit hit, AtaHitKind kind)
     {
         if (Fight == null) return default;
+        if (_d.Net?.Forward("ata.hit", w => { w.U8((byte)kind); w.F32(hit.Amount); w.U8((byte)hit.Type); w.U8((byte)hit.Procs); w.Bool(hit.Crit); }) == true)
+            return new CombatResult { Damage = hit.Amount }; // gorunus icin tahmin; gercek can host'tan
         var def = Data.Get(Fight.AtaId);
         hit = hit with { Amount = hit.Amount * AtaRules.PlayerDamageMult(Fight, def) }; // Ana Maya asama 3: kabarmis oyuncular
         var cmds = new List<AtaCommand>();
@@ -396,6 +412,7 @@ public partial class AtaSystem : Node3D
     public bool DamageWeakPoint(int index, CombatHit hit)
     {
         if (Fight == null) return false;
+        if (_d.Net?.Forward("ata.weak", w => { w.VarI(index); w.F32(hit.Amount); w.U8((byte)hit.Type); w.U8((byte)hit.Procs); w.Bool(hit.Crit); }) == true) return false;
         var def = Data.Get(Fight.AtaId);
         var cmds = new List<AtaCommand>();
         bool broke = AtaRules.HitWeakPoint(Fight, Data, _d.Data.Combat, def, index, hit.Amount, cmds, hit.Type, hit.Procs);
@@ -410,6 +427,7 @@ public partial class AtaSystem : Node3D
     public bool Shear(Vector3 at)
     {
         if (Fight == null) return false;
+        if (_d.Net?.Forward("ata.shear", w => { w.F32(at.X); w.F32(at.Y); w.F32(at.Z); }) == true) return false;
         var def = Data.Get(Fight.AtaId);
         float before = Fight.Armor;
         float after = AtaRules.Shear(Fight, def);
@@ -444,6 +462,7 @@ public partial class AtaSystem : Node3D
         int ks = Fight.Ks;
         var items = kab ? new List<AtaRewardItemDef> { new() { Item = Data.Kabarik.RewardItem, Count = Mathf.Max(1, ks / 5) * Data.Kabarik.RewardPer5Ks } } : def.Reward.Items;
         int left = kab ? AtaRules.RewardKabarik(Progress, Data, def, ks, _d.State.Backpack) : AtaRules.Reward(Progress, def, _d.State.Backpack);
+        if (_d.Net != null) foreach (var a in _d.Net.Actors.Values) foreach (var it in items) a.Bag.Add(it.Item, it.Count); // ortak: herkesin cantasina (istemci cantasi host'ta)
         DefeatedLog.Add(kab ? AtaRules.KabarikId(def.Id) : def.Id);
         Bar.Victory(def);
         Sfx.Play("kabarmis_patlama", at, 4f, 0.6f);

@@ -48,7 +48,7 @@
     "dorukEliteShare": 0.5,
     "firstClearCardTokens": 1,
     "firstClearCredits": 150,
-    "maxKs": 10,
+    "maxKs": 50,
     "everyDays": 4,
     "families": {
       "root": ["homur", "dehliz"],
