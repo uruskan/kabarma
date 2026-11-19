@@ -105,6 +105,8 @@ public sealed class EnetTransport : ITransport
     public long BytesSent { get; private set; }
     public long BytesReceived { get; private set; }
 
+    public string PeerAddress(int peer) => IsHost && _peers.TryGetValue(peer, out var p) ? p.GetRemoteAddress() : "";
+
     public void Kick(int peer)
     {
         if (IsHost && _peers.TryGetValue(peer, out var p)) p.PeerDisconnectLater();

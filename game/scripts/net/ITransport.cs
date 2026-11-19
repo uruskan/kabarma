@@ -24,6 +24,8 @@ public interface ITransport : IDisposable
     /// <summary>Gelenleri toplar ve bekleyenleri gonderir. Her karede bir kez.</summary>
     void Poll(List<NetEvent> into);
     void Kick(int peer);
+    /// <summary>Host: baglanti kimligindeki oyuncunun adresi (yasak denetimi, M5 sunucu); bilinmiyorsa bos.</summary>
+    string PeerAddress(int peer) => "";
     /// <summary>Kullaniciya gosterilecek adres (IP:port ya da Steam lobisi).</summary>
     string Address { get; }
     /// <summary>Kablodan giden ve gelen toplam bayt (ENet: protokol ek yuku dahil; olcum, TEKNIK 5.3).</summary>

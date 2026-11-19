@@ -172,12 +172,15 @@ public partial class MudurEncounter : Node3D
         };
         if (!_w.Host) return;
         foreach (var c in H.MudurTick(dt, H.MechanicsAlive(f.CampId))) Dispatch(c);
-        var p = D.Player;
+        // Hedef: en yakin ayaktaki oyuncu (ortak oyunda butun oyuncular; HoldingWorld.NearestTarget)
+        var (tpos, tpeer, has) = _w.NearestTarget(f.Stage == 0 ? TruckPos : (_boss?.GlobalPosition ?? _center));
+        if (!has) return;
+        var t = new Target(tpos, tpeer);
         switch (f.Stage)
         {
-            case 0: TruckAi(dt, p); break;
-            case 1: BossAi(dt, p, groundBoss: true); break;
-            case 2: BossAi(dt, p, groundBoss: MudurRules.BalloonsLeft(f) == 0); break;
+            case 0: TruckAi(dt, t); break;
+            case 1: BossAi(dt, t, groundBoss: true); break;
+            case 2: BossAi(dt, t, groundBoss: MudurRules.BalloonsLeft(f) == 0); break;
         }
     }
 
@@ -194,7 +197,15 @@ public partial class MudurEncounter : Node3D
         }
     }
 
-    void TruckAi(float dt, Player p)
+    readonly record struct Target(Vector3 Pos, byte Peer);
+
+    void HurtTarget(Target t, float dmg, Vector3 from, Vector3? knock = null)
+    {
+        _w.HurtPeer(t.Peer, dmg, from);
+        if (knock != null && (D.Net == null || (t.Peer == D.Net.LocalPeer && !D.Net.Dedicated))) D.Player.Velocity += knock.Value; // itme yalniz yerel oyuncuda
+    }
+
+    void TruckAi(float dt, Target p)
     {
         if (_truck == null) return;
         float yard = Def.Mudur.YardRadius, tr = Def.Mudur.Truck.Speed / yard;
@@ -206,20 +217,19 @@ public partial class MudurEncounter : Node3D
         if (dir.LengthSquared() > 1e-6f) _truck.Rotation = new Vector3(0, Mathf.Atan2(dir.X, dir.Z), 0);
         // Kuleden ates
         _fireT -= dt; _ramT -= dt;
-        if (_fireT <= 0 && !p.Down)
+        if (_fireT <= 0)
         {
             _fireT = Def.Mudur.Truck.CannonEvery;
             Shoot(_truck.GlobalPosition + Vector3.Up * 3.2f, p, Def.Mudur.Truck.CannonDamage);
         }
-        if (_ramT <= 0 && !p.Down && p.GlobalPosition.DistanceTo(_truck.GlobalPosition) < 3.2f)
+        if (_ramT <= 0 && p.Pos.DistanceTo(_truck.GlobalPosition) < 3.2f)
         {
             _ramT = 2f; Rams++;
-            p.Hurt(Def.Mudur.Truck.RamDamage, _truck.GlobalPosition);
-            p.Velocity += ((p.GlobalPosition - _truck.GlobalPosition) with { Y = 0 }).Normalized() * 12f + Vector3.Up * 4f;
+            HurtTarget(p, Def.Mudur.Truck.RamDamage, _truck.GlobalPosition, ((p.Pos - _truck.GlobalPosition) with { Y = 0 }).Normalized() * 12f + Vector3.Up * 4f);
         }
     }
 
-    void BossAi(float dt, Player p, bool groundBoss)
+    void BossAi(float dt, Target p, bool groundBoss)
     {
         if (_boss == null) return;
         var b = Def.Mudur.Boss;
@@ -230,23 +240,23 @@ public partial class MudurEncounter : Node3D
         }
         if (groundBoss && _zeppelin == null)
         {
-            var d = (p.GlobalPosition - _boss.GlobalPosition) with { Y = 0 };
+            var d = (p.Pos - _boss.GlobalPosition) with { Y = 0 };
             if (d.Length() > 2.6f) _boss.GlobalPosition = D.World.Ground(_boss.GlobalPosition + d.Normalized() * b.Speed * dt * MudurRules.UnitSpeedMult(Def, F));
             if (d.LengthSquared() > 0.01f) _boss.Rotation = new Vector3(0, Mathf.Atan2(d.X, d.Z), 0);
             _meleeT -= dt;
-            if (_meleeT <= 0 && !p.Down && d.Length() < 3.2f) { _meleeT = 1.4f; p.Hurt(b.MeleeDamage, _boss.GlobalPosition); }
+            if (_meleeT <= 0 && d.Length() < 3.2f) { _meleeT = 1.4f; HurtTarget(p, b.MeleeDamage, _boss.GlobalPosition); }
         }
         _fireT -= dt;
-        if (_fireT <= 0 && !p.Down)
+        if (_fireT <= 0)
         {
             _fireT = F.Stage == 2 ? 2.2f : 2.4f;
             Shoot(_boss.GlobalPosition + Vector3.Up * 2.4f, p, b.FireDamage);
         }
     }
 
-    void Shoot(Vector3 from, Player p, float dmg)
+    void Shoot(Vector3 from, Target p, float dmg)
     {
-        var target = p.GlobalPosition + Vector3.Up * 1f;
+        var target = p.Pos + Vector3.Up * 1f;
         var dir = (target - from) with { Y = 0 };
         float dist = dir.Length();
         if (dist < 0.5f) return;
@@ -288,10 +298,13 @@ public partial class MudurEncounter : Node3D
         Fx.Burst(at + Vector3.Up, Palette.Warning, 60, 7f, 0.2f, 1.4f, true);
         Sfx.Play("kabarmis_patlama", at, 6f, 0.5f);
         Sfx.Play("seviye_atlama", null, 0f);
-        var loot = H.MudurReward(D.State.Backpack, out var left);
-        foreach (var (id, n) in left) H.State.Depot[id] = H.State.Depot.GetValueOrDefault(id) + n;
-        if (loot != null && loot.Credits > 0) D.State.ApplyLoot(new HoldingLoot("mudur", new Dictionary<string, int>(), loot.Credits, ""), D.State.Backpack);
-        if (D.State.DropChip("holding:genel_merkez") != null) D.Hud.Say("Genel Merkez bir çip düşürdü.");
+        if (_w.Host) // ganimet, Depo, Kredi ve cip yalniz host'ta (istemcide Sim durumu host'tan gelir)
+        {
+            var loot = H.MudurReward(D.State.Backpack, out var left);
+            foreach (var (id, n) in left) H.State.Depot[id] = H.State.Depot.GetValueOrDefault(id) + n;
+            if (loot != null && loot.Credits > 0) D.State.ApplyLoot(new HoldingLoot("mudur", new Dictionary<string, int>(), loot.Credits, ""), D.State.Backpack);
+            if (D.State.DropChip("holding:genel_merkez") != null) D.Hud.Say("Genel Merkez bir çip düşürdü.");
+        }
         GD.Print($"MUDUR defeated t={_t:0.0} unlocks={string.Join(",", H.State.Unlocks)}");
         D.Hud.Big("MÜDÜR YENİLDİ", Palette.HoldingRed, 3f);
         D.Hud.Say("Genel Merkez senin: Yerçekimi başlığı, Efsane çip planları, Holding kaskı ve kaplaması açıldı.");

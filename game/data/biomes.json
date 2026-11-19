@@ -42,7 +42,8 @@
     "_clearings": "Bitki ve ot konmayan aciklik [x, z, yaricap]: inis kapsulu (Director.PodPos), Ocak cevresi (tarla, istasyonlar, agil).",
     "clearings": [[9, -9, 6], [0, 1, 9],
       [64, 36, 18], [-212, 219, 20],
-      [-105, 245, 7]],
+      [-105, 245, 7],
+      [91, 1241, 22], [-725, 1008, 26], [-768, 391, 26], [-401, 523, 30]],
     "_clearings_atalar": "Son iki satir boss akisinin Ata arenalaridir (atalar.json arena.center/radius + 2 m): Koca Pofuduk (Altin Cayir) ve Boynuzlu Dede (Sis Korusu Ata Tasi; dunya2 tasidi). Sonraki satir 'koru' yer iminin onu (agac kameraya girmesin).",
     "_paths": "Cignenmis patikalar [x, z] (gorsel-dunya): us-kapsul, us-gol, us-bakir-tepe, us-kuzey. Zemin toprak katmani, ot yok.",
     "paths": [
@@ -265,10 +266,11 @@
           {"creature": "tukurgen", "time": "day", "weight": 1, "group": [1, 2], "maxGroups": 2, "baseDistance": [120, 100000], "minWeight": 0.7, "respawn": 180, "note": "yaratik4 yaratigi; satir biyom akisindan (creatures.json biome)"},
           {"creature": "cizbiz", "time": "any", "weight": 1, "group": [1, 2], "maxGroups": 2, "baseDistance": [120, 100000], "minWeight": 0.7, "respawn": 180, "note": "yaratik4 yaratigi; satir biyom akisindan (creatures.json biome)"},
           {"creature": "suluk_surusu", "time": "any", "weight": 1, "group": [1, 1], "maxGroups": 2, "baseDistance": [120, 100000], "minWeight": 0.7, "respawn": 180, "note": "yaratik4 yaratigi; satir biyom akisindan (creatures.json biome)"}
-        ], "atalar": [] },
+        ], "atalar": [ {"ata": "kurbaga_aga", "site": "ata_tasi", "arenaRadius": 20, "note": "Boss akisi: arena ve cagirma."} ] },
       "pois": [
         {"type": "seyir_kulesi", "count": 1, "minSpacing": 200, "baseDistance": [60, 100000], "minWeight": 0.9},
-        {"type": "ata_tasi", "count": 1, "minSpacing": 200, "baseDistance": [60, 100000], "minWeight": 0.95},
+        {"type": "ata_tasi", "count": 1, "minSpacing": 100, "baseDistance": [60, 100000], "minWeight": 0.95, "flatten": 24, "fixed": [[91, 1241]], "_fixed": "boss akisinin kurbaga_aga arenasi (atalar.json arena.center)"},
+        {"type": "oyuk", "count": 3, "minSpacing": 90, "baseDistance": [60, 100000], "minWeight": 0.92, "_not": "M3/M4 oyuk akisi: biyomun koruyucusu (oyuk.json guardians)"},
         {"type": "yabani_bahce", "count": 1, "minSpacing": 120, "baseDistance": [60, 100000], "minWeight": 0.85},
         {"type": "yuva", "count": 2, "minSpacing": 70, "baseDistance": [60, 100000], "minWeight": 0.8},
         {"type": "enkaz", "count": 3, "minSpacing": 70, "baseDistance": [60, 100000], "minWeight": 0.75},
@@ -312,10 +314,11 @@
           {"creature": "kizgin", "time": "any", "weight": 1, "group": [1, 2], "maxGroups": 2, "baseDistance": [120, 100000], "minWeight": 0.7, "respawn": 180, "note": "yaratik4 yaratigi; satir biyom akisindan (creatures.json biome)"},
           {"creature": "lesci", "time": "day", "weight": 1, "group": [2, 3], "maxGroups": 2, "baseDistance": [120, 100000], "minWeight": 0.7, "respawn": 180, "note": "yaratik4 yaratigi; satir biyom akisindan (creatures.json biome)"},
           {"creature": "dehliz", "time": "any", "weight": 1, "group": [1, 2], "maxGroups": 2, "baseDistance": [120, 100000], "minWeight": 0.7, "respawn": 180, "note": "yaratik4 yaratigi; satir biyom akisindan (creatures.json biome)"}
-        ], "atalar": [] },
+        ], "atalar": [ {"ata": "ciyan_pasa", "site": "ata_tasi", "arenaRadius": 24, "note": "Boss akisi: arena ve cagirma."} ] },
       "pois": [
         {"type": "seyir_kulesi", "count": 1, "minSpacing": 200, "baseDistance": [60, 100000], "minWeight": 0.9},
-        {"type": "ata_tasi", "count": 1, "minSpacing": 200, "baseDistance": [60, 100000], "minWeight": 0.95},
+        {"type": "ata_tasi", "count": 1, "minSpacing": 100, "baseDistance": [60, 100000], "minWeight": 0.95, "flatten": 28, "fixed": [[-725, 1008]], "_fixed": "boss akisinin ciyan_pasa arenasi (atalar.json arena.center)"},
+        {"type": "oyuk", "count": 3, "minSpacing": 90, "baseDistance": [60, 100000], "minWeight": 0.92, "_not": "M3/M4 oyuk akisi: biyomun koruyucusu (oyuk.json guardians)"},
         {"type": "yabani_bahce", "count": 1, "minSpacing": 120, "baseDistance": [60, 100000], "minWeight": 0.85},
         {"type": "yuva", "count": 2, "minSpacing": 70, "baseDistance": [60, 100000], "minWeight": 0.8},
         {"type": "enkaz", "count": 3, "minSpacing": 70, "baseDistance": [60, 100000], "minWeight": 0.75},
@@ -355,10 +358,11 @@
           {"creature": "ayaz_kurdu", "time": "any", "weight": 1, "group": [1, 2], "maxGroups": 2, "baseDistance": [120, 100000], "minWeight": 0.7, "respawn": 180, "note": "yaratik4 yaratigi; satir biyom akisindan (creatures.json biome)"},
           {"creature": "paytak", "time": "day", "weight": 1, "group": [2, 3], "maxGroups": 2, "baseDistance": [120, 100000], "minWeight": 0.7, "respawn": 180, "note": "yaratik4 yaratigi; satir biyom akisindan (creatures.json biome)"},
           {"creature": "billur", "time": "day", "weight": 1, "group": [2, 3], "maxGroups": 2, "baseDistance": [120, 100000], "minWeight": 0.7, "respawn": 180, "note": "yaratik4 yaratigi; satir biyom akisindan (creatures.json biome)"}
-        ], "atalar": [] },
+        ], "atalar": [ {"ata": "buz_tosunu", "site": "ata_tasi", "arenaRadius": 24, "note": "Boss akisi: arena ve cagirma."} ] },
       "pois": [
         {"type": "seyir_kulesi", "count": 1, "minSpacing": 200, "baseDistance": [60, 100000], "minWeight": 0.9},
-        {"type": "ata_tasi", "count": 1, "minSpacing": 200, "baseDistance": [60, 100000], "minWeight": 0.95},
+        {"type": "ata_tasi", "count": 1, "minSpacing": 100, "baseDistance": [60, 100000], "minWeight": 0.95, "flatten": 28, "fixed": [[-768, 391]], "_fixed": "boss akisinin buz_tosunu arenasi (atalar.json arena.center)"},
+        {"type": "oyuk", "count": 3, "minSpacing": 90, "baseDistance": [60, 100000], "minWeight": 0.92, "_not": "M3/M4 oyuk akisi: biyomun koruyucusu (oyuk.json guardians)"},
         {"type": "yabani_bahce", "count": 1, "minSpacing": 120, "baseDistance": [60, 100000], "minWeight": 0.85},
         {"type": "yuva", "count": 2, "minSpacing": 70, "baseDistance": [60, 100000], "minWeight": 0.8},
         {"type": "enkaz", "count": 3, "minSpacing": 70, "baseDistance": [60, 100000], "minWeight": 0.75},
@@ -395,10 +399,10 @@
       "grass": { "chunk": 16, "perChunk": 380, "height": [0.3, 0.62], "baseClear": 0, "wind": 1.0, "spacing": 0.3, "farSpacing": 0.75, "blades": 9, "farKeep": 0.45 },
       "spawns": { "creatures": [
           {"creature": "hamurcuk", "time": "any", "weight": 1, "group": [2, 3], "maxGroups": 2, "baseDistance": [120, 100000], "minWeight": 0.7, "respawn": 180, "note": "yaratik4 yaratigi; satir biyom akisindan (creatures.json biome)"}
-        ], "atalar": [] },
+        ], "atalar": [ {"ata": "ana_maya", "site": "ata_tasi", "arenaRadius": 28, "note": "Boss akisi: arena ve cagirma."} ] },
       "pois": [
         {"type": "seyir_kulesi", "count": 1, "minSpacing": 100, "baseDistance": [60, 100000], "minWeight": 0.9},
-        {"type": "ata_tasi", "count": 1, "minSpacing": 100, "baseDistance": [60, 100000], "minWeight": 0.95},
+        {"type": "ata_tasi", "count": 1, "minSpacing": 100, "baseDistance": [60, 100000], "minWeight": 0.95, "flatten": 32, "fixed": [[-401, 523]], "_fixed": "boss akisinin ana_maya arenasi (atalar.json arena.center)"},
         {"type": "enkaz", "count": 2, "minSpacing": 60, "baseDistance": [60, 100000], "minWeight": 0.85},
         {"type": "zengin_yatak", "count": 1, "minSpacing": 80, "baseDistance": [60, 100000], "minWeight": 0.9}
       ]

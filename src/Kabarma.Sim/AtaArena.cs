@@ -25,6 +25,6 @@ public static class AtaArena
         float half = t.Size * 0.5f;
         float edge = t.EdgeStart > 0 ? Math.Min(t.EdgeStart, half) : half;
         // Kenar yukselisi kare (World.BaseHeight: max(|x|,|z|) EdgeStart'tan sonra; dunya2), daire degil.
-        return Math.Max(Math.Abs(x), Math.Abs(z)) + radius <= edge;
+        return Math.Max(Math.Abs(x - t.CenterX), Math.Abs(z - t.CenterZ)) + radius <= edge; // M4: dunya karesi kratere yakin merkezlenir (Terrain.Center)
     }
 }

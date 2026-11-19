@@ -16,6 +16,8 @@ public partial class Player
     Skeleton3D _skel;
     public PlayerRig Rig { get; private set; }
     public Visor Visor { get; private set; }
+    /// <summary>Model iskeleti (kozmetik uygulamasi, CosmeticView).</summary>
+    public Skeleton3D Skeleton => _skel;
     PlayerAnimsFile _clips = new();
     PlayerRigDef RigDef => _clips.Rig;
     int _handBone = -1;

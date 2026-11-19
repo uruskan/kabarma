@@ -5,18 +5,18 @@
   "maxStack": 2,
   "newMoon": { "_": "Yeni Ay'da secilen her madde KS 1'den tek kat acik; o dunyanin Maya kazanci +%5 (yuk zam, placeholder).", "mayaPerClause": 0.05 },
   "clauses": [
-    { "id": "sis", "name": "Sis", "visionM": 30 },
-    { "id": "ac_suru", "name": "Aç Sürü", "eatSpeed": 2.0 },
-    { "id": "kalin_kabuk", "name": "Kalın Kabuk", "eliteAdd": 0.10 },
-    { "id": "cift_azman", "name": "Çift Azman", "azmanAdd": 1 },
-    { "id": "kirik_can", "name": "Kırık Çan", "noGap": true },
-    { "id": "saganak", "name": "Sağanak", "fireMult": 0.0, "shockMult": 1.5 },
-    { "id": "holding_seferberligi", "name": "Holding Seferberliği", "holdingAllRaid": true },
-    { "id": "cimri_ay", "name": "Cimri Ay", "offerSize": 2 },
-    { "id": "uzun_gece", "name": "Uzun Gece", "extraWaves": 4 },
-    { "id": "kor_kule", "name": "Kör Kule", "towerSpeed": 0.7 },
-    { "id": "gocmen_suru", "name": "Göçmen Sürü", "anyBiomeMix": true },
-    { "id": "ters_ruzgar", "name": "Ters Rüzgâr", "rangeMult": 0.75 }
+    { "id": "sis", "note": "Görüş 30 m", "name": "Sis", "visionM": 30 },
+    { "id": "ac_suru", "note": "Düşmanlar ekini iki kat hızlı yer", "name": "Aç Sürü", "eatSpeed": 2.0 },
+    { "id": "kalin_kabuk", "note": "Elit oranı +%10", "name": "Kalın Kabuk", "eliteAdd": 0.10 },
+    { "id": "cift_azman", "note": "Doruk'ta iki Azman", "name": "Çift Azman", "azmanAdd": 1 },
+    { "id": "kirik_can", "note": "Dalgalar arasında ara yok", "name": "Kırık Çan", "noGap": true },
+    { "id": "saganak", "note": "Ateş etkisiz, Şok güçlü", "name": "Sağanak", "fireMult": 0.0, "shockMult": 1.5 },
+    { "id": "holding_seferberligi", "note": "Bütün kamplar baskın yollar", "name": "Holding Seferberliği", "holdingAllRaid": true },
+    { "id": "cimri_ay", "note": "Seviye başına 2 kart sunulur", "name": "Cimri Ay", "offerSize": 2 },
+    { "id": "uzun_gece", "note": "Dört dalga daha", "name": "Uzun Gece", "extraWaves": 4 },
+    { "id": "kor_kule", "note": "Kuleler %30 yavaş", "name": "Kör Kule", "towerSpeed": 0.7 },
+    { "id": "gocmen_suru", "note": "Bileşim bütün biyomlardan rastgele", "name": "Göçmen Sürü", "anyBiomeMix": true },
+    { "id": "ters_ruzgar", "note": "Mermi menzili −%25", "name": "Ters Rüzgâr", "rangeMult": 0.75 }
   ],
   "swellRoom": { "_": "Kabartma Odasi (GDD 14.10): calisma basina Maya, hedef yaricapi (m), hayvanin kabarik kaldigi sure (sn).", "mayaCost": 50, "radius": 12, "animalSeconds": 120 }
 }

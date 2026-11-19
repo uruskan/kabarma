@@ -20,6 +20,8 @@ public sealed class Mastery
     public MasteryFile Def => _def;
 
     /// <summary>(dal, yeni seviye).</summary>
+    /// <summary>Kazanilan XP carpani (dolap: Cirak +%10).</summary>
+    public Func<double>? XpScale { get; set; }
     public event Action<string, int>? LevelUp;
     /// <summary>(dal, kademe): yeni bir A/B secimi acildi.</summary>
     public event Action<string, int>? PerkUnlocked;
@@ -59,6 +61,7 @@ public sealed class Mastery
     public void AddXp(string branch, double xp)
     {
         if (xp <= 0 || _def.Branches.All(b => b.Id != branch)) return;
+        xp *= XpScale?.Invoke() ?? 1.0; // dolap: Cirak pasifi (mastery_gain)
         int before = Level(branch);
         double cap = Threshold(_def.MaxLevel);
         _xp[branch] = Math.Min(cap, Xp(branch) + xp);

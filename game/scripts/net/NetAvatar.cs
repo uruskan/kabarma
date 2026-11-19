@@ -94,8 +94,21 @@ public partial class NetAvatar : Node3D
         Slapping = f.Has(NetFrameFlags.Slapping);
     }
 
+    string _look = null;
+
+    /// <summary>Uzak oyuncunun kozmetigi (Director.LookOf, "looks" bolumu): degisince modele uygulanir (CosmeticView).</summary>
+    void UpdateLook()
+    {
+        string look = _net.D.LookOf(Peer);
+        if (look == _look || _model == null) return;
+        _look = look;
+        var skel = _model.FindChildren("*", "Skeleton3D", true, false).OfType<Skeleton3D>().FirstOrDefault();
+        CosmeticView.Apply(skel, Kabarma.Sim.Wardrobe.ParseLook(look), _net.D.Data);
+    }
+
     public override void _Process(double delta)
     {
+        UpdateLook();
         if (_buf.Count == 0) return;
         Visible = true;
         double t = NetSync.Now - _net.Cfg.InterpDelay;

@@ -21,6 +21,24 @@ public partial class Player
     Transform3D _capaBack = Transform3D.Identity;
     string _backBone = "Backpack";
     bool _capaOnBack;
+    bool _backCal;
+
+    /// <summary>
+    /// Capa sirtta: yer cantanin kutusundan hesaplanir (Tripo modeli: Mixamo kemik cerceveleri grips.json back tablosuyla uyusmuyordu).
+    /// Capa cantanin arka yuzunde yatar, namlu asagi; kemik dinlenme durusuna gore yerele cevrilir. Kutu bulunamazsa grips.json kalir.
+    /// </summary>
+    void CalibrateBack()
+    {
+        _backCal = true;
+        var skel = Skeleton;
+        if (skel == null) return;
+        int bi = skel.FindBone(_backBone);
+        if (bi < 0 || CosmeticView.BagBox(skel) is not Aabb box) return;
+        var center = box.GetCenter();
+        var basis = new Basis(new Vector3(-1, 0, 0), new Vector3(0, 0, -1), new Vector3(0, -1, 0)); // Z (namlu) asagi, Y arkaya
+        var want = new Transform3D(basis, new Vector3(center.X, box.Position.Y + 0.04f, box.Position.Z - 0.07f));
+        _capaBack = skel.GetBoneGlobalRest(bi).AffineInverse() * want;
+    }
     Vector3 _aimCache;
     ElArabasi _cart;            // oyuncunun ittigi araba (iki elle tutulur)
     Node3D _cartR, _cartL;      // tutamak dugumleri
@@ -188,6 +206,7 @@ public partial class Player
         }
         if ((_capaOnBack || _cart != null) && Rig.Body.HasBag)
         {
+            if (!_backCal) CalibrateBack();
             _capa.GlobalTransform = Rig.BoneWorld(_backBone) * _capaBack;
             return;
         }

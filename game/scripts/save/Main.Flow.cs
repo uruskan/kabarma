@@ -32,12 +32,12 @@ public partial class Main
     }
 
     /// <summary>Menuden oyuna: <paramref name="load"/> null ise yeni oyun. Oyun bu yuvaya kaydeder.</summary>
-    public void StartGame(SaveGame load, string slot, string preset = null)
+    public void StartGame(SaveGame load, string slot, string preset = null, System.Collections.Generic.List<string> newMoon = null)
     {
         if (_menu != null) { RemoveChild(_menu); _menu.QueueFree(); _menu = null; }
         EndGame();
         var data = _menuData ?? GameData.Load(f => FileAccess.GetFileAsString("res://data/" + f));
-        _dir = new Director { Name = "Director", Controls = _controls, PendingLoad = load, SaveRoot = MenuRoot(data), SaveSlot = slot, NewPreset = preset };
+        _dir = new Director { Name = "Director", Controls = _controls, PendingLoad = load, SaveRoot = MenuRoot(data), SaveSlot = slot, NewPreset = preset, NewMoon = newMoon };
         if (Args.TryGetValue("fast", out var f)) _dir.SpeedScale = float.Parse(f, System.Globalization.CultureInfo.InvariantCulture);
         AddChild(_dir);
         GD.Print($"GAME start slot={slot} load={(load != null ? load.Manifest.Day.ToString() : "-")}");
