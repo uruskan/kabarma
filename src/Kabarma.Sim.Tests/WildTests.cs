@@ -68,8 +68,6 @@ public class WildTests
         // Dogma semasi dunya2'nin (biomes.json spawns.creatures, SpawnTable); yaratik2 satir ekler.
         foreach (var c in D.Creatures.Creatures.Where(c => c.Wild != null || c.Swarm != null))
         {
-            // GECICI (yaratik4, M4): yeni biyomlar (isil_sazlik, kizil_kanyon, ayaz_yaylasi, gobek) biyom akisiyla gelir; gelince satir zorunlu.
-            if (!D.Biomes.Biomes.ContainsKey(c.Biome) && c.Biome is "isil_sazlik" or "kizil_kanyon" or "ayaz_yaylasi" or "gobek") continue;
             Assert.True(D.Biomes.Biomes.ContainsKey(c.Biome), $"{c.Id}: biyom {c.Biome}");
             var row = D.Biomes.Biomes[c.Biome].Spawns.Creatures.FirstOrDefault(r => r.Creature == c.Id);
             Assert.True(row != null, $"{c.Id}: {c.Biome} dogma satiri yok");

@@ -32,6 +32,19 @@ public sealed class AbilityDef
     public float Speed { get; set; }
     /// <summary>Dev Mod: alinan hasar carpani.</summary>
     public float DamageTaken { get; set; } = 1f;
+    // kusam (M4): yeni gucler
+    /// <summary>Zaman Bali: icindekilerin hiz kaybi (0..1).</summary>
+    public float Slow { get; set; }
+    /// <summary>Cekim Kuyusu: merkeze cekme hizi (m/sn).</summary>
+    public float Pull { get; set; }
+    /// <summary>Roket Zipleme: sicrama yuksekligi (m).</summary>
+    public float Height { get; set; }
+    /// <summary>Alev Cemberi: halkanin ic yaricapi (m); yaricap dis.</summary>
+    public float Inner { get; set; }
+    /// <summary>Alev Cemberi: yanik suresi (sn).</summary>
+    public float Burn { get; set; }
+    /// <summary>Buz Duvari: duvar uzunlugu (m).</summary>
+    public float Length { get; set; }
 
     public bool IsUlti => Kind == "ulti";
 }

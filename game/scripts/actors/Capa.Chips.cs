@@ -15,7 +15,7 @@ public partial class Capa
     public static string ChipHeadId(Head h) => h switch
     {
         Head.Kazma => "kazma", Head.Bicme => "bicme", Head.Toprak => "toprak", Head.Sulama => "sulama", Head.Cekim => "cekim",
-        Head.Tirpan => "tirpan_isini", _ => "civi_tabancasi",
+        Head.Tirpan => "tirpan_isini", Head.Civi => "civi_tabancasi", _ => Head4Id(h),
     };
 
     /// <summary>Atis basina istatistik: kart (gece) + baslik cipleri.</summary>

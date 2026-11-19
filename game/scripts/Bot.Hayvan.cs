@@ -52,6 +52,16 @@ public partial class Bot
         if (_d.Hud.StationOpen && !_d.Hud.ReportOpen && _hayvanShot == 0) { if (_menuT <= 0) { MenuClose(); _menuT = 0.3f; } return; }
         int need = (a.Tame ? 0 : Mathf.CeilToInt((1f - a.Trust) * _d.State.Ranch.Rules.Species("pofuduk").FoodToTrust - 0.001f)) + (FeederFor("turnip") == null ? 2 : 0);
         if (bag.Count("turnip") < need) { HarvestTurnip(); return; }
+        // Ikinci Yemlik'in malzemesini agila girmeden topla (oyuncu da disarida toplar; agilin icinden kapiya donus bota takiliyordu).
+        if (!a.Registered && bag.Count("yemlik") == 0 && FeederFor("turnip") == null)
+        {
+            var pen0 = _d.Pens.Pens.FirstOrDefault();
+            bool spare = pen0 != null && _d.Pens.PropsIn(pen0, "yemlik").Any(y => y.Feeder.Amount == 0);
+            var rec0 = _d.Data.Tool.RecipeFor("yemlik");
+            if (!spare && rec0 != null)
+                foreach (var (item, n) in rec0.In)
+                    if (bag.Count(item) < n) { if (_d.Hud.MenuOpen) { if (_menuT <= 0) { MenuClose(); _menuT = 0.3f; } return; } EnsureItem(item, n); return; }
+        }
 
         // 2. Guven
         if (!a.Tame)

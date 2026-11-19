@@ -139,6 +139,18 @@ public abstract partial class AtaActor : Node3D, IAtaTarget
     protected float DmgMult => Fight?.DamageMult ?? 1f;
     /// <summary>Her kare, durum makinesinden once (Fight dolu).</summary>
     protected virtual void ExtraTick(float dt) { }
+
+    /// <summary>Istemci kuklasi: durumdaki konuma kayar, bakar, yurur; yalniz yerel oyuncuya temas hasari verir.</summary>
+    void PuppetTick(float dt)
+    {
+        var f = Fight;
+        var to = D.World.Ground(new Vector3(f.X, 0, f.Z));
+        bool moving = to.DistanceTo(GlobalPosition) > 0.05f;
+        GlobalPosition = GlobalPosition.DistanceTo(to) > 14f ? to : GlobalPosition.Lerp(to, Mathf.Min(1f, dt * 8f));
+        Rotation = new Vector3(0, Mathf.LerpAngle(Rotation.Y, f.Yaw, Mathf.Min(1f, dt * 8f)), 0);
+        if (moving) WalkAnim(dt, Phase.MoveSpeed); else IdleAnim(dt, false);
+        if (f.ShieldT <= 0 && f.StunT <= 0) Contact(D.Player, Phase.ContactDamage);
+    }
     protected bool Frozen;
     protected Vector3 FaceDir => new Vector3(Mathf.Sin(Rotation.Y), 0, Mathf.Cos(Rotation.Y));
 
@@ -231,6 +243,7 @@ public abstract partial class AtaActor : Node3D, IAtaTarget
         _contactCd -= dt;
         if (_flash > 0) _flash = Mathf.Max(0, _flash - dt * 5f);
         if (Fight == null) return;
+        if (D.NetClient) { PuppetTick(dt); return; } // ortak oyun: istemcide kukla (host yurutur)
         Frozen = false;
         ExtraTick(dt); // M4: Ata ozel kare isi (yutma, dalis, bogum zinciri, soguk); Frozen: durum makinesi bu karede islemez (ziplama)
         if (Frozen) return;

@@ -1,4 +1,4 @@
-﻿{
+{
   "_not": "Gucler, ultiler, Kadim Tas denemeleri, Maya Feneri ve Tatbikat (GDD 14.6, 14.7, 17, 17.1; ICERIK 7). Sure saniye, uzaklik metre. 'charge' Sarj bedeli, 'cooldown' bekleme. Kural src/Kabarma.Sim/Ability*.cs, KadimTas*.cs, Tatbikat*.cs; Godot game/scripts/abilities/. Elektrik (power.json) ile ilgisi yok.",
   "charge": { "max": 100, "regenPerSecond": 5, "regenDelay": 1.5 },
   "activeSlots": 1,
@@ -11,7 +11,15 @@
     { "id": "yem_hologrami", "name": "Yem Hologramı", "kind": "active", "charge": 30, "cooldown": 20, "duration": 8, "radius": 15, "hp": 60 },
     { "id": "sifa_sisi", "name": "Şifa Sisi", "kind": "active", "charge": 45, "cooldown": 30, "radius": 5, "duration": 6, "heal": 8 },
     { "id": "suru_cagrisi", "name": "Sürü Çağrısı", "kind": "ulti", "radius": 60, "distance": 25, "duration": 2.5, "damage": 40, "knock": 10, "damageType": "darbe", "ghostAnimals": 4, "_ghostAnimals": "YER TUTUCU: evcil hayvan yoksa kosan hayalet hayvan sayisi" },
-    { "id": "dev_mod", "name": "Dev Mod", "kind": "ulti", "duration": 20, "scale": 2.5, "speed": 1.3, "damageTaken": 0.5, "damage": 30, "radius": 2.2, "damageType": "darbe" }
+    { "id": "zaman_bali", "name": "Zaman Balı", "kind": "active", "charge": 40, "cooldown": 25, "radius": 5, "duration": 6, "slow": 0.7 },
+    { "id": "cekim_kuyusu", "name": "Çekim Kuyusu", "kind": "active", "charge": 40, "cooldown": 20, "radius": 12, "duration": 3, "pull": 9 },
+    { "id": "roket_ziplama", "name": "Roket Zıplama", "kind": "active", "charge": 30, "cooldown": 12, "height": 14, "radius": 6, "damage": 40, "knock": 10, "damageType": "darbe" },
+    { "id": "alev_cemberi", "name": "Alev Çemberi", "kind": "active", "charge": 35, "cooldown": 18, "radius": 6, "inner": 4, "duration": 5, "damage": 14, "damageType": "ates", "burn": 3 },
+    { "id": "isinlan", "name": "Işınlan", "kind": "active", "charge": 50, "cooldown": 30, "duration": 4 },
+    { "id": "buz_duvari", "name": "Buz Duvarı", "kind": "active", "charge": 35, "cooldown": 20, "length": 8, "duration": 8, "distance": 4 },
+    { "id": "gorunmez_pelerin", "name": "Görünmez Pelerin", "kind": "active", "charge": 45, "cooldown": 30, "duration": 8 },
+    { "id": "yorunge_sulamasi", "name": "Yörünge Sulaması", "kind": "ulti", "radius": 8, "distance": 18, "duration": 3, "damage": 120, "damageType": "darbe", "knock": 4 },
+    { "id": "zaman_durdu", "name": "Zaman Durdu", "kind": "ulti", "duration": 5 },    { "id": "dev_mod", "name": "Dev Mod", "kind": "ulti", "duration": 20, "scale": 2.5, "speed": 1.3, "damageTaken": 0.5, "damage": 30, "radius": 2.2, "damageType": "darbe" }
   ],
   "stones": [
     { "id": "kadim_atilma", "name": "Kadim Taş: Atılma", "biome": "altin_cayir", "ability": "atilma", "trial": "parkur", "x": -10, "z": 40, "seconds": 45, "rings": [[0, 9, 1.2], [6, 16, 1.6], [-3, 24, 2.4], [5, 31, 1.4], [-4, 38, 2.0], [0, 45, 1.2]], "ringRadius": 2.2 },
