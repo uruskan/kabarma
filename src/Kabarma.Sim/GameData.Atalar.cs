@@ -25,6 +25,21 @@ public sealed class AtaArenaDef
     public float PillarRadius { get; set; } = 1f;
     /// <summary>Oyuncu bu yaricapin disina cikarsa Ata merkeze doner (m).</summary>
     public float Leash { get; set; } = 30f;
+    /// <summary>
+    /// GECICI (M4, ata4): "gecici" doluysa bu arena merkezi biyom akisinin Ata Tasi noktasi gelene dek yer tutucudur;
+    /// AtaSystem bu Atalar icin tas ve arena yalniz gercek bir nokta cozuldugunde ya da test yerlestirdiginde kurulur.
+    /// </summary>
+    public string Temporary { get; set; } = "";
+    /// <summary>Arena donanimi (merkeze gore): nilufer yapragi, duvar, varil, isinma noktasi, gol. Biyomun noktasina da ayni kurulur.</summary>
+    public List<AtaPropDef> Props { get; set; } = new();
+}
+
+/// <summary>Arena donanimi: Kind "pad" (nilufer yapragi), "wall" (mesa duvari, Yon dereceyle), "barrel" (katran varili), "warm" (isinma noktasi), "lake" (donmus gol).</summary>
+public sealed class AtaPropDef
+{
+    public string Kind { get; set; } = "";
+    public List<float> Pos { get; set; } = new();
+    public float Radius { get; set; } = 1.5f;
 }
 
 /// <summary>Bir asama. Asama, can orani HpUntil'in altina inene dek surer (son asamada 0).</summary>
@@ -76,6 +91,27 @@ public sealed class AtaPhaseDef
     public float ShardDamage { get; set; }
     /// <summary>Sis yogunlugu carpani (Dede asama 1); 1 = degismez.</summary>
     public float Fog { get; set; } = 1f;
+
+    // ---- M4 (ata4) ----
+    /// <summary>"swallow" saldirisi: yutulan oyuncu bu sure icerde kalir ve icerden vurus SwallowCritMult carpar (Kurbaga Aga).</summary>
+    public float SwallowSeconds { get; set; }
+    public float SwallowCritMult { get; set; } = 1f;
+    /// <summary>"dive" saldirisi: Ata bu sure suyun altinda, hasar almaz; cikista LungeRadius alaninda AttackDamage (nilufer yapragindakine degmez).</summary>
+    public float DiveSeconds { get; set; }
+    /// <summary>Alan saldirisi yaricapi (m): dalistan cikis, ziplama inisi, kum fircinasi.</summary>
+    public float LungeRadius { get; set; }
+    /// <summary>Soguk (tipi): isinma noktasindan WarmRadius uzaktaki oyuncu saniyede ColdDps hasar alir (Buz Tosunu asama 2).</summary>
+    public float ColdDps { get; set; }
+    public float WarmRadius { get; set; }
+    /// <summary>Zayif nokta yalniz zirh bu degerin altina inince acik (Buz Tosunu: buzul eriyince karin acilir); 0 = kullanilmaz.</summary>
+    public float WeakArmorBelow { get; set; }
+    /// <summary>Asamada butun oyuncular kabarir (boy carpani) ve verdikleri hasar PlayerDamageMult carpar (Ana Maya asama 3).</summary>
+    public float PlayerSwell { get; set; } = 1f;
+    public float PlayerDamageMult { get; set; } = 1f;
+    /// <summary>Kopan bogum: her kirilan zayif nokta bir yardimci (AtaDef.Add) dogurur (Ciyan Pasa asama 2).</summary>
+    public bool BreakSpawnsAdd { get; set; }
+    /// <summary>Bu asamanin yardimcisi (AtaDef.Add yerine); bos = AtaDef.Add.</summary>
+    public string AddId { get; set; } = "";
 }
 
 public sealed class AtaRewardItemDef
@@ -90,6 +126,11 @@ public sealed class AtaRewardDef
     public List<AtaRewardItemDef> Items { get; set; } = new();
     public string Seal { get; set; } = "";
     public string Ulti { get; set; } = "";
+    /// <summary>
+    /// GECICI (ata4): ulti kimligi abilities.json'da tanimlanana (kusam akisi) dek Ulti yerine buraya yazilir; yenilgide
+    /// AtaProgress.UltisOwed'a eklenir. Tanim gelince bu alan bosaltilip Ulti'ye tasinir.
+    /// </summary>
+    public string PendingUlti { get; set; } = "";
     /// <summary>Acilan icerik kimlikleri ("biome:sis_korusu", "recipe:capa_mk2" ...); ilgili akislar Sim'den sorar.</summary>
     public List<string> Unlocks { get; set; } = new();
 }
@@ -101,6 +142,34 @@ public sealed class SealDef
     public string Name { get; set; } = "";
     public string Effect { get; set; } = "";
     public float Mult { get; set; } = 1f;
+    /// <summary>Ek etkiler (Kalin Post iki etki tasir; Eksi Maya toplamsal Add).</summary>
+    public List<SealEffectDef> Also { get; set; } = new();
+}
+
+public sealed class SealEffectDef
+{
+    public string Effect { get; set; } = "";
+    public float Mult { get; set; } = 1f;
+    /// <summary>Toplamsal etki (Eksi Maya boy puani +2); Mult 1 kalir.</summary>
+    public float Add { get; set; }
+}
+
+/// <summary>
+/// Kabarik Ata (GDD §18, ICERIK §2 #26): yenilen Ata ayni adak ve KS × MayaPerKs Maya ile yeniden cagrilir; can ve hasar
+/// KS ile olceklenir; odul ust basamak cip malzemesidir. Kimlik "kabarik_" + Ata kimligi.
+/// </summary>
+public sealed class KabarikDef
+{
+    public string MayaItem { get; set; } = "maya";
+    public int MayaPerKs { get; set; } = 50;
+    /// <summary>Secilebilen KS'ler (iş emri #33: 5 · 10 · 15 · 20 · 30).</summary>
+    public List<int> Ks { get; set; } = new() { 5, 10, 15, 20, 30 };
+    /// <summary>Can ve hasar carpani 1 + k × KS.</summary>
+    public float HpPerKs { get; set; } = 0.1f;
+    public float DamagePerKs { get; set; } = 0.02f;
+    /// <summary>Ust basamak cip malzemesi: KS / 5 tane (Kabarik Ata'nin tek odulu; Cekirdek, muhur, ulti tekrar verilmez).</summary>
+    public string RewardItem { get; set; } = "kabarik_oz";
+    public int RewardPer5Ks { get; set; } = 1;
 }
 
 /// <summary>Yardimci yaratik (yer tutucu: gercegi yaratik2 akisinda gelince Creature alanina tur kimligi yazilir).</summary>
@@ -113,6 +182,8 @@ public sealed class AtaAddDef
     public float Damage { get; set; }
     public float Scale { get; set; } = 1f;
     public string Look { get; set; } = "";
+    /// <summary>Koddan yer tutucunun rengi (onaltilik); bos = varsayilan.</summary>
+    public string Color { get; set; } = "";
     public string Placeholder { get; set; } = "";
 }
 
@@ -135,6 +206,9 @@ public sealed class AtaDef
     /// <summary>Kutle (GDD §16.1 Itme: itme hizi = kuvvet / kutle).</summary>
     public float Mass { get; set; } = 25f;
     public string Add { get; set; } = "";
+    /// <summary>Guc isteyen adak (Ciyan Pasa'nin Sismik Davulu): arenaya kurulur, PowerWatts W ile PowerSeconds sn beslenince adak tamam sayilir.</summary>
+    public float PowerWatts { get; set; }
+    public float PowerSeconds { get; set; }
     public List<AtaPhaseDef> Phases { get; set; } = new();
     public AtaRewardDef Reward { get; set; } = new();
 }
@@ -152,6 +226,7 @@ public sealed class AtalarFile
     public List<AtaDef> Atalar { get; set; } = new();
     public List<AtaAddDef> Adds { get; set; } = new();
     public List<SealDef> Seals { get; set; } = new();
+    public KabarikDef Kabarik { get; set; } = new();
 
     public AtaDef Get(string id) => Atalar.FirstOrDefault(a => a.Id == id) ?? throw new KeyNotFoundException($"atalar.json: '{id}' yok");
     public AtaAddDef? AddOf(string id) => Adds.FirstOrDefault(a => a.Id == id);

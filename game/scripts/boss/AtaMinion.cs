@@ -47,7 +47,7 @@ public partial class AtaMinion : Node3D, IAtaTarget
         {
             // Koddan bekci: findik govde, yaprak kulak, isiyan gozler (Findikci / Hu yer tutucusu).
             var kit = new MeshKit();
-            var shell = Palette.Wood.Lerp(Palette.Shadow, 0.25f);
+            var shell = string.IsNullOrEmpty(_def.Color) ? Palette.Wood.Lerp(Palette.Shadow, 0.25f) : new Color(_def.Color);
             kit.Sphere(0.38f, MeshKit.At(new Vector3(0, 0.4f, 0), Vector3.Zero, new Vector3(1f, 1.15f, 1f)), shell, 12, 7);
             kit.Cylinder(0.08f, 0.3f, 0.22f, MeshKit.At(0, 0.86f, 0), Palette.Wood.Darkened(0.4f), 8);
             kit.Pillow(new Vector3(0.28f, 0.06f, 0.14f), MeshKit.At(new Vector3(-0.3f, 0.7f, 0), new Vector3(0, 0, 0.6f)), Palette.Plant, 0.5f, 8, 3);

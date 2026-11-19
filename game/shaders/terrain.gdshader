@@ -30,10 +30,17 @@ uniform float flash = 0.0;
 uniform float wobble_amp = 0.0; // MeshKit canli malzemesiyle uyum (kullanilmaz)
 uniform float rim = 0.0;
 // Biyom karisimi (dunya2, World.Biomes.cs): R = Sis Korusu agirligi; orman tabani + yosun.
-uniform sampler2D biome_tex : filter_linear, repeat_disable;
+uniform sampler2D biome_tex : filter_linear, repeat_disable;   // R Koru, G Sazlik, B Kanyon, A Ayaz
+uniform sampler2D biome_tex2 : filter_linear, repeat_disable;  // R Gobek
+uniform vec2 world_center = vec2(0.0);
 uniform float biome_floor_mix = 0.0;
 uniform vec4 biome_floor : source_color = vec4(0.25, 0.35, 0.3, 1.0);
 uniform vec4 biome_moss : source_color = vec4(0.25, 0.45, 0.35, 1.0);
+// M4 biyomlari: [mix, floor, moss] x 4 (Sazlik, Kanyon, Ayaz, Gobek); mix 0 = o biyom kapali.
+uniform float b2_mix = 0.0; uniform vec4 b2_floor : source_color = vec4(0.3); uniform vec4 b2_moss : source_color = vec4(0.3);
+uniform float b3_mix = 0.0; uniform vec4 b3_floor : source_color = vec4(0.3); uniform vec4 b3_moss : source_color = vec4(0.3);
+uniform float b4_mix = 0.0; uniform vec4 b4_floor : source_color = vec4(0.3); uniform vec4 b4_moss : source_color = vec4(0.3);
+uniform float b5_mix = 0.0; uniform vec4 b5_floor : source_color = vec4(0.3); uniform vec4 b5_moss : source_color = vec4(0.3);
 
 varying vec3 v_world;
 varying vec3 v_nw;
@@ -82,7 +89,7 @@ void fragment() {
 	vec3 ng = normalize(v_nw);
 	float dist = length(v_world - CAMERA_POSITION_WORLD);
 	float far = smoothstep(15.0, 140.0, dist);
-	vec4 ctl = texture(control, (xz + world_size * 0.5) / world_size);
+	vec4 ctl = texture(control, (xz - world_center + world_size * 0.5) / world_size);
 	float m1 = texture(macro_noise, xz / 110.0).r;   // buyuk lekeler (yesil / altin)
 	float m2 = texture(macro_noise, xz / 27.0 + 0.5).r;
 	float m3 = texture(macro_noise, xz / 7.0 + 0.25).r;
@@ -104,15 +111,23 @@ void fragment() {
 		alb = mix(alb, a, t); nrm = mix(nrm, n, t);
 	}
 	// Sis Korusu tabani: toprak dokusu, palet zemin rengine boyanir; buyuk lekelerde yosun.
-	float kb = texture(biome_tex, (xz + world_size * 0.5) / world_size).r * biome_floor_mix;
-	if (kb > 0.003) {
-		vec4 a; vec4 n;
-		planar(L_TOPRAK, xz, tile_m.y, mixk, a, n);
-		float lum = dot(a.rgb, vec3(0.3, 0.59, 0.11));
-		float moss = smoothstep(0.35, 0.7, m1 + (m3 - 0.5) * 0.4);
-		vec3 fc = mix(biome_floor.rgb * (0.5 + lum * 1.4), biome_moss.rgb * (0.55 + lum * 1.1), moss);
-		alb.rgb = mix(alb.rgb, fc, kb);
-		nrm = mix(nrm, n, kb);
+	vec2 buv = (xz - world_center + world_size * 0.5) / world_size;
+	vec4 bw = texture(biome_tex, buv);
+	float bw5 = texture(biome_tex2, buv).r;
+	float kw[5] = float[5](bw.r * biome_floor_mix, bw.g * b2_mix, bw.b * b3_mix, bw.a * b4_mix, bw5 * b5_mix);
+	vec3 kfl[5] = vec3[5](biome_floor.rgb, b2_floor.rgb, b3_floor.rgb, b4_floor.rgb, b5_floor.rgb);
+	vec3 kms[5] = vec3[5](biome_moss.rgb, b2_moss.rgb, b3_moss.rgb, b4_moss.rgb, b5_moss.rgb);
+	for (int bi = 0; bi < 5; bi++) {
+		float kb = kw[bi];
+		if (kb > 0.003) {
+			vec4 a; vec4 n;
+			planar(L_TOPRAK, xz, tile_m.y, mixk, a, n);
+			float lum = dot(a.rgb, vec3(0.3, 0.59, 0.11));
+			float moss = smoothstep(0.35, 0.7, m1 + (m3 - 0.5) * 0.4);
+			vec3 fc = mix(kfl[bi] * (0.5 + lum * 1.4), kms[bi] * (0.55 + lum * 1.1), moss);
+			alb.rgb = mix(alb.rgb, fc, kb);
+			nrm = mix(nrm, n, kb);
+		}
 	}
 	// Kum (gol kiyisi).
 	float w_kum = ctl.g;

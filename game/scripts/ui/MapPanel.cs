@@ -71,12 +71,12 @@ public partial class MapPanel : Control
 
     /// <summary>Kuzey yukari, dogu saga: ekran x = -dunya X, ekran y = -dunya Z.</summary>
     Vector2 ToMap(Rect2 r, float wx, float wz) =>
-        r.Position + new Vector2((S / 2f - wx) / S * r.Size.X, (S / 2f - wz) / S * r.Size.Y);
+        r.Position + new Vector2((W.Center.X + S / 2f - wx) / S * r.Size.X, (W.Center.Y + S / 2f - wz) / S * r.Size.Y);
 
     Vector2 ToWorld(Rect2 r, Vector2 m)
     {
         var u = (m - r.Position) / r.Size;
-        return new Vector2(S / 2f - u.X * S, S / 2f - u.Y * S);
+        return new Vector2(W.Center.X + S / 2f - u.X * S, W.Center.Y + S / 2f - u.Y * S);
     }
 
     // ---------- Dokular ----------
@@ -85,18 +85,21 @@ public partial class MapPanel : Control
     {
         const int res = 512;
         var img = Image.CreateEmpty(res, res, false, Image.Format.Rgb8);
-        var second = W.OtherBiomes.Select(b => b.id).FirstOrDefault();
         Color P(BiomeDef b, string k, Color f) => b.Palette.TryGetValue(k, out var h) ? new Color(h) : f;
-        var cay = W.Biome;
-        var koru = second != null ? W.Biomes.Biomes[second] : cay;
+        // Her biyomun harita tonu: baslangic biyomu (Cayir) zemin+bitki, digerleri bitki+zemin; agirlikla karisir (M4: altı biyom).
+        var order = W.Map.Order;
+        var tones = order.Select(id => { var b = W.Biomes.Biomes[id]; return id == W.Biomes.World.Biome ? P(b, "ground", Palette.Ground).Lerp(P(b, "plant", Palette.Plant), 0.45f) : P(b, "plant", Palette.Plant).Lerp(P(b, "ground", Palette.Ground), 0.5f); }).ToArray();
+        var wbuf = new float[order.Count];
         var light = new Vector3(0.5f, 0.75f, -0.45f).Normalized();
         for (int j = 0; j < res; j++)
         for (int i = 0; i < res; i++)
         {
-            float wx = S / 2f - (i + 0.5f) / res * S, wz = S / 2f - (j + 0.5f) / res * S;
+            float wx = W.Center.X + S / 2f - (i + 0.5f) / res * S, wz = W.Center.Y + S / 2f - (j + 0.5f) / res * S;
             float h = W.HeightAt(wx, wz);
-            float k = second != null ? W.Map.Weight(second, wx, wz) : 0f;
-            var c = P(cay, "ground", Palette.Ground).Lerp(P(cay, "plant", Palette.Plant), 0.45f).Lerp(P(koru, "plant", Palette.Plant).Lerp(P(koru, "ground", Palette.Ground), 0.5f), k);
+            W.Map.Weights(wx, wz, wbuf);
+            var c = new Color(0, 0, 0);
+            for (int bi = 0; bi < tones.Length; bi++) c += tones[bi] * wbuf[bi];
+            c.A = 1f;
             // Yukseklik golgesi.
             float dx = W.HeightAt(wx - 1f, wz) - W.HeightAt(wx + 1f, wz), dz = W.HeightAt(wx, wz - 1f) - W.HeightAt(wx, wz + 1f);
             var n = new Vector3(dx * 0.5f, 1f, dz * 0.5f).Normalized();
@@ -146,12 +149,12 @@ public partial class MapPanel : Control
         var fogCol = new Color(_d.Data.Biomes.World.Map.Fog);
         DrawTextureRect(_fog, r, false, fogCol);
         // 64 m kafes.
-        for (float g = -S / 2f; g <= S / 2f + 0.1f; g += 64f)
+        float grid = S > 1000f ? 200f : 64f;
+        for (float g = 0f; g <= S + 0.1f; g += grid)
         {
-            var a = ToMap(r, g, -S / 2f); var b = ToMap(r, g, S / 2f);
-            DrawLine(new Vector2(a.X, r.Position.Y), new Vector2(a.X, r.End.Y), new Color(1, 1, 1, 0.05f), 1f);
-            var c = ToMap(r, -S / 2f, g);
-            DrawLine(new Vector2(r.Position.X, c.Y), new Vector2(r.End.X, c.Y), new Color(1, 1, 1, 0.05f), 1f);
+            float u = g / S;
+            DrawLine(new Vector2(r.Position.X + u * r.Size.X, r.Position.Y), new Vector2(r.Position.X + u * r.Size.X, r.End.Y), new Color(1, 1, 1, 0.05f), 1f);
+            DrawLine(new Vector2(r.Position.X, r.Position.Y + u * r.Size.Y), new Vector2(r.End.X, r.Position.Y + u * r.Size.Y), new Color(1, 1, 1, 0.05f), 1f);
         }
         DrawRect(r, T.A(T.Ink, 0.35f), false, 1.5f);
         DrawString(small, new Vector2(r.Position.X + r.Size.X / 2f - T.Pxf(4), r.Position.Y - T.Pxf(4)), "K", HorizontalAlignment.Left, -1, T.Px(14), T.Teal);

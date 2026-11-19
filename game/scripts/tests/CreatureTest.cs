@@ -32,6 +32,8 @@ public partial class CreatureTest : Node3D
         CheckWild(data, poses); // CreatureTest.Wild.cs: yabani turler dogar, hareket eder, kabarir (yaratik2)
         CheckHits(data, poses); // CreatureTest.Hits.cs: Capa mermisi yabaniye ve suruye deger (yaratik2)
         CheckVehicle(data); // CreatureTest.Vehicle.cs: Cekirge ATV aktoru (yaratik2)
+        CheckTraits(data, poses); // CreatureTest.Traits.cs: M4 menzilli vurus, pusu, kayma (yaratik4)
+        CheckFacing(data, poses); // CreatureTest.Facing.cs: model onu +Z, hareket yonu (yaratik4)
         string res = _fail.Count == 0 ? "ok" : "fail";
         GD.Print($"RESULT {res} creatures={species.Count} wild={_wild} clips={_clips} posed={_posed}" + (_fail.Count > 0 ? " :: " + string.Join(" | ", _fail) : ""));
         GetTree().Quit(_fail.Count == 0 ? 0 : 1);

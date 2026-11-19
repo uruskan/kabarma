@@ -70,7 +70,7 @@ public class WaveTests
     [Fact]
     public void Family_without_species_goes_to_natives()
     {
-        var plan = Waves.Compose(D, Spec(2, fam: new() { ["fiber"] = 10 }));
+        var plan = Waves.Compose(D, Spec(2, fam: new() { ["bos_aile"] = 10 }));
         var allowed = F.Natives["altin_cayir"].Concat(F.Natives["sis_korusu"]).ToHashSet();
         Assert.All(plan.Waves.SelectMany(w => w.Slots), s => Assert.Contains(s.Species, allowed));
         var nat = F.Natives["altin_cayir"].ToHashSet();

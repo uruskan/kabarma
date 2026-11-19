@@ -32,7 +32,7 @@ public sealed class OyukGuardianDef
     public string NameEn { get; set; } = "";
     /// <summary>Bu koruyucunun tuttugu biyom (biomes.json kimligi).</summary>
     public string Biome { get; set; } = "";
-    /// <summary>"kostebek" ya da "yarasa": hangi kural sinifi (MoleFight, BatKnotFight).</summary>
+    /// <summary>"kostebek", "yarasa", "camur", "akrep" ya da "ayna": hangi kural sinifi (MoleFight, BatKnotFight, MudFight, ScorpionFight, MirrorFight).</summary>
     public string Kind { get; set; } = "";
     public List<float> Hp { get; set; } = new() { 300f };
     /// <summary>Oyuncuya vurusu (kostebek cikis carpmasi, yarasa dalisi).</summary>
@@ -79,6 +79,38 @@ public sealed class OyukGuardianDef
     public int WallLights { get; set; } = 0;
     /// <summary>Oda tavani (m); 0 ise Interior.Height.</summary>
     public float RoomHeight { get; set; } = 0f;
+
+    // ---- Camur Devi (M4, ata4) ----
+    /// <summary>Yuruyus hizi (m/s), vurus araligi (sn), islakken canlanma (can/sn): kademe dizileri.</summary>
+    public List<float> MoveSpeed { get; set; } = new() { 2.2f };
+    public List<float> SlamEvery { get; set; } = new() { 3.4f };
+    public List<float> RegenPerSecond { get; set; } = new() { 12f };
+    /// <summary>Kuruma: ates/yanma hasarinin her puani DryPerHeat sn kuruluk ekler; DryNeeded sn dolunca kurur ve DryHold sn kuru kalir.</summary>
+    public float DryNeeded { get; set; } = 3f;
+    public float DryHold { get; set; } = 7f;
+    public float DryPerHeat { get; set; } = 0.06f;
+    /// <summary>Gol (oda merkezine gore [x, z], yaricap): kuruyan dev oraya yurur ve girince yeniden islanir.</summary>
+    public List<float> Pool { get; set; } = new() { 0f, -8f };
+    public float PoolRadius { get; set; } = 3f;
+    // ---- Kuvars Akrebi (M4, ata4) ----
+    /// <summary>Catlak suresi (sn); agir vurus esigi (Havan: bu hasar ve ustu catlatir); sarkit sayisi, halka yaricapi, dusme gecikmesi (sn) ve etki yaricapi.</summary>
+    public float CrackSeconds { get; set; } = 7f;
+    public float CrackThreshold { get; set; } = 60f;
+    public int Stalactites { get; set; } = 4;
+    public float StalactiteRing { get; set; } = 8f;
+    public float StalactiteRadius { get; set; } = 2.6f;
+    public float FallSeconds { get; set; } = 0.9f;
+    /// <summary>Kuyruk (zehir) atisi araligi (sn, kademe) ve menzili (m).</summary>
+    public List<float> TailEvery { get; set; } = new() { 3.2f };
+    public float TailRange { get; set; } = 16f;
+    // ---- Buz Aynasi (M4, ata4) ----
+    /// <summary>Kopya cikarma araligi (sn), ayni anda en cok kopya, kopya cani ve vurus araligi (sn): kademe dizileri.</summary>
+    public List<float> CopyEvery { get; set; } = new() { 6f };
+    public List<int> CopyMax { get; set; } = new() { 2 };
+    public List<float> CopyHp { get; set; } = new() { 40f };
+    public float CopyReach { get; set; } = 2.4f;
+    public float CopyAttackEvery { get; set; } = 1.6f;
+    public float CopySpeed { get; set; } = 3.2f;
 
     /// <summary>Ilk acilista sandiktan cikanlar: esya → kademe dizisi.</summary>
     public Dictionary<string, List<int>> Rewards { get; set; } = new();

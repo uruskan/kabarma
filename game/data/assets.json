@@ -33,7 +33,13 @@
       },
       "license": "Tripo web (sahibin hesabi; uretilen varlik sahibin) (pipeline/licenses.md, Bitkiler)",
       "criteria": [
-        {"id": 1, "name": "doku", "pass": false, "value": "albedo+alfa, normal, puruzluluk; en buyuk 2048 px (sinir 1024)", "note": ""},
+        {
+          "id": 1,
+          "name": "doku",
+          "pass": false,
+          "value": "albedo+alfa, normal, puruzluluk; en buyuk 2048 px (sinir 1024)",
+          "note": "sahibin izniyle 2K (yaprak atlasi)"
+        },
         {"id": 2, "name": "poligon", "pass": true, "value": "5400 / 8000 ucgen", "note": ""},
         {"id": 3, "name": "kalinlik", "pass": null, "value": "", "note": "olculmedi: yaprak karti / ince yaprak tasarim geregi levha (alfa makasli)"},
         {"id": 4, "name": "butunluk", "pass": null, "value": "", "note": "olculmedi: kart dortgenleri acik levha (manifold degil) tasarim geregi"},
@@ -1185,7 +1191,13 @@
       "license": "Tripo web (sahibin hesabi; uretilen varlik sahibin) (pipeline/licenses.md, Bitkiler)",
       "tris": 1900,
       "criteria": [
-        {"id": 1, "name": "doku", "pass": false, "value": "albedo+alfa, normal, puruzluluk; en buyuk 2048 px (sinir 1024)", "note": ""},
+        {
+          "id": 1,
+          "name": "doku",
+          "pass": false,
+          "value": "albedo+alfa, normal, puruzluluk; en buyuk 2048 px (sinir 1024)",
+          "note": "sahibin izniyle 2K (yaprak atlasi)"
+        },
         {"id": 2, "name": "poligon", "pass": true, "value": "1900 / 6000 ucgen (sinif alt sinirinin altinda)", "note": ""},
         {"id": 3, "name": "kalinlik", "pass": null, "value": "", "note": "olculmedi: yaprak karti / ince yaprak tasarim geregi levha (alfa makasli)"},
         {"id": 4, "name": "butunluk", "pass": null, "value": "", "note": "olculmedi: kart dortgenleri acik levha (manifold degil) tasarim geregi"},
@@ -1432,7 +1444,13 @@
       "license": "Tripo web (sahibin hesabi; uretilen varlik sahibin) (pipeline/licenses.md, Bitkiler)",
       "tris": 5399,
       "criteria": [
-        {"id": 1, "name": "doku", "pass": false, "value": "albedo+alfa, normal, puruzluluk; en buyuk 2048 px (sinir 1024)", "note": ""},
+        {
+          "id": 1,
+          "name": "doku",
+          "pass": false,
+          "value": "albedo+alfa, normal, puruzluluk; en buyuk 2048 px (sinir 1024)",
+          "note": "sahibin izniyle 2K (yaprak atlasi)"
+        },
         {"id": 2, "name": "poligon", "pass": true, "value": "5399 / 8000 ucgen", "note": ""},
         {"id": 3, "name": "kalinlik", "pass": null, "value": "", "note": "olculmedi: yaprak karti / ince yaprak tasarim geregi levha (alfa makasli)"},
         {"id": 4, "name": "butunluk", "pass": null, "value": "", "note": "olculmedi: kart dortgenleri acik levha (manifold degil) tasarim geregi"},
@@ -1823,7 +1841,13 @@
       },
       "license": "Tripo web (sahibin hesabi; uretilen varlik sahibin) (pipeline/licenses.md, Bitkiler)",
       "criteria": [
-        {"id": 1, "name": "doku", "pass": false, "value": "albedo+alfa, normal, puruzluluk; en buyuk 2048 px (sinir 1024)", "note": ""},
+        {
+          "id": 1,
+          "name": "doku",
+          "pass": false,
+          "value": "albedo+alfa, normal, puruzluluk; en buyuk 2048 px (sinir 1024)",
+          "note": "sahibin izniyle 2K (yaprak atlasi)"
+        },
         {"id": 2, "name": "poligon", "pass": true, "value": "5400 / 8000 ucgen", "note": ""},
         {"id": 3, "name": "kalinlik", "pass": null, "value": "", "note": "olculmedi: yaprak karti / ince yaprak tasarim geregi levha (alfa makasli)"},
         {"id": 4, "name": "butunluk", "pass": null, "value": "", "note": "olculmedi: kart dortgenleri acik levha (manifold degil) tasarim geregi"},
@@ -1890,7 +1914,13 @@
       },
       "license": "Tripo web (sahibin hesabi; uretilen varlik sahibin) (pipeline/licenses.md, Bitkiler)",
       "criteria": [
-        {"id": 1, "name": "doku", "pass": false, "value": "albedo+alfa, normal, puruzluluk; en buyuk 2048 px (sinir 1024)", "note": ""},
+        {
+          "id": 1,
+          "name": "doku",
+          "pass": false,
+          "value": "albedo+alfa, normal, puruzluluk; en buyuk 2048 px (sinir 1024)",
+          "note": "sahibin izniyle 2K (yaprak atlasi)"
+        },
         {"id": 2, "name": "poligon", "pass": true, "value": "5399 / 8000 ucgen", "note": ""},
         {"id": 3, "name": "kalinlik", "pass": null, "value": "", "note": "olculmedi: yaprak karti / ince yaprak tasarim geregi levha (alfa makasli)"},
         {"id": 4, "name": "butunluk", "pass": null, "value": "", "note": "olculmedi: kart dortgenleri acik levha (manifold degil) tasarim geregi"},
@@ -1957,7 +1987,13 @@
       },
       "license": "Tripo web (sahibin hesabi; uretilen varlik sahibin) (pipeline/licenses.md, Bitkiler)",
       "criteria": [
-        {"id": 1, "name": "doku", "pass": false, "value": "albedo+alfa, normal, puruzluluk; en buyuk 2048 px (sinir 1024)", "note": ""},
+        {
+          "id": 1,
+          "name": "doku",
+          "pass": false,
+          "value": "albedo+alfa, normal, puruzluluk; en buyuk 2048 px (sinir 1024)",
+          "note": "sahibin izniyle 2K (yaprak atlasi)"
+        },
         {"id": 2, "name": "poligon", "pass": true, "value": "4800 / 8000 ucgen (sinif alt sinirinin altinda)", "note": ""},
         {"id": 3, "name": "kalinlik", "pass": null, "value": "", "note": "olculmedi: yaprak karti / ince yaprak tasarim geregi levha (alfa makasli)"},
         {"id": 4, "name": "butunluk", "pass": null, "value": "", "note": "olculmedi: kart dortgenleri acik levha (manifold degil) tasarim geregi"},

@@ -58,6 +58,7 @@ Kabul akışı için açık: `rawSources` `via: pending:biyom` (T3–T6 ham kayn
 | Bulgu | Nerede | Not |
 |---|---|---|
 | KS 10'da 200 düşmanla kare ~33 ms (bütçe üstü) | gece, sürü | Şüphe (ölçülmedi): şişme shader'ı parametreleri her karede her yaratığın kendi materyaline yazılıyor; çizimler toplanamıyor |
+| 1800 m dünyada kurulum ~16 → ~40 sn (başsız `--test=world`, makine yoğunken); TEKNIK §10 ≤ 15 sn hedefi | World.cs yükseklik ızgarası (3,2 M hücre), World.Ground denetim dokusu 2048², dekor ve çarpışma gövdeleri | Şüphe (ölçülmedi): ızgara tek iş parçacığında; başsız testlerde yarı çözünürlük ya da yalnız gereken bölge; çarpışma gövdeleri ağaç başına bir düğüm |
 
 ## 17 Kasım 2026, akşam: M1 eksik denetimi
 
@@ -123,3 +124,5 @@ Ortak oyun (koşul 4) ve kayıt (koşul 5) M2 teslimidir. M1'deki hiçbir özell
 1. Dikiş refaktörü: sıcak dosyaları partial dosyalara bölmek, bot adım kaydı, olay yolu, veri bölme, tek test koşucusu ve gerçek çıkış kodları. Davranış değişmez.
 2. Belge kararları: M1'de belgelerin sustuğu yerler (6 yerleştirilebilir, 3 yemek, 60 ses listesi, 4 gün saati ve yer imleri, kartlar, başlık kapsamı) ve eskimiş bilgiler.
 3. Ardından dokuz paralel akış: dünya, varlık hattı, oyuncu, Çapa ve his, yaratıklar, yapı-tarla-istasyon, gece-HUD-ilk 10 dakika, teknik ve girdi, ses kodu. Kredi gerektiren üretim sahibin onayıyla ayrıca yapılır.
+
+- 2026-11-19 oyuncu2: yeni oyuncu modeli (Tripo, Mixamo iskeleti) player.glb; govde ~13,6k + canta 3k ucgen (butce 8k: optimizasyon listesine). Klipler Meshy'den yeniden hedeflendi; ayrinti game/assets/models/player/README.md.

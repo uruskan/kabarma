@@ -1,7 +1,7 @@
 namespace Kabarma.Sim;
 
-/// <summary>Hasar kaynagi: silah, zayif noktaya silah, Bicme (kirkma), firlatilan yuk (boynuz parcasi), yanik.</summary>
-public enum AtaHitKind { Weapon, Weak, Shear, Thrown, Burn }
+/// <summary>Hasar kaynagi: silah, zayif noktaya silah, Bicme (kirkma), firlatilan yuk (boynuz parcasi), yanik, yutulmusken icerden vurus (M4).</summary>
+public enum AtaHitKind { Weapon, Weak, Shear, Thrown, Burn, Inside }
 
 /// <summary>
 /// Ata kurallari (GDD §18, §18.1), motordan bagimsiz ve saf: durum AtaFight / AtaProgress'te, sayilar AtalarFile'da.
@@ -12,27 +12,53 @@ public static class AtaRules
     /// <summary>GDD §18: can carpani 1 + k × (n − 1).</summary>
     public static float TeamHpMult(AtalarFile data, int teamSize) => 1f + data.TeamHpPerExtra * (Math.Max(1, teamSize) - 1);
 
+    /// <summary>Kabarik Ata kimligi ("kabarik_" + Ata): kayit, olay ve cip kaynagi bununla anilir (docs/kimlikler-m4.md).</summary>
+    public static string KabarikId(string ataId) => "kabarik_" + ataId;
+    static string RecId(AtaDef def, bool kab) => kab ? KabarikId(def.Id) : def.Id;
+    /// <summary>Adak sunulabilir mi: dovus yok; normal adak yenilmemis Ata'ya, Kabarik adak yenilmis Ata'ya.</summary>
+    static bool CanOffer(AtaProgress p, AtaDef def, bool kab) => p.Active == null && p.IsDefeated(def.Id) == kab;
+
     /// <summary>Adagin bu bileseninden daha kac tane gerekiyor.</summary>
-    public static int Missing(AtaProgress p, AtaDef def, AtaOfferingDef o)
+    public static int Missing(AtaProgress p, AtaDef def, AtaOfferingDef o, bool kab = false)
     {
-        p.Record(def.Id).Offered.TryGetValue(o.Item, out int have);
+        p.Record(RecId(def, kab)).Offered.TryGetValue(o.Item, out int have);
         return Math.Max(0, o.Count - have);
     }
 
-    public static bool OfferingComplete(AtaProgress p, AtaDef def) => def.Offering.All(o => Missing(p, def, o) == 0);
+    /// <summary>Adagin esyalari tamam mi (guc isteyen adakta beslenme sayilmaz: bkz. DrumReady).</summary>
+    public static bool ItemsComplete(AtaProgress p, AtaDef def, bool kab = false) => def.Offering.All(o => Missing(p, def, o, kab) == 0);
+
+    public static bool OfferingComplete(AtaProgress p, AtaDef def, bool kab = false) => ItemsComplete(p, def, kab) && DrumReady(p, def, kab);
+
+    /// <summary>Guc isteyen adak (Sismik Davul): PowerSeconds sn kesintisiz beslendi mi. Guc istemeyen adakta hep true.</summary>
+    public static bool DrumReady(AtaProgress p, AtaDef def, bool kab = false) =>
+        def.PowerWatts <= 0 || p.Record(RecId(def, kab)).PowerT >= def.PowerSeconds;
+
+    /// <summary>
+    /// Davul beslemesi (her kare): esyalar tamamken ve davul PowerWatts ile besleniyorsa sure birikir; besleme kesilince sifirlanir
+    /// ("60 sn boyunca"). Davul tamamlandiysa true.
+    /// </summary>
+    public static bool ChargeDrum(AtaProgress p, AtaDef def, bool powered, float dt, bool kab = false)
+    {
+        if (def.PowerWatts <= 0 || !CanOffer(p, def, kab)) return false;
+        var rec = p.Record(RecId(def, kab));
+        if (!ItemsComplete(p, def, kab)) { rec.PowerT = 0; return false; }
+        rec.PowerT = powered ? Math.Min(def.PowerSeconds, rec.PowerT + dt) : 0f;
+        return rec.PowerT >= def.PowerSeconds;
+    }
 
     /// <summary>
     /// Cantadan adak sunar (etkilesim): eksik her canta bileseninden cantada ne varsa sunaga gecer. Kabarik urun
-    /// (Swollen) cantadan gelmez, OfferSwollen ile. Sunulan toplam adet doner.
+    /// (Swollen) cantadan gelmez, OfferSwollen ile. Sunulan toplam adet doner. kab: Kabarik Ata adagi (yenilmis Ata, ayni adak).
     /// </summary>
-    public static int OfferFromBag(AtaProgress p, AtaDef def, Inventory bag)
+    public static int OfferFromBag(AtaProgress p, AtaDef def, Inventory bag, bool kab = false)
     {
-        if (p.Active != null || p.IsDefeated(def.Id)) return 0; // M2: yenilen Ata yeniden cagrilmaz (Kabarik Ata M4)
+        if (!CanOffer(p, def, kab)) return 0;
         int moved = 0;
-        var rec = p.Record(def.Id);
+        var rec = p.Record(RecId(def, kab));
         foreach (var o in def.Offering.Where(o => !o.Swollen))
         {
-            int n = Math.Min(Missing(p, def, o), bag.Count(o.Item));
+            int n = Math.Min(Missing(p, def, o, kab), bag.Count(o.Item));
             if (n <= 0 || !bag.Remove(o.Item, n)) continue;
             rec.Offered[o.Item] = rec.Offered.GetValueOrDefault(o.Item) + n;
             moved += n;
@@ -41,27 +67,56 @@ public static class AtaRules
     }
 
     /// <summary>Kabarik urun sunaga birakildi (Cekim). Adakta bu urun eksikse kabul eder.</summary>
-    public static bool OfferSwollen(AtaProgress p, AtaDef def, string crop)
+    public static bool OfferSwollen(AtaProgress p, AtaDef def, string crop, bool kab = false)
     {
-        if (p.Active != null || p.IsDefeated(def.Id)) return false;
+        if (!CanOffer(p, def, kab)) return false;
         var o = def.Offering.FirstOrDefault(x => x.Swollen && x.Item == crop);
-        if (o == null || Missing(p, def, o) == 0) return false;
-        var rec = p.Record(def.Id);
+        if (o == null || Missing(p, def, o, kab) == 0) return false;
+        var rec = p.Record(RecId(def, kab));
         rec.Offered[crop] = rec.Offered.GetValueOrDefault(crop) + 1;
         return true;
     }
 
     /// <summary>
     /// Ata'yi indirir: adak tamamsa (ya da force: F1 gelistirici cagirmasi, GDD §18.1 M2 sinamasi) adak harcanir, dovus
-    /// baslar. Baska dovus suruyorsa null.
+    /// baslar. Baska dovus suruyorsa ya da Ata yenildiyse (Kabarik icin SummonKabarik) null.
     /// </summary>
     public static AtaFight? Summon(AtaProgress p, AtalarFile data, AtaDef def, int teamSize, bool force = false)
     {
-        if (p.Active != null || p.IsDefeated(def.Id)) return null; // Kabarik Ata (KS ile yeniden cagirma) M4
+        if (p.Active != null || p.IsDefeated(def.Id)) return null;
         if (!force && !OfferingComplete(p, def)) return null;
-        p.Record(def.Id).Offered.Clear();
-        float hp = def.Hp * TeamHpMult(data, teamSize);
-        var f = new AtaFight { AtaId = def.Id, TeamSize = Math.Max(1, teamSize), ShieldT = data.ArriveSeconds };
+        var rec = p.Record(def.Id);
+        rec.Offered.Clear(); rec.PowerT = 0;
+        return Start(p, data, def, teamSize, 1f, 1f, false, 0);
+    }
+
+    /// <summary>Kabarik can carpani (KS ile) ve oyuncuya verilen hasar carpani.</summary>
+    public static float KabarikHpMult(AtalarFile data, int ks) => 1f + data.Kabarik.HpPerKs * ks;
+    public static float KabarikDamageMult(AtalarFile data, int ks) => 1f + data.Kabarik.DamagePerKs * ks;
+    public static int MayaCost(AtalarFile data, int ks) => data.Kabarik.MayaPerKs * ks;
+
+    /// <summary>
+    /// Kabarik Ata (GDD §18): yenilmis Ata ayni adak (Kabarik kaydinda tamam) ve KS × 50 Maya ile, secilen KS'nin gucuyle yeniden
+    /// gelir. KS gecerli degilse, adak ya da Maya eksikse null (Maya dusulmez). force: gelistirici cagirmasi (adak ve Maya yok).
+    /// </summary>
+    public static AtaFight? SummonKabarik(AtaProgress p, AtalarFile data, AtaDef def, int ks, int teamSize, Inventory bag, bool force = false)
+    {
+        if (p.Active != null || !p.IsDefeated(def.Id) || !data.Kabarik.Ks.Contains(ks)) return null;
+        if (!force)
+        {
+            if (!OfferingComplete(p, def, kab: true)) return null;
+            if (bag.Count(data.Kabarik.MayaItem) < MayaCost(data, ks)) return null;
+            bag.Remove(data.Kabarik.MayaItem, MayaCost(data, ks));
+        }
+        var rec = p.Record(KabarikId(def.Id));
+        rec.Offered.Clear(); rec.PowerT = 0;
+        return Start(p, data, def, teamSize, KabarikHpMult(data, ks), KabarikDamageMult(data, ks), true, ks);
+    }
+
+    static AtaFight Start(AtaProgress p, AtalarFile data, AtaDef def, int teamSize, float hpMult, float dmgMult, bool kab, int ks)
+    {
+        float hp = def.Hp * TeamHpMult(data, teamSize) * hpMult;
+        var f = new AtaFight { AtaId = def.Id, TeamSize = Math.Max(1, teamSize), ShieldT = data.ArriveSeconds, Kabarik = kab, Ks = ks, DamageMult = dmgMult };
         f.Body = CombatBody.Of(hp, CombatTeam.Wild, def.Id, mass: def.Mass);
         EnterPhase(f, def, 0);
         f.AttackT = def.Phases[0].AttackEvery + data.ArriveSeconds;
@@ -69,7 +124,6 @@ public static class AtaRules
         p.Active = f;
         return f;
     }
-
     static void EnterPhase(AtaFight f, AtaDef def, int phase)
     {
         var ph = def.Phases[phase];
@@ -98,9 +152,11 @@ public static class AtaRules
         List<AtaCommand>? cmds = null, DamageType type = DamageType.Darbe, StatusProc procs = StatusProc.None, List<CombatArea>? areas = null)
     {
         if (f.Defeated || f.ShieldT > 0 || amount <= 0) return 0;
+        if (f.SubmergedT > 0) return 0; // suyun altinda (Kurbaga Aga "dive"): hasar almaz
         var ph = PhaseOf(f, def);
-        bool weapon = kind is AtaHitKind.Weapon or AtaHitKind.Weak;
+        bool weapon = kind is AtaHitKind.Weapon or AtaHitKind.Weak or AtaHitKind.Inside;
         float amt = amount * (weapon ? ph.WeaponMult : 1f) * (f.StunT > 0 ? Math.Max(1f, ph.StunMult) : 1f);
+        if (kind == AtaHitKind.Inside && f.SwallowT > 0) amt *= Math.Max(1f, ph.SwallowCritMult); // icerden vurus kritik
         if (string.IsNullOrEmpty(f.Body.Profile)) f.Body.Profile = def.Id;
         f.Body.Armor = weapon ? Combat.ArmorPointsFor(combat, f.Armor) : 0f;
         var r = Combat.Apply(combat, f.Body, new CombatHit(amt, type, CombatTeam.Player) { Procs = procs, IgnoreArmor = !weapon }, areas);
@@ -197,8 +253,26 @@ public static class AtaRules
     public static bool WeakOpen(AtaFight f, AtaDef def)
     {
         var ph = PhaseOf(f, def);
+        if (ph.WeakArmorBelow > 0 && f.Armor > ph.WeakArmorBelow) return false; // Buz Tosunu: buzul erimeden karin kapali
         return ph.WeakPoints > 0 && (ph.WeakWindow <= 0 || f.WeakOpenT > 0);
     }
+
+    /// <summary>Yutma basladi (Godot oyuncuyu yakaladiysa cagirir): SwallowSeconds icerde kalinir.</summary>
+    public static bool BeginSwallow(AtaFight f, AtaDef def)
+    {
+        var ph = PhaseOf(f, def);
+        if (f.Defeated || ph.SwallowSeconds <= 0) return false;
+        f.SwallowT = ph.SwallowSeconds;
+        return true;
+    }
+
+    /// <summary>Tipi (Buz Tosunu asama 2): isinma noktasindan uzaktaki oyuncunun dt'de yiyecegi soguk hasari.</summary>
+    public static float ColdDamage(AtaFight f, AtaDef def, bool nearWarm, float dt) =>
+        f.Defeated || nearWarm || f.ShieldT > 0 ? 0f : PhaseOf(f, def).ColdDps * dt;
+
+    /// <summary>Oyuncunun verdigi hasar carpani (Ana Maya asama 3: kabarmis oyuncular) ve boy carpani.</summary>
+    public static float PlayerDamageMult(AtaFight f, AtaDef def) => f.Defeated ? 1f : PhaseOf(f, def).PlayerDamageMult;
+    public static float PlayerSwell(AtaFight f, AtaDef def) => f.Defeated ? 1f : PhaseOf(f, def).PlayerSwell;
 
     /// <summary>
     /// Zaman: kalkan ve sersemleme azalir; saldiri sirasi ve sezdirme; yardimci dalgasi. Sersemken saldiri ve yardimci yok.
@@ -211,6 +285,8 @@ public static class AtaRules
         f.Time += dt;
         var ph = PhaseOf(f, def);
         if (f.WeakOpenT > 0) f.WeakOpenT = Math.Max(0, f.WeakOpenT - dt);
+        if (f.SubmergedT > 0) f.SubmergedT = Math.Max(0, f.SubmergedT - dt);
+        if (f.SwallowT > 0) f.SwallowT = Math.Max(0, f.SwallowT - dt);
         if (f.ShieldT > 0) { f.ShieldT = Math.Max(0, f.ShieldT - dt); return cmds; }
         if (f.StunT > 0) { f.StunT = Math.Max(0, f.StunT - dt); return cmds; }
         if (!Status.CanAct(f.Body)) return cmds; // savas: donma kilidi ya da sok sersemi saldiriyi durdurur
@@ -222,6 +298,7 @@ public static class AtaRules
             {
                 cmds.Add(new AtaCommand(AtaCue.Attack, f.Pending, ph.VolleyCount, f.Phase));
                 if (ph.WeakWindow > 0) f.WeakOpenT = ph.WeakWindow;
+                if (f.Pending == "dive" && ph.DiveSeconds > 0) f.SubmergedT = ph.DiveSeconds; // Kurbaga Aga suya dalar
                 f.Pending = "";
                 f.TelegraphT = 0;
             }
@@ -264,7 +341,25 @@ public static class AtaRules
         foreach (var it in def.Reward.Items) left += it.Count - bag.Add(it.Item, it.Count);
         if (!string.IsNullOrEmpty(def.Reward.Seal) && !p.Seals.Contains(def.Reward.Seal)) p.Seals.Add(def.Reward.Seal);
         if (!string.IsNullOrEmpty(def.Reward.Ulti) && !p.Ultis.Contains(def.Reward.Ulti)) p.Ultis.Add(def.Reward.Ulti);
+        if (!string.IsNullOrEmpty(def.Reward.PendingUlti) && !p.UltisOwed.Contains(def.Reward.PendingUlti)) p.UltisOwed.Add(def.Reward.PendingUlti);
         foreach (var u in def.Reward.Unlocks) if (!p.Unlocks.Contains(u)) p.Unlocks.Add(u);
+        p.Active = null;
+        return left;
+    }
+
+    /// <summary>
+    /// Kabarik Ata yenildi: yalniz ust basamak cip malzemesi (KS / 5 × RewardPer5Ks); Cekirdek, muhur, ulti ve acilanlar
+    /// bir kez verilmisti, tekrar verilmez. Kabarik kaydi (kabarik_&lt;ata&gt;) yenilgi, en iyi KS ve yenilen KS'leri tutar.
+    /// Cantaya sigmayan adet doner.
+    /// </summary>
+    public static int RewardKabarik(AtaProgress p, AtalarFile data, AtaDef def, int ks, Inventory bag)
+    {
+        var rec = p.Record(KabarikId(def.Id));
+        rec.Defeats++;
+        rec.BestKs = Math.Max(rec.BestKs, ks);
+        if (!rec.KsBeaten.Contains(ks)) rec.KsBeaten.Add(ks);
+        int n = Math.Max(1, ks / 5) * data.Kabarik.RewardPer5Ks;
+        int left = n - bag.Add(data.Kabarik.RewardItem, n);
         p.Active = null;
         return left;
     }

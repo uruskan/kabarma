@@ -1,8 +1,8 @@
 {
   "_not": "Elde tutulan nesneler ve el soketleri (oyuncu akisi, Player.Grip.cs). Nesne = el kemiginin son pozu x soket x tutamagin tersi: nesne her durumda (bekleme, yurume, nisan, ragdoll, poz) eli izler. Kavrama cercevesi: pos yumrugun ortasi (m); bar kavranan cubugun basparmaga dogru ekseni; fingers parmak bogumlarinin baktigi yon. Soket el kemiginin yerel uzayinda (kemik +Y bilekten parmaklara; avuc -Z; sag elde basparmak -X, solda +X). Tutamak ve namlu modelin icindeki adli dugumlerdir ('node', 'muzzleNode'): pipeline/grip_markers.py modelin gercek tutamagini ve namlusunu olcerek koyar (dugum +Y bar, +Z parmaklar; namluda +Z namlu ekseni). Model degisince betik yeniden kosar; burada elle konum yok. Capa'nin cercevesi namlu dugumudur (koku namlu ucu, +Z namlu); 'back' bu cerceveyi kemige koyar (Backpack kemigi: +Z sirttan disa, +Y asagi, +X sol; canta koseleri +Y -0,05..0,48, dis yuzu +Z 0,17 m: Capa cantanin dis yuzunde yatik, namlu asagi; --griptest BACKBONE satiri olcer). Capa tek el aletidir (PLAN §3); iki elle tutulan tek nesne El Arabasi (iki tutamak: handle_r/handle_l; Tripo modelinde saplar capraz koselerdeydi, pipeline/fix_cart_handles.py kovayi arka sapli yarisindan aynalar, grip_markers.py once onu cagirir). pushReach: itilirken saplarin avuc ortasi oyuncu merkezinin bu kadar onunde; --test=grip olculen omuz ve koldan hesaplar (kolun %92'si), sayi ondan 4 cm'den fazla sapamaz. Tirpan Isini ve Civi Tabancasi Capa'nin basliklaridir, ayri modelleri yok. Karar 23 (kemer akisi): mesale ve insa_plani kemerden elde tutulan obur esyalar; Player.Hand.cs okur (Player.Grip.cs degil), model yoksa kodla cizilir; Capa elde degilken sirtta durur (capa.back).",
   "hands": {
-    "right": { "bone": "RightHand", "pos": [-0.01, 0.11, -0.05], "bar": [-1, 0, 0], "fingers": [0, 1, 0] },
-    "left": { "bone": "LeftHand", "pos": [0.01, 0.11, -0.05], "bar": [1, 0, 0], "fingers": [0, 1, 0] }
+    "right": { "bone": "RightHand", "pos": [-0.01, 0.08, -0.03], "bar": [-1, 0, 0], "fingers": [0, 1, 0] },
+    "left": { "bone": "LeftHand", "pos": [0.01, 0.08, -0.03], "bar": [1, 0, 0], "fingers": [0, 1, 0] }
   },
   "armBlend": 6,
   "items": {
@@ -14,7 +14,7 @@
       "aimDrop": 0.05,
       "carryPitchDeg": -35,
       "carryAlign": 1,
-      "back": { "bone": "Backpack", "pos": [-0.02, 0.41, 0.23], "rotDeg": [-90, 90, 0] }
+      "back": { "bone": "Backpack", "pos": [0.0, 0.2, 0.36], "rotDeg": [-90, 90, 0] }
     },
     "mesale": { "modelPos": [0, 0, 0], "modelRotDeg": [0, 0, 0], "right": { "pos": [0, 0.06, 0], "bar": [0, 1, 0], "fingers": [0, 0, 1] } },
     "insa_plani": { "modelPos": [0, 0, 0], "modelRotDeg": [0, 0, 0], "right": { "pos": [0, 0, 0], "bar": [1, 0, 0], "fingers": [0, 0, 1] } },

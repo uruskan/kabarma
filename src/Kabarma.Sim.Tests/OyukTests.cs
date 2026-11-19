@@ -26,7 +26,7 @@ public class OyukTests
         for (int i = 0; i < all.Count; i++)
         {
             var (x, z) = OyukRules.RoomCenter(D.Oyuk.Interior, i);
-            Assert.True(Math.Abs(x) - D.Oyuk.Interior.Radius > half + 100, "oda oynanabilir karenin icinde");
+            Assert.True(Math.Abs(x - D.Biomes.World.Terrain.CenterX) - D.Oyuk.Interior.Radius > half + 100, "oda oynanabilir karenin icinde");
             if (i > 0) Assert.True(x - OyukRules.RoomCenter(D.Oyuk.Interior, i - 1).x > D.Oyuk.Interior.Radius * 2 + 20);
         }
     }

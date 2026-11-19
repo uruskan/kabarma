@@ -13,7 +13,12 @@ public class ExploreTests
     static GameData Data640()
     {
         var d = TestData.Load();
-        d.Biomes.World.Terrain.Size = 640; // M2 dunyasi (veri birlesince 640 olur; test boyuttan bagimsiz kurali sinar)
+        // M2 dunyasi (640 m, iki biyom): M4 verisi (1800 m, altı biyom) bunun ustune kurulur; kurallar M2 dunyasinda sinanir,
+        // M4 dunyasinda cekirdegin ayni kaldigi BiomeCoreTests'te sinanir.
+        var w = d.Biomes.World;
+        w.Terrain.Size = 640; w.Terrain.Center.Clear(); w.Terrain.CoreSize = 0;
+        w.BiomeMap.Order = new List<string> { "altin_cayir", "sis_korusu" };
+        w.BiomeMap.Home.Clear(); w.BiomeMap.Slices.Clear(); w.BiomeMap.Crater = new CraterDef();
         return d;
     }
 
@@ -82,7 +87,7 @@ public class ExploreTests
             Assert.Equal((1, 1, 1, 2, 3), (N("seyir_kulesi"), N("ata_tasi"), N("yabani_bahce"), N("yuva"), N("enkaz")));
         }
         // Henuz calismayan turler yerlesmez (M2 noktalari ve M3 Oyuk); her kural turu tanimli.
-        Assert.DoesNotContain(pois, p => d.Biomes.World.PoiTypes[p.Type].Milestone is not ("M2" or "M3"));
+        Assert.DoesNotContain(pois, p => d.Biomes.World.PoiTypes[p.Type].Milestone is not ("M2" or "M3" or "M4"));
         // Kimlikler tekil ve tohumdan kararli.
         Assert.Equal(pois.Count, pois.Select(p => p.Id).Distinct().Count());
         var again = PoiPlacer.Place(Data640().Biomes, new BiomeMap(Data640().Biomes));
