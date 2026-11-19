@@ -66,6 +66,13 @@ public partial class HoldingWorld
         }
     }
 
+    /// <summary>Host: es numarasina gore hasar (host oyuncusu yerel, uzak oyuncu "holding_hurt" bolumuyle); Mudur dovusu kullanir.</summary>
+    public void HurtPeer(byte peer, float dmg, Vector3 from)
+    {
+        if (D.Net == null || (peer == D.Net.LocalPeer && !D.Net.Dedicated)) D.Player.Hurt(dmg, from);
+        else HurtRemote(peer, dmg, from);
+    }
+
     /// <summary>Host: uzak oyuncuya birim hasari (bolumle gider).</summary>
     void HurtRemote(byte peer, float dmg, Vector3 from)
     {

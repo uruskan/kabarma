@@ -117,6 +117,7 @@ public partial class Director : Node3D
         WireProgress();    // Director.Progress.cs: Ustalik XP'si, is emri olculeri, basarim ve odul bildirimleri
         WireChips();       // Director.Chips.cs: cip kilidi (Kabarma) ve dusme kaynaklari
         InitVfx();         // fx/Director.Vfx.cs: ortak efekt kitapligi (durum aurasi, olay efektleri, Kabarma gokyuzu dalgasi)
+        InitDolap();       // actors/Director.Dolap.cs: uye tipleri ve kozmetik (dolap, M4)
         State.Farm.Eaten += p => { GD.Print($"EATEN plot {p.X},{p.Y}"); Sfx.Play("pop", FarmView.CellCenter(p.X, p.Y), -2f); };
         Pod.BeginHatchIntro(this); // Pod.Hatch.cs: kapak acilir, Suna giris repliklerini soyler (PLAN 1.4, 0:00)
         InitNet(); // Director.Net.cs (ortak): --coop varsa NetSync; tek oyuncuda null
@@ -189,6 +190,7 @@ public partial class Director : Node3D
         if (Input.IsActionJustPressed("ui_accept") && Hud.ReportOpen) CloseReport();
         TickEconomy(dt); // Director.Economy.cs: gecikmeli odeme, kasa izleme
         TickKemer(dt);   // Director.Belt.cs: elde tutulan esya, el uretim kuyrugu (karar 23)
+        TickRivalry(dt); // Director.Rivalry.cs: Cekisme dunyasi (kapaliyken bos)
         TickZincir(dt);  // Director.Zincir.cs: Tarayici, Ocak basamagi, arastirma geri bildirimi (zincir M2)
 
         Capa.Process(dt, fire && !Hud.ReportOpen, firePressed && !Hud.ReportOpen);

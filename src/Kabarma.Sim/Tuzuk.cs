@@ -34,6 +34,9 @@ public sealed class TuzukSet
         return m;
     }
 
+    /// <summary>Hasar turune gore tuzuk carpani (Saganak: Ates etkisiz, Sok guclu); diger turler 1.</summary>
+    public float DamageMult(DamageType type) => type == DamageType.Ates ? FireMult : type == DamageType.Sok ? ShockMult : 1f;
+
     /// <summary>Gorus mesafesi (m); 0: sinirsiz.</summary>
     public float VisionM => Active().Where(a => a.c.VisionM > 0).Select(a => Math.Max(10f, a.c.VisionM - 10f * (a.s - 1))).DefaultIfEmpty(0f).Min();
     public float EatSpeed => Mult(c => c.EatSpeed > 0 ? c.EatSpeed : null);

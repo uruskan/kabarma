@@ -30,6 +30,7 @@ public partial class NetSync
         On("chest", HostChest);
         On("eat", HostEat);
         On("graft", HostGraft); // tarim4: Asi Tezgahi (Director.Asi.cs DoGraft)
+        RegisterSwellRoom(); // gece4: Kabartma Odasi (NetSync.SwellRoom.cs)
     }
 
     /// <summary>Asi Tezgahi: aktorun cantasi ve ortak Tohum Kaydi; aktor tezgahin erisiminde olmali.</summary>

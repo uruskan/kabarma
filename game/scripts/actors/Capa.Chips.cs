@@ -19,7 +19,12 @@ public partial class Capa
     };
 
     /// <summary>Atis basina istatistik: kart (gece) + baslik cipleri.</summary>
-    CombatStats StatsFor(string head) => ChipCombat.Merge(_d.Night?.Stats, _d.State.Chips, head, _d.State.ChipRng);
+    CombatStats StatsFor(string head)
+    {
+        var s = ChipCombat.Merge(_d.Night?.Stats, _d.State.Chips, head, _d.State.ChipRng);
+        if (head == "tirpan_isini") s.SizeMult *= _d.State.Wardrobe.Mult("scythe_damage"); // dolap: Pehlivan Tirpan +%30
+        return s;
+    }
 
     /// <summary>Silahin ates hizi carpani (cipler).</summary>
     float ChipFireRate(string head) => 1f + _d.State.Chips.Stat(head, "fire_rate");

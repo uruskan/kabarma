@@ -608,6 +608,23 @@ public partial class BuildSystem : Node3D
         return m;
     }
 
+    /// <summary>Sinama icin (coop cam adimi): merkez cevresinde parcanin gecerli ilk yerlesimini bulur (yuvaya oturur); yoksa null.</summary>
+    public Transform3D? FindValidPlacement(string id, Vector3 center, float radius = 4f, string material = "wood")
+    {
+        var def = Kit[id];
+        if (def == null) return null;
+        material = Data.Build.SetMaterialOf(id) ?? material;
+        for (float dy = 0f; dy <= 1.01f; dy += 0.5f)
+            for (float dx = -radius; dx <= radius; dx += 0.5f)
+                for (float dz = -radius; dz <= radius; dz += 0.5f)
+                    for (int k = 0; k < 4; k++)
+                    {
+                        var xf = new Transform3D(new Basis(Vector3.Up, k * Mathf.Pi / 2f), center + new Vector3(dx, dy, dz));
+                        var p = Evaluate(def, xf, "snap", material);
+                        if (p != null && p.Valid) return p.Xf;
+                    }
+        return null;
+    }
     /// <summary>Komut dosyasi icin: hayaletsiz, kurallari sinayarak yerlestirir (gecersizse null, neden reason'da).</summary>
     public BuildPiece PlaceAt(string id, Transform3D xf, out string reason, string material = "wood")
     {

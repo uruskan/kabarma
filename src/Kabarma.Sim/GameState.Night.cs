@@ -30,6 +30,7 @@ public sealed partial class GameState
         Farm.Eaten += _ => Night?.RecordEaten();
         Sold += (v, _) => { Orders.Report("cargo_sold"); Orders.Report("credits_earned", v); }; // credits_earned: Tuccar (ilerleme4)
         InitProgress(); // GameState.Progress.cs: Ustalik, basarimlar, boy olculeri
+        InitWardrobe(); // GameState.Wardrobe.cs: uye tipleri ve kozmetik (karakter)
     }
 
     void OnNightStarted(KabarmaNight n)

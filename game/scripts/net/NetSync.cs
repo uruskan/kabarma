@@ -51,6 +51,25 @@ public partial class NetSync : Node
     /// <summary>Host: istemciden sinama mesaji (es, tur, okuyucu).</summary>
     public event Action<byte, NetMsg, NetReader> TestMessageFrom;
 
+    /// <summary>Adanmis sunucu (--server, M5 sunucu akisi): host oyuncu degildir (karakteri gizli, listede sayilmaz).</summary>
+    public ServerNet Srv { get; private set; }
+    public bool Dedicated => Main.Args.ContainsKey("server");
+    /// <summary>Kabul edilen toplam es (host dahil): normal oyunda net.json, adanmis sunucuda server.json maxPlayers + 1.</summary>
+    public int SlotLimit => Dedicated ? D.Data.Server.MaxPlayers + 1 : Cfg.MaxPlayers;
+    /// <summary>Adanmis sunucunun katilma denetimi (ad, sifre, adres): null kabul, aksi reddetme nedeni (ServerRunner baglar).</summary>
+    public Func<string, string, string, string> JoinGate;
+
+    /// <summary>Host: oyuncuyu nedeniyle atar (istemci "host reddetti: neden" gorur). Bulunamazsa false.</summary>
+    public bool KickPeer(byte peer, string reason)
+    {
+        if (!IsHost || !_conn.TryGetValue(peer, out var c)) return false;
+        _tx.Send(c, NetPackets.Reject(reason), NetChannel.Reliable);
+        _tx.Kick(c);
+        return true;
+    }
+
+    public string PeerAddress(byte peer) => _conn.TryGetValue(peer, out var c) ? _tx.PeerAddress(c) : "";
+
     public NetSync(Director d) { D = d; }
     public NetSync() { }
 
@@ -73,10 +92,11 @@ public partial class NetSync : Node
         Joined = host;
         LocalName = Main.Args.TryGetValue("name", out var nm) ? nm : host ? "Host" : $"Oyuncu {OS.GetProcessId() % 1000}";
         int port = Main.Args.TryGetValue("port", out var ps) && int.TryParse(ps, out var pp) ? pp : Cfg.Port;
+        _port = port; // NetSync.Handover.cs
         string transport = Main.Args.TryGetValue("transport", out var tr) ? tr : "enet";
         string err;
         if (transport == "steam") _tx = SteamTransport.Create(this, host, out err);
-        else if (host) _tx = EnetTransport.Host(port, Cfg.MaxPlayers - 1, out err);
+        else if (host) _tx = EnetTransport.Host(port, SlotLimit - 1, out err);
         else _tx = EnetTransport.Connect(Main.Args.TryGetValue("connect", out var ip) ? ip : "127.0.0.1", port, out err);
         _startT = _lastHeard = Now;
         RegisterWorld();    // NetSync.World.cs
@@ -87,6 +107,7 @@ public partial class NetSync : Node
         RegisterFarm();     // NetSync.Farm.cs
         RegisterStations(); // NetSync.Stations.cs
         RegisterSpawns();   // NetSync.Spawns.cs
+        Srv = new ServerNet(this); // sunucu duyurusu ve yonetici cevabi (server/ServerNet.cs)
         CallDeferred(nameof(RegisterSaveBridge)); // NetSync.Save.cs: butun _Ready'lerden sonra (kayit bolumleri eklenmis olsun)
         if (_tx == null) { Fail(err ?? "taşıma kurulamadı"); return; }
         Status = host ? $"host · {_tx.Address}" : $"bağlanıyor · {_tx.Address}";
@@ -143,12 +164,12 @@ public partial class NetSync : Node
     /// <summary>Butun oyuncularin konumu (kendisi dahil): yaratik hedefi, Kabarma olcegi, ses. (es, konum, baygin mi).</summary>
     public IEnumerable<(byte peer, Vector3 pos, bool down)> Players()
     {
-        yield return (LocalPeer, D.Player.GlobalPosition, D.Player.Down);
+        if (!Dedicated) yield return (LocalPeer, D.Player.GlobalPosition, D.Player.Down);
         foreach (var (peer, av) in Avatars) yield return (peer, av.GlobalPosition, av.Down);
     }
 
     /// <summary>Oyuncu sayisi (Kabarma ve Ata cani ekip boyuna gore olcekler, GDD 22.1).</summary>
-    public int PlayerCount => IsHost ? 1 + Actors.Count : Math.Max(1, Roster.Count);
+    public int PlayerCount => IsHost ? (Dedicated ? 0 : 1) + Actors.Count : Math.Max(1, Roster.Count(e => !(e.Host && e.Name.StartsWith("[Sunucu]"))));
 
     // ---------------------------------------------------------------- kare
 
@@ -200,7 +221,7 @@ public partial class NetSync : Node
         switch (ev.Kind)
         {
             case NetEventKind.Connected:
-                if (IsClient) { _tx.Send(0, NetPackets.Hello(Cfg.Protocol, LocalName, WorldHash()), NetChannel.Reliable); Status = "katılıyor"; }
+                if (IsClient) { _tx.Send(0, NetPackets.Hello(Cfg.Protocol, Main.Args.TryGetValue("password", out var pw) && pw.Length > 0 ? LocalName + "\u001f" + pw : LocalName, WorldHash()), NetChannel.Reliable); Status = "katılıyor"; }
                 return;
             case NetEventKind.Disconnected:
                 if (IsHost) DropPeer(ev.Peer, "ayrıldı");
@@ -225,7 +246,7 @@ public partial class NetSync : Node
             case NetMsg.Frame: OnFrame(a, PlayerFrame.Read(r, Cfg.PosPerMetre), now); break; // NetSync.Players.cs
             case NetMsg.Look: OnLook(a, r); break;
             case NetMsg.Ready:
-                a.Ready = true;
+                a.Ready = true; _readyAt[peer] = now; // NetSync.Handover.cs: devralma icin katilma suresi
                 Sections.Forget(peer); // butun bolumler bastan (sonradan katilma)
                 RebuildRoster();
                 GD.Print($"NET peer {peer} ready ({a.Name})");
@@ -253,10 +274,13 @@ public partial class NetSync : Node
     {
         int proto = r.U16();
         string name = r.Str();
+        string password = "";
+        int sep = name.IndexOf('\u001f');
+        if (sep >= 0) { password = name[(sep + 1)..]; name = name[..sep]; }
         ulong world = r.U64();
         string why = proto != Cfg.Protocol ? $"sürüm farklı ({proto} ≠ {Cfg.Protocol})"
             : world != WorldHash() ? "dünya farklı (sürüm ya da tohum)"
-            : Actors.Count >= Cfg.MaxPlayers - 1 ? "oyun dolu" : null;
+            : Actors.Count >= SlotLimit - 1 ? "oyun dolu" : JoinGate?.Invoke(name, password, _tx.PeerAddress(conn));
         if (why != null)
         {
             GD.Print($"NET reject conn={conn} {why}");
@@ -351,6 +375,7 @@ public partial class NetSync : Node
                 GD.Print($"NET welcome peer={LocalPeer}");
                 break;
             case NetMsg.Reject: Fail("host reddetti: " + r.Str()); break;
+            case NetMsg.Handover: OnHandover(r); break; // NetSync.Handover.cs
             case NetMsg.Roster:
                 Roster = NetPackets.ReadRoster(r);
                 SyncAvatars(); // NetSync.Players.cs

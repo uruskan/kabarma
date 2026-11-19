@@ -78,7 +78,7 @@ public partial class Station : Node3D
     {
         float dt = (float)delta;
         TickAuto(dt); // M4 tasima: makine islevleri (Station.Automation.cs)
-        if (_d.Stations.FirstOrDefault(s => s.Queue == Queue) == this && _d.Net?.TickStation(Queue, dt) != true) Queue.Tick(dt, _d.StationStore()); // ambardan uretim: urun cantaya, dolarsa tapudaki Sandiklara (GDD 5); ortak: NetSync.Stations
+        if (_d.Stations.FirstOrDefault(s => s.Queue == Queue) == this && _d.Net?.TickStation(Queue, dt) != true) Queue.Tick(dt * _d.State.Wardrobe.Mult("craft_speed"), _d.StationStore()); // ambardan uretim: urun cantaya, dolarsa tapudaki Sandiklara (GDD 5); ortak: NetSync.Stations
         bool working = Queue.Active != null;
         if (_oven != null) _oven.Working = working;
         if (_grill != null) _grill.Working = working;

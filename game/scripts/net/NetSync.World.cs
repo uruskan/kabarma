@@ -74,9 +74,13 @@ public partial class NetSync
 
     Vector3 ActorPos(NetActor a) => new(a.Last.X, a.Last.Y, a.Last.Z);
 
+    /// <summary>Son reddetme nedeni (sinama gunlugu).</summary>
+    public string LastReject = "";
+
     bool Reject(NetActor a, string what)
     {
         a.Rejected++;
+        LastReject = what;
         if (Main.Args.ContainsKey("netdebug")) GD.Print($"NET reject peer={a.Peer} {what}");
         return false;
     }
@@ -335,6 +339,55 @@ public partial class NetSync
 
     bool InClaim(Vector3 p) => D.Ocak != null && Structures.InClaim(p.X - D.OcakPos.X, p.Z - D.OcakPos.Z, Ocak.ClaimRadius);
 
+    int _glassStep = -1;
+    double _glassNext;
+    int _glassCam0, _glassWood0;
+    Dictionary<string, int> _glassPay;
+
+    static readonly (float dx, float dz, float yaw)[] GlassSpots =
+    {
+        (0f, 0f, 0f), (2f, 0f, 0f), (-2f, 0f, 0f), (0f, 2f, 1.5708f), (0f, -2f, 1.5708f), (1.5f, 1.5f, 0f), (-1.5f, -1.5f, 0f), (0f, 1f, 0f), (1f, 0f, 1.5708f),
+    };
+
+    /// <summary>
+    /// --test=coop (kale): bir istemcinin Cam parca yerlestirmesi host'ta Cam oder, Odun'a dokunmaz. Aktorun cantasina Cam
+    /// konur (probe; botun eylemi degil), temel cevresinde nokta nokta denenir (her deneme bekleme suresinden sonra).
+    /// Donen: null (suruyor, her kare cagir) ya da "ok ..." / "fail ...".
+    /// </summary>
+    public string CoopGlassProbe()
+    {
+        var a = Actors.Values.FirstOrDefault(x => x.HasFrame);
+        var found = D.Build?.System.Pieces.FirstOrDefault(p => p.Def.Id == "kare_temel");
+        if (a == null || found == null) return "fail no actor/foundation";
+        const string id = "cam_duvar";
+        var f = found.GlobalPosition;
+        if (_glassStep < 0)
+        {
+            _glassPay = StructureCosts.Cost(D.Data.Build, "cam", D.Build.CostOf(id));
+            foreach (var kv in _glassPay) a.Bag.Add(kv.Key, kv.Value);
+            _glassCam0 = a.Bag.Count("cam"); _glassWood0 = a.Bag.Count("wood");
+            a.Last.X = f.X; a.Last.Y = f.Y; a.Last.Z = f.Z; a.LastTime = Now;
+            _glassStep = 0; _glassNext = 0;
+        }
+        bool paid = a.Bag.Count("cam") < _glassCam0;
+        if (!paid && _glassStep < 3)
+        {
+            if (Now < _glassNext) return null;
+            _glassNext = Now + Cfg.Cooldowns.Place + 0.1;
+            _glassStep++;
+            var xf = D.Build.System.FindValidPlacement(id, f);
+            if (xf == null) { LastReject = "no valid spot"; return null; }
+            var q = xf.Value.Basis.GetRotationQuaternion();
+            var o = xf.Value.Origin;
+            var w = new NetWriter();
+            w.Str(id); w.F32(o.X); w.F32(o.Y); w.F32(o.Z); w.F32(q.X); w.F32(q.Y); w.F32(q.Z); w.F32(q.W);
+            HostPlace(a, new NetReader(w.ToArray()));
+            return null;
+        }        int spent = _glassCam0 - a.Bag.Count("cam");
+        bool woodOk = a.Bag.Count("wood") == _glassWood0;
+        foreach (var kv in _glassPay) a.Bag.Remove(kv.Key, Mathf.Min(kv.Value, a.Bag.Count(kv.Key))); // artani geri al
+        return spent == _glassPay["cam"] && woodOk ? $"ok cam_paid={spent} wood_untouched" : $"fail cam_paid={spent}/{_glassPay["cam"]} wood_ok={woodOk} last_reject={LastReject} handles={D.Build.Handles(id)} tries={_glassStep}";
+    }
     void HostPlace(NetActor a, NetReader r)
     {
         string id = r.Str();
@@ -346,10 +399,15 @@ public partial class NetSync
         if (!a.Cooldown(NetReq.Place, Now, Cfg.Cooldowns.Place)) { Reject(a, "place cooldown"); return; }
         // M2 (GDD §7): yapi parcasi tapu disinda da kurulur; sokumde iadesi %50.
         int cost = D.Build.CostOf(id);
-        if (a.Bag.Count("wood") < cost) { Reject(a, "place wood"); return; }
-        var piece = D.Build.System.PlaceAt(id, new Transform3D(new Basis(q), o), out var why);
+        var bd = D.Data.Build;
+        string setMat = bd.SetMaterialOf(id); // Cam seti (M4): Odun degil Cam (BuildBridge.Impl.cs ile ayni)
+        var pay = setMat == null ? new Dictionary<string, int> { ["wood"] = cost } : StructureCosts.Cost(bd, setMat, cost);
+        if (pay.Any(kv => a.Bag.Count(kv.Key) < kv.Value)) { Reject(a, "place cost"); return; }
+        var piece = setMat == null
+            ? D.Build.System.PlaceAt(id, new Transform3D(new Basis(q), o), out var why)
+            : D.Build.System.PlaceAt(id, new Transform3D(new Basis(q), o), out why, setMat);
         if (piece == null) { Reject(a, "place invalid " + why); return; }
-        a.Bag.Remove("wood", cost);
+        foreach (var kv in pay) a.Bag.Remove(kv.Key, kv.Value);
         Flush();
     }
 

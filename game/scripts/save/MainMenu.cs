@@ -37,6 +37,7 @@ public partial class MainMenu : RustMenu
         Item("Yükle", ShowLoad, _store.List().Any(s => s.Exists));
         bool coop = _main.CoopAvailable;
         Item("Ortak oyun", () => _main.OpenCoop(this), coop, "yakında");
+        Item("Sunucular", () => ServerListPanel.Open(this)); // adanmis sunucu listesi (server/ServerListPanel.cs)
         Item("Ayarlar", ShowSettings);
         Item("Çıkış", () => GetTree().Quit());
         if (Notice != null) { ClearContent(); Header("Uyarı", Notice); }
@@ -72,14 +73,30 @@ public partial class MainMenu : RustMenu
                 _preset = presets[(i + 1) % presets.Count].Id;
                 ShowNew();
             });
+        Row($"Yeni Ay: {(_newMoon.Count == 0 ? "tüzük maddesi yok" : _newMoon.Count + " madde seçili")}   (tıkla: maddeleri seç)", ShowNewMoon);
         foreach (var s in _store.List())
         {
             var slot = s.Slot;
             if (_confirm == slot)
-                Row($"{SlotLine(s)}   ·   ÜZERİNE YAZ?  (tekrar tıkla)", () => { _confirm = null; _main.StartGame(null, slot, _preset); });
+                Row($"{SlotLine(s)}   ·   ÜZERİNE YAZ?  (tekrar tıkla)", () => { _confirm = null; _main.StartGame(null, slot, _preset, _newMoon.ToList()); });
             else
-                Row(SlotLine(s), () => { if (s.Exists) { _confirm = slot; ShowNew(); } else _main.StartGame(null, slot, _preset); });
+                Row(SlotLine(s), () => { if (s.Exists) { _confirm = slot; ShowNew(); } else _main.StartGame(null, slot, _preset, _newMoon.ToList()); });
         }
+    }
+
+    readonly System.Collections.Generic.HashSet<string> _newMoon = new();
+
+    /// <summary>Yeni Ay (GDD 14.8): dünya kurulurken 12 tüzük maddesinden istenenler KS 1'den açık olur (her biri Maya kazancını %5 artırır).</summary>
+    void ShowNewMoon()
+    {
+        ClearContent();
+        Header("Yeni Ay", $"Seçilen madde KS 1'den açık olur ve Maya kazancını madde başına %{_data.Tuzuk.NewMoon.MayaPerClause * 100:0} artırır. Seçim dünya kaydında durur.");
+        foreach (var c in _data.Tuzuk.Clauses)
+        {
+            var id = c.Id;
+            Row($"[{(_newMoon.Contains(id) ? "x" : " ")}] {c.Name}   ·   {c.Note}", () => { if (!_newMoon.Remove(id)) _newMoon.Add(id); ShowNewMoon(); });
+        }
+        Row($"Tamam ({_newMoon.Count} madde)", ShowNew);
     }
 
     string _preset;
