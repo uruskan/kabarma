@@ -23,7 +23,7 @@
   "_swell": "Kabarik: Swell eklenen boydur (0 = %100, 1 = %200). Maya hasari / azami can x perMaxHp kadar sisirir (azami canin ucte biri kadar Maya %200 eder); burstAt olunca patlar: cevreye azami canin burstOfMaxHp'si Darbe, kendine selfOfMaxHp.",
   "knock": { "minMass": 0.5, "maxSpeed": 18 },
   "_knock": "Itme kutleye gore: hiz = itme / max(minMass, kutle), en cok maxSpeed (m/s).",
-  "weaponTypes": { "tirpan_isini": "kesme", "civi_tabancasi": "darbe" },
+  "weaponTypes": { "tirpan_isini": "kesme", "civi_tabancasi": "darbe", "alev_puskurtecu": "ates", "havan": "darbe", "ark": "sok", "tohum_makinalisi": "darbe", "ayaz_lazeri": "buz", "yercekimi": "darbe", "maya_topu": "maya" },
   "_weaponTypes": "Capa basliklarinin hasar turu (weapons.json capa akisinin; tur burada). Kart sansi (Yanik, Donma) bunun ustune durum ekler.",
   "_profiles": "Tur basina zayiflik (>1) ve direnc (<1): hasar turu -> carpan. Yazilmayan tur 1. Anahtar creatures.json, atalar.json ya da azman.json kimligi.",
   "profiles": {

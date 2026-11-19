@@ -75,7 +75,7 @@ public partial class LatencyTest : Node
 
         var P = _d.Player;
         var away = _d.World.Ground(new Vector3(-14, 0, 6));
-        foreach (Capa.Head h in Enum.GetValues(typeof(Capa.Head)))
+        foreach (Capa.Head h in Enum.GetValues(typeof(Capa.Head)).Cast<Capa.Head>().Where(x => x <= Capa.Head.Civi)) // kusam basliklari (Alev..): LatencyTest kapsami disi
         {
             Place(h, out var stand, out var aim);
             P.GlobalPosition = _d.World.Ground(stand) + Vector3.Up * 0.2f;
@@ -360,7 +360,7 @@ public partial class LatencyTest : Node
         double worst = _heads.Count == 0 ? -1 : _heads.Values.Max(v => v.budget);
         double wallMed = _heads.Count == 0 ? -1 : _heads.Values.Select(v => v.wallMed).OrderBy(x => x).ElementAt(_heads.Count / 2);
         double wallMax = _heads.Count == 0 ? -1 : _heads.Values.Max(v => v.wallMax);
-        int expected = Enum.GetValues(typeof(Capa.Head)).Length;
+        int expected = Enum.GetValues(typeof(Capa.Head)).Cast<Capa.Head>().Count(x => x <= Capa.Head.Civi);
         if (_heads.Count < expected && _fails.Count == 0) _fails.Add($"yalnizca {_heads.Count}/{expected} baslik olculdu");
         string tail = $"heads={_heads.Count}/{expected} budget_max_ms={worst:0.0} wall_med_ms={wallMed:0.0} wall_max_ms={wallMax:0.0} hitstop={(_fails.Any(f => f.Contains("duraklama") || f.Contains("istenen")) ? "fail" : "ok")}";
         Say(_fails.Count == 0 ? $"RESULT ok {tail}" : $"RESULT fail {tail} :: {string.Join(" | ", _fails)}");

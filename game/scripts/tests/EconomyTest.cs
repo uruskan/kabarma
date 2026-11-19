@@ -93,6 +93,41 @@ public partial class EconomyTest : Node
         Check(crate != null && cargo.Value(crate) == expect, $"kasa degeri taban × kalite × Borsa ({(crate != null ? cargo.Value(crate) : 0)} = {expect})");
         await NewCropInGreenhouse();
         await TarimM4Rules();
+        await KusamRules();
+    }
+
+    /// <summary>kusam (M4): zirh takimi hasari dusurur, yeni silah basligi atis yapar ve cephane harcar, yeni guc dunyaya etki eder.</summary>
+    async Task KusamRules()
+    {
+        // zirh: Celik Zirh cantada -> 60 puan, 100 hasar ~62,5
+        Bag.Add("celik_zirh", 1);
+        await Wait(0.8f);
+        Check(Mathf.IsEqualApprox(_d.Player.ArmorPoints, 60f), $"zirh: Celik Zirh 60 puan ({_d.Player.ArmorPoints})");
+        _d.Player.MaxHp = 1000f; _d.Player.Hp = 1000f;
+        _d.Player.Hurt(100f, _d.Player.GlobalPosition + Vector3.Forward * 3f);
+        float lost = 1000f - _d.Player.Hp;
+        Check(Mathf.Abs(lost - 62.5f) < 1.5f, $"zirh: 100 hasar -> {lost:0.0} (beklenen ~62,5)");
+        Bag.Remove("celik_zirh", 1);
+        _d.Player.Hp = _d.Player.MaxHp;
+        // silah basligi: Alev Puskurteci cantada, atis cephane harcar
+        Bag.Add("alev_puskurtecu", 1); Bag.Add("biyoyakit", 10);
+        _d.HoldCapa();
+        Check(_d.Capa.IsAvailable(Capa.Head.Alev), "alev: tarifin urunu cantada, baslik acik");
+        _d.Capa.Select(Capa.Head.Alev);
+        Check(_d.Capa.Current == Capa.Head.Alev, "alev: baslik takildi");
+        int shots = _d.Capa.ShotsFired, fuel = Bag.Count("biyoyakit");
+        for (int i = 0; i < 12; i++) { _d.Capa.Process(0.12f, true, i == 0); await Frames(1); }
+        Check(_d.Capa.ShotsFired > shots, $"alev: atis yapti ({_d.Capa.ShotsFired - shots})");
+        Check(Bag.Count("biyoyakit") < fuel || _d.NightActive, "alev: gunduz Biyoyakit harcadi");
+        _d.Capa.Select(Capa.Head.Kazma);
+        // guc: Roket Ziplama yukari firlatir, Buz Duvari sahneye duvar koyar
+        var f = _d.Data.Abilities;
+        _d.Player.GlobalPosition = G(-3, 8) + Vector3.Up * 0.2f; await Frames(4);
+        _d.Abilities.Apply(f.Def("roket_ziplama")!, _d.Player.GlobalPosition, Vector3.Forward, true);
+        Check(_d.Player.Velocity.Y > 15f, $"roket ziplama: yukari hiz {_d.Player.Velocity.Y:0.0}");
+        int bodies = _d.GetChildren().OfType<StaticBody3D>().Count();
+        _d.Abilities.Apply(f.Def("buz_duvari")!, _d.Player.GlobalPosition, Vector3.Forward, true);
+        Check(_d.GetChildren().OfType<StaticBody3D>().Count() == bodies + 1, "buz duvari: duvar kuruldu");
     }
 
     /// <summary>tarim4 (M4): yemek etkileri oyuncuya, Asi Tezgahi, Sera Kontrol Unitesi ile sera, sig su (test sahnesinde isaretli gecici).</summary>
@@ -107,7 +142,7 @@ public partial class EconomyTest : Node
         Check(Mathf.IsEqualApprox(_d.State.Stamina.DrainMult, 0.8f), $"yemek: depar bedeli -%20 ({_d.State.Stamina.DrainMult})");
         Check(Mathf.IsEqualApprox(_d.State.Stamina.BonusMax, 60f), $"yemek: azami dayaniklilik +60 ({_d.State.Stamina.BonusMax})");
         _d.State.Food.Tick(10000f);
-        await Frames(3);
+        await Wait(0.4f);
         Check(Mathf.IsEqualApprox(_d.Player.FoodSpeed, 0f) && Mathf.IsEqualApprox(_d.State.Stamina.DrainMult, 1f), "yemek: bitince etkiler kalkti");
 
         // Asi Tezgahi: iki turp tohumu kaydi, V geni aktarilir
