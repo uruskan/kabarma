@@ -188,3 +188,15 @@ M5 (URETIM §6): çok oyunculunun tamamı. Kurallar M4 ile aynı (kendi dal, `to
 | sekiz | 2 | Sonnet 5.5 | GDD §22.1, TEKNIK §5.4: 8 oyuncuya çıkış (ilgi alanı, 5 Hz bütçesi içinde kalan yazım), dünyayı devretme (host ayrılınca), telsiz kanalı (sesli sohbetin uzak kanalı), 8 botluk `--test=coop`. Dosyalar: `game/scripts/net/`, `src/Kabarma.Sim/Net*.cs`, `data/net.json` |
 
 **Sunucu bağlanma notu (sunucu, M5):** Adanmış sunucu `Godot --headless --path game -- --server` (belge `docs/SUNUCU.md`, ayarlar `data/server.json`, kod `game/scripts/server/`). `ServerRunner` host oyunu kurar (`NetSync.Dedicated`: oyuncu karakteri gizli, `Players()`/`PlayerCount`te sayılmaz, roster adı `[Sunucu] ...`), kayıt yuvasından yükler ve yazar, katılma denetimi `NetSync.JoinGate` (`ServerAdmin.CheckJoin`: yasak, şifre, ad), şifre Hello ad alanında `ad\u001fşifre`. Yönetim `ServerAdmin.Execute` (konsol, `server_commands.txt`, oyun içi F8 + `giris <admin_password>`; `srv.cmd`/`srv.reply` ve duyuru `srv.msg` bölümleri `ServerNet`). Yeni yönetim komutu `ServerAdmin.Execute`'e bir `case`. Sunucu listesi ana menüde "Sunucular" (`ServerListPanel`, Steam tarayıcısı `SteamServerBrowser`, sunucu kaydı `SteamListing`). Test: `--test=server`.
+
+## M6 akışları (19 Kasım 2026)
+
+M6 (URETIM §6): cila. Yeni oynanış içeriği yok. Kurallar M5 ile aynı. Kredi ya da ElevenLabs isteyen her şey (ses, müzik, seslendirme, model) yalnız istek listesi olarak PROGRESS "Kredi kuyruğu"na yazılır; anahtar her kullanımda sahibin onayını ister. Performans turu en sondadır (sahibin kararı).
+
+| Akış | Model | Sahip olduğu dosyalar ve işler |
+|---|---|---|
+| arayuz | Sonnet 5.5 | Arayüz cilası (bütün paneller tek görsel dil, Rust tarzı), erişilebilirlik ayarları (yazı boyu, renk körlüğü, sarsıntı kapatma, tuş yeniden atama, altyazı), fotoğraf modu. Dosyalar: `Hud*.cs` (yalnız cila), yeni `Settings*.cs`, `PhotoMode*.cs`, `data/ui.json` |
+| dil | Sonnet 5.5 | 10 dil (TEKNIK §12): metin anahtarlarına geçiş, `ItemNames` ve bütün arayüz metinleri çeviri tablosunda, TR ve EN tam; öteki 8 dil makine çevirisi + işaret. Dosyalar: yeni `game/locale/`, `Loc*.cs` |
+| ogretici | Sonnet 5.5 | Öğretici ve Suna'nın bütün replikleri (TR ve EN metin; ses kaydı kredi kuyruğuna). Dosyalar: `scenario.json`, `Director.Scenario.cs`, yeni `data/suna.json` |
+| steam | Sonnet 5.5 | Başarımlar (Steam), Steam Cloud, zengin durum bilgisi; Steam yokken sessizce geçer. Dosyalar: yeni `game/scripts/steam/`, `achievements.json`'a satır |
+| denge | Sonnet 5.5 high | Simülasyonla denge turu (ekonomi, Kabarma KS eğrisi, yaratık ve Ata canları); sayılar `data/*.json`'da, gerekçe `docs/` altında bir denge notunda |
