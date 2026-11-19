@@ -1,0 +1,33 @@
+{
+  "_not": "Adanmis sunucu (TEKNIK §5, §12; M5 sunucu akisi). Basiz Godot: `Godot --headless --path game -- --server [--port=N] [--name=Ad] [--password=P] [--admin_password=P] [--slot=yuva]`. Komut satiri bu dosyadaki degerleri ezer. Yollar: user:// ya da mutlak; --server_dir=KLASOR durum, komut ve yasak dosyalarini oraya tasir (sinama). Yonetim komutlari: yardim, oyuncular, at, yasakla, yasak_kaldir, yasaklar, kaydet, duyuru, sifre, durum, kapat.",
+  "name": "Kabarma Sunucusu",
+  "motd": "Hoş geldin! Kabarma sürüyor.",
+  "port": 27015,
+  "maxPlayers": 8,
+  "_maxPlayers": "Sunucunun kabul edecegi oyuncu (host dahil degil: oyuncu karakteri yok). net.json maxPlayers'tan buyuk olabilir; 16'ya cikis sekiz akisinda.",
+  "password": "",
+  "adminPassword": "",
+  "_adminPassword": "Bos ise oyun ici yonetim kapali (yalniz konsol). Oyun icinde 'giris <sifre>' komutuyla yonetici olunur.",
+  "saveSlot": "sunucu",
+  "autosaveMinutes": 5,
+  "_autosave": "save.json autosaveMinutes'i sunucuda bu deger ezer; safak kaydi ve cikis kaydi her zaman acik.",
+  "stateFile": "server_status.txt",
+  "commandFile": "server_commands.txt",
+  "resultFile": "server_results.log",
+  "runtimeFile": "server_runtime.json",
+  "_files": "stateFile: her saniye durum satiri (durum, oyuncu sayisi, gun); commandFile: satir satir komut kuyrugu (okununca bosaltilir); resultFile: komut sonuclari; runtimeFile: yasak listesi ve sifre (yeniden baslayinca korunur).",
+  "stdin": true,
+  "ping": {
+    "_not": "Sunucu listesi: ENet doğrudan bağlantı için kayıtlı sunucular user://servers.json'da; Steam sunucu tarayıcısı Steam açıksa listeler.",
+    "listFile": "user://servers.json",
+    "steamMaxResults": 200,
+    "steamTimeoutSeconds": 6
+  },
+  "steam": {
+    "_not": "Sunucuyu Steam sunucu tarayicisinda gosterir (Steamworks.NET GameServer). Steam yoksa atlanir. 480 deneme kimligi (net.json steam.appId ile ayni).",
+    "listed": true,
+    "gameDir": "kabarma",
+    "product": "kabarma",
+    "description": "Kabarma"
+  }
+}

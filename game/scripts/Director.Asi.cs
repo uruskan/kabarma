@@ -21,6 +21,7 @@ public partial class Director
         s.BonusMax = f.BonusStamina;
         s.DrainMult = Mathf.Max(0.1f, 1f + f.Effect("sprintCost"));
         s.RegenMult = 1f + 0.25f * f.Effect("staminaRegen");
+        if (State.Wardrobe.Flag("sprint_free")) s.DrainMult = 0f; // dolap: Kacak
     }
 
     // ---------- Asi Tezgahi ----------

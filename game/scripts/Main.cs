@@ -56,6 +56,7 @@ public partial class Main : Node3D
         ["lineup"] =m => { m.AddChild(new ModelLineup()); return true; }, // gorsel-model: her model ayni isikta (progress/gorsel/model/)
         ["camera"] = m => { m.AddChild(new CameraTest()); return false; }, // oyuncu akisi: kamera kipleri, tekerlek, carpisma, nisan, ayar dosyasi
         ["grip"] = m => { Args["mute"] = "1"; Sfx.Muted = true; m.AddChild(new GripTest()); return false; }, // oyuncu akisi: Capa elde, namlu nisanda, araba iki elle
+        ["dolap"] = m => { Args["mute"] = "1"; Sfx.Muted = true; m.AddChild(new DolapTest()); return false; }, // dolap akisi: uye pasifleri, kozmetik, jest, menu, goruntuler (progress/m4/dolap/, pencereli)
         ["vfx"] = m => { Args["mute"] = "1"; Sfx.Muted = true; m.AddChild(new VfxTest()); return false; }, // efekt akisi: kitaplik, durum aurasi, goruntuler (progress/m4/efekt/, pencereli)
         ["playershots"] = m => { Args["mute"] = "1"; Sfx.Muted = true; m.AddChild(new PlayerShots()); return false; }, // oyuncu2: karakter goruntuleri (progress/oyuncu2/, pencereli kosulur)
         ["kemer"] = m => { Args["bot"] = "1"; if (m._quitAfter <= 0) m._quitAfter = 600; m.AddChild(new KemerShots()); return false; }, // karar 23 kaniti: progress/kemer/*.png
@@ -66,6 +67,7 @@ public partial class Main : Node3D
         ["borsa"] = m => { Args["borsatest"] = "1"; Args["mute"] = "1"; Sfx.Muted = true; return false; }, // ekonomi2: Borsa, Katalog, Cark (MarketTest.cs)
         ["tasima"] = m => { Args["tasimatest"] = "1"; Args["mute"] = "1"; Sfx.Muted = true; return false; }, // tasima M4: Kol, Bant, Drone (power/TasimaTest.cs)
         ["holding"] = m => { Args["holdingtest"] = "1"; Args["mute"] = "1"; Sfx.Muted = true; return false; }, // holding M3: kamp, Perde, kervan, baskinlar (holding/HoldingTest.cs)
+        ["server"] = m => ServerTest.Setup(m), // M5 sunucu: basliksiz adanmis sunucu, 2 bot istemci, yonetim komutlari, kayit (server/ServerTest.cs)
         ["ata4"] = m => { Args.TryAdd("fast", "3"); Args.TryAdd("mute", "1"); Sfx.Muted = true; m.AddChild(new Ata4Test()); return false; }, // ata4 (M4): 4 yeni Ata, Kabarik Atalar, 4 yeni Azman, 3 yeni Oyuk koruyucusu (boss/Ata4Test.cs)
         ["boss"] = m => { Args.TryAdd("fast", "3"); Args.TryAdd("mute", "1"); Sfx.Muted = Args["mute"] == "1"; m.AddChild(new AtaTest()); return false; }, // boss akisi: bot iki Ata'yi bulur ve yener (boss/AtaTest.cs)
         ["savas"] = m => { Args.TryAdd("fast", "3"); Args.TryAdd("mute", "1"); Sfx.Muted = Args["mute"] == "1"; m.AddChild(new SavasTest()); return false; }, // savas akisi: gunduz savasi, Azman Homur ve Bozuk (combat/SavasTest.cs)
@@ -80,6 +82,7 @@ public partial class Main : Node3D
         ["powershots"] = m => { Args["powershots"] = "1"; Args["mute"] = "1"; Sfx.Muted = true; return false; }, // guc akisi: parcalar ve kablolar, gunduz/gece goruntusu (progress/m2/guc/)
         ["vehicles"] = m => { Args["vehicletest"] = "1"; Args["mute"] = "1"; Sfx.Muted = true; if (m._quitAfter <= 0) m._quitAfter = 450; return false; }, // arac M4: surus, eklenti, hava yastikli, zeplin (tests/VehicleTest.cs)
         ["kale"] = m => { Args["kaletest"] = "1"; Args["mute"] = "1"; Sfx.Muted = true; if (m._quitAfter <= 0) m._quitAfter = 420; return false; }, // kale M4: yeni kuleler, tuzaklar, Cam seti (defense/KaleTest.cs)
+        ["anamaya"] = m => { Args["bot"] = "1"; Args["anamaya"] = "1"; Args["mute"] = "1"; Sfx.Muted = true; if (m._quitAfter <= 0) m._quitAfter = 2400; return false; }, // M4 kabul: ilk gun zinciri, sonra alti biyomu yuruyerek Ana Maya Ata Tasi'na (Bot.AnaMaya.cs)
         ["savunma"] = m => { Args["savunmatest"] = "1"; Args["mute"] = "1"; Sfx.Muted = true; if (m._quitAfter <= 0) m._quitAfter = 300; return false; }, // savunma M3: kuleler ve tuzaklar (defense/DefenseTest.cs)
         ["input"] = m => { m._inputDevice = InputDriver.ParseDevice(Args.TryGetValue("device", out var d) ? d : "kbm"); if (m._quitAfter <= 0) m._quitAfter = 900; return false; }, // zincir bitince Bot.Hands cikar; bu ust sinir
     };
@@ -114,6 +117,7 @@ public partial class Main : Node3D
             GD.Print($"TEST {test}");
             if (run(this)) return;
         }
+        if (Args.ContainsKey("server")) { AddChild(new ServerRunner { Name = "ServerRunner" }); return; } // adanmis sunucu (server/ServerRunner.cs)
         if (Args.ContainsKey("netsync")) { AddChild(new NetSyncTest()); return; }
         if (Args.ContainsKey("swarm")) { AddChild(new SwarmTest()); return; }
         if (ShowMainMenu()) return; // save/Main.Flow.cs: argumansiz acilista ana menu (otomasyon kosulari dogrudan oyuna)

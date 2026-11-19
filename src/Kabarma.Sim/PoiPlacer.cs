@@ -8,6 +8,8 @@ public sealed class Poi
     public string Biome { get; set; } = "";
     public float X { get; set; }
     public float Z { get; set; }
+    /// <summary>Kurala ozgu duzlestirme yaricapi (m); 0 = tur varsayilani.</summary>
+    public float Flatten { get; set; }
 }
 
 /// <summary>
@@ -54,7 +56,7 @@ public static class PoiPlacer
                     return true;
                 }
                 void Add(float x, float z) =>
-                    placed.Add(new Poi { Id = $"{rule.Type}_{biomeId}_{made++}", Type = rule.Type, Biome = biomeId, X = x, Z = z });
+                    placed.Add(new Poi { Id = $"{rule.Type}_{biomeId}_{made++}", Type = rule.Type, Biome = biomeId, X = x, Z = z, Flatten = rule.Flatten });
 
                 foreach (var f in rule.Fixed)
                     if (made < rule.Count && f.Count >= 2 && Ok(f[0], f[1], strict: false)) Add(f[0], f[1]);

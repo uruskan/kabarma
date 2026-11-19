@@ -76,7 +76,8 @@ public partial class RanchSystem
     /// <summary>Her kare (_Process): savasanlarin hedefi ve vurusu, dusmanin temas vurusu, durumlar, ahirin yikilmasi.</summary>
     void WarProcess(float dt)
     {
-        if (!Ranch.AtWar) return;
+        if (IsHost && Ranch.AnyDaySwell) foreach (var e in Ranch.DaySwellTick(dt)) ShowWar(e); // Kabartma Odasi (gece4): sure dolunca soner
+        if (!Ranch.AtWar && !Ranch.AnyDaySwell) return;
         // istemci: gorunus yalniz (konum host'tan)
         foreach (var ag in _agents.Where(IsInstanceValid))
         {
@@ -129,7 +130,13 @@ public partial class RanchSystem
     }
 
     /// <summary>Dusmanlar (GECICI: Zipzip; dalga sozlesmesi gelince Wave*).</summary>
-    static IEnumerable<Zipzip> Enemies() => Zipzip.All.Where(z => IsInstanceValid(z) && !z.Dead);
+    IEnumerable<Zipzip> Enemies()
+    {
+        var night = Zipzip.All.Where(z => IsInstanceValid(z) && !z.Dead);
+        // Gunduz (Kabartma Odasi kabartmasi): cayirdaki zararli gruplari da hedeftir.
+        if (_d.Meadow == null || Ranch.AtWar) return night;
+        return night.Concat(_d.Meadow.Herds.SelectMany(h => h.Members).Where(z => IsInstanceValid(z) && !z.Dead));
+    }
 
     void Strike(HusbandryAgent ag, AnimalFormDef f, Zipzip target)
     {
@@ -182,6 +189,9 @@ public partial class RanchSystem
                 break;
             case WarEventKind.Called:
                 Fx.Text3D(at, "♪", Palette.CoopBlue, 64, 1f, 1.2f);
+                break;
+            case WarEventKind.SwellEnded:
+                if (ag != null && !Ranch.AtWar) { SwellHost(ag.Host, false); ag.Override = null; }
                 break;
         }
     }

@@ -48,7 +48,7 @@ public sealed partial class PenAnimal
     public float CallZ { get; set; }
 }
 
-public enum WarEventKind { Swelled, Hid, Fainted, Died, Woke, Scattered, Called }
+public enum WarEventKind { Swelled, Hid, Fainted, Died, Woke, Scattered, Called, SwellEnded }
 
 public readonly record struct WarEvent(WarEventKind Kind, int AnimalId);
 

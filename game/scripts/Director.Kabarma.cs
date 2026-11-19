@@ -32,7 +32,7 @@ public partial class Director
     {
         var t = TuzukNow;
         if (!t.Any || h.Team != CombatTeam.Player) return h;
-        float m = h.Type == DamageType.Ates ? t.FireMult : h.Type == DamageType.Sok ? t.ShockMult : 1f;
+        float m = t.DamageMult(h.Type);
         return m == 1f ? h : h with { Amount = h.Amount * m };
     }
 

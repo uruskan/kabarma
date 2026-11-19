@@ -112,7 +112,7 @@ public static class ItemNames
         ["turba"] = "Turba", ["kukurt"] = "Kükürt", ["kaucuk_sutu"] = "Kauçuk Sütü", ["balcik"] = "Balçık", ["isil_yosun"] = "Işıl Yosun",
         ["kum"] = "Kum", ["kuvars"] = "Kuvars", ["titan_ore"] = "Titan Cevheri", ["katran"] = "Katran", ["tuz"] = "Tuz",
         ["buz"] = "Buz", ["ayaz_kristali"] = "Ayaz Kristali", ["ham_maya"] = "Ham Maya", ["obsidyen"] = "Obsidyen", ["isil_cevher"] = "Işıl Cevher",
-        ["kemik"] = "Kemik",
+        ["kemik"] = "Kemik", ["kitin"] = "Kitin", ["kabartma_plani"] = "Kabartma Planı",
         ["scrap"] = "Hurda",
         // cip (M3): cip uretim malzemeleri (ICERIK 27, 36); tur ve nadirlik adlari chips.json
         ["maya_kesesi"] = "Maya Kesesi",

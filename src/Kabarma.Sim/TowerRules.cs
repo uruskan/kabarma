@@ -32,14 +32,15 @@ public static class TowerRules
         t.Hp <= 0 ? TowerStatus.Broken : t.Priority == "off" ? TowerStatus.Off
         : t.Loaded <= 0 && (d == null || (d.Ammo.Count > 0 && !d.AmmoOptional)) ? TowerStatus.Empty : TowerStatus.Ready; // M4: cephanesiz (guc) ve istege bagli cephaneli kule hep hazir
 
-    public static bool InRange(TowerDef d, Vector3 at, DefenseTarget x)
+    /// <summary>rangeMult: Tuzuk Ters Ruzgar (mermi menzili carpani, gece4); en az menzil degismez.</summary>
+    public static bool InRange(TowerDef d, Vector3 at, DefenseTarget x, float rangeMult = 1f)
     {
         float r = Flat(at, x.Pos);
-        return r >= d.MinRange && r <= d.Range + x.Radius;
+        return r >= d.MinRange && r <= d.Range * rangeMult + x.Radius;
     }
 
     /// <summary>Oncelige gore hedef (listedeki sira); yoksa -1. Aranan tur yoksa en yakina doner; esitlikte kucuk Id.</summary>
-    public static int Pick(TowerDef d, Vector3 at, IReadOnlyList<DefenseTarget> ts, string priority)
+    public static int Pick(TowerDef d, Vector3 at, IReadOnlyList<DefenseTarget> ts, string priority, float rangeMult = 1f)
     {
         if (priority == "off") return -1;
         int best = -1;
@@ -56,7 +57,7 @@ public static class TowerRules
         for (int i = 0; i < ts.Count; i++)
         {
             var x = ts[i];
-            if (x.IsPlayer || x.Hp <= 0 || !InRange(d, at, x)) continue;
+            if (x.IsPlayer || x.Hp <= 0 || !InRange(d, at, x, rangeMult)) continue;
             if (best < 0 || Better(i, best)) best = i;
         }
         return best;

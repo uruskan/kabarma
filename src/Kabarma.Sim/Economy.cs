@@ -86,6 +86,8 @@ public sealed partial class Cargo
     readonly Queue<CargoCrate> _closed = new();
     public IReadOnlyList<CargoCrate> Pad => _pad;
     public IReadOnlyList<PendingPayout> Pending => _pending;
+    /// <summary>Kredi geliri carpani (dolap: Muhtar +%10).</summary>
+    public Func<float>? IncomeMult { get; set; }
     public bool FirstSaleDone { get; private set; }
 
     /// <summary>Odeme hesaba gecti (Kredi, ne satildi).</summary>
@@ -177,6 +179,7 @@ public sealed partial class Cargo
 
     void Pay(int credits, string what)
     {
+        if (credits > 0 && IncomeMult != null) credits = (int)Math.Round(credits * IncomeMult(), MidpointRounding.AwayFromZero); // dolap: Muhtar +%10
         _credit(credits, what);
         Paid?.Invoke(credits, what);
     }
