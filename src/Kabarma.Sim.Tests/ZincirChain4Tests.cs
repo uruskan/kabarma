@@ -22,6 +22,9 @@ public class ZincirChain4Tests
         "maya_dokumhanesi", "kabartma_odasi",
     };
 
+    /// <summary>ICERIK §11'in 43 istasyonu (AutomationTests: her birinin islevi var).</summary>
+    public static string[] AllStations => Stations43;
+
     /// <summary>Henuz baska akisin isi olanlar: Asi Tezgahi tarim4'te (gen aktarma). tarim4 birlesince bu liste bosalir.</summary>
     static readonly string[] OtherStreams = { "asi_tezgahi" };
 
@@ -32,7 +35,7 @@ public class ZincirChain4Tests
         "cam_ocagi", "elektronik_tezgahi", "montaj_makinesi", "rafineri", "sera_kontrol_unitesi", "ekim_robotu", "sagim_kirkim_kolu", "paketleyici", "sondaj_kulesi",
         "kristal_kesici", "batarya_tezgahi", "zeplin_hangari", "maya_dokumhanesi", "kabartma_odasi",
         "ark_eki", "celik", "titan_ingot", "kaucuk", "bitkisel_yag", "barut", "kimyasal_gubre", "havan_mermisi", "maya_siringasi", "biyoyakit", "cam", "devre", "plastik",
-        "termal_kumas", "kristal_lens", "aku_hucresi", "mayali_alasim", "mayali_beton", "reaktor_cubugu",
+        "termal_kumas", "kristal_lens", "aku_hucresi", "mayali_alasim", "mayali_beton", "reaktor_cubugu", "kompost", "sira",
     };
 
     [Fact]

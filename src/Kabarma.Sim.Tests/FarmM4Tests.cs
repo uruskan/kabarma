@@ -198,6 +198,35 @@ public class FarmM4Tests
     }
 
     [Fact]
+    public void Food_effects_sum_double_the_duration_and_cheapen_sprint()
+    {
+        var d = Data();
+        var s = new GameState(d);
+        var f = d.Tool.Foods;
+        Assert.True(s.Food.Eat(f.Single(x => x.Id == "kozde_misir")));
+        Assert.Equal(0.05f, s.Food.Effect("speed"), 4);
+        Assert.True(s.Food.Eat(f.Single(x => x.Id == "salgam_suyu")));
+        Assert.Equal(-0.2f, s.Food.Effect("sprintCost"), 4);
+        s.Stamina.DrainMult = 1f + s.Food.Effect("sprintCost");
+        float before = s.Stamina.Value;
+        s.Stamina.Tick(1f, true);
+        Assert.Equal(before - s.Stamina.Def.SprintDrain * 0.8f, s.Stamina.Value, 3);
+        var s2 = new GameState(d);
+        var tursu = f.Single(x => x.Id == "tursu");
+        Assert.True(s2.Food.Eat(tursu));
+        Assert.Equal(tursu.Seconds * 2f, s2.Food.Active[0].left, 2); // Tursu: suresi iki kat
+        Assert.Equal(0f, new GameState(d).Food.Effect("speed"));
+    }
+
+    [Fact]
+    public void T3_and_later_foods_cook_at_mutfak_and_earlier_at_ocakbasi()
+    {
+        var d = Data();
+        foreach (var id in new[] { "menemen", "bazlama", "izgara_et", "salgam_suyu", "mantar_sote", "ayran" }) Assert.Equal("ocakbasi", d.Tool.Recipes.Single(r => r.Id == id).Station);
+        foreach (var id in new[] { "pilav", "guvec", "baklava", "kooperatif_ziyafeti" }) Assert.Equal("mutfak", d.Tool.Recipes.Single(r => r.Id == id).Station);
+    }
+
+    [Fact]
     public void Foods_are_cooked_and_eaten_through_the_station()
     {
         var d = Data();

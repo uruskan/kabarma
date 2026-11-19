@@ -23,7 +23,41 @@ public sealed class PowerDeviceDef
     public float AnimalRadius { get; set; }
     public int Tier { get; set; }
 
-    public bool IsSignalSource => Kind is "button" or "plate";
+    // ---- M4 tasima (ICERIK §12): sensor, kapi, tasima parametreleri (hepsi power.json) ----
+    /// <summary>Zamanlayici: dongu (sn). Kol/Pompa: saniyede is (Rate). Teleferik: yuk dongusu.</summary>
+    public float Period { get; set; }
+    /// <summary>Zamanlayici: sinyalin acik kaldigi sure (sn).</summary>
+    public float Pulse { get; set; }
+    /// <summary>Sayac: kac kenarda cikis 100 olur. Karsilastirici: tek girisliyse esik.</summary>
+    public int Target { get; set; }
+    /// <summary>Kol, Pompa, Drone, Teleferik: saniyede tasinan sey (nesne ya da yuk).</summary>
+    public float Rate { get; set; }
+    /// <summary>Bant, Boru, Drone, Teleferik: tasima hizi (m/sn).</summary>
+    public float Speed { get; set; }
+    /// <summary>Bant: iki nesne arasindaki en kisa sure (sn; saniyede 2 nesne = 0.5).</summary>
+    public float Gap { get; set; }
+    /// <summary>Bant parcasinda ayni anda en cok nesne; Drone: tasima kapasitesi (nesne); Teleferik: yuk basina.</summary>
+    public int Capacity { get; set; }
+    /// <summary>Bant parcasinin uzunlugu (m); Drone ve Teleferik menzili (m).</summary>
+    public float Range { get; set; }
+    /// <summary>Drone Istasyonu: drone adedi.</summary>
+    public int Drones { get; set; }
+    /// <summary>Boru ve Pompa: yalniz sivi (transport.json fluids) tasir.</summary>
+    public bool Fluid { get; set; }
+    /// <summary>Biyoyakit Jeneratoru: yakit esyasi ve bir esyanin yaktigi sure (sn).</summary>
+    public string? FuelItem { get; set; }
+    public float FuelSeconds { get; set; }
+    /// <summary>Teleferik Diregi: iki direk arasi en cok aciklik (m).</summary>
+    public float Span { get; set; }
+
+    public bool IsGate => Kind is "and" or "or" or "not" or "compare" or "memory";
+    /// <summary>Sinyal cikisi veren parca (kaynak ya da kapi).</summary>
+    public bool IsSignalSource => IsGate || Kind is "button" or "plate" or "lever" or "motion" or "daynight" or "kabarma_sensor" or "reading" or "power_sensor" or "counter" or "timer";
+    /// <summary>Guc ceken parca: lamba, siren, kol, pompa, drone ve teleferik istasyonu (istasyonlar research.json watts).</summary>
+    public bool IsConsumer => Kind is "consumer" or "arm" or "pump" or "drone_station" or "ropeway_station";
+    /// <summary>Bant, Boru, Ayirici, Birlestirici: nesne tasiyan parca (TransportNet).</summary>
+    public bool IsConveyor => Kind is "belt" or "pipe" or "splitter" or "merger";
+    public bool IsMover => Kind is "arm" or "pump";
 }
 
 public sealed class WindDef
@@ -44,6 +78,10 @@ public sealed class PowerFile
     public float ButtonSeconds { get; set; } = 1f;
     public float PlateRadius { get; set; } = 0.8f;
     public WindDef Wind { get; set; } = new();
+    /// <summary>Boru ve Pompa'nin tasidigi sivi esyalar (M4).</summary>
+    public List<string> Fluids { get; set; } = new();
+    /// <summary>Bant ve kol: bir parcanin yarim cikis/giris noktasi uzakligi (m).</summary>
+    public float TileSize { get; set; } = 1f;
     public List<PowerDeviceDef> Devices { get; set; } = new();
     /// <summary>
     /// Guc isteyen istasyonlar (istasyon kimligi -> W). Veride degil: research.json "watts" (zincir akisi) GameData.Power

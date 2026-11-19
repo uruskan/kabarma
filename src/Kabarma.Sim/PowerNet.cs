@@ -28,6 +28,21 @@ public sealed class PowerNode
     /// <summary>Aku: icindeki enerji (Wh).</summary>
     public float StoredWh { get; set; }
 
+    // ---- M4 tasima (ICERIK §12): sensor, kapi, sayac, yakit, tasima filtresi ----
+    /// <summary>Kol, Pompa, Teleferik: yalniz bu esyayi tasir (bos: hepsi).</summary>
+    public string Filter { get; set; } = "";
+    /// <summary>Bellek kapisi: tutulan deger.</summary>
+    public bool Mem { get; set; }
+    /// <summary>Sayac: sayilan kenar.</summary>
+    public int Count { get; set; }
+    /// <summary>Zamanlayici: dongudeki an (sn). Sayac/Kapi: onceki giris (kenar bulmak icin 1).</summary>
+    public float TimerT { get; set; }
+    public bool PrevIn { get; set; }
+    /// <summary>Biyoyakit Jeneratoru: kalan yakit (sn).</summary>
+    public float Fuel { get; set; }
+    /// <summary>Depo ve Nem Sensoru: Godot'un yazdigi olcum 0..100.</summary>
+    public int Reading { get; set; }
+
     // ---- sonuc (Tick) ----
     /// <summary>Tuketici beslendi / uretec uretti / ag canli.</summary>
     public bool Powered { get; set; }
@@ -84,13 +99,27 @@ public sealed class PowerNet
     [System.Text.Json.Serialization.JsonIgnore]
     public List<PowerNetStats> Nets { get; } = new();
 
+    /// <summary>Tasima durumu (bant, kol, drone, teleferik; Logistics.cs). Kayit ve ag bu nesneyle gelir.</summary>
+    public TransportState Transport { get; set; } = new();
+
+    // ---- dis dunya (Godot her kare yazar; kayda girmez) ----
+    /// <summary>Gunes isigi 0..1 (Gunes Paneli). Gece 0.</summary>
+    [System.Text.Json.Serialization.JsonIgnore] public float Sun { get; set; } = 1f;
+    /// <summary>Gece mi (Gun-Gece Sensoru).</summary>
+    [System.Text.Json.Serialization.JsonIgnore] public bool Night { get; set; }
+    /// <summary>Kabarma asamasi ve dalgasi 0..100 (Kabarma Sensoru; 0: Kabarma yok). Kabarma Toplayicisi >0 iken uretir.</summary>
+    [System.Text.Json.Serialization.JsonIgnore] public int KabarmaLevel { get; set; }
+    /// <summary>Tasima dunyasi (Godot: Sandik ve istasyon depolari). Null iken tasima islemez.</summary>
+    [System.Text.Json.Serialization.JsonIgnore] public ITransportWorld? World { get; set; }
+
     public PowerNode? Get(int id) => Nodes.Find(n => n.Id == id);
 
     public PowerNode Add(PowerFile f, string def, float x, float y, float z)
     {
         var d = f.Def(def) ?? throw new ArgumentException($"guc parcasi degil: {def}");
         var n = new PowerNode { Id = NextId++, Def = def, X = x, Y = y, Z = z, Priority = f.PriorityDefault };
-        if (d.Kind == "consumer" && f.Consumers.ContainsKey(def)) n.Wants = false; // istasyon: is baslayinca ister
+        if (d.IsConsumer && f.Consumers.ContainsKey(def)) n.Wants = false;
+        if (d.Kind == "memory") n.Mem = false; // istasyon: is baslayinca ister
         Nodes.Add(n);
         return n;
     }
@@ -132,10 +161,11 @@ public sealed class PowerNet
         if (Distance(na, nb) > f.CableMaxLength) return $"Kablo en fazla {f.CableMaxLength:0} m";
         if (signal)
         {
-            if (da.IsSignalSource == db.IsSignalSource) return "Sinyal teli: Düğme ya da Basınç Plakası → Şalter ya da Lamba";
-            var (src, dst) = da.IsSignalSource ? (da, db) : (db, da);
+            var dir = SignalDir(da, db);
+            if (dir == 0) return "Sinyal teli: kaynak (Düğme, sensör, kapı…) → alıcı (Şalter, Lamba, Kapı, Bant, Kol…)";
+            var dst = dir > 0 ? db : da;
             if (!dst.SignalIn) return $"{dst.Id}: sinyal girişi yok";
-            int s = da.IsSignalSource ? a : b, r = da.IsSignalSource ? b : a;
+            int s = dir > 0 ? a : b, r = dir > 0 ? b : a;
             if (Links.Any(l => l.Signal && l.A == s && l.B == r)) return "Zaten bağlı";
             return null;
         }
@@ -146,11 +176,20 @@ public sealed class PowerNet
         return null;
     }
 
+    /// <summary>Sinyal teli yonu: +1 a kaynak, b alici; -1 b kaynak, a alici; 0 hicbiri (ikisi de kaynak degil).</summary>
+    static int SignalDir(PowerDeviceDef da, PowerDeviceDef db)
+    {
+        if (da.IsSignalSource && !db.IsSignalSource) return 1;
+        if (db.IsSignalSource && !da.IsSignalSource) return -1;
+        if (da.IsSignalSource && db.IsSignalSource) return db.SignalIn ? 1 : da.SignalIn ? -1 : 0;
+        return 0;
+    }
+
     /// <summary>Kabloyu ceker (once CanConnect). Cekildiyse kablo, degilse null.</summary>
     public PowerLink? Connect(PowerFile f, int a, int b, bool signal)
     {
         if (CanConnect(f, a, b, signal) != null) return null;
-        if (signal && !f.Def(Get(a)!.Def)!.IsSignalSource) (a, b) = (b, a);
+        if (signal && SignalDir(f.Def(Get(a)!.Def)!, f.Def(Get(b)!.Def)!) < 0) (a, b) = (b, a);
         var l = new PowerLink { A = a, B = b, Signal = signal, Length = Distance(Get(a)!, Get(b)!) };
         Links.Add(l);
         return l;
@@ -190,26 +229,84 @@ public sealed class PowerNet
         foreach (var n in Nodes) defs[n.Id] = f.Def(n.Def) ?? new PowerDeviceDef { Id = n.Def, Kind = "pole" };
 
         // 1) Sinyal: kaynaklar, sonra alicilar.
-        foreach (var n in Nodes)
-        {
-            var d = defs[n.Id];
-            if (d.Kind == "button") { n.PressLeft = Math.Max(0f, n.PressLeft - dt); n.Signal = n.PressLeft > 0 ? f.SignalMax : 0; }
-            else if (d.Kind == "plate") n.Signal = n.Occupied ? f.SignalMax : 0;
-            else { n.Signal = 0; n.SignalWired = false; }
-        }
+        int smax = f.SignalMax;
+        foreach (var n in Nodes) n.SignalWired = false;
+        var sigIns = new Dictionary<int, List<PowerNode>>(); // alici -> girisleri (tel sirasiyla)
         foreach (var l in Links.Where(l => l.Signal))
         {
             var s = Get(l.A); var r = Get(l.B);
             if (s == null || r == null) continue;
             r.SignalWired = true;
-            r.Signal = Math.Max(r.Signal, s.Signal);
+            if (!sigIns.TryGetValue(r.Id, out var lst)) sigIns[r.Id] = lst = new List<PowerNode>();
+            lst.Add(s);
+        }
+        // Kaynaklar (kapilar onceki tikin cikisini tutar: bellek ve dongu)
+        foreach (var n in Nodes)
+        {
+            var d = defs[n.Id];
+            switch (d.Kind)
+            {
+                case "button": n.PressLeft = Math.Max(0f, n.PressLeft - dt); n.Signal = n.PressLeft > 0 ? smax : 0; break;
+                case "plate": n.Signal = n.Occupied ? smax : 0; break;
+                case "lever": n.Signal = n.On ? smax : 0; break;
+                case "motion": n.Signal = n.On && n.Occupied ? smax : 0; break;
+                case "daynight": n.Signal = Night ? smax : 0; break;
+                case "kabarma_sensor": n.Signal = Math.Clamp(KabarmaLevel, 0, smax); break;
+                case "reading": n.Signal = Math.Clamp(n.Reading, 0, smax); break;
+                case "power_sensor": n.Signal = PowerLevel(n, smax); break;
+                case "timer":
+                    if (n.On && d.Period > 0) { n.TimerT = (n.TimerT + dt) % d.Period; n.Signal = n.TimerT < d.Pulse ? smax : 0; }
+                    else { n.TimerT = 0; n.Signal = 0; }
+                    break;
+                default:
+                    if (!d.IsGate && d.Kind != "counter") n.Signal = 0; // alici: asagida
+                    break;
+            }
+        }
+        // Sayac: giris kenarlarini sayar (Target kenarda cikis acilir; Godot ya da test Reset eder).
+        foreach (var n in Nodes.Where(n => defs[n.Id].Kind == "counter"))
+        {
+            bool inp = sigIns.TryGetValue(n.Id, out var li) && li.Any(x => x.Signal > 0);
+            if (inp && !n.PrevIn) n.Count++;
+            n.PrevIn = inp;
+            n.Signal = n.Count >= Math.Max(1, defs[n.Id].Target) ? smax : 0;
+        }
+        // Kapilar: zincirli kapilar icin birkac gecis.
+        var gates = Nodes.Where(n => defs[n.Id].IsGate).ToList();
+        for (int pass = 0; pass < 6 && gates.Count > 0; pass++)
+            foreach (var g in gates)
+            {
+                var ins = sigIns.GetValueOrDefault(g.Id) ?? new List<PowerNode>();
+                bool v = false;
+                switch (defs[g.Id].Kind)
+                {
+                    case "and": v = ins.Count > 0 && ins.All(x => x.Signal > 0); break;
+                    case "or": v = ins.Any(x => x.Signal > 0); break;
+                    case "not": v = ins.Count == 0 || ins.All(x => x.Signal <= 0); break;
+                    case "compare":
+                        v = ins.Count >= 2 ? ins[0].Signal > ins[1].Signal : ins.Count == 1 && ins[0].Signal > (defs[g.Id].Target > 0 ? defs[g.Id].Target : smax / 2);
+                        break;
+                    case "memory":
+                        if (ins.Count > 0 && ins[0].Signal > 0) g.Mem = true;
+                        if (ins.Count > 1 && ins[1].Signal > 0) g.Mem = false; // sifirlama ustun
+                        v = g.Mem;
+                        break;
+                }
+                g.Signal = g.On && v ? smax : 0;
+            }
+        // Alicilar: girislerin en buyugu.
+        foreach (var n in Nodes)
+        {
+            var d = defs[n.Id];
+            if (d.IsSignalSource) continue;
+            n.Signal = sigIns.TryGetValue(n.Id, out var li) ? li.Max(x => x.Signal) : 0;
         }
         // Salter ve lamba: sinyal teli varsa sinyal surer, yoksa elle (On).
         bool Conducts(PowerNode n) => defs[n.Id].Kind != "switch" || (n.SignalWired ? n.Signal > 0 : n.On);
         foreach (var n in Nodes)
         {
             var d = defs[n.Id];
-            if (d.Kind == "consumer" && !f.Consumers.ContainsKey(n.Def)) n.Wants = n.On && (!n.SignalWired || n.Signal > 0);
+            if (d.IsConsumer && !f.Consumers.ContainsKey(n.Def)) n.Wants = n.On && (!n.SignalWired || n.Signal > 0);
         }
 
         // 2) Aglar: acik salterin kablolari birlestirmez.
@@ -240,7 +337,16 @@ public sealed class PowerNet
             {
                 var d = defs[n.Id];
                 if (d.Kind != "generator") continue;
-                float w = d.Source switch { "wind" => d.Watts * wind, "animal" => n.Occupied ? d.Watts : 0f, _ => d.Watts };
+                float w = d.Source switch
+                {
+                    "wind" => d.Watts * wind,
+                    "animal" or "water" => n.Occupied ? d.Watts : 0f,          // Hayvan Carki, Cizbiz Tanki (icinde yaratik), Su Carki (suya oturur)
+                    "solar" => d.Watts * Math.Clamp(Sun, 0f, 1f),
+                    "kabarma" => KabarmaLevel > 0 ? d.Watts : 0f,               // Kabarma Toplayicisi: yalniz Kabarma'da
+                    "fuel" => n.On && n.Fuel > 0 ? d.Watts : 0f,                // Biyoyakit Jeneratoru: yakit yanarken
+                    _ => d.Watts,
+                };
+                if (d.Source == "fuel" && w > 0) n.Fuel = Math.Max(0f, n.Fuel - dt);
                 n.OutputW = w;
                 n.Powered = w > 0;
                 st.SupplyW += w;
@@ -255,7 +361,7 @@ public sealed class PowerNet
                 batMax += dtHours > 0 ? Math.Min(d.Watts, b.StoredWh / dtHours) : (b.StoredWh > 0 ? d.Watts : 0);
             }
             // Talep: oncelik 1 once; ayni oncelikte eski parca once. Sigmayan kapanir, kucugu sigarsa beslenir.
-            var want = members.Where(n => defs[n.Id].Kind == "consumer" && n.Wants).OrderBy(n => n.Priority).ThenBy(n => n.Id).ToList();
+            var want = members.Where(n => defs[n.Id].IsConsumer && n.Wants).OrderBy(n => EffectivePriority(n, defs)).ThenBy(n => n.Id).ToList();
             float left = st.SupplyW + batMax;
             foreach (var n in want)
             {
@@ -296,10 +402,42 @@ public sealed class PowerNet
             foreach (var n in members)
             {
                 var k = defs[n.Id].Kind;
-                if (k is "pole" or "switch") n.Powered = live;
+                if (k is "pole" or "switch" or "fuse" or "ropeway_post") n.Powered = live;
                 else if (k == "battery") n.Powered = n.StoredWh > 0;
             }
         }
+        if (World != null) Transport.Tick(this, f, World, dt);
+    }
+
+    /// <summary>Sigorta Kutusu (ICERIK §12): kablosuna bagli tuketici, kutunun onceligini kullanir.</summary>
+    int EffectivePriority(PowerNode n, Dictionary<int, PowerDeviceDef> defs)
+    {
+        foreach (var l in Links)
+        {
+            if (l.Signal) continue;
+            int other = l.A == n.Id ? l.B : l.B == n.Id ? l.A : -1;
+            if (other >= 0 && defs.TryGetValue(other, out var d) && d.Kind == "fuse") return Get(other)!.Priority;
+        }
+        return n.Priority;
+    }
+
+    /// <summary>Guc Sensoru: aku varsa doluluk yuzdesi, yoksa uretimin talebe orani (0..signalMax); bagsiz 0.</summary>
+    int PowerLevel(PowerNode sensor, int smax)
+    {
+        var st = StatsOf(sensor.Id);
+        if (st == null) return 0;
+        if (st.CapacityWh > 0) return (int)Math.Round(st.StoredWh / st.CapacityWh * smax);
+        return st.SupplyW <= 0 ? 0 : (int)Math.Round(Math.Min(1f, st.SupplyW / Math.Max(1f, st.DemandW)) * smax);
+    }
+
+    /// <summary>Biyoyakit Jeneratoru'na yakit koyar: esya basina FuelSeconds. Donen: eklenen sure.</summary>
+    public float Refuel(PowerFile f, int id, int items)
+    {
+        var n = Get(id);
+        var d = n == null ? null : f.Def(n.Def);
+        if (n == null || d == null || d.Source != "fuel" || items <= 0) return 0f;
+        n.Fuel += items * d.FuelSeconds;
+        return items * d.FuelSeconds;
     }
 
     /// <summary>Parcanin aginin dengesi; bagsizsa null.</summary>

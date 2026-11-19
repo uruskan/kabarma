@@ -718,6 +718,16 @@ Sinyal parçaları T3'te (basit) ve T4'te (sensörler, kapılar) açılır; yaln
 
 Soket: üretici, akü ve şalter 2, tüketici 1, Direk 4; sinyal teli soket saymaz. Öncelik: tüketici başına 1 (en önemli) – 5, varsayılan 3; üretim ve akü talebi karşılamazsa 5'ten başlayarak kapanır (GDD §11.1). Sigorta Kutusu M4'te, o zamana dek öncelik tüketicinin E menüsünden ayarlanır.
 
+**M4 tasima değerleri** (tasima akışı, 19 Kasım 2026; tarifler `recipes.json`, hepsi Tezgâh'ta ve `ocak:n` basamağıyla açılır, bedeller denge simülasyonuna dek tahmin; §20'de yazanlar olduğu gibi). Hepsi `power.json`'dadır.
+
+- **Üreticiler:** Su Çarkı 120 W (akan suya oturur), Biyoyakıt Jeneratörü 250 W (bir Biyoyakıt 120 sn yanar, E'den yakıt eklenir), Güneş Paneli 60 W × gün ışığı, Cızbız Tankı 150 W (içinde Cızbız varken), Kabarma Toplayıcısı 1.000 W (yalnız Kabarma aşamasında), Maya Reaktörü 2.000 W. Akü Mk2/Mk3/Mk4: 2.000/8.000/30.000 Wh, en çok 400/800/2.000 W.
+- **Sigorta Kutusu:** 4 soket; kablosuna bağlı tüketici kutunun önceliğini (E: 1–5) kullanır.
+- **Sinyal kaynakları** (0–100): Şalter Kolu (elle), Hareket Sensörü (8 m'de oyuncu, hayvan), Gün-Gece Sensörü (gece 100), Kabarma Sensörü (aşama ve dalga: Alarm 25, Dalgalar 75), Depo Sensörü (3,5 m'deki Sandığın doluluk yüzdesi), Güç Sensörü (aküsü varsa doluluk, yoksa üretim/talep), Nem Sensörü (şimdilik suya yakınlık: yer tutucu ölçüm), Sayaç (giriş kenarlarını sayar, 5'te 100, E: sıfırla), Zamanlayıcı (10 sn'de 2 sn açık).
+- **Kapılar:** VE, VEYA, DEĞİL; Karşılaştırıcı (birinci tel > ikinci tel, tek telse > 50); Bellek (birinci tel kurar, ikinci sıfırlar, sıfırlama üstün). Kapı kapıya zincirlenir (6 geçiş).
+- **Uyarı:** Siren 10 W, Sinyal Lambası 2 W; ikisi sinyal > 0 iken çalışır.
+- **Taşıma** (GDD 11.3; parçalar 1 m karoya ve 90° yöne oturur, kablosuzdur: parçanın önündeki karo sıradaki parça ya da Sandıktır): Bant saniyede 2 nesne (2 m/sn, karoda en çok 2 nesne); Ayırıcı önüne, soluna ve sağına sırayla verir; Birleştirici her yandan alır; Kol (10 W) arkasındaki Sandıktan önündeki banda ya da Sandığa saniyede 1 nesne taşır, E ile eşya süzgeci; Boru ve Pompa (30 W, saniyede 4) yalnız sıvı (`power.json` `fluids`: su, biyoyakıt, süt) taşır, Bant sıvı almaz. Sinyal telli parça sinyal 0 iken durur.
+- **Drone İstasyonu** (40 W): 6 drone, 80 m, saniyede 8 m, kalkışta 8 nesne; en çok 8 görev (eşya, kaynak Sandık, hedef Sandık), istasyon beslenmişken kalkar, hedefte yer yoksa kaynağa geri koyar (kayıp yok). **Teleferik İstasyonu** (60 W): en çok 400 m hat, iki direk arası en çok 60 m (araya Teleferik Direği), her 4 sn'de 20 nesnelik yük; hat tek yönlüdür (dönüş için ikinci hat).
+
 ## 13. Kuleler (8) ve tuzaklar (8)
 
 | Kule | T | Besleme | Davranış |

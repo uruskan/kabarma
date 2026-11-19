@@ -59,6 +59,7 @@ public partial class PowerSystem : Node3D
     public PowerDevice Place(PlaceableDef def, Vector3 at, float yaw)
     {
         var pdef = F.Def(def.Id);
+        if (pdef is { IsConveyor: true } or { IsMover: true }) (at, yaw) = SnapToTile(at, yaw); // tasima: parcalar 1 m karolara ve 90 derece yonlere oturur
         var node = Net.Add(F, def.Id, at.X, at.Y, at.Z);
         var dev = Spawn(def, pdef, node.Id, at, yaw);
         Sfx.Play("place", at, 2f);
@@ -168,7 +169,7 @@ public partial class PowerSystem : Node3D
         {
             if (!IsInstanceValid(st) || !st.IsInsideTree()) { _stationPorts.Remove(st); continue; }
             var n = Net.Get(port.NodeId);
-            if (n != null) n.Wants = st.Queue.Active != null;
+            if (n != null) n.Wants = st.Queue.Active != null || st.WantsPower; // tasima M4: makine hedefi varken de guc ister
         }
     }
 
@@ -180,6 +181,7 @@ public partial class PowerSystem : Node3D
         float dt = (float)delta;
         SyncStations();
         Occupancy();
+        FeedWorld(); // M4 tasima: gunes, gece, Kabarma, depolar (PowerSystem.Transport.cs)
         _d.State.TickPower(dt);
         SyncCables();
     }
@@ -358,6 +360,7 @@ public partial class PowerSystem : Node3D
         if (dev != null && (st == null || dev.GlobalPosition.DistanceTo(p) < st.GlobalPosition.DistanceTo(p)))
         {
             if (dev.PDef.Kind == "button" && !cableInHand) { Press(dev); return true; }
+            if (dev.PDef.Kind == "lever" && !cableInHand) { Act(Op.Toggle, dev.NodeId); Sfx.Play("place", dev.GlobalPosition, -6f); dev.Bounce(); return true; }
             OpenPanel(dev.NodeId);
             return true;
         }
@@ -383,11 +386,12 @@ public partial class PowerSystem : Node3D
         var dev = _owners.TryGetValue(id, out var o) ? o as PowerDevice : null;
         var items = new List<Hud.MenuItem>();
         void Re() => OpenPanel(id);
-        if (pdef.Kind is "switch" or "consumer" && F.IsDevice(n.Def))
+        if (pdef.Kind is "switch" or "lever" or "timer" or "motion" or "memory" or "belt" or "pipe" or "splitter" or "merger" || (pdef.IsConsumer && F.IsDevice(n.Def)))
             items.Add(new Hud.MenuItem(n.On ? "Kapat" : "Aç", () => !(n.SignalWired && pdef.Kind == "switch"), () => { Act(Op.Toggle, id); Sfx.Play("place", null, -8f); Re(); }));
-        if (pdef.Kind == "consumer")
+        if (pdef.IsConsumer || pdef.Kind == "fuse")
             items.Add(new Hud.MenuItem($"Öncelik: {n.Priority}  (1 en önemli, 5 ilk kapanır)", () => true, () => { Act(Op.Priority, id); Sfx.Play("place", null, -12f); Re(); }));
         if (pdef.Kind == "button" && dev != null) items.Add(new Hud.MenuItem("Bas", () => true, () => { Press(dev); Re(); }));
+        TransportPanel(items, n, pdef, dev, Re); // M4 tasima: kol filtresi, yakit, sayac, drone gorevleri, teleferik hatti
         int cables = Net.Links.Count(l => l.A == id || l.B == id);
         items.Add(new Hud.MenuItem($"Kablolarını sök ({cables})", () => cables > 0, () => { Act(Op.Unplug, id); Sfx.Play("pickup", null, -6f); Re(); }, F.CableItem));
         if (dev != null) items.Add(new Hud.MenuItem($"Sök ({dev.Def.Name} ve kabloları çantaya)", () => true, () => Dismantle(dev), dev.Def.Id));

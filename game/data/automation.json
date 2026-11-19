@@ -1,0 +1,28 @@
+{
+  "_not": "Otomasyon makineleri ve istasyon islevleri (M4 tasima; GDD 11.4, ICERIK §11, §12). machines: istasyon kimligi -> kural parametreleri (radius m: makinenin etrafi, interval sn: bir calisma). Makineler guc ister (research.json watts); is varken guc ceker. Cikti ve girdi tapu icindeki Sandiklardan (ambardan uretim gibi), canta degil. functions: her istasyonun islevi: 'recipes' (kendi tarifleri recipes.json'da), 'machine' (machines'te), 'hand' (el tarifleri), 'special' (kendi menusu ya da baska sistemde: arastirma, paketleme, rampa, hayvan, arac, yapi) ya da 'next:<akis>' (sonraki akisin isi, PROGRESS.md satiri). Test: her istasyonun islevi var.",
+  "machines": {
+    "hasat_robotu": { "radius": 8.0, "interval": 2.0 },
+    "ekim_robotu": { "radius": 8.0, "interval": 2.0 },
+    "otomatik_yemlik": { "radius": 12.0, "interval": 5.0 },
+    "yumurta_toplayici": { "radius": 12.0, "interval": 5.0 },
+    "sagim_kirkim_kolu": { "radius": 12.0, "interval": 8.0, "items": ["sut", "yun"] },
+    "paketleyici": { "radius": 12.0, "chestRadius": 3.5, "interval": 6.0, "idleLaunchSeconds": 12.0 },
+    "sondaj_kulesi": { "radius": 6.0, "interval": 6.0, "poiType": "zengin_yatak", "ores": { "altin_cayir": "copper_ore", "sis_korusu": "iron_ore", "isil_sazlik": "kukurt", "kizil_kanyon": "titan_ore", "ayaz_yaylasi": "ayaz_kristali", "gobek": "isil_cevher" } },
+    "sera_kontrol_unitesi": { "radius": 8.0, "interval": 1.0 },
+    "montaj_makinesi": { "radius": 0.0, "interval": 1.0 }
+  },
+  "functions": {
+    "sirt_yazicisi": "hand",
+    "tezgah": "recipes", "tas_firin": "recipes", "komur_ocagi": "recipes", "ocakbasi": "recipes",
+    "tabaklama_askisi": "recipes", "harman_yeri": "recipes",
+    "paketleme": "special", "kargo_rampasi": "special", "arastirma_masasi": "special",
+    "demirci_ocagi": "recipes", "bicki": "recipes", "degirmen": "recipes", "dokuma_tezgahi": "recipes",
+    "kasap_tezgahi": "special", "kulucka": "special", "arac_atolyesi": "special", "oyma_iskelesi": "special",
+    "yuksek_firin": "recipes", "kimya_tezgahi": "recipes", "pres": "recipes", "mutfak": "next:tarim4", "damitici": "recipes", "tursu_ficisi": "recipes",
+    "hasat_robotu": "machine", "otomatik_yemlik": "machine", "yumurta_toplayici": "machine", "kompostor": "recipes",
+    "cam_ocagi": "recipes", "elektronik_tezgahi": "recipes", "montaj_makinesi": "machine", "rafineri": "recipes", "sera_kontrol_unitesi": "machine",
+    "ekim_robotu": "machine", "sagim_kirkim_kolu": "machine", "paketleyici": "machine", "sondaj_kulesi": "machine",
+    "kristal_kesici": "recipes", "batarya_tezgahi": "recipes", "asi_tezgahi": "special", "zeplin_hangari": "next:arac",
+    "maya_dokumhanesi": "recipes", "kabartma_odasi": "next:gece4"
+  }
+}

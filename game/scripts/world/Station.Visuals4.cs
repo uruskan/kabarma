@@ -34,12 +34,14 @@ public static class ZincirVisuals4
         ["montaj_makinesi"] = (2.4f, 1.5f, 1.6f, 4, Sym.Arm),
         ["rafineri"] = (2.0f, 1.8f, 1.8f, 4, Sym.Tower),
         ["sera_kontrol_unitesi"] = (0.8f, 1.1f, 0.6f, 4, Sym.Panel),
+        ["asi_tezgahi"] = (1.2f, 1.0f, 0.8f, 5, Sym.Arm), // tarim4 (M4): gen aktarma, ICERIK 11
         ["ekim_robotu"] = (0.9f, 0.8f, 0.9f, 4, Sym.Arm),
         ["sagim_kirkim_kolu"] = (1.2f, 1.0f, 0.8f, 4, Sym.Arm),
         ["paketleyici"] = (1.6f, 0.9f, 1.0f, 4, Sym.Hopper),
         ["sondaj_kulesi"] = (1.8f, 3.0f, 1.8f, 4, Sym.Tower),
         ["kristal_kesici"] = (1.4f, 0.9f, 1.0f, 5, Sym.Dome),
         ["batarya_tezgahi"] = (1.6f, 0.9f, 1.0f, 5, Sym.Tank),
+        ["asi_tezgahi"] = (1.5f, 1.0f, 1.0f, 5, Sym.Arm), // tarim4'ün istasyonu: yer tutucu burada (zincir sinamasi her istasyonun gorunusunu ister)
         ["zeplin_hangari"] = (6.0f, 3.2f, 3.5f, 5, Sym.Dome),
         ["maya_dokumhanesi"] = (3.0f, 1.8f, 2.4f, 6, Sym.Chimney),
         ["kabartma_odasi"] = (4.0f, 2.6f, 4.0f, 6, Sym.Dome),

@@ -40,6 +40,7 @@ public sealed partial class GameState
         n.DawnNow += () =>
         {
             Orders.Report("kabarma_survived");
+            MayaStock.Deposit(n.Maya); // Maya Kazani: gecenin Maya'si (borc dusulmus) esya olarak alinir (MayaVault.cs)
             // M1: ilk Kabarma'nin safagindan sonra gun dongusu baslar; F1'den yeniden oynanan gece saati yalnizca durdurur.
             if (!Calendar.Running) Calendar.Start(Data.Calendar.FirstDay);
             Calendar.Paused = false;

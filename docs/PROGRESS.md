@@ -43,6 +43,16 @@ Sahibin kararı 24 (18 Kasım 2026): ana oturum M2'den M7'ye sormadan ilerler; a
 | Homur (yaratık denemesi) | Tripo web | 1 iş + iskelet | 55 + ? | model üretildi, iskelet ve yaratik2 doğrulaması bekliyor; öteki 6 tür ve Atalar bundan sonra |
 | Taş Fırın, kuleler, tuzaklar, istasyonlar | Tripo web | — | — | sırada. Hareketli parçası olanlar (kule başı, kapak, mancınık kolu) önce parçalama planı ister |
 
+### İstasyon işlevleri: sonraki akışlara bırakılanlar (tasima, 19 Kasım 2026; `automation.json` `functions`, `AutomationTests`)
+
+| İstasyon | İşlev (ICERIK §11) | Sonraki akış | Durum |
+|---|---|---|---|
+| Kabartma Odası | tek kareyi ya da hayvanı gündüz kabartır (50 Maya, 800 W) | gece4 | ❌ kurulur ve bedeli ödenir, çalışma yok; `Maya` (`MayaVault`) ve Kabarma başlatma (`StartKabarma`) hazır |
+| Zeplin Hangarı | Zeplin üretimi | arac | ❌ kurulur, tarifi yok; Zeplin ve eklentiler arac akışında |
+| Mutfak, Aşı Tezgâhı | T2–T6 yemek; gen aktarma | tarim4 | ❌ tarim4'ün işi (tarifleri `mutfak`, `asi_tezgahi`) |
+
+Kabul akışı için açık: `rawSources` `via: pending:biyom` (T3–T6 ham kaynak düğümleri) ve `pending:ata4` (Ana Maya'nın `kabartma_plani`); biyom ve ata4 birleşince bu satırlar silinir, `AutomationTests.Raw_sources_need_an_in_game_producer_or_are_listed_as_pending` listeyi sıfıra indirmeyi bekler. Sondaj Kulesi Zengin Yatak düğümü yerleşene kadar boşta (Sim kuralı sınandı, dünya sınaması yok).
+
 ### Optimizasyon listesi (sahibin kararı: en sona; ölçüm ve iyileştirme şimdi yapılmaz)
 
 | Bulgu | Nerede | Not |

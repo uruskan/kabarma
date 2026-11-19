@@ -26,6 +26,12 @@ public static class PowerVisuals
         "elektrik_lambasi" => new Vector3(0, 1.2f, 0.08f),
         "dugme" => new Vector3(0, 1.0f, 0),
         "basinc_plakasi" => new Vector3(0.45f, 0.12f, 0.45f),
+        "bant" or "ayirici" or "birlestirici" => new Vector3(0, 0.24f, 0), // tasima (M4): nesne yuksekligi
+        "boru" => new Vector3(0, 0.25f, 0),
+        "tasima_kolu" or "pompa" => new Vector3(0, 0.55f, 0),
+        "drone_istasyonu" => new Vector3(0, 1.3f, 0),
+        "teleferik_istasyonu" => new Vector3(0, 2.9f, 0), // halat bu yukseklikten gider
+        "teleferik_diregi" => new Vector3(0, 4.0f, 0),
         _ => new Vector3(0, 1.3f, 0), // guc isteyen istasyon
     };
 
@@ -151,7 +157,7 @@ public static class PowerVisuals
                 kit.Cylinder(0.04f, 0.04f, 0.06f, MeshKit.At(0.45f, 0.1f, 0.45f), Ceramic, 8);
                 break;
             default:
-                kit.Pillow(new Vector3(0.6f, 0.6f, 0.6f), MeshKit.At(0, 0.3f, 0), Metal, 0.3f);
+                if (!PowerVisuals4.Make(id, kit, root)) kit.Pillow(new Vector3(0.6f, 0.6f, 0.6f), MeshKit.At(0, 0.3f, 0), Metal, 0.3f); // M4 tasima: yer tutucular
                 break;
         }
         var body = kit.Instance();
