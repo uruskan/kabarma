@@ -146,7 +146,7 @@ public partial class CoopTest : Node
                 if (_handClientT > HandoverWait - 3f && !_handLogged)
                 {
                     _handLogged = true;
-                    Log($"COOP HANDOVER state={(Net.IsHost ? "host" : "client")} joined={Net.Joined} roster={Net.Roster.Count} avatars={Net.Avatars.Count} {Net.Status}");
+                    Log($"COOP HANDOVER state={(Net.IsHost ? "host" : "client")} joined={Net.Joined} roster={Net.Roster.Count} avatars={Net.Avatars.Count} bag={_bagBefore}->{BagTotal()} {Net.Status}");
                 }
             }
             return;
@@ -212,7 +212,7 @@ public partial class CoopTest : Node
         byte k = r.U8();
         if (k == 1) { SendHost(1); Log("COOP report sent"); }
         else if (k == 2) { int code = r.U8(); Log($"COOP final from host code={code}"); _exit = code; _quitT = 0.5f; }
-        else if (k == 4) { _handClientT = 0f; Log("COOP handover basliyor"); } // sekiz (M5)
+        else if (k == 4) { _handClientT = 0f; _bagBefore = BagTotal(); Log($"COOP handover basliyor bag_before={_bagBefore}"); } // sekiz (M5)
         else if (k == 3)
         {
             string id = Main.Args.GetValueOrDefault("bot_id");
@@ -333,11 +333,14 @@ public partial class CoopTest : Node
     bool _handover, _handLogged;
     float _handT, _handClientT = -1f;
     string _resultLine = "";
+    int _bagBefore;
+    int BagTotal() => _d.State.Backpack.Stacks.Sum(s => s.Item2);
 
     /// <summary>Host: sinama bitince dunyayi bir istemciye devreder, kendisi yeni host'a istemci olarak baglanir.</summary>
     void StartHandover()
     {
         _handover = true;
+        _bagBefore = BagTotal(); // devirden once host cantasi (devir sonrasi istemci cantasi ayni olmali)
         var w = NetPackets.Begin(NetMsg.Final); w.U8(4);
         Net.Broadcast(w.ToArray());
         if (!Net.Handover()) { Log($"{_resultLine.Replace("RESULT ok", "RESULT fail")} :: devir baslamadi: {Net.Status}"); Finish(1); return; }
@@ -355,6 +358,8 @@ public partial class CoopTest : Node
         if (!Net.IsClient || !Net.Joined) fails.Add($"eski host istemci degil (host={Net.IsHost} joined={Net.Joined} {Net.Status})");
         if (Net.Roster.Count != want) fails.Add($"eski host listesi {Net.Roster.Count}/{want}");
         if (Net.Avatars.Count != Clients) fails.Add($"eski host {Net.Avatars.Count}/{Clients} oyuncu goruyor");
+        if (_bagBefore <= 0) fails.Add("eski host cantasi bos (sinama anlamsiz)");
+        if (BagTotal() != _bagBefore) fails.Add($"eski host cantasi {_bagBefore} -> {BagTotal()}");
         int hosts = 0, clients = 0;
         string runDir = ProjectSettings.GlobalizePath("res://").TrimEnd('/') + "/../.tools/run/test";
         for (int k = 1; k <= Clients; k++)
@@ -362,6 +367,8 @@ public partial class CoopTest : Node
             string path = $"{runDir}/coop_client_{k}.log";
             string line = FileAccess.FileExists(path) ? FileAccess.GetFileAsString(path).Split('\n').LastOrDefault(l => l.Contains("COOP HANDOVER state=")) : null;
             if (line == null) { fails.Add($"bot {k} devir durumu yazmadi"); continue; }
+            var bm = System.Text.RegularExpressions.Regex.Match(line, @"bag=(\d+)->(\d+)");
+            if (!bm.Success || bm.Groups[1].Value != bm.Groups[2].Value || bm.Groups[1].Value == "0") { fails.Add($"bot {k} cantasi degisti: {(bm.Success ? bm.Value : "yok")}"); continue; }
             if (line.Contains("state=host") && line.Contains($"roster={want}")) hosts++;
             else if (line.Contains("state=client") && line.Contains("joined=True") && line.Contains($"roster={want}")) clients++;
             else fails.Add($"bot {k}: {line.Trim()}");

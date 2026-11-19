@@ -29,6 +29,7 @@ public partial class NetSync
         On("stcancel", HostStationCancel);
         On("chest", HostChest);
         On("eat", HostEat);
+        On("restore", HostRestore); // NetSync.Handover.cs
         On("graft", HostGraft); // tarim4: Asi Tezgahi (Director.Asi.cs DoGraft)
         RegisterSwellRoom(); // gece4: Kabartma Odasi (NetSync.SwellRoom.cs)
     }
