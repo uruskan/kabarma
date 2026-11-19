@@ -584,3 +584,18 @@ Var (orders.json, #1–12): `ciraklik, salgam_baronu, yesil_parmak, islahci, ala
 | fotografci | Fotoğrafçı | #48 | |
 
 Başarım kimliği kalıbı: `chain_<zincir>` (achievements.json `chainPrefix`); ek başarımlar var: `ilk_gece`, `maya_hakimi`.
+## 19. ata4 eklemeleri (Atalar, Azmanlar, koruyucular; 19 Kasım 2026)
+
+Yeni kimlikler (yukaridaki listede yoktu; ata4 ekledi):
+
+| kimlik | Türkçe ad | not |
+|---|---|---|
+| kabarik_oz | Kabarık Ata Özü | Kabarık Ata ödülü (üst basamak çip malzemesi), `atalar.json` `kabarik.rewardItem`; KS/5 tane |
+| maya | Maya | Kabarık Ata bedeli (KS × 50); eşya kimliği ICERIK §2 #26'dan, Kabarma ödülünü yazan akış verir (`atalar.json` `kabarik.mayaItem`) |
+| azman_kiskaci, azman_kozu, surubasi_postu, azman_hamuru | Azman ödülleri | `azman.json` (örüntü `azman_postu`, `azman_boynuzu`) |
+| destansi_cip | Destansı Çip | Oyuk koruyucusu sandık ödülü (Çamur Devi, Kuvars Akrebi, Buz Aynası), `nadir_cip` örüntüsü |
+| sismik_davul | Sismik Davul | Çıyan Paşa adağı, `research.json` `watts` satırı (200 W); arenada kurulu, kablo çekilir |
+| ata:kabarik_<ata>, oyuk:camur_devi, oyuk:kuvars_akrebi, oyuk:buz_aynasi, ata:kurbaga_aga, ata:ciyan_pasa, ata:buz_tosunu, ata:ana_maya | çip kaynakları | `chips.json` `sources` |
+
+Ata ödül çekirdekleri: `sazlik_cekirdegi`, `kanyon_cekirdegi`, `ayaz_cekirdegi` (§1'de vardı). Ulti: Çıyan Paşa `yorunge_sulamasi`, Buz Tosunu `zaman_durdu` henüz `abilities.json`'da tanımsız; `atalar.json` `reward.pendingUlti` ve `AtaProgress.UltisOwed` taşır (kusam akışı tanımlayınca `ulti`'ye taşınır).
+Kurbağa Ağa'nın ödülü ikinci güç yuvasıdır (`unlocks`: `slot:guc_2`); Çapa: `recipe:capa_mk4` (Kurbağa), `capa_mk5` (Çıyan), `capa_mk6` (Tosunu).
