@@ -259,7 +259,13 @@
         {"id": "kemik_yigini", "item": "kemik", "model": "res://assets/models/lib/kaya/kaya.glb", "units": [3, 5], "size": [0.55, 0.8], "sink": 0.1, "scatterCount": 8, "scatterDistance": [0, 100000], "tint": "EFE6D2", "placeholder": "ayni model, ton farkli (biyom akisi, URETIM 3); gercek model Tripo istegi"}
       ],
       "grass": { "chunk": 16, "perChunk": 380, "height": [0.3, 0.62], "baseClear": 0, "wind": 1.0, "spacing": 0.3, "farSpacing": 0.75, "blades": 9, "farKeep": 0.45 },
-      "spawns": { "creatures": [], "atalar": [] },
+      "spawns": { "creatures": [
+          {"creature": "vrak", "time": "any", "weight": 1, "group": [1, 2], "maxGroups": 2, "baseDistance": [120, 100000], "minWeight": 0.7, "respawn": 180, "note": "yaratik4 yaratigi; satir biyom akisindan (creatures.json biome)"},
+          {"creature": "kiskac", "time": "day", "weight": 1, "group": [2, 3], "maxGroups": 2, "baseDistance": [120, 100000], "minWeight": 0.7, "respawn": 180, "note": "yaratik4 yaratigi; satir biyom akisindan (creatures.json biome)"},
+          {"creature": "tukurgen", "time": "day", "weight": 1, "group": [1, 2], "maxGroups": 2, "baseDistance": [120, 100000], "minWeight": 0.7, "respawn": 180, "note": "yaratik4 yaratigi; satir biyom akisindan (creatures.json biome)"},
+          {"creature": "cizbiz", "time": "any", "weight": 1, "group": [1, 2], "maxGroups": 2, "baseDistance": [120, 100000], "minWeight": 0.7, "respawn": 180, "note": "yaratik4 yaratigi; satir biyom akisindan (creatures.json biome)"},
+          {"creature": "suluk_surusu", "time": "any", "weight": 1, "group": [1, 1], "maxGroups": 2, "baseDistance": [120, 100000], "minWeight": 0.7, "respawn": 180, "note": "yaratik4 yaratigi; satir biyom akisindan (creatures.json biome)"}
+        ], "atalar": [] },
       "pois": [
         {"type": "seyir_kulesi", "count": 1, "minSpacing": 200, "baseDistance": [60, 100000], "minWeight": 0.9},
         {"type": "ata_tasi", "count": 1, "minSpacing": 200, "baseDistance": [60, 100000], "minWeight": 0.95},
@@ -300,7 +306,13 @@
         {"id": "kemik_yigini", "item": "kemik", "model": "res://assets/models/lib/kaya/kaya.glb", "units": [3, 5], "size": [0.55, 0.8], "sink": 0.1, "scatterCount": 10, "scatterDistance": [0, 100000], "tint": "EFE6D2", "placeholder": "ayni model, ton farkli (biyom akisi, URETIM 3); gercek model Tripo istegi"}
       ],
       "grass": { "chunk": 16, "perChunk": 380, "height": [0.3, 0.62], "baseClear": 0, "wind": 1.0, "spacing": 0.3, "farSpacing": 0.75, "blades": 9, "farKeep": 0.45 },
-      "spawns": { "creatures": [], "atalar": [] },
+      "spawns": { "creatures": [
+          {"creature": "kosar", "time": "day", "weight": 1, "group": [2, 3], "maxGroups": 2, "baseDistance": [120, 100000], "minWeight": 0.7, "respawn": 180, "note": "yaratik4 yaratigi; satir biyom akisindan (creatures.json biome)"},
+          {"creature": "kivrik", "time": "any", "weight": 1, "group": [1, 2], "maxGroups": 2, "baseDistance": [120, 100000], "minWeight": 0.7, "respawn": 180, "note": "yaratik4 yaratigi; satir biyom akisindan (creatures.json biome)"},
+          {"creature": "kizgin", "time": "any", "weight": 1, "group": [1, 2], "maxGroups": 2, "baseDistance": [120, 100000], "minWeight": 0.7, "respawn": 180, "note": "yaratik4 yaratigi; satir biyom akisindan (creatures.json biome)"},
+          {"creature": "lesci", "time": "day", "weight": 1, "group": [2, 3], "maxGroups": 2, "baseDistance": [120, 100000], "minWeight": 0.7, "respawn": 180, "note": "yaratik4 yaratigi; satir biyom akisindan (creatures.json biome)"},
+          {"creature": "dehliz", "time": "any", "weight": 1, "group": [1, 2], "maxGroups": 2, "baseDistance": [120, 100000], "minWeight": 0.7, "respawn": 180, "note": "yaratik4 yaratigi; satir biyom akisindan (creatures.json biome)"}
+        ], "atalar": [] },
       "pois": [
         {"type": "seyir_kulesi", "count": 1, "minSpacing": 200, "baseDistance": [60, 100000], "minWeight": 0.9},
         {"type": "ata_tasi", "count": 1, "minSpacing": 200, "baseDistance": [60, 100000], "minWeight": 0.95},
@@ -338,7 +350,12 @@
         {"id": "kemik_yigini", "item": "kemik", "model": "res://assets/models/lib/kaya/kaya.glb", "units": [3, 5], "size": [0.55, 0.8], "sink": 0.1, "scatterCount": 6, "scatterDistance": [0, 100000], "tint": "EFE6D2", "placeholder": "ayni model, ton farkli (biyom akisi, URETIM 3); gercek model Tripo istegi"}
       ],
       "grass": { "chunk": 16, "perChunk": 380, "height": [0.3, 0.62], "baseClear": 0, "wind": 1.0, "spacing": 0.3, "farSpacing": 0.75, "blades": 9, "farKeep": 0.45 },
-      "spawns": { "creatures": [], "atalar": [] },
+      "spawns": { "creatures": [
+          {"creature": "tosun", "time": "day", "weight": 1, "group": [2, 3], "maxGroups": 2, "baseDistance": [120, 100000], "minWeight": 0.7, "respawn": 180, "note": "yaratik4 yaratigi; satir biyom akisindan (creatures.json biome)"},
+          {"creature": "ayaz_kurdu", "time": "any", "weight": 1, "group": [1, 2], "maxGroups": 2, "baseDistance": [120, 100000], "minWeight": 0.7, "respawn": 180, "note": "yaratik4 yaratigi; satir biyom akisindan (creatures.json biome)"},
+          {"creature": "paytak", "time": "day", "weight": 1, "group": [2, 3], "maxGroups": 2, "baseDistance": [120, 100000], "minWeight": 0.7, "respawn": 180, "note": "yaratik4 yaratigi; satir biyom akisindan (creatures.json biome)"},
+          {"creature": "billur", "time": "day", "weight": 1, "group": [2, 3], "maxGroups": 2, "baseDistance": [120, 100000], "minWeight": 0.7, "respawn": 180, "note": "yaratik4 yaratigi; satir biyom akisindan (creatures.json biome)"}
+        ], "atalar": [] },
       "pois": [
         {"type": "seyir_kulesi", "count": 1, "minSpacing": 200, "baseDistance": [60, 100000], "minWeight": 0.9},
         {"type": "ata_tasi", "count": 1, "minSpacing": 200, "baseDistance": [60, 100000], "minWeight": 0.95},
@@ -376,7 +393,9 @@
         {"id": "isil_cevher", "item": "isil_cevher", "model": "res://assets/models/koru/demir.glb", "units": [4, 6], "size": [0.9, 1.15], "sink": 0.2, "scatterCount": 8, "scatterDistance": [0, 100000], "tint": "5FF0C8", "placeholder": "ayni model, ton farkli (biyom akisi, URETIM 3); gercek model Tripo istegi"}
       ],
       "grass": { "chunk": 16, "perChunk": 380, "height": [0.3, 0.62], "baseClear": 0, "wind": 1.0, "spacing": 0.3, "farSpacing": 0.75, "blades": 9, "farKeep": 0.45 },
-      "spawns": { "creatures": [], "atalar": [] },
+      "spawns": { "creatures": [
+          {"creature": "hamurcuk", "time": "any", "weight": 1, "group": [2, 3], "maxGroups": 2, "baseDistance": [120, 100000], "minWeight": 0.7, "respawn": 180, "note": "yaratik4 yaratigi; satir biyom akisindan (creatures.json biome)"}
+        ], "atalar": [] },
       "pois": [
         {"type": "seyir_kulesi", "count": 1, "minSpacing": 100, "baseDistance": [60, 100000], "minWeight": 0.9},
         {"type": "ata_tasi", "count": 1, "minSpacing": 100, "baseDistance": [60, 100000], "minWeight": 0.95},
