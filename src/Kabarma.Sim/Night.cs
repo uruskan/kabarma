@@ -162,8 +162,8 @@ public sealed partial class KabarmaNight
     public void RecordAnimalSwell(int n = 1) => AnimalsSwollen += n;
 
     public WaveDef? CurrentWave => WaveIndex >= 0 && WaveIndex < _def.Waves.Count ? _def.Waves[WaveIndex] : null;
-    public float HpMult => MathF.Pow(_data.Kabarma.HpGrowth, Ks - 1) * Hand.EnemyHpMult;
-    public float DamageMult => MathF.Pow(_data.Kabarma.DamageGrowth, Ks - 1);
+    public float HpMult => Waves.HpMult(_data.Kabarma, Ks) * Hand.EnemyHpMult;
+    public float DamageMult => Waves.DamageMult(_data.Kabarma, Ks);
 
     /// <summary>GDD 15: n. seviye esigi = 20 x n^1,5 (toplam Oz).</summary>
     public float Threshold(int n) => _data.Kabarma.LevelBase * MathF.Pow(n, _data.Kabarma.LevelExponent);

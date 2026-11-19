@@ -68,6 +68,21 @@ public sealed class KabarmaFile
     public float MayaKsFactor { get; set; }
     public float HpGrowth { get; set; }
     public float DamageGrowth { get; set; }
+    /// <summary>denge (M6): LateFromKs'tan sonraki KS basina buyume (0 = ayni, tek us). Erken egri M3 kabulune (KS 1-10) baglidir; gec egri onerilen donanimin gercekci buyumesine uyar.</summary>
+    public float HpGrowthLate { get; set; }
+    public float DamageGrowthLate { get; set; }
+    public int LateFromKs { get; set; } = 10;
+    /// <summary>denge (M6): EndFromKs'tan sonra ucuncu us (0 = Late ile ayni). Toplam can buyumesi (can x dusman sayisi) sabit kalsin diye sayi artisi azaldikca can buyumesi de kisilir.</summary>
+    public float HpGrowthEnd { get; set; }
+    public float DamageGrowthEnd { get; set; }
+    public int EndFromKs { get; set; } = 25;
+    public float GrowthMult(float early, float late, int ks, float end = 0f)
+    {
+        if (late <= 0f || ks <= LateFromKs) return MathF.Pow(early, ks - 1);
+        float mid = MathF.Pow(early, LateFromKs - 1);
+        if (end <= 0f || ks <= EndFromKs) return mid * MathF.Pow(late, ks - LateFromKs);
+        return mid * MathF.Pow(late, EndFromKs - LateFromKs) * MathF.Pow(end, ks - EndFromKs);
+    }
     /// <summary>Tam Kabarma (GDD 14.1-14.6): GameData.Wave.cs.</summary>
     public FullKabarmaDef Full { get; set; } = new();
 }

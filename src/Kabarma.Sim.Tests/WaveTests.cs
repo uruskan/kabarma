@@ -19,7 +19,7 @@ public class WaveTests
     public void Count_power_and_elite_formulas_match_gdd_14_3()
     {
         Assert.Equal(38, Waves.Count(F, 1, 1));
-        Assert.Equal(1f + 0.6f * MathF.Pow(3, 0.85f), Waves.PlayerMult(F, 4), 4);
+        Assert.Equal(1f + F.PlayerFactor * MathF.Pow(3, F.PlayerExponent), Waves.PlayerMult(F, 4), 4); // denge (M6): her ek oyuncu bir oyuncu kadar dusman (factor 1, exponent 1)
         Assert.Equal((int)MathF.Round(110 * Waves.PlayerMult(F, 4)), Waves.Count(F, 10, 4));
         Assert.Equal(0.02f, Waves.EliteRate(F, 1), 4);
         Assert.Equal(0.4f, Waves.EliteRate(F, 30), 4);
