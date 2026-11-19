@@ -1,7 +1,27 @@
 {
-  "_not": "Araclar (ICERIK §14, GDD §20). M2: Cekirge (ATV, T2). Govde koddan yer tutucu. Tarif ICERIK §20: 15 Demir Kulce + 6 Recine + 4 Bakir Tel, Arac Atolyesi; recine main'de yok, tarif satiri o gelince recipes.json'a eklenir. Yakit Bitkisel Yag (T2); esya kimligi main'de yok.",
+  "_not": "Araclar ve eklentiler (ICERIK §14, GDD §20; M4 arac akisi). 6 arac (Cekirge, Traktor, Kamyon, Bicerdover, Hava Yastikli, Zeplin) ve 10 eklenti. kind: ground|hover|air. surface: zemin turune hiz carpani (hover hepsinde 1). fuels: yakit esyasi -> verim carpani (Bitkisel Yag 1, Biyoyakit 2, Aku 4). hitches/bodyMounts: eklenti yuvalari; cargoCrates: kasa kapasitesi. Zeplin: air; maxAltitude/climbRate; Zeplin Hangari uretir ve parklar. Tarifler recipes.json'da (station arac_atolyesi, zeplin_hangari; urun yuk olarak istasyonun onunde dogar). Govdeler koddan yer tutucu (VehicleBodies.cs).",
+  "rules": {
+    "fallDamageSpeed": 9,
+    "damagePerSpeed": 8,
+    "netInputHz": 15,
+    "reachMeters": 2.6,
+    "hangarParkRadius": 14,
+    "ramMinSpeed": 4
+  },
   "vehicles": [
     {
+      "fuelItem": "bitkisel_yag",
+      "fuels": {
+        "bitkisel_yag": 1,
+        "biyoyakit": 2,
+        "aku_hucresi": 4
+      },
+      "surface": {
+        "water": 0.2,
+        "swamp": 0.6,
+        "snow": 0.75,
+        "sand": 0.7
+      },
       "id": "cekirge",
       "name": "Çekirge",
       "tier": 2,
@@ -14,14 +34,461 @@
       "coast": 2,
       "turnRate": 2.2,
       "turnAtSpeed": 4,
-      "fuelItem": "bitkisel_yag",
       "tankUnits": 12,
       "unitSeconds": 300,
       "flipSlopeDeg": 35,
       "flipSpeed": 3,
       "hp": 200,
-      "recipe": { "iron_ingot": 15, "recine": 6, "copper_wire": 4 },
-      "placeholder": "Govde koddan (CekirgeAtv.cs); Tripo modeli bekleniyor. Yakit esyasi ve tarif girdisi (recine, bitkisel_yag) main'de yok: --vehicle=cekirge dolu depoyla dogurur"
+      "hitches": 1,
+      "bodyMounts": 1,
+      "cargoCrates": 0,
+      "station": "arac_atolyesi",
+      "recipe": {
+        "iron_ingot": 15,
+        "resin": 6,
+        "copper_wire": 4
+      },
+      "placeholder": "Govde koddan (CekirgeAtv.cs); Tripo modeli bekleniyor."
+    },
+    {
+      "fuelItem": "bitkisel_yag",
+      "fuels": {
+        "bitkisel_yag": 1,
+        "biyoyakit": 2,
+        "aku_hucresi": 4
+      },
+      "surface": {
+        "water": 0.2,
+        "swamp": 0.6,
+        "snow": 0.75,
+        "sand": 0.7
+      },
+      "id": "traktor",
+      "name": "Traktör",
+      "tier": 3,
+      "seats": 2,
+      "slots": 2,
+      "maxSpeed": 8,
+      "reverseSpeed": 3,
+      "accel": 3.5,
+      "brake": 9,
+      "coast": 2,
+      "turnRate": 1.6,
+      "turnAtSpeed": 3,
+      "tankUnits": 16,
+      "unitSeconds": 300,
+      "flipSlopeDeg": 30,
+      "flipSpeed": 3,
+      "hp": 400,
+      "hitches": 1,
+      "bodyMounts": 2,
+      "cargoCrates": 0,
+      "station": "arac_atolyesi",
+      "recipe": {
+        "celik": 10,
+        "plank": 10,
+        "kaucuk": 6,
+        "copper_wire": 6
+      },
+      "placeholder": "Govde koddan (VehicleBodies.cs); Tripo modeli bekleniyor."
+    },
+    {
+      "fuelItem": "bitkisel_yag",
+      "fuels": {
+        "bitkisel_yag": 1,
+        "biyoyakit": 2,
+        "aku_hucresi": 4
+      },
+      "surface": {
+        "water": 0.2,
+        "swamp": 0.6,
+        "snow": 0.75,
+        "sand": 0.7
+      },
+      "id": "kamyon",
+      "name": "Kamyon",
+      "tier": 3,
+      "seats": 3,
+      "slots": 2,
+      "maxSpeed": 12,
+      "reverseSpeed": 4,
+      "accel": 3,
+      "brake": 8,
+      "coast": 2,
+      "turnRate": 1.2,
+      "turnAtSpeed": 4,
+      "tankUnits": 20,
+      "unitSeconds": 300,
+      "flipSlopeDeg": 28,
+      "flipSpeed": 4,
+      "hp": 500,
+      "hitches": 1,
+      "bodyMounts": 2,
+      "cargoCrates": 6,
+      "station": "arac_atolyesi",
+      "recipe": {
+        "celik": 14,
+        "plank": 14,
+        "kaucuk": 8,
+        "copper_wire": 8
+      },
+      "placeholder": "Govde koddan (VehicleBodies.cs); Tripo modeli bekleniyor."
+    },
+    {
+      "fuelItem": "bitkisel_yag",
+      "fuels": {
+        "bitkisel_yag": 1,
+        "biyoyakit": 2,
+        "aku_hucresi": 4
+      },
+      "surface": {
+        "water": 0.2,
+        "swamp": 0.6,
+        "snow": 0.75,
+        "sand": 0.7
+      },
+      "id": "bicerdover",
+      "name": "Biçerdöver",
+      "tier": 4,
+      "seats": 1,
+      "slots": 1,
+      "maxSpeed": 6,
+      "reverseSpeed": 2,
+      "accel": 2.5,
+      "brake": 7,
+      "coast": 2,
+      "turnRate": 1.2,
+      "turnAtSpeed": 2.5,
+      "tankUnits": 20,
+      "unitSeconds": 300,
+      "flipSlopeDeg": 25,
+      "flipSpeed": 3,
+      "hp": 600,
+      "hitches": 0,
+      "bodyMounts": 1,
+      "cargoCrates": 0,
+      "harvestRadius": 3.2,
+      "harvestPerSecond": 6,
+      "station": "arac_atolyesi",
+      "recipe": {
+        "celik": 20,
+        "titan_ingot": 6,
+        "kaucuk": 8,
+        "devre": 4
+      },
+      "placeholder": "Govde koddan (VehicleBodies.cs); Tripo modeli bekleniyor."
+    },
+    {
+      "fuelItem": "bitkisel_yag",
+      "fuels": {
+        "bitkisel_yag": 1,
+        "biyoyakit": 2,
+        "aku_hucresi": 4
+      },
+      "surface": {
+        "water": 1,
+        "swamp": 1,
+        "snow": 1,
+        "sand": 1
+      },
+      "id": "hava_yastikli",
+      "name": "Hava Yastıklı",
+      "kind": "hover",
+      "tier": 4,
+      "seats": 4,
+      "slots": 2,
+      "maxSpeed": 16,
+      "reverseSpeed": 5,
+      "accel": 4,
+      "brake": 7,
+      "coast": 1.2,
+      "turnRate": 1.5,
+      "turnAtSpeed": 5,
+      "tankUnits": 18,
+      "unitSeconds": 300,
+      "flipSlopeDeg": 60,
+      "flipSpeed": 6,
+      "hp": 350,
+      "hitches": 1,
+      "bodyMounts": 2,
+      "cargoCrates": 2,
+      "station": "arac_atolyesi",
+      "recipe": {
+        "titan_ingot": 12,
+        "plastik": 10,
+        "kaucuk": 10,
+        "devre": 6
+      },
+      "placeholder": "Govde koddan (VehicleBodies.cs); Tripo modeli bekleniyor."
+    },
+    {
+      "fuelItem": "bitkisel_yag",
+      "fuels": {
+        "bitkisel_yag": 1,
+        "biyoyakit": 2,
+        "aku_hucresi": 4
+      },
+      "surface": {
+        "water": 0.2,
+        "swamp": 0.6,
+        "snow": 0.75,
+        "sand": 0.7
+      },
+      "id": "zeplin",
+      "name": "Zeplin",
+      "kind": "air",
+      "tier": 5,
+      "seats": 6,
+      "slots": 3,
+      "maxSpeed": 7,
+      "reverseSpeed": 2,
+      "accel": 1.2,
+      "brake": 2,
+      "coast": 0.6,
+      "turnRate": 0.6,
+      "turnAtSpeed": 2,
+      "tankUnits": 20,
+      "unitSeconds": 400,
+      "hp": 800,
+      "hitches": 0,
+      "bodyMounts": 3,
+      "cargoCrates": 3,
+      "maxAltitude": 120,
+      "climbRate": 6,
+      "takeoffAltitude": 1.5,
+      "taxiSpeed": 2,
+      "station": "zeplin_hangari",
+      "recipe": {
+        "titan_ingot": 24,
+        "plastik": 20,
+        "cloth": 30,
+        "devre": 10,
+        "kristal_lens": 6,
+        "aku_hucresi": 4
+      },
+      "placeholder": "Govde koddan (VehicleBodies.cs); Tripo modeli bekleniyor."
+    }
+  ],
+  "attachments": [
+    {
+      "id": "romork",
+      "name": "Römork",
+      "tier": 3,
+      "mount": "hitch",
+      "fits": [
+        "cekirge",
+        "traktor",
+        "kamyon",
+        "hava_yastikli"
+      ],
+      "params": {
+        "crates": 4,
+        "speedMult": 0.85
+      },
+      "recipe": {
+        "plank": 12,
+        "celik": 4,
+        "kaucuk": 2
+      },
+      "station": "arac_atolyesi",
+      "placeholder": "Govde koddan (VehicleBodies.cs); Tripo modeli bekleniyor."
+    },
+    {
+      "id": "pulluk",
+      "name": "Pulluk",
+      "tier": 3,
+      "mount": "hitch",
+      "fits": [
+        "traktor"
+      ],
+      "params": {
+        "till": 1,
+        "width": 3
+      },
+      "recipe": {
+        "celik": 8,
+        "iron_ingot": 6
+      },
+      "station": "arac_atolyesi",
+      "placeholder": "Govde koddan (VehicleBodies.cs); Tripo modeli bekleniyor."
+    },
+    {
+      "id": "ekim_makinesi",
+      "name": "Ekim Makinesi",
+      "tier": 3,
+      "mount": "hitch",
+      "fits": [
+        "traktor"
+      ],
+      "params": {
+        "sow": 1,
+        "width": 3
+      },
+      "recipe": {
+        "celik": 8,
+        "iron_ingot": 4,
+        "copper_wire": 4,
+        "devre": 2
+      },
+      "station": "arac_atolyesi",
+      "placeholder": "Govde koddan (VehicleBodies.cs); Tripo modeli bekleniyor."
+    },
+    {
+      "id": "su_tankeri",
+      "name": "Su Tankeri",
+      "tier": 3,
+      "mount": "hitch",
+      "fits": [
+        "traktor",
+        "kamyon"
+      ],
+      "params": {
+        "water": 1,
+        "waterUnits": 200,
+        "width": 3,
+        "speedMult": 0.9
+      },
+      "recipe": {
+        "celik": 8,
+        "plank": 6,
+        "kaucuk": 4
+      },
+      "station": "arac_atolyesi",
+      "placeholder": "Govde koddan (VehicleBodies.cs); Tripo modeli bekleniyor."
+    },
+    {
+      "id": "vinc",
+      "name": "Vinç",
+      "tier": 3,
+      "mount": "body",
+      "fits": [
+        "traktor",
+        "kamyon",
+        "zeplin"
+      ],
+      "params": {
+        "lift": 1,
+        "reach": 6
+      },
+      "recipe": {
+        "celik": 10,
+        "iron_ingot": 6,
+        "copper_wire": 4
+      },
+      "station": "arac_atolyesi",
+      "placeholder": "Govde koddan (VehicleBodies.cs); Tripo modeli bekleniyor."
+    },
+    {
+      "id": "kepce",
+      "name": "Kepçe",
+      "tier": 3,
+      "mount": "hitch",
+      "fits": [
+        "traktor",
+        "kamyon"
+      ],
+      "params": {
+        "scoop": 1,
+        "reach": 4
+      },
+      "recipe": {
+        "celik": 10,
+        "iron_ingot": 8
+      },
+      "station": "arac_atolyesi",
+      "placeholder": "Govde koddan (VehicleBodies.cs); Tripo modeli bekleniyor."
+    },
+    {
+      "id": "zirh_tampon",
+      "name": "Zırh ve Tampon",
+      "tier": 3,
+      "mount": "body",
+      "fits": [
+        "cekirge",
+        "traktor",
+        "kamyon",
+        "hava_yastikli",
+        "bicerdover"
+      ],
+      "params": {
+        "armorHp": 200,
+        "ramDamage": 40,
+        "speedMult": 0.95
+      },
+      "recipe": {
+        "celik": 12,
+        "kaucuk": 4
+      },
+      "station": "arac_atolyesi",
+      "placeholder": "Govde koddan (VehicleBodies.cs); Tripo modeli bekleniyor."
+    },
+    {
+      "id": "arac_kulesi",
+      "name": "Araç Kulesi",
+      "tier": 3,
+      "mount": "body",
+      "fits": [
+        "traktor",
+        "kamyon",
+        "hava_yastikli",
+        "zeplin"
+      ],
+      "params": {
+        "gunnerSeat": 1
+      },
+      "recipe": {
+        "celik": 8,
+        "plank": 6,
+        "devre": 2
+      },
+      "station": "arac_atolyesi",
+      "placeholder": "Govde koddan (VehicleBodies.cs); Tripo modeli bekleniyor."
+    },
+    {
+      "id": "arac_projektoru",
+      "name": "Projektör",
+      "tier": 3,
+      "mount": "body",
+      "fits": [
+        "cekirge",
+        "traktor",
+        "kamyon",
+        "hava_yastikli",
+        "bicerdover",
+        "zeplin"
+      ],
+      "params": {
+        "light": 1
+      },
+      "recipe": {
+        "iron_ingot": 4,
+        "copper_wire": 4,
+        "cam": 2
+      },
+      "station": "arac_atolyesi",
+      "placeholder": "Govde koddan (VehicleBodies.cs); Tripo modeli bekleniyor."
+    },
+    {
+      "id": "balon",
+      "name": "Balon",
+      "tier": 3,
+      "mount": "body",
+      "fits": [
+        "cekirge",
+        "traktor",
+        "kamyon",
+        "hava_yastikli"
+      ],
+      "params": {
+        "glide": 3
+      },
+      "recipe": {
+        "cloth": 12,
+        "plank": 4,
+        "kaucuk": 4
+      },
+      "station": "arac_atolyesi",
+      "placeholder": "Govde koddan (VehicleBodies.cs); Tripo modeli bekleniyor."
     }
   ]
 }

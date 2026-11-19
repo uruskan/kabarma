@@ -63,7 +63,8 @@ public partial class Station : Node3D
     {
         if (!IsInsideTree() || _d.Stations.FirstOrDefault(s => s.Queue == Queue) != this) return; // ayni turden ikinci istasyon: ilki gosterir
         _bounce = 1f;
-        if (r.Load) _d.SpawnLoad(r, this);
+        if (r.Load && Kabarma.Sim.Vehicles.IsProduct(_d.Data.Vehicles, r.Id)) _d.SpawnProduced(r, this); // arac akisi: Arac Atolyesi ve Zeplin Hangari (Director.Vehicles.cs)
+        else if (r.Load) _d.SpawnLoad(r, this);
         else Fx.FlyTo(GlobalPosition + Vector3.Up * 1.2f, () => _d.Player.BackpackPoint.GlobalPosition, Palette.Warning, 0.14f);
         Fx.Text3D(GlobalPosition + Vector3.Up * 1.6f, $"+{n} {r.Name}", Palette.Warning, 48, 1.2f, 1.4f);
         Sfx.Play("pickup", GlobalPosition, 0f);

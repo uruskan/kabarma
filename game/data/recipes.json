@@ -191,6 +191,22 @@
     { "id": "tomato_seed", "name": "Domates Tohumu", "station": "harman_yeri", "category": "malzeme", "in": { "tomato": 1 }, "out": 3, "seconds": 3.0 },
     { "id": "garlic_seed", "name": "Sarımsak Dişi", "station": "harman_yeri", "category": "malzeme", "in": { "garlic": 1 }, "out": 2, "seconds": 3.0 },
     { "id": "kompost", "name": "Kompost", "station": "kompostor", "category": "malzeme", "in": { "gubre": 2, "fiber": 3 }, "out": 3, "seconds": 8.0 },
-    { "id": "sira", "name": "Şıra", "station": "tursu_ficisi", "category": "malzeme", "in": { "blackberry": 4 }, "out": 1, "seconds": 10.0 }
+    { "id": "sira", "name": "Şıra", "station": "tursu_ficisi", "category": "malzeme", "in": { "blackberry": 4 }, "out": 1, "seconds": 10.0 },
+    {"id": "cekirge", "name": "Çekirge", "station": "arac_atolyesi", "category": "yuk", "in": {"iron_ingot": 15, "resin": 6, "copper_wire": 4}, "out": 1, "seconds": 40.0, "load": true, "unlockOn": "ocak:2"},
+    {"id": "traktor", "name": "Traktör", "station": "arac_atolyesi", "category": "yuk", "in": {"celik": 10, "plank": 10, "kaucuk": 6, "copper_wire": 6}, "out": 1, "seconds": 50.0, "load": true, "unlockOn": "ocak:3"},
+    {"id": "kamyon", "name": "Kamyon", "station": "arac_atolyesi", "category": "yuk", "in": {"celik": 14, "plank": 14, "kaucuk": 8, "copper_wire": 8}, "out": 1, "seconds": 50.0, "load": true, "unlockOn": "ocak:3"},
+    {"id": "bicerdover", "name": "Biçerdöver", "station": "arac_atolyesi", "category": "yuk", "in": {"celik": 20, "titan_ingot": 6, "kaucuk": 8, "devre": 4}, "out": 1, "seconds": 60.0, "load": true, "unlockOn": "ocak:4"},
+    {"id": "hava_yastikli", "name": "Hava Yastıklı", "station": "arac_atolyesi", "category": "yuk", "in": {"titan_ingot": 12, "plastik": 10, "kaucuk": 10, "devre": 6}, "out": 1, "seconds": 60.0, "load": true, "unlockOn": "ocak:4"},
+    {"id": "zeplin", "name": "Zeplin", "station": "zeplin_hangari", "category": "yuk", "in": {"titan_ingot": 24, "plastik": 20, "cloth": 30, "devre": 10, "kristal_lens": 6, "aku_hucresi": 4}, "out": 1, "seconds": 70.0, "load": true, "unlockOn": "ocak:5"},
+    {"id": "romork", "name": "Römork", "station": "arac_atolyesi", "category": "alet", "in": {"plank": 12, "celik": 4, "kaucuk": 2}, "out": 1, "seconds": 8.0, "unlockOn": "ocak:3"},
+    {"id": "pulluk", "name": "Pulluk", "station": "arac_atolyesi", "category": "alet", "in": {"celik": 8, "iron_ingot": 6}, "out": 1, "seconds": 8.0, "unlockOn": "ocak:3"},
+    {"id": "ekim_makinesi", "name": "Ekim Makinesi", "station": "arac_atolyesi", "category": "alet", "in": {"celik": 8, "iron_ingot": 4, "copper_wire": 4, "devre": 2}, "out": 1, "seconds": 8.0, "unlockOn": "ocak:3"},
+    {"id": "su_tankeri", "name": "Su Tankeri", "station": "arac_atolyesi", "category": "alet", "in": {"celik": 8, "plank": 6, "kaucuk": 4}, "out": 1, "seconds": 8.0, "unlockOn": "ocak:3"},
+    {"id": "vinc", "name": "Vinç", "station": "arac_atolyesi", "category": "alet", "in": {"celik": 10, "iron_ingot": 6, "copper_wire": 4}, "out": 1, "seconds": 8.0, "unlockOn": "ocak:3"},
+    {"id": "kepce", "name": "Kepçe", "station": "arac_atolyesi", "category": "alet", "in": {"celik": 10, "iron_ingot": 8}, "out": 1, "seconds": 8.0, "unlockOn": "ocak:3"},
+    {"id": "zirh_tampon", "name": "Zırh ve Tampon", "station": "arac_atolyesi", "category": "alet", "in": {"celik": 12, "kaucuk": 4}, "out": 1, "seconds": 8.0, "unlockOn": "ocak:3"},
+    {"id": "arac_kulesi", "name": "Araç Kulesi", "station": "arac_atolyesi", "category": "alet", "in": {"celik": 8, "plank": 6, "devre": 2}, "out": 1, "seconds": 8.0, "unlockOn": "ocak:3"},
+    {"id": "arac_projektoru", "name": "Projektör", "station": "arac_atolyesi", "category": "alet", "in": {"iron_ingot": 4, "copper_wire": 4, "cam": 2}, "out": 1, "seconds": 8.0, "unlockOn": "ocak:3"},
+    {"id": "balon", "name": "Balon", "station": "arac_atolyesi", "category": "alet", "in": {"cloth": 12, "plank": 4, "kaucuk": 4}, "out": 1, "seconds": 8.0, "unlockOn": "ocak:3"}
   ]
 }

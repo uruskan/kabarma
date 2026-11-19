@@ -12,7 +12,7 @@ public partial class CreatureTest
     void CheckVehicle(GameData data)
     {
         var def = data.Vehicle("cekirge");
-        var v = new CekirgeAtv(def, Vehicles.New(def, 1, 3000, 0)) { ProcessMode = ProcessModeEnum.Disabled };
+        var v = new VehicleNode(def, Vehicles.New(def, 1, 3000, 0)) { ProcessMode = ProcessModeEnum.Disabled };
         AddChild(v);
         v.Place();
         if (v.FindChild("Visual", true, false) == null) Fail("cekirge_atv", "govde yok");
