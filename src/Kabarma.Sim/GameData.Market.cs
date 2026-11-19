@@ -49,6 +49,8 @@ public sealed class CatalogEntryDef
     public string Load { get; set; } = "";
     /// <summary>kapsul ya da rampa.</summary>
     public string Via { get; set; } = "kapsul";
+    /// <summary>Kozmetik kimligi (cosmetics.json): satin alininca dolaba acilir, teslimat yok.</summary>
+    public string Cosmetic { get; set; } = "";
     /// <summary>Veride bulunmasi gereken kimlikler; biri yoksa kalem gizlenir.</summary>
     public List<string> Requires { get; set; } = new();
 }

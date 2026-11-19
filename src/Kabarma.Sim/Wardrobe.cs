@@ -79,6 +79,13 @@ public sealed class Wardrobe
         if (_equipped.Remove(slot)) Changed?.Invoke();
     }
 
+    /// <summary>Tohum Carki'nin kozmetik odulu: sahip olunmayan cark ya da katalog kozmetiklerinden biri (kimlik sirasi sabit, secim Rng ile); yoksa null.</summary>
+    public string? WheelPick(Rng rng)
+    {
+        var pool = _d.Cosmetics.Cosmetics.Where(c => c.Source is "wheel" or "catalog" && !_cosmetics.Contains(c.Id)).Select(c => c.Id).OrderBy(x => x, StringComparer.Ordinal).ToList();
+        return pool.Count == 0 ? null : pool[(int)(rng.NextFloat() * pool.Count) % pool.Count];
+    }
+
     // ---------------- pasif ----------------
 
     /// <summary>Secili uyenin pasif etkisi (yok: 0).</summary>

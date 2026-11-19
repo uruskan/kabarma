@@ -156,6 +156,17 @@ public partial class DolapTest : Node
         Check(_d.Hud.MenuOpen && _d.Hud.MenuTitleText == "Dolap" && _d.Hud.MenuRows == 8, $"dolap menusu ({_d.Hud.MenuTitleText}, {_d.Hud.MenuRows})");
         _d.Hud.HideMenu();
 
+        // ---- 5) ilerleme4: zincir olculeri ve odulleri oyun olaylariyla ----
+        _d.State.Orders.OpenDefter();
+        for (int i = 0; i < 20; i++) Events.RaisePiecePlaced("duvar");
+        Check(_d.State.Orders.Chain("usta").StepDone(0), "usta zinciri: 20 yapi parcasi 1. adimi bitirdi");
+        Events.RaiseSold("salgam", 1, 100_000);
+        Check(_d.State.Orders.Chain("tuccar").CurrentStep >= 3 && W.HasMember("muhtar"), "tuccar zinciri: 3. adimda Muhtar dolapta");
+        _d.State.Orders.Report("hot_crate", 200);
+        Check(_d.State.Orders.Chain("borsaci").Done && _d.State.CardBook.IsUnlocked("acgozlu"), "borsaci zinciri: Acgozlu karti acildi");
+        _d.State.Orders.Report("photo", 60);
+        Check(W.HasCosmetic("altin_cerceve"), "fotografci zinciri: kozmetik odulu saklandi");
+
         // ---- goruntuler ----
         if (!_window) return;
         await Seconds(3.5f); // jest klibi bitsin (kol vizoru kapatmasin)

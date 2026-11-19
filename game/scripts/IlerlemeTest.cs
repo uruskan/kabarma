@@ -63,8 +63,8 @@ public partial class IlerlemeTest : Node
         {
             case 0:
                 if (_stageT < 0.5f) break;
-                Check(!s.Orders.DefterOpen && s.Orders.Chains.Count == 12, "12 zincir, Defter kapali olmali");
-                Check(s.Achievements.Count == 14, "basarimlar: 12 zincir + 2");
+                Check(!s.Orders.DefterOpen && s.Orders.Chains.Count == 36, "36 zincir (M4: 12 + 24), Defter kapali olmali");
+                Check(s.Achievements.Count == 38, "basarimlar: 36 zincir + 2");
                 // Is emri odemesi: Defter acilinca adim biter bitmez Kredi ve Veri
                 s.Orders.OpenDefter();
                 int c0 = s.Credits, v0 = s.Research.Veri;
