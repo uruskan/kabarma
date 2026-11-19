@@ -1,2 +1,44 @@
-ZAMAN ASIMI t=1500 adim=mine veri=0 masa=False
-ZINCIR RESULT ok=0 fail=1 veri=0 t=1500
+ilk gun botu durdu (adim tarla, t=28); arastir_t2 basliyor
+bot bitti t=209
+OK   Dokuma Tezgahi arastirildi (Arastirma Masasi, Veri)
+OK   Tarayici: 4 tur tarandi (stone,wheat,fiber,tree)
+OK   T2 urunu Kumas uretildi
+OK   Arastirma Masasi ve Dokuma Tezgahi kurulu
+OK   arastirilmayan dugum kilitli kaldi (Bicki)
+OK   tapudaki Sandik istasyon deposunda (GDD 5 ambardan uretim)
+OK   el tarifi yalniz cantadan
+FAIL zincir istasyonlarinin yer tutucusu var: eksik asi_tezgahi
+--- zincir4: T3 ve T5 urunu ---
+OK   Yuksek Firin tarifi Ocak T3 gelmeden kilitli
+OK   Pres tarifi arastirilmadan kilitli
+GEVSETILDI Ocak basamagi dogrudan yukseltildi (Ata yolu: boss akisi)
+GEVSETILDI Veri verildi (tarama ve is emri yolu M2 testinde)
+OK   Ocak T3: Yuksek Firin tarifi acildi
+GEVSETILDI brick verildi (T1 urunu)
+GEVSETILDI iron_ingot verildi (T2 urunu)
+GEVSETILDI clay verildi (T1 kaynagi)
+GEVSETILDI guc kurali kapali (PowerOk=true; watt kurali Sim testinde, kablolu besleme guc akisinda)
+OK   T3: Yuksek Firin Tezgah'ta uretildi ve kuruldu
+GEVSETILDI charcoal verildi (T1 urunu (girdi + yakit))
+OK   T3 urunu: 10 Celik (Yuksek Firin kuyrugu, yakitli)
+OK   Pres arastirilabilir (Masa yaninda, Veri yeterli)
+OK   Pres arastirildi (Arastirma Masasi kurali)
+GEVSETILDI plank verildi (T2 urunu)
+OK   T3: Pres uretildi ve kuruldu (10 Celik + 10 Kereste)
+GEVSETILDI kaucuk_sutu verildi (Sazlik kaynagi: biyom dugumu henuz yok)
+GEVSETILDI kukurt verildi (Sazlik kaynagi: biyom dugumu henuz yok)
+OK   T3 urunu: Kaucuk (Pres)
+OK   T5: arastirma zinciri (Kimya, Elektronik, Rafineri, Batarya) Veri ile gecti
+GEVSETILDI titan_ingot verildi (T4 urunu (Titan Cevheri Kanyon'da))
+GEVSETILDI devre verildi (T4 urunu)
+GEVSETILDI plastik verildi (T4 urunu)
+GEVSETILDI cam verildi (T4 urunu)
+OK   T5: Batarya Tezgahi uretildi ve kuruldu (20 Titan + 10 Devre + 10 Plastik)
+GEVSETILDI ayaz_kristali verildi (Ayaz kaynagi: biyom dugumu henuz yok)
+GEVSETILDI tuz verildi (Kanyon kaynagi: biyom dugumu henuz yok)
+OK   T5 urunu: Aku Hucresi (Batarya Tezgahi)
+OK   T5: Kristal Kesici uretildi ve kuruldu (Ocak T5 ile)
+OK   T5 urunu: Kristal Lens (Kristal Kesici)
+OK   urunler depoda (Kaucuk, Aku Hucresi, Kristal Lens; 10 Celik Pres'in bedeli oldu)
+GEVSETILEN ADIMLAR (16): Ocak basamagi dogrudan yukseltildi (Ata yolu: boss akisi); Veri verildi (tarama ve is emri yolu M2 testinde); brick verildi (T1 urunu); iron_ingot verildi (T2 urunu); clay verildi (T1 kaynagi); guc kurali kapali (PowerOk=true; watt kurali Sim testinde, kablolu besleme guc akisinda); charcoal verildi (T1 urunu (girdi + yakit)); plank verildi (T2 urunu); kaucuk_sutu verildi (Sazlik kaynagi: biyom dugumu henuz yok); kukurt verildi (Sazlik kaynagi: biyom dugumu henuz yok); titan_ingot verildi (T4 urunu (Titan Cevheri Kanyon'da)); devre verildi (T4 urunu); plastik verildi (T4 urunu); cam verildi (T4 urunu); ayaz_kristali verildi (Ayaz kaynagi: biyom dugumu henuz yok); tuz verildi (Kanyon kaynagi: biyom dugumu henuz yok)
+ZINCIR RESULT ok=22 fail=1 veri=1422 t=209
