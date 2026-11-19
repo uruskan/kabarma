@@ -17,10 +17,10 @@ namespace Kabarma.Game;
 public partial class Capa : Node3D
 {
     // GDD 4: bes is basligi + silah yuvalari (Mk.I: 2). Karar 23: Insa basligi kalkti (Insa Plani esyasi).
-    public enum Head { Kazma, Bicme, Toprak, Sulama, Cekim, Tirpan, Civi }
-    public static readonly string[] HeadNames = { "Kazma", "Biçme", "Toprak", "Sulama", "Çekim", "Tırpan Işını", "Çivi Tab." };
-    public static readonly Color[] HeadColors = { Palette.Warning, Palette.Plant.Lerp(Palette.Warning, 0.3f), Palette.Wood.Lerp(Palette.Warning, 0.4f), new("8CC8E8"), Palette.MayaViolet, Palette.MayaTeal, Palette.OffWhite };
-    public static bool IsWeapon(Head h) => h is Head.Tirpan or Head.Civi;
+    public enum Head { Kazma, Bicme, Toprak, Sulama, Cekim, Tirpan, Civi, Alev, Havan, Ark, Tohum, Ayaz, Yercekimi, MayaTopu } // 7-13: kusam (M4), Capa.Heads4.cs
+    public static readonly string[] HeadNames = { "Kazma", "Biçme", "Toprak", "Sulama", "Çekim", "Tırpan Işını", "Çivi Tab.", "Alev Püskürteci", "Havan", "Ark", "Tohum Makinalısı", "Ayaz Lazeri", "Yerçekimi", "Maya Topu" };
+    public static readonly Color[] HeadColors = { Palette.Warning, Palette.Plant.Lerp(Palette.Warning, 0.3f), Palette.Wood.Lerp(Palette.Warning, 0.4f), new("8CC8E8"), Palette.MayaViolet, Palette.MayaTeal, Palette.OffWhite, Palette.Warning, new("3A3A3A"), new("BFE6F5"), new("D9C089"), new("8CC8E8"), Palette.MayaViolet, Palette.MayaViolet };
+    public static bool IsWeapon(Head h) => h >= Head.Tirpan;
 
     public Head Current { get; private set; } = Head.Kazma;
     Director _d;
@@ -75,6 +75,7 @@ public partial class Capa : Node3D
     {
         Head.Tirpan => _d.State.Capa.IsUnlocked(_t.Weapon.Id),
         Head.Civi => _d.State.Capa.IsUnlocked(_t.Nailgun.Id),
+        >= Head.Alev => Head4Available(h), // kusam (M4): tarifin urunu cantada
         _ => true,
     };
 
@@ -163,6 +164,9 @@ public partial class Capa : Node3D
                 break;
             case Head.Civi:
                 TickWeapon(_d.Data.Tool.Nailgun, fire, firePressed, dt, () => FireNail(aim)); // yari otomatik
+                break;
+            default: // kusam (M4): Alev, Havan, Ark, Tohum, Ayaz Lazeri, Yercekimi, Maya Topu
+                beaming |= TickHead4(Current, dt, fire, firePressed, aim, muzzle);
                 break;
         }
         _spray.Emitting = spraying;

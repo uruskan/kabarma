@@ -1,0 +1,40 @@
+{
+  "_not": "kusam (M4): ICERIK 16 zirh takimlari, kusam modulleri ve Capa Mk. Takim, modul ve Mk cantada durunca giyilir (ArmorRules). armor: zirh puani (GDD 16.1, Waves.AfterArmor). moduleSlots: modul yuvasi. effects anahtarlari: toxicResist, heatResist, coldResist, mayaBurnResist, glide, extraJump, backpackSlots, beltSlots, chargeMax, chargeRegen, pickupRadius, light, chute, noFallDamage, swimSpeed, commandRange, remoteRepair, shield. chipSlots: baslik basina cip yuvasi (ICERIK 6.3.1). Maliyetler ilk deger (ICERIK 0).",
+  "sets": [
+    { "id": "kooperatif_tulumu", "name": "Kooperatif Tulumu", "tier": 0, "armor": 0, "moduleSlots": 3, "cost": {} },
+    { "id": "deri_yelek", "name": "Deri Yelek", "tier": 1, "armor": 15, "moduleSlots": 3, "cost": { "deri": 6, "fiber": 4 } },
+    { "id": "demir_plaka", "name": "Demir Plaka", "tier": 2, "armor": 35, "moduleSlots": 4, "cost": { "iron_ingot": 10, "deri": 4, "ata_yunu": 2 } },
+    { "id": "celik_zirh", "name": "Çelik Zırh", "tier": 3, "armor": 60, "moduleSlots": 4, "cost": { "celik": 10, "cloth": 6, "dede_boynuzu": 2 } },
+    { "id": "titan_zirh", "name": "Titan Zırh", "tier": 4, "armor": 90, "moduleSlots": 5, "cost": { "titan_ingot": 12, "kaucuk": 6, "aga_derisi": 2 } },
+    { "id": "kristal_zirh", "name": "Kristal Zırh", "tier": 5, "armor": 125, "moduleSlots": 5, "cost": { "titan_ingot": 8, "kristal_lens": 8, "pasa_kabugu": 2 } },
+    { "id": "mayali_zirh", "name": "Mayalı Zırh", "tier": 6, "armor": 170, "moduleSlots": 6, "cost": { "mayali_alasim": 12, "termal_kumas": 8, "tosun_disi": 2 } }
+  ],
+  "modules": [
+    { "id": "filtre_maskesi", "name": "Filtre Maskesi", "tier": 2, "effects": { "toxicResist": 1 } },
+    { "id": "serin_yelek", "name": "Serin Yelek", "tier": 3, "effects": { "heatResist": 1 }, "cost": { "cloth": 4, "celik": 2 } },
+    { "id": "termal_astar", "name": "Termal Astar", "tier": 4, "effects": { "coldResist": 1 }, "cost": { "termal_kumas": 3, "devre": 2 } },
+    { "id": "maya_yalitimi", "name": "Maya Yalıtımı", "tier": 5, "effects": { "mayaBurnResist": 1 }, "cost": { "termal_kumas": 2, "kristal_lens": 2, "devre": 2 } },
+    { "id": "planor", "name": "Planör", "tier": 3, "effects": { "glide": 1 }, "cost": { "cloth": 6, "celik": 2 } },
+    { "id": "cift_ziplama_tabani", "name": "Çift Zıplama Tabanı", "tier": 3, "effects": { "extraJump": 1 }, "cost": { "celik": 3, "kaucuk": 2 } },
+    { "id": "genis_canta", "name": "Geniş Çanta", "tier": 2, "effects": { "backpackSlots": 6 }, "cost": { "cloth": 4, "iron_ingot": 2 } },
+    { "id": "kemer_uzatmasi", "name": "Kemer Uzatması", "tier": 2, "effects": { "beltSlots": 2 }, "cost": { "cloth": 3, "iron_ingot": 2 } },
+    { "id": "aku_paketi", "name": "Akü Paketi", "tier": 4, "effects": { "chargeMax": 50 }, "cost": { "devre": 2, "termal_kumas": 3 } },
+    { "id": "hizli_sarj", "name": "Hızlı Şarj", "tier": 4, "effects": { "chargeRegen": 0.5 }, "cost": { "devre": 3, "termal_kumas": 2 } },
+    { "id": "miknatis_eldiveni", "name": "Mıknatıs Eldiveni", "tier": 3, "effects": { "pickupRadius": 3 }, "cost": { "cloth": 3, "celik": 2 } },
+    { "id": "far", "name": "Far", "tier": 2, "effects": { "light": 1 }, "cost": { "copper_wire": 4, "iron_ingot": 2 } },
+    { "id": "yonlu_parasut", "name": "Yönlü Paraşüt", "tier": 3, "effects": { "chute": 1 }, "cost": { "cloth": 8, "celik": 1 } },
+    { "id": "amortisor", "name": "Amortisör", "tier": 3, "effects": { "noFallDamage": 1 }, "cost": { "celik": 3, "kaucuk": 3 } },
+    { "id": "yuzgec", "name": "Yüzgeç", "tier": 3, "effects": { "swimSpeed": 0.5 }, "cost": { "kaucuk": 4, "cloth": 2 } },
+    { "id": "hayvan_dudugu", "name": "Hayvan Düdüğü", "tier": 2, "effects": { "commandRange": 0.5 }, "cost": { "iron_ingot": 2, "plank": 2 } },
+    { "id": "tamir_kiti", "name": "Tamir Kiti", "tier": 3, "effects": { "remoteRepair": 1 }, "cost": { "celik": 3, "copper_wire": 4 } },
+    { "id": "kalkan_jeneratoru", "name": "Kalkan Jeneratörü", "tier": 5, "effects": { "shield": 20 }, "cost": { "devre": 3, "kristal_lens": 2, "termal_kumas": 2 } }
+  ],
+  "capaMk": [
+    { "id": "capa_mk1", "mk": 1, "tier": 1, "chipSlots": 1, "cost": {} },
+    { "id": "capa_mk2", "mk": 2, "tier": 2, "chipSlots": 1, "cost": { "iron_ingot": 10, "ata_yunu": 2 } },
+    { "id": "capa_mk3", "mk": 3, "tier": 3, "chipSlots": 2, "cost": { "celik": 15, "dede_boynuzu": 2 } },
+    { "id": "capa_mk4", "mk": 4, "tier": 4, "chipSlots": 2, "cost": { "titan_ingot": 15, "aga_derisi": 2 } },
+    { "id": "capa_mk5", "mk": 5, "tier": 5, "chipSlots": 3, "cost": { "kristal_lens": 10, "pasa_kabugu": 2 } },
+    { "id": "capa_mk6", "mk": 6, "tier": 6, "chipSlots": 4, "cost": { "mayali_alasim": 20, "tosun_disi": 2 } }
+  ]
+}

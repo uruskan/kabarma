@@ -25,6 +25,8 @@ public partial class Player : CharacterBody3D
     public float SpeedMult = 1f;
     /// <summary>Yemek hiz eki (Kozde Misir +0,05); Director.ApplyFoodEffects yazar.</summary>
     public float FoodSpeed;
+    /// <summary>Zirh puani (GDD 16.1), Kalkan Jeneratoru kalkani ve en yuksegi; Director.ApplyArmor yazar (kusam, M4).</summary>
+    public float ArmorPoints, Shield, ShieldMax, ShieldIdle;
     public float Hp;
     public bool Down { get; private set; }
     float _downT;
@@ -192,6 +194,7 @@ public partial class Player : CharacterBody3D
         if (Down) return;
         dmg = AbilitySystem.HurtFilter?.Invoke(this, dmg, from) ?? dmg; if (dmg <= 0) return; // gucler: Atilma, Kalkan Balonu, Dev Mod (kart etkisinden once: kacinilan vurus karti tetiklemez)
         if (GetParent() is Director cd) { dmg = cd.CardGuard(dmg, from); if (dmg <= 0) return; } // kartlar: Kabuk, Dikenli, Ufak Tefek
+        if (ArmorPoints > 0f || Shield > 0f) { var (ad, ashield) = Kabarma.Sim.ArmorRules.Absorb(dmg, ArmorPoints, Shield); Shield = ashield; ShieldIdle = 0f; dmg = ad; if (dmg <= 0f) return; } // kusam: zirh takimi ve Kalkan Jeneratoru
         Hp -= dmg;
         _shake = Mathf.Max(_shake, 0.35f);
         var k = (GlobalPosition - from); k.Y = 0;
