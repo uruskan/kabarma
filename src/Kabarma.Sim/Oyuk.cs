@@ -95,6 +95,8 @@ public interface IOyukFight
     bool Vulnerable { get; }
     /// <summary>Vurus: verilen hasar (savunmasizken carpanli). Vurulamiyorsa 0.</summary>
     float Hit(float dmg);
+    /// <summary>Tur bilgili vurus (M4: Camur Devi, Akrep ve Ayna turle ayrilir). Varsayilan turu yok sayar.</summary>
+    float Hit(float dmg, DamageType type) => Hit(dmg);
     /// <summary>Bu karede oyuncuya vurus varsa hasari (yoksa 0). Oyuncunun oda merkezine gore konumu verilir.</summary>
     float Tick(float dt, float px, float pz);
 }

@@ -24,6 +24,8 @@ public partial class AzmanSystem : Node
     /// <summary>Sinama ve rapor.</summary>
     public readonly List<string> DefeatedLog = new();
     public int WallHits, Uproots, LogHits, LogLandings, RidersDropped;
+    /// <summary>M4 sinama sayaclari: Kiskac sokmesi, Kizgin yangin lekeleri, Surubasi kurtlari, Hamur bolunmeleri, sondurulen leke.</summary>
+    public int Rips, Ignitions, Howls, Splits, Douses;
     /// <summary>Bu oturumda sokulen agaclar (ayni agac iki kez sokulmez; agac yerinde kalir, yer tutucu).</summary>
     public readonly HashSet<Vector3> UsedTrees = new();
 
@@ -49,7 +51,7 @@ public partial class AzmanSystem : Node
     public bool SpawnSlot(WaveSlot slot, int ks, Vector3 at)
     {
         if (Puppet) return true;
-        string id = "azman_" + slot.Species;
+        string id = Data.Azmanlar.Any(a => a.Id == slot.Species) ? slot.Species : "azman_" + slot.Species; // surubasi gibi "azman_" onekisiz kimlikler
         if (Data.Azmanlar.All(a => a.Id != id)) return false;
         return Summon(id, ks, at) != null;
     }
@@ -155,6 +157,7 @@ public partial class AzmanSystem : Node
             case AzmanCue.Telegraph: a.Telegraph(c.Attack); break;
             case AzmanCue.Attack: a.Attack(c.Attack); break;
             case AzmanCue.DropRiders: RidersDropped += c.Count; a.DropRiders(c.Count); break;
+            case AzmanCue.Split: SplitPieces(a, f, def, c.Count); break;
             case AzmanCue.Defeated: Defeat(a, f, def); break;
         }
     }
@@ -169,7 +172,7 @@ public partial class AzmanSystem : Node
         var def = Data.Get(f.AzmanId);
         var cmds = new List<AzmanCommand>();
         var areas = new List<CombatArea>();
-        var r = AzmanRules.Damage(f, _d.Data.Combat, def, hit, cmds, areas);
+        var r = AzmanRules.Damage(f, _d.Data.Combat, def, hit, cmds, areas, from.X, from.Z);
         _d.Savas.Areas(a, areas);
         foreach (var c in cmds) Dispatch(a, f, def, c);
         return r;
@@ -186,8 +189,53 @@ public partial class AzmanSystem : Node
 
     public void EndAct(AzmanActor a) { var f = FightOf(a.FightId); if (f != null && !Puppet) AzmanRules.EndAct(f); }
 
+    /// <summary>Azman Hamur bolundu: parcalar govdenin cevresine ciksin (daha kucuk, ayni govde).</summary>
+    void SplitPieces(AzmanActor a, AzmanFight f, AzmanDef def, int n)
+    {
+        for (int i = 0; i < n; i++)
+        {
+            float ang = (i / (float)n + GD.Randf() * 0.3f) * Mathf.Tau;
+            var at = a.GlobalPosition + new Vector3(Mathf.Cos(ang), 0, Mathf.Sin(ang)) * (def.Radius + 1.5f);
+            var piece = AzmanRules.SpawnPiece(Progress, Data, def, f, _d.State.Ids.New(), at.X, at.Z);
+            Spawn(piece, arriving: false);
+        }
+        Splits += n;
+        Fx.Burst(a.Center, Palette.OffWhite, 40, 6f, 0.22f, 0.9f);
+        Sfx.Play("sisme", a.Center, 4f, 0.6f);
+        GD.Print($"AZMAN split {def.Id} pieces={n} alive={Progress.Active.Count(x => x.AzmanId == def.Id)}");
+    }
+
+    /// <summary>Sulama (Capa.Sulama) ya da yagmurlama: (aim) cevresindeki yangin lekeleri sonmeye baslar (saniye = dt × douseSeconds).</summary>
+    public bool Douse(Vector3 aim, float dt)
+    {
+        if (Puppet) return false;
+        bool any = false;
+        foreach (var f in Progress.Active)
+        {
+            var def = Data.Get(f.AzmanId);
+            if (def.Ignite == null || f.Fires.Count == 0) continue;
+            Douses += AzmanRules.Douse(f, aim.X, aim.Z, def.Ignite.Radius, dt * def.Ignite.DouseSeconds);
+            any = true;
+        }
+        return any;
+    }
+
+    /// <summary>Tarla akisinin okuyacagi yangin noktalari (x, z, yaricap): tarla bitkisine yangin hasari bunlardan hesaplanir (baglanma noktasi).</summary>
+    public IEnumerable<(float x, float z, float r)> FireSpots() =>
+        Progress.Active.SelectMany(f => f.Fires.Select(fr => (fr.X, fr.Z, Data.Get(f.AzmanId).Ignite?.Radius ?? 3f)));
+
     void Defeat(AzmanActor a, AzmanFight f, AzmanDef def)
     {
+        // Azman Hamur: son parca disindakiler odul vermez (cekirdek son parcadir).
+        if (!AzmanRules.IsLastPiece(Progress, f))
+        {
+            GD.Print($"AZMAN piece_down {def.Id} gen={f.Gen}");
+            AzmanRules.DropPiece(Progress, f);
+            a.OnDefeated();
+            _actors.Remove(f.Id);
+            _d.Savas.Remove(a);
+            return;
+        }
         GD.Print($"AZMAN defeated {def.Id} t={f.Time:0.0} ks={f.Ks}");
         DefeatedLog.Add(def.Id);
         var at = a.Center;

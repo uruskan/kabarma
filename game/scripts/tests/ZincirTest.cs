@@ -74,8 +74,9 @@ public partial class ZincirTest : Node
         Check(_d.StationStore().Count("fiber") == before + 7, "tapudaki Sandik istasyon deposunda (GDD 5 ambardan uretim)");
         Check(_d.StoreFor(_d.Data.Tool.RecipeFor("sandik")!).Count("fiber") == s.Backpack.Count("fiber"), "el tarifi yalniz cantadan");
         // Yer tutucu gorunusler: modeli olmayan her zincir istasyonu koddan.
-        var missing = _d.Data.Tool.Placeables.Where(p => p.Station != null && p.Model == null && p.Id is not ("tas_firin" or "ocakbasi") && ZincirVisuals.Make(p) == null).Select(p => p.Id).ToList();
+        var missing = _d.Data.Tool.Placeables.Where(p => p.Station != null && p.Model == null && p.Id is not ("tas_firin" or "ocakbasi") && ZincirVisuals.Make(p) == null && ZincirVisuals4.Make(p) == null).Select(p => p.Id).ToList();
         Check(missing.Count == 0, "zincir istasyonlarinin yer tutucusu var" + (missing.Count > 0 ? ": eksik " + string.Join(",", missing) : ""));
+        await Zincir4Phase(); // M4: T3 ve T5 urunu (ZincirTest.T3.cs)
         if (DisplayServer.GetName() != "headless") await Shots();
         Finish();
     }

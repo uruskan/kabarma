@@ -36,6 +36,14 @@ public sealed class CropDef
     public float RegrowDays { get; set; }
     public bool Dark { get; set; }
     public bool WardsPests { get; set; }
+    /// <summary>Su basmis ekin (Pirinc, Kamis, Isil Nilufer): sig su karesi ister (Farm.SetFlooded).</summary>
+    public bool Flooded { get; set; }
+    /// <summary>Kabarik halinin ozelligi (ICERIK 5 son sutun); davranis Godot katmaninda, kimlik burada.</summary>
+    public string? Trait { get; set; }
+    /// <summary>Kabarik tek bitkinin verdigi urun (Pirinc 30, Kamis 20); 0: kuralsiz.</summary>
+    public int SwollenYield { get; set; }
+    /// <summary>Hasat basina Maya (Maya Cicegi 5).</summary>
+    public int MayaPerHarvest { get; set; }
 
     public string ProductId => string.IsNullOrEmpty(Product) ? Id : Product!;
     public string SeedId => Id + "_seed";
