@@ -66,6 +66,19 @@ public partial class Bot
     /// Cantada yeterli `item` yoksa oyun yolundan toplar: tas, kil, bakir cevheri Kazma ile kayadan (kil ve bakir
     /// World.Placeholders yer tutucu dugumleri); odun Bicme ile agactan; lif ve bugday Bicme ile tutamdan. Yeterliyse true.
     /// </summary>
+    /// <summary>
+    /// Tutamin dibine girilmisse (1,6 m icinde) geri cekilir: nisan yere ve ayaga dik iner, kolun sag cubugu pitch sinirina takilip
+    /// Biçme tutama ulasmaz (input_pad barinak takilmasi: aimErr=15deg, miss=1,5 m). Oyuncu da tutamdan bir adim geri durur.
+    /// </summary>
+    bool BackOffTuft(Vector3 tuft)
+    {
+        var d = P.GlobalPosition - tuft; d.Y = 0;
+        if (d.Length() >= 1.6f) return false;
+        var away = d.LengthSquared() > 0.01f ? d.Normalized() : Vector3.Back;
+        MoveTo(_d.World.Ground(tuft + away * 2.4f), 0.3f, false);
+        return true;
+    }
+
     bool EnsureItem(string item, int need)
     {
         if (_d.State.Backpack.Count(item) >= need) return true;
@@ -86,6 +99,7 @@ public partial class Bot
             if (t == null) { GD.Print($"BOT no {item} tufts left"); return true; }
             Head(Capa.Head.Bicme);
             Aim(t.Position + Vector3.Up * 0.3f);
+            if (BackOffTuft(t.Position)) return false;
             if (MoveTo(t.Position, 3.0f)) Fire = true;
             return false;
         }

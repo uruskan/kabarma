@@ -49,8 +49,9 @@ public partial class Capa
         return l;
     }
 
-    void Hit4(Node3D n, float dmg, Vector3 from, float knock)
+    void Hit4(Node3D n, float dmg, Vector3 from, float knock, string damageType = null)
     {
+        dmg *= _d.TuzukMult(damageType); // Tuzuk Saganak: Ates etkisiz, Sok guclu (gece4)
         var dir = ((n.GlobalPosition - from) with { Y = 0 }).Normalized() * knock;
         if (n is Zipzip z) z.Hit(dmg, false, dir, dir.Length(), false);
         else { var k = Kabarans.Live.FirstOrDefault(x => x.Node == n); if (k != null) Kabarans.Hit(k, dmg, from, knock); }
@@ -92,7 +93,7 @@ public partial class Capa
                     {
                         float r = n is Zipzip zz ? 0.6f * zz.Scale0 : 0.6f;
                         if (!HeadRules.InCone(muzzle.X, muzzle.Z, flat.X, flat.Z, def.ConeDegrees, def.Range, n.GlobalPosition.X, n.GlobalPosition.Z, r)) continue;
-                        Hit4(n, def.Damage, muzzle, 0.5f);
+                        Hit4(n, def.Damage, muzzle, 0.5f, def.DamageType);
                         if (n is Zipzip z) z.BurnT = Mathf.Max(z.BurnT, def.BurnSeconds);
                     }
                     Vfx.Head("alev", "muzzle", muzzle + flat * 1.2f, Palette.Warning, flat);
@@ -125,7 +126,7 @@ public partial class Capa
                         {
                             var p = chain[i].GlobalPosition + Vector3.Up * 0.8f;
                             Zap4(prev, p, new Color("BFE6F5"));
-                            Hit4(chain[i], HeadRules.ChainDamage(def, i), prev, 1f);
+                            Hit4(chain[i], HeadRules.ChainDamage(def, i), prev, 1f, def.DamageType);
                             Fx.Burst(p, new Color("BFE6F5"), 6, 3f, 0.08f, 0.25f, true, 0f);
                             prev = p;
                         }
@@ -144,7 +145,7 @@ public partial class Capa
                         .OrderBy(n => n.GlobalPosition.DistanceTo(muzzle)).Take(1 + fx.Pierce).ToList();
                     foreach (var n in hits)
                     {
-                        Hit4(n, def.Damage * fx.DamageMult, muzzle, 1f);
+                        Hit4(n, def.Damage * fx.DamageMult, muzzle, 1f, def.DamageType);
                         if (n is Zipzip z) { if (fx.Burn > 0) z.BurnT = Mathf.Max(z.BurnT, fx.Burn); if (fx.Slow > 0) z.FreezeT = Mathf.Max(z.FreezeT, fx.SlowSeconds); }
                     }
                     Zap4(muzzle, hits.Count > 0 ? hits[^1].GlobalPosition + Vector3.Up * 0.6f : muzzle + dir * 12f, new Color("D9C089"), 0.05f);
@@ -161,7 +162,7 @@ public partial class Capa
                         _tick4 = def.FireInterval;
                         foreach (var n in Foes4(muzzle + dir * def.Range * 0.5f, def.Range * 0.55f).Where(n => SegDist(muzzle, end, n.GlobalPosition + Vector3.Up * 0.6f) <= 0.9f))
                         {
-                            Hit4(n, def.Damage, muzzle, 0f);
+                            Hit4(n, def.Damage, muzzle, 0f, def.DamageType);
                             if (n is Zipzip z) z.FreezeT = Mathf.Max(z.FreezeT, def.FreezeSeconds);
                         }
                     }
@@ -186,7 +187,7 @@ public partial class Capa
                     {
                         var node = _grab4; _grab4 = null;
                         var from = muzzle;
-                        Hit4(node, def.Damage, from, def.ThrowSpeed * 0.4f);
+                        Hit4(node, def.Damage, from, def.ThrowSpeed * 0.4f, def.DamageType);
                         if (node is Zipzip z) z.Push(flat, def.ThrowSpeed);
                         else if (IsInstanceValid(node)) node.GlobalPosition += flat * 6f;
                         FeelThrow4(muzzle, flat);
@@ -237,12 +238,12 @@ public partial class Capa
                 foreach (var n in foes)
                 {
                     if (!IsInstanceValid(n)) continue;
-                    Hit4(n, def.Damage, at, 3f);
+                    Hit4(n, def.Damage, at, 3f, def.DamageType);
                     if (IsInstanceValid(n)) n.Scale /= 1.4f;
                     Fx.Burst(n.GlobalPosition + Vector3.Up * 0.6f, col, 14, 3f, 0.1f, 0.4f, true, 0f);
                 }
             };
         }
-        else foreach (var n in foes) Hit4(n, def.Damage, at, 6f);
+        else foreach (var n in foes) Hit4(n, def.Damage, at, 6f, def.DamageType);
     }
 }

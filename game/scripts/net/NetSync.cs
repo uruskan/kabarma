@@ -376,6 +376,7 @@ public partial class NetSync : Node
                 if (seed != D.State.Seed) { Fail($"tohum farklı {seed} ≠ {D.State.Seed}"); return; }
                 Joined = true;
                 Status = $"bağlı · {_tx.Address}";
+                if (_rejoin) SendRestore(); // NetSync.Handover.cs: devirden sonra canta ve el kuyrugu yeni host'a
                 SendHost(new[] { (byte)NetMsg.Ready });
                 GD.Print($"NET welcome peer={LocalPeer}");
                 break;
