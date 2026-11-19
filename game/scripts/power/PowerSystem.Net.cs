@@ -23,6 +23,8 @@ public partial class PowerSystem
         net.Register("power", false, WriteNet, ReadNet);
         net.On("pcable", HostCable);
         net.On("pact", HostAct);
+        net.On("ptrans", HostTrans); // M4 tasima: drone gorevi, teleferik hatti (PowerSystem.Transport.cs)
+        _d.BindMayaNet();            // Maya Kazani (Director.Maya.cs)
         GD.Print($"POWER net bound host={net.IsHost}");
     }
 
@@ -47,6 +49,7 @@ public partial class PowerSystem
         var links = n.Links.OrderBy(l => l.A).ThenBy(l => l.B).ThenBy(l => l.Signal).ToList();
         w.VarU((uint)links.Count);
         foreach (var l in links) { w.VarU((uint)l.A); w.VarU((uint)l.B); w.Bool(l.Signal); w.F32(l.Length); }
+        TransportCodec.Write(w, n.Transport); // M4 tasima: bant seritleri, drone'lar, teleferik hatlari (TransportCodec.cs)
     }
 
     void ReadNet(NetReader r)
@@ -70,6 +73,7 @@ public partial class PowerSystem
         int lc = (int)r.VarU();
         var links = new System.Collections.Generic.List<PowerLink>();
         for (int i = 0; i < lc; i++) links.Add(new PowerLink { A = (int)r.VarU(), B = (int)r.VarU(), Signal = r.Bool(), Length = r.F32() });
+        TransportCodec.Read(r, n.Transport);
         bool sameShape = n.Nodes.Count == nodes.Count && n.Nodes.OrderBy(x => x.Id).Zip(nodes, (a, b) => a.Id == b.Id && a.Def == b.Def).All(s => s);
         n.NextId = nextId;
         if (System.Math.Abs(n.Clock - clock) > 15) n.Clock = clock;

@@ -12,7 +12,7 @@ namespace Kabarma.Game;
 public partial class Director
 {
     bool _zincirWired;
-    float _coreHintT;
+    float _coreHintT, _mayaAskT;
 
     /// <summary>Tapu icindeki Sandiklar (Ocak'tan tapu yaricapinda; Ocak yoksa hic).</summary>
     public IEnumerable<Inventory> ClaimChests()
@@ -93,8 +93,11 @@ public partial class Director
         }
         if (!Hud.MenuOpen && Input.IsActionJustPressed("scan")) Scan();
         // Maya Kazani (GDD 6, 14.4): safakta biriken Maya, Ocak'in yaninda "maya" esyasi olarak canta ve Sandiklara alinir.
-        if (Ocak != null && State.MayaStock.Stock > 0 && OcakPos.DistanceTo(Player.GlobalPosition) < 4.5f)
+        _mayaAskT -= dt;
+        if (Ocak != null && State.MayaStock.Stock > 0 && _mayaAskT <= 0 && OcakPos.DistanceTo(Player.GlobalPosition) < 4.5f)
         {
+            _mayaAskT = 0.5f;
+            if (Net?.Forward("maya", _ => { }) == true) return; // ortak: istemcide host Kazan'dan aktorun cantasina verir (Director.Maya.cs)
             int got = State.MayaStock.Withdraw(StationStore());
             if (got > 0) { Hud.Big($"+{got} Maya (Kazan)", Palette.MayaTeal, 2f); Sfx.Play("pickup", null, -4f); GD.Print($"MAYA withdrawn {got} left={State.MayaStock.Stock}"); }
             else Hud.Hint($"Maya Kazanı'nda {State.MayaStock.Stock} Maya var: çanta ve Sandıklar dolu", 1.2f);

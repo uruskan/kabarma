@@ -329,6 +329,55 @@ public class TasimaTests
         Assert.Equal(net.Transport.Delivered, back.Transport.Delivered);
     }
 
+    // ---------------- ag (ortak oyun) ----------------
+
+    [Fact]
+    public void Transport_state_round_trips_through_the_net_codec_and_is_canonical()
+    {
+        var f = Fixed(); var net = new PowerNet(); var w = new TestWorld();
+        // bant + drone + teleferik canli durumda
+        var a = w.Add(0, -1); var b = w.Add(0, 4);
+        var g = net.Add(f, "sabit", 3, 0, 0);
+        var arm = Add(net, f, "tasima_kolu", 0, 0); Wire(net, f, g, arm); arm.Filter = "stone";
+        foreach (var z in new[] { 1, 2, 3 }) Add(net, f, "bant", 0, z);
+        var g2 = net.Add(f, "sabit", 20, 0, 3);
+        var drone = Add(net, f, "drone_istasyonu", 20, 0); Wire(net, f, g2, drone);
+        var src = w.Add(30, 0); var dst = w.Add(40, 10);
+        var ra = Add(net, f, "teleferik_istasyonu", 60, 0); var rb = Add(net, f, "teleferik_istasyonu", 100, 0);
+        var g3 = net.Add(f, "sabit", 60, 0, 3); Wire(net, f, g3, ra);
+        var g4 = net.Add(f, "sabit", 100, 0, 3); Wire(net, f, g4, rb);
+        net.World = w;
+        a.Add("stone", 10); src.Add("stone", 30);
+        net.Transport.Drones.AddOrder(net, f, drone.Id, new DroneOrder { Item = "stone", Fx = 30, Fz = 0, Tx = 40, Tz = 10 });
+        Assert.Null(net.Transport.Ropeways.Connect(net, f, ra.Id, rb.Id, "stone"));
+        Run(net, f, 3.7f);
+        Assert.True(net.Transport.Lanes.Values.Any(l => l.Items.Count > 0));
+        var wr1 = new NetWriter(); TransportCodec.Write(wr1, net.Transport);
+        var back = new TransportState();
+        TransportCodec.Read(new NetReader(wr1.ToArray()), back);
+        var wr2 = new NetWriter(); TransportCodec.Write(wr2, back);
+        Assert.Equal(wr1.ToArray(), wr2.ToArray());                                   // kanonik: oku-yaz ayni bayt
+        Assert.Equal(net.Transport.Lanes.Sum(l => l.Value.Items.Count), back.Lanes.Sum(l => l.Value.Items.Count));
+        Assert.Equal(net.Transport.Drones.Station(drone.Id).Orders.Count, back.Drones.Stations[drone.Id].Orders.Count);
+        Assert.Equal(net.Transport.Drones.Station(drone.Id).Fleet.Select(d => d.Phase), back.Drones.Stations[drone.Id].Fleet.Select(d => d.Phase));
+        Assert.Single(back.Ropeways.Lines);
+        Assert.Equal(net.Transport.Delivered, back.Delivered);
+        // yeniden yazilan durum eskisinin ustune okunursa fazlayi siler
+        back.Lanes[9999] = new LaneState();
+        TransportCodec.Read(new NetReader(wr1.ToArray()), back);
+        Assert.False(back.Lanes.ContainsKey(9999));
+    }
+
+    [Fact]
+    public void Maya_vault_stock_can_be_written_and_read_for_the_net_section()
+    {
+        var v = new MayaVault(); v.Deposit(75.9f);
+        Assert.Equal(75, v.Stock);
+        var w = new NetWriter(); w.VarU((uint)v.Stock); w.VarU((uint)v.TotalDeposited);
+        var r = new NetReader(w.ToArray()); var v2 = new MayaVault { Stock = (int)r.VarU(), TotalDeposited = (int)r.VarU() };
+        Assert.Equal(v.Stock, v2.Stock); Assert.Equal(v.TotalDeposited, v2.TotalDeposited);
+    }
+
     // ---------------- drone ----------------
 
     [Fact]

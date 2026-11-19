@@ -89,7 +89,7 @@ Bant kimlikleri (crops.json `band`: `cayir`, `koru`): yeni `sazlik`, `kanyon`, `
 | ham_maya | Ham Maya | §2.1 #23 | Göbek |
 | obsidyen | Obsidyen | §2.1 #24 | Göbek |
 | isil_cevher | Işıl Cevher | §2.1 #25 | Göbek |
-| maya | Maya | §2.1 #26 | M3; kimlik main'de doğrulanmadı |
+| maya | Maya | §2.1 #26 | var: Kabarma şafağında Maya Kazanı'ndan (`MayaVault`, kayıt `maya_vault`, ağ `maya_vault` + `maya` isteği), Ocak'ın yanında alınır |
 | holding_parcasi | Holding Parçası | §2.1 #27 | var (ItemNames) |
 | maya_kesesi | Maya Kesesi | §2.2 #36 | var (ItemNames, recipes.json) |
 | kemik | Kemik | §2.2 #32 | T1 ama main'de yok |

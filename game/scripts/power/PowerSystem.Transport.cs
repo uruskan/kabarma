@@ -30,6 +30,47 @@ public partial class PowerSystem
         }
     }
 
+    public enum TransOp : byte { DroneOrder = 1, DroneClear = 2, RopeConnect = 3, RopeRemove = 4 }
+
+    /// <summary>Drone gorevi ve teleferik hatti eylemleri: istemcide host'a gider; host ve tek oyuncuda yerel isler.</summary>
+    void TransAct(TransOp op, int id, int other = 0, string item = "", float fx = 0, float fz = 0, float tx = 0, float tz = 0)
+    {
+        if (_d.Net?.Forward("ptrans", w => { w.U8((byte)op); w.VarU((uint)id); w.VarU((uint)other); w.Str(item); w.F32(fx); w.F32(fz); w.F32(tx); w.F32(tz); }) == true) return;
+        ApplyTrans(op, id, other, item, fx, fz, tx, tz, true);
+    }
+
+    void HostTrans(NetActor actor, NetReader r)
+    {
+        var op = (TransOp)r.U8();
+        int id = (int)r.VarU(), other = (int)r.VarU();
+        string item = r.Str();
+        float fx = r.F32(), fz = r.F32(), tx = r.F32(), tz = r.F32();
+        var n = Net.Get(id);
+        if (n == null || !NetRules.InRange(actor, n.X, n.Y, n.Z, 8f)) { GD.Print($"POWER net reject {op} {id}"); return; }
+        ApplyTrans(op, id, other, item, fx, fz, tx, tz, false);
+        _d.Net.Flush();
+    }
+
+    /// <summary>Eylemin kendisi. local: ipucu ve ses bu makinede. Donen: null ya da reddetme nedeni.</summary>
+    string ApplyTrans(TransOp op, int id, int other, string item, float fx, float fz, float tx, float tz, bool local)
+    {
+        string err = null;
+        switch (op)
+        {
+            case TransOp.DroneOrder: err = Net.Transport.Drones.AddOrder(Net, F, id, new DroneOrder { Item = item, Fx = fx, Fz = fz, Tx = tx, Tz = tz }); break;
+            case TransOp.DroneClear: Net.Transport.Drones.ClearOrders(id); break;
+            case TransOp.RopeConnect: err = Net.Transport.Ropeways.Connect(Net, F, id, other, item); break;
+            case TransOp.RopeRemove: Net.Transport.Ropeways.Lines.RemoveAll(l => l.A == id); break;
+        }
+        if (local && op is TransOp.DroneOrder or TransOp.RopeConnect)
+        {
+            _d.Hud.Hint(err ?? (op == TransOp.DroneOrder ? "Görev eklendi" : "Hat kuruldu"), 2f);
+            Sfx.Play(err == null ? "pickup" : "hit", null, -8f);
+        }
+        GD.Print($"POWER trans {op} {id} err={err}");
+        return err;
+    }
+
     Depots _depots;
     Vector3? _droneFrom, _droneTo;
 
@@ -133,12 +174,10 @@ public partial class PowerSystem
             items.Add(new Hud.MenuItem(_droneTo == null ? "Hedef: bakılan Sandık" : "Hedef seçildi ✓ (yeniden: bakılan Sandık)", () => ChestAtAim() != null, () => { _droneTo = ChestAtAim().GlobalPosition; Sfx.Play("place", null, -10f); re(); }));
             items.Add(new Hud.MenuItem($"Görev ekle ({ds.Orders.Count}/8): {(n.Filter.Length > 0 ? ItemNames.Of(n.Filter) : "?")}", () => _droneFrom != null && _droneTo != null && n.Filter.Length > 0, () =>
             {
-                var err = Net.Transport.Drones.AddOrder(Net, F, id, new DroneOrder { Item = n.Filter, Fx = _droneFrom.Value.X, Fz = _droneFrom.Value.Z, Tx = _droneTo.Value.X, Tz = _droneTo.Value.Z });
-                _d.Hud.Hint(err ?? "Görev eklendi", 1.6f);
-                Sfx.Play(err == null ? "pickup" : "hit", null, -8f);
+                TransAct(TransOp.DroneOrder, id, 0, n.Filter, _droneFrom.Value.X, _droneFrom.Value.Z, _droneTo.Value.X, _droneTo.Value.Z);
                 re();
             }));
-            items.Add(new Hud.MenuItem("Görevleri temizle", () => ds.Orders.Count > 0, () => { Net.Transport.Drones.ClearOrders(id); re(); }));
+            items.Add(new Hud.MenuItem("Görevleri temizle", () => ds.Orders.Count > 0, () => { TransAct(TransOp.DroneClear, id); re(); }));
         }
         if (pdef.Kind == "ropeway_station")
         {
@@ -147,12 +186,10 @@ public partial class PowerSystem
             int other = Net.Nodes.Where(x => x.Id != id && F.Def(x.Def)?.Kind == "ropeway_station").OrderBy(x => new Vector3(x.X, x.Y, x.Z).DistanceTo(aim)).Select(x => x.Id).FirstOrDefault();
             items.Add(new Hud.MenuItem($"Hat kur: bakılan en yakın başka istasyona ({lines.Count(l => l.A == id)} hat)", () => other > 0, () =>
             {
-                var err = Net.Transport.Ropeways.Connect(Net, F, id, other, n.Filter);
-                _d.Hud.Hint(err ?? "Hat kuruldu", 2.2f);
-                Sfx.Play(err == null ? "pickup" : "hit", null, -8f);
+                TransAct(TransOp.RopeConnect, id, other, n.Filter);
                 re();
             }));
-            items.Add(new Hud.MenuItem("Hatlarını kaldır", () => lines.Any(l => l.A == id), () => { lines.RemoveAll(l => l.A == id); re(); }));
+            items.Add(new Hud.MenuItem("Hatlarını kaldır", () => lines.Any(l => l.A == id), () => { TransAct(TransOp.RopeRemove, id); re(); }));
         }
     }
 }

@@ -242,7 +242,7 @@ public static class ItemNames
         // zincir4 (M4, ICERIK §2, §11): T3-T6 ham kaynaklari, ara urunler ve istasyonlar.
         ["turba"] = "Turba", ["kukurt"] = "Kükürt", ["kaucuk_sutu"] = "Kauçuk Sütü", ["balcik"] = "Balçık", ["isil_yosun"] = "Işıl Yosun",
         ["kum"] = "Kum", ["kuvars"] = "Kuvars", ["titan_ore"] = "Titan Cevheri", ["katran"] = "Katran", ["tuz"] = "Tuz",
-        ["buz"] = "Buz", ["ayaz_kristali"] = "Ayaz Kristali", ["ham_maya"] = "Ham Maya", ["obsidyen"] = "Obsidyen", ["isil_cevher"] = "Işıl Cevher", ["maya"] = "Maya",
+        ["buz"] = "Buz", ["ayaz_kristali"] = "Ayaz Kristali", ["ham_maya"] = "Ham Maya", ["obsidyen"] = "Obsidyen", ["isil_cevher"] = "Işıl Cevher",
         ["kaucuk"] = "Kauçuk", ["barut"] = "Barut", ["kimyasal_gubre"] = "Kimyasal Gübre", ["bitkisel_yag"] = "Bitkisel Yağ", ["biyoyakit"] = "Biyoyakıt",
         ["cam"] = "Cam", ["devre"] = "Devre", ["plastik"] = "Plastik", ["titan_ingot"] = "Titan Külçe", ["termal_kumas"] = "Termal Kumaş",
         ["kristal_lens"] = "Kristal Lens", ["aku_hucresi"] = "Akü Hücresi", ["mayali_alasim"] = "Mayalı Alaşım", ["reaktor_cubugu"] = "Reaktör Çubuğu",
