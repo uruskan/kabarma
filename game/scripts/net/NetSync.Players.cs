@@ -16,6 +16,8 @@ public partial class NetSync
     public readonly Dictionary<byte, NetAvatar> Avatars = new();
     PlayerFrame _own;
     string _lastLook;
+    readonly Dictionary<byte, (float, float, float)> _prevPos = new();
+    readonly Dictionary<(byte, byte), float> _settleLeft = new();
     byte _lastHead = 255;
 
     void RegisterPlayers() { }
@@ -56,6 +58,16 @@ public partial class NetSync
         }
         if (IsClient) { SendHost(NetPackets.Frame(_own, Cfg.PosPerMetre), NetChannel.State); return; }
 
+        // sekiz (M5): hareketsiz kalan oyuncunun son karesi, seyreltilmis olsa da her aliciya bir kez gider (donuk avatar kalmasin).
+        var moved = new Dictionary<byte, bool>();
+        void Track(in PlayerFrame f)
+        {
+            var pos = new Vector3(f.X, f.Y, f.Z);
+            moved[f.Peer] = !_prevPos.TryGetValue(f.Peer, out var old) || System.Math.Abs(old.Item1 - pos.X) + System.Math.Abs(old.Item2 - pos.Y) + System.Math.Abs(old.Item3 - pos.Z) > 0.002f;
+            _prevPos[f.Peer] = (pos.X, pos.Y, pos.Z);
+        }
+        Track(_own);
+        foreach (var x in Actors.Values) if (x.HasFrame) Track(x.Last);
         // Host: her hazir istemciye kendisi disindaki oyuncular (host dahil) ve yakindaki yaratiklar.
         foreach (var (peer, a) in Actors)
         {
@@ -68,7 +80,13 @@ public partial class NetSync
             {
                 float d = Mathf.Sqrt((f.X - rx) * (f.X - rx) + (f.Z - rz) * (f.Z - rz));
                 bool urgent = (f.Flags & (NetFrameFlags.Talking | NetFrameFlags.Down)) != 0;
-                return NetInterest.SendThisTick(_tick, NetInterest.Divisor(Cfg.Interest, d, urgent), peer, f.Peer);
+                int div = NetInterest.Divisor(Cfg.Interest, d, urgent);
+                var key = (peer, f.Peer);
+                if (div <= 1) return true;
+                if (moved.GetValueOrDefault(f.Peer, true)) { _settleLeft[key] = 1f; return NetInterest.SendThisTick(_tick, div, peer, f.Peer); }
+                // durdu: bir saniye boyunca tam hizda (son kare kesin ulassin), sonra seyrek
+                if (_settleLeft.TryGetValue(key, out var left) && left > 0f) { _settleLeft[key] = left - 1f / Cfg.FrameHz; return true; }
+                return NetInterest.SendThisTick(_tick, div, peer, f.Peer);
             }
             var frames = new List<PlayerFrame>();
             if (Want(_own)) frames.Add(_own);
