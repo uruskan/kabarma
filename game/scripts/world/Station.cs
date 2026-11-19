@@ -27,7 +27,7 @@ public partial class Station : Node3D
     }
 
     /// <summary>Gorunus: Tas Firin ve Ocakbasi kendi siniflari (kodla hareket eden parcalar), digerleri model (PlaceableVisuals).</summary>
-    public static Node3D MakeVisual(PlaceableDef def) => ZincirVisuals.Make(def) ?? PlaceableVisuals.Make(def); // zincir istasyonlari: koddan yer tutucu (Station.Visuals.cs)
+    public static Node3D MakeVisual(PlaceableDef def) => ZincirVisuals.Make(def) ?? ZincirVisuals4.Make(def) ?? PlaceableVisuals.Make(def); // zincir istasyonlari: koddan yer tutucu (Station.Visuals.cs)
 
     /// <summary>Yuk urununun cikacagi nokta: istasyonun onu (+Z), yere oturmus.</summary>
     public Vector3 OutputPoint => _d.World.Ground(GlobalPosition + GlobalBasis.Z * 1.9f);

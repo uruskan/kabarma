@@ -53,7 +53,7 @@ public partial class World
         {
             float r = PoiType(poi.Type).Flatten;
             if (r <= 0) continue;
-            int cx = Mathf.RoundToInt(poi.X + Cells / 2f), cz = Mathf.RoundToInt(poi.Z + Cells / 2f);
+            int cx = Mathf.RoundToInt(poi.X - Origin.X), cz = Mathf.RoundToInt(poi.Z - Origin.Y);
             if (cx < 0 || cz < 0 || cx > Cells || cz > Cells) continue;
             // Merkez: yaricap icindeki ortalama (tepe ya da cukur ortasina dusmesin).
             float sum = 0; int n = 0;
@@ -68,8 +68,8 @@ public partial class World
             {
                 if (x < 0 || z < 0 || x > Cells || z > Cells) continue;
                 // Ussun duzlugu (M1 yuksekligi, dunya sinamasi) hic degismez.
-                if (new Vector2(x - Cells / 2f, z - Cells / 2f).Length() <= T.BaseFlatOuter + 1f) continue;
-                float d = new Vector2(x - Cells / 2f - poi.X, z - Cells / 2f - poi.Z).Length();
+                if (new Vector2(x + Origin.X, z + Origin.Y).Length() <= T.BaseFlatOuter + 1f) continue;
+                float d = new Vector2(x + Origin.X - poi.X, z + Origin.Y - poi.Z).Length();
                 float k = 1f - Mathf.SmoothStep(r, r * 1.8f, d);
                 if (k > 0) _h[x, z] = Mathf.Lerp(_h[x, z], target, k);
             }

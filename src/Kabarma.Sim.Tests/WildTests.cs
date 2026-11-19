@@ -37,7 +37,9 @@ public class WildTests
             var names = body.Bones.Select(b => b.Name).ToHashSet();
             foreach (var b in body.Bones.Where(b => b.Name.EndsWith("_l"))) names.Add(b.Name[..^2] + "_r");
             var plan = D.Plan(c.Rig.Plan);
-            foreach (var role in plan.Roles) Assert.True(names.Contains(role), $"{c.Id}: {role} kemigi yok");
+            // Plan rolleri tur basina kismi olabilir (yaratik4: bacaksiz Cizbiz/Hamurcuk, kiskacsiz Billur); PoseLibrary olmayani atlar.
+            Assert.True(c.Rig.Bones.ContainsKey(plan.MoveRole), $"{c.Id}: hareket rolu {plan.MoveRole}");
+            foreach (var role in c.Rig.Bones.Keys) { Assert.Contains(role, plan.Roles); Assert.True(names.Contains(c.Rig.Bones[role]), $"{c.Id}: {role} kemigi yok"); }
             foreach (var (_, bone) in c.Rig.Bones) Assert.Contains(bone, names);
             foreach (var p in body.Parts) Assert.True(names.Contains(p.Bone), $"{c.Id}: parca kemigi {p.Bone}");
             Assert.True(body.Bones.Count(b => string.IsNullOrEmpty(b.Parent)) == 1, $"{c.Id}: tek kok");
@@ -50,11 +52,24 @@ public class WildTests
     }
 
     [Fact]
+    public void Content_has_all_27_icerik_species_with_canonical_ids()
+    {
+        // ICERIK §3: 27 tur (PLAN §7.1); kimlikler docs/kimlikler-m4.md §3.
+        string[] ids = { "zipzip", "gidak", "pofuduk", "homur", "cekirge", "sinsi", "dalli", "hu", "vicik", "bozuk", "vizviz", "findikci",
+            "vrak", "kiskac", "suluk_surusu", "tukurgen", "cizbiz", "kosar", "kivrik", "kizgin", "lesci", "dehliz",
+            "tosun", "ayaz_kurdu", "paytak", "billur", "hamurcuk" };
+        Assert.Equal(27, D.Creatures.Creatures.Count);
+        foreach (var id in ids) Assert.Contains(D.Creatures.Creatures, c => c.Id == id);
+        foreach (var c in D.Creatures.Creatures.Skip(12)) Assert.True(c.Wild != null && c.Weight > 0 && !string.IsNullOrEmpty(c.Biome), c.Id);
+    }
+    [Fact]
     public void Every_new_species_has_a_spawn_row_in_its_home_biome()
     {
         // Dogma semasi dunya2'nin (biomes.json spawns.creatures, SpawnTable); yaratik2 satir ekler.
         foreach (var c in D.Creatures.Creatures.Where(c => c.Wild != null || c.Swarm != null))
         {
+            // GECICI (yaratik4, M4): yeni biyomlar (isil_sazlik, kizil_kanyon, ayaz_yaylasi, gobek) biyom akisiyla gelir; gelince satir zorunlu.
+            if (!D.Biomes.Biomes.ContainsKey(c.Biome) && c.Biome is "isil_sazlik" or "kizil_kanyon" or "ayaz_yaylasi" or "gobek") continue;
             Assert.True(D.Biomes.Biomes.ContainsKey(c.Biome), $"{c.Id}: biyom {c.Biome}");
             var row = D.Biomes.Biomes[c.Biome].Spawns.Creatures.FirstOrDefault(r => r.Creature == c.Id);
             Assert.True(row != null, $"{c.Id}: {c.Biome} dogma satiri yok");

@@ -20,7 +20,10 @@ public class ResearchTests
     {
         var d = Data();
         var g = RecipeGraph.Walk(d, 2);
-        Assert.True(g.Unreached.Count == 0, "T2'de ulasilamayan tarif: " + string.Join(", ", g.Unreached.Select(r => r.Id)));
+        // T3+ tarifleri T2'de beklenen sekilde ulasilmaz: zincir4 listesi ve ocak:3+ ile kilitli tarifler (tarim4 yemekleri, Asi Tezgahi; T6'da hepsi: FarmM4Tests).
+        bool Late(RecipeDef r) => r.UnlockOn != null && r.UnlockOn.StartsWith(ResearchFile.TierPrefix) && int.Parse(r.UnlockOn[ResearchFile.TierPrefix.Length..]) > 2;
+        var stuck = g.Unreached.Where(r => !ZincirChain4Tests.T3Plus.Contains(r.Id) && !Late(r)).ToList();
+        Assert.True(stuck.Count == 0, "T2'de ulasilamayan tarif: " + string.Join(", ", stuck.Select(r => r.Id)));
         foreach (var id in new[] { "arastirma_masasi", "komur_ocagi", "charcoal", "brick", "copper_wire", "demirci_ocagi", "iron_ingot", "bicki", "plank", "degirmen", "flour", "dokuma_tezgahi", "cloth", "arac_atolyesi", "filtre_maskesi" })
             Assert.True(g.Has(id), id);
         Assert.Contains("arastirma:arac_atolyesi", g.Tokens);

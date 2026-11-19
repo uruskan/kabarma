@@ -166,3 +166,6 @@ Ham GLB'ler `.tools/tripo_web/dalga1/` (git dışı). Dönüşüm `build_bitki.p
 | `game/assets/models/kesif/yuva.glb` | `kabarma_yuva.glb` | 1 m çap |
 | `game/assets/models/kesif/enkaz.glb` | `kabarma_enkaz.glb` | 2,5 m |
 | `game/assets/models/kesif/oyuk_agzi.glb` | `kabarma_oyuk_agzi.glb` | 4 m |
+
+## Istasyon yer tutuculari (zincir4, M4)
+| 19 Kasim 2026 | 25 T3-T6 istasyon ve 3 T1 istasyon (Sirt Yazicisi, Tabaklama Askisi, Harman Yeri) | `game/scripts/world/Station.Visuals4.cs` (MeshKit yastik kutu, silindir, kure) | Proje kodu | YER TUTUCU; kredi harcanmadi, Tripo istemleri raporda |

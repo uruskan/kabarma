@@ -71,7 +71,7 @@ public abstract partial class AtaActor : Node3D, IAtaTarget
     public CombatResult TakeHit(CombatHit hit, Vector3 from)
     {
         if (!Alive) return default;
-        var r = Sys.Damage(hit, AtaHitKind.Weapon);
+        var r = Sys.Damage(hit, HitKind);
         Feedback(r.Damage, hit.Crit || Stunned);
         return r;
     }
@@ -131,6 +131,34 @@ public abstract partial class AtaActor : Node3D, IAtaTarget
 
     protected virtual void SpecialAttack(string kind, int count) { }
 
+    // ---------- M4 (ata4) kancalari ----------
+
+    /// <summary>Isabet turu: yutulmus oyuncunun icerden vurusu (Kurbaga Aga) AtaHitKind.Inside olur.</summary>
+    protected virtual AtaHitKind HitKind => AtaHitKind.Weapon;
+    /// <summary>Kabarik Ata hasar carpani (KS ile); normal dovuste 1.</summary>
+    protected float DmgMult => Fight?.DamageMult ?? 1f;
+    /// <summary>Her kare, durum makinesinden once (Fight dolu).</summary>
+    protected virtual void ExtraTick(float dt) { }
+    protected bool Frozen;
+    protected Vector3 FaceDir => new Vector3(Mathf.Sin(Rotation.Y), 0, Mathf.Cos(Rotation.Y));
+
+    /// <summary>Yer alani vurusu: oyuncu (xz) yaricap icindeyse hasar ve itme. Vurduysa true.</summary>
+    protected bool AreaHit(Vector3 at, float radius, float dmg, float knock)
+    {
+        var p = D.Player;
+        if (p == null || p.Down || new Vector2(p.GlobalPosition.X - at.X, p.GlobalPosition.Z - at.Z).Length() > radius) return false;
+        p.Hurt(dmg * DmgMult, at);
+        var away = ((p.GlobalPosition - at) with { Y = 0 }).Normalized();
+        p.Velocity += away * knock + Vector3.Up * 3f;
+        return true;
+    }
+    /// <summary>Alan vurusunun yer halkasi (gorsel).</summary>
+    protected void Ring(Vector3 at, float radius, Color c)
+    {
+        Fx.Burst(at + Vector3.Up * 0.2f, c, 36, radius * 1.6f, 0.2f, 0.8f);
+        D.Player.Shake(0.35f);
+    }
+
     /// <summary>Yumak / fidan atisi: oyuncuya dogru yay; degerse hasar ve itme.</summary>
     protected void Volley(int count)
     {
@@ -142,7 +170,7 @@ public abstract partial class AtaActor : Node3D, IAtaTarget
         for (int i = 0; i < count; i++)
         {
             float off = count == 1 ? 0 : Mathf.Lerp(-0.35f, 0.35f, i / (float)(count - 1));
-            var p = new AtaProjectile(D, Phase.VolleyDamage, Phase.Knockback, VolleyColor, VolleySize) { Name = "AtaYumak" };
+            var p = new AtaProjectile(D, Phase.VolleyDamage * DmgMult, Phase.Knockback, VolleyColor, VolleySize) { Name = "AtaYumak" };
             p.AddToGroup("ata_fx");
             Sys.AddChild(p);
             p.Launch(from, dir.Rotated(Vector3.Up, off), Phase.VolleySpeed, dist);
@@ -203,6 +231,9 @@ public abstract partial class AtaActor : Node3D, IAtaTarget
         _contactCd -= dt;
         if (_flash > 0) _flash = Mathf.Max(0, _flash - dt * 5f);
         if (Fight == null) return;
+        Frozen = false;
+        ExtraTick(dt); // M4: Ata ozel kare isi (yutma, dalis, bogum zinciri, soguk); Frozen: durum makinesi bu karede islemez (ziplama)
+        if (Frozen) return;
         dt *= _move is Move.Walk or Move.Charge ? SpeedMult : 1f; // savas: donma yavaslatir, kilit durdurur
         var p = D.Player;
         var center = Sys.ArenaCenter(Def);
@@ -223,7 +254,7 @@ public abstract partial class AtaActor : Node3D, IAtaTarget
                     Fx.Burst(GlobalPosition + Vector3.Up * 0.3f, Palette.Soil, 50, 8f, 0.25f, 1.0f);
                     Sfx.Play("kabarik_gumleme", GlobalPosition, 6f, 0.5f);
                     p.Shake(0.6f);
-                    if (p.GlobalPosition.DistanceTo(GlobalPosition) < Def.Radius + 1.5f) p.Hurt(Phase.ContactDamage, GlobalPosition);
+                    if (p.GlobalPosition.DistanceTo(GlobalPosition) < Def.Radius + 1.5f) p.Hurt(Phase.ContactDamage * DmgMult, GlobalPosition);
                 }
                 return;
             case Move.Stunned:
@@ -295,7 +326,7 @@ public abstract partial class AtaActor : Node3D, IAtaTarget
         if (!_chargeHitPlayer && !p.Down && p.GlobalPosition.DistanceTo(next) < Def.Radius + 0.9f)
         {
             _chargeHitPlayer = true;
-            p.Hurt(Phase.AttackDamage, GlobalPosition);
+            p.Hurt(Phase.AttackDamage * DmgMult, GlobalPosition);
             p.Velocity += _chargeDir * Phase.Knockback + Vector3.Up * 3f;
         }
         bool outside = (next - center).Length() > Sys.ArenaRadius(Def) + 3f;
@@ -308,7 +339,7 @@ public abstract partial class AtaActor : Node3D, IAtaTarget
         if (_contactCd > 0 || p.Down || dmg <= 0) return;
         if (p.GlobalPosition.DistanceTo(GlobalPosition) > Def.Radius + 0.8f) return;
         _contactCd = 1.2f;
-        p.Hurt(dmg, GlobalPosition);
+        p.Hurt(dmg * DmgMult, GlobalPosition);
         Squash.Kick(Visual, 0.1f, 0.3f, 2f);
     }
 

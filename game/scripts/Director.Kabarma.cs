@@ -245,7 +245,7 @@ public partial class Director
         if (n?.Plan == null) return;
         n.CreditKill(z.State.LastHitBy);
         var e = Data.Kabarma.Full.Elites.FirstOrDefault(x => x.Id == z.State.Elite);
-        if (e == null) return;
+        if (e == null) { SplitSpecies(n, z); return; }
         if (e.DeathBlast > 0 && Player.GlobalPosition.DistanceTo(z.GlobalPosition) < e.DeathBlast)
             Player.Hurt(Mathf.Round(z.State.Damage), z.GlobalPosition);
         if (e.DeathBlast > 0) Fx.Burst(z.Center, Palette.Accent, 30, 7f, 0.14f, 0.7f, true, 1f);
@@ -258,6 +258,26 @@ public partial class Director
             CallDeferred(Node.MethodName.AddChild, c);
             var off = new Vector3(i == 0 ? 0.8f : -0.8f, 0, 0.4f);
             c.Position = World.Ground(z.GlobalPosition + off);
+        }
+    }
+
+    /// <summary>
+    /// Bolunen tur (yaratik4, ICERIK §3.6 Hamurcuk "Maya Kabarcigi: vuruldukca bolunur"): WildDef.SplitInto kadar parca;
+    /// kusak boydan anlasilir (her bolunmede x0.7, SplitGenerations kusak).
+    /// </summary>
+    void SplitSpecies(KabarmaNight n, Zipzip z)
+    {
+        var w = z.Def.Wild;
+        if (w == null || w.SplitInto <= 0 || z.State.Scale < Mathf.Pow(0.7f, w.SplitGenerations) + 0.01f) return;
+        for (int i = 0; i < w.SplitInto; i++)
+        {
+            var st = n.NewKabaran(new WaveSlot { Species = z.Def.Id }, z.State.Wave, z.GlobalPosition.X, z.GlobalPosition.Z);
+            st.MaxHp = st.Hp = z.MaxHp * w.SplitHpMult; st.Scale = z.State.Scale * 0.7f;
+            var c = new Zipzip(z.Def, this, 1f, 1f, swollen: true) { Name = $"Kabaran_{z.Def.Id}_{st.Id}" };
+            c.BindKabaran(st, Data.Kabarma.Full);
+            CallDeferred(Node.MethodName.AddChild, c);
+            float a = Mathf.Tau * i / w.SplitInto;
+            c.Position = World.Ground(z.GlobalPosition + new Vector3(Mathf.Cos(a), 0, Mathf.Sin(a)) * 0.8f);
         }
     }
 

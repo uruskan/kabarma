@@ -163,7 +163,7 @@ public class CraftingTests
     {
         var d = Data();
         var s = new GameState(d);
-        var f = d.Tool.Foods;
+        var f = d.Tool.Foods.Where(x => x.Id is "kozde_salgam" or "haslanmis_yumurta" or "sebze_corbasi").ToList(); // M1 ucu; kalan 29 yemek: FarmM4Tests
         Assert.Equal(3, s.Food.Slots);
         Assert.Equal(3, f.Count);
         foreach (var x in f) Assert.InRange(x.Seconds, 15 * 60, 25 * 60); // GDD 3.3: 15-25 dk

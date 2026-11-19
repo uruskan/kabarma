@@ -38,6 +38,11 @@ public sealed class Plot
     /// <summary>Yabani bitkinin hasattan beri bekledigi sure (sn).</summary>
     public float RegrowT { get; internal set; }
 
+    /// <summary>Sera icinde: biyom bandindan bagimsiz (Farm.SetGreenhouse).</summary>
+    public bool Greenhouse { get; internal set; }
+    /// <summary>Sig su karesi (Toprak basligiyla acilan havuz); su basmis ekin ister.</summary>
+    public bool Flooded { get; internal set; }
+
     public bool Planted => Crop != null && !Eaten && !Harvested;
     public CropStage Stage => Growth >= 1f ? CropStage.Mature : Growth >= 0.6f ? CropStage.Young : Growth >= 0.2f ? CropStage.Sprout : CropStage.Seed;
 }
@@ -130,7 +135,7 @@ public sealed partial class Farm
         bool dark = def?.Dark == true;
         float lightF = dark ? (light ? 0f : 1f) : (light ? 1f : 0f); // GDD 8.2: mantarlar tersidir
         return MoistureFactor(p.Moisture, p.Genes.D, def?.WetLoving == true) * FertilityFactor(p.Fertility) * lightF
-            * BandFactor(def, p.Genes.D) * (1f + 0.04f * p.Genes.H);
+            * BandFactor(def, p.Genes.D, p.Greenhouse) * FloodFactor(def, p) * (1f + 0.04f * p.Genes.H);
     }
 
     public void Tick(float dt, bool light)
@@ -165,7 +170,7 @@ public sealed partial class Farm
                 p.Growth = Math.Min(1f, p.Growth + dt / span * GrowthFactor(p, light));
                 if (before < 1f && p.Growth >= 1f) Matured?.Invoke(p);
                 // Olgun ekin artik su icmez; buyurken nem azalir.
-                p.Moisture = Math.Max(0f, p.Moisture - def.MoistureDrainPerSecond * dt);
+                p.Moisture = p.Flooded ? 100f : Math.Max(0f, p.Moisture - def.MoistureDrainPerSecond * dt);
                 if (p.Moisture < _data.Crops.Moisture.StopBelow) p.NeverDry = false;
             }
         }

@@ -44,7 +44,7 @@ public partial class WorldTest : Node3D
         var t = w.Data.Biomes.World.Terrain;
 
         // 1. Boyut
-        Check(Mathf.IsEqualApprox(w.Size, 640f), $"size={w.Size} (M2 dunyasi 640 m, TEKNIK 7)");
+        Check(Mathf.IsEqualApprox(w.Size, 1800f), $"size={w.Size} (M4 ara adimi 1800 m, TEKNIK 7)");
 
         // 2. Ussun yuksekligi MVP formuluyle ayni (Director, bot ve diger akislarin sabit konumlari).
         var mvp = new FastNoiseLite { Seed = 4417, Frequency = 0.012f, FractalOctaves = 3, NoiseType = FastNoiseLite.NoiseTypeEnum.Perlin };
@@ -154,7 +154,7 @@ public partial class WorldTest : Node3D
         foreach (var b in w.Biomes.World.Bookmarks)
         {
             var xf = w.BookmarkTransform(b);
-            Check(Mathf.Abs(xf.Origin.X) < w.Size / 2f && Mathf.Abs(xf.Origin.Z) < w.Size / 2f, $"bookmark {b.Id} outside world");
+            Check(Mathf.Abs(xf.Origin.X - w.Center.X) < w.Size / 2f && Mathf.Abs(xf.Origin.Z - w.Center.Y) < w.Size / 2f, $"bookmark {b.Id} outside world");
             Check(xf.Origin.Y > w.HeightAt(xf.Origin.X, xf.Origin.Z) + 1f, $"bookmark {b.Id} under ground");
         }
         var tepe = w.Bookmark("tepe");
@@ -167,6 +167,7 @@ public partial class WorldTest : Node3D
 
         // 9. M2 dunyasi (dunya2; TEKNIK 7 "M2 dunyasi", ICERIK 1 ve 17).
         RunM2(w);
+        RunM4(w);
 
         foreach (var i in _info) GD.Print("WORLD " + i);
         if (_fail.Count == 0) GD.Print($"WORLD RESULT ok checks passed ({sw.ElapsedMilliseconds} ms)");
