@@ -13,6 +13,10 @@ public sealed class BalanceDef
     public float AreaTargets { get; set; } = 1.6f;
     /// <summary>Onerilen donanimin KS basina hasar artisi (basamak, cip, baslik; carpimsal).</summary>
     public float GearPerKs { get; set; } = 0.12f;
+    /// <summary>denge (M6): Kabarma.LateFromKs'tan sonra donanimin KS basina artisi (0 = GearPerKs).</summary>
+    public float GearPerKsLate { get; set; }
+    /// <summary>EndFromKs'tan sonra (0 = GearPerKsLate).</summary>
+    public float GearPerKsEnd { get; set; }
     /// <summary>Gece karti: seviye basina hasar artisi ve dalga basina ortalama seviye.</summary>
     public float CardPerLevel { get; set; } = 0.035f;
     public float LevelsPerWave { get; set; } = 2.6f;
@@ -37,6 +41,15 @@ public sealed class BalanceDef
 public static class WaveBalance
 {
     public readonly record struct Result(bool Passed, float KazanLeft, int Killed, int Reached);
+
+    /// <summary>Onerilen donanimin KS carpani (uc us: erken, orta, son).</summary>
+    public static float Gear(BalanceDef b, int lateFrom, int endFrom, int ks)
+    {
+        if (b.GearPerKsLate <= 0f || ks <= lateFrom) return MathF.Pow(1f + b.GearPerKs, ks - 1);
+        float mid = MathF.Pow(1f + b.GearPerKs, lateFrom - 1);
+        if (b.GearPerKsEnd <= 0f || ks <= endFrom) return mid * MathF.Pow(1f + b.GearPerKsLate, ks - lateFrom);
+        return mid * MathF.Pow(1f + b.GearPerKsLate, endFrom - lateFrom) * MathF.Pow(1f + b.GearPerKsEnd, ks - endFrom);
+    }
 
     public static Result Simulate(GameData data, BalanceDef b, int ks, int players, ulong seed)
     {
@@ -72,7 +85,10 @@ public static class WaveBalance
                     var k = Waves.NewKabaran(data, plan, slots[spawned++], 0, w.Index, 0, 0);
                     alive.Add((k.MaxHp, 0f, k.Damage / b.AttackInterval));
                 }
-                float dmgMult = MathF.Pow(1f + b.GearPerKs, ks - 1) * (1f + b.CardPerLevel * level);
+                int lateFrom = data.Kabarma.LateFromKs;
+                int endFrom = data.Kabarma.EndFromKs;
+                float gear = Gear(b, lateFrom, endFrom, ks);
+                float dmgMult = gear * (1f + b.CardPerLevel * level);
                 float budget = (b.BaseDps * b.Accuracy * b.AreaTargets * skill * dmgMult + b.TowerDpsPerKs * ks) * 1f;
                 // En eski (Kazan'a en yakin) dusman once.
                 alive.Sort((a, c) => c.age.CompareTo(a.age));
