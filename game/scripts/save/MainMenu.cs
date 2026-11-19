@@ -37,6 +37,7 @@ public partial class MainMenu : RustMenu
         Item("Yükle", ShowLoad, _store.List().Any(s => s.Exists));
         bool coop = _main.CoopAvailable;
         Item("Ortak oyun", () => _main.OpenCoop(this), coop, "yakında");
+        Item("Sunucular", () => ServerListPanel.Open(this)); // adanmis sunucu listesi (server/ServerListPanel.cs)
         Item("Ayarlar", ShowSettings);
         Item("Çıkış", () => GetTree().Quit());
         if (Notice != null) { ClearContent(); Header("Uyarı", Notice); }

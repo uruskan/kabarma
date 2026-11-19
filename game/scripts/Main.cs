@@ -67,6 +67,7 @@ public partial class Main : Node3D
         ["borsa"] = m => { Args["borsatest"] = "1"; Args["mute"] = "1"; Sfx.Muted = true; return false; }, // ekonomi2: Borsa, Katalog, Cark (MarketTest.cs)
         ["tasima"] = m => { Args["tasimatest"] = "1"; Args["mute"] = "1"; Sfx.Muted = true; return false; }, // tasima M4: Kol, Bant, Drone (power/TasimaTest.cs)
         ["holding"] = m => { Args["holdingtest"] = "1"; Args["mute"] = "1"; Sfx.Muted = true; return false; }, // holding M3: kamp, Perde, kervan, baskinlar (holding/HoldingTest.cs)
+        ["server"] = m => ServerTest.Setup(m), // M5 sunucu: basliksiz adanmis sunucu, 2 bot istemci, yonetim komutlari, kayit (server/ServerTest.cs)
         ["ata4"] = m => { Args.TryAdd("fast", "3"); Args.TryAdd("mute", "1"); Sfx.Muted = true; m.AddChild(new Ata4Test()); return false; }, // ata4 (M4): 4 yeni Ata, Kabarik Atalar, 4 yeni Azman, 3 yeni Oyuk koruyucusu (boss/Ata4Test.cs)
         ["boss"] = m => { Args.TryAdd("fast", "3"); Args.TryAdd("mute", "1"); Sfx.Muted = Args["mute"] == "1"; m.AddChild(new AtaTest()); return false; }, // boss akisi: bot iki Ata'yi bulur ve yener (boss/AtaTest.cs)
         ["savas"] = m => { Args.TryAdd("fast", "3"); Args.TryAdd("mute", "1"); Sfx.Muted = Args["mute"] == "1"; m.AddChild(new SavasTest()); return false; }, // savas akisi: gunduz savasi, Azman Homur ve Bozuk (combat/SavasTest.cs)
@@ -116,6 +117,7 @@ public partial class Main : Node3D
             GD.Print($"TEST {test}");
             if (run(this)) return;
         }
+        if (Args.ContainsKey("server")) { AddChild(new ServerRunner { Name = "ServerRunner" }); return; } // adanmis sunucu (server/ServerRunner.cs)
         if (Args.ContainsKey("netsync")) { AddChild(new NetSyncTest()); return; }
         if (Args.ContainsKey("swarm")) { AddChild(new SwarmTest()); return; }
         if (ShowMainMenu()) return; // save/Main.Flow.cs: argumansiz acilista ana menu (otomasyon kosulari dogrudan oyuna)
