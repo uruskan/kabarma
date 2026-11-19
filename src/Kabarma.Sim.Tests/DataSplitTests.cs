@@ -45,7 +45,7 @@ public class DataSplitTests
         Assert.Equal(m1Placeables, t.Placeables.Select(p => p.Id).Take(m1Placeables.Length));
         Assert.True(t.Placeables[0].Once);
         Assert.Equal(15, t.CostOf(t.Placeables[2].Id)["stone"]);
-        Assert.Equal(28, t.BuildCosts.Count);
+        Assert.Equal(32, t.BuildCosts.Count); // 26 sekil (makine platformu 3 boy) + Cam seti 4
         Assert.Equal(6, t.BuildCosts["kare_temel"]);
         // foods.json
         Assert.Equal(25f, t.Foods.Single(f => f.Id == "sebze_corbasi").MaxHp);

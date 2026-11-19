@@ -400,7 +400,7 @@ public partial class BuildTest : Node3D
         _cam.LookAt(new Vector3(x0 - 8, 1, z0));
         await Frames(6);
         SaveShot("build_all_shapes.png");
-        var missing = _bs.Kit.Pieces.Select(p => p.Id).Where(id => !_placedIds.Contains(id)).ToList();
+        var missing = _bs.Kit.Pieces.Select(p => p.Id).Where(id => !_placedIds.Contains(id) && _bs.Data.Build.SetMaterialOf(id) == null).ToList(); // Cam seti parcalari KaleTest'te (M4)
         Log($"SHAPES placed={_placedIds.Count}/{_bs.Kit.Pieces.Count}{(missing.Count > 0 ? " missing=" + string.Join(",", missing) : "")}");
         if (missing.Count > 0) _fail++;
     }

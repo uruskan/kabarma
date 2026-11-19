@@ -93,6 +93,7 @@
     "isil_cevher": { "text": "Işıl Cevher: Göbek damarları, Kazma", "target": "rock:isil_cevher" },
     "maya": { "text": "Maya: Kabarma safağında Kazan'dan, Ocak'ın yanında al", "target": "station:ocak" },
     "pumpkin": { "text": "Kabak: tarlada yetiştir, Biçme ile hasat et", "target": "farm" },
-    "gubre": { "text": "Gübre: ağıldaki hayvanlar bırakır, E ile topla", "target": "gidak" }
+    "gubre": { "text": "Gübre: ağıldaki hayvanlar bırakır, E ile topla", "target": "gidak" },
+    "isil_yosun": { "text": "Işıl Yosun: Işıl Sazlık, Kazma", "target": "rock:isil_yosun" }
   }
 }

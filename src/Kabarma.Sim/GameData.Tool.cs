@@ -60,6 +60,8 @@ public sealed class PlaceableDef
     public int FuelPerJob { get; set; }
     /// <summary>Depo yuvasi (Sandik 20).</summary>
     public int Slots { get; set; }
+    /// <summary>Depo yigin siniri (0: genel; Silo: tek turden 2.000, ICERIK §10.2).</summary>
+    public int Stack { get; set; }
     /// <summary>Gece isigi yaricapi, m (Mesale 6).</summary>
     public float LightRange { get; set; }
     /// <summary>Dogma noktasi ve uyku yeri (Uyku Tulumu).</summary>

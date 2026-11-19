@@ -113,6 +113,7 @@ public partial class Director
         if (furn == null) return false;
         if (furn.Storage != null) { OpenChestMenu(furn); return true; }
         if (furn.Def.Spawn) { Sleep(furn); return true; }
+        if (InteractProp(furn)) return true; // kale M4: hizmet parcalari (Director.Props.cs)
         return false;
     }
 

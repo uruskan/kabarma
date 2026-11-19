@@ -20,7 +20,8 @@ public partial class DefenseSystem : Node3D
     readonly Dictionary<int, Zipzip> _zips = new();
     readonly Dictionary<ulong, (Vector3 pos, Vector3 vel)> _track = new();
     readonly List<DefenseTarget> _targets = new();
-    float _holdT;
+    float _holdT, _spreadT;
+    readonly DefenseStatus _st = new(); // Yanik, Kabarik (M4 kale)
     DefenseNode _focus;
 
     public DefenseSystem(Director d) { _d = d; Name = "DefenseSystem"; }
@@ -31,6 +32,10 @@ public partial class DefenseSystem : Node3D
     public int Shots { get; private set; }
     public int Kills { get; private set; }
     public int TrapHits { get; private set; }
+    /// <summary>Sinama (M4 kale): yanik hasar adimlari, Maya Topu patlamalari, su an yanan hedef sayisi.</summary>
+    public int BurnTicks { get; private set; }
+    public int SwellBursts { get; private set; }
+    public int BurningCount => _st.Burning.Count();
 
     public bool Handles(string id) => F.Handles(id);
     public static bool NeedsRepair(float hp, float max) => hp < max * 0.5f;
@@ -142,6 +147,7 @@ public partial class DefenseSystem : Node3D
         CollectTargets(dt);
         TickProjectiles(dt); // DefenseSystem.Shots.cs
         if (_d.NetClient) return; // ortak: kural host'ta
+        TickStatuses(dt);
         foreach (var n in Nodes.ToList())
         {
             if (n.Tower != null && n.TowerState is TowerState t) TickTower(n, t, dt);
@@ -154,31 +160,47 @@ public partial class DefenseSystem : Node3D
         var d = n.Tower;
         var at = ToN(n.GlobalPosition);
         int i = TowerRules.Pick(d, at, _targets, t.Priority);
-        bool ready = TowerRules.Tick(t, dt);
+        bool ready = TowerRules.Tick(t, dt, d);
+        if (n.Port != null && _d.Power?.Net.Get(n.Port.NodeId) is { } pn) pn.Wants = i >= 0; // guc yalniz hedef varken (M4)
         if (i < 0) return;
         var x = _targets[i];
-        var aimPt = d.Kind == "arc" ? G(x.Pos + x.Vel * d.FlightSeconds) : d.Kind == "single" ? G(TowerRules.Lead(ToN(n.Muzzle), x.Pos, x.Vel, d.Speed)) : G(x.Pos);
+        var aimPt = d.Kind == "arc" ? G(x.Pos + x.Vel * d.FlightSeconds) : d.Kind is "single" or "swell" ? G(TowerRules.Lead(ToN(n.Muzzle), x.Pos, x.Vel, d.Speed)) : G(x.Pos);
         bool aimed = n.Aim(aimPt, dt);
-        if (!ready || !aimed) return;
+        if (!ready || !aimed || !n.PowerOk) return;
         string item = TowerRules.Fire(t, d);
         if (item == null) return;
         Shots++;
         n.Kick();
         Shoot(n, d, item, x, aimPt); // DefenseSystem.Shots.cs
-        if (TowerRules.Status(t) == TowerStatus.Broken) GD.Print($"DEFENSE {d.Id}({t.Id}) bakim ister");
+        if (TowerRules.Status(t, d) == TowerStatus.Broken) GD.Print($"DEFENSE {d.Id}({t.Id}) bakim ister");
     }
 
     void TickTrap(DefenseNode n, TrapState s, float dt)
     {
         var d = n.Trap;
-        foreach (var e in TrapRules.Step(s, d, _targets, dt))
+        if (n.Port != null && _d.Power?.Net.Get(n.Port.NodeId) is { } pn) pn.Wants = _targets.Any(t => !t.IsPlayer && t.Hp > 0 && new Vector2(t.Pos.X - n.GlobalPosition.X, t.Pos.Z - n.GlobalPosition.Z).Length() < 8f);
+        var burning = new HashSet<int>(_st.Burning);
+        foreach (var e in TrapRules.Step(s, d, _targets, dt, n.PowerOk, burning))
         {
             TrapHits++;
             if (e.Target == -1) { if (e.Kind == TrapFx.Launch) LaunchPlayer(n, d, G(e.Dir)); continue; }
             if (!_zips.TryGetValue(e.Target, out var z) || !IsInstanceValid(z) || z.Dead) continue;
             switch (e.Kind)
             {
-                case TrapFx.Damage: Hurt(e.Target, e.Value, n.GlobalPosition, 0f); Vfx.Play("trap_diken", z.GlobalPosition + Vector3.Up * 0.2f); break;
+                case TrapFx.Damage:
+                    Hurt(e.Target, e.Value, n.GlobalPosition, 0f);
+                    Vfx.Play(d.Kind switch { "fence" => "trap_elektrik", "oil" => "trap_yag", "freezer" => "trap_dondurucu", _ => "trap_diken" }, z.GlobalPosition + Vector3.Up * 0.2f);
+                    break;
+                case TrapFx.Shock: ShockChain(z, d, e); break;
+                case TrapFx.Burn: _st.AddBurn(e.Target, e.Value, e.Seconds); break;
+                case TrapFx.Freeze:
+                    z.DefenseSlow(e.Seconds);
+                    Vfx.Play("freeze_shatter", z.GlobalPosition + Vector3.Up * 0.4f);
+                    break;
+                case TrapFx.Blast:
+                    Hurt(e.Target, e.Value, n.GlobalPosition, 5f);
+                    Vfx.Play("trap_mayin", z.GlobalPosition + Vector3.Up * 0.2f);
+                    break;
                 case TrapFx.Slow: z.DefenseSlow(e.Seconds); break;
                 case TrapFx.Hold:
                     z.DefenseHold(e.Seconds);
@@ -240,7 +262,7 @@ public partial class DefenseSystem : Node3D
         if (n.Tower != null && n.TowerState is TowerState t) Act(NeedsRepair(t.Hp, n.Tower.Hp) ? Op.Repair : Op.Load, n);
         else if (n.Trap != null && n.TrapState is TrapState s)
         {
-            if (n.Trap.Kind == "pit" && !TrapRules.Broken(s)) Act(Op.Toggle, n);
+            if (n.Trap.Kind is "pit" or "oil" && !TrapRules.Broken(s)) Act(Op.Toggle, n); // Cukur: ac/kapa; Yag Hendegi: tutustur (M4)
             else if (s.Hp < n.Trap.Hp - 0.01f) Act(Op.Repair, n);
             else _d.Hud.Hint($"{n.Trap.Name}: bakım gerekmiyor", 1.5f);
         }
@@ -313,8 +335,9 @@ public partial class DefenseSystem : Node3D
                 GD.Print($"DEFENSE priority {t.Def}({id}) {t.Priority}");
                 return true;
             case Op.Toggle when s != null:
-                TrapRules.Toggle(s);
-                Say($"{name}: {(s.Open ? "açık" : "kapalı")}");
+                TrapRules.Toggle(s, F.Trap(s.Def));
+                Say($"{name}: {(F.Trap(s.Def)?.Kind == "oil" ? (s.Open ? "tutuştu" : "yağ yok") : s.Open ? "açık" : "kapalı")}");
+                if (F.Trap(s.Def)?.Kind == "oil" && s.Open && node != null) Vfx.Play("trap_yag", node.GlobalPosition + Vector3.Up * 0.3f);
                 Sfx.Play("place", node?.GlobalPosition, -4f, s.Open ? 0.8f : 1.1f);
                 GD.Print($"DEFENSE pit {(s.Open ? "open" : "closed")} ({id})");
                 return true;

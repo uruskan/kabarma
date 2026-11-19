@@ -51,6 +51,8 @@ Sahibin kararı 24 (18 Kasım 2026): ana oturum M2'den M7'ye sormadan ilerler; a
 | Zeplin Hangarı | Zeplin üretimi | arac | ❌ kurulur, tarifi yok; Zeplin ve eklentiler arac akışında |
 | Mutfak, Aşı Tezgâhı | T2–T6 yemek; gen aktarma | tarim4 | ❌ tarim4'ün işi (tarifleri `mutfak`, `asi_tezgahi`) |
 
+Kale (19 Kasım 2026) açıkları: kapı varyantları (Çelik Kapı, Çift Kanat, Garaj, Tavan Kapağı, El Merdiveni) kurulur ama Ahşap Kapı gibi açılmaz (kapı kasası davranışı yok); Gardırop kozmetik akışını bekler (dolap); Cam seti modeli ahşap geometrisinin saydam boyası (yer tutucu); kuleler ve yeni 56 parçanın modelleri koddan yer tutucu (Tripo istemleri ana oturumda); Havan Kulesi kabarık Fındık özelliğini taşımaz (yalnız cephane).
+
 Kabul akışı için açık: `rawSources` `via: pending:biyom` (T3–T6 ham kaynak düğümleri) ve `pending:ata4` (Ana Maya'nın `kabartma_plani`); biyom ve ata4 birleşince bu satırlar silinir, `AutomationTests.Raw_sources_need_an_in_game_producer_or_are_listed_as_pending` listeyi sıfıra indirmeyi bekler. Sondaj Kulesi Zengin Yatak düğümü yerleşene kadar boşta (Sim kuralı sınandı, dünya sınaması yok).
 
 ### Optimizasyon listesi (sahibin kararı: en sona; ölçüm ve iyileştirme şimdi yapılmaz)

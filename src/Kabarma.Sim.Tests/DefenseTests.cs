@@ -18,8 +18,8 @@ public class DefenseTests
     {
         var towers = new[] { "civi_kulesi", "sapan_kulesi", "sacma_kulesi" };
         var traps = new[] { "diken_tarlasi", "yapiskan_zemin", "firlatma_pedi", "cukur_kapagi" };
-        Assert.Equal(towers, D.Defense.Towers.Select(t => t.Id));
-        Assert.Equal(traps, D.Defense.Traps.Select(t => t.Id));
+        Assert.Equal(towers, D.Defense.Towers.Select(t => t.Id).Take(towers.Length)); // M4: 5 kule daha (KaleTests)
+        Assert.Equal(traps, D.Defense.Traps.Select(t => t.Id).Take(traps.Length));
         var items = D.Tool.Recipes.Select(r => r.Id).ToHashSet();
         foreach (var id in towers.Concat(traps))
         {

@@ -754,6 +754,22 @@ Soket: üretici, akü ve şalter 2, tüketici 1, Direk 4; sinyal teli soket saym
 
 M3'te gelenler: Çivi, Sapan ve Saçma Kulesi; Diken Tarlası, Yapışkan Zemin, Fırlatma Pedi ve Çukur Kapağı. Bedelleri `recipes.json`'da (Tezgâh), menzil, hasar, cephane, aşınma ve tuzak sayıları `data/defense.json`'da (GDD §16.4 M3 kuralları). Saçma Kulesi'nin cephanesi Demirci Ocağı'nın Saçma'sı (`sacma`). Kalan dört kule ve dört tuzak M4'te.
 
+**M4 kale değerleri** (kale akışı, 19 Kasım 2026; sayılar `defense.json`, bedeller `recipes.json`, hepsi Tezgâh'ta ve `ocak:n` ile açılır, tahmin; Watt'lar `research.json`).
+
+| Yapı | Değer |
+|---|---|
+| Alev Kulesi (T3) | Biyoyakıt 40; 7 m koni, 0,4 sn, 3 Ateş + Yanık (6/sn, 3 sn; yayılır) |
+| Havan Kulesi (T3) | Havan Mermisi ya da kabarık Fındık 20; 9–30 m, 3 sn, 45 Darbe, 4,5 m alan |
+| Ark Bobini (T4, 120 W) | cephanesiz; 11 m, 1,4 sn, 14 Şok, 3 zincir (4,5 m, ×0,6/atlama), 0,5 sn durdurur |
+| Lazer Kulesi (T5, 200 W) | cephanesiz atar; Ayaz Kristali (Billur) ×1,6; 22 m, 0,9 sn, 12 Ateş, ucana ×2, varsayılan öncelik "uçan" |
+| Maya Topu Kulesi (T6, 300 W + Maya) | Maya 40; 16 m, 2 sn, 20 Maya; her isabet Kabarık ekler, %200'de patlar (combat.json swell) |
+| Elektrikli Çit (T3, 40 W) | dokunana 14 Şok/sn, 0,6 sn durdurur, 2 zincir |
+| Mayın (T3) | 70 Darbe, 3,2 m, mesafeyle azalır; tek kullanımlık (bozulur, onarımla yeniden kurulur) |
+| Yağ Hendeği (T3) | kaydırır; E ya da yanan hedef tutuşturur: 8 sn alev duvarı (12/sn + Yanık), sonra yağ biter (onarım) |
+| Dondurucu Püskürtücü (T5, 80 W) | 4,4 m kare alan, 1 sn'de Donma 2,5 sn (×0,4) |
+
+Çelik Sac ve Mayalı Beton M2'den beri 26 şekil × malzeme olarak kuruludur. **Cam seti** (`build.json` `sets`): Cam Duvar, Cam Çatı, Cam Zemin, Cam Kapı = Duvar, Eğimli Çatı, Kare Zemin, Kapı Kasası'nın geometrisi ve yuvaları; her biri 4 birim = 4 Cam; Cam malzemesi 120 can, açıklık 3, saydam; yükseltme zincirinde değildir. Kalan 56 yerleştirilebilir (§10.2) `placeables.json`'da; bedeller Tezgâh'ta.
+
 ## 14. Araçlar (7) ve eklentiler (10)
 
 | Araç | T | Kişi | Yuva | Özelliği |

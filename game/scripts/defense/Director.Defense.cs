@@ -16,6 +16,7 @@ public partial class Director
         // Kayit (TEKNIK 9.1): kural durumu Sim'in "defense" bolumunde; yuklemeden sonra dugumler yeniden kurulur.
         Save.Add(SaveSection.Json("defense.view", 1, () => 0, _ => { }, SaveOrder.Spawn, afterRestore: Defense.Rebuild));
         Callable.From(Defense.BindNet).CallDeferred(); // ortak oyun: InitNet'ten sonra (DefenseSystem.Net.cs)
+        if (Main.Args.ContainsKey("kaletest")) AddChild(new KaleTest(this)); // --test=kale (defense/KaleTest.cs; M4)
         if (Main.Args.ContainsKey("savunmatest")) AddChild(new DefenseTest(this)); // --test=savunma (defense/DefenseTest.cs)
     }
 

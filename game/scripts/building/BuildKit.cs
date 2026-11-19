@@ -65,6 +65,14 @@ public sealed class PieceDef
 
     /// <summary>Yuva tipi ayni olan ilk yuva (yoksa null).</summary>
     public SocketDef Socket(string type) => Sockets.FirstOrDefault(s => s.Type == type);
+
+    /// <summary>Ayni geometri ve yuvalarla baska kimlikli parca (Cam seti: cam_duvar = duvar, M4).</summary>
+    public PieceDef Alias(string id, string name)
+    {
+        var c = (PieceDef)MemberwiseClone();
+        c.Id = id; c.Name = name;
+        return c;
+    }
 }
 
 /// <summary>
@@ -85,6 +93,19 @@ public sealed class BuildKit
     public readonly List<SnapRule> Rules = new();
 
     public PieceDef this[string id] => ById.TryGetValue(id, out var d) ? d : null;
+
+    /// <summary>Cam seti (build.json sets): her set sekli temel sekliyle ayni geometri ve yuvalara sahip (M4).</summary>
+    public void AddAliases(Kabarma.Sim.BuildFile b, System.Func<string, string> nameOf)
+    {
+        foreach (var set in b.Sets.Values)
+            foreach (var (shape, baseShape) in set)
+                if (!ById.ContainsKey(shape) && ById.TryGetValue(baseShape, out var src))
+                {
+                    var a = src.Alias(shape, nameOf(shape));
+                    Pieces.Add(a);
+                    ById[shape] = a;
+                }
+    }
 
     public static BuildKit Load(string dir = WoodDir)
     {

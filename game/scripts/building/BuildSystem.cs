@@ -131,7 +131,7 @@ public partial class BuildSystem : Node3D
         Data = data ?? GameData.Load(f => FileAccess.GetFileAsString("res://data/" + f));
         if (graph == null) { graph = new StructureGraph(); graph.Bind(Data.Build); }
         Graph = graph;
-        if (Kit != null) _kits[Kit.Material] = Kit;
+        if (Kit != null) { _kits[Kit.Material] = Kit; Kit.AddAliases(Data.Build, ItemNames.Of); } // Cam seti (M4)
         if (GetParent() == null) worldRoot.AddChild(this);
         Name = "BuildSystem";
         _piecesRoot = new Node3D { Name = "BuildPieces" };
@@ -234,6 +234,7 @@ public partial class BuildSystem : Node3D
                 {
                     var dup = src is BaseMaterial3D b ? (BaseMaterial3D)b.Duplicate() : new StandardMaterial3D();
                     dup.AlbedoColor = tint * 1.15f;
+                    if (m.Alpha < 1f) { dup.AlbedoColor = new Color(tint.R * 1.1f, tint.G * 1.1f, tint.B * 1.1f, m.Alpha); dup.Transparency = BaseMaterial3D.TransparencyEnum.Alpha; dup.Roughness = 0.1f; dup.Metallic = 0.1f; } // Cam: saydam
                     _tints[key] = mat = dup;
                 }
                 mi.SetSurfaceOverrideMaterial(s, mat);
@@ -521,7 +522,7 @@ public partial class BuildSystem : Node3D
     public BuildPiece TryPlace()
     {
         if (!_active || _current == null || !_current.Valid || Blueprint != null) return null;
-        var piece = Spawn(_current, PlanMode, "wood");
+        var piece = Spawn(_current, PlanMode, Data.Build.SetMaterialOf(_current.Def.Id) ?? "wood"); // Cam seti kendi malzemesiyle (M4)
         _current = null;
         if (_ghost != null) _ghost.Visible = false;
         return piece;
@@ -611,6 +612,7 @@ public partial class BuildSystem : Node3D
     public BuildPiece PlaceAt(string id, Transform3D xf, out string reason, string material = "wood")
     {
         var def = Kit[id];
+        material = Data.Build.SetMaterialOf(id) ?? material; // Cam seti kendi malzemesiyle (M4)
         reason = def == null ? "parça yok" : "";
         if (def == null) return null;
         var p = Evaluate(def, xf, "snap", material);

@@ -5,8 +5,13 @@
     { "id": "wood", "name": "Ahşap", "tier": 1, "hp": 400, "maxSpan": 3, "weightPerUnit": 1.0, "capacity": 30, "cost": { "wood": 1.0 }, "tint": [0.80, 0.60, 0.39] },
     { "id": "kerpic_tas", "name": "Kerpiç-Taş", "tier": 2, "hp": 900, "maxSpan": 4, "weightPerUnit": 2.0, "capacity": 80, "cost": { "brick": 0.5, "stone": 0.5 }, "tint": [0.74, 0.62, 0.50] },
     { "id": "celik_sac", "name": "Çelik Sac", "tier": 3, "hp": 2000, "maxSpan": 6, "weightPerUnit": 1.5, "capacity": 160, "cost": { "celik": 1.0 }, "tint": [0.58, 0.62, 0.66] },
-    { "id": "mayali_beton", "name": "Mayalı Beton", "tier": 6, "hp": 5000, "maxSpan": 8, "weightPerUnit": 3.0, "capacity": 400, "cost": { "mayali_beton": 1.0 }, "tint": [0.66, 0.70, 0.70] }
+    { "id": "mayali_beton", "name": "Mayalı Beton", "tier": 6, "hp": 5000, "maxSpan": 8, "weightPerUnit": 3.0, "capacity": 400, "cost": { "mayali_beton": 1.0 }, "tint": [0.66, 0.70, 0.70] },
+    { "id": "cam", "name": "Cam", "tier": 4, "set": true, "alpha": 0.4, "hp": 120, "maxSpan": 3, "weightPerUnit": 1.0, "capacity": 24, "cost": { "cam": 1.0 }, "tint": [0.62, 0.82, 0.90] }
   ],
+  "_not_sets": "Cam seti (ICERIK §10.1, M4): dort sekil, her biri 4 birim = 4 Cam. Geometri ve yuvalar temel sekilden (ahsap kiti), gorunus saydam cam; yukseltme zincirinde degil (materials set: true).",
+  "sets": {
+    "cam": { "cam_duvar": "duvar", "cam_cati": "egimli_cati", "cam_zemin": "kare_zemin", "cam_kapi": "kapi_kasasi" }
+  },
   "refundInClaim": 1.0,
   "refundOutClaim": 0.5,
   "repairFraction": 0.25,

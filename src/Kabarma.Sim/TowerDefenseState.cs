@@ -11,7 +11,7 @@ public sealed class DefenseState
 
     public TowerState AddTower(TowerDef d, Vector3 at, float yaw)
     {
-        var t = new TowerState { Id = NextId++, Def = d.Id, Pos = new[] { at.X, at.Y, at.Z }, Yaw = yaw, Hp = d.Hp };
+        var t = new TowerState { Id = NextId++, Def = d.Id, Pos = new[] { at.X, at.Y, at.Z }, Yaw = yaw, Hp = d.Hp, Priority = d.DefaultPriority ?? "nearest" };
         Towers.Add(t);
         return t;
     }

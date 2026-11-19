@@ -26,6 +26,8 @@ public static class PlaceableVisuals
         var m = def.Model != null ? Assets.Load(def.Model) : null;
         m ??= Assets.Load($"{Dir}/{def.Id}.glb");
         if (m != null) return m;
+        var m4 = DefenseVisuals4.Make(def) ?? PropVisuals4.Make(def); // kale (M4): kuleler, tuzaklar ve kalan yerlestirilebilirler (koddan yer tutucu)
+        if (m4 != null) return m4;
         // Yedek: koddan kutu
         var kit = new MeshKit();
         kit.Pillow(new Vector3(1.4f, 0.9f, 0.8f), MeshKit.At(0, 0.45f, 0), Palette.Wood, 0.3f);
@@ -211,7 +213,7 @@ public partial class Furniture : Node3D
     public Furniture(Director d, PlaceableDef def)
     {
         _d = d; Def = def; Name = def.Id;
-        if (def.Slots > 0) Storage = new Inventory(def.Slots, d.Data.Tool.StackOf);
+        if (def.Slots > 0) Storage = def.Stack > 0 ? new Inventory(def.Slots, _ => def.Stack) : new Inventory(def.Slots, d.Data.Tool.StackOf);
     }
 
     public override void _Ready()

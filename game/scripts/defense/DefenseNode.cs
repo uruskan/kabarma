@@ -17,6 +17,9 @@ public partial class DefenseNode : Furniture
     public TowerDef Tower { get; }
     public TrapDef Trap { get; }
     Node3D _head, _muzzle, _plate, _leafL, _leafR;
+    /// <summary>Guc isteyen kule ya da tuzagin guc ucu (research.json watts; M4 kale); yoksa null.</summary>
+    public PowerPort Port { get; private set; }
+    public bool PowerOk => !(Tower?.Powered ?? Trap?.Powered ?? false) || Port?.Powered == true;
     float _yaw, _recoil, _plateT, _open;
 
     public DefenseNode(Director d, PlaceableDef def) : base(d, def)
@@ -60,6 +63,8 @@ public partial class DefenseNode : Furniture
     {
         base._Process(delta);
         float dt = (float)delta;
+        // Guc ucu konum atandiktan sonra (Place AddChild'dan sonra konumlar): ilk karede, kayittan donenin ucunu da geri alir.
+        if (Port == null && IsInsideTree() && (Tower?.Powered == true || Trap?.Powered == true)) Port = _dd.Power?.Attach(this, Def.Id);
         _recoil = Mathf.Max(0, _recoil - dt * 6f);
         if (_head != null) { _head.Rotation = new Vector3(0, _yaw, 0); _head.Scale = Vector3.One * (1f - 0.06f * Mathf.Sin(_recoil * Mathf.Pi)); }
         if (_plate != null)
@@ -82,14 +87,17 @@ public partial class DefenseNode : Furniture
         var f = _dd.Data.Defense;
         if (Tower != null && TowerState is TowerState t)
         {
-            string ammo = string.Join(", ", Tower.Ammo.Where(a => t.Mag.GetValueOrDefault(a) > 0).Select(a => $"{ItemNames.Of(a)} {t.Mag[a]}"));
-            string st = TowerRules.Status(t) switch { TowerStatus.Broken => "bakım ister", TowerStatus.Empty => "cephane yok", TowerStatus.Off => "kapalı", _ => "hazır" };
-            return $"{Tower.Name} · {st} · {(ammo == "" ? "boş" : ammo)} ({t.Loaded}/{Tower.Magazine}) · can {t.Hp:0}/{Tower.Hp:0} · öncelik: {DefenseSystem.PriorityName(t.Priority)}  ·  {{act:interact}}: {(DefenseSystem.NeedsRepair(t.Hp, Tower.Hp) ? "onar" : "doldur")}  ·  {{act:interact}} basılı: öncelik";
+            string ammo = Tower.Ammo.Count == 0 ? "cephanesiz" : string.Join(", ", Tower.Ammo.Where(a => t.Mag.GetValueOrDefault(a) > 0).Select(a => $"{ItemNames.Of(a)} {t.Mag[a]}"));
+            string st = TowerRules.Status(t, Tower) switch { TowerStatus.Broken => "bakım ister", TowerStatus.Empty => "cephane yok", TowerStatus.Off => "kapalı", _ => Tower.Powered && !PowerOk ? $"güç yok ({Port?.Watts:0} W)" : "hazır" };
+            return $"{Tower.Name} · {st} · {(ammo == "" ? "boş" : ammo)}{(Tower.Magazine > 0 ? $" ({t.Loaded}/{Tower.Magazine})" : "")} · can {t.Hp:0}/{Tower.Hp:0} · öncelik: {DefenseSystem.PriorityName(t.Priority)}  ·  {{act:interact}}: {(DefenseSystem.NeedsRepair(t.Hp, Tower.Hp) ? "onar" : "doldur")}  ·  {{act:interact}} basılı: öncelik";
         }
         if (Trap != null && TrapState is TrapState s)
         {
-            string st = TrapRules.Broken(s) ? "bakım ister" : Trap.Kind == "pit" ? (s.Open ? $"açık ({s.Held.Count}/{Trap.Capacity})" : "kapalı") : "kurulu";
-            string act = Trap.Kind == "pit" ? "aç / kapat" : "onar";
+            string st = TrapRules.Broken(s) ? (Trap.Kind is "mine" or "oil" ? "kullanıldı: onar ya da yeniden kur" : "bakım ister")
+                : Trap.Kind == "pit" ? (s.Open ? $"açık ({s.Held.Count}/{Trap.Capacity})" : "kapalı")
+                : Trap.Kind == "oil" ? (s.Open ? $"yanıyor ({s.Fuel:0} sn)" : "yağlı: tutuşturulabilir")
+                : Trap.Powered && !PowerOk ? $"güç yok ({Port?.Watts:0} W)" : "kurulu";
+            string act = Trap.Kind == "pit" ? "aç / kapat" : Trap.Kind == "oil" && !TrapRules.Broken(s) ? "tutuştur" : "onar";
             return $"{Trap.Name} · {st} · can {s.Hp:0}/{Trap.Hp:0}  ·  {{act:interact}}: {act}";
         }
         return Def.Name;

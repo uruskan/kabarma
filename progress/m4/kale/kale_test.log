@@ -1,0 +1,49 @@
+﻿KALE GEVSETILDI Biyoyakit cantaya verildi (Damitici ve Bugday zinciri tasima/zincir testlerinde)
+KALE PASS Alev Kulesi Biyoyakit ile doldu
+KALE PASS Alev Kulesi atti (9), cephane harcandi
+KALE PASS Yanik hasar verdi (28 adim)
+KALE PASS hedef hasar aldi ya da oldu
+KALE PASS Havan Kulesi 20 m'deki hedefe atti (3)
+KALE PASS Havan Kulesi 4 m'deki (menzil alti) hedefe atmaz
+KALE GEVSETILDI kablo Sim'den cekildi (Kablo esyasi harcanmadi; kablo cekme Capa'da sinanir)
+KALE PASS guc isteyen kuleler guc ucu acti (Ark 120 W, Lazer 200 W, Maya Topu 300 W)
+KALE PASS Maya Reaktoru -> Direk -> 3 kule kablolandi
+KALE GEVSETILDI Maya (Kazan) ve Ayaz Kristali cantaya verildi
+KALE PASS Maya Topu Maya ile, Lazer Ayaz Kristali ile doldu
+KALE PASS Lazer Kulesi ucanlara oncelikli kuruldu
+KALE PASS kuleler beslendi (hedef varken guc ceker)
+KALE PASS Ark Bobini atti (6), cephane harcamadi: 0
+KALE PASS Lazer Kulesi atti (9)
+KALE PASS Maya Topu atti (4), Maya harcandi
+KALE PASS kablosuz Ark Bobini atmaz (guc yok)
+KALE PASS guc kuleleri hedefe hasar verdi
+KALE swellBursts=0 kills=0
+KALE PASS Elektrikli Cit ve Dondurucu guc ucu acti; Mayin ve Yag Hendegi istemez
+KALE PASS Reaktor -> Direk -> Cit ve Dondurucu
+KALE PASS Elektrikli Cit vurdu (2)
+KALE PASS kablosuz Elektrikli Cit calismaz
+KALE PASS Mayin patladi ve bozuldu (tek kullanimlik)
+KALE PASS patlama alan hasari verdi
+KALE GEVSETILDI Mayin onarimi icin celik, barut, kaucuk cantaya verildi
+KALE PASS Mayin onarimla yeniden kuruldu
+KALE PASS tutusturulmadan Yag Hendegi yalniz kaydirir
+KALE PASS E ile tutusunca alev duvari yakar (Yanik)
+KALE PASS alevdeki hedef hasar aldi
+KALE PASS Dondurucu Puskurtucu dondurdu (1)
+KALE PASS Cam seti dort parca kitte (temel parcalarin geometrisiyle)
+KALE PASS Cam Duvar ahsap duvarin yuvalarini tasir
+KALE PASS temel (ahsap) kuruldu
+KALE PASS Cam Duvar Cam malzemesiyle kuruldu (cam)
+KALE PASS cam kirilgan: 120 can
+KALE PASS Cam Duvar saydam
+KALE PASS Cam yukseltme zincirinde degil
+KALE PASS Ambar 60 yuvalik depo
+KALE PASS Silo tek turden 2.000 (2000)
+KALE PASS Yatak dogma noktasi ve uyku yeri
+KALE PASS Fener gece isigi tasir
+KALE PASS Borsa Tahtasi E ile Borsa'yi acar (rampa terminaliyle ayni)
+KALE placeables(istasyon/guc/savunma haric)=72
+KALE PASS efektler VfxSystem'den oynadi
+KALE PASS dokuz yeni efekt vfx.json'da tanimli
+KALE GEVSETILEN ADIMLAR (4): Biyoyakit cantaya verildi (Damitici ve Bugday zinciri tasima/zincir testlerinde); kablo Sim'den cekildi (Kablo esyasi harcanmadi; kablo cekme Capa'da sinanir); Maya (Kazan) ve Ayaz Kristali cantaya verildi; Mayin onarimi icin celik, barut, kaucuk cantaya verildi
+KALE RESULT ok=41 fail=0 shots=51 kills=0 trapHits=11 burn=832

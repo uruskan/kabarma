@@ -67,6 +67,7 @@ public class CraftingTests
             ["merdiven"] = 5, ["rampa"] = 5, ["sutun"] = 2, ["kiris"] = 2, ["parmaklik"] = 2, ["cit"] = 2, ["bahce_kapisi"] = 3,
             ["sur_duvari"] = 8, ["sur_kapisi"] = 10, ["kule_tabani"] = 12,
             ["makine_platformu_kucuk"] = 6, ["makine_platformu_orta"] = 24, ["makine_platformu_buyuk"] = 54,
+            ["cam_duvar"] = 4, ["cam_cati"] = 4, ["cam_zemin"] = 4, ["cam_kapi"] = 4, // Cam seti (M4)
         };
         Assert.Equal(want.OrderBy(kv => kv.Key), c.OrderBy(kv => kv.Key));
     }

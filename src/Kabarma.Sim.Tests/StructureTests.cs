@@ -189,9 +189,10 @@ public class StructureTests
         Assert.Null(StructureCosts.Upgrade(b, "mayali_beton", 4, true));
         Assert.Equal(new Dictionary<string, int> { ["brick"] = 1, ["stone"] = 1 }, StructureCosts.RepairCost(StructureCosts.Cost(b, "kerpic_tas", 4), 450, 900, b));
         Assert.Equal(450f, StructureCosts.UpgradedHp(200, 400, 900));
-        Assert.Equal(new[] { "wood", "kerpic_tas", "celik_sac", "mayali_beton" }, b.Materials.Select(m => m.Id));
-        Assert.Equal(new[] { 3, 4, 6, 8 }, b.Materials.Select(m => m.MaxSpan));
-        Assert.Equal(new[] { 400f, 900f, 2000f, 5000f }, b.Materials.Select(m => m.Hp));
+        Assert.Equal(new[] { "wood", "kerpic_tas", "celik_sac", "mayali_beton", "cam" }, b.Materials.Select(m => m.Id)); // cam: ayri set (M4), yukseltme zincirinde degil
+        Assert.Null(b.Next("mayali_beton")); Assert.Null(b.Next("cam")); Assert.NotNull(b.Next("celik_sac"));
+        Assert.Equal(new[] { 3, 4, 6, 8 }, b.Materials.Where(m => !m.Set).Select(m => m.MaxSpan));
+        Assert.Equal(new[] { 400f, 900f, 2000f, 5000f }, b.Materials.Where(m => !m.Set).Select(m => m.Hp));
     }
 
     [Fact]

@@ -67,16 +67,19 @@ public partial class BuildBridge
         var cur = _sys.Current;
         string id = _sys.Selected?.Id ?? "";
         int cost = CostOf(id);
-        int wood = _d.State.Backpack.Count("wood");
+        string setMat = BData.SetMaterialOf(id); // Cam seti (M4): Odun degil Cam
+        var setCost = setMat == null ? null : StructureCosts.Cost(BData, setMat, cost);
+        int wood = setMat == null ? _d.State.Backpack.Count("wood") : (setCost.All(kv => _d.State.Backpack.Count(kv.Key) >= kv.Value) ? cost : 0);
         // M2: kurma tapu disinda da serbest (GDD 7); orada sokum iadesi %50 (BuildBridge.Yapi.cs RefundFor).
-        string why = cur == null ? "" : !cur.Valid ? cur.Reason : wood < cost ? $"odun yetmiyor ({wood}/{cost})" : "";
-        _d.Hud.Hint($"İnşa: {NameOf(id)} ({cost} Odun){(why != "" ? "  ·  " + why : "")}  ·  {{act:build_wheel}} basılı: parça  ·  {{act:build_rotate}}: döndür  ·  {{act:interact}} basılı: onar / sök", 0.2f);
+        string why = cur == null ? "" : !cur.Valid ? cur.Reason : wood < cost ? (setMat == null ? $"odun yetmiyor ({wood}/{cost})" : $"{ItemNames.Of(setCost.Keys.First())} yetmiyor ({_d.State.Backpack.Count(setCost.Keys.First())}/{cost})") : "";
+        _d.Hud.Hint($"İnşa: {NameOf(id)} ({(setMat == null ? cost + " Odun" : string.Join(" + ", setCost.Select(kv => kv.Value + " " + ItemNames.Of(kv.Key))))}){(why != "" ? "  ·  " + why : "")}  ·  {{act:build_wheel}} basılı: parça  ·  {{act:build_rotate}}: döndür  ·  {{act:interact}} basılı: onar / sök", 0.2f);
         if (!place || cur == null) return;
         if (why != "") { Sfx.Play("hit", null, -10f); return; }
         if (_d.Net?.ForwardPlace(_sys) == true) return; // ortak: istemcide host kurar, parca bolumle doner
         var piece = _sys.TryPlace();
         if (piece == null) return;
-        _d.State.Backpack.Remove("wood", cost);
+        if (setMat == null) _d.State.Backpack.Remove("wood", cost);
+        else foreach (var kv in setCost) _d.State.Backpack.Remove(kv.Key, kv.Value);
         Sfx.Play("place", piece.GlobalPosition, 0f);
         Fx.Burst(piece.GlobalPosition + Vector3.Up * 0.3f, Palette.Wood, 18, 4f, 0.08f, 0.6f);
         Events.RaisePiecePlaced(piece.Def.Id);

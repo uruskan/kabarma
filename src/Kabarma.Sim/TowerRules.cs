@@ -28,8 +28,9 @@ public static class TowerRules
 {
     static float Flat(Vector3 a, Vector3 b) { var d = a - b; d.Y = 0; return d.Length(); }
 
-    public static TowerStatus Status(TowerState t) =>
-        t.Hp <= 0 ? TowerStatus.Broken : t.Priority == "off" ? TowerStatus.Off : t.Loaded <= 0 ? TowerStatus.Empty : TowerStatus.Ready;
+    public static TowerStatus Status(TowerState t, TowerDef? d = null) =>
+        t.Hp <= 0 ? TowerStatus.Broken : t.Priority == "off" ? TowerStatus.Off
+        : t.Loaded <= 0 && (d == null || (d.Ammo.Count > 0 && !d.AmmoOptional)) ? TowerStatus.Empty : TowerStatus.Ready; // M4: cephanesiz (guc) ve istege bagli cephaneli kule hep hazir
 
     public static bool InRange(TowerDef d, Vector3 at, DefenseTarget x)
     {
@@ -132,6 +133,35 @@ public static class TowerRules
         return hits;
     }
 
+    /// <summary>
+    /// Ark Bobini: ilk hedeften yakindaki hedeflere zincirleme Sok (hedef, hasar carpani); her atlamada carpan ChainFalloff
+    /// kadar azalir, en fazla ChainTargets atlama, atlama ChainRadius icinde (hedef yaricapi dahil).
+    /// </summary>
+    public static List<(int index, float mult)> Chain(TowerDef d, int first, IReadOnlyList<DefenseTarget> ts)
+    {
+        var res = new List<(int, float)> { (first, 1f) };
+        var used = new HashSet<int> { first };
+        int cur = first; float m = 1f;
+        for (int k = 0; k < d.ChainTargets; k++)
+        {
+            m *= d.ChainFalloff;
+            int best = -1; float bd = float.MaxValue;
+            for (int i = 0; i < ts.Count; i++)
+            {
+                if (used.Contains(i) || ts[i].IsPlayer || ts[i].Hp <= 0) continue;
+                float dd = Flat(ts[cur].Pos, ts[i].Pos);
+                if (dd <= d.ChainRadius + ts[i].Radius && dd < bd) { bd = dd; best = i; }
+            }
+            if (best < 0) break;
+            res.Add((best, m)); used.Add(best); cur = best;
+        }
+        return res;
+    }
+
+    /// <summary>Lazer: hasar x (guclendirici cephane varsa BoostMult) x (hedef ucansa FlyingMult).</summary>
+    public static float BeamDamage(TowerDef d, DefenseTarget x, bool boosted) =>
+        d.Damage * (boosted ? d.BoostMult : 1f) * (x.Flying ? d.FlyingMult : 1f);
+
     /// <summary>Cantadan depoya cephane aktarir (tanimdaki sirayla, depo dolana dek). Aktarilan adet.</summary>
     public static int Load(TowerState t, TowerDef d, Inventory bag)
     {
@@ -149,19 +179,20 @@ public static class TowerRules
     }
 
     /// <summary>Bekleme suresini ilerletir; ates edebiliyorsa true.</summary>
-    public static bool Tick(TowerState t, float dt)
+    public static bool Tick(TowerState t, float dt, TowerDef? d = null)
     {
         t.Cooldown = Math.Max(0f, t.Cooldown - dt);
-        return t.Cooldown <= 0f && Status(t) == TowerStatus.Ready;
+        return t.Cooldown <= 0f && Status(t, d) == TowerStatus.Ready;
     }
 
     /// <summary>Atis: bir cephane (tanim sirasindaki ilk dolu) duser, bekleme ve asinma yazilir. Harcanan esya (yoksa null).</summary>
     public static string? Fire(TowerState t, TowerDef d)
     {
-        if (Status(t) != TowerStatus.Ready || t.Cooldown > 0) return null;
+        if (Status(t, d) != TowerStatus.Ready || t.Cooldown > 0) return null;
         string? item = d.Ammo.FirstOrDefault(a => t.Mag.GetValueOrDefault(a) > 0);
+        if (item == null && (d.Ammo.Count == 0 || d.AmmoOptional)) item = ""; // guc kulesi: cephanesiz atar ("" = cephane harcanmadi)
         if (item == null) return null;
-        if (--t.Mag[item] <= 0) t.Mag.Remove(item);
+        if (item.Length > 0 && --t.Mag[item] <= 0) t.Mag.Remove(item);
         t.Cooldown = d.Interval;
         t.Hp = Math.Max(0f, t.Hp - d.WearPerShot);
         t.Shots++;

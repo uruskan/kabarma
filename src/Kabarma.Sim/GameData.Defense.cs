@@ -31,6 +31,27 @@ public sealed class TowerDef
     public float WearPerShot { get; set; } = 1f;
     /// <summary>Namlunun yerden yuksekligi (atis noktasi).</summary>
     public float HeadHeight { get; set; } = 2f;
+
+    // ---- M4 kale (ICERIK §13): Alev, Havan, Ark, Lazer, Maya Topu ----
+    /// <summary>Guc ister (research.json watts); atis yalniz beslenmisken. Cephane yoksa (Ammo bos) hep hazir.</summary>
+    public bool Powered { get; set; }
+    /// <summary>Cephane (Ammo) zorunlu degil: varsa guclendirir (Lazer: Ayaz Kristali / Billur).</summary>
+    public bool AmmoOptional { get; set; }
+    /// <summary>Cephane guclendirmesi (AmmoOptional): hasar carpani.</summary>
+    public float BoostMult { get; set; } = 1f;
+    /// <summary>Varsayilan hedef onceligi (Lazer: flying).</summary>
+    public string? DefaultPriority { get; set; }
+    /// <summary>Isabette durum: burn (Yanik), shock (Sok), freeze (Donma), swell (Kabarik/Maya).</summary>
+    public string? Status { get; set; }
+    public float StatusSeconds { get; set; }
+    /// <summary>burn: saniyede hasar; swell: tek atistaki sisme gucu (azami can orani, 1 = patlama esigi).</summary>
+    public float StatusValue { get; set; }
+    /// <summary>chain: zincirleme hedef sayisi ve yaricapi, her atlamada hasar carpani.</summary>
+    public int ChainTargets { get; set; }
+    public float ChainRadius { get; set; } = 4.5f;
+    public float ChainFalloff { get; set; } = 0.6f;
+    /// <summary>beam: ucan hedefe hasar carpani.</summary>
+    public float FlyingMult { get; set; } = 1f;
 }
 
 public sealed class TrapDef
@@ -61,6 +82,21 @@ public sealed class TrapDef
     public float Depth { get; set; } = 1f;
     public float Hp { get; set; } = 300f;
     public float WearPerTrigger { get; set; } = 1f;
+
+    // ---- M4 kale: Elektrikli Cit, Mayin, Yag Hendegi, Dondurucu Puskurtucu ----
+    /// <summary>Guc ister (research.json watts); beslenmezken calismaz.</summary>
+    public bool Powered { get; set; }
+    /// <summary>mine: patlama yaricapi (m).</summary>
+    public float Radius { get; set; }
+    /// <summary>fence: sok durma suresi ve zincir (hedef sayisi, yaricap).</summary>
+    public float StunSeconds { get; set; }
+    public int ChainTargets { get; set; }
+    public float ChainRadius { get; set; } = 3f;
+    /// <summary>oil: tutusunca alev duvarinin suresi, icindekilere yanik; freezer: donma suresi.</summary>
+    public float IgniteSeconds { get; set; }
+    public float BurnSeconds { get; set; }
+    public float BurnDps { get; set; }
+    public float FreezeSeconds { get; set; }
 }
 
 public sealed class DefenseFile

@@ -19,6 +19,10 @@ public sealed class BuildMaterialDef
     public Dictionary<string, float> Cost { get; set; } = new();
     /// <summary>Model yoksa ahsap modelinin boyanacagi renk (sRGB, yer tutucu).</summary>
     public float[] Tint { get; set; } = { 1f, 1f, 1f };
+    /// <summary>Ayri set (Cam, M4): yukseltme zincirinde degil; yalniz BuildFile.Sets sekilleriyle kurulur.</summary>
+    public bool Set { get; set; }
+    /// <summary>Gorsel saydamlik 0..1 (Cam).</summary>
+    public float Alpha { get; set; } = 1f;
 }
 
 public sealed class BuildGhostDef
@@ -52,6 +56,8 @@ public sealed class BuildFile
     public BuildGhostDef Ghost { get; set; } = new();
     public BuildCollapseDef Collapse { get; set; } = new();
     public PlanBookDef PlanBook { get; set; } = new();
+    /// <summary>Ayri setler (ICERIK §10.1: Cam seti): malzeme -> (set sekli -> geometrisini aldigi temel sekil).</summary>
+    public Dictionary<string, Dictionary<string, string>> Sets { get; set; } = new();
 
     public BuildMaterialDef? Material(string id) => Materials.FirstOrDefault(m => m.Id == id);
     public int IndexOf(string id) => Materials.FindIndex(m => m.Id == id);
@@ -59,8 +65,14 @@ public sealed class BuildFile
     public BuildMaterialDef? Next(string id)
     {
         int i = IndexOf(id);
-        return i >= 0 && i + 1 < Materials.Count ? Materials[i + 1] : null;
+        return i >= 0 && !Materials[i].Set && i + 1 < Materials.Count && !Materials[i + 1].Set ? Materials[i + 1] : null;
     }
+
+    /// <summary>Set sekli ise kurulacagi malzeme (Cam seti: "cam"); degilse null (ahsap kurulur).</summary>
+    public string? SetMaterialOf(string shape) => Sets.FirstOrDefault(kv => kv.Value.ContainsKey(shape)).Key;
+
+    /// <summary>Set sekli icin geometrisinin temel sekli (cam_duvar -> duvar); degilse null.</summary>
+    public string? BaseShapeOf(string shape) => Sets.Values.Select(s => s.GetValueOrDefault(shape)).FirstOrDefault(b => b != null);
 }
 
 public sealed partial class GameData
