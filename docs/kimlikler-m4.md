@@ -616,3 +616,9 @@ Yeni kimlikler (yukaridaki listede yoktu; ata4 ekledi):
 
 Ata ödül çekirdekleri: `sazlik_cekirdegi`, `kanyon_cekirdegi`, `ayaz_cekirdegi` (§1'de vardı). Ulti: Çıyan Paşa `yorunge_sulamasi`, Buz Tosunu `zaman_durdu` henüz `abilities.json`'da tanımsız; `atalar.json` `reward.pendingUlti` ve `AtaProgress.UltisOwed` taşır (kusam akışı tanımlayınca `ulti`'ye taşınır).
 Kurbağa Ağa'nın ödülü ikinci güç yuvasıdır (`unlocks`: `slot:guc_2`); Çapa: `recipe:capa_mk4` (Kurbağa), `capa_mk5` (Çıyan), `capa_mk6` (Tosunu).
+
+## 20. holding4 eklemeleri (19 Kasım 2026)
+
+- Kamp sırası (holding.json sites): slot 1 (Sis Korusu), 2 isil_sazlik (Ocak T3), 3 kizil_kanyon (T4), 4 kind: hq Genel Merkez (T5). Genel Merkez ayrı keşif türü değildir: HoldingCamp.Kind = hq olarak haritada Holding Kampı işaretiyle görünür.
+- Müdür parça kimlikleri (MudurRules.Hit): kasa, motor, jenerator:<i>, hoparlor:<i>, alon:<i>, mudur.
+- Açılanlar (HoldingState.Unlocks): head:yercekimi, plan:efsane_cip, cosmetic:kask_holding_muduru, cosmetic:kaplama_holding.

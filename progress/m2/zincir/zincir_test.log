@@ -1,5 +1,5 @@
 ilk gun botu durdu (adim tarla, t=28); arastir_t2 basliyor
-bot bitti t=208
+bot bitti t=209
 OK   Dokuma Tezgahi arastirildi (Arastirma Masasi, Veri)
 OK   Tarayici: 4 tur tarandi (stone,wheat,fiber,tree)
 OK   T2 urunu Kumas uretildi
@@ -41,4 +41,4 @@ OK   T5: Kristal Kesici uretildi ve kuruldu (Ocak T5 ile)
 OK   T5 urunu: Kristal Lens (Kristal Kesici)
 OK   urunler depoda (Kaucuk, Aku Hucresi, Kristal Lens; 10 Celik Pres'in bedeli oldu)
 GEVSETILEN ADIMLAR (16): Ocak basamagi dogrudan yukseltildi (Ata yolu: boss akisi); Veri verildi (tarama ve is emri yolu M2 testinde); brick verildi (T1 urunu); iron_ingot verildi (T2 urunu); clay verildi (T1 kaynagi); guc kurali kapali (PowerOk=true; watt kurali Sim testinde, kablolu besleme guc akisinda); charcoal verildi (T1 urunu (girdi + yakit)); plank verildi (T2 urunu); kaucuk_sutu verildi (Sazlik kaynagi: biyom dugumu henuz yok); kukurt verildi (Sazlik kaynagi: biyom dugumu henuz yok); titan_ingot verildi (T4 urunu (Titan Cevheri Kanyon'da)); devre verildi (T4 urunu); plastik verildi (T4 urunu); cam verildi (T4 urunu); ayaz_kristali verildi (Ayaz kaynagi: biyom dugumu henuz yok); tuz verildi (Kanyon kaynagi: biyom dugumu henuz yok)
-ZINCIR RESULT ok=23 fail=0 veri=1422 t=208
+ZINCIR RESULT ok=23 fail=0 veri=1422 t=209

@@ -37,6 +37,31 @@ public sealed class HoldingSystem
 
     public void Restore(HoldingState s) => State = s;
 
+    /// <summary>Biyom haritasi ve oynanabilir yaricap (GameState verir): kamp 2, 3 ve Genel Merkez yerleri biyomdan cozulur.</summary>
+    public Func<BiomeMap>? Biomes { get; set; }
+    public float WorldEdge { get; set; } = 800f;
+    /// <summary>Ekip boyu (Mudur cani).</summary>
+    public Func<int>? Team { get; set; }
+
+    /// <summary>Sitenin dunyadaki yeri: kamp 1 icin camp.anchor, digerleri HoldingSites.</summary>
+    public (float x, float z) SitePos(HoldingSiteDef s)
+    {
+        if (s.Slot == 1) { var a = _h.Camp.Anchor; return (a.Count > 0 ? a[0] : 0, a.Count > 1 ? a[1] : 0); }
+        var map = Biomes?.Invoke();
+        return map == null ? (s.Anchor.Count > 0 ? s.Anchor[0] : 0, s.Anchor.Count > 1 ? s.Anchor[1] : 0) : HoldingSites.Resolve(_h, s, map, WorldEdge);
+    }
+
+    /// <summary>Kervanin teslim noktasi: kamp 1 icin caravan.depot, digerleri kamp + site.depotOffset.</summary>
+    public (float x, float z) DepotOf(HoldingCamp c)
+    {
+        var s = _h.Site(c.Slot);
+        if (s != null && s.DepotOffset.Count >= 2) return (c.X + s.DepotOffset[0], c.Z + s.DepotOffset[1]);
+        var d = _h.Caravan.Depot;
+        return (d.Count > 0 ? d[0] : c.X, d.Count > 1 ? d[1] : c.Z);
+    }
+
+    public bool IsHq(HoldingCamp c) => c.Kind == "hq";
+
     public HoldingFile Def => _h;
 
     // ---------- Bilesim ----------
@@ -80,11 +105,12 @@ public sealed class HoldingSystem
         {
             State.FoundOnDay = 0;
             var a = _h.Camp.Anchor;
-            var camp = new HoldingCamp { Id = ++State.Serial, X = a.Count > 0 ? a[0] : 0, Z = a.Count > 1 ? a[1] : 0, FoundedDay = day, Husumet = _h.Husumet.Start };
+            var camp = new HoldingCamp { Id = ++State.Serial, Slot = 1, X = a.Count > 0 ? a[0] : 0, Z = a.Count > 1 ? a[1] : 0, FoundedDay = day, Husumet = _h.Husumet.Start };
             State.Camps.Add(camp);
             Build(camp);
             CampFounded?.Invoke(camp);
         }
+        FoundSites(day, ocakTier);
         float export = Math.Min(_h.Husumet.ExportMax, State.ExportToday / 1000 * _h.Husumet.ExportPerThousand);
         State.ExportToday = 0;
         int cap = Cap(ocakTier);
@@ -92,10 +118,12 @@ public sealed class HoldingSystem
         {
             if (c.Destroyed)
             {
+                if (c.Cleared) continue; // Genel Merkez yeniden kurulmaz
                 if (day >= c.RebuildDay) { c.Destroyed = false; c.Level = 1; c.QuietDays = 0; c.FoundedDay = day; Build(c); CampFounded?.Invoke(c); }
                 continue;
             }
             if (c.FoundedDay == day) continue; // kuruldugu sabah sayilmaz
+            if (IsHq(c)) { Replenish(c); continue; } // Genel Merkez: seviye sabit, Husumet ve baskin yok
             AddHusumet(c, _h.Husumet.Daily, "gun");
             if (export > 0) AddHusumet(c, export, "ihracat");
             c.QuietDays++;
@@ -109,6 +137,24 @@ public sealed class HoldingSystem
             c.Units.RemoveAll(u => u.Job == "caravan"); // dunku kervan biter
             c.Caravan = null;
             Replenish(c);
+        }
+    }
+
+    /// <summary>
+    /// 2. kamp (Ocak T3), 3. kamp (T4) ve Genel Merkez (T5) (GDD §19.1): 1. kamp ayaktayken, Ocak basamagi yetince sabah kurulur
+    /// (bir kez; yikilan kamp kendi kuralindan doner). Genel Merkez sabit seviyede, krater etegindedir.
+    /// </summary>
+    void FoundSites(int day, int ocakTier)
+    {
+        if (State.Camps.Count == 0) return;
+        foreach (var s in _h.Sites)
+        {
+            if (s.Slot <= 1 || ocakTier < s.OcakTier || State.Camps.Any(c => c.Slot == s.Slot)) continue;
+            var (x, z) = SitePos(s);
+            var camp = new HoldingCamp { Id = ++State.Serial, Slot = s.Slot, Kind = s.Kind, X = x, Z = z, Level = Math.Max(1, s.Level), FoundedDay = day, Husumet = _h.Husumet.Start };
+            State.Camps.Add(camp);
+            Build(camp);
+            CampFounded?.Invoke(camp);
         }
     }
 
@@ -129,7 +175,7 @@ public sealed class HoldingSystem
             c.RaidedTonight = false;
             c.RaidSent = false;
             c.RaidEntered = false;
-            if (c.Destroyed || c.Husumet < _h.Raid.Threshold) continue;
+            if (c.Destroyed || IsHq(c) || c.Husumet < _h.Raid.Threshold) continue;
             int n = _h.Raid.BaseCount + c.Level / 2;
             var team = new List<HoldingUnit>();
             for (int i = 0; i < n; i++)
@@ -159,6 +205,13 @@ public sealed class HoldingSystem
     {
         State.NightOpen = false;
         foreach (var c in State.Camps) c.Units.RemoveAll(u => u.Job == "raid");
+        // Mudur dovusu safakta biter (Perde iner, oyuncu disari firlar): Mudur kacar, Genel Merkez yeniden kurulur; sonraki gece yeniden denenir.
+        if (State.Mudur is { Defeated: false } m)
+        {
+            State.Mudur = null;
+            var hq = Camp(m.CampId);
+            if (hq != null && !hq.Cleared) { hq.Destroyed = false; Build(hq); }
+        }
     }
 
     /// <summary>Perde: gunduz (gercek Kabarma disinda) kamp tapusu icinde hasar yok.</summary>
@@ -196,6 +249,15 @@ public sealed class HoldingSystem
         if (hp > 0) return HoldingHit.Hit;
         loot = Loot(structId, c.Level);
         StructureDestroyed?.Invoke(c, structId, loot);
+        if (def.Core && IsHq(c))
+        {
+            // Genel Merkez: Cekirdek dusunce Mudur gelir (avlu asamasi); kamp Mudur yenilene dek ayakta sayilir.
+            c.Units.Clear();
+            if (State.Mudur == null) State.Mudur = MudurRules.Start(_h, c.Id, Team?.Invoke() ?? 1);
+            State.CoresDestroyed++;
+            CoreDestroyed?.Invoke(c);
+            return HoldingHit.Destroyed;
+        }
         if (def.Core)
         {
             c.Destroyed = true;
@@ -208,6 +270,61 @@ public sealed class HoldingSystem
             CoreDestroyed?.Invoke(c);
         }
         return HoldingHit.Destroyed;
+    }
+
+    // ---------- Mudur ----------
+
+    /// <summary>Kampa birim ekler (Mudur dovusunun Mekanikleri ve cagirdigi Ustabasilar).</summary>
+    public HoldingUnit? SpawnUnit(int campId, string kind, string job = "camp")
+    {
+        var c = Camp(campId);
+        if (c == null) return null;
+        var u = NewUnit(c, kind, job);
+        c.Units.Add(u);
+        return u;
+    }
+
+    public int MechanicsAlive(int campId) => Camp(campId)?.Units.Count(u => u.Alive && u.Kind == "mekanik") ?? 0;
+
+    /// <summary>Mudur parcasina vurus (MudurRules.Hit); komutlar asama gecisini bildirir. Yenilince odul ve Genel Merkez temizlenir.</summary>
+    public float MudurHit(string part, float dmg, List<MudurCommand>? cmds = null)
+    {
+        var f = State.Mudur;
+        if (f == null) return 0;
+        var local = cmds ?? new List<MudurCommand>();
+        float done = MudurRules.Hit(f, _h, part, dmg, local);
+        if (local.Any(c => c.Cue == MudurCue.Defeated)) OnMudurDefeated(f);
+        return done;
+    }
+
+    public List<MudurCommand> MudurTick(float dt, int mechanicsAlive)
+    {
+        var f = State.Mudur;
+        return f == null ? new List<MudurCommand>() : MudurRules.Tick(f, _h, dt, mechanicsAlive);
+    }
+
+    void OnMudurDefeated(MudurFight f)
+    {
+        var c = Camp(f.CampId);
+        State.MudurDefeats++;
+        if (c != null) { c.Cleared = true; c.Destroyed = true; c.Husumet = 0; c.Units.Clear(); }
+        foreach (var u in _h.Mudur.Reward.Unlocks) if (!State.Unlocks.Contains(u)) State.Unlocks.Add(u);
+        MudurDefeated?.Invoke(f);
+    }
+
+    /// <summary>Mudur yenildi (olay; odul MudurReward ile alinir).</summary>
+    public event Action<MudurFight>? MudurDefeated;
+
+    /// <summary>Mudur odulu: esyalar cantaya (sigmayan geri doner), Kredi, bir kez; sonra Mudur dovusu kapanir.</summary>
+    public HoldingLoot? MudurReward(Inventory bag, out Dictionary<string, int> left)
+    {
+        left = new Dictionary<string, int>();
+        var f = State.Mudur;
+        if (f == null || !f.Defeated) return null;
+        var r = _h.Mudur.Reward;
+        foreach (var (id, n) in r.Items) { int got = bag.Add(id, n); if (got < n) left[id] = n - got; }
+        State.Mudur = null;
+        return new HoldingLoot("mudur", new Dictionary<string, int>(r.Items), r.Credits, "");
     }
 
     public HoldingLoot Loot(string source, int level)
@@ -271,7 +388,7 @@ public sealed class HoldingSystem
     public HoldingCaravan? DepartCaravan(int campId, int day)
     {
         var c = Camp(campId);
-        if (c == null || c.Destroyed || c.LastCaravanDay >= day) return null;
+        if (c == null || c.Destroyed || IsHq(c) || c.LastCaravanDay >= day) return null;
         var kd = _h.Caravan;
         c.LastCaravanDay = day;
         var k = new HoldingCaravan

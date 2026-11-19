@@ -128,7 +128,7 @@ public partial class HoldingCampNode : Node3D
             p.label.Modulate = up ? (hp < max ? Palette.Warning : Palette.OffWhite) : Palette.DarkGrey;
         }
         _perde.Visible = perdeUp;
-        _sign.Text = c.Destroyed
+        _sign.Text = c.Kind == "hq" ? (c.Cleared ? "Bereket Holding Genel Merkez (ele geçirildi)" : $"BEREKET HOLDING GENEL MERKEZ · Sv. {c.Level} · yalnız Kabarma gecesi") : c.Destroyed
             ? $"Bereket Holding (yıkık, gün {c.RebuildDay} yeniden kurulur)"
             : $"Bereket Holding · Kamp Sv. {c.Level} · Husumet {Mathf.RoundToInt(c.Husumet)}";
     }

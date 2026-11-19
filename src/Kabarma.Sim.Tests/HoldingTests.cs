@@ -23,7 +23,7 @@ public class HoldingTests
         var d = Data();
         var h = d.Holding;
         Assert.Equal(new[] { "isci", "bekci", "ustabasi", "mekanik", "mudur" }, h.Units.Select(u => u.Id));
-        Assert.Equal("M5", h.Unit("mudur").Milestone);
+        Assert.Equal("M4", h.Unit("mudur").Milestone);
         Assert.Equal(new[] { "silo", "atolye", "ahir", "cekirdek" }, h.Camp.Structures.Select(s => s.Id));
         Assert.Single(h.Camp.Structures, s => s.Core);
         float dist = MathF.Sqrt(h.Camp.Anchor[0] * h.Camp.Anchor[0] + h.Camp.Anchor[1] * h.Camp.Anchor[1]);
