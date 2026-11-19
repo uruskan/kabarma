@@ -7,6 +7,20 @@
 
 Sahibin kararı 24 (18 Kasım 2026): ana oturum M2'den M7'ye sormadan ilerler; akışlar CLAUDE.md "M2 akışları" tablosunda. Sıra URETIM §6: M2 çekirdek sandbox → M3 Kabarma ve savaş → M4 dünya ve içerik → M5 çok oyunculu → M6 cila → M7 çıkış.
 
+### Durum (19 Kasım 2026, öğlen): sahip çalışmayı haftaya kadar durdurdu
+
+- **Yer:** main `ec84400`, origin'e push edildi. İki yarım iş origin'de ayrı dalda:
+  - `wip/ana-maya-botu`: Ana Maya zincir botu, 1. bölüm.
+  - `wip/dil-cekisme`: dil altyapısı, 10 dilde eşya adları, arayüz taşıma yarım. Çekişme'nin dört açığının düzeltmesi de burada; `coop` koşulmadı.
+- **M4:** 13 akışın hepsi main'de. URETIM M4 kabulündeki adet ve RecipeGraph maddeleri tamam. Başlangıçtan Ana Maya'ya hediyesiz bot eksik: yalnız Ata Taşı'na yürüyen bot var, tamamı WIP dalında. Sahibin her biyomu 30 dk oynaması bekliyor.
+- **M5:** sunucu, cekisme ve sekiz main'de. Opus bakışının bulduğu iki açık düzeltildi: yönetici kimliği ve devirde silinen çanta. Çekişme'nin on kuralı oyun yoluna yalnız WIP dalında bağlandı; haftaya ilk iş bu.
+- **M6:** arayuz, ogretici, steam ve denge main'de, dil WIP. Ses, müzik ve Suna seslendirmesi Kredi kuyruğunda (ElevenLabs, sahibin onayı). Performans turu en sonda.
+- **M7:** başlamadı. Mağaza, yayın ve demo işleri sahibin onayıyla.
+- **Görünüş:** ana karakter Tripo'dan (insan biçimli iskelet). Yaratıkların, Ataların, istasyonların ve araçların çoğu hâlâ kodla yapılmış yer tutucu.
+  - Homur pilotu hattı `pipeline/yaratik_rig.py` ile çalışıyor; tür başına yaklaşık 110 Tripo web kredisi, bakiye 1705.
+  - Öncelik: Sinsi, Dallı, Hu, Bozuk, Fındıkçı, Vıcık, Tosun, Vrak; sonra Atalar.
+- **Test düzeni:** akışlar yalnız `-Only build,sim` ve kendi Godot testlerini koşar. Tam koşu nöbetçi oturumun işi. Son tam koşuda bilinen kırmızı yok; `coop` yük altında ara ara sapıyor.
+- **Haftalık kullanım:** durdurulurken yaklaşık %70.
 ### Durum (18 Kasım 2026, öğleden sonra)
 
 - **M1:** main `9dd245a` sonrası. Teslimlerin çoğu main'de (Çapa elde, kemer ve Rust Üretim paneli, İnşa Planı, El Arabası iki elle, Suna'nın sesi, 75 ikon). Açık: `input_kbm`/`input_pad` testleri Taş Fırın ve Çivi adımında kırmızı (girdi); Taş Fırın ve ağaç modelleri (Tripo web, sahibin girişi); El Arabası LOD, çarpışma kabuğu ve rapor eski modeli anlatıyor, üçgen 14.747 > 14.000 (varlik); `kazma_isini_2` ~20 dB sessiz (ses); kapsül rampası pedin 0,4 m üstünde. 👤 his, 30 dk oynama, FPS, Megascans lisansı, ElevenLabs'teki 6 tasarlanmış ses.
