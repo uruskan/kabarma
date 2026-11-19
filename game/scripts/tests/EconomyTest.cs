@@ -110,12 +110,7 @@ public partial class EconomyTest : Node
         _d.Player.GlobalPosition = c + new Vector3(0, 0.3f, -2.5f);
         await Frames(4);
         int n = _d.Capa.Mow(c);
-        if (n == 0) // Capa menzilde degilse (onceki bolumden kalan durum) Sim hasadi: ayni HarvestFull yolu
-        {
-            var h = f.HarvestFull(x, y, _d.State.Rng);
-            if (h != null) { Bag.Add(h.Item, h.Yield, h.Stars); n = 1; }
-        }
-        Check(n == 1 && (Bag.Count("corn") + Bag.Count("corn", 2) + Bag.Count("corn", 3)) > 0, "sera: misir hasat edildi (cantada)");
+        Check(n == 1 && (Bag.Count("corn") + Bag.Count("corn", 2) + Bag.Count("corn", 3)) > 0, "sera: misir Bicme ile hasat edildi (cantada)");
     }
 
     bool _finished;
