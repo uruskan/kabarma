@@ -31,13 +31,17 @@ public static class PoiPlacer
         {
             if (!biomes.Biomes.TryGetValue(biomeId, out var biome)) continue;
             var rng = new Rng((ulong)(w.Terrain.Seed * 7919 + biome.Seed * 104729 + 17));
+            // M2 cekirdegi (Cayir, Koru) eski ±296 kutusundan ornekler: tohum akisi ve noktalar bit bit ayni kalir.
+            var pa = biome.PoiArea;
+            float ax0 = pa.Count == 4 ? pa[0] : w.Terrain.CenterX - half, az0 = pa.Count == 4 ? pa[1] : w.Terrain.CenterZ - half;
+            float ax1 = pa.Count == 4 ? pa[2] : w.Terrain.CenterX + half, az1 = pa.Count == 4 ? pa[3] : w.Terrain.CenterZ + half;
             foreach (var rule in biome.Pois)
             {
                 int made = 0;
                 bool Ok(float x, float z, bool strict)
                 {
                     float d = MathF.Sqrt(x * x + z * z);
-                    if (MathF.Abs(x) > half || MathF.Abs(z) > half) return false;
+                    if (MathF.Abs(x - w.Terrain.CenterX) > half || MathF.Abs(z - w.Terrain.CenterZ) > half) return false;
                     if (strict && (d < rule.BaseDistance[0] || d > rule.BaseDistance[1])) return false;
                     if (strict && map.Weight(biomeId, x, z) < rule.MinWeight) return false;
                     if (InLake(w, x, z)) return false;
@@ -56,7 +60,7 @@ public static class PoiPlacer
                     if (made < rule.Count && f.Count >= 2 && Ok(f[0], f[1], strict: false)) Add(f[0], f[1]);
                 for (int tries = 0; tries < 4000 && made < rule.Count; tries++)
                 {
-                    float x = rng.Range(-half, half), z = rng.Range(-half, half);
+                    float x = rng.Range(ax0, ax1), z = rng.Range(az0, az1);
                     if (Ok(x, z, strict: true)) Add(x, z);
                 }
             }

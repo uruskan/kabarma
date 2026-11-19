@@ -51,8 +51,9 @@ public partial class WorldTest
 
         // Kesif noktalari.
         // M2 noktalari 16 + M3 Oyuklar 6 (oyuk akisi; ICERIK 17 "M3: Oyuklar").
-        Check(w.Pois.Count(q => q.Type != "oyuk") == 16, $"M2 pois {w.Pois.Count(q => q.Type != "oyuk")} != 16");
-        Check(w.Pois.Count(q => q.Type == "oyuk") == 6, $"oyuk pois {w.Pois.Count(q => q.Type == "oyuk")} != 6");
+        var coreBiomes = w.Pois.Where(q => q.Biome is "altin_cayir" or "sis_korusu").ToList();
+        Check(coreBiomes.Count(q => q.Type != "oyuk") == 16, $"M2 pois {coreBiomes.Count(q => q.Type != "oyuk")} != 16");
+        Check(coreBiomes.Count(q => q.Type == "oyuk") == 6, $"oyuk pois {coreBiomes.Count(q => q.Type == "oyuk")} != 6");
         foreach (var poi in w.Pois)
         {
             var type = w.PoiType(poi.Type);

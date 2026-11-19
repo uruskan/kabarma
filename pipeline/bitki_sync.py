@@ -88,7 +88,7 @@ def main():
         old = {c['id']: c for c in e.get('criteria', [])}
         card = it['kind'] in ('tree', 'tripo_tree') or any(m.get('clip') or m.get('alpha') or m.get('albedo_alpha') for m in it.get('materials', {}).values())
         crit = [
-            {'id': 1, 'name': CRIT[1], 'pass': tex <= lim['maxTex'], 'value': f"albedo+alfa, normal{', puruzluluk' if it['kind'] != 'tree' else ''}; en buyuk {tex} px (sinir {lim['maxTex']})", 'note': ''},
+            {'id': 1, 'name': CRIT[1], 'pass': tex <= lim['maxTex'], 'value': f"albedo+alfa, normal{', puruzluluk' if it['kind'] != 'tree' else ''}; en buyuk {tex} px (sinir {lim['maxTex']})", 'note': 'sahibin izniyle 2K (yaprak atlasi)' if (it['kind'] == 'tripo_tree' and tex > lim['maxTex']) else ''},
             {'id': 2, 'name': CRIT[2], 'pass': r['tris'] <= lim['maxTris'], 'value': f"{r['tris']} / {lim['maxTris']} ucgen" + (' (sinif alt sinirinin altinda)' if r['tris'] < lim['minTris'] else ''), 'note': ''},
             {'id': 3, 'name': CRIT[3], 'pass': None, 'value': '', 'note': 'olculmedi: yaprak karti / ince yaprak tasarim geregi levha (alfa makasli)' if card else 'olculmedi (bitki hatti)'},
             {'id': 4, 'name': CRIT[4], 'pass': None, 'value': '', 'note': 'olculmedi: kart dortgenleri acik levha (manifold degil) tasarim geregi' if card else 'olculmedi (bitki hatti)'},

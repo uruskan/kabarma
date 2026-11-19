@@ -3,8 +3,10 @@
   "world": {
     "biome": "altin_cayir",
     "terrain": {
-      "_not": "Ussun 42 m'si icinde yukseklik MVP ile aynidir (ayni gurultu ve duzluk); yeni terimler 45 m'den sonra acilir. GDD 8.1: tarla egimi < 15 derece. M2 (dunya2, TEKNIK 7): 640 m; kenar sirti 290 m'de.",
-      "size": 640,
+      "_not": "Ussun 42 m'si icinde yukseklik MVP ile aynidir (ayni gurultu ve duzluk); yeni terimler 45 m'den sonra acilir. GDD 8.1: tarla egimi < 15 derece. M2 (dunya2, TEKNIK 7): 640 m cekirdek. M4 ara adimi (19 Kasim 2026, TEKNIK 7): dunya 1800 m, merkezi kratere yakin (center); Cayir ve Koru'nun 640 m'lik cekirdegi (coreSize) ayni tohum ve ayni yuksekliktedir (kenar sirti dunyanin kenarina tasindi). 5x5 km hedefi sonraya.",
+      "size": 1800,
+      "center": [-250, 430],
+      "coreSize": 640,
       "seed": 4417,
       "noiseFrequency": 0.012,
       "noiseAmp": 9,
@@ -15,7 +17,7 @@
       "hillFrequency": 0.006,
       "hillStart": 45,
       "hillEnd": 110,
-      "edgeStart": 290,
+      "edgeStart": 870,
       "edgeHeight": 12,
       "peak": [50, -87],
       "peakHeight": 28,
@@ -35,7 +37,7 @@
       "clarity": 0.6
     },
     "pillar": [-350, 606],
-    "horizonRings": [400, 520, 680],
+    "horizonRings": [900, 1250, 1700],
     "heightFog": [1, 0.01],
     "_clearings": "Bitki ve ot konmayan aciklik [x, z, yaricap]: inis kapsulu (Director.PodPos), Ocak cevresi (tarla, istasyonlar, agil).",
     "clearings": [[9, -9, 6], [0, 1, 9],
@@ -56,10 +58,17 @@
       { "id": "gol", "name": "Göl kıyısı", "eye": [-50, 24], "eyeHeight": 2.5, "target": [-82, 2.5, 46], "fov": 68 },
       { "id": "tepe", "name": "Tepe", "eye": [50, -87], "eyeHeight": 2.5, "target": [0, 3, 0], "fov": 68 },
       { "id": "gecis", "name": "Çayır-Koru geçişi", "eye": [10, 140], "eyeHeight": 2.5, "target": [-70, 4, 240], "fov": 68 },
-      { "id": "koru", "name": "Sis Korusu içi", "eye": [-110, 240], "eyeHeight": 2.5, "target": [-60, 7, 285], "fov": 68 }
+      { "id": "koru", "name": "Sis Korusu içi", "eye": [-110, 240], "eyeHeight": 2.5, "target": [-60, 7, 285], "fov": 68 },
+      { "id": "sazlik", "name": "Işıl Sazlık", "eye": [33, 927], "eyeHeight": 2.5, "target": [-20, 1.5, 960], "fov": 68 },
+      { "id": "kanyon", "name": "Kızıl Kanyon", "eye": [-575, 996], "eyeHeight": 3, "target": [-640, 6, 1040], "fov": 68 },
+      { "id": "ayaz", "name": "Ayaz Yaylası", "eye": [-773, 452], "eyeHeight": 2.5, "target": [-820, 5, 500], "fov": 68 },
+      { "id": "gobek", "name": "Göbek", "eye": [-300, 560], "eyeHeight": 2.5, "target": [-350, 4, 640], "fov": 68 }
     ],
     "_biomeMap": "TEKNIK 7 'M2 dunyasi': Ocak'tan krater sutununa (pillar) dogru olculen uzaklik + gurultu bukulmesi; boundaries[i] sonraki biyomun basladigi uzaklik (m), blend gecis bandi.",
-    "biomeMap": { "order": ["altin_cayir", "sis_korusu"], "boundaries": [200], "blend": 50, "warpAmp": 28, "warpFrequency": 0.007, "seed": 91 },
+    "_biomeMapM4": "M4 ara adimi: order kademe sirasiyla altı biyom (T1-T6). home = Ocak'tan krater sutununa derinlik zinciri (boundaries bu ikisi arasi); crater = Gobek (sutunun diptedir), rim = krater sirti; slices = kraterin cevresinde acisal dilimler (derece, 0 = +X bati, 90 = +Z kuzey; home dilimi Ocak yonu): bati Sazlik, kuzey Kanyon, dogu Ayaz.",
+    "biomeMap": { "order": ["altin_cayir", "sis_korusu", "isil_sazlik", "kizil_kanyon", "ayaz_yaylasi", "gobek"], "home": ["altin_cayir", "sis_korusu"], "boundaries": [200], "blend": 50, "warpAmp": 28, "warpFrequency": 0.007, "seed": 91,
+      "crater": { "biome": "gobek", "center": [-350, 606], "radius": 150, "blend": 50, "rimHeight": 14, "rimStart": 0.9, "rimEnd": 1.45 },
+      "slices": [ { "biome": "home", "center": -60, "halfWidth": 60 }, { "biome": "isil_sazlik", "center": 40, "halfWidth": 40 }, { "biome": "kizil_kanyon", "center": 120, "halfWidth": 40 }, { "biome": "ayaz_yaylasi", "center": 200, "halfWidth": 40 } ] },
     "_poiTypes": "ICERIK 17. milestone: M2 oyunda calisir; sonrakiler yalniz tanim (kural satiri yok, yerlesmez). use: 'e' el, 'kazma', 'bicme'; bos = etkilesim yok. loot birimleri; respawnDays oyun gunu.",
     "poiTypes": {
       "seyir_kulesi": { "name": "Seyir Kulesi", "milestone": "M2", "reveal": 600, "catapult": true, "discoverRadius": 70, "flatten": 7, "use": "e", "color": "F2C14E", "model": "res://assets/models/kesif/seyir_kulesi.glb", "placeholder": "Blender betigi pipeline/gen_kesif.py, dokusuz duz renk (SANAT-SES 9 olcut 1). Uretim istegi: Tripo." },
@@ -70,7 +79,7 @@
       "kadim_tas": { "name": "Kadim Taş", "milestone": "M3" },
       "oyuk": { "name": "Oyuk", "milestone": "M3", "discoverRadius": 40, "flatten": 7, "use": "oyuk", "color": "7A5A3A", "model": "res://assets/models/kesif/oyuk_agzi.glb" },
       "holding_kampi": { "name": "Holding Kampı", "milestone": "M3" },
-      "zengin_yatak": { "name": "Zengin Yatak", "milestone": "M4" }
+      "zengin_yatak": { "name": "Zengin Yatak", "milestone": "M4", "discoverRadius": 40, "flatten": 6, "color": "FFB02E", "model": "res://assets/models/koru/demir.glb", "placeholder": "Sondaj Kulesi (zincir4) ile bitmeyen cevher; model yer tutucu (demir damari)." }
     },
     "_map": "GDD 21: gezilen yer acilir (walkReveal m), hucre m; M tusu paneli (Hud.Map.cs).",
     "map": { "cell": 8, "walkReveal": 45, "texSize": 512, "fog": "2B2A33" },
@@ -98,16 +107,16 @@
         "normal_gece": { "name": "Normal gece", "lightElevation": 35, "lightAzimuth": 140, "lightColor": "A9B8E8", "lightEnergy": 0.55, "sunDisk": 0, "moonDisk": 1, "moonElevation": 35, "moonAzimuth": 140, "skyTop": "1A2238", "skyHorizon": "2E3E66", "fog": "2A3358", "fogDensity": 0.003, "ambient": 1.25, "stars": 1, "aurora": 0, "clouds": 0.2, "cloudColor": "3A4570", "veins": 0 }
       },
       "decor": [
-        { "id": "agac", "model": "res://assets/models/agac/agac.glb", "count": 95, "scale": [0.8, 1.5], "minDistance": 24, "lakeClear": 3, "wind": 0.35, "tree": true, "viewDistance": 320, "sink": 0.1, "collideRadius": 0.45, "collideHeight": 3 },
-        { "id": "turuncu_agac", "model": "res://assets/models/turuncu_agac/turuncu_agac.glb", "count": 28, "scale": [0.85, 1.25], "minDistance": 30, "lakeClear": 3, "wind": 0.35, "tree": true, "viewDistance": 320, "sink": 0.1, "collideRadius": 0.5, "collideHeight": 3 },
-        { "id": "cali", "model": "res://assets/models/cali/cali.glb", "count": 150, "scale": [0.7, 1.2], "minDistance": 14, "lakeClear": 1, "wind": 0.5, "viewDistance": 110, "sink": 0.05, "harvest": "fiber", "yield": 4, "perHit": 2 },
-        { "id": "ot", "placeholder": "bitki-pbr: dokulu kutuphane modeli (pipeline/build_bitki.py); gorunus sahibin onayini bekliyor", "model": "res://assets/models/ot/ot.glb", "count": 220, "scale": [0.8, 1.3], "minDistance": 10, "lakeClear": 0.5, "wind": 1.0, "viewDistance": 110, "shadow": false, "sink": 0.03, "harvest": "fiber", "yield": 4, "perHit": 2 },
-        { "id": "bugday", "placeholder": "bitki-pbr: dokulu kutuphane modeli (pipeline/build_bitki.py); gorunus sahibin onayini bekliyor", "model": "res://assets/models/bugday/bugday.glb", "count": 70, "scale": [0.85, 1.15], "minDistance": 16, "lakeClear": 2, "wind": 1.0, "viewDistance": 110, "shadow": false, "sink": 0.03, "harvest": "wheat", "yield": 4, "perHit": 2 },
-        { "id": "cicek", "placeholder": "bitki-pbr: dokulu kutuphane modeli (pipeline/build_bitki.py); gorunus sahibin onayini bekliyor", "model": "res://assets/models/cicek/cicek.glb", "count": 240, "scale": [0.8, 1.3], "minDistance": 8, "lakeClear": 1, "wind": 0.8, "viewDistance": 110, "shadow": false, "sink": 0.02 },
-        { "id": "egrelti", "placeholder": "bitki-pbr: dokulu kutuphane modeli (pipeline/build_bitki.py); gorunus sahibin onayini bekliyor", "model": "res://assets/models/egrelti/egrelti.glb", "count": 150, "scale": [0.8, 1.4], "minDistance": 12, "lakeClear": 0.5, "wind": 0.6, "viewDistance": 110, "shadow": false, "sink": 0.02 },
-        { "id": "kaya_duz", "placeholder": "olcut 4: 4 manifold disi kenar (hat sorunu, varlik akisi)", "model": "res://assets/models/lib/kaya_duz/kaya_duz.glb", "count": 36, "scale": [0.8, 1.8], "minDistance": 20, "lakeClear": 1, "sink": 0.12, "viewDistance": 170, "collideRadius": 0.8, "collideHeight": 0.7 },
-        { "id": "kaya_dik", "placeholder": "olcut 4: 9 manifold disi kenar (hat sorunu, varlik akisi)", "model": "res://assets/models/lib/kaya_dik/kaya_dik.glb", "count": 14, "scale": [0.8, 1.3], "minDistance": 40, "lakeClear": 3, "sink": 0.15, "collideRadius": 0.5, "collideHeight": 2.4 },
-        { "id": "agac_hus", "model": "res://assets/models/agac_hus/agac_hus.glb", "count": 40, "scale": [0.85, 1.35], "minDistance": 24, "lakeClear": 3, "wind": 0.35, "tree": true, "viewDistance": 320, "sink": 0.1, "collideRadius": 0.35, "collideHeight": 3 }
+        { "id": "agac", "model": "res://assets/models/agac/agac.glb", "count": 95, "scale": [0.8, 1.5], "minDistance": 24, "lakeClear": 3, "wind": 0.35, "tree": true, "viewDistance": 320, "sink": 0.1, "collideRadius": 0.45, "collideHeight": 3, "outerScale": 0.6 },
+        { "id": "turuncu_agac", "model": "res://assets/models/turuncu_agac/turuncu_agac.glb", "count": 28, "scale": [0.85, 1.25], "minDistance": 30, "lakeClear": 3, "wind": 0.35, "tree": true, "viewDistance": 320, "sink": 0.1, "collideRadius": 0.5, "collideHeight": 3, "outerScale": 0.6 },
+        { "id": "cali", "model": "res://assets/models/cali/cali.glb", "count": 150, "scale": [0.7, 1.2], "minDistance": 14, "lakeClear": 1, "wind": 0.5, "viewDistance": 110, "sink": 0.05, "harvest": "fiber", "yield": 4, "perHit": 2, "outerScale": 0.3 },
+        { "id": "ot", "placeholder": "bitki-pbr: dokulu kutuphane modeli (pipeline/build_bitki.py); gorunus sahibin onayini bekliyor", "model": "res://assets/models/ot/ot.glb", "count": 220, "scale": [0.8, 1.3], "minDistance": 10, "lakeClear": 0.5, "wind": 1.0, "viewDistance": 110, "shadow": false, "sink": 0.03, "harvest": "fiber", "yield": 4, "perHit": 2, "outerScale": 0.2 },
+        { "id": "bugday", "placeholder": "bitki-pbr: dokulu kutuphane modeli (pipeline/build_bitki.py); gorunus sahibin onayini bekliyor", "model": "res://assets/models/bugday/bugday.glb", "count": 70, "scale": [0.85, 1.15], "minDistance": 16, "lakeClear": 2, "wind": 1.0, "viewDistance": 110, "shadow": false, "sink": 0.03, "harvest": "wheat", "yield": 4, "perHit": 2, "outerScale": 0.2 },
+        { "id": "cicek", "placeholder": "bitki-pbr: dokulu kutuphane modeli (pipeline/build_bitki.py); gorunus sahibin onayini bekliyor", "model": "res://assets/models/cicek/cicek.glb", "count": 240, "scale": [0.8, 1.3], "minDistance": 8, "lakeClear": 1, "wind": 0.8, "viewDistance": 110, "shadow": false, "sink": 0.02, "outerScale": 0.2 },
+        { "id": "egrelti", "placeholder": "bitki-pbr: dokulu kutuphane modeli (pipeline/build_bitki.py); gorunus sahibin onayini bekliyor", "model": "res://assets/models/egrelti/egrelti.glb", "count": 150, "scale": [0.8, 1.4], "minDistance": 12, "lakeClear": 0.5, "wind": 0.6, "viewDistance": 110, "shadow": false, "sink": 0.02, "outerScale": 0.2 },
+        { "id": "kaya_duz", "placeholder": "olcut 4: 4 manifold disi kenar (hat sorunu, varlik akisi)", "model": "res://assets/models/lib/kaya_duz/kaya_duz.glb", "count": 36, "scale": [0.8, 1.8], "minDistance": 20, "lakeClear": 1, "sink": 0.12, "viewDistance": 170, "collideRadius": 0.8, "collideHeight": 0.7, "outerScale": 0.3 },
+        { "id": "kaya_dik", "placeholder": "olcut 4: 9 manifold disi kenar (hat sorunu, varlik akisi)", "model": "res://assets/models/lib/kaya_dik/kaya_dik.glb", "count": 14, "scale": [0.8, 1.3], "minDistance": 40, "lakeClear": 3, "sink": 0.15, "collideRadius": 0.5, "collideHeight": 2.4, "outerScale": 0.3 },
+        { "id": "agac_hus", "model": "res://assets/models/agac_hus/agac_hus.glb", "count": 40, "scale": [0.85, 1.35], "minDistance": 24, "lakeClear": 3, "wind": 0.35, "tree": true, "viewDistance": 320, "sink": 0.1, "collideRadius": 0.35, "collideHeight": 3, "outerScale": 0.6 }
       ],
       "patches": [
         { "_not": "Yer tutucu tutamlarin yerleri (ussun 10-25 m'si): ilk gunun Lif ve Bugday'i yakinda kalir.", "decor": "ot", "center": [-9, -14], "radius": 4, "count": 4 },
@@ -121,10 +130,12 @@
       "nodes": [
         { "id": "kaya", "item": "stone", "placeholder": "altin varlik; olcut 4: 13 manifold disi kenar (stil/README, varlik akisi)", "model": "res://assets/models/lib/kaya/kaya.glb", "units": [4, 6], "size": [0.9, 1.3], "sink": 0.2, "_nearBase": "Tas yalniz altin kayadan (ana oturum karari 18 Kasim 2026). Ilk gun: Tezgah 5 + Tas Firin 15 + El Arabasi 4 (ekonomi) + Paketleme 8 + yapi payi 8 = 40; Ocak'in 35 m'sinde guvenceli en az birim. Ussun cevresinde 15 kaya (en az 60 birim), dunyaya 16 kaya daha.", "nearBase": [35, 40], "scatterCount": 16, "scatterDistance": [50, 140], "positions": [[-7, 6], [-10, 1], [5, 11], [12, 6], [-4, 14], [16, -4], [-15, -8], [2, -16], [-13, 10], [9, 15], [-18, 2], [18, 9], [24, 4], [-22, -14], [6, -24]] },
         { "_not": "Kil yatagi: Blender betiginden (pipeline/gen_kil_yatagi.py, M1 kararlari 'Koddan varliklar'), kredi yok. Gol kiyisinda, Ussun tarafinda.", "id": "kil", "item": "clay", "model": "res://assets/models/kil_yatagi/kil_yatagi.glb", "units": [8, 8], "size": [1.1, 1.35], "sink": 0.05, "shoreCount": 4, "shoreOffset": 1.2, "shoreArc": [-70, 15] },
-        { "id": "bakir", "item": "copper_ore", "placeholder": "olcut 4: 10 manifold disi kenar (hat sorunu, varlik akisi)", "model": "res://assets/models/bakir/bakir.glb", "units": [8, 8], "size": [0.9, 1.1], "sink": 0.2, "positions": [[30, -14], [34, -20], [27, -21]] }
+        { "id": "bakir", "item": "copper_ore", "placeholder": "olcut 4: 10 manifold disi kenar (hat sorunu, varlik akisi)", "model": "res://assets/models/bakir/bakir.glb", "units": [8, 8], "size": [0.9, 1.1], "sink": 0.2, "positions": [[30, -14], [34, -20], [27, -21]] },
+        { "_not": "Kemik (ICERIK 2.2 #32, kimlikler-m4 'biyom'un'): Av ve kemik yiginlari; yer tutucu: kaya modeli bej tonda.", "id": "kemik_yigini", "item": "kemik", "placeholder": "kaya modeli, bej ton", "model": "res://assets/models/lib/kaya/kaya.glb", "tint": "EFE6D2", "units": [3, 5], "size": [0.55, 0.8], "sink": 0.1, "scatterCount": 6, "scatterDistance": [60, 300] }
       ],
       "grass": { "chunk": 16, "perChunk": 380, "height": [0.3, 0.62], "baseClear": 7, "wind": 1.0, "spacing": 0.3, "farSpacing": 0.75, "blades": 9, "farKeep": 0.45 },
       "_area": "M1 serpme kutusu (eski 300 m dunyanin ic payi): kutunun ici M1 ile ayni tohum akisi; fillOutside kutu disindaki Cayir'i ayni siklikla doldurur (seed ile).",
+      "poiArea": [-296, -296, 296, 296],
       "area": [-146, -146, 146, 146],
       "fillOutside": true,
       "seed": 1,
@@ -154,19 +165,20 @@
       "name": "Sis Korusu",
       "_not": "ICERIK 1: cok yuksek govdeler, mavi-yesil sis katmanlari, dev mantarlar, isik huzmeleri; gece serin. Kaynak: Sert Odun, Recine, Demir, Guhercile. Palet SANAT-SES 2.",
       "seed": 2,
+      "poiArea": [-296, -296, 296, 296],
       "palette": {
-        "ground": "3F6B5C",
-        "plant": "2E8C7A",
+        "ground": "4A6E48",
+        "plant": "3C8F5A",
         "accent": "F2C14E",
         "shadow": "1F3044",
-        "fog": "A9C9C4",
-        "skyNoon": "9FC5C9",
+        "fog": "B0CCB8",
+        "skyNoon": "A6C9BD",
         "skySunset": "E0926B"
       },
       "_times": "Oyuncu (kamera) Koru'ya girdikce Cayir'in saatleri bunlara karisir (World.Sky.cs). Tac ortusu: isik az, sis yogun, ortam mavi-yesil.",
       "times": {
-        "sabah": { "name": "Sabah", "lightElevation": 12, "lightAzimuth": 90, "lightColor": "FFE2B8", "lightEnergy": 1.9, "sunDisk": 1, "moonDisk": 0, "moonElevation": -20, "moonAzimuth": 270, "skyTop": "5C8FB0", "skyHorizon": "C9DCD2", "fog": "A9C9C4", "fogDensity": 0.006, "ambient": 0.55, "stars": 0, "aurora": 0, "clouds": 0.5, "cloudColor": "EEF4EE", "veins": 0 },
-        "ogle": { "name": "Öğle", "lightElevation": 62, "lightAzimuth": 165, "lightColor": "F4F6E6", "lightEnergy": 2.4, "sunDisk": 1, "moonDisk": 0, "moonElevation": -20, "moonAzimuth": 0, "skyTop": "4F86AE", "skyHorizon": "9FC5C9", "fog": "A2C4BF", "fogDensity": 0.0045, "ambient": 0.55, "stars": 0, "aurora": 0, "clouds": 0.5, "cloudColor": "F4F8F4", "veins": 0 },
+        "sabah": { "name": "Sabah", "lightElevation": 12, "lightAzimuth": 90, "lightColor": "FFE2B8", "lightEnergy": 1.9, "sunDisk": 1, "moonDisk": 0, "moonElevation": -20, "moonAzimuth": 270, "skyTop": "5C8FB0", "skyHorizon": "C9DCD2", "fog": "B0CCB8", "fogDensity": 0.006, "ambient": 0.55, "stars": 0, "aurora": 0, "clouds": 0.5, "cloudColor": "EEF4EE", "veins": 0 },
+        "ogle": { "name": "Öğle", "lightElevation": 62, "lightAzimuth": 165, "lightColor": "F4F6E6", "lightEnergy": 2.4, "sunDisk": 1, "moonDisk": 0, "moonElevation": -20, "moonAzimuth": 0, "skyTop": "4F86AE", "skyHorizon": "A6C9BD", "fog": "A8C6B4", "fogDensity": 0.0045, "ambient": 0.55, "stars": 0, "aurora": 0, "clouds": 0.5, "cloudColor": "F4F8F4", "veins": 0 },
         "gunbatimi": { "name": "Gün batımı", "lightElevation": 4, "lightAzimuth": 270, "lightColor": "F09A62", "lightEnergy": 1.8, "sunDisk": 1, "moonDisk": 0.25, "moonElevation": 18, "moonAzimuth": 100, "skyTop": "34507E", "skyHorizon": "E0926B", "fog": "8E8A86", "fogDensity": 0.006, "ambient": 0.45, "stars": 0.05, "aurora": 0, "clouds": 0.55, "cloudColor": "E9A887", "veins": 0 },
         "kabarma_gecesi": { "name": "Kabarma gecesi", "lightElevation": 35, "lightAzimuth": 140, "lightColor": "9FC0E0", "lightEnergy": 0.5, "sunDisk": 0, "moonDisk": 1, "moonElevation": 35, "moonAzimuth": 140, "skyTop": "142034", "skyHorizon": "4FD8B8", "fog": "1F3448", "fogDensity": 0.007, "ambient": 1.25, "stars": 1, "aurora": 1, "clouds": 0.2, "cloudColor": "2F4660", "veins": 0.5 },
         "normal_gece": { "name": "Normal gece", "lightElevation": 35, "lightAzimuth": 140, "lightColor": "9FC0E0", "lightEnergy": 0.45, "sunDisk": 0, "moonDisk": 1, "moonElevation": 35, "moonAzimuth": 140, "skyTop": "142034", "skyHorizon": "243A55", "fog": "1F3448", "fogDensity": 0.007, "ambient": 1.15, "stars": 1, "aurora": 0, "clouds": 0.25, "cloudColor": "2F4660", "veins": 0 }
@@ -174,15 +186,15 @@
       "_terrain": "Biyom agirligiyla eklenen yukseklik: sirtli gurultu (ridge 0..1) + taban yukseltmesi (offset). floorMix orman tabani rengi, grassDensity ot carpani.",
       "terrain": { "amp": 11, "frequency": 0.011, "ridge": 0.55, "offset": 3, "floorMix": 0.85, "grassDensity": 0.35 },
       "_atmosphere": "Yere yakin sis katmanlari (fogLayers zeminden m, World.Fog.cs) ve tac arasindan inen isik huzmeleri; oyuncu Koru'dayken ortam sisi fogDensityMult ile kalinlasir.",
-      "atmosphere": { "fogLayers": [1.2, 3.6, 7.5], "fogColor": "A9C9C4", "fogAlpha": 0.3, "fogCell": 8, "shafts": 44, "shaftSize": [3.5, 26], "shaftColor": "F6E7B8", "shaftAlpha": 0.14, "fogDensityMult": 1.0, "ambientFog": "8FB3B0" },
+      "atmosphere": { "fogLayers": [1.2, 3.6, 7.5], "fogColor": "B0CCB8", "fogAlpha": 0.3, "fogCell": 8, "shafts": 44, "shaftSize": [3.5, 26], "shaftColor": "F6E7B8", "shaftAlpha": 0.14, "fogDensityMult": 1.0, "ambientFog": "98B79C" },
       "decor": [
-        { "id": "koru_agac", "model": "res://assets/models/koru/koru_agac.glb", "count": 120, "scale": [0.85, 1.35], "minDistance": 0, "lakeClear": 3, "wind": 0.15, "tree": true, "wood": "hard_wood", "sink": 0.2, "collideRadius": 0.8, "collideHeight": 6, "viewDistance": 320 },
-        { "id": "dev_mantar", "model": "res://assets/models/koru/dev_mantar.glb", "count": 50, "scale": [0.7, 1.6], "minDistance": 0, "lakeClear": 2, "wind": 0, "sink": 0.1, "collideRadius": 0.35, "collideHeight": 2.5, "viewDistance": 220 },
-        { "id": "kutuk", "model": "res://assets/models/koru/kutuk.glb", "count": 26, "scale": [0.8, 1.2], "minDistance": 0, "lakeClear": 2, "wind": 0, "sink": 0.15, "viewDistance": 170, "collideRadius": 0.6, "collideHeight": 0.8 },
-        { "id": "egrelti", "placeholder": "bitki-pbr: dokulu kutuphane modeli (pipeline/build_bitki.py); gorunus sahibin onayini bekliyor", "model": "res://assets/models/egrelti/egrelti.glb", "count": 260, "scale": [1.0, 1.7], "minDistance": 0, "lakeClear": 0.5, "wind": 0.6, "viewDistance": 110, "shadow": false, "sink": 0.02 },
-        { "id": "koru_ot", "placeholder": "Cayir 'ot' modeli (olcut 3-4 yer tutucu).", "model": "res://assets/models/ot/ot.glb", "count": 90, "scale": [0.9, 1.4], "minDistance": 0, "lakeClear": 0.5, "wind": 0.8, "viewDistance": 110, "shadow": false, "sink": 0.03, "harvest": "fiber", "yield": 4, "perHit": 2 },
-        { "id": "kaya_duz", "placeholder": "olcut 4: 4 manifold disi kenar (hat sorunu, varlik akisi)", "model": "res://assets/models/lib/kaya_duz/kaya_duz.glb", "count": 24, "scale": [1.0, 2.2], "minDistance": 0, "lakeClear": 1, "sink": 0.12, "viewDistance": 170, "collideRadius": 0.8, "collideHeight": 0.7 },
-        { "id": "koru_ladin", "model": "res://assets/models/koru_ladin/koru_ladin.glb", "count": 60, "scale": [0.85, 1.25], "minDistance": 0, "lakeClear": 3, "wind": 0.12, "tree": true, "wood": "hard_wood", "sink": 0.2, "collideRadius": 0.5, "collideHeight": 8, "viewDistance": 320 }
+        { "id": "koru_agac", "model": "res://assets/models/koru/koru_agac.glb", "count": 120, "scale": [0.85, 1.35], "minDistance": 0, "lakeClear": 3, "wind": 0.15, "tree": true, "wood": "hard_wood", "sink": 0.2, "collideRadius": 0.8, "collideHeight": 6, "viewDistance": 320, "outerScale": 1.2 },
+        { "id": "dev_mantar", "model": "res://assets/models/koru/dev_mantar.glb", "count": 50, "scale": [0.7, 1.6], "minDistance": 0, "lakeClear": 2, "wind": 0, "sink": 0.1, "collideRadius": 0.35, "collideHeight": 2.5, "viewDistance": 220, "outerScale": 0.8 },
+        { "id": "kutuk", "model": "res://assets/models/koru/kutuk.glb", "count": 26, "scale": [0.8, 1.2], "minDistance": 0, "lakeClear": 2, "wind": 0, "sink": 0.15, "viewDistance": 170, "collideRadius": 0.6, "collideHeight": 0.8, "outerScale": 0.8 },
+        { "id": "egrelti", "placeholder": "bitki-pbr: dokulu kutuphane modeli (pipeline/build_bitki.py); gorunus sahibin onayini bekliyor", "model": "res://assets/models/egrelti/egrelti.glb", "count": 260, "scale": [1.0, 1.7], "minDistance": 0, "lakeClear": 0.5, "wind": 0.6, "viewDistance": 110, "shadow": false, "sink": 0.02, "outerScale": 0.3 },
+        { "id": "koru_ot", "placeholder": "Cayir 'ot' modeli (olcut 3-4 yer tutucu).", "model": "res://assets/models/ot/ot.glb", "count": 90, "scale": [0.9, 1.4], "minDistance": 0, "lakeClear": 0.5, "wind": 0.8, "viewDistance": 110, "shadow": false, "sink": 0.03, "harvest": "fiber", "yield": 4, "perHit": 2, "outerScale": 0.3 },
+        { "id": "kaya_duz", "placeholder": "olcut 4: 4 manifold disi kenar (hat sorunu, varlik akisi)", "model": "res://assets/models/lib/kaya_duz/kaya_duz.glb", "count": 24, "scale": [1.0, 2.2], "minDistance": 0, "lakeClear": 1, "sink": 0.12, "viewDistance": 170, "collideRadius": 0.8, "collideHeight": 0.7, "outerScale": 0.5 },
+        { "id": "koru_ladin", "model": "res://assets/models/koru_ladin/koru_ladin.glb", "count": 60, "scale": [0.85, 1.25], "minDistance": 0, "lakeClear": 3, "wind": 0.12, "tree": true, "wood": "hard_wood", "sink": 0.2, "collideRadius": 0.5, "collideHeight": 8, "viewDistance": 320, "outerScale": 1.2 }
       ],
       "patches": [],
       "nodes": [
@@ -212,6 +224,183 @@
         { "type": "yuva", "count": 2, "minSpacing": 70, "baseDistance": [210, 440], "minWeight": 0.8 },
         { "type": "enkaz", "count": 3, "minSpacing": 70, "baseDistance": [210, 440], "minWeight": 0.75 },
         { "type": "oyuk", "count": 3, "minSpacing": 80, "baseDistance": [240, 440], "minWeight": 0.92, "_not": "M3 oyuk akisi: Yarasa Yumagi (oyuk.json)" }
+      ]
+    },
+    "isil_sazlik": {
+      "name": "Işıl Sazlık",
+      "_not": "ICERIK 1: sig su, isildayan kamislar, mor ve turkuaz, gece kendi isigi; zehirli gaz cukurlari. Kaynak: Turba, Kukurt, Kaucuk Sutu, Balcik, Isil Yosun. Su yuzeyleri yer tutucu: zemin bataklik tonu (gol sistemi tek gol).",
+      "seed": 3,
+      "palette": {"ground": "46604F", "plant": "7A6CC0", "accent": "5FE0D0", "shadow": "2A2A4A", "fog": "B8B4D8", "skyNoon": "A8B8D8", "skySunset": "D890B0"},
+      "times": {
+        "sabah": {"name": "Sabah", "lightElevation": 12, "lightAzimuth": 90, "lightColor": "F0D0D8", "lightEnergy": 1.8, "sunDisk": 1, "moonDisk": 0, "moonElevation": -20, "moonAzimuth": 270, "skyTop": "7088C0", "skyHorizon": "E0C8E0", "fog": "C4B8D8", "fogDensity": 0.0045, "ambient": 0.55, "stars": 0, "aurora": 0, "clouds": 0.5, "cloudColor": "F4E8F4", "veins": 0},
+        "ogle": {"name": "Öğle", "lightElevation": 62, "lightAzimuth": 165, "lightColor": "F2F0F4", "lightEnergy": 2.4, "sunDisk": 1, "moonDisk": 0, "moonElevation": -20, "moonAzimuth": 0, "skyTop": "5A86C0", "skyHorizon": "C4C8E0", "fog": "B4B8D8", "fogDensity": 0.0035, "ambient": 0.58, "stars": 0, "aurora": 0, "clouds": 0.5, "cloudColor": "F4F0F8", "veins": 0},
+        "gunbatimi": {"name": "Gün batımı", "lightElevation": 4, "lightAzimuth": 270, "lightColor": "F09AA8", "lightEnergy": 2.0, "sunDisk": 1, "moonDisk": 0.25, "moonElevation": 18, "moonAzimuth": 100, "skyTop": "3E4A86", "skyHorizon": "E0809A", "fog": "A88AA8", "fogDensity": 0.0045, "ambient": 0.48, "stars": 0.05, "aurora": 0, "clouds": 0.55, "cloudColor": "E8A8B8", "veins": 0},
+        "kabarma_gecesi": {"name": "Kabarma gecesi", "lightElevation": 35, "lightAzimuth": 140, "lightColor": "A0B0E8", "lightEnergy": 0.55, "sunDisk": 0, "moonDisk": 1, "moonElevation": 35, "moonAzimuth": 140, "skyTop": "161E38", "skyHorizon": "6AF0D8", "fog": "24304E", "fogDensity": 0.0055, "ambient": 1.3, "stars": 1, "aurora": 1, "clouds": 0.2, "cloudColor": "2F3A66", "veins": 0.5},
+        "normal_gece": {"name": "Normal gece", "lightElevation": 35, "lightAzimuth": 140, "lightColor": "A0B0E8", "lightEnergy": 0.5, "sunDisk": 0, "moonDisk": 1, "moonElevation": 35, "moonAzimuth": 140, "skyTop": "161E38", "skyHorizon": "2E5A6A", "fog": "24304E", "fogDensity": 0.0055, "ambient": 1.4, "stars": 1, "aurora": 0, "clouds": 0.25, "cloudColor": "2F3A66", "veins": 0.25}
+      },
+      "terrain": {"amp": 2.5, "frequency": 0.02, "ridge": 0.0, "offset": -0.8, "floorMix": 0.9, "grassDensity": 0.5},
+      "atmosphere": {"fogLayers": [0.6, 2.0], "fogColor": "B9B2DD", "fogAlpha": 0.28, "fogCell": 10, "shafts": 0, "shaftSize": [3.5, 26], "shaftColor": "F6E7B8", "shaftAlpha": 0.0, "fogDensityMult": 1.0, "ambientFog": "9A94C0"},
+      "decor": [
+        {"id": "sazlik_kamis", "model": "res://assets/models/ot/ot.glb", "count": 1500, "scale": [1.3, 2.4], "minDistance": 0, "lakeClear": 0.5, "wind": 1.0, "viewDistance": 130, "shadow": false, "sink": 0.03, "tint": "8E7CE0", "placeholder": "ayni model, ton farkli (biyom akisi, URETIM 3); gercek model Tripo istegi", "harvest": "fiber", "yield": 4, "perHit": 2},
+        {"id": "sazlik_cicek", "model": "res://assets/models/cicek/cicek.glb", "count": 900, "scale": [0.9, 1.6], "minDistance": 0, "lakeClear": 0.5, "wind": 0.8, "viewDistance": 120, "shadow": false, "sink": 0.02, "tint": "5FE8D8", "placeholder": "ayni model, ton farkli (biyom akisi, URETIM 3); gercek model Tripo istegi"},
+        {"id": "sazlik_egrelti", "model": "res://assets/models/egrelti/egrelti.glb", "count": 600, "scale": [1.0, 1.8], "minDistance": 0, "lakeClear": 0.5, "wind": 0.6, "viewDistance": 110, "shadow": false, "sink": 0.02, "tint": "9A8CE8", "placeholder": "ayni model, ton farkli (biyom akisi, URETIM 3); gercek model Tripo istegi"},
+        {"id": "sazlik_mantar", "model": "res://assets/models/koru/dev_mantar.glb", "count": 70, "scale": [0.6, 1.4], "minDistance": 0, "lakeClear": 1, "wind": 0, "sink": 0.1, "tint": "5FE8D8", "collideRadius": 0.35, "collideHeight": 2.2, "viewDistance": 200, "placeholder": "ayni model, ton farkli (biyom akisi, URETIM 3); gercek model Tripo istegi"},
+        {"id": "sazlik_kutuk", "model": "res://assets/models/koru/kutuk.glb", "count": 40, "scale": [0.8, 1.3], "minDistance": 0, "lakeClear": 1, "wind": 0, "sink": 0.15, "tint": "5A5A70", "collideRadius": 0.6, "collideHeight": 0.8, "viewDistance": 170, "placeholder": "ayni model, ton farkli (biyom akisi, URETIM 3); gercek model Tripo istegi"},
+        {"id": "sazlik_agac", "model": "res://assets/models/agac_hus/agac_hus.glb", "count": 70, "scale": [0.9, 1.5], "minDistance": 0, "lakeClear": 2, "wind": 0.35, "tree": true, "sink": 0.1, "tint": "8C8AD0", "collideRadius": 0.35, "collideHeight": 3, "viewDistance": 320, "placeholder": "ayni model, ton farkli (biyom akisi, URETIM 3); gercek model Tripo istegi"}
+      ],
+      "patches": [],
+      "nodes": [
+        {"id": "kaya", "item": "stone", "model": "res://assets/models/lib/kaya/kaya.glb", "units": [4, 6], "size": [0.9, 1.3], "sink": 0.2, "scatterCount": 8, "scatterDistance": [0, 100000], "placeholder": "altin varlik (Cayir ile ayni)"},
+        {"id": "turba", "item": "turba", "model": "res://assets/models/kil_yatagi/kil_yatagi.glb", "units": [6, 8], "size": [1.1, 1.4], "sink": 0.05, "scatterCount": 14, "scatterDistance": [0, 100000], "tint": "4A3A2A", "placeholder": "ayni model, ton farkli (biyom akisi, URETIM 3); gercek model Tripo istegi"},
+        {"id": "kukurt", "item": "kukurt", "model": "res://assets/models/lib/kaya/kaya.glb", "units": [4, 6], "size": [0.8, 1.1], "sink": 0.2, "scatterCount": 10, "scatterDistance": [0, 100000], "tint": "E8D840", "placeholder": "ayni model, ton farkli (biyom akisi, URETIM 3); gercek model Tripo istegi"},
+        {"id": "kaucuk_sutu", "item": "kaucuk_sutu", "model": "res://assets/models/koru/recine.glb", "units": [4, 5], "size": [0.9, 1.1], "sink": 0.05, "scatterCount": 12, "scatterDistance": [0, 100000], "tint": "F4F0E0", "placeholder": "ayni model, ton farkli (biyom akisi, URETIM 3); gercek model Tripo istegi"},
+        {"id": "balcik", "item": "balcik", "model": "res://assets/models/kil_yatagi/kil_yatagi.glb", "units": [8, 8], "size": [1.1, 1.35], "sink": 0.05, "scatterCount": 12, "scatterDistance": [0, 100000], "tint": "6A7860", "placeholder": "ayni model, ton farkli (biyom akisi, URETIM 3); gercek model Tripo istegi"},
+        {"id": "isil_yosun", "item": "isil_yosun", "model": "res://assets/models/koru/guhercile.glb", "units": [3, 4], "size": [0.8, 1.0], "sink": 0.15, "scatterCount": 12, "scatterDistance": [0, 100000], "tint": "5FF0C8", "placeholder": "ayni model, ton farkli (biyom akisi, URETIM 3); gercek model Tripo istegi"},
+        {"id": "kemik_yigini", "item": "kemik", "model": "res://assets/models/lib/kaya/kaya.glb", "units": [3, 5], "size": [0.55, 0.8], "sink": 0.1, "scatterCount": 8, "scatterDistance": [0, 100000], "tint": "EFE6D2", "placeholder": "ayni model, ton farkli (biyom akisi, URETIM 3); gercek model Tripo istegi"}
+      ],
+      "grass": { "chunk": 16, "perChunk": 380, "height": [0.3, 0.62], "baseClear": 0, "wind": 1.0, "spacing": 0.3, "farSpacing": 0.75, "blades": 9, "farKeep": 0.45 },
+      "spawns": { "creatures": [
+          {"creature": "vrak", "time": "any", "weight": 1, "group": [1, 2], "maxGroups": 2, "baseDistance": [120, 100000], "minWeight": 0.7, "respawn": 180, "note": "yaratik4 yaratigi; satir biyom akisindan (creatures.json biome)"},
+          {"creature": "kiskac", "time": "day", "weight": 1, "group": [2, 3], "maxGroups": 2, "baseDistance": [120, 100000], "minWeight": 0.7, "respawn": 180, "note": "yaratik4 yaratigi; satir biyom akisindan (creatures.json biome)"},
+          {"creature": "tukurgen", "time": "day", "weight": 1, "group": [1, 2], "maxGroups": 2, "baseDistance": [120, 100000], "minWeight": 0.7, "respawn": 180, "note": "yaratik4 yaratigi; satir biyom akisindan (creatures.json biome)"},
+          {"creature": "cizbiz", "time": "any", "weight": 1, "group": [1, 2], "maxGroups": 2, "baseDistance": [120, 100000], "minWeight": 0.7, "respawn": 180, "note": "yaratik4 yaratigi; satir biyom akisindan (creatures.json biome)"},
+          {"creature": "suluk_surusu", "time": "any", "weight": 1, "group": [1, 1], "maxGroups": 2, "baseDistance": [120, 100000], "minWeight": 0.7, "respawn": 180, "note": "yaratik4 yaratigi; satir biyom akisindan (creatures.json biome)"}
+        ], "atalar": [] },
+      "pois": [
+        {"type": "seyir_kulesi", "count": 1, "minSpacing": 200, "baseDistance": [60, 100000], "minWeight": 0.9},
+        {"type": "ata_tasi", "count": 1, "minSpacing": 200, "baseDistance": [60, 100000], "minWeight": 0.95},
+        {"type": "yabani_bahce", "count": 1, "minSpacing": 120, "baseDistance": [60, 100000], "minWeight": 0.85},
+        {"type": "yuva", "count": 2, "minSpacing": 70, "baseDistance": [60, 100000], "minWeight": 0.8},
+        {"type": "enkaz", "count": 3, "minSpacing": 70, "baseDistance": [60, 100000], "minWeight": 0.75},
+        {"type": "zengin_yatak", "count": 2, "minSpacing": 150, "baseDistance": [60, 100000], "minWeight": 0.85}
+      ]
+    },
+    "kizil_kanyon": {
+      "name": "Kızıl Kanyon",
+      "_not": "ICERIK 1: kizil mesalar, tuz duzlukleri, katran golcukleri, uzun golgeler; sicak ve kum firtinasi. Kaynak: Kum, Kuvars, Titan, Katran, Tuz. Katran golcukleri ve tuz duzlukleri yer tutucu: zemin tonu + kaynak dugumleri.",
+      "seed": 4,
+      "palette": {"ground": "C4562E", "plant": "B58A4A", "accent": "F2C14E", "shadow": "4A2A30", "fog": "E4B890", "skyNoon": "7FB0D8", "skySunset": "F07A48"},
+      "times": {
+        "sabah": {"name": "Sabah", "lightElevation": 12, "lightAzimuth": 90, "lightColor": "FFC890", "lightEnergy": 2.4, "sunDisk": 1, "moonDisk": 0, "moonElevation": -20, "moonAzimuth": 270, "skyTop": "6A98C8", "skyHorizon": "F6C898", "fog": "E8C098", "fogDensity": 0.0016, "ambient": 0.6, "stars": 0, "aurora": 0, "clouds": 0.3, "cloudColor": "FFE8D0", "veins": 0},
+        "ogle": {"name": "Öğle", "lightElevation": 50, "lightAzimuth": 165, "lightColor": "FFF0D8", "lightEnergy": 3.2, "sunDisk": 1, "moonDisk": 0, "moonElevation": -20, "moonAzimuth": 0, "skyTop": "4A86C4", "skyHorizon": "E8D4BC", "fog": "E0C8A8", "fogDensity": 0.0014, "ambient": 0.62, "stars": 0, "aurora": 0, "clouds": 0.25, "cloudColor": "FFF4E4", "veins": 0},
+        "gunbatimi": {"name": "Gün batımı", "lightElevation": 4, "lightAzimuth": 270, "lightColor": "FF7A38", "lightEnergy": 2.6, "sunDisk": 1, "moonDisk": 0.25, "moonElevation": 18, "moonAzimuth": 100, "skyTop": "4A3A78", "skyHorizon": "F8703C", "fog": "C47850", "fogDensity": 0.002, "ambient": 0.5, "stars": 0.05, "aurora": 0, "clouds": 0.4, "cloudColor": "F8A070", "veins": 0},
+        "kabarma_gecesi": {"name": "Kabarma gecesi", "lightElevation": 35, "lightAzimuth": 140, "lightColor": "B0B8E8", "lightEnergy": 0.6, "sunDisk": 0, "moonDisk": 1, "moonElevation": 35, "moonAzimuth": 140, "skyTop": "1E1A3A", "skyHorizon": "8AE0C0", "fog": "3A2E48", "fogDensity": 0.003, "ambient": 1.3, "stars": 1, "aurora": 1, "clouds": 0.15, "cloudColor": "3A3060", "veins": 0.55},
+        "normal_gece": {"name": "Normal gece", "lightElevation": 35, "lightAzimuth": 140, "lightColor": "B0B8E8", "lightEnergy": 0.55, "sunDisk": 0, "moonDisk": 1, "moonElevation": 35, "moonAzimuth": 140, "skyTop": "1E1A3A", "skyHorizon": "3A3A5E", "fog": "3A2E48", "fogDensity": 0.003, "ambient": 1.2, "stars": 1, "aurora": 0, "clouds": 0.15, "cloudColor": "3A3060", "veins": 0}
+      },
+      "terrain": {"amp": 26, "frequency": 0.008, "ridge": 0.85, "offset": 4, "floorMix": 0.9, "grassDensity": 0.08},
+      "atmosphere": {"fogLayers": [0.8], "fogColor": "E8B98A", "fogAlpha": 0.12, "fogCell": 10, "shafts": 0, "shaftSize": [3.5, 26], "shaftColor": "F6E7B8", "shaftAlpha": 0.0, "fogDensityMult": 1.0, "ambientFog": "D9B088"},
+      "decor": [
+        {"id": "kanyon_mesa", "model": "res://assets/models/lib/kaya_dik/kaya_dik.glb", "count": 260, "scale": [2.5, 6.0], "minDistance": 0, "lakeClear": 2, "sink": 0.3, "tint": "C8582F", "collideRadius": 0.9, "collideHeight": 3, "viewDistance": 420, "placeholder": "ayni model, ton farkli (biyom akisi, URETIM 3); gercek model Tripo istegi"},
+        {"id": "kanyon_kaya", "model": "res://assets/models/lib/kaya_duz/kaya_duz.glb", "count": 420, "scale": [1.5, 3.5], "minDistance": 0, "lakeClear": 1, "sink": 0.15, "tint": "B4502C", "collideRadius": 0.8, "collideHeight": 0.8, "viewDistance": 300, "placeholder": "ayni model, ton farkli (biyom akisi, URETIM 3); gercek model Tripo istegi"},
+        {"id": "kanyon_cali", "model": "res://assets/models/cali/cali.glb", "count": 160, "scale": [0.7, 1.2], "minDistance": 0, "lakeClear": 1, "wind": 0.5, "sink": 0.05, "tint": "B07A3A", "viewDistance": 110, "placeholder": "ayni model, ton farkli (biyom akisi, URETIM 3); gercek model Tripo istegi", "harvest": "fiber", "yield": 4, "perHit": 2},
+        {"id": "kanyon_agac", "model": "res://assets/models/turuncu_agac/turuncu_agac.glb", "count": 30, "scale": [0.8, 1.2], "minDistance": 0, "lakeClear": 3, "wind": 0.3, "tree": true, "sink": 0.1, "tint": "9B6B3A", "collideRadius": 0.5, "collideHeight": 3, "viewDistance": 320, "placeholder": "ayni model, ton farkli (biyom akisi, URETIM 3); gercek model Tripo istegi"}
+      ],
+      "patches": [],
+      "nodes": [
+        {"id": "kaya", "item": "stone", "model": "res://assets/models/lib/kaya/kaya.glb", "units": [4, 6], "size": [0.9, 1.3], "sink": 0.2, "scatterCount": 8, "scatterDistance": [0, 100000], "placeholder": "altin varlik (Cayir ile ayni)"},
+        {"id": "kum", "item": "kum", "model": "res://assets/models/kil_yatagi/kil_yatagi.glb", "units": [8, 8], "size": [1.1, 1.35], "sink": 0.05, "scatterCount": 14, "scatterDistance": [0, 100000], "tint": "E8C88A", "placeholder": "ayni model, ton farkli (biyom akisi, URETIM 3); gercek model Tripo istegi"},
+        {"id": "kuvars", "item": "kuvars", "model": "res://assets/models/lib/kaya/kaya.glb", "units": [4, 6], "size": [0.8, 1.1], "sink": 0.2, "scatterCount": 12, "scatterDistance": [0, 100000], "tint": "F4ECF8", "placeholder": "ayni model, ton farkli (biyom akisi, URETIM 3); gercek model Tripo istegi"},
+        {"id": "titan", "item": "titan_ore", "model": "res://assets/models/koru/demir.glb", "units": [6, 8], "size": [0.9, 1.15], "sink": 0.2, "scatterCount": 12, "scatterDistance": [0, 100000], "tint": "8AA4C0", "placeholder": "ayni model, ton farkli (biyom akisi, URETIM 3); gercek model Tripo istegi"},
+        {"id": "katran", "item": "katran", "model": "res://assets/models/kil_yatagi/kil_yatagi.glb", "units": [6, 8], "size": [1.0, 1.3], "sink": 0.05, "scatterCount": 10, "scatterDistance": [0, 100000], "tint": "1C1C26", "placeholder": "ayni model, ton farkli (biyom akisi, URETIM 3); gercek model Tripo istegi"},
+        {"id": "tuz", "item": "tuz", "model": "res://assets/models/lib/kaya/kaya.glb", "units": [4, 6], "size": [0.8, 1.1], "sink": 0.2, "scatterCount": 12, "scatterDistance": [0, 100000], "tint": "F8F8F4", "placeholder": "ayni model, ton farkli (biyom akisi, URETIM 3); gercek model Tripo istegi"},
+        {"id": "kemik_yigini", "item": "kemik", "model": "res://assets/models/lib/kaya/kaya.glb", "units": [3, 5], "size": [0.55, 0.8], "sink": 0.1, "scatterCount": 10, "scatterDistance": [0, 100000], "tint": "EFE6D2", "placeholder": "ayni model, ton farkli (biyom akisi, URETIM 3); gercek model Tripo istegi"}
+      ],
+      "grass": { "chunk": 16, "perChunk": 380, "height": [0.3, 0.62], "baseClear": 0, "wind": 1.0, "spacing": 0.3, "farSpacing": 0.75, "blades": 9, "farKeep": 0.45 },
+      "spawns": { "creatures": [
+          {"creature": "kosar", "time": "day", "weight": 1, "group": [2, 3], "maxGroups": 2, "baseDistance": [120, 100000], "minWeight": 0.7, "respawn": 180, "note": "yaratik4 yaratigi; satir biyom akisindan (creatures.json biome)"},
+          {"creature": "kivrik", "time": "any", "weight": 1, "group": [1, 2], "maxGroups": 2, "baseDistance": [120, 100000], "minWeight": 0.7, "respawn": 180, "note": "yaratik4 yaratigi; satir biyom akisindan (creatures.json biome)"},
+          {"creature": "kizgin", "time": "any", "weight": 1, "group": [1, 2], "maxGroups": 2, "baseDistance": [120, 100000], "minWeight": 0.7, "respawn": 180, "note": "yaratik4 yaratigi; satir biyom akisindan (creatures.json biome)"},
+          {"creature": "lesci", "time": "day", "weight": 1, "group": [2, 3], "maxGroups": 2, "baseDistance": [120, 100000], "minWeight": 0.7, "respawn": 180, "note": "yaratik4 yaratigi; satir biyom akisindan (creatures.json biome)"},
+          {"creature": "dehliz", "time": "any", "weight": 1, "group": [1, 2], "maxGroups": 2, "baseDistance": [120, 100000], "minWeight": 0.7, "respawn": 180, "note": "yaratik4 yaratigi; satir biyom akisindan (creatures.json biome)"}
+        ], "atalar": [] },
+      "pois": [
+        {"type": "seyir_kulesi", "count": 1, "minSpacing": 200, "baseDistance": [60, 100000], "minWeight": 0.9},
+        {"type": "ata_tasi", "count": 1, "minSpacing": 200, "baseDistance": [60, 100000], "minWeight": 0.95},
+        {"type": "yabani_bahce", "count": 1, "minSpacing": 120, "baseDistance": [60, 100000], "minWeight": 0.85},
+        {"type": "yuva", "count": 2, "minSpacing": 70, "baseDistance": [60, 100000], "minWeight": 0.8},
+        {"type": "enkaz", "count": 3, "minSpacing": 70, "baseDistance": [60, 100000], "minWeight": 0.75},
+        {"type": "zengin_yatak", "count": 2, "minSpacing": 150, "baseDistance": [60, 100000], "minWeight": 0.85}
+      ]
+    },
+    "ayaz_yaylasi": {
+      "name": "Ayaz Yaylası",
+      "_not": "ICERIK 1: kar, buzul yarikları, donmus goller; aurora en parlak burada; soguk ve tipi. Kaynak: Buz, Ayaz Kristali. Donmus goller ve buzul yarikları yer tutucu: zemin tonu + buz dugumleri.",
+      "seed": 5,
+      "palette": {"ground": "DCE8F2", "plant": "A8C4D8", "accent": "7FD8FF", "shadow": "5A6C8C", "fog": "D8E6F2", "skyNoon": "9AC4E8", "skySunset": "E8A0B8"},
+      "times": {
+        "sabah": {"name": "Sabah", "lightElevation": 12, "lightAzimuth": 90, "lightColor": "FFE4D0", "lightEnergy": 2.0, "sunDisk": 1, "moonDisk": 0, "moonElevation": -20, "moonAzimuth": 270, "skyTop": "6A9AD0", "skyHorizon": "F0D8D8", "fog": "D0E0F0", "fogDensity": 0.0025, "ambient": 0.7, "stars": 0, "aurora": 0, "clouds": 0.4, "cloudColor": "FFFFFF", "veins": 0},
+        "ogle": {"name": "Öğle", "lightElevation": 40, "lightAzimuth": 165, "lightColor": "F4F8FF", "lightEnergy": 2.6, "sunDisk": 1, "moonDisk": 0, "moonElevation": -20, "moonAzimuth": 0, "skyTop": "4C8AD0", "skyHorizon": "D4E4F4", "fog": "D0E0F0", "fogDensity": 0.002, "ambient": 0.75, "stars": 0, "aurora": 0, "clouds": 0.35, "cloudColor": "FFFFFF", "veins": 0},
+        "gunbatimi": {"name": "Gün batımı", "lightElevation": 4, "lightAzimuth": 270, "lightColor": "F4A0A0", "lightEnergy": 2.0, "sunDisk": 1, "moonDisk": 0.25, "moonElevation": 18, "moonAzimuth": 100, "skyTop": "3A4C8E", "skyHorizon": "F0A0B0", "fog": "B8A8C8", "fogDensity": 0.003, "ambient": 0.55, "stars": 0.05, "aurora": 0, "clouds": 0.45, "cloudColor": "F4C8D0", "veins": 0},
+        "kabarma_gecesi": {"name": "Kabarma gecesi", "lightElevation": 35, "lightAzimuth": 140, "lightColor": "A8C0F0", "lightEnergy": 0.6, "sunDisk": 0, "moonDisk": 1, "moonElevation": 35, "moonAzimuth": 140, "skyTop": "122040", "skyHorizon": "58F0C8", "fog": "20304E", "fogDensity": 0.004, "ambient": 1.35, "stars": 1, "aurora": 1, "clouds": 0.15, "cloudColor": "2A3C64", "veins": 0.5},
+        "normal_gece": {"name": "Normal gece", "lightElevation": 35, "lightAzimuth": 140, "lightColor": "A8C0F0", "lightEnergy": 0.55, "sunDisk": 0, "moonDisk": 1, "moonElevation": 35, "moonAzimuth": 140, "skyTop": "122040", "skyHorizon": "2C5C70", "fog": "20304E", "fogDensity": 0.004, "ambient": 1.3, "stars": 1, "aurora": 0.7, "clouds": 0.2, "cloudColor": "2A3C64", "veins": 0}
+      },
+      "terrain": {"amp": 14, "frequency": 0.01, "ridge": 0.3, "offset": 8, "floorMix": 0.95, "grassDensity": 0.03},
+      "atmosphere": {"fogLayers": [1.0], "fogColor": "D8E6F2", "fogAlpha": 0.2, "fogCell": 10, "shafts": 0, "shaftSize": [3.5, 26], "shaftColor": "F6E7B8", "shaftAlpha": 0.0, "fogDensityMult": 1.0, "ambientFog": "C8D8EA"},
+      "decor": [
+        {"id": "ayaz_koknar", "model": "res://assets/models/koru_ladin/koru_ladin.glb", "count": 650, "scale": [0.9, 1.5], "minDistance": 0, "lakeClear": 3, "wind": 0.15, "tree": true, "wood": "hard_wood", "sink": 0.2, "tint": "E8F0F8", "collideRadius": 0.5, "collideHeight": 6, "viewDistance": 320, "placeholder": "ayni model, ton farkli (biyom akisi, URETIM 3); gercek model Tripo istegi"},
+        {"id": "ayaz_koknar_genc", "model": "res://assets/models/koru_ladin/koru_ladin.glb", "count": 400, "scale": [0.35, 0.6], "minDistance": 0, "lakeClear": 2, "wind": 0.2, "sink": 0.1, "tint": "E8F0F8", "viewDistance": 200, "placeholder": "ayni model, ton farkli (biyom akisi, URETIM 3); gercek model Tripo istegi"},
+        {"id": "ayaz_kaya", "model": "res://assets/models/lib/kaya_duz/kaya_duz.glb", "count": 300, "scale": [1.2, 3.0], "minDistance": 0, "lakeClear": 1, "sink": 0.15, "tint": "C8D8E8", "collideRadius": 0.8, "collideHeight": 0.8, "viewDistance": 300, "placeholder": "ayni model, ton farkli (biyom akisi, URETIM 3); gercek model Tripo istegi"},
+        {"id": "ayaz_buz", "model": "res://assets/models/lib/kaya_dik/kaya_dik.glb", "count": 200, "scale": [1.0, 3.0], "minDistance": 0, "lakeClear": 2, "sink": 0.2, "tint": "9ED0F0", "collideRadius": 0.5, "collideHeight": 2.4, "viewDistance": 300, "placeholder": "ayni model, ton farkli (biyom akisi, URETIM 3); gercek model Tripo istegi"}
+      ],
+      "patches": [],
+      "nodes": [
+        {"id": "kaya", "item": "stone", "model": "res://assets/models/lib/kaya/kaya.glb", "units": [4, 6], "size": [0.9, 1.3], "sink": 0.2, "scatterCount": 8, "scatterDistance": [0, 100000], "placeholder": "altin varlik (Cayir ile ayni)"},
+        {"id": "buz", "item": "buz", "model": "res://assets/models/lib/kaya/kaya.glb", "units": [4, 6], "size": [0.9, 1.3], "sink": 0.2, "scatterCount": 18, "scatterDistance": [0, 100000], "tint": "BFE6FF", "placeholder": "ayni model, ton farkli (biyom akisi, URETIM 3); gercek model Tripo istegi"},
+        {"id": "ayaz_kristali", "item": "ayaz_kristali", "model": "res://assets/models/bakir/bakir.glb", "units": [4, 5], "size": [0.9, 1.1], "sink": 0.2, "scatterCount": 12, "scatterDistance": [0, 100000], "tint": "6FD8FF", "placeholder": "ayni model, ton farkli (biyom akisi, URETIM 3); gercek model Tripo istegi"},
+        {"id": "kemik_yigini", "item": "kemik", "model": "res://assets/models/lib/kaya/kaya.glb", "units": [3, 5], "size": [0.55, 0.8], "sink": 0.1, "scatterCount": 6, "scatterDistance": [0, 100000], "tint": "EFE6D2", "placeholder": "ayni model, ton farkli (biyom akisi, URETIM 3); gercek model Tripo istegi"}
+      ],
+      "grass": { "chunk": 16, "perChunk": 380, "height": [0.3, 0.62], "baseClear": 0, "wind": 1.0, "spacing": 0.3, "farSpacing": 0.75, "blades": 9, "farKeep": 0.45 },
+      "spawns": { "creatures": [
+          {"creature": "tosun", "time": "day", "weight": 1, "group": [2, 3], "maxGroups": 2, "baseDistance": [120, 100000], "minWeight": 0.7, "respawn": 180, "note": "yaratik4 yaratigi; satir biyom akisindan (creatures.json biome)"},
+          {"creature": "ayaz_kurdu", "time": "any", "weight": 1, "group": [1, 2], "maxGroups": 2, "baseDistance": [120, 100000], "minWeight": 0.7, "respawn": 180, "note": "yaratik4 yaratigi; satir biyom akisindan (creatures.json biome)"},
+          {"creature": "paytak", "time": "day", "weight": 1, "group": [2, 3], "maxGroups": 2, "baseDistance": [120, 100000], "minWeight": 0.7, "respawn": 180, "note": "yaratik4 yaratigi; satir biyom akisindan (creatures.json biome)"},
+          {"creature": "billur", "time": "day", "weight": 1, "group": [2, 3], "maxGroups": 2, "baseDistance": [120, 100000], "minWeight": 0.7, "respawn": 180, "note": "yaratik4 yaratigi; satir biyom akisindan (creatures.json biome)"}
+        ], "atalar": [] },
+      "pois": [
+        {"type": "seyir_kulesi", "count": 1, "minSpacing": 200, "baseDistance": [60, 100000], "minWeight": 0.9},
+        {"type": "ata_tasi", "count": 1, "minSpacing": 200, "baseDistance": [60, 100000], "minWeight": 0.95},
+        {"type": "yabani_bahce", "count": 1, "minSpacing": 120, "baseDistance": [60, 100000], "minWeight": 0.85},
+        {"type": "yuva", "count": 2, "minSpacing": 70, "baseDistance": [60, 100000], "minWeight": 0.8},
+        {"type": "enkaz", "count": 3, "minSpacing": 70, "baseDistance": [60, 100000], "minWeight": 0.75},
+        {"type": "zengin_yatak", "count": 2, "minSpacing": 150, "baseDistance": [60, 100000], "minWeight": 0.85}
+      ]
+    },
+    "gobek": {
+      "name": "Göbek",
+      "_not": "ICERIK 1: krater ici, parlayan Maya golleri, hamur gibi kabarmis kayalar, goge cikan isik sutunu; Maya yanigi. Kaynak: Ham Maya, Obsidyen, Isil Cevher. Maya golleri yer tutucu: zeminin parlamasi (veins) + Ham Maya dugumleri.",
+      "seed": 6,
+      "palette": {"ground": "E8D6B8", "plant": "5FF0C8", "accent": "D45CFF", "shadow": "4A3A6A", "fog": "CBB5E8", "skyNoon": "A0A8E0", "skySunset": "E8908A"},
+      "times": {
+        "sabah": {"name": "Sabah", "lightElevation": 12, "lightAzimuth": 90, "lightColor": "FFD8C0", "lightEnergy": 2.2, "sunDisk": 1, "moonDisk": 0, "moonElevation": -20, "moonAzimuth": 270, "skyTop": "7A80C8", "skyHorizon": "F0C8D8", "fog": "D0B8E0", "fogDensity": 0.0032, "ambient": 0.6, "stars": 0, "aurora": 0, "clouds": 0.4, "cloudColor": "F8E8F4", "veins": 0.3},
+        "ogle": {"name": "Öğle", "lightElevation": 62, "lightAzimuth": 165, "lightColor": "FFF0F4", "lightEnergy": 2.6, "sunDisk": 1, "moonDisk": 0, "moonElevation": -20, "moonAzimuth": 0, "skyTop": "5C78C8", "skyHorizon": "D0C8EC", "fog": "C8B4E4", "fogDensity": 0.0028, "ambient": 0.6, "stars": 0, "aurora": 0, "clouds": 0.4, "cloudColor": "F8F0FC", "veins": 0.3},
+        "gunbatimi": {"name": "Gün batımı", "lightElevation": 4, "lightAzimuth": 270, "lightColor": "F08A8A", "lightEnergy": 2.0, "sunDisk": 1, "moonDisk": 0.25, "moonElevation": 18, "moonAzimuth": 100, "skyTop": "3C4488", "skyHorizon": "E8908A", "fog": "A890B8", "fogDensity": 0.0036, "ambient": 0.5, "stars": 0.05, "aurora": 0, "clouds": 0.5, "cloudColor": "F0B0C0", "veins": 0.4},
+        "kabarma_gecesi": {"name": "Kabarma gecesi", "lightElevation": 35, "lightAzimuth": 140, "lightColor": "B8B0F0", "lightEnergy": 0.6, "sunDisk": 0, "moonDisk": 1, "moonElevation": 35, "moonAzimuth": 140, "skyTop": "1A1838", "skyHorizon": "9A6AF0", "fog": "2E2850", "fogDensity": 0.005, "ambient": 1.3, "stars": 1, "aurora": 1, "clouds": 0.2, "cloudColor": "3A3066", "veins": 0.9},
+        "normal_gece": {"name": "Normal gece", "lightElevation": 35, "lightAzimuth": 140, "lightColor": "B8B0F0", "lightEnergy": 0.55, "sunDisk": 0, "moonDisk": 1, "moonElevation": 35, "moonAzimuth": 140, "skyTop": "1A1838", "skyHorizon": "4A3A78", "fog": "2E2850", "fogDensity": 0.005, "ambient": 1.25, "stars": 1, "aurora": 0, "clouds": 0.2, "cloudColor": "3A3066", "veins": 0.5}
+      },
+      "terrain": {"amp": 5, "frequency": 0.03, "ridge": 0.4, "offset": -14, "floorMix": 0.9, "grassDensity": 0.1},
+      "atmosphere": {"fogLayers": [1.0, 3.0], "fogColor": "C9B2E6", "fogAlpha": 0.25, "fogCell": 8, "shafts": 0, "shaftSize": [3.5, 26], "shaftColor": "F6E7B8", "shaftAlpha": 0.0, "fogDensityMult": 1.0, "ambientFog": "B8A0DC"},
+      "decor": [
+        {"id": "gobek_mantar", "model": "res://assets/models/koru/dev_mantar.glb", "count": 110, "scale": [1.2, 3.0], "minDistance": 0, "lakeClear": 1, "wind": 0, "sink": 0.1, "tint": "E8D0A8", "collideRadius": 0.5, "collideHeight": 3, "viewDistance": 300, "placeholder": "ayni model, ton farkli (biyom akisi, URETIM 3); gercek model Tripo istegi"},
+        {"id": "gobek_hamur", "model": "res://assets/models/lib/kaya_duz/kaya_duz.glb", "count": 180, "scale": [2.0, 5.0], "minDistance": 0, "lakeClear": 1, "sink": 0.2, "tint": "E0C8A0", "collideRadius": 1.0, "collideHeight": 1.2, "viewDistance": 300, "placeholder": "ayni model, ton farkli (biyom akisi, URETIM 3); gercek model Tripo istegi"},
+        {"id": "gobek_kristal", "model": "res://assets/models/lib/kaya_dik/kaya_dik.glb", "count": 80, "scale": [0.9, 2.2], "minDistance": 0, "lakeClear": 1, "sink": 0.15, "tint": "D45CFF", "collideRadius": 0.5, "collideHeight": 2.4, "viewDistance": 300, "placeholder": "ayni model, ton farkli (biyom akisi, URETIM 3); gercek model Tripo istegi"},
+        {"id": "gobek_egrelti", "model": "res://assets/models/egrelti/egrelti.glb", "count": 140, "scale": [1.0, 1.8], "minDistance": 0, "lakeClear": 0.5, "wind": 0.6, "shadow": false, "sink": 0.02, "tint": "5FF0C8", "viewDistance": 110, "placeholder": "ayni model, ton farkli (biyom akisi, URETIM 3); gercek model Tripo istegi"}
+      ],
+      "patches": [],
+      "nodes": [
+        {"id": "kaya", "item": "stone", "model": "res://assets/models/lib/kaya/kaya.glb", "units": [4, 6], "size": [0.9, 1.3], "sink": 0.2, "scatterCount": 4, "scatterDistance": [0, 100000], "placeholder": "altin varlik (Cayir ile ayni)"},
+        {"id": "ham_maya", "item": "ham_maya", "model": "res://assets/models/kil_yatagi/kil_yatagi.glb", "units": [6, 8], "size": [1.1, 1.4], "sink": 0.05, "scatterCount": 10, "scatterDistance": [0, 100000], "tint": "B67CFF", "placeholder": "ayni model, ton farkli (biyom akisi, URETIM 3); gercek model Tripo istegi"},
+        {"id": "obsidyen", "item": "obsidyen", "model": "res://assets/models/lib/kaya/kaya.glb", "units": [4, 6], "size": [0.8, 1.1], "sink": 0.2, "scatterCount": 8, "scatterDistance": [0, 100000], "tint": "2A2433", "placeholder": "ayni model, ton farkli (biyom akisi, URETIM 3); gercek model Tripo istegi"},
+        {"id": "isil_cevher", "item": "isil_cevher", "model": "res://assets/models/koru/demir.glb", "units": [4, 6], "size": [0.9, 1.15], "sink": 0.2, "scatterCount": 8, "scatterDistance": [0, 100000], "tint": "5FF0C8", "placeholder": "ayni model, ton farkli (biyom akisi, URETIM 3); gercek model Tripo istegi"}
+      ],
+      "grass": { "chunk": 16, "perChunk": 380, "height": [0.3, 0.62], "baseClear": 0, "wind": 1.0, "spacing": 0.3, "farSpacing": 0.75, "blades": 9, "farKeep": 0.45 },
+      "spawns": { "creatures": [
+          {"creature": "hamurcuk", "time": "any", "weight": 1, "group": [2, 3], "maxGroups": 2, "baseDistance": [120, 100000], "minWeight": 0.7, "respawn": 180, "note": "yaratik4 yaratigi; satir biyom akisindan (creatures.json biome)"}
+        ], "atalar": [] },
+      "pois": [
+        {"type": "seyir_kulesi", "count": 1, "minSpacing": 100, "baseDistance": [60, 100000], "minWeight": 0.9},
+        {"type": "ata_tasi", "count": 1, "minSpacing": 100, "baseDistance": [60, 100000], "minWeight": 0.95},
+        {"type": "enkaz", "count": 2, "minSpacing": 60, "baseDistance": [60, 100000], "minWeight": 0.85},
+        {"type": "zengin_yatak", "count": 1, "minSpacing": 80, "baseDistance": [60, 100000], "minWeight": 0.9}
       ]
     }
   }

@@ -1,0 +1,23 @@
+{
+ "in": "C:\\Users\\uruskan\\Documents\\GitHub\\kabarma\\.tools\\tripo_web\\yaratik\\kabarma_homur_rig.glb",
+ "out": "game/assets/models/homur/homur.glb",
+ "bones": 42,
+ "tris_before": 18546,
+ "tris_after": 8000,
+ "unweighted_verts": 0,
+ "verts": 12516,
+ "textures": {
+  "kabarma_homur_rig_basecolor": [
+   2048,
+   2048
+  ],
+  "kabarma_homur_rig_normal": [
+   2048,
+   2048
+  ]
+ },
+ "clips": [
+  "walk"
+ ],
+ "size_kb": 1756
+}

@@ -160,12 +160,15 @@ public partial class CreatureTest
         var notes = new List<string> { $"dolasma={s.Travelled:0}m uye={n0}" };
 
         // Hedef: Cekirge tahila, Vizviz cicege (kovan menzilinde) akar.
-        world.Events.Clear();
-        world.Target = new Vector3(s.State.HomeX + 5f, 0, s.State.HomeZ);
-        for (float t = 0; t < 40f && !world.Events.Contains(WildEvent.Took); t += Dt) s.Tick(Dt);
-        if (!world.Events.Contains(WildEvent.Took)) Fail(def.Id, $"suru hedefe ({def.Wild?.Target}) varmadi");
-        world.Target = null;
-        notes.Add($"hedef={def.Wild?.Target}");
+        if (!string.IsNullOrEmpty(def.Wild?.Target)) // Suluk Surusu hedefsiz, suda bekler (yaratik4)
+        {
+            world.Events.Clear();
+            world.Target = new Vector3(s.State.HomeX + 5f, 0, s.State.HomeZ);
+            for (float t = 0; t < 40f && !world.Events.Contains(WildEvent.Took); t += Dt) s.Tick(Dt);
+            if (!world.Events.Contains(WildEvent.Took)) Fail(def.Id, $"suru hedefe ({def.Wild?.Target}) varmadi");
+            world.Target = null;
+            notes.Add($"hedef={def.Wild?.Target}");
+        }
 
         if (d.Hive)
         {

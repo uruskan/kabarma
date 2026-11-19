@@ -50,6 +50,8 @@ public sealed class SpawnTable
     {
         var w = _biomes.World;
         float half = w.Terrain.Size / 2f - 10f;
+        float cx = w.Terrain.CenterX, cz = w.Terrain.CenterZ;
+        var bb = _map.Bounds(biome); // M4: biyomun sinir kutusunda ara (1800 m dunyada kucuk biyomlar)
         var near = string.IsNullOrEmpty(def.NearPoi) || pois == null ? null : pois.Where(p => p.Type == def.NearPoi && p.Biome == biome).ToList();
         for (int i = 0; i < tries; i++)
         {
@@ -60,8 +62,8 @@ public sealed class SpawnTable
                 float a = rng.Range(0f, MathF.Tau), d = rng.Range(4f, 25f);
                 x = p.X + MathF.Cos(a) * d; z = p.Z + MathF.Sin(a) * d;
             }
-            else { x = rng.Range(-half, half); z = rng.Range(-half, half); }
-            if (MathF.Abs(x) > half || MathF.Abs(z) > half) continue;
+            else { x = rng.Range(bb.x0, bb.x1); z = rng.Range(bb.z0, bb.z1); }
+            if (MathF.Abs(x - cx) > half || MathF.Abs(z - cz) > half) continue;
             float bd = MathF.Sqrt((x - baseX) * (x - baseX) + (z - baseZ) * (z - baseZ));
             if (bd < def.BaseDistance[0] || bd > def.BaseDistance[1]) continue;
             if (_map.Weight(biome, x, z) < def.MinWeight) continue;

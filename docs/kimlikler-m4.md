@@ -554,6 +554,21 @@ Tür kimlikleri (biomes.json `world.poiTypes`, hepsi var): `seyir_kulesi, kadim_
 
 Kalan biyomlar için ICERIK yalnız toplam verir (Seyir Kulesi 18, Kadim Taş 12, Ata Taşı 6, Oyuk 15, Enkaz ~30, Yabani Bahçe 10, Yuva ~20, Holding Kampı 3 + GM). Tablodan çıkan türetmeler (ICERIK yazmıyor): Ata Taşı Sazlık/Kanyon/Ayaz/Göbek 1'er (= 6 − 2 = 4); Oyuk Sazlık/Kanyon/Ayaz 3'er (= 15 − 6 = 9; Göbek'te Oyuk yok); Kadim Taş Sazlık 2, Kanyon 3, Ayaz 2 (§7 tablosundan); Seyir Kulesi 16, Yabani Bahçe 8, Yuva ~16, Enkaz ~24 kalan biyomlara bölüşülecek (bölüşüm belgede yok, boşluk).
 
+**Biyom akışı (19 Kasım 2026) — 1800 m ara dünya** ([TEKNIK.md](TEKNIK.md) §7 "M4 ara adımı"). 5 × 5 km yerine 1800 m'de toplamlar ölçeklendi; her yeni biyomda: Seyir Kulesi 1, Ata Taşı 1, Yabani Bahçe 1 (Göbek'te yok), Yuva 2 (Göbek'te yok), Enkaz 3 (Göbek 2), **Zengin Yatak 2 (Göbek 1; toplam 7 = 14'ün yarısı)**. Oyuk (ata4: üç koruyucu) ve Kadim Taş (gucler) bu akışta yerleşmez; Holding Kampı holding4'ün. Ilk dört biyomun keşif noktası kimlikleri `{tür}_{biyom}_{n}` (örn. `zengin_yatak_gobek_0`). `zengin_yatak` modeli yer tutucu (demir damarı); Sondaj Kulesi (zincir4) ile bitmeyen cevher ona bağlanır, loot tablosu zincir4/tarim4'ün.
+
+**Yeni kimlikler (biyom akışı):**
+
+| kimlik | ne | not |
+|---|---|---|
+| `kemik_yigini` | kaynak düğümü (`biomes.json` nodes), verdiği `kemik` | Çayır, Sazlık, Kanyon, Ayaz'da; yer tutucu (kaya modeli, bej ton) |
+| `turba`, `kukurt`, `kaucuk_sutu`, `balcik`, `isil_yosun` | Sazlık düğümleri (aynı kimlikle eşya) | yer tutucu model + ton (`nodes.tint`) |
+| `kum`, `kuvars`, `titan` (eşya `titan_ore`), `katran`, `tuz` | Kanyon düğümleri | idem |
+| `buz`, `ayaz_kristali` | Ayaz düğümleri | idem |
+| `ham_maya`, `obsidyen`, `isil_cevher` | Göbek düğümleri | idem |
+| `sazlik`, `kanyon`, `ayaz`, `gobek` | `biomes.json` yer imleri (görüntü seti) | |
+| `sazlik_*`, `kanyon_*`, `ayaz_*`, `gobek_*` | dekor kimlikleri | `decor.tint` ile aynı model baska ton (yer tutucu) |
+| `climate.json` | iklim tehlikesi tablosu (`BiomeClimate`) | `cold`, `heat`, `toxic_gas`, `maya_burn` |
+
 ## 18. İş emri zincirleri #13–#24 ve #37–#48 (ICERIK §18; kimlik yalnız)
 
 Var (orders.json, #1–12): `ciraklik, salgam_baronu, yesil_parmak, islahci, alaca_bahce, devler_ligi, coban, suru_sahibi, mandira, cins_hayvan, suvari, savas_agili`. M3 payı (#25–36, main'de yok, bilgi için): `gece_bekcisi, merdiven_zinciri, sovmen, kartbaz, asici, mayaci, avci, ata_yolu, kabarik_ata_zinciri, azman_kiran, holding_belasi, silahsor` (`merdiven` ve `kabarik_ata` varlık kimlikleriyle çakışmasın diye son ek).
@@ -586,3 +601,18 @@ Var (orders.json, #1–12): `ciraklik, salgam_baronu, yesil_parmak, islahci, ala
 | fotografci | Fotoğrafçı | #48 | |
 
 Başarım kimliği kalıbı: `chain_<zincir>` (achievements.json `chainPrefix`); ek başarımlar var: `ilk_gece`, `maya_hakimi`.
+## 19. ata4 eklemeleri (Atalar, Azmanlar, koruyucular; 19 Kasım 2026)
+
+Yeni kimlikler (yukaridaki listede yoktu; ata4 ekledi):
+
+| kimlik | Türkçe ad | not |
+|---|---|---|
+| kabarik_oz | Kabarık Ata Özü | Kabarık Ata ödülü (üst basamak çip malzemesi), `atalar.json` `kabarik.rewardItem`; KS/5 tane |
+| maya | Maya | Kabarık Ata bedeli (KS × 50); eşya kimliği ICERIK §2 #26'dan, Kabarma ödülünü yazan akış verir (`atalar.json` `kabarik.mayaItem`) |
+| azman_kiskaci, azman_kozu, surubasi_postu, azman_hamuru | Azman ödülleri | `azman.json` (örüntü `azman_postu`, `azman_boynuzu`) |
+| destansi_cip | Destansı Çip | Oyuk koruyucusu sandık ödülü (Çamur Devi, Kuvars Akrebi, Buz Aynası), `nadir_cip` örüntüsü |
+| sismik_davul | Sismik Davul | Çıyan Paşa adağı, `research.json` `watts` satırı (200 W); arenada kurulu, kablo çekilir |
+| ata:kabarik_<ata>, oyuk:camur_devi, oyuk:kuvars_akrebi, oyuk:buz_aynasi, ata:kurbaga_aga, ata:ciyan_pasa, ata:buz_tosunu, ata:ana_maya | çip kaynakları | `chips.json` `sources` |
+
+Ata ödül çekirdekleri: `sazlik_cekirdegi`, `kanyon_cekirdegi`, `ayaz_cekirdegi` (§1'de vardı). Ulti: Çıyan Paşa `yorunge_sulamasi`, Buz Tosunu `zaman_durdu` henüz `abilities.json`'da tanımsız; `atalar.json` `reward.pendingUlti` ve `AtaProgress.UltisOwed` taşır (kusam akışı tanımlayınca `ulti`'ye taşınır).
+Kurbağa Ağa'nın ödülü ikinci güç yuvasıdır (`unlocks`: `slot:guc_2`); Çapa: `recipe:capa_mk4` (Kurbağa), `capa_mk5` (Çıyan), `capa_mk6` (Tosunu).

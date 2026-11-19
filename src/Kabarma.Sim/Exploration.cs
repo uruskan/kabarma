@@ -1,4 +1,4 @@
-namespace Kabarma.Sim;
+﻿namespace Kabarma.Sim;
 
 /// <summary>Oyuncunun haritaya koydugu isaret (GDD §21 harita; "isaretler").</summary>
 public sealed class MapMarker
@@ -25,6 +25,9 @@ public sealed class PoiUse
 public sealed class Exploration
 {
     public float WorldSize { get; set; }
+    /// <summary>Dunya karesinin merkezi (M4: 1800 m dunya kratere yakin merkezlenir; eski kayitlarda 0,0).</summary>
+    public float CenterX { get; set; }
+    public float CenterZ { get; set; }
     public float Cell { get; set; }
     public int N { get; set; }
     public byte[] Bits { get; set; } = Array.Empty<byte>();
@@ -39,22 +42,48 @@ public sealed class Exploration
 
     public Exploration() { }
 
-    public Exploration(GameData data) : this(data.Biomes.World.Terrain.Size, data.Biomes.World.Map.Cell) { }
+    public Exploration(GameData data) : this(data.Biomes.World.Terrain.Size, data.Biomes.World.Map.Cell, data.Biomes.World.Terrain.CenterX, data.Biomes.World.Terrain.CenterZ) { }
 
-    public Exploration(float worldSize, float cell)
+    public Exploration(float worldSize, float cell, float centerX = 0f, float centerZ = 0f)
     {
         WorldSize = worldSize;
+        CenterX = centerX; CenterZ = centerZ;
         Cell = Math.Max(1f, cell);
         N = (int)MathF.Ceiling(worldSize / Cell);
         Bits = new byte[(N * N + 7) / 8];
+    }
+
+    /// <summary>
+    /// Kesif izgarasini yeni dunya boyuna ve merkezine tasir (M4: 640 m kayit 1800 m dunyaya acilir): her yeni hucre, eski izgarada
+    /// ayni dunya konumunun hucresi acildiysa acik olur; yeni hucrenin eski izgara disinda kalani kapali. Boyut ve merkez ayniysa dokunmaz.
+    /// </summary>
+    public Exploration RemapTo(float worldSize, float cell, float centerX, float centerZ)
+    {
+        if (WorldSize == worldSize && CenterX == centerX && CenterZ == centerZ && Cell == Math.Max(1f, cell)) return this;
+        var to = new Exploration(worldSize, cell, centerX, centerZ)
+        {
+            Found = Found, Climbed = Climbed, Markers = Markers, NextMarker = NextMarker, Uses = Uses, Flights = Flights,
+        };
+        float half = WorldSize / 2f;
+        for (int j = 0; j < to.N; j++)
+        for (int i = 0; i < to.N; i++)
+        {
+            float x = (i + 0.5f) * to.Cell - worldSize / 2f + centerX, z = (j + 0.5f) * to.Cell - worldSize / 2f + centerZ;
+            if (x < CenterX - half || x >= CenterX + half || z < CenterZ - half || z >= CenterZ + half) continue;
+            if (!IsRevealedAt(x, z)) continue;
+            int k = j * to.N + i;
+            to.Bits[k >> 3] |= (byte)(1 << (k & 7));
+            to.Revealed++;
+        }
+        return to;
     }
 
     public int Total => N * N;
     public float Percent => Total == 0 ? 0 : 100f * Revealed / Total;
 
     public (int i, int j) CellOf(float x, float z) =>
-        (Math.Clamp((int)MathF.Floor((x + WorldSize / 2f) / Cell), 0, N - 1),
-         Math.Clamp((int)MathF.Floor((z + WorldSize / 2f) / Cell), 0, N - 1));
+        (Math.Clamp((int)MathF.Floor((x - CenterX + WorldSize / 2f) / Cell), 0, N - 1),
+         Math.Clamp((int)MathF.Floor((z - CenterZ + WorldSize / 2f) / Cell), 0, N - 1));
 
     public bool IsRevealed(int i, int j)
     {
@@ -75,7 +104,7 @@ public sealed class Exploration
         for (int j = j0; j <= j1; j++)
         for (int i = i0; i <= i1; i++)
         {
-            float cx = (i + 0.5f) * Cell - WorldSize / 2f, cz = (j + 0.5f) * Cell - WorldSize / 2f;
+            float cx = (i + 0.5f) * Cell - WorldSize / 2f + CenterX, cz = (j + 0.5f) * Cell - WorldSize / 2f + CenterZ;
             if ((cx - x) * (cx - x) + (cz - z) * (cz - z) > r2) continue;
             int k = j * N + i;
             if ((Bits[k >> 3] & (1 << (k & 7))) != 0) continue;

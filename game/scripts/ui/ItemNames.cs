@@ -44,6 +44,9 @@ public static class ItemNames
         ["kargo_rampasi"] = "Kargo Rampası",
         // boss akisi (M2, GDD §18): Ata odulleri ve Ata Tasi.
         ["cayir_cekirdegi"] = "Çayır Çekirdeği", ["koru_cekirdegi"] = "Koru Çekirdeği", ["ata_yunu"] = "Ata Yünü", ["dede_boynuzu"] = "Dede Boynuzu", ["ata_tasi"] = "Ata Taşı",
+        // M4 (ata4): Ata ve Azman odulleri, Kabarik Ata Ozu, Maya
+        ["aga_derisi"] = "Ağa Derisi", ["pasa_kabugu"] = "Paşa Kabuğu", ["tosun_disi"] = "Tosun Dişi", ["sazlik_cekirdegi"] = "Sazlık Çekirdeği", ["kanyon_cekirdegi"] = "Kanyon Çekirdeği", ["ayaz_cekirdegi"] = "Ayaz Çekirdeği",
+        ["kabarik_oz"] = "Kabarık Ata Özü", ["maya"] = "Maya", ["azman_kiskaci"] = "Azman Kıskacı", ["azman_kozu"] = "Azman Közü", ["surubasi_postu"] = "Sürübaşı Postu", ["azman_hamuru"] = "Azman Hamuru", ["destansi_cip"] = "Destansı Çip",
         // savas (M3, ICERIK §4.2): Azman odulleri.
         ["azman_postu"] = "Azman Postu", ["azman_boynuzu"] = "Azman Boynuzu",
         // Karar 23 (kemer akisi): kemer aletleri ve uretilen yerlestirilebilirler.
@@ -105,6 +108,11 @@ public static class ItemNames
         ["resin"] = "Reçine",
         ["iron_ore"] = "Demir Cevheri",
         ["saltpeter"] = "Güherçile",
+        // M4 biyom akışı: T3–T6 ham kaynaklar (ICERIK §2.1 #11–#25) ve Kemik (§2.2 #32)
+        ["turba"] = "Turba", ["kukurt"] = "Kükürt", ["kaucuk_sutu"] = "Kauçuk Sütü", ["balcik"] = "Balçık", ["isil_yosun"] = "Işıl Yosun",
+        ["kum"] = "Kum", ["kuvars"] = "Kuvars", ["titan_ore"] = "Titan Cevheri", ["katran"] = "Katran", ["tuz"] = "Tuz",
+        ["buz"] = "Buz", ["ayaz_kristali"] = "Ayaz Kristali", ["ham_maya"] = "Ham Maya", ["obsidyen"] = "Obsidyen", ["isil_cevher"] = "Işıl Cevher",
+        ["kemik"] = "Kemik",
         ["scrap"] = "Hurda",
         // cip (M3): cip uretim malzemeleri (ICERIK 27, 36); tur ve nadirlik adlari chips.json
         ["maya_kesesi"] = "Maya Kesesi",

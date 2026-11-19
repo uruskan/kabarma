@@ -49,6 +49,8 @@ public sealed class RigDef
     public Dictionary<string, string> Bones { get; set; } = new();
     public Dictionary<string, string> Clips { get; set; } = new();
     public List<string> Placeholder { get; set; } = new();
+    /// <summary>Yuva basina klip hizi carpani (yaratik4): modelde kosu klibi yoksa 'run': 'glb:walk' ve burada 1.8 gibi bir carpan.</summary>
+    public Dictionary<string, float> ClipSpeed { get; set; } = new();
     public Dictionary<string, List<float>> RestFix { get; set; } = new();
     /// <summary>Ragdoll kemikleri: rol -> kapsul yaricapi (iskelet boyunun orani).</summary>
     public Dictionary<string, float> Ragdoll { get; set; } = new();

@@ -48,6 +48,7 @@ Sahibin kararı 24 (18 Kasım 2026): ana oturum M2'den M7'ye sormadan ilerler; a
 | Bulgu | Nerede | Not |
 |---|---|---|
 | KS 10'da 200 düşmanla kare ~33 ms (bütçe üstü) | gece, sürü | Şüphe (ölçülmedi): şişme shader'ı parametreleri her karede her yaratığın kendi materyaline yazılıyor; çizimler toplanamıyor |
+| 1800 m dünyada kurulum ~16 → ~40 sn (başsız `--test=world`, makine yoğunken); TEKNIK §10 ≤ 15 sn hedefi | World.cs yükseklik ızgarası (3,2 M hücre), World.Ground denetim dokusu 2048², dekor ve çarpışma gövdeleri | Şüphe (ölçülmedi): ızgara tek iş parçacığında; başsız testlerde yarı çözünürlük ya da yalnız gereken bölge; çarpışma gövdeleri ağaç başına bir düğüm |
 
 ## 17 Kasım 2026, akşam: M1 eksik denetimi
 
