@@ -1,3 +1,4 @@
+using System.Linq;
 using Godot;
 using Kabarma.Sim;
 
@@ -22,8 +23,11 @@ public partial class AtaMinion : Node3D, IAtaTarget
     public AtaMinion(Director d, AtaSystem sys, AtaAddDef def)
     {
         _d = d; _sys = sys; _def = def;
-        Body = CombatBody.Of(def.Hp, CombatTeam.Wild, def.Look == "pofuduk" ? "pofuduk" : "", mass: def.Scale);
+        Body = CombatBody.Of(def.Hp, CombatTeam.Wild, IsReal(def, d) ? def.Look : "", mass: def.Scale);
     }
+
+    /// <summary>look "kod" degilse ve yaratik tablosunda varsa gercek yaratik modeli (M4: suluk_surusu, tosun, hamurcuk ...).</summary>
+    static bool IsReal(AtaAddDef def, Director d) => def.Look != "kod" && !string.IsNullOrEmpty(def.Look) && d.Data.Creatures.Creatures.Any(c => c.Id == def.Look);
 
     public Vector3 Center => GlobalPosition + Vector3.Up * 0.45f * _def.Scale;
     public float Radius => 0.5f * _def.Scale;
@@ -37,9 +41,9 @@ public partial class AtaMinion : Node3D, IAtaTarget
         var aimArea = new Area3D { Name = "Nisan", CollisionLayer = 1, CollisionMask = 0, Monitoring = false };
         aimArea.AddChild(new CollisionShape3D { Shape = new SphereShape3D { Radius = Radius }, Position = Vector3.Up * 0.45f * _def.Scale });
         AddChild(aimArea);
-        if (_def.Look == "pofuduk")
+        if (IsReal(_def, _d))
         {
-            _rig = CreatureRig.Load(_d.Data.Creature("pofuduk"), _d.Poses, _body);
+            _rig = CreatureRig.Load(_d.Data.Creature(_def.Look), _d.Poses, _body);
             _body.Scale = Vector3.One * _def.Scale;
             _rig?.Play("walk", 0f);
         }
@@ -90,7 +94,7 @@ public partial class AtaMinion : Node3D, IAtaTarget
         if (_dead) return;
         _dead = true;
         _sys.Remove(this);
-        Fx.Burst(Center, _def.Look == "pofuduk" ? Palette.OffWhite : Palette.Wood, 16, 4f, 0.14f, 0.6f);
+        Fx.Burst(Center, _def.Look == "pofuduk" || _def.Look == "hamurcuk" ? Palette.OffWhite : Palette.Wood, 16, 4f, 0.14f, 0.6f);
         Sfx.Play("zipzip_aci", Center, 0f, 0.8f);
         QueueFree();
     }

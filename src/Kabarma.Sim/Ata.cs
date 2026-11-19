@@ -42,6 +42,10 @@ public sealed class AtaFight
     public float DamageMult { get; set; } = 1f;
     /// <summary>Yutulmus oyuncu icerde kalan sure (sn) ve Ata'nin suyun altinda kalan suresi (sn): M4.</summary>
     public float SwallowT { get; set; }
+    /// <summary>Konum ve yon (Godot katmani host'ta her kare yazar; ortak oyunda istemcideki kukla bundan yurur).</summary>
+    public float X { get; set; }
+    public float Z { get; set; }
+    public float Yaw { get; set; }
     public float SubmergedT { get; set; }
     /// <summary>Toplam alinan hasar, kaynaga gore (sinama ve rapor).</summary>
     public Dictionary<string, float> DamageBySource { get; set; } = new();
