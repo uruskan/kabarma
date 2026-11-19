@@ -29,6 +29,7 @@ public partial class Capa
         int n = Count(s.Muzzle);
         if (n > 0) Fx.Burst(muzzle, color, n, s.MuzzleSpeed, s.MuzzleSize, s.MuzzleLife, true, 0f);
         FeelSound(s.FireSfx, s.FireDb, muzzle);
+        Vfx.Head(id, "muzzle", muzzle, color); // fx/Vfx.cs: baslik namlu efekti (head.<id>.muzzle)
     }
 
     /// <summary>Isabet katmani. squash: esnetilecek hedef (yoksa null; Zipzip kendi esnemesini yapar).</summary>
@@ -50,6 +51,7 @@ public partial class Capa
         }
         FeelSound(s.DebrisSfx, s.DebrisDb, at);
         if (crit && s.CritFlash > 0) ScreenFlash(color, s.CritFlash);
+        Vfx.Head(id, "impact", at, color); // fx/Vfx.cs: baslik isabet efekti (head.<id>.impact)
     }
 
     /// <summary>Parca sacilmasi katmani (kaynagin debris sayilari).</summary>

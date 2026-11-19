@@ -153,6 +153,7 @@ public partial class AbilitySystem : Node3D
     /// <summary>Gucun dunyadaki etkisi. local: kullanan bu makinedeki oyuncu (Atilma ve Dev Mod yalniz onu oynatir).</summary>
     public void Apply(AbilityDef def, Vector3 at, Vector3 aim, bool local)
     {
+        Vfx.Power(def.Id, at + Vector3.Up * 0.1f, aim); // fx/Vfx.cs: power.<kimlik> (yoksa power.default); kusam yeni gucler icin vfx.json'a satir ekler
         switch (def.Id)
         {
             case "atilma":

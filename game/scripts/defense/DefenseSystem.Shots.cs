@@ -38,6 +38,7 @@ public partial class DefenseSystem
                 m.LookAt(aimPt == from ? from + Vector3.Forward : aimPt);
                 _shots.Add(new Shot { Mesh = m, From = from, To = aimPt, Dur = Mathf.Max(0.02f, dur), Damage = d.Damage, Target = x.Id, Tower = d.Id });
                 Sfx.Play("hit", from, -10f, 1.8f);
+                Vfx.Play("tower_civi_shot", from, aimPt - from);
                 break;
             }
             case "arc":
@@ -47,6 +48,7 @@ public partial class DefenseSystem
                 var m = Bullet(new SphereMesh { Radius = 0.14f, Height = 0.28f, RadialSegments = 8, Rings = 4 }, AmmoColor(item), from);
                 _shots.Add(new Shot { Mesh = m, From = from, V0 = v0, To = to, Dur = d.FlightSeconds, Gravity = d.Gravity, Damage = d.Damage, Splash = d.Splash, Arc = true, Target = x.Id, Tower = d.Id });
                 Sfx.Play("firlatma", from, -6f, 1.1f);
+                Vfx.Play("tower_sapan_shot", from, Vector3.Up);
                 break;
             }
             case "cone":
@@ -57,6 +59,7 @@ public partial class DefenseSystem
                     Fx.Burst(from + G(u) * 0.6f, Palette.OffWhite.Lerp(Palette.Accent, 0.4f), 3, 9f, 0.05f, 0.18f, true, 0f);
                 Fx.Burst(from, Palette.DarkGrey.Lerp(Palette.OffWhite, 0.5f), 10, 2f, 0.14f, 0.5f, false, -1f);
                 Sfx.Play("pop", from, -2f, 0.7f);
+                Vfx.Play("tower_sacma_shot", from, dir);
                 foreach (var (i, k) in hits.ToList())
                 {
                     var t = _targets[i];

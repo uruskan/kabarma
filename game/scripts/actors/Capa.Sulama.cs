@@ -51,6 +51,7 @@ public partial class Capa
         if (got <= 0) return;
         if (GD.Randf() < 0.3f) Sfx.Play("water", aim, -14f);
         Fx.Burst(aim + Vector3.Up * 0.15f, Palette.SkyNoon, 5, 2.5f, 0.05f, 0.35f);
+        Vfx.Play("farm_water", aim + Vector3.Up * 0.2f);
     }
 
     static string TankText(WaterTank t) => $"Su deposu: {t.Liters:0} / {t.Capacity:0} L";

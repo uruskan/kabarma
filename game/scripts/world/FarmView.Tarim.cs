@@ -154,6 +154,7 @@ public partial class FarmView
             var a = _data.Crops.Genetics.AlacaOf(h.Alaca);
             d?.Hud.Hint($"Alaca! {name}: satışta ×{a?.PriceMult}", 2.5f);
             Fx.Burst(at + Vector3.Up * 0.6f, CropVisuals.AlacaTint(h.Alaca), 30, 6f, 0.12f, 0.9f);
+        Vfx.Play("farm_alaca", at + Vector3.Up * 0.5f, null, CropVisuals.AlacaTint(h.Alaca));
             Sfx.Play("swell", at, -2f);
         }
         GD.Print($"TARIM harvest crop={h.Crop} item={h.Item} yield={h.Yield} seeds={h.Seeds} wild={h.Wild} crossed={h.Crossed}");
