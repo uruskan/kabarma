@@ -207,6 +207,8 @@ Host ya da sunucu yetkilidir. İstemci istekleri mesafe, bekleme süresi ve enva
 - **Arazi** 64 m'lik görsel parçalara bölünür (görüş konisi eleme); çarpışma tek yükseklik şeklidir. Bütçeler §10'dakilerle aynıdır.
 - **Doğma tabloları** biyom başına `biomes.json` `spawns` içindedir: `creatures` (yaratık sürüleri: gündüz/gece, ağırlık, sürü boyu, en çok sürü, Ocak'a uzaklık) ve `atalar` (Ata'nın çağrıldığı Ata Taşı ve arena yarıçapı). Yaratık ve Ata akışları satır ekler; tabloyu `SpawnTable` okur.
 
+**Biyom sözleşmesi (M4, `biyom` akışı).** Altı biyomun kimliği, kademesi (T1–T6) ve iklim tehlikesi `data/climate.json`'dadır; `BiomeClimate` (`Sim`) okur, durumsuzdur, kayda ve ağa girmez. "Bu noktada hangi biyom": `BiomeMap.BiomeAt(x, z)` (harita yeni biyomları kapsayana dek yalnız Çayır ve Koru döner; kimlikler ve kademe haritadan bağımsız `BiomeClimate`'te durur). "Bu biyomda ne tehlike, direnç yetiyor mu": `BiomeClimate.Exposure(biyom, ClimateContext)` (gece/gündüz, giyili modül, etkin yemek, bölge `gas_pit`, durum `shelter`/`shade`/`wet`) → tehlike, direnç yetti mi, saniyede can (1–3), dayanıklılık yenilenmesi engelli mi. Giriş donanımı `entryGear` (ipucu). Yeni içerik biyom kimliğiyle `biomes.json` `biomes.<kimlik>` altına satır ekler.
+
 ## 8. Yapay zekâ
 
 - **Izgara:** 1 m'lik maliyet ızgarası; eğim, su ve yapı ayak izinden türetilir. Duvar hücreleri kapalı değil, "kırma maliyetli"dir.

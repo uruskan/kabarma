@@ -14,13 +14,13 @@ public class FarmM2Tests
     public void All_eleven_t1_t2_crops_have_data_and_families_from_icerik()
     {
         var d = Data();
-        Assert.Equal(T12.OrderBy(x => x), d.Crops.Crops.Select(c => c.Id).OrderBy(x => x));
+        Assert.Equal(T12.OrderBy(x => x), d.Crops.Crops.Select(c => c.Id).Where(T12.Contains).OrderBy(x => x)); // 13 yeni ekin: FarmM4Tests
         var fam = new Dictionary<string, string>
         {
             ["turnip"] = "root", ["wheat"] = "grain", ["pumpkin"] = "gourd", ["sunflower"] = "oil", ["flax"] = "fiber", ["tomato"] = "fruit",
             ["mushroom"] = "mushroom", ["blackberry"] = "fruit", ["sourberry"] = "fruit", ["hazelnut"] = "oil", ["garlic"] = "spice",
         };
-        foreach (var c in d.Crops.Crops)
+        foreach (var c in d.Crops.Crops.Where(c => T12.Contains(c.Id)))
         {
             Assert.Equal(fam[c.Id], c.Family);
             Assert.True(c.GrowSeconds > 0 && c.BaseYield > 0 && c.SeedReturn > 0 && c.BasePrice > 0, c.Id);

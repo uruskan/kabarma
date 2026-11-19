@@ -7,7 +7,7 @@ namespace Kabarma.Game;
 /// kose rengi, toon). Kredi yok; uretim istegi raporda (Tripo, ekin basina 1 model). pipeline/licenses.md "kod".
 /// Model olgun boyda kurulur; PlotView evreye gore olcekler. Salgam altin modeli (assets/models/salgam) aynen kalir.
 /// </summary>
-public static class CropVisuals
+public static partial class CropVisuals
 {
     static readonly Color Leaf = new("5E9E3A"), LeafDark = new("3F7A2A"), Stem = new("7FA64A"), Straw = new("D9B451");
 
@@ -100,7 +100,8 @@ public static class CropVisuals
                     k.Cylinder(0.012f, 0.025f, 0.5f, MeshKit.At(new Vector3(Mathf.Cos(a) * 0.03f, 0.38f, Mathf.Sin(a) * 0.03f), new Vector3(0.18f * Mathf.Cos(a), 0, 0.18f * Mathf.Sin(a))), Stem, 4);
                 }
                 break;
-            default: // bilinmeyen ekin: salgamin yedek sekli
+            default: // bilinmeyen ekin: salgamin yedek sekli (M4 ekinleri: FarmView.Crops4.cs)
+                if (MakeM4(crop, k)) break;
                 k.Sphere(0.3f, MeshKit.At(new Vector3(0, 0.18f, 0), Vector3.Zero, new Vector3(1f, 0.95f, 1f)), Palette.TurnipBody, 12, 8);
                 k.Sphere(0.27f, MeshKit.At(new Vector3(0, 0.3f, 0), Vector3.Zero, new Vector3(1f, 0.55f, 1f)), Palette.TurnipTop, 12, 6);
                 break;
@@ -122,7 +123,7 @@ public static class CropVisuals
     {
         "wheat" => new Color("E2C35A"), "pumpkin" => new Color("E8862A"), "sunflower" => new Color("F2C531"), "flax" => new Color("7FA7E8"),
         "tomato" => new Color("D93A2B"), "mushroom" => new Color("A4572E"), "blackberry" => new Color("5A2F6E"), "sourberry" => new Color("C9D43A"),
-        "hazelnut" => new Color("A8743E"), "garlic" => new Color("F1ECE0"), _ => Palette.TurnipBody,
+        "hazelnut" => new Color("A8743E"), "garlic" => new Color("F1ECE0"), _ => M4Color(crop),
     };
 }
 
