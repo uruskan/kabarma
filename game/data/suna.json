@@ -1,0 +1,162 @@
+{
+ "_not": "Suna'nin M6 ogretici replikleri (TR ve EN) ve ogretici tetikleyicileri (M6 ogretici). Replik anahtari 'key' dil akisi icin ceviri anahtaridir (suna.<kimlik>); tone: seslendirme tonu (ElevenLabs istegi, PROGRESS Kredi kuyrugu). Ses dosyasi assets/audio/voice/{dil}/{kimlik}.mp3; yoksa satir yalniz altyazi. trigger: biome (arg: biyom kimligi) | station (ilk istasyon) | automation (bant, kol, boru, drone, teleferik ilk kurulum) | vehicle (ilk arac) | ata (ilk Ata dovusu) | ks (arg: en az KS) | tuzuk (ilk Tuzuklu gece) | husumet (ilk Husumet > 0). Her tetikleyici bir kez calar (kayitta saklanir).",
+ "cooldownSeconds": 12,
+ "automationIds": [
+  "bant",
+  "kol",
+  "boru",
+  "drone",
+  "teleferik",
+  "conveyor",
+  "arm",
+  "pipe"
+ ],
+ "lines": {
+  "tut_biyom_sis_korusu": {
+   "key": "suna.tut_biyom_sis_korusu",
+   "tone": "kuru, hafif temkinli",
+   "tr": "Sis Korusu. Burada görüş kısa, ağaçlar fazla. Ocak'tan uzaklaşırken pusulana bak.",
+   "en": "Mist Grove. Visibility is short and the trees are many. Watch your compass when you leave the Hearth."
+  },
+  "tut_biyom_isil_sazlik": {
+   "key": "suna.tut_biyom_isil_sazlik",
+   "tone": "meraklı, hafif alaycı",
+   "tr": "Işıl Sazlık. Parlayan şeyleri yeme, parlayan şeylerin de seni yemesine izin verme.",
+   "en": "Glimmer Reeds. Do not eat the glowing things, and do not let the glowing things eat you."
+  },
+  "tut_biyom_kizil_kanyon": {
+   "key": "suna.tut_biyom_kizil_kanyon",
+   "tone": "dürüst, hafif gergin",
+   "tr": "Kızıl Kanyon. Sıcak burada ciddi bir tehlike. Su ve gölge planın olmadan ilerleme.",
+   "en": "Red Canyon. Heat is a real hazard here. Do not go further without a plan for water and shade."
+  },
+  "tut_biyom_ayaz_yaylasi": {
+   "key": "suna.tut_biyom_ayaz_yaylasi",
+   "tone": "kuru, üşümüş",
+   "tr": "Ayaz Yaylası. Soğuk dayanıklılığını yer. Sıcak yemek ve sıcak bir ocak yanında dursun.",
+   "en": "Frost Plateau. The cold eats your stamina. Keep hot food and a warm hearth within reach."
+  },
+  "tut_biyom_gobek": {
+   "key": "suna.tut_biyom_gobek",
+   "tone": "ciddi, yavaş",
+   "tr": "Göbek. Maya burada kalın. Kooperatif de burada, bunu sana sonradan söyleyecektim.",
+   "en": "The Core. The Maya is thick here. The Cooperative is here too, which I was going to tell you later."
+  },
+  "tut_istasyon_ilk": {
+   "key": "suna.tut_istasyon_ilk",
+   "tone": "öğretici, sakin",
+   "tr": "İlk istasyonun kuruldu. E ile aç, malzemeyi koy, sırayı başlat. Üretim sen yokken de sürer.",
+   "en": "Your first station is up. Press E to open it, load the materials and start the queue. Production keeps going while you are away."
+  },
+  "tut_otomasyon_ilk": {
+   "key": "suna.tut_otomasyon_ilk",
+   "tone": "hevesli, hafif yorgun",
+   "tr": "Otomasyon. Bant, kol, boru: artık kendi ellerinle taşımak zorunda değilsin. Yine de sorumlu sensin.",
+   "en": "Automation. Belts, arms, pipes: you no longer have to carry things yourself. You are still the one responsible."
+  },
+  "tut_arac_ilk": {
+   "key": "suna.tut_arac_ilk",
+   "tone": "neşeli",
+   "tr": "İlk araç. Sürücü koltuğuna E ile otur. Yakıt, yük ve toprak: sırayla önemli.",
+   "en": "Your first vehicle. Press E to take the driver's seat. Fuel, cargo and terrain matter, in that order."
+  },
+  "tut_ata_ilk": {
+   "key": "suna.tut_ata_ilk",
+   "tone": "ciddi, alçak sesle",
+   "tr": "Bu bir Ata. Kendi arenasında kendi kurallarıyla vurur. Canı üç aşamalı; her aşamada tavrı değişir.",
+   "en": "That is an Ancestor. It fights by its own rules in its own arena. Its health has three phases, and its manner changes in each."
+  },
+  "tut_ks_2": {
+   "key": "suna.tut_ks_2",
+   "tone": "resmi",
+   "tr": "Kabarma Seviyesi yükseldi. Her seviye daha büyük dalgalar ve daha çok kart demek. Savunmanı seviyeye göre kur.",
+   "en": "The Swell Level went up. Each level means bigger waves and more cards. Build your defences to match."
+  },
+  "tut_tuzuk_ilk": {
+   "key": "suna.tut_tuzuk_ilk",
+   "tone": "dürüst, hafif suçlu",
+   "tr": "Bu gece Tüzük var. Kooperatif kuralları gece için değiştirdi. Kartların bunu telafi etmeyecek, o yüzden oku.",
+   "en": "Tonight has a Charter. The Cooperative changed the rules for the night. Your cards will not make up for it, so read it."
+  },
+  "tut_cekisme_ilk": {
+   "key": "suna.tut_cekisme_ilk",
+   "tone": "kuru, işyeri tonu",
+   "tr": "Bereket Holding seninle ilgilenmeye başladı. Buna Çekişme diyoruz. Çok yükselirse kamp sana baskın yapar.",
+   "en": "Bereket Holding has taken an interest in you. We call it Friction. If it climbs too high, the camp raids you."
+  }
+ },
+ "tutorial": [
+  {
+   "id": "biyom_sis_korusu",
+   "trigger": "biome",
+   "arg": "sis_korusu",
+   "line": "tut_biyom_sis_korusu"
+  },
+  {
+   "id": "biyom_isil_sazlik",
+   "trigger": "biome",
+   "arg": "isil_sazlik",
+   "line": "tut_biyom_isil_sazlik"
+  },
+  {
+   "id": "biyom_kizil_kanyon",
+   "trigger": "biome",
+   "arg": "kizil_kanyon",
+   "line": "tut_biyom_kizil_kanyon"
+  },
+  {
+   "id": "biyom_ayaz_yaylasi",
+   "trigger": "biome",
+   "arg": "ayaz_yaylasi",
+   "line": "tut_biyom_ayaz_yaylasi"
+  },
+  {
+   "id": "biyom_gobek",
+   "trigger": "biome",
+   "arg": "gobek",
+   "line": "tut_biyom_gobek"
+  },
+  {
+   "id": "istasyon_ilk",
+   "trigger": "station",
+   "arg": "",
+   "line": "tut_istasyon_ilk"
+  },
+  {
+   "id": "otomasyon_ilk",
+   "trigger": "automation",
+   "arg": "",
+   "line": "tut_otomasyon_ilk"
+  },
+  {
+   "id": "arac_ilk",
+   "trigger": "vehicle",
+   "arg": "",
+   "line": "tut_arac_ilk"
+  },
+  {
+   "id": "ata_ilk",
+   "trigger": "ata",
+   "arg": "",
+   "line": "tut_ata_ilk"
+  },
+  {
+   "id": "ks_2",
+   "trigger": "ks",
+   "arg": "2",
+   "line": "tut_ks_2"
+  },
+  {
+   "id": "tuzuk_ilk",
+   "trigger": "tuzuk",
+   "arg": "",
+   "line": "tut_tuzuk_ilk"
+  },
+  {
+   "id": "cekisme_ilk",
+   "trigger": "husumet",
+   "arg": "",
+   "line": "tut_cekisme_ilk"
+  }
+ ]
+}

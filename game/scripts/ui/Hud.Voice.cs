@@ -32,6 +32,7 @@ public partial class Hud
                     foreach (var (id, text) in VoiceLines.FromJson(json, lang)) _voiceIds.TryAdd(text, id);
         }
         catch (System.Exception e) { GD.PushWarning($"Suna sesi: {ScenarioPath} okunamadi ({e.Message}); replikler yalniz altyazi"); }
+        foreach (var (id, l) in _d.Data.Suna.Lines) { _voiceIds.TryAdd(l.Tr.Trim(), id); if (l.En.Length > 0) _voiceIds.TryAdd(l.En.Trim(), id); } // M6: ogretici replikleri
         _voice = new AudioStreamPlayer { Name = "SunaVoice", Bus = Sfx.BusOr(_d.Data.Audio.Radio.Bus) };
         AddChild(_voice);
         _voice.Finished += () => { Sfx.Play(_d.Data.Audio.Radio.Latch); Sfx.Duck(false); };
