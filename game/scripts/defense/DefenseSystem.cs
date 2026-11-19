@@ -162,6 +162,7 @@ public partial class DefenseSystem : Node3D
         if (!ready || !aimed) return;
         string item = TowerRules.Fire(t, d);
         if (item == null) return;
+        { float ts = _d.TuzukNow.TowerSpeed; if (ts < 0.999f) t.Cooldown = d.Interval / Mathf.Max(0.1f, ts); } // Tuzuk: Kor Kule (gece4)
         Shots++;
         n.Kick();
         Shoot(n, d, item, x, aimPt); // DefenseSystem.Shots.cs

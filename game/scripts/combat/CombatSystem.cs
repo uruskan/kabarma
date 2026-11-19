@@ -41,6 +41,7 @@ public partial class CombatSystem : Node
     public CombatResult Hit(ICombatTarget t, CombatHit hit, Vector3 from)
     {
         if (t == null || !t.Alive) return default;
+        hit = _d.TuzukHit(hit); // Tuzuk: Saganak (gece4)
         var r = t.TakeHit(hit, from);
         Vfx.Hit(t.Center, hit, r); // fx/Vfx.cs: kıvılcım, kritik halka, kabarık patlaması
         Resolve(t, 0);

@@ -24,9 +24,23 @@ public partial class Director
     /// <summary>Calisan gece planli (tam/kucuk/tatbikat) mi.</summary>
     public bool FullNight => Night?.Plan != null;
 
+    /// <summary>O an gecerli tuzuk (Kabarma suruyorsa plandan; degilse yok). GDD 14.8.</summary>
+    public TuzukSet TuzukNow => Night is { Plan: not null, Phase: not NightPhase.Dawn } n ? n.Plan.Spec.Tuzuk : TuzukSet.None;
+
+    /// <summary>Sagnak (tuzuk): oyuncunun Ates isabeti etkisiz, Sok guclu. Savas sozlesmesinin Hit girisinde cagrilir.</summary>
+    public CombatHit TuzukHit(CombatHit h)
+    {
+        var t = TuzukNow;
+        if (!t.Any || h.Team != CombatTeam.Player) return h;
+        float m = h.Type == DamageType.Ates ? t.FireMult : h.Type == DamageType.Sok ? t.ShockMult : 1f;
+        return m == 1f ? h : h with { Amount = h.Amount * m };
+    }
+
     void InitKabarma()
     {
         State.Calendar.Dusk += OnKabarmaDusk;
+        // Yeni Ay (GDD 14.8): --yeniay=sis,kor_kule  dunya kurulurken secilen tuzuk maddeleri (ilk Kabarma baslamadan).
+        if (Main.Args.TryGetValue("yeniay", out var ya)) GD.Print($"YENIAY secilen={State.SetNewMoon(ya.Split(new[] { ',', ';' }, System.StringSplitOptions.RemoveEmptyEntries))}");
         Events.WildActed += OnNightSwarmActed;
         if (Main.Args.ContainsKey("kabarmatest")) AddChild(new KabarmaTest(this) { Name = "KabarmaTest" }); // --test=kabarma
         if (Main.Args.TryGetValue("kabarma", out var a))
@@ -159,6 +173,9 @@ public partial class Director
             Zipzip.ProcessTicks = 0;
             _perfT = 0; _perfFrames = 0;
         }
+        // Sis (tuzuk): gorus mesafesi sinirlanir (ustel sis, gorus ~ 3 / yogunluk).
+        float vis = n.Plan.Spec.Tuzuk.VisionM;
+        if (vis > 0 && World.Env?.Environment is { } env) { env.FogEnabled = true; env.FogDensity = Mathf.Max(env.FogDensity, 3f / vis); }
         TickElites(n, dt);
         // Bozgun (GDD 14.4): butun oyuncular yerde. Tek oyuncuda: oyuncu yere dusunce bir kez.
         bool allDown = Player.Down && (Net == null || Net.Players().All(p => p.down));

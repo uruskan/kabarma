@@ -119,7 +119,7 @@ public sealed class HoldingSystem
     /// Kabarma gecesi basladi. Gercekse Perde kalkar; Husumet 50 ve ustundeki kamp baskin ekibi gonderir (L/2 + 2 birim:
     /// bir ustabasi, bir mekanik, gerisi bekci). Donen: yola cikan ekipler.
     /// </summary>
-    public List<(HoldingCamp camp, List<HoldingUnit> units)> OnNightStart(bool real)
+    public List<(HoldingCamp camp, List<HoldingUnit> units)> OnNightStart(bool real, bool allCamps = false)
     {
         var raids = new List<(HoldingCamp, List<HoldingUnit>)>();
         State.NightOpen = real;
@@ -129,7 +129,7 @@ public sealed class HoldingSystem
             c.RaidedTonight = false;
             c.RaidSent = false;
             c.RaidEntered = false;
-            if (c.Destroyed || c.Husumet < _h.Raid.Threshold) continue;
+            if (c.Destroyed || (!allCamps && c.Husumet < _h.Raid.Threshold)) continue; // allCamps: Tuzuk Holding Seferberligi (gece4)
             int n = _h.Raid.BaseCount + c.Level / 2;
             var team = new List<HoldingUnit>();
             for (int i = 0; i < n; i++)

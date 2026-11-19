@@ -23,6 +23,6 @@
     "cam_ocagi": "recipes", "elektronik_tezgahi": "recipes", "montaj_makinesi": "machine", "rafineri": "recipes", "sera_kontrol_unitesi": "machine",
     "ekim_robotu": "machine", "sagim_kirkim_kolu": "machine", "paketleyici": "machine", "sondaj_kulesi": "machine",
     "kristal_kesici": "recipes", "batarya_tezgahi": "recipes", "asi_tezgahi": "special", "zeplin_hangari": "next:arac",
-    "maya_dokumhanesi": "recipes", "kabartma_odasi": "next:gece4"
+    "maya_dokumhanesi": "recipes", "kabartma_odasi": "special"
   }
 }

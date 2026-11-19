@@ -40,6 +40,7 @@ public partial class Director
         if (st.Def.Station == "paketleme") { OpenPackingMenu(st); return; }
         if (st.OpenMachineMenu()) return; // tasima M4: otomasyon makineleri, Montaj Makinesi ve Sirt Yazicisi (Station.Automation.cs)
         if (st.Def.Station == "asi_tezgahi") { OpenGraftMenu(st); return; } // tarim4: gen aktarma (Director.Asi.cs)
+        if (st.Def.Station == "kabartma_odasi") { OpenSwellRoomMenu(st); return; } // gece4: tek kare ya da hayvan kabartir (Director.KabartmaOdasi.cs)
         if (st.Def.Station == Data.Research.Table) { Hud.OpenResearch(); return; } // zincir: Arastirma Masasi arastirilabilir tarifleri acar (Hud.Craft.Research.cs)
         Hud.OpenCraft(st.Def.Station);
     }

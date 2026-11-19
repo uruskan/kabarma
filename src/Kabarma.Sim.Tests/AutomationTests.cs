@@ -22,7 +22,7 @@ public class AutomationTests
     public void Every_station_has_a_function_or_is_explicitly_marked_for_a_later_stream()
     {
         var d = Data();
-        var allowedNext = new[] { "next:tarim4", "next:arac", "next:gece4" };
+        var allowedNext = new[] { "next:tarim4", "next:arac" };
         foreach (var id in ZincirChain4Tests.AllStations)
         {
             Assert.True(d.Automation.Functions.TryGetValue(id, out var fn), "istasyonun islevi yazilmamis: " + id);
@@ -36,7 +36,7 @@ public class AutomationTests
             }
         }
         // "next:" yalniz o akisin kendi istasyonlari icin; bu istasyonlar M4'te bos kalir ve PROGRESS.md'de satiri var.
-        Assert.Equal(new[] { "kabartma_odasi", "mutfak", "zeplin_hangari" },
+        Assert.Equal(new[] { "mutfak", "zeplin_hangari" },
             d.Automation.Functions.Where(kv => kv.Value.StartsWith("next:")).Select(kv => kv.Key).OrderBy(x => x).ToArray());
         foreach (var m in d.Automation.Machines.Keys) Assert.True(d.Research.Watts.ContainsKey(m), "makine guc ister (watts): " + m);
         Assert.Contains(d.Tool.Recipes, r => r.Id == "tabaklanmis_deri" && r.Station == "tabaklama_askisi");
