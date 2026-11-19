@@ -223,12 +223,12 @@
   "_adds": "Yardimci yaratiklar. Yer tutucu: Koca Pofuduk'un kucuk Pofuduklari olcekli pofuduk modeli; Dede'nin dallarindan dusen Findikci ve Hu, yaratik2 akisi gercegini yazana dek koddan 'bekci'.",
   "adds": [
     { "id": "mini_pofuduk", "name": "Yün Yumağı", "hp": 30, "speed": 3.2, "damage": 4, "scale": 0.55, "look": "pofuduk", "placeholder": "olcekli pofuduk.glb" },
-    { "id": "koru_bekcisi", "name": "Koru Bekçisi", "hp": 26, "speed": 3.6, "damage": 4, "scale": 1.0, "look": "kod", "placeholder": "Findikci ve Hu yerine koddan model (yaratik2 akisi)" },
-    { "id": "suluk", "name": "Sülük Sürüsü", "hp": 24, "speed": 4.0, "damage": 4, "scale": 0.8, "look": "kod", "color": "5B3A4A", "placeholder": "GECICI: suluk_surusu yaratigi yaratik4 akisinda gelince look o tura doner" },
+    { "id": "koru_bekcisi", "name": "Koru Bekçisi", "hp": 26, "speed": 3.6, "damage": 4, "scale": 1.0, "look": "findikci" },
+    { "id": "suluk", "name": "Sülük Sürüsü", "hp": 24, "speed": 4.0, "damage": 4, "scale": 0.8, "look": "suluk_surusu" },
     { "id": "kopan_bogum", "name": "Kopan Boğum", "hp": 34, "speed": 3.8, "damage": 5, "scale": 0.8, "look": "kod", "color": "A0643C", "placeholder": "Ciyan Pasa'nin kopan bogumu; kod govde" },
-    { "id": "kar_yavrusu", "name": "Kar Yavrusu", "hp": 40, "speed": 3.4, "damage": 5, "scale": 0.9, "look": "kod", "color": "D7E7F2", "placeholder": "GECICI: Tosun/Ayaz Kurdu yaratik4 akisinda gelince o tur" },
+    { "id": "kar_yavrusu", "name": "Tosun Yavrusu", "hp": 40, "speed": 3.4, "damage": 5, "scale": 0.45, "look": "tosun" },
     { "id": "maya_kopya", "name": "Maya Kopyası", "hp": 60, "speed": 3.0, "damage": 6, "scale": 1.3, "look": "kod", "color": "A5E8D5", "placeholder": "Onceki Atalarin hamurdan kopyasi: yer tutucu kod govde" },
-    { "id": "hamurcuk", "name": "Hamurcuk", "hp": 25, "speed": 4.2, "damage": 4, "scale": 0.7, "look": "kod", "color": "F0E2C4", "placeholder": "GECICI: hamurcuk yaratigi yaratik4 akisinda gelince o tur" }
+    { "id": "hamurcuk", "name": "Hamurcuk", "hp": 25, "speed": 4.2, "damage": 4, "scale": 1.0, "look": "hamurcuk" }
   ],
   "seals": [
     { "id": "bereketli_toprak", "name": "Bereketli Toprak", "effect": "bereket_tuketimi", "mult": 0.75 },

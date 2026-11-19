@@ -18,6 +18,14 @@ public sealed class AbilityLoadout
     public float InvulnLeft { get; set; }
     /// <summary>Dev Mod'un kalan suresi.</summary>
     public float GiantLeft { get; set; }
+    /// <summary>Gorunmez Pelerin'in kalan suresi (dusman hedef almaz, hayvan urkmez).</summary>
+    public float CloakLeft { get; set; }
+    /// <summary>Zaman Durdu'nun kalan suresi (butun dusmanlar donar).</summary>
+    public float TimeStopLeft { get; set; }
+    /// <summary>Isinlan: birakilan isaret (x, z) ve donusune kalan sure; yoksa MarkLeft 0.</summary>
+    public float MarkX { get; set; }
+    public float MarkZ { get; set; }
+    public float MarkLeft { get; set; }
 
     public float CooldownOf(string id) => Cooldowns.TryGetValue(id, out var c) ? c : 0f;
 }
@@ -116,12 +124,15 @@ public static class AbilityRules
         {
             l.Meter = 0;
             if (def.Id == "dev_mod") l.GiantLeft = def.Duration;
+            if (def.Id == "zaman_durdu") l.TimeStopLeft = def.Duration;
             return def;
         }
         l.Charge -= def.Charge;
         l.SinceSpend = 0;
         l.Cooldowns[id] = def.Cooldown;
         if (def.Invulnerable > 0) l.InvulnLeft = def.Invulnerable;
+        if (def.Id == "gorunmez_pelerin") l.CloakLeft = def.Duration;
+        if (def.Id == "isinlan") l.MarkLeft = def.Duration;
         return def;
     }
 
@@ -140,6 +151,9 @@ public static class AbilityRules
             l.Charge = MathF.Min(f.Charge.Max, l.Charge + f.Charge.RegenPerSecond * regen);
         l.InvulnLeft = MathF.Max(0, l.InvulnLeft - dt);
         l.GiantLeft = MathF.Max(0, l.GiantLeft - dt);
+        l.CloakLeft = MathF.Max(0, l.CloakLeft - dt);
+        l.TimeStopLeft = MathF.Max(0, l.TimeStopLeft - dt);
+        l.MarkLeft = MathF.Max(0, l.MarkLeft - dt);
     }
 
     /// <summary>Kabarma'da oldurme: olcer dolar (GDD 17.1). Kabarma ya da Ata dovusu disinda cagrilmaz.</summary>
@@ -159,6 +173,34 @@ public static class AbilityRules
         if (l.InvulnLeft > 0) return 0;
         if (l.GiantLeft > 0) dmg *= f.Def("dev_mod")?.DamageTaken ?? 1f;
         return dmg;
+    }
+
+    /// <summary>Alev Cemberi: ic ve dis yaricap arasindaki halka (ic yaricap 0: dolu daire).</summary>
+    public static bool InRing(float cx, float cz, float inner, float outer, float x, float z)
+    {
+        float dx = x - cx, dz = z - cz, d2 = dx * dx + dz * dz;
+        return d2 <= outer * outer && d2 >= inner * inner;
+    }
+
+    /// <summary>Cekim Kuyusu: hedefin merkeze dt boyunca cekilmis konumu (merkezde durur).</summary>
+    public static (float x, float z) PullToward(AbilityDef def, float cx, float cz, float x, float z, float dt)
+    {
+        float dx = cx - x, dz = cz - z, len = MathF.Sqrt(dx * dx + dz * dz);
+        if (len < 0.05f) return (cx, cz);
+        float step = MathF.Min(len, def.Pull * dt);
+        return (x + dx / len * step, z + dz / len * step);
+    }
+
+    /// <summary>Zaman Bali: hiz carpani (icinde 1 - slow, disinda 1).</summary>
+    public static float SlowFactor(AbilityDef def, float cx, float cz, float x, float z) => InRadius(cx, cz, def.Radius, x, z) ? 1f - def.Slow : 1f;
+
+    /// <summary>Buz Duvari: duvarin iki ucu (nisan yonune dik, onunde distance metrede, length uzunlukta).</summary>
+    public static ((float x, float z) a, (float x, float z) b) WallEnds(AbilityDef def, float px, float pz, float dx, float dz)
+    {
+        float l = MathF.Sqrt(dx * dx + dz * dz); if (l < 0.001f) { dx = 0; dz = 1; l = 1; }
+        dx /= l; dz /= l;
+        float cx = px + dx * def.Distance, cz = pz + dz * def.Distance, h = def.Length * 0.5f;
+        return ((cx - dz * h, cz + dx * h), (cx + dz * h, cz - dx * h));
     }
 
     /// <summary>Alan etkisinin bir hedefe dusen payi: yaricap icinde tam, disinda 0.</summary>

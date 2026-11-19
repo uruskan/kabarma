@@ -47,7 +47,7 @@ public partial class Wildlife : Node3D
     public override void _Process(double delta)
     {
         float dt = (float)delta;
-        TickM4Temp(dt); // GECICI (yaratik4): Wildlife.M4.cs, biyom satirlari gelene kadar
+        TickSiraGate(dt); // gorunum araci: Wildlife.Sira.cs
         Creatures.RemoveAll(c => !IsInstanceValid(c) || c.Dead);
         Swarms.RemoveAll(s => !IsInstanceValid(s) || s.Dead);
         foreach (var g in _groups) g.members.RemoveAll(m => !IsInstanceValid(m) || m is WildCreature { Dead: true } || m is WildSwarm { Dead: true });

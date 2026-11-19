@@ -101,6 +101,7 @@ public partial class AbilitySystem : Node3D
         TickFog(dt);
         TickHerd(dt);
         TickGiant(dt);
+        TickM4(dt);
     }
 
     void TickAtaMeter()
@@ -198,6 +199,9 @@ public partial class AbilitySystem : Node3D
                 if (!local) break;
                 Hud().Big("DEV MOD", Palette.MayaViolet, 2f);
                 Sfx.Play("levelup", at, -2f);
+                break;
+            default:
+                ApplyM4(def, at, aim, local); // AbilitySystem.M4.cs: kusam gucleri
                 break;
         }
     }

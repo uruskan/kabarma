@@ -30,13 +30,29 @@ public partial class HoldingWorld : Node3D
 
     public HoldingWorld(Director d) { D = d; Name = "HoldingWorld"; }
 
+    /// <summary>Suren Mudur dovusu (M4); Genel Merkez Cekirdegi dusunce kurulur, Sim durumu bosalinca kalkar.</summary>
+    public MudurEncounter Encounter { get; private set; }
+
+    void EncounterTick()
+    {
+        if (H.State.Mudur != null && Encounter == null) { Encounter = new MudurEncounter(this); AddChild(Encounter); }
+        else if (H.State.Mudur == null && Encounter != null) { Encounter.QueueFree(); Encounter = null; }
+    }
+
     public IReadOnlyDictionary<int, HoldingUnitActor> Units => _units;
     public HoldingCampNode CampNode(int id) => _camps.GetValueOrDefault(id);
     public Node3D Truck(int campId) => _trucks.GetValueOrDefault(campId);
 
     public override void _Ready()
     {
-        H.CampFounded += c => { GD.Print($"HOLDING founded camp#{c.Id} at {c.X:0},{c.Z:0} level={c.Level}"); D.Hud.Big("BEREKET HOLDING KAMP KURDU", Palette.HoldingRed, 3f); D.Hud.Hint("Sis Korusu'nun kıyısında bir Holding şubesi belirdi. Gündüz Perde'si var; Kabarma gecesi iner.", 5f); };
+        H.Team = () => D.Net?.PlayerCount ?? 1; // Mudur cani ekip boyuna gore
+        H.CampFounded += c =>
+        {
+            GD.Print($"HOLDING founded camp#{c.Id} slot={c.Slot} kind={c.Kind} at {c.X:0},{c.Z:0} level={c.Level}");
+            bool hq = c.Kind == "hq";
+            D.Hud.Big(hq ? "BEREKET HOLDING GENEL MERKEZ" : "BEREKET HOLDING KAMP KURDU", Palette.HoldingRed, 3f);
+            D.Hud.Hint(hq ? "Krater eteğinde Holding Genel Merkezi belirdi: yalnız Kabarma gecesi girilir; sonunda Müdür var." : c.Slot == 1 ? "Sis Korusu kıyısında bir Holding şubesi belirdi. Gündüz Perde si var; Kabarma gecesi iner." : $"Yeni bir Holding şubesi kuruldu ({c.Slot}. kamp). Gündüz Perde si var; Kabarma gecesi iner.", 5f);
+        };
         H.LevelUp += (c, l) => { GD.Print($"HOLDING camp#{c.Id} levelup {l}"); D.Hud.Big($"Holding kampı · Sv. {l}", Palette.HoldingRed, 2f); };
         H.CaravanDeparted += (c, k) => GD.Print($"HOLDING caravan camp#{c.Id} day={k.Day} guards={c.Units.Count(u => u.Job == "caravan")}");
         H.Ambushed += OnAmbushed;
@@ -50,6 +66,7 @@ public partial class HoldingWorld : Node3D
         float dt = (float)delta;
         if (Host) TickCaravans(dt);
         Reconcile(dt);
+        EncounterTick();
         PushOutOfPerde(dt);
         foreach (var k in _provoked.Keys.ToList()) _provoked[k] = Mathf.Max(0, _provoked[k] - dt);
     }
@@ -141,10 +158,11 @@ public partial class HoldingWorld : Node3D
     {
         var cal = D.State.Calendar;
         var kd = Def.Caravan;
-        var depot = new Vector3(kd.Depot.Count >= 2 ? kd.Depot[0] : 0, 0, kd.Depot.Count >= 2 ? kd.Depot[^1] : 0);
         foreach (var c in H.State.Camps)
         {
-            if (c.Destroyed) continue;
+            if (c.Destroyed || H.IsHq(c)) continue;
+            var (dx, dz) = H.DepotOf(c); // kamp 1: caravan.depot; 2. ve 3. kamp: kampa gore teslim noktasi
+            var depot = new Vector3(dx, 0, dz);
             var k = c.Caravan;
             if ((k == null || k.Phase == "done") && cal.Running && !cal.IsNight && cal.TimeOfDay >= kd.DepartTime && c.LastCaravanDay < cal.Day)
             {

@@ -51,6 +51,7 @@ public sealed partial class GameState
             CenterX = x, CenterZ = z, Radius = r,
             OcakTier = Research.OcakTier,
             Seed = Seed * 131 + (ulong)NightsStarted * 7 + (ulong)ks,
+            Tuzuk = TuzukFor(Math.Clamp(ks, 1, Math.Max(1, Data.Kabarma.Full.MaxKs)), kind), // GDD 14.8
         };
     }
 

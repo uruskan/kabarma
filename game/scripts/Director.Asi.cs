@@ -71,6 +71,12 @@ public partial class Director
     /// <summary>Aşıyı yapar (menu ve test ortak): sonuc mesaji ekrana, durum dondurulur.</summary>
     public GraftResult DoGraft(Station st, SeedLot recv, SeedLot donor, int gene)
     {
+        // ortak oyun: istemcide istek host'a gider (host aktorun cantasiyla ve tezgah erisimiyle dogrular; NetSync.Stations.cs HostGraft)
+        if (Net?.Forward("graft", w =>
+        {
+            foreach (var lot in new[] { recv, donor }) { w.Str(lot.Crop); w.U8((byte)lot.Genes.V); w.U8((byte)lot.Genes.H); w.U8((byte)lot.Genes.D); w.U8((byte)lot.Genes.M); }
+            w.U8((byte)gene);
+        }) == true) { Hud.HideMenu(); return GraftResult.Ok; }
         var r = State.Farm.Graft(State.Backpack, recv, donor, gene, out var res);
         if (r == GraftResult.Ok)
         {

@@ -40,7 +40,23 @@ public partial class ZipzipMeadow : Node
         _rng = new Rng(GD.Randi() | 1UL);
     }
 
-    bool Night => _d.Phase is Director.Act.Dusk or Director.Act.Night;
+    /// <summary>
+    /// Ogretici kurali (GDD 24, yalniz ilk gun): ilk dokuz salgam ilk Kabarma'ya ve ilk hasada kadar yasar; gunduz suruleri o zamana kadar
+    /// ekine gelmez (ilk 10 dakika boyunca ekin yenirse oyuncu Kabarma ve Hasat adimlarini hic goremez). Hasat adimi bitince normal (GDD 8.2).
+    /// </summary>
+    bool TutorialShield
+    {
+        get
+        {
+            var sc = _d.State.Scenario;
+            if (sc == null || sc.Finished) return false;
+            int last = sc.Steps.ToList().FindIndex(s => s.Id == "hasat");
+            if (last < 0) last = sc.Steps.ToList().FindIndex(s => s.Id == "night");
+            return last >= 0 && sc.StepIndex <= last;
+        }
+    }
+
+    bool Night =>_d.Phase is Director.Act.Dusk or Director.Act.Night;
 
     public override void _Process(double delta)
     {
@@ -143,7 +159,7 @@ public partial class ZipzipMeadow : Node
         {
             h.SenseT = _day.SenseSeconds;
             var was = h.Crop;
-            h.Crop = _d.FarmView.Views.Where(v => Kabarma.Sim.Herds.Attracts(v.Plot) && v.GlobalPosition.DistanceTo(h.Center) < _day.CropSense)
+            h.Crop = TutorialShield ? null : _d.FarmView.Views.Where(v => Kabarma.Sim.Herds.Attracts(v.Plot) && v.GlobalPosition.DistanceTo(h.Center) < _day.CropSense)
                 .OrderBy(v => v.GlobalPosition.DistanceSquaredTo(h.Center)).FirstOrDefault();
             if (h.Crop != null && h.Crop != was)
                 GD.Print($"ZIPZIP herd crop plot={h.Crop.Plot.X},{h.Crop.Plot.Y} dist={h.Crop.GlobalPosition.DistanceTo(h.Center):0.0}");

@@ -531,6 +531,8 @@ Havuz bittikten sonra kazanılan her kart jetonu, seçilen bir karta 1 Nişan pu
 | 11 | Göçmen Sürü | Bileşim bütün biyomlardan rastgele |
 | 12 | Ters Rüzgâr | Mermi menzili −%25 |
 
+Kimlikler: `sis`, `ac_suru`, `kalin_kabuk`, `cift_azman`, `kirik_can`, `saganak`, `holding_seferberligi`, `cimri_ay`, `uzun_gece`, `kor_kule`, `gocmen_suru`, `ters_ruzgar`. Sayılar `data/tuzuk.json`; sıra, yığılma (en çok iki kat) ve Yeni Ay seçimi [GDD.md](GDD.md) §14.8.
+
 ## 9. Üye tipleri (12)
 
 | # | Üye | Pasif | Başlangıç kartı | Nasıl açılır |
@@ -785,6 +787,16 @@ M3'te gelenler: Çivi, Sapan ve Saçma Kulesi; Diken Tarlası, Yapışkan Zemin,
 **Eklentiler:** Römork · Pulluk · Ekim Makinesi · Su Tankeri · Vinç · Kepçe · Zırh ve Tampon · Araç Kulesi (takılı silah başlığını yolcu kullanır) · Projektör · Balon (aracı hafifletir, yardan süzülür).
 
 **Yakıt:** Bitkisel Yağ (T2), Biyoyakıt (T3, iki kat verim), akü (T4).
+
+**M4 araç kuralları (arac akışı, 19 Kasım 2026; sayılar `game/data/vehicles.json`, kural `src/Kabarma.Sim/Vehicle*.cs`).**
+- **Üretim:** Araç Atölyesi (T2) Çekirge, Traktör, Kamyon, Biçerdöver, Hava Yastıklı ve 10 eklentiyi üretir; araç El Arabası gibi yük olarak istasyonun önüne çıkar (çantaya girmez), eklenti çantaya girer. **Zeplin Hangarı** (T5) Zeplin'i üretir ve parklar: Zeplin hangarın önünde park halinde çıkar; hangarın 14 m'sinde yere inen Zeplin park sayılır ve onarılır. Tarifler `recipes.json` (`unlockOn` `ocak:<T>`).
+- **Yakıt:** depo birimi 300 sn gaz (Zeplin 400); Bitkisel Yağ 1×, Biyoyakıt 2×, Akü Hücresi 4× verir. Depo boşsa araç gitmez; menüden (E) yakıt doldurulur.
+- **Yuvalar:** her araçta çeki demiri ve gövde yuvası vardır (Çekirge 1+1, Traktör 1+2, Kamyon 1+2, Biçerdöver 0+1, Hava Yastıklı 1+2, Zeplin 0+3). Eklenti kendi yuvasına, uyan araca takılır (menü: Tak / Çıkar).
+- **Eklentiler:** Römork (çeki demiri, +4 kasa, hız ×0,85) · Pulluk (Traktör, çeki demiri; arkasındaki 3 m'lik seritte tapuda tarla sürer) · Ekim Makinesi (Traktör; sürülmüş kareye seçili tohumu eker) · Su Tankeri (Traktör, Kamyon; 200 birim su, kareyi sular, gölden doldurulur) · Vinç (gövde; 6 m'den kasa yükler) · Kepçe (çeki demiri; önündeki kayaları kazar) · Zırh ve Tampon (gövde; +200 can, hızlıyken önündeki yaratığa Darbe hasarı, hız ×0,95) · Araç Kulesi (gövde; bir yolcu nişancı koltuğu) · Projektör (gövde; far) · Balon (gövde; düşüşü 3 m/sn'ye yavaşlatır, düşme hasarı yok).
+- **Zemin:** yer araçları suda ×0,2, bataklıkta (Sazlık) ×0,6, karda (Ayaz) ×0,75, kumda (Kanyon) ×0,7 yavaşlar; **Hava Yastıklı** hepsinde tam hızla gider (su, bataklık, kar, kum). Düşme: 9 m/sn'den hızlı inen araç, aşan her m/sn için 8 can kaybeder.
+- **Zeplin:** uçar (en çok 120 m, 6 m/sn tırmanış), Shift yükselir, Boşluk alçalır; kumanda yokken asılı kalır, sürücüsüzken yavaşça iner; yerdeyken yalnız taksi hızı (2 m/sn), havada 7 m/sn; devrilmez. Altına 3 kasa asar. Havadayken inilmez.
+- **Biçerdöver:** önündeki 3,2 m'de olgun ekini ve tutamları biçip çantaya depolar; yaratığı biçer (Kesme).
+- **Ortak oyun:** host yetkili; sürücü girdisini saniyede 15 kez gönderir, yolcu koltuğu bağımsız (Çekirge 2, Traktör 2, Kamyon 3, Hava Yastıklı 4, Zeplin 6).
 
 ## 15. Yemekler (32)
 

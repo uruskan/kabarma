@@ -36,6 +36,12 @@ public sealed class HoldingCamp
     public float X { get; set; }
     public float Z { get; set; }
     public int Level { get; set; } = 1;
+    /// <summary>1, 2, 3: kamp sirasi; 4: Genel Merkez (holding.json sites).</summary>
+    public int Slot { get; set; } = 1;
+    /// <summary>"camp" ya da "hq" (Genel Merkez: seviye sabit, baskin ve kervan yok, Cekirdek dusunce Mudur gelir).</summary>
+    public string Kind { get; set; } = "camp";
+    /// <summary>Genel Merkez temizlendi (Mudur yenildi): yeniden kurulmaz.</summary>
+    public bool Cleared { get; set; }
     public int FoundedDay { get; set; }
     /// <summary>Son seviye atlamadan ya da son baskindan beri gecen gun.</summary>
     public int QuietDays { get; set; }
@@ -70,6 +76,10 @@ public sealed class HoldingState
     public int Ambushes { get; set; }
     public int PlayerRaids { get; set; }
     public int CoresDestroyed { get; set; }
+    /// <summary>Suren Mudur dovusu (yoksa null) ve toplam yenilgi; acilanlar (head:..., cosmetic:...).</summary>
+    public MudurFight? Mudur { get; set; }
+    public int MudurDefeats { get; set; }
+    public List<string> Unlocks { get; set; } = new();
 }
 
 /// <summary>Yikilan hedefin ya da basarili pusunun ganimeti.</summary>

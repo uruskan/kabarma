@@ -33,6 +33,8 @@ public sealed class KabarmaSpec
     public float Radius { get; set; }
     public int OcakTier { get; set; } = 1;
     public ulong Seed { get; set; } = 1;
+    /// <summary>O gecenin tuzuk maddeleri (GDD 14.8); yoksa TuzukSet.None.</summary>
+    public TuzukSet Tuzuk { get; set; } = TuzukSet.None;
 }
 
 /// <summary>Dalgadaki tek giris: tur, elit oneki (yoksa bos), suru mu, Azman yeri mi (savas akisi; yoksa elit dalga).</summary>
@@ -151,13 +153,15 @@ public static class Waves
             MaxActive = d.MaxActive,
         };
         plan.MayaMult = !plan.Rewards ? 0f : noCrops ? d.NoCropMayaMult : 1f;
+        var tz = spec.Tuzuk;
+        if (plan.Rewards && tz.NewMoonCount > 0) plan.MayaMult *= 1f + data.Tuzuk.NewMoon.MayaPerClause * tz.NewMoonCount; // Yeni Ay: secilen madde basina Maya zammi
 
-        int waveCount = spec.Kind == KabarmaKind.Small ? d.Small.WaveCount : d.WaveCount;
+        int waveCount = spec.Kind == KabarmaKind.Small ? d.Small.WaveCount : d.WaveCount + tz.ExtraWaves; // Uzun Gece
         float waveSeconds = spec.Kind == KabarmaKind.Small ? d.Small.Seconds / Math.Max(1, waveCount) - d.GapSeconds * 0.5f : d.WaveSeconds;
-        float gap = spec.Kind == KabarmaKind.Small ? d.GapSeconds * 0.5f : d.GapSeconds;
+        float gap = tz.NoGap ? 0f : spec.Kind == KabarmaKind.Small ? d.GapSeconds * 0.5f : d.GapSeconds; // Kirik Can: ara yok
         int budget = (int)MathF.Round(Count(d, ks, spec.Players) * (noCrops ? d.NoCropCountMult : 1f));
         if (spec.Kind == KabarmaKind.Small) budget = Math.Max(4, budget / 2);
-        float elite = EliteRate(d, ks);
+        float elite = EliteRate(d, ks) + tz.EliteAdd; // Kalin Kabuk: tavanin ustune
         var buckets = Buckets(data, spec, noCrops);
 
         for (int i = 0; i < waveCount; i++)
@@ -171,7 +175,9 @@ public static class Waves
             // Doruk (GDD 14.1): her 5. KS'de Azman (savas akisi), oteki KS'lerde elit dalga. Azman yeri isaretli; Azman
             // sozlesmesi gelene kadar o dalga da elit dalgadir.
             var dk = new PlannedWave { Index = waveCount, Doruk = true, Seconds = d.DorukSeconds, GapAfter = 0 };
-            if (d.DorukEvery > 0 && ks % d.DorukEvery == 0) dk.Slots.Add(new WaveSlot { Azman = true, Species = ks % (2 * d.DorukEvery) == 0 ? "bozuk" : "homur" });
+            if (d.DorukEvery > 0 && ks % d.DorukEvery == 0)
+                for (int az = 0; az <= tz.AzmanAdd; az++) // Cift Azman: Doruk'ta ek Azman
+                    dk.Slots.Add(new WaveSlot { Azman = true, Species = ks % (2 * d.DorukEvery) == 0 ? "bozuk" : "homur" });
             Fill(data, dk, buckets, (int)MathF.Round(budget * d.DorukEliteShare), 1f, rng, allElite: true);
             plan.Waves.Add(dk);
         }
@@ -188,6 +194,11 @@ public static class Waves
         var natives = (d.Natives.GetValueOrDefault(spec.Biome) ?? new()).Where(Known).ToList();
         var nb = Neighbor(data.Biomes, spec.Biome);
         var neighbors = nb == null ? new List<string>() : (d.Natives.GetValueOrDefault(nb) ?? new()).Where(Known).ToList();
+        if (spec.Tuzuk.AnyBiomeMix) // Gocmen Suru: butun biyomlardan rastgele; yerli ve komsu payi bir havuzda
+        {
+            natives = d.Natives.OrderBy(kv => kv.Key, StringComparer.Ordinal).SelectMany(kv => kv.Value).Where(Known).Distinct().ToList();
+            neighbors = new();
+        }
         float nativeShare = d.MixNative, neighborShare = d.MixNeighbor, plantedShare = d.MixPlanted;
         if (noCrops) { nativeShare = 1f; neighborShare = 0f; plantedShare = 0f; }
         var planted = new List<(string, float)>();

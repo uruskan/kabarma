@@ -225,7 +225,7 @@ public partial class Zipzip : Node3D
         {
             // Yeme klibi (kafa sallama)
             eating = true;
-            _eatT += dt * slow;
+            _eatT += dt * slow * EatMult; // EatMult: Tuzuk Ac Suru (Zipzip.Kabaran.cs)
             if (_rig == null) _body.Rotation = new Vector3(Mathf.Sin(_eatT * 18f) * 0.25f, _body.Rotation.Y, 0);
             if (_eatT >= Def.EatSeconds)
             {

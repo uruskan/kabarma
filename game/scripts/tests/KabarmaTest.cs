@@ -188,6 +188,22 @@ public partial class KabarmaTest : Node
                 if (_killT <= 0) { _killT = 1f; KillAll(); }
                 if (n.Kills < 3) { if (_stageT > 300f) Fail("tatbikatta oldurme yok"); return; }
                 Check(n.Maya == 0f, $"tatbikat Maya {n.Maya}");
+                _stage = 11; _stageT = 0; _killT = 0;
+                return;
+            case 11: // tuzuk (gece4): KS 30'da bes madde gecerli, Uzun Gece vb. plana yansir
+                if (_stageT < 8f) return;
+                if (_d.Hud.ReportOpen) { _d.CloseReport(); return; }
+                if (_d.Phase != Director.Act.Free && _d.Phase != Director.Act.Report) return;
+                Check(_d.StartKabarma(KabarmaKind.Full, 30), "KS 30 baslamadi");
+                Next();
+                return;
+            case 12:
+                if (n == null || n.Plan == null || n.Ks != 30) { if (_stageT > 30f) Fail("KS 30 gece kurulmadi"); return; }
+                var tz = n.Plan.Spec.Tuzuk;
+                Check(tz.Stacks.Count == 5, $"KS 30 tuzuk madde sayisi {tz.Stacks.Count}");
+                Check(n.Plan.Waves.Count == _d.Data.Kabarma.Full.WaveCount + 1 + tz.ExtraWaves, $"dalga sayisi {n.Plan.Waves.Count} (tuzuk +{tz.ExtraWaves})");
+                Check(_d.TuzukNow.Stacks.Count == 5, "TuzukNow gece surerken dolu degil");
+                GD.Print($"KABARMA tuzuk ks=30 maddeler={string.Join(",", tz.Stacks.Select(kv => kv.Key + ":" + kv.Value))} dalga={n.Plan.Waves.Count} slot={n.Plan.TotalSlots}");
                 GD.Print($"KABARMA RESULT ok checks={_checks} species={_species.Count} t={_t:0}");
                 GetTree().Quit(0);
                 SetProcess(false);

@@ -78,6 +78,7 @@ public partial class Main : Node3D
         ["power"] = m => { Args["bot"] = "1"; Args["power"] = "1"; if (m._quitAfter <= 0) m._quitAfter = 1500; return false; }, // guc akisi: ilk gun zinciri, sonra uretec + lamba + dugme (Bot.Power.cs)
         ["gucler"] = m => { Args["guclertest"] = "1"; Args["mute"] = "1"; Sfx.Muted = true; return false; }, // gucler akisi: Kadim Tas parkuru, Atilma, Tatbikat, Fener (abilities/GuclerTest.cs)
         ["powershots"] = m => { Args["powershots"] = "1"; Args["mute"] = "1"; Sfx.Muted = true; return false; }, // guc akisi: parcalar ve kablolar, gunduz/gece goruntusu (progress/m2/guc/)
+        ["vehicles"] = m => { Args["vehicletest"] = "1"; Args["mute"] = "1"; Sfx.Muted = true; if (m._quitAfter <= 0) m._quitAfter = 450; return false; }, // arac M4: surus, eklenti, hava yastikli, zeplin (tests/VehicleTest.cs)
         ["kale"] = m => { Args["kaletest"] = "1"; Args["mute"] = "1"; Sfx.Muted = true; if (m._quitAfter <= 0) m._quitAfter = 420; return false; }, // kale M4: yeni kuleler, tuzaklar, Cam seti (defense/KaleTest.cs)
         ["savunma"] = m => { Args["savunmatest"] = "1"; Args["mute"] = "1"; Sfx.Muted = true; if (m._quitAfter <= 0) m._quitAfter = 300; return false; }, // savunma M3: kuleler ve tuzaklar (defense/DefenseTest.cs)
         ["input"] = m => { m._inputDevice = InputDriver.ParseDevice(Args.TryGetValue("device", out var d) ? d : "kbm"); if (m._quitAfter <= 0) m._quitAfter = 900; return false; }, // zincir bitince Bot.Hands cikar; bu ust sinir

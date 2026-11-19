@@ -20,11 +20,11 @@ public class AbilityTests
     public void Data_has_five_powers_two_ultis_five_stones_each_with_a_power()
     {
         var f = F();
-        Assert.Equal(5, f.Abilities.Count(a => !a.IsUlti));
-        Assert.Equal(2, f.Abilities.Count(a => a.IsUlti));
-        Assert.Equal(5, f.Stones.Count);
+        Assert.Equal(12, f.Abilities.Count(a => !a.IsUlti)); // M4 kusam: PLAN 7.1 Guc 12 (5 M3 + 7 M4)
+        Assert.Equal(4, f.Abilities.Count(a => a.IsUlti));   // Ulti 4
+        Assert.Equal(5, f.Stones.Count);                     // M3 Kadim Tas denemeleri; M4 gucleri icin deneme henuz yok
         foreach (var s in f.Stones) Assert.False(f.Def(s.Ability)!.IsUlti);
-        Assert.Equal(f.Abilities.Where(a => !a.IsUlti).Select(a => a.Id).OrderBy(x => x), f.Stones.Select(s => s.Ability).OrderBy(x => x));
+        Assert.Equal(f.Stones.Select(s => s.Ability).OrderBy(x => x), f.Abilities.Where(a => !a.IsUlti).Select(a => a.Id).Intersect(f.Stones.Select(s => s.Ability)).OrderBy(x => x));
         // GDD 17: Sarj 25-50, bekleme 8-30 sn
         foreach (var a in f.Abilities.Where(a => !a.IsUlti))
         {

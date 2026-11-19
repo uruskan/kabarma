@@ -104,6 +104,9 @@ public partial class Zipzip : IKabaran
 
     bool Walking => _walkPhase > 0;
 
+    /// <summary>Tuzuk Ac Suru: gece dalgasi ekini daha hizli yer (GDD 14.8).</summary>
+    float EatMult => Planned ? _dir.TuzukNow.EatSpeed : 1f;
+
     partial void KabaranExit();
     partial void KabaranExit() => Kabarans.Remove(this);
 }
