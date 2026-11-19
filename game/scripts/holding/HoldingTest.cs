@@ -37,7 +37,7 @@ public partial class HoldingTest : Node
     {
         _outDir = Main.Args.TryGetValue("test_out", out var o) ? o.TrimEnd('/', '\\') + "/" : ProjectSettings.GlobalizePath("res://").TrimEnd('/', '\\') + "/../progress/m3/holding/";
         DirAccess.MakeDirRecursiveAbsolute(_outDir);
-        GetTree().CreateTimer(400, true, false, true).Timeout += () => { GD.Print("HOLDING ZAMAN ASIMI"); _fail++; Finish(); };
+        GetTree().CreateTimer(600, true, false, true).Timeout += () => { GD.Print("HOLDING ZAMAN ASIMI"); _fail++; Finish(); };
         await Frames(10);
         try
         {
@@ -51,6 +51,7 @@ public partial class HoldingTest : Node
             await TheirRaid(camp);
             await PlayerRaid(camp);
             await Dawn(camp);
+            await Four(); // M4 (holding4): 2. ve 3. kamp, Genel Merkez, Mudur
         }
         catch (Exception e) { _fail++; GD.Print("HOLDING HATA " + e); }
         Finish();
@@ -194,6 +195,73 @@ public partial class HoldingTest : Node
         await Frames(3);
         Check(H.State.NightOpen == false && !_d.Holding.Units.Values.Any(a => a.Job == "raid"), "safakta Perde kalkti, baskin dagildi");
         Check(c.RebuildDay > S.Calendar.Day, $"yikik kamp gun {c.RebuildDay} yeniden kurulacak");
+    }
+
+    // ---------------------------------------------------------------- M4 (holding4)
+
+    CombatHit Hit(float amount) => new(amount, DamageType.Darbe, CombatTeam.Player);
+    MudurPart Part(string id) => _d.Holding.Encounter?.Parts.FirstOrDefault(p => p.Part == id);
+    float Do(string id, float amount) => Part(id) is { } p && p.Alive ? p.TakeHit(Hit(amount), _d.Player.GlobalPosition).Damage : 0f;
+
+    /// <summary>
+    /// 2. kamp (Ocak T3, Isil Sazlik), 3. kamp (T4, Kizil Kanyon), Genel Merkez (T5, krater eteginde); GM yalniz gece girilir; Cekirdek
+    /// dusunce Mudur: avlu (kamyon, motor kapagi, Mekanik onarimi), yonetim kati (jeneratorler, hoparlorler, Ustabasi), cati (balonlar),
+    /// zafer (odul, acilanlar). Vurus silah yolundan (IAtaTarget.TakeHit); GECICI: kamyon govdesi koddan (arac akisi gelene dek).
+    /// </summary>
+    async Task Four()
+    {
+        int day = S.Calendar.Day + 10;
+        H.OnMorning(day, 3); await Frames(6);
+        var c2 = H.State.Camps.FirstOrDefault(x => x.Slot == 2);
+        Check(c2 != null && S.BiomeMap.BiomeAt(c2.X, c2.Z) == "isil_sazlik" && _d.Holding.CampNode(c2.Id) != null, "2. kamp (Ocak T3) Isil Sazlik'ta kuruldu ve dugumu var");
+        Check(c2 != null && !_d.World.IsWater(new Vector3(c2.X, 0, c2.Z)), "2. kamp suda degil");
+        H.OnMorning(day + 1, 4); await Frames(6);
+        var c3 = H.State.Camps.FirstOrDefault(x => x.Slot == 3);
+        Check(c3 != null && S.BiomeMap.BiomeAt(c3.X, c3.Z) == "kizil_kanyon" && _d.Holding.CampNode(c3.Id) != null, "3. kamp (Ocak T4) Kizil Kanyon'da kuruldu ve dugumu var");
+        H.OnMorning(day + 2, 5); await Frames(6);
+        var hq = H.State.Camps.FirstOrDefault(x => x.Slot == 4);
+        Check(hq != null && hq.Kind == "hq" && hq.Level == 10 && _d.Holding.CampNode(hq.Id) != null, "Genel Merkez (Ocak T5) kuruldu, seviye 10");
+        if (hq == null) return;
+        Check(H.PerdeUp(hq), "Genel Merkez gunduz Perde'li (girilmez)");
+        H.OnNightStart(true);
+        Check(!H.PerdeUp(hq), "Kabarma gecesi Genel Merkez girilir");
+        foreach (var id in new[] { "silo", "atolye", "ahir", "cekirdek" }) H.HitStructure(hq.Id, id, 99999, out _);
+        await Frames(8);
+        var enc = _d.Holding.Encounter;
+        Check(H.State.Mudur != null && enc != null && enc.Stage == 0, "Cekirdek dustu: Mudur avlu asamasi basladi");
+        Check(Part("kasa") != null && Part("motor") != null && enc.Truck != null, "kamyon: kasa ve motor kapagi hedefleri");
+        var p0 = enc.Truck.GlobalPosition; await Wait(0.8f);
+        Check(enc.Truck.GlobalPosition.DistanceTo(p0) > 1f, "kamyon avluda doner");
+        Check(H.MechanicsAlive(hq.Id) >= 2, "Mekanikler avluda");
+        await Wait(2.2f); // kalkan
+        var f = H.State.Mudur;
+        float body = Do("kasa", 100), motor = Do("motor", 100);
+        Check(body > 0 && motor > body * 5, $"motor kapagi zayif nokta (kasa {body:0}, motor {motor:0})");
+        f.TruckHp = f.TruckMax * 0.5f; float hp0 = f.TruckHp; await Wait(2f);
+        Check(f.TruckHp > hp0, $"Mekanikler kamyonu onariyor ({hp0:0} -> {f.TruckHp:0})");
+        Do("motor", 100000); await Frames(6);
+        Check(f.Stage == 1 && Part("jenerator:0") != null && Part("hoparlor:1") != null, "yonetim kati: jeneratorler ve hoparlorler");
+        await Wait(2.4f);
+        Check(Part("mudur") is { Alive: false }, "jeneratorler kapanmadan Mudur vurulamaz");
+        Check(MudurRules.UnitSpeedMult(S.Data.Holding, f) > 1f, "hoparlor birimleri hizlandirir");
+        Do("hoparlor:0", 1000); Do("hoparlor:1", 1000);
+        Check(MudurRules.UnitSpeedMult(S.Data.Holding, f) == 1f, "hoparlorler susturuldu");
+        int ust = hq.Units.Count(u => u.Kind == "ustabasi"); f.CallT = 0.05f; await Wait(0.4f);
+        Check(hq.Units.Count(u => u.Kind == "ustabasi") > ust, "Mudur Ustabasi cagirdi");
+        for (int i = 0; i < 4; i++) Do($"jenerator:{i}", 1000);
+        Check(Part("mudur") is { Alive: true }, "jeneratorler kapaninca Mudur vurulur");
+        Do("mudur", f.BossHp - f.BossMax * 0.4f + 1f); await Frames(8);
+        Check(f.Stage == 2 && Part("balon:5") != null, "cati: zeplin ve 6 balon");
+        await Wait(2.4f);
+        Check(Part("mudur") is { Alive: false }, "balonlar inmeden Mudur vurulamaz");
+        for (int i = 0; i < 6; i++) Do($"balon:{i}", 1000);
+        Check(MudurRules.BalloonsLeft(f) == 0 && Part("mudur") is { Alive: true }, "balonlar patladi, Mudur vurulur");
+        int plan = S.Backpack.Count("holding_plani");
+        Do("mudur", 100000); await Frames(8);
+        Check(H.State.MudurDefeats == 1 && H.State.Mudur == null && hq.Cleared, "Mudur yenildi, Genel Merkez temizlendi");
+        Check(S.Backpack.Count("holding_plani") >= plan + 3 && H.State.Unlocks.Contains("head:yercekimi") && H.State.Unlocks.Contains("cosmetic:kask_holding_muduru"), "odul: Efsane planlari, Yercekimi basligi, kask ve kaplama acildi");
+        await Frames(4);
+        Check(_d.Holding.Encounter == null, "Mudur sahnesi kalkti");
     }
 
     Vector3 SiloCenter(HoldingCamp c) => _d.Holding.CampNode(c.Id).Targets(c).First(t => t.id == "silo").center;
