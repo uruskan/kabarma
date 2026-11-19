@@ -36,7 +36,7 @@ public class AutomationTests
             }
         }
         // "next:" yalniz o akisin kendi istasyonlari icin; bu istasyonlar M4'te bos kalir ve PROGRESS.md'de satiri var.
-        Assert.Equal(new[] { "asi_tezgahi", "kabartma_odasi", "mutfak", "zeplin_hangari" },
+        Assert.Equal(new[] { "kabartma_odasi", "mutfak", "zeplin_hangari" },
             d.Automation.Functions.Where(kv => kv.Value.StartsWith("next:")).Select(kv => kv.Key).OrderBy(x => x).ToArray());
         foreach (var m in d.Automation.Machines.Keys) Assert.True(d.Research.Watts.ContainsKey(m), "makine guc ister (watts): " + m);
         Assert.Contains(d.Tool.Recipes, r => r.Id == "tabaklanmis_deri" && r.Station == "tabaklama_askisi");
