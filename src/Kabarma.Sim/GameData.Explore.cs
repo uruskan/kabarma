@@ -20,6 +20,33 @@ public sealed class BiomeMapDef
     public float WarpAmp { get; set; } = 30f;
     public float WarpFrequency { get; set; } = 0.008f;
     public int Seed { get; set; } = 91;
+    /// <summary>M4 (1800 m dunya): derinlik zinciri yalniz bu biyomlar arasindadir (bos = Order'in hepsi). Order kademe sirasiyla altı biyomdur.</summary>
+    public List<string> Home { get; set; } = new();
+    /// <summary>M4: krater (Gobek) ve cevresindeki aciksal dilimler. Crater.Radius 0 ise yalniz derinlik zinciri (M2 dunyasi).</summary>
+    public CraterDef Crater { get; set; } = new();
+    public List<SliceDef> Slices { get; set; } = new();
+}
+
+/// <summary>Krater: Gobek biyomu (daire), cevresinde sirt (yukseklik). Merkez dunya konumu [x, z].</summary>
+public sealed class CraterDef
+{
+    public string Biome { get; set; } = "gobek";
+    public List<float> Center { get; set; } = new();
+    public float Radius { get; set; }
+    /// <summary>Gobek agirliginin dustugu band (m).</summary>
+    public float Blend { get; set; } = 50f;
+    /// <summary>Krater sirti: Radius*RimStart ile Radius*RimEnd arasinda RimHeight (m) yukselen cos tumsegi.</summary>
+    public float RimHeight { get; set; }
+    public float RimStart { get; set; } = 0.9f;
+    public float RimEnd { get; set; } = 1.45f;
+}
+
+/// <summary>Krater cevresindeki aciksal dilim: merkez ve yarim genislik (derece; 0 = +X, 90 = +Z). Biome "home" = derinlik zinciri.</summary>
+public sealed class SliceDef
+{
+    public string Biome { get; set; } = "";
+    public float Center { get; set; }
+    public float HalfWidth { get; set; } = 40f;
 }
 
 /// <summary>Yaratik dogma satiri (yaratik2 ve hayvan akislari satir ekler). Suru: Group araliginda uye.</summary>

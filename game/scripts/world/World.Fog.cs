@@ -13,7 +13,7 @@ namespace Kabarma.Game;
 public partial class World
 {
     readonly List<ShaderMaterial> _fogMats = new();
-    ShaderMaterial _shaftMat;
+    readonly List<ShaderMaterial> _shaftMats = new();
     public int FogLayerChunks { get; private set; }
     public int ShaftCount { get; private set; }
 
@@ -42,14 +42,15 @@ public partial class World
         var w = new float[n + 1, n + 1];
         for (int i = 0; i <= n; i++)
         for (int j = 0; j <= n; j++)
-            w[i, j] = Map.Weight(biome, i * cell - Size / 2f, j * cell - Size / 2f);
-        var root = new Node3D { Name = "KoruFog" };
+            w[i, j] = Map.Weight(biome, i * cell + Origin.X, j * cell + Origin.Y);
+        var root = new Node3D { Name = biome == "sis_korusu" ? "KoruFog" : biome + "_Fog" };
         AddChild(root);
         for (int layer = 0; layer < a.FogLayers.Count; layer++)
         {
             float lift = a.FogLayers[layer];
             var mat = new ShaderMaterial { Shader = GD.Load<Shader>("res://shaders/fog_layer.gdshader") };
             mat.SetShaderParameter("fog_color", new Color(a.FogColor));
+            mat.SetMeta("fogc", a.FogColor);
             // Ust katmanlar daha ince ve buyuk desenli.
             mat.SetShaderParameter("alpha", a.FogAlpha * (1f - 0.22f * layer));
             mat.SetShaderParameter("scale", 45f + 30f * layer);
@@ -70,7 +71,7 @@ public partial class World
                     if (w[i, j] + w[i + 1, j] + w[i, j + 1] + w[i + 1, j + 1] < 0.02f) continue;
                     Vector3 V(int x, int z)
                     {
-                        float wx = x * cell - Size / 2f, wz = z * cell - Size / 2f;
+                        float wx = x * cell + Origin.X, wz = z * cell + Origin.Y;
                         return new Vector3(wx, HeightAt(wx, wz) + lift, wz);
                     }
                     void P(int x, int z) { st.SetColor(new Color(1, 1, 1, w[x, z])); st.AddVertex(V(x, z)); }
@@ -94,14 +95,14 @@ public partial class World
     {
         var rng = new RandomNumberGenerator { Seed = (ulong)(T.Seed + 93) };
         var xfs = new List<(Transform3D xf, Color custom)>();
-        float half = Size / 2f - 10f;
+        var shaftRect = BiomeRect(biome, 10f);
         float wdt = a.ShaftSize.Count > 0 ? a.ShaftSize[0] : 3f, len = a.ShaftSize.Count > 1 ? a.ShaftSize[1] : 22f;
         // Huzme yonu: ogle gunesinden asagi (biraz egik), butun huzmeler paralel.
         var noon = Biome.Times.TryGetValue("ogle", out var o) ? o : null;
         var down = noon != null ? -Dir(Mathf.Min(noon.LightElevation, 70f), noon.LightAzimuth) : Vector3.Down;
-        for (int tries = 0; tries < a.Shafts * 30 && xfs.Count < a.Shafts; tries++)
+        for (int tries = 0; tries < a.Shafts * 90 && xfs.Count < a.Shafts; tries++)
         {
-            var p = new Vector3(rng.RandfRange(-half, half), 0, rng.RandfRange(-half, half));
+            var p = new Vector3(rng.RandfRange(shaftRect.Position.X, shaftRect.End.X), 0, rng.RandfRange(shaftRect.Position.Y, shaftRect.End.Y));
             if (Map.Weight(biome, p.X, p.Z) < 0.8f) continue;
             float s = rng.RandfRange(0.7f, 1.3f);
             // Kartin boyu huzme yonunde; dip noktasi zeminde, tepe tac hizasinda.
@@ -129,14 +130,15 @@ public partial class World
             Q(top - sx, new Vector2(0, 0)); Q(top + sx, new Vector2(1, 0)); Q(bot - sx, new Vector2(0, 1));
             Q(top + sx, new Vector2(1, 0)); Q(bot + sx, new Vector2(1, 1)); Q(bot - sx, new Vector2(0, 1));
         }
-        _shaftMat = new ShaderMaterial { Shader = GD.Load<Shader>("res://shaders/light_shaft.gdshader") };
+        var _shaftMat = new ShaderMaterial { Shader = GD.Load<Shader>("res://shaders/light_shaft.gdshader") };
+        _shaftMats.Add(_shaftMat);
         _shaftMat.SetShaderParameter("shaft_color", new Color(a.ShaftColor));
         _shaftMat.SetShaderParameter("alpha", a.ShaftAlpha);
         var mesh = st.Commit();
         mesh.SurfaceSetMaterial(0, _shaftMat);
         var mm = new MultiMesh { TransformFormat = MultiMesh.TransformFormatEnum.Transform3D, UseCustomData = true, Mesh = mesh, InstanceCount = xfs.Count };
         for (int i = 0; i < xfs.Count; i++) { mm.SetInstanceTransform(i, xfs[i].xf); mm.SetInstanceCustomData(i, xfs[i].custom); }
-        AddChild(new MultiMeshInstance3D { Name = "KoruShafts", Multimesh = mm, CastShadow = GeometryInstance3D.ShadowCastingSetting.Off });
+        AddChild(new MultiMeshInstance3D { Name = biome == "sis_korusu" ? "KoruShafts" : biome + "_Shafts", Multimesh = mm, CastShadow = GeometryInstance3D.ShadowCastingSetting.Off });
         ShaftCount = xfs.Count;
     }
 
@@ -145,11 +147,11 @@ public partial class World
     {
         // Gece ay "gunes" yerinde: huzme isik gucuyle de olceklenir (gecede belirgin huzme yok).
         float sun = Mathf.Clamp(L.SunDisk * Mathf.SmoothStep(2f, 30f, L.Elev) * Mathf.SmoothStep(0.4f, 1.4f, L.Energy), 0f, 1f);
-        _shaftMat?.SetShaderParameter("strength", sun);
+        foreach (var sm in _shaftMats) sm.SetShaderParameter("strength", sun);
         foreach (var m in _fogMats)
         {
             m.SetShaderParameter("strength", Mathf.Lerp(0.75f, 1f, Mathf.Clamp(L.Energy / 2.4f, 0f, 1f)));
-            var c = SecondBiome.Atmosphere.FogColor;
+            var c = m.HasMeta("fogc") ? (string)m.GetMeta("fogc") : SecondBiome.Atmosphere.FogColor;
             if (!string.IsNullOrEmpty(c)) m.SetShaderParameter("fog_color", new Color(c).Lerp(L.Fog, 0.45f));
         }
     }

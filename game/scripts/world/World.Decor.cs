@@ -50,8 +50,8 @@ public partial class World
                     }
                 }
             int want = Mathf.RoundToInt(def.Count * density);
-            float half = Size / 2f - 4f;
-            float x0 = box?[0] ?? -half, z0 = box?[1] ?? -half, x1 = box?[2] ?? half, z1 = box?[3] ?? half;
+            var core = SampleRect(Biomes.World.Biome, 4f);
+            float x0 = box?[0] ?? core.Position.X, z0 = box?[1] ?? core.Position.Y, x1 = box?[2] ?? core.End.X, z1 = box?[3] ?? core.End.Y;
             for (int tries = 0; tries < want * 12 && placed.Count < want + PatchCount(def.Id); tries++)
             {
                 var p = new Vector3(rng.RandfRange(x0, x1), 0, rng.RandfRange(z0, z1));
@@ -66,30 +66,43 @@ public partial class World
             if (outArea > 0)
                 ScatterInBiome(def, Biomes.World.Biome, Mathf.RoundToInt(def.Count * density * outArea / boxArea), placed, fillRng, box);
             GD.Print($"WORLD decor {def.Id} box={inBox} outside={placed.Count - inBox}");
+            // M4: M2 cekirdeginin disindaki Cayir (1800 m dunya): ayri tohum, adet = Count * OuterScale.
+            if (def.OuterScale > 0 && Size > T.CoreSize && T.CoreSize > 0)
+            {
+                var orng = new RandomNumberGenerator { Seed = (ulong)(T.Seed + 11 + 5000 * (Biome.Seed + 1)) };
+                ScatterInBiome(def, Biomes.World.Biome, Mathf.RoundToInt(def.Count * density * def.OuterScale), placed, orng, null, WorldRect(4f), skipCore: true);
+            }
             FinishDecor(def, def.Id, mesh, placed);
         }
-        // Diger biyomlar (Sis Korusu): kendi tohumu, adetler o biyomun alani icin (dunya2).
+        // Diger biyomlar: kendi tohumu, adetler o biyomun alani icin (dunya2; M4: dunya karesinin tamami, Koru icin once eski cekirdek).
         foreach (var (id, b) in OtherBiomes)
         {
             var brng = new RandomNumberGenerator { Seed = (ulong)(T.Seed + 11 + 1000 * (b.Seed + 1)) };
+            var orng = new RandomNumberGenerator { Seed = (ulong)(T.Seed + 11 + 5000 * (b.Seed + 1)) };
             foreach (var def in b.Decor)
             {
                 var mesh = DecorMesh(def, out _);
                 if (mesh == null) { GD.PrintErr($"WORLD decor model yok: {def.Model}"); continue; }
                 var placed = new List<Transform3D>();
                 ScatterInBiome(def, id, Mathf.RoundToInt(def.Count * density), placed, brng, null);
+                // Ev biyomu (Koru): cekirdegin disindaki bolum (krater eteklerine dek) ayri tohumdan, Count * OuterScale.
+                if (IsHome(id) && def.OuterScale > 0 && T.CoreSize > 0)
+                    ScatterInBiome(def, id, Mathf.RoundToInt(def.Count * density * def.OuterScale), placed, orng, null, WorldRect(4f), skipCore: true);
                 string key = DecorCounts.ContainsKey(def.Id) ? $"{id}_{def.Id}" : def.Id;
                 FinishDecor(def, key, mesh, placed);
             }
         }
     }
 
-    /// <summary>Biyomun kutu disinda kalan alani (m², 8 m'lik orneklemle; agirlik >= 0,5).</summary>
+    Rect2 WorldRect(float margin) { float h = Size / 2f - margin; return new Rect2(Center.X - h, Center.Y - h, 2 * h, 2 * h); }
+
+    /// <summary>Biyomun kutu disinda kalan alani (m², 8 m'lik orneklemle; agirlik >= 0,5); orneklem alani = biyomun orneklem karesi.</summary>
     float BiomeAreaOutside(string biome, List<float> box)
     {
-        float area = 0, half = Size / 2f - 4f;
-        for (float x = -half; x < half; x += 8f)
-        for (float z = -half; z < half; z += 8f)
+        float area = 0;
+        var r = SampleRect(biome, 4f);
+        for (float x = r.Position.X; x < r.End.X; x += 8f)
+        for (float z = r.Position.Y; z < r.End.Y; z += 8f)
         {
             if (x >= box[0] && x <= box[2] && z >= box[1] && z <= box[3]) continue;
             if (Map.Weight(biome, x, z) >= 0.5f) area += 64f;
@@ -101,13 +114,14 @@ public partial class World
     /// Biyomun icine serpme: agirligi rastgele esikten buyuk yer (gecis bandinda seyrelir), kutunun disi (box verilirse),
     /// aciklik, gol, egim kurallari Cayir'inkiyle ayni.
     /// </summary>
-    void ScatterInBiome(DecorDef def, string biome, int want, List<Transform3D> placed, RandomNumberGenerator rng, List<float> box)
+    void ScatterInBiome(DecorDef def, string biome, int want, List<Transform3D> placed, RandomNumberGenerator rng, List<float> box, Rect2? rect = null, bool skipCore = false)
     {
-        float half = Size / 2f - 4f;
+        var r = rect ?? BiomeRect(biome, 4f);
         int start = placed.Count;
-        for (int tries = 0; tries < want * 20 && placed.Count - start < want; tries++)
+        for (int tries = 0; tries < want * 40 && placed.Count - start < want; tries++)
         {
-            var p = new Vector3(rng.RandfRange(-half, half), 0, rng.RandfRange(-half, half));
+            var p = new Vector3(rng.RandfRange(r.Position.X, r.End.X), 0, rng.RandfRange(r.Position.Y, r.End.Y));
+            if (skipCore && InCore(p.X, p.Z)) continue;
             if (box != null && p.X >= box[0] && p.X <= box[2] && p.Z >= box[1] && p.Z <= box[3]) continue;
             if (Map.Weight(biome, p.X, p.Z) < rng.Randf() * 0.9f + 0.1f) continue;
             float dist = new Vector2(p.X, p.Z).Length();
@@ -167,11 +181,38 @@ public partial class World
         node?.Free();
         if (src == null) return null;
         height = Mathf.Max(0.05f, src.GetAabb().End.Y);
-        if (def.Wind <= 0 || src is not ArrayMesh am) return src;
+        bool tinted = !string.IsNullOrEmpty(def.Tint);
+        if ((def.Wind <= 0 && !tinted) || src is not ArrayMesh am) return src;
         var mesh = (ArrayMesh)am.Duplicate();
+        if (tinted) TintMesh(mesh, new Color(def.Tint));
+        if (def.Wind <= 0) return mesh;
         for (int i = 0; i < mesh.GetSurfaceCount(); i++)
             mesh.SurfaceSetMaterial(i, WindMaterial(mesh.SurfaceGetMaterial(i), def, height));
         return mesh;
+    }
+
+    /// <summary>Yer tutucu: ayni model baska biyomda baska ton (malzemelerin albedosu tonla carpilir).</summary>
+    public static void TintMesh(ArrayMesh mesh, Color tint)
+    {
+        for (int i = 0; i < mesh.GetSurfaceCount(); i++)
+            if (mesh.SurfaceGetMaterial(i) is BaseMaterial3D b)
+            {
+                var d = (BaseMaterial3D)b.Duplicate();
+                d.AlbedoColor *= tint;
+                mesh.SurfaceSetMaterial(i, d);
+            }
+    }
+
+    /// <summary>Dugum modeli icin: sahnedeki MeshInstance3D yuzeylerini tonla boyar.</summary>
+    public static void TintNode(Node root, Color tint)
+    {
+        if (root is MeshInstance3D mi && mi.Mesh != null)
+            for (int i = 0; i < mi.Mesh.GetSurfaceCount(); i++)
+            {
+                var m = mi.GetActiveMaterial(i);
+                if (m is BaseMaterial3D b) { var d = (BaseMaterial3D)b.Duplicate(); d.AlbedoColor *= tint; mi.SetSurfaceOverrideMaterial(i, d); }
+            }
+        foreach (var c in root.GetChildren()) TintNode(c, tint);
     }
 
     Shader _plantShader;

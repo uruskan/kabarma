@@ -30,6 +30,8 @@ public sealed partial class GameState
     Exploration ExploreSection
     {
         get => Explore;
-        set => _explore = value ?? new Exploration(Data);
+        // M4: kayit daha kucuk bir dunyadan (640 m) gelmis olabilir: ayni dunya konumlarini yeni izgaraya tasir (Exploration.RemapTo).
+        set => _explore = value == null ? new Exploration(Data)
+            : value.RemapTo(Data.Biomes.World.Terrain.Size, Data.Biomes.World.Map.Cell, Data.Biomes.World.Terrain.CenterX, Data.Biomes.World.Terrain.CenterZ);
     }
 }

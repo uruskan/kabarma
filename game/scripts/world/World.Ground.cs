@@ -62,15 +62,15 @@ public partial class World
 
     /// <summary>Dunya noktasindan denetim dokusu hucresi.</summary>
     (int x, int z) CtlCell(float wx, float wz) =>
-        (Mathf.Clamp((int)((wx + Size / 2f) / Size * ControlRes), 0, ControlRes - 1),
-         Mathf.Clamp((int)((wz + Size / 2f) / Size * ControlRes), 0, ControlRes - 1));
+        (Mathf.Clamp((int)((wx - Origin.X) / Size * ControlRes), 0, ControlRes - 1),
+         Mathf.Clamp((int)((wz - Origin.Y) / Size * ControlRes), 0, ControlRes - 1));
 
-    Vector2 CtlWorld(int x, int z) => new((x + 0.5f) / ControlRes * Size - Size / 2f, (z + 0.5f) / ControlRes * Size - Size / 2f);
+    Vector2 CtlWorld(int x, int z) => new((x + 0.5f) / ControlRes * Size + Origin.X, (z + 0.5f) / ControlRes * Size + Origin.Y);
 
     void BuildGroundLayers()
     {
         LoadLayers();
-        ControlRes = Size > 400 ? 1024 : 512;
+        ControlRes = Size > 1200 ? 2048 : Size > 400 ? 1024 : 512;
         MacroNoise = new NoiseTexture2D
         {
             Width = 512, Height = 512, Seamless = true, GenerateMipmaps = true,
@@ -95,7 +95,8 @@ public partial class World
         var paths = Biomes.World.Paths;
         float pw = Biomes.World.PathWidth;
         float pathReach = PathsReach(paths) + pw * 2f + 1f; // patikalardan uzak hucrede mesafe hesaplanmaz
-        var second = OtherBiomes.Select(b => b.id).FirstOrDefault();
+        var others = OtherBiomes.Select(b => (System.Array.IndexOf(Map.Order.ToArray(), b.id), b.def.Terrain.GrassDensity)).ToList();
+        var wsBuf = new float[Map.Order.Count];
         for (int z = 0; z < ControlRes; z++)
         for (int x = 0; x < ControlRes; x++)
         {
@@ -134,7 +135,8 @@ public partial class World
             if (HasLake) dens *= Mathf.SmoothStep(WaterLevel + 0.05f, WaterLevel + 0.3f, HeightAt(w.X, w.Y));
             dens *= Mathf.SmoothStep(-0.55f, -0.2f, bare.GetNoise2D(w.X, w.Y));
             // Biyom: orman tabaninda ot seyrek (biomes.json terrain.grassDensity, dunya2).
-            if (second != null) dens *= Mathf.Lerp(1f, Biomes.Biomes[second].Terrain.GrassDensity, Map.Weight(second, w.X, w.Y));
+            Map.Weights(w.X, w.Y, wsBuf);
+            foreach (var (oi, gd) in others) { float ow = wsBuf[oi]; if (ow > 0f) dens *= Mathf.Lerp(1f, gd, ow); }
             int i = (z * ControlRes + x) * 4;
             _ctl[i] = (byte)(Mathf.Clamp(r, 0, 1) * 255);
             _ctl[i + 1] = (byte)(Mathf.Clamp(g, 0, 1) * 255);
@@ -215,6 +217,7 @@ public partial class World
         m.SetShaderParameter("control", ControlTex);
         m.SetShaderParameter("macro_noise", MacroNoise);
         m.SetShaderParameter("world_size", Size);
+        m.SetShaderParameter("world_center", Center);
         m.SetShaderParameter("water_level", WaterLevel);
         m.SetShaderParameter("detail", Preset.TerrainDetail);
         m.SetShaderParameter("tint_lush", TintFor(Pal("plant", Palette.Plant), CimenMean, 0.45f));

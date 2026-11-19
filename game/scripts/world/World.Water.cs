@@ -43,7 +43,7 @@ public partial class World
         for (int x = 0; x <= Cells; x++)
         for (int z = 0; z <= Cells; z++)
         {
-            float wx = x - Cells / 2f, wz = z - Cells / 2f;
+            float wx = x + Origin.X, wz = z + Origin.Y;
             float d = new Vector2(wx - c.X, wz - c.Y).Length();
             if (d > reach) continue;
             float r = ShoreRadiusAt(wx, wz);

@@ -28,9 +28,15 @@ uniform vec4 dry_root : source_color = vec4(0.22, 0.18, 0.08, 1.0);
 uniform vec4 dry_tip : source_color = vec4(0.86, 0.72, 0.38, 1.0);
 uniform float translucency = 0.45;
 // Biyom karisimi (dunya2): R = Sis Korusu agirligi; Koru otu mavi-yesil.
-uniform sampler2D biome_tex : filter_linear, repeat_disable;
+uniform sampler2D biome_tex : filter_linear, repeat_disable;   // R Koru, G Sazlik, B Kanyon, A Ayaz
+uniform sampler2D biome_tex2 : filter_linear, repeat_disable;  // R Gobek
+uniform vec2 world_center = vec2(0.0);
 uniform vec4 biome_tip : source_color = vec4(0.3, 0.5, 0.45, 1.0);
 uniform vec4 biome_root : source_color = vec4(0.05, 0.1, 0.1, 1.0);
+uniform vec4 b2_tip : source_color = vec4(0.3); uniform vec4 b2_root : source_color = vec4(0.05);
+uniform vec4 b3_tip : source_color = vec4(0.3); uniform vec4 b3_root : source_color = vec4(0.05);
+uniform vec4 b4_tip : source_color = vec4(0.3); uniform vec4 b4_root : source_color = vec4(0.05);
+uniform vec4 b5_tip : source_color = vec4(0.3); uniform vec4 b5_root : source_color = vec4(0.05);
 
 varying vec3 v_col;
 varying float v_t;
@@ -52,7 +58,7 @@ void vertex() {
 	float size = 0.0;
 	vec4 ctl = vec4(0.0);
 	if (keep > r3) {
-		ctl = textureLod(control, (root + world_size * 0.5) / world_size, 0.0);
+		ctl = textureLod(control, (root - world_center + world_size * 0.5) / world_size, 0.0);
 		size = clamp((keep * ctl.a - r3) / 0.08, 0.0, 1.0);
 	}
 
@@ -62,7 +68,7 @@ void vertex() {
 		VERTEX = vec3(0.0, 0.0, 1e6); // kameranin arkasina, tum ucgenler bir noktada
 		NORMAL = vec3(0.0, 0.0, 1.0);
 	} else {
-		float gh = textureLod(height_tex, (root + world_size * 0.5 + 0.5) / height_res, 0.0).r;
+		float gh = textureLod(height_tex, (root - world_center + world_size * 0.5 + 0.5) / height_res, 0.0).r;
 		float m1 = textureLod(macro_noise, root / 110.0, 0.0).r;
 		float m3 = r5 * 0.6 + 0.2;
 		float m2 = r1 * 0.5 + 0.25;
@@ -102,8 +108,16 @@ void vertex() {
 		tip_c = mix(tip_c, dry_tip.rgb * 0.9, dry * 0.6);
 		v_col = mix(root_c, tip_c, smoothstep(0.0, 1.0, t)) * mix(0.85, 1.12, r5) * (0.9 + 0.2 * m2);
 
-		float kb = textureLod(biome_tex, (root + world_size * 0.5) / world_size, 0.0).r;
-		if (kb > 0.003) v_col = mix(v_col, mix(biome_root.rgb, biome_tip.rgb, smoothstep(0.0, 1.0, t)) * mix(0.85, 1.12, r5), kb);
+		vec2 buv = (root - world_center + world_size * 0.5) / world_size;
+		vec4 bw = textureLod(biome_tex, buv, 0.0);
+		float bw5 = textureLod(biome_tex2, buv, 0.0).r;
+		float tt = smoothstep(0.0, 1.0, t);
+		float vv = mix(0.85, 1.12, r5);
+		if (bw.r > 0.003) v_col = mix(v_col, mix(biome_root.rgb, biome_tip.rgb, tt) * vv, bw.r);
+		if (bw.g > 0.003) v_col = mix(v_col, mix(b2_root.rgb, b2_tip.rgb, tt) * vv, bw.g);
+		if (bw.b > 0.003) v_col = mix(v_col, mix(b3_root.rgb, b3_tip.rgb, tt) * vv, bw.b);
+		if (bw.a > 0.003) v_col = mix(v_col, mix(b4_root.rgb, b4_tip.rgb, tt) * vv, bw.a);
+		if (bw5 > 0.003) v_col = mix(v_col, mix(b5_root.rgb, b5_tip.rgb, tt) * vv, bw5);
 		v_up = normalize((VIEW_MATRIX * vec4(0.0, 1.0, 0.0, 0.0)).xyz);
 		VERTEX = (VIEW_MATRIX * vec4(world, 1.0)).xyz;
 		NORMAL = normalize((VIEW_MATRIX * vec4(n, 0.0)).xyz);

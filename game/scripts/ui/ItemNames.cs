@@ -105,6 +105,11 @@ public static class ItemNames
         ["resin"] = "Reçine",
         ["iron_ore"] = "Demir Cevheri",
         ["saltpeter"] = "Güherçile",
+        // M4 biyom akışı: T3–T6 ham kaynaklar (ICERIK §2.1 #11–#25) ve Kemik (§2.2 #32)
+        ["turba"] = "Turba", ["kukurt"] = "Kükürt", ["kaucuk_sutu"] = "Kauçuk Sütü", ["balcik"] = "Balçık", ["isil_yosun"] = "Işıl Yosun",
+        ["kum"] = "Kum", ["kuvars"] = "Kuvars", ["titan_ore"] = "Titan Cevheri", ["katran"] = "Katran", ["tuz"] = "Tuz",
+        ["buz"] = "Buz", ["ayaz_kristali"] = "Ayaz Kristali", ["ham_maya"] = "Ham Maya", ["obsidyen"] = "Obsidyen", ["isil_cevher"] = "Işıl Cevher",
+        ["kemik"] = "Kemik",
         ["scrap"] = "Hurda",
         // cip (M3): cip uretim malzemeleri (ICERIK 27, 36); tur ve nadirlik adlari chips.json
         ["maya_kesesi"] = "Maya Kesesi",

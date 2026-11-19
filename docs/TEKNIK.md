@@ -207,6 +207,13 @@ Host ya da sunucu yetkilidir. İstemci istekleri mesafe, bekleme süresi ve enva
 - **Arazi** 64 m'lik görsel parçalara bölünür (görüş konisi eleme); çarpışma tek yükseklik şeklidir. Bütçeler §10'dakilerle aynıdır.
 - **Doğma tabloları** biyom başına `biomes.json` `spawns` içindedir: `creatures` (yaratık sürüleri: gündüz/gece, ağırlık, sürü boyu, en çok sürü, Ocak'a uzaklık) ve `atalar` (Ata'nın çağrıldığı Ata Taşı ve arena yarıçapı). Yaratık ve Ata akışları satır ekler; tabloyu `SpawnTable` okur.
 
+**M4 ara adımı (19 Kasım 2026, sahibin kararı): 1800 × 1800 m dünya.** 5 × 5 km hedefi (yukarıdaki 1–5. maddeler) akış ve LOD gerektirdiği için sonraya kalır; M4'te dünya 1800 m'dir ve altı biyomu taşır. Yerleşim:
+- **Göbek** krater çanağıdır; merkezi Ocak'tan ışık sütunu yönünde 600 m (`world.crater`), yarıçapı ~130 m.
+- **Açısal dilimler** kraterin çevresinde: güney (Ocak yönü, ±60°) bugünkü Çayır + Koru (Koru kraterin eteğine kadar sürer), batı Sazlık, kuzey Kanyon, doğu Ayaz; sınırlar gürültüyle bükülür, geçişler 50 m'lik karışım bandıdır. Dünyanın merkezi krater yakınındadır (`terrain.center`); Ocak (0,0) yerinde kalır.
+- **Çayır ve Koru'nun 640 m'lik çekirdeği bit bit korunur:** çekirdekte biyom ağırlıkları, bitki/kaynak/keşif dağılımı ve yükseklik eski formülle aynıdır; çekirdeğin dışı yeni biyomların ayrı tohumlarıyla dolar. Yeni biyom ağırlığı çekirdekte 0'dır.
+- **Büyütülebilir:** biyomlar dilim olarak eklenir (`biomeMap.slices`); 5 × 5 km'ye geçişte yalnız boyut, dilim yarıçapları ve akış/LOD değişir.
+- **Test:** başsız Godot sınamalarında arazi ızgarası yarı çözünürlükte kurulabilir (`--lowres`); oyunda 1 m'lik tam çözünürlük kalır. Keşif ızgarası (`Exploration`) büyüyen dünyaya göçle taşınır (kayıt sürümü artar, göç testi).
+
 **Biyom sözleşmesi (M4, `biyom` akışı).** Altı biyomun kimliği, kademesi (T1–T6) ve iklim tehlikesi `data/climate.json`'dadır; `BiomeClimate` (`Sim`) okur, durumsuzdur, kayda ve ağa girmez. "Bu noktada hangi biyom": `BiomeMap.BiomeAt(x, z)` (harita yeni biyomları kapsayana dek yalnız Çayır ve Koru döner; kimlikler ve kademe haritadan bağımsız `BiomeClimate`'te durur). "Bu biyomda ne tehlike, direnç yetiyor mu": `BiomeClimate.Exposure(biyom, ClimateContext)` (gece/gündüz, giyili modül, etkin yemek, bölge `gas_pit`, durum `shelter`/`shade`/`wet`) → tehlike, direnç yetti mi, saniyede can (1–3), dayanıklılık yenilenmesi engelli mi. Giriş donanımı `entryGear` (ipucu). Yeni içerik biyom kimliğiyle `biomes.json` `biomes.<kimlik>` altına satır ekler.
 
 ## 8. Yapay zekâ

@@ -218,7 +218,22 @@ public partial class World
         }
         // Kamera Koru'daysa o biyomun saatlerine karisir (World.Biomes.cs CameraBiomeMix; dunya2).
         var L = Blend(Key);
-        if (CameraBiomeMix > 0.001f && Map != null) L = TimeLight.Lerp(L, Blend(Key2), CameraBiomeMix);
+        if (Map != null && _camMix.Length > 0)
+        {
+            // Agirlikli ortalama: baslangic biyomu kalan payi (1 - toplam) tasir; her diger biyom kendi payi kadar karisir.
+            float cum = 1f;
+            foreach (var w in _camMix) cum -= Mathf.Min(w, 1f);
+            cum = Mathf.Max(cum, 0.0001f);
+            int bi = 0;
+            foreach (var (id, _) in OtherBiomes)
+            {
+                float w = bi < _camMix.Length ? _camMix[bi] : 0f; bi++;
+                if (w <= 0.001f) continue;
+                cum += w;
+                string bid = id;
+                L = TimeLight.Lerp(L, Blend(k => KeyOf(bid, k)), w / cum);
+            }
+        }
         Light = L;
         UpdateAtmosphere(L); // World.Fog.cs: Koru huzmeleri ve sis katmanlari (dunya2)
         var lightDir = Dir(L.Elev, L.Az);
