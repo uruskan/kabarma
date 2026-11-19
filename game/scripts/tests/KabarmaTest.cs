@@ -203,6 +203,10 @@ public partial class KabarmaTest : Node
                 Check(tz.Stacks.Count == 5, $"KS 30 tuzuk madde sayisi {tz.Stacks.Count}");
                 Check(n.Plan.Waves.Count == _d.Data.Kabarma.Full.WaveCount + 1 + tz.ExtraWaves, $"dalga sayisi {n.Plan.Waves.Count} (tuzuk +{tz.ExtraWaves})");
                 Check(_d.TuzukNow.Stacks.Count == 5, "TuzukNow gece surerken dolu degil");
+                // Tuzuk etkileri oyun yolunda (KS 30, dunya tohumu 4417: saganak ve ters_ruzgar dahil)
+                Check(tz.Has("saganak") && _d.TuzukHit(new CombatHit(10f, DamageType.Ates, CombatTeam.Player)).Amount == 0f, "Saganak: Ates isabeti sifirlanmadi");
+                Check(_d.TuzukHit(new CombatHit(10f, DamageType.Sok, CombatTeam.Player)).Amount > 10f, "Saganak: Sok guclenmedi");
+                Check(!tz.Has("ters_ruzgar") || _d.TuzukNow.RangeMult < 1f, "Ters Ruzgar menzili kismadi");
                 GD.Print($"KABARMA tuzuk ks=30 maddeler={string.Join(",", tz.Stacks.Select(kv => kv.Key + ":" + kv.Value))} dalga={n.Plan.Waves.Count} slot={n.Plan.TotalSlots}");
                 GD.Print($"KABARMA RESULT ok checks={_checks} species={_species.Count} t={_t:0}");
                 GetTree().Quit(0);

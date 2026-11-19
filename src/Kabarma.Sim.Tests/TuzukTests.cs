@@ -210,4 +210,84 @@ public class TuzukTests
         Assert.Equal(SwellRoomResult.KabarmaActive, SwellRoom.UsePlot(s, s.Backpack, true, p));
         Assert.Equal(50, s.Backpack.Count("maya"));
     }
+
+    // ---------- gece4 ek: Saganak turu, Ters Ruzgar kule menzili, hayvan kabartmasi, Yeni Ay metni ----------
+
+    [Fact]
+    public void Saganak_scales_fire_to_zero_and_shock_up_by_damage_type()
+    {
+        var s1 = Only("saganak", 1);
+        Assert.Equal(0f, s1.DamageMult(DamageType.Ates));
+        Assert.Equal(1.5f, s1.DamageMult(DamageType.Sok), 3);
+        Assert.Equal(2f, Only("saganak", 2).DamageMult(DamageType.Sok), 3);
+        Assert.Equal(1f, s1.DamageMult(DamageType.Darbe));
+        Assert.Equal(1f, TuzukSet.None.DamageMult(DamageType.Ates));
+    }
+
+    [Fact]
+    public void Ters_ruzgar_shrinks_tower_pick_range_only_when_asked()
+    {
+        var d = D.Tuzuk; // veri yuklu
+        var tw = D.Defense.Towers.First(x => x.Range > 8f && x.MinRange <= 1f);
+        var far = new DefenseTarget { Id = 1, Pos = new System.Numerics.Vector3(tw.Range * 0.9f, 0, 0), Hp = 10, Radius = 0.1f };
+        Assert.Equal(0, TowerRules.Pick(tw, System.Numerics.Vector3.Zero, new[] { far }, "nearest"));
+        Assert.Equal(-1, TowerRules.Pick(tw, System.Numerics.Vector3.Zero, new[] { far }, "nearest", Only("ters_ruzgar", 1).RangeMult)); // 0,9 > 0,75
+        Assert.Equal(0, TowerRules.Pick(tw, System.Numerics.Vector3.Zero, new[] { far }, "nearest", TuzukSet.None.RangeMult));
+        Assert.NotNull(d);
+    }
+
+    [Fact]
+    public void Every_clause_has_a_menu_note()
+    {
+        Assert.All(T.Clauses, c => Assert.False(string.IsNullOrWhiteSpace(c.Note), c.Id));
+    }
+
+    static (GameState s, Ranch r, PenAnimal a) TamePofuduk()
+    {
+        var s = new GameState(D, World);
+        var pen = new PenShape { Polygon = new List<P2> { new(0, 0), new(6, 0), new(6, 6), new(0, 6) }, Walls = new List<int>(), Area = 36, HasGate = true };
+        var a = s.Ranch.Wild("pofuduk", 3, 3);
+        a.Trust = 1f;
+        Assert.True(s.Ranch.Register(a, pen));
+        return (s, s.Ranch, a);
+    }
+
+    [Fact]
+    public void Swell_room_gives_a_tame_animal_a_war_body_for_two_minutes_then_it_wears_off()
+    {
+        var (s, r, a) = TamePofuduk();
+        var pens = new List<PenShape> { new() { Polygon = new List<P2> { new(0, 0), new(6, 0), new(6, 6), new(0, 6) }, Walls = new List<int>(), Area = 36, HasGate = true } };
+        Func<string, float> hp = id => s.Data.Creature(id).Hp;
+        Assert.Null(a.War);
+        Assert.True(r.SwellForSeconds(a, hp, T.SwellRoom.AnimalSeconds, pens));
+        Assert.NotNull(a.War);
+        Assert.True(r.IsDaySwollen(a) && r.AnyDaySwell);
+        Assert.Equal(CombatTeam.Player, a.War!.Team);
+        Assert.False(r.SwellForSeconds(a, hp, 120f, pens)); // zaten kabarik
+        Assert.Empty(r.DaySwellTick(60f));
+        Assert.NotNull(a.War);
+        var ev = r.DaySwellTick(61f);
+        Assert.Contains(ev, e => e.Kind == WarEventKind.SwellEnded && e.AnimalId == a.Id);
+        Assert.Null(a.War);
+        Assert.False(r.AnyDaySwell);
+    }
+
+    [Fact]
+    public void Swell_room_refuses_wild_tutorial_and_exhausted_animals_and_keeps_night_war_bodies()
+    {
+        var (s, r, a) = TamePofuduk();
+        Func<string, float> hp = id => s.Data.Creature(id).Hp;
+        var wild = r.Wild("pofuduk", 20, 20);
+        Assert.False(r.SwellForSeconds(wild, hp, 60f, new List<PenShape>()));
+        var tut = new PenAnimal { Species = "gidak", Tutorial = true, Trust = 1, Registered = true };
+        r.Animals.Add(tut);
+        Assert.False(r.SwellForSeconds(tut, hp, 60f, new List<PenShape>()));
+        a.TiredDawns = 1;
+        Assert.False(r.SwellForSeconds(a, hp, 60f, new List<PenShape>()));
+        a.TiredDawns = 0;
+        Assert.True(r.SwellForSeconds(a, hp, 30f, new List<PenShape>()));
+        r.AtWar = true; // gece basladi: gece kurali devralir, sure bitince govde dusmez
+        r.DaySwellTick(40f);
+        Assert.NotNull(a.War);
+    }
 }

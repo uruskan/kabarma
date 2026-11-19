@@ -34,12 +34,15 @@ public partial class Director
     public SaveService Saver { get; private set; }
     /// <summary>Yeni oyunun dunya ayari (GDD 25; menude secilir). Null: save.json defaultPreset.</summary>
     public string NewPreset { get; set; }
+    /// <summary>Yeni oyunda Yeni Ay'da secilen tuzuk maddeleri (GDD 14.8); dunya kaydinda saklanir, karakter dosyasinda degil.</summary>
+    public System.Collections.Generic.List<string> NewMoon { get; set; }
 
     /// <summary>Director._Ready sonunda bir kez: bolumleri kaydeder, otomatik kaydi kurar, bekleyen kaydi uygular.</summary>
     void InitSave()
     {
         RegisterGodotSections();
         if (PendingLoad == null && !string.IsNullOrEmpty(NewPreset)) State.Settings.Preset = NewPreset;
+        if (PendingLoad == null && NewMoon is { Count: > 0 }) GD.Print($"YENIAY secilen={State.SetNewMoon(NewMoon)}"); // GDD 14.8: tuzuk TuzukSection ile dunya kaydina girer
         SaveRoot ??= Main.Args.TryGetValue("save_root", out var r) ? r : null;
         SaveSlot ??= Main.Args.TryGetValue("save_slot", out var sl) ? sl : Data.Save.DefaultSlot;
         // Otomasyon kosulari (komut satiri argumanli) sahibin kaydina hic yazmaz: yalniz test kokune.
