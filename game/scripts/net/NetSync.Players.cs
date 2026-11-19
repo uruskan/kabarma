@@ -62,8 +62,17 @@ public partial class NetSync
             if (!a.Ready) continue;
             var w = NetPackets.Begin(NetMsg.Snapshot, 16 + 17 * (Actors.Count + 1));
             w.U32(_tick);
-            var frames = new List<PlayerFrame> { _own };
-            frames.AddRange(Actors.Values.Where(x => x.Peer != peer && x.HasFrame).Select(x => x.Last));
+            // sekiz (M5): ilgi alani. Alicinin yakinindaki oyuncular tam hizda, uzaktakiler seyreltilmis (NetInterest, net.json interest).
+            float rx = a.HasFrame ? a.Last.X : _own.X, rz = a.HasFrame ? a.Last.Z : _own.Z;
+            bool Want(in PlayerFrame f)
+            {
+                float d = Mathf.Sqrt((f.X - rx) * (f.X - rx) + (f.Z - rz) * (f.Z - rz));
+                bool urgent = (f.Flags & (NetFrameFlags.Talking | NetFrameFlags.Down)) != 0;
+                return NetInterest.SendThisTick(_tick, NetInterest.Divisor(Cfg.Interest, d, urgent), peer, f.Peer);
+            }
+            var frames = new List<PlayerFrame>();
+            if (Want(_own)) frames.Add(_own);
+            foreach (var x in Actors.Values) if (x.Peer != peer && x.HasFrame && Want(x.Last)) frames.Add(x.Last);
             w.U8((byte)frames.Count);
             foreach (var f in frames) f.Write(w, Cfg.PosPerMetre);
             WriteCreatures(w, a, now); // NetSync.Creatures.cs

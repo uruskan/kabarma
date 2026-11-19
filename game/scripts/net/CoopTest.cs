@@ -18,7 +18,8 @@ namespace Kabarma.Game;
 /// </summary>
 public partial class CoopTest : Node
 {
-    const int Clients = 3;
+    /// <summary>Toplam oyuncu (host dahil): varsayilan 3; sekiz (M5) icin --clients=8 (8 surec: makine kuralina gore dikkat, test.ps1 varsayilani 3).</summary>
+    static readonly int Clients = Main.Args.TryGetValue("clients", out var cs) && int.TryParse(cs, out var cn) ? System.Math.Clamp(cn, 2, 8) : 3;
     const float LateJoinAt = 35f;   // gercek sn: ilk ikisi kurmaya baslamisken
     const float Timeout = 420f;
     const float SettleSeconds = 3.5f;

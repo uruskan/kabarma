@@ -56,6 +56,9 @@ public sealed class EnetTransport : ITransport
         p.Send((int)channel, data, Flags(channel));
     }
 
+    /// <summary>Host: bagli istemcinin uzak IP adresi (dunya devrinde yeni host adresi; sekiz, M5).</summary>
+    public string RemoteAddress(int conn) => _peers.TryGetValue(conn, out var p) && p != null ? p.GetRemoteAddress() : null;
+
     public void Poll(List<NetEvent> into)
     {
         for (int guard = 0; guard < 4096; guard++)

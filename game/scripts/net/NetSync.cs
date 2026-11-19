@@ -73,6 +73,7 @@ public partial class NetSync : Node
         Joined = host;
         LocalName = Main.Args.TryGetValue("name", out var nm) ? nm : host ? "Host" : $"Oyuncu {OS.GetProcessId() % 1000}";
         int port = Main.Args.TryGetValue("port", out var ps) && int.TryParse(ps, out var pp) ? pp : Cfg.Port;
+        _port = port; // NetSync.Handover.cs
         string transport = Main.Args.TryGetValue("transport", out var tr) ? tr : "enet";
         string err;
         if (transport == "steam") _tx = SteamTransport.Create(this, host, out err);
@@ -225,7 +226,7 @@ public partial class NetSync : Node
             case NetMsg.Frame: OnFrame(a, PlayerFrame.Read(r, Cfg.PosPerMetre), now); break; // NetSync.Players.cs
             case NetMsg.Look: OnLook(a, r); break;
             case NetMsg.Ready:
-                a.Ready = true;
+                a.Ready = true; _readyAt[peer] = now; // NetSync.Handover.cs: devralma icin katilma suresi
                 Sections.Forget(peer); // butun bolumler bastan (sonradan katilma)
                 RebuildRoster();
                 GD.Print($"NET peer {peer} ready ({a.Name})");
@@ -351,6 +352,7 @@ public partial class NetSync : Node
                 GD.Print($"NET welcome peer={LocalPeer}");
                 break;
             case NetMsg.Reject: Fail("host reddetti: " + r.Str()); break;
+            case NetMsg.Handover: OnHandover(r); break; // NetSync.Handover.cs
             case NetMsg.Roster:
                 Roster = NetPackets.ReadRoster(r);
                 SyncAvatars(); // NetSync.Players.cs
