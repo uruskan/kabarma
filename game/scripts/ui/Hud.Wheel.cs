@@ -35,7 +35,9 @@ public partial class Hud
     public void OpenWheel(int current)
     {
         var l = new List<WheelSlice>();
-        for (int i = 0; i < Capa.HeadNames.Length; i++)
+        int shown = Capa.HeadNames.Length; // kusam (M4): yeni basliklar cantada yoksa cark 7 dilimde kalir (son acik basliga kadar uzar)
+        while (shown > (int)Capa.Head.Civi + 1 && !_d.Capa.IsAvailable((Capa.Head)(shown - 1))) shown--;
+        for (int i = 0; i < shown; i++)
         {
             var head = i < T.Data.Heads.Count ? T.Data.Heads[i] : new Kabarma.Sim.UiHeadDef { Title = Capa.HeadNames[i] };
             l.Add(new WheelSlice(HeadGlyphName(i), null, head.Title, head.Text, _d.Capa.IsAvailable((Capa.Head)i)));
